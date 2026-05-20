@@ -1,0 +1,39 @@
+import { peripheralModules } from '../generators/registry.js'
+
+const VALID_ARCHES = ['xtensa-lx6', 'xtensa-lx7', 'risc-v', 'arm-cortex-m33']
+const VALID_FLASH  = ['qspi', 'spi']
+
+export function validatePlatform(data) {
+  const errors = []
+
+  if (data.schemaVersion !== 1)
+    errors.push(`schemaVersion — 期望 1，实际 ${data.schemaVersion}`)
+
+  for (const field of ['platformId', 'id', 'name']) {
+    if (typeof data[field] !== 'string')
+      errors.push(`${field} — 期望 string，实际 ${typeof data[field]}`)
+  }
+
+  if (!VALID_ARCHES.includes(data.arch))
+    errors.push(`arch — 期望 ${VALID_ARCHES.join(' | ')}，实际 "${data.arch}"`)
+
+  if (!VALID_FLASH.includes(data.flashInterface))
+    errors.push(`flashInterface — 期望 qspi | spi，实际 "${data.flashInterface}"`)
+
+  const mem = data.memory ?? {}
+  for (const field of ['sramBytes', 'romBytes', 'flashMaxBytes', 'psramMaxBytes']) {
+    if (typeof mem[field] !== 'number')
+      errors.push(`memory.${field} — 期望 number，实际 ${typeof mem[field]}`)
+  }
+
+  if (data.peripherals && typeof data.peripherals === 'object') {
+    for (const mod of peripheralModules) {
+      const key = mod.meta.key
+      if (data.peripherals[key]) {
+        errors.push(...mod.validate(data.peripherals[key], `peripherals.${key}`))
+      }
+    }
+  }
+
+  return errors
+}
