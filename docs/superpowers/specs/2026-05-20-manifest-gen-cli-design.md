@@ -1,42 +1,42 @@
-# manifest-gen CLI Design
+# manifest-gen CLI 设计规格
 
-**Date:** 2026-05-20  
-**Scope:** Platform JSON generation & validation tool (`tools/manifest-gen/`)  
-**Status:** Approved
-
----
-
-## Problem
-
-AI-assisted generation of platform variant JSON files (`platforms/<platformId>/<variantId>.json`) produces inconsistent output: missing required fields, wrong value types, wrong key ordering, and structural drift from the canonical template. A programmatic tool with hard-coded schema rules guarantees format correctness.
+**日期：** 2026-05-20  
+**范围：** Platform JSON 生成与校验工具（`tools/manifest-gen/`）  
+**状态：** 已确认
 
 ---
 
-## Scope
+## 问题背景
 
-- **Phase 1 (this spec):** Platform JSON only (`platforms/`)
-- **Phase 2 (future):** Board JSON (`boards-and-chips/`) — architecture reserves extension slots
+AI 辅助生成 platform 变体 JSON 文件（`platforms/<platformId>/<variantId>.json`）时，输出格式不可靠：必填字段缺失、值类型错误、键顺序混乱、结构偏离模板。需要一个基于硬编码 schema 规则的程序化工具来保证格式正确性。
 
 ---
 
-## Architecture
+## 范围
 
-### Directory Structure
+- **第一阶段（本规格）：** 只处理 platform JSON（`platforms/`）
+- **第二阶段（未来）：** board JSON（`boards-and-chips/`）—— 架构预留扩展插槽
+
+---
+
+## 架构
+
+### 目录结构
 
 ```
 tools/
 └── manifest-gen/
-    ├── package.json             # name: manifest-gen, pure ESM
+    ├── package.json             # name: manifest-gen，纯 ESM
     ├── bin/
-    │   └── manifest-gen.js      # CLI entry point, #!/usr/bin/env node
+    │   └── manifest-gen.js      # CLI 入口，#!/usr/bin/env node
     └── src/
-        ├── cli.js               # commander subcommand registration
+        ├── cli.js               # commander 子命令注册
         ├── generators/
-        │   ├── registry.js      # peripheral module registry (extension point)
+        │   ├── registry.js      # 外设模块注册表（扩展点）
         │   ├── platform/
-        │   │   ├── wizard.js    # top-level field prompts (inquirer)
-        │   │   ├── builder.js   # assembles wizard answers into final JSON
-        │   │   └── peripherals/ # one file per peripheral type (~18 modules)
+        │   │   ├── wizard.js    # 顶层字段交互提问（inquirer）
+        │   │   ├── builder.js   # 将向导答案组装成最终 JSON
+        │   │   └── peripherals/ # 每种外设一个文件，共约 18 个模块
         │   │       ├── gpio.js
         │   │       ├── uart.js
         │   │       ├── i2c.js
@@ -56,128 +56,130 @@ tools/
         │   │       ├── kws.js
         │   │       └── vad.js
         │   └── board/
-        │       └── index.js     # stub — returns TODO notice
+        │       └── index.js     # 空 stub，返回"暂未支持"提示
         ├── validators/
-        │   ├── platform.js      # platform JSON field validation
-        │   └── board.js         # stub
+        │   ├── platform.js      # platform JSON 字段校验
+        │   └── board.js         # 空 stub
         └── schemas/
-            ├── platform.js      # JS-object field rules (not JSON Schema)
-            └── board.js         # stub
+            ├── platform.js      # JS 对象描述的字段规则（非 JSON Schema）
+            └── board.js         # 空 stub
 ```
 
-### Dependencies
+### 依赖
 
-| Package | Purpose |
-|---------|---------|
-| `commander` | Subcommand parsing |
-| `@inquirer/prompts` | Interactive prompts (ESM-native) |
-| `chalk` | Terminal color output |
-| `prettier` | JSON formatting — guarantees identical indentation/key order across all outputs |
+| 包 | 用途 |
+|---|---|
+| `commander` | 子命令解析 |
+| `@inquirer/prompts` | 交互式提问（原生 ESM） |
+| `chalk` | 终端彩色输出 |
+| `prettier` | JSON 格式化输出——保证所有文件缩进和换行完全一致 |
 
-**No `ajv`:** The `peripherals` structure varies too much per peripheral type. JS validator functions per module are more maintainable than a monolithic JSON Schema.
+**不使用 `ajv`：** `peripherals` 各外设结构差异太大，为每个模块单独写 JS 校验函数比维护一个巨型 JSON Schema 更直观、可维护。
 
 ---
 
-## CLI Subcommands
+## CLI 子命令
 
 ```bash
-# Interactive wizard — generate new platform JSON from scratch
+# 交互式向导——从零生成新的 platform JSON
 manifest-gen platform create
 
-# Validate an existing platform JSON
-manifest-gen platform validate <file>
+# 校验已有 platform JSON 的格式和字段
+manifest-gen platform validate <文件路径>
 
-# Validate + reformat an existing platform JSON
-manifest-gen platform normalize <file> [--out <outfile>]
+# 校验 + 格式化已有 platform JSON
+manifest-gen platform normalize <文件路径> [--out <输出路径>]
 ```
 
 ---
 
-## `platform create` — Layered Wizard Flow
+## `platform create` 分层向导流程
 
-### Layer 1: Top-level fields (interactive)
+### 第一层：顶层字段（逐一交互填写）
 
-| Field | Input type |
-|-------|-----------|
-| `platformId` | text |
-| `id` (variantId) | text |
-| `name` | text |
-| `arch` | select: `xtensa-lx6` \| `xtensa-lx7` \| `risc-v` \| `arm-cortex-m33` |
-| `flashInterface` | select: `qspi` \| `spi` |
-| `connectivity` | checkbox: wifi / ble / ethernet / cellular (each prompts sub-fields) |
-| `memory.*` | number inputs for sramBytes, romBytes, flashMaxBytes, psramMaxBytes, efuse |
-| `kconfig.PLATFORM_CHOICE` | text |
+| 字段 | 输入方式 |
+|------|---------|
+| `platformId` | 文本输入 |
+| `id`（variantId） | 文本输入 |
+| `name` | 文本输入 |
+| `arch` | 单选：`xtensa-lx6` / `xtensa-lx7` / `risc-v` / `arm-cortex-m33` |
+| `flashInterface` | 单选：`qspi` / `spi` |
+| `connectivity` | 多选：wifi / ble / ethernet / cellular（每项再追问子字段） |
+| `memory.*` | 依次数字输入：sramBytes、romBytes、flashMaxBytes、psramMaxBytes、efuse |
+| `kconfig.PLATFORM_CHOICE` | 文本输入 |
 
-### Layer 2: Peripheral selection
+### 第二层：外设选择
 
-A checkbox list of all ~18 peripheral types. The user selects which ones this platform supports. Unselected peripherals do not appear in the output file.
+复选框列出全部约 18 种外设类型，用户勾选本平台支持哪些。**未勾选的外设不出现在输出文件中。**
 
-### Layer 3: Output
+### 第三层：输出
 
-- For each selected peripheral, call `scaffold()` from its module — produces a structurally correct skeleton with `0` / `null` / empty-array placeholders for numeric values the user fills later.
-- `builder.js` assembles all sections using a fixed object literal order.
-- Output formatted by `prettier` and written to `platforms/<platformId>/<variantId>.json`.
+- 对每个已勾选的外设，调用其模块的 `scaffold()` 函数，生成结构完整的骨架（数值部分填 `0` / `null` / 空数组占位，供用户事后填写实际数值）
+- `builder.js` 用固定的对象字面量顺序组装所有字段
+- 用 `prettier` 格式化后写入 `platforms/<platformId>/<variantId>.json`
 
 ---
 
-## `platform validate` — Error Reporting
+## `platform validate` 输出示例
 
-Each peripheral module exports a `validate(data, path)` function returning an array of error strings. The platform validator calls each in turn and aggregates results.
-
-Example output:
 ```
-✔ schemaVersion: OK
-✔ connectivity.wifi: OK
-✗ peripherals.uart.spec.ports[0].pinGroups — expected array, got object
-✗ peripherals.pwm.count — expected number, got string "12"
-2 errors found.
+✔ schemaVersion: 正常
+✔ connectivity.wifi: 正常
+✗ peripherals.uart.spec.ports[0].pinGroups — 期望 array，实际 object
+✗ peripherals.pwm.count — 期望 number，实际 string "12"
+发现 2 个错误。
 ```
 
 ---
 
 ## `platform normalize`
 
-1. Run `validate` — abort with errors if any found.
-2. Re-serialize with `prettier` (2-space indent, consistent key order via `builder.js`).
-3. Write to `--out <file>` if specified, otherwise overwrite input file.
+1. 先运行校验——若有错误则终止并报告，不覆盖原文件
+2. 用 `prettier` 重新序列化（2 空格缩进，键顺序由 `builder.js` 固定）
+3. 若指定 `--out`，写入新文件；否则原地覆盖
 
 ---
 
-## Peripheral Module Contract
+## 外设模块规范
 
-Every file under `src/generators/platform/peripherals/` exports:
+`src/generators/platform/peripherals/` 下每个文件导出以下内容：
 
 ```js
+// 模块元信息
 export const meta = {
-  key: string,           // key in peripherals object
-  label: string,         // wizard checkbox label
+  key: string,           // peripherals 对象中的键名
+  label: string,         // 向导复选框显示名称
   enableMacro: string,
   tklHeader: string,
   idPrefix: string | null,
 }
 
-export function scaffold(): object   // returns skeleton with placeholders
-export function validate(data: object, path: string): string[]  // returns error list
+// 生成带占位符的骨架结构
+export function scaffold(): object
+
+// 校验已有数据，返回错误信息列表
+export function validate(data: object, path: string): string[]
 ```
 
-`registry.js` imports all modules and exports `peripheralModules[]` — the single place to add new peripheral types or future board peripheral modules.
+`registry.js` 统一导入所有模块并导出 `peripheralModules[]` 数组——这是唯一需要修改的地方，用于新增外设类型或未来添加 board 外设模块。
 
 ---
 
-## Extension Point for Board Support
+## Board 支持扩展方式
 
-Adding board JSON support requires:
-1. Create `src/generators/board/wizard.js`, `builder.js`, `peripherals/`
-2. Create `src/validators/board.js`
-3. Register in `registry.js`
-4. Add `manifest-gen board create|validate|normalize` subcommands in `cli.js`
+添加 board JSON 支持时，只需：
 
-No changes needed in platform code.
+1. 创建 `src/generators/board/wizard.js`、`builder.js`、`peripherals/`
+2. 创建 `src/validators/board.js`
+3. 在 `registry.js` 中注册
+4. 在 `cli.js` 中添加 `manifest-gen board create|validate|normalize` 子命令
+
+**Platform 相关代码无需改动。**
 
 ---
 
-## Key Invariants
+## 关键不变量
 
-- **Key order** is enforced by `builder.js` assembling fixed object literals — not by sorting.
-- **Formatting** is enforced by `prettier` — no manual JSON.stringify indentation.
-- **Validation** is structural (types, required fields, array shapes) — not semantic (pin numbers are not checked against platform GPIO count).
+- **键顺序**：由 `builder.js` 用固定对象字面量顺序保证，不依赖排序算法
+- **格式化**：由 `prettier` 统一保证，不依赖手动 `JSON.stringify` 缩进参数
+- **校验范围**：结构校验（类型、必填字段、数组形状），不做语义校验（不检查针脚号是否在 GPIO 范围内）
