@@ -41,11 +41,16 @@ export function scaffold() {
 }
 
 export function validate(data, path) {
+  if (data == null) return [`${path} — data 为空`]
   const errors = []
   if (typeof data.count !== 'number')
     errors.push(`${path}.count — 期望 number，实际 ${typeof data.count}`)
   if (!Array.isArray(data.spec?.pins))
     errors.push(`${path}.spec.pins — 期望 array`)
+  if (!Array.isArray(data.spec?.direction))
+    errors.push(`${path}.spec.direction — 期望 array`)
+  if (!Array.isArray(data.spec?.mode))
+    errors.push(`${path}.spec.mode — 期望 array`)
   if (!Array.isArray(data.spec?.irq?.pins))
     errors.push(`${path}.spec.irq.pins — 期望 array`)
   return errors

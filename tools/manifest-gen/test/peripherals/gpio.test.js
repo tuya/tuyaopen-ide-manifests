@@ -43,5 +43,12 @@ describe('gpio 外设模块', () => {
       const errors = validate(data, 'peripherals.gpio')
       expect(errors.some(e => e.includes('spec.pins'))).toBe(true)
     })
+    it('spec.irq.pins 非数组时报错', () => {
+      const data = scaffold()
+      data.count = 56
+      data.spec.irq.pins = null
+      const errors = validate(data, 'peripherals.gpio')
+      expect(errors.some(e => e.includes('spec.irq.pins'))).toBe(true)
+    })
   })
 })
