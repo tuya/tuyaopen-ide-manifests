@@ -12,3 +12,6 @@ Thumbs.db
 # oh-my-claudecode internal state
 .omc/
 .claude/
+
+# manifest-gen tool dependencies
+tools/manifest-gen/node_modules/
