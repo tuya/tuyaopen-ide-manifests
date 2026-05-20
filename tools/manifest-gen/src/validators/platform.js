@@ -1,7 +1,6 @@
 import { peripheralModules } from '../generators/registry.js'
 
-const VALID_ARCHES = ['xtensa-lx6', 'xtensa-lx7', 'risc-v', 'arm-cortex-m33']
-const VALID_FLASH  = ['qspi', 'spi']
+const VALID_FLASH = ['qspi', 'spi']
 
 export function validatePlatform(data) {
   const errors = []
@@ -14,8 +13,8 @@ export function validatePlatform(data) {
       errors.push(`${field} — 期望 string，实际 ${typeof data[field]}`)
   }
 
-  if (!VALID_ARCHES.includes(data.arch))
-    errors.push(`arch — 期望 ${VALID_ARCHES.join(' | ')}，实际 "${data.arch}"`)
+  if (typeof data.arch !== 'string' || data.arch.length === 0)
+    errors.push(`arch — 期望非空 string，实际 "${data.arch}"`)
 
   if (!VALID_FLASH.includes(data.flashInterface))
     errors.push(`flashInterface — 期望 qspi | spi，实际 "${data.flashInterface}"`)

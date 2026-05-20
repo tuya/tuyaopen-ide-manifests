@@ -7,15 +7,19 @@ export async function runPlatformWizard() {
   const platformId     = await input({ message: 'platformId (小写连字符，如 t5ai):' })
   const variantId      = await input({ message: 'variantId（通常与 platformId 相同）:', default: platformId })
   const name           = await input({ message: '平台显示名称（如 T5AI）:' })
-  const arch           = await select({
+  const archChoice = await select({
     message: '处理器架构:',
     choices: [
       { value: 'arm-cortex-m33' },
       { value: 'xtensa-lx6' },
       { value: 'xtensa-lx7' },
       { value: 'risc-v' },
+      { name: '手动输入...', value: '__custom__' },
     ],
   })
+  const arch = archChoice === '__custom__'
+    ? await input({ message: '请输入架构名称:' })
+    : archChoice
   const flashInterface = await select({
     message: 'Flash 接口:',
     choices: [{ value: 'qspi' }, { value: 'spi' }],
