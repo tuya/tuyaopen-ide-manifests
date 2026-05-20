@@ -32,7 +32,9 @@ export function normalizePlatform(data) {
     }
   }
   for (const key of Object.keys(data.peripherals ?? {})) {
-    if (!orderedPeripherals[key]) orderedPeripherals[key] = data.peripherals[key]
+    if (!orderedPeripherals[key]) {
+      process.stderr.write(`[normalize] 警告：未知外设键 "${key}" 已忽略\n`)
+    }
   }
   return { ...data, peripherals: orderedPeripherals }
 }
