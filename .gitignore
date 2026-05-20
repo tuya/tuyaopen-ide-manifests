@@ -8,3 +8,9 @@ Thumbs.db
 # Local-only experimentation
 *.local.json
 /scratch/
+
+# oh-my-claudecode internal state
+.omc/
+
+# manifest-gen tool dependencies
+tools/manifest-gen/node_modules/
