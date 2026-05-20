@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-05-13T00:00:00Z",
+  "publishedAt": "2026-05-20T00:00:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
@@ -30,79 +30,13 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen-build",
       "related": [
-        "tuyaopen-flash",
-        "tuyaopen-clean",
+        "tuyaopen-flash-monitor",
         "tuyaopen-project-config"
       ],
       "source": {
         "repo": "https://github.com/tuya/TuyaOpen-dev-skills",
         "subpath": "skills/tuyaopen-build",
         "ref": "master"
-      }
-    },
-    {
-      "id": "tuyaopen-flash",
-      "order": 2,
-      "name": {
-        "en": "TuyaOpen Flash",
-        "zh-CN": "TuyaOpen 烧录"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Flash the built binary to a connected device.",
-        "zh-CN": "将已编译产物烧录到已连接的设备。"
-      },
-      "whenToUse": {
-        "en": "Use after a successful build when the user wants to deploy to hardware.",
-        "zh-CN": "编译成功后用户希望部署到真实硬件时使用。"
-      },
-      "tags": [
-        "flash",
-        "device"
-      ],
-      "commands": [
-        "tuyaopen.skill.flash"
-      ],
-      "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen-flash",
-      "related": [
-        "tuyaopen-build",
-        "tuyaopen-device-pair"
-      ],
-      "source": {
-        "localPath": "skills/embedded/tuyaopen-flash"
-      }
-    },
-    {
-      "id": "tuyaopen-clean",
-      "order": 3,
-      "name": {
-        "en": "TuyaOpen Clean",
-        "zh-CN": "TuyaOpen 清理"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Wipe build/ artifacts for a fresh rebuild.",
-        "zh-CN": "清理 build/ 产物以便重新编译。"
-      },
-      "whenToUse": {
-        "en": "Use when the build cache is stale or before switching platform targets.",
-        "zh-CN": "当构建缓存过期或切换平台目标前使用。"
-      },
-      "tags": [
-        "build",
-        "maintenance"
-      ],
-      "commands": [
-        "tuyaopen.skill.clean"
-      ],
-      "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen-clean",
-      "related": [
-        "tuyaopen-build"
-      ],
-      "source": {
-        "localPath": "skills/embedded/tuyaopen-clean"
       }
     },
     {
@@ -204,38 +138,6 @@
         "repo": "https://github.com/tuya/TuyaOpen-dev-skills",
         "subpath": "skills/tuyaopen-project-config",
         "ref": "master"
-      }
-    },
-    {
-      "id": "tuyaopen-device-pair",
-      "order": 7,
-      "name": {
-        "en": "TuyaOpen Device Pair",
-        "zh-CN": "TuyaOpen 设备配对"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Pair or inspect a real device over serial.",
-        "zh-CN": "通过串口配对或检查真实设备。"
-      },
-      "whenToUse": {
-        "en": "Use when the user wants to provision a device or read its serial console.",
-        "zh-CN": "当用户希望配网设备或读取串口日志时使用。"
-      },
-      "tags": [
-        "device",
-        "serial"
-      ],
-      "commands": [
-        "tuyaopen.skill.devicePair"
-      ],
-      "defaultEnabled": false,
-      "installPayload": "embedded/tuyaopen-device-pair",
-      "related": [
-        "tuyaopen-flash"
-      ],
-      "source": {
-        "localPath": "skills/embedded/tuyaopen-device-pair"
       }
     },
     {
