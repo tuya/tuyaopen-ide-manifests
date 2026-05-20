@@ -1,5 +1,5 @@
 import { input, select, checkbox, number, confirm } from '@inquirer/prompts'
-import { peripheralModules } from '../../registry.js'
+import { peripheralModules } from '../registry.js'
 
 export async function runPlatformWizard() {
   console.log('\n=== Platform JSON 生成向导 ===\n')
