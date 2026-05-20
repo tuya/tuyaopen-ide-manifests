@@ -26,6 +26,12 @@ export function validatePlatform(data) {
       errors.push(`memory.${field} — 期望 number，实际 ${typeof mem[field]}`)
   }
 
+  if (data.connectivity == null || typeof data.connectivity !== 'object' || Array.isArray(data.connectivity))
+    errors.push('connectivity — 期望 object')
+
+  if (data.kconfig == null || typeof data.kconfig !== 'object' || Array.isArray(data.kconfig))
+    errors.push('kconfig — 期望 object')
+
   if (data.peripherals && typeof data.peripherals === 'object') {
     for (const mod of peripheralModules) {
       const key = mod.meta.key
