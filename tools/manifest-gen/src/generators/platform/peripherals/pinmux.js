@@ -1,4 +1,5 @@
-import { input } from '@inquirer/prompts'
+import { input, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 import { parseRangePins, pinsToRangeStr } from './_pin-utils.js'
 
 export const meta = {
@@ -34,15 +35,25 @@ export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
   const funcs = ['i2c', 'uart', 'spi', 'pwm', 'adc', 'dac', 'i2s']
-  const remappableFuncs = {}
-  for (const fn of funcs) {
-    const ex = data.spec.remappableFuncs[fn] ?? []
+
+  while (true) {
+    const field = await select({
+      message: 'Pin Mux 配置:',
+      choices: [
+        ...funcs.map(fn => ({
+          name: `${fn.toUpperCase()}: ${pinsToRangeStr(data.spec.remappableFuncs[fn] ?? [])}`,
+          value: fn,
+        })),
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+    if (field === 'done') break
+    const ex = data.spec.remappableFuncs[field] ?? []
     const pinsStr = await input({
-      message: `${fn.toUpperCase()} 可重映射引脚（支持范围，如 0-5,8；留空=无）:`,
+      message: `${field.toUpperCase()} 可重映射引脚（支持范围，如 0-5,8；留空=无）:`,
       default: pinsToRangeStr(ex),
     })
-    remappableFuncs[fn] = pinsStr.trim() ? parseRangePins(pinsStr) : []
+    data.spec.remappableFuncs[field] = pinsStr.trim() ? parseRangePins(pinsStr) : []
   }
-  data.spec.remappableFuncs = remappableFuncs
   return data
 }

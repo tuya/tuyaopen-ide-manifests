@@ -1,5 +1,6 @@
 // src/generators/platform/peripherals/gpio.js
-import { input, number } from '@inquirer/prompts'
+import { input, number, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 import { parseRangePins, pinsToRangeStr } from './_pin-utils.js'
 
 export const meta = {
@@ -62,20 +63,27 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'GPIO 数量:', default: data.count })
-
-  const pinsStr = await input({
-    message: 'GPIO 引脚号列表（支持范围，如 0-5,8-10,15,20-25）:',
-    default: pinsToRangeStr(data.spec.pins),
-  })
-  data.spec.pins = parseRangePins(pinsStr)
-
-  const irqStr = await input({
-    message: 'IRQ 支持引脚列表（格式同上，留空=同 pins）:',
-    default: pinsToRangeStr(data.spec.irq.pins),
-  })
-  data.spec.irq.pins = irqStr.trim() ? parseRangePins(irqStr) : [...data.spec.pins]
-
+  while (true) {
+    const field = await select({
+      message: 'GPIO 配置:',
+      choices: [
+        { name: `数量         ${chalk.gray(String(data.count))}`, value: 'count' },
+        { name: `引脚列表     ${chalk.gray(pinsToRangeStr(data.spec.pins) || '—')}`, value: 'pins' },
+        { name: `IRQ 引脚     ${chalk.gray(pinsToRangeStr(data.spec.irq.pins) || '（同引脚列表）')}`, value: 'irq' },
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+    if (field === 'done') break
+    if (field === 'count') {
+      data.count = await number({ message: 'GPIO 数量:', default: data.count })
+    } else if (field === 'pins') {
+      const s = await input({ message: '引脚号列表（支持范围，如 0-5,8-10,15）:', default: pinsToRangeStr(data.spec.pins) })
+      data.spec.pins = parseRangePins(s)
+    } else if (field === 'irq') {
+      const s = await input({ message: 'IRQ 引脚列表（留空=同 pins）:', default: pinsToRangeStr(data.spec.irq.pins) })
+      data.spec.irq.pins = s.trim() ? parseRangePins(s) : [...data.spec.pins]
+    }
+  }
   return data
 }
 

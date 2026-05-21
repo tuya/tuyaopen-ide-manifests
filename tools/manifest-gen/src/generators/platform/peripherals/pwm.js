@@ -1,4 +1,5 @@
-import { number, confirm } from '@inquirer/prompts'
+import { number, confirm, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'pwm',
@@ -39,15 +40,45 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'PWM 通道数:', default: data.count })
+  while (true) {
+    const choices = [
+      { name: `通道数: ${chalk.gray(String(data.count))}`, value: 'count' },
+      ...data.spec.channels.map((ch, i) => ({
+        name: `通道${i}  pin:${ch.pin} irq:${ch.irq ? '是' : '否'}`,
+        value: `ch:${i}`,
+      })),
+      { name: chalk.green('✔ 完成'), value: 'done' },
+    ]
 
-  const channels = []
-  for (let i = 0; i < data.count; i++) {
-    const ex = data.spec.channels[i]
-    const pin = await number({ message: `PWM[${i}] 引脚:`,    default: ex?.pin ?? 0 })
-    const irq = await confirm({ message: `PWM[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
-    channels.push({ id: i, pin, irq })
+    const action = await select({ message: 'PWM 配置:', choices })
+
+    if (action === 'done') break
+
+    if (action === 'count') {
+      const newCount = await number({ message: 'PWM 通道数:', default: data.count })
+      while (data.spec.channels.length < newCount)
+        data.spec.channels.push({ id: data.spec.channels.length, pin: 0, irq: false })
+      data.spec.channels = data.spec.channels.slice(0, newCount)
+      data.count = newCount
+    } else {
+      const idx = Number(action.split(':')[1])
+      const ch = data.spec.channels[idx]
+
+      while (true) {
+        const sub = await select({
+          message: `PWM 通道${idx} 配置:`,
+          choices: [
+            { name: `引脚: ${chalk.gray(String(ch.pin))}`, value: 'pin' },
+            { name: `IRQ: ${chalk.gray(ch.irq ? '是' : '否')}`, value: 'irq' },
+            { name: chalk.gray('← 返回'), value: 'back' },
+          ],
+        })
+        if (sub === 'back') break
+        if (sub === 'pin') ch.pin = await number({ message: `通道${idx} 引脚:`, default: ch.pin })
+        else if (sub === 'irq') ch.irq = await confirm({ message: `通道${idx} 支持 IRQ?`, default: ch.irq })
+      }
+    }
   }
-  data.spec.channels = channels
+
   return data
 }

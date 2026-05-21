@@ -1,4 +1,5 @@
 import { input, number, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'flash', label: 'Flash',
@@ -61,23 +62,72 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  const partCount = await number({ message: 'Flash 分区数:', default: data.spec.partitionMap.length })
+  while (true) {
+    const choices = [
+      { name: `分区数: ${chalk.gray(String(data.spec.partitionMap.length))}`, value: 'count' },
+      ...data.spec.partitionMap.map((p, i) => ({
+        name: `分区${i}  ${p.type} ${p.startAddr}`,
+        value: `part:${i}`,
+      })),
+      { name: chalk.green('✔ 完成'), value: 'done' },
+    ]
 
-  const partitionMap = []
-  for (let i = 0; i < partCount; i++) {
-    const ex = data.spec.partitionMap[i] ?? {}
-    const type      = await select({
-      message: `分区[${i}] 类型:`,
-      choices: data.spec.partitionTypes.map(t => ({ value: t })),
-      default: ex.type ?? data.spec.partitionTypes[0],
-    })
-    const startAddr = await input({ message: `分区[${i}] 起始地址 (0x...):`, default: ex.startAddr ?? '0x000000' })
-    const endAddr   = await input({ message: `分区[${i}] 结束地址 (0x...):`, default: ex.endAddr   ?? '0x000000' })
-    const size      = await number({ message: `分区[${i}] 大小 (bytes):`,      default: ex.size      ?? 0 })
-    const blockSize = await number({ message: `分区[${i}] 块大小 (bytes):`,    default: ex.blockSize ?? 4096 })
-    const desc      = await input({ message: `分区[${i}] 描述:`,               default: ex.desc      ?? '' })
-    partitionMap.push({ type, startAddr, endAddr, size, blockSize, desc })
+    const action = await select({ message: 'Flash 配置:', choices })
+
+    if (action === 'done') break
+
+    if (action === 'count') {
+      const newCount = await number({ message: 'Flash 分区数:', default: data.spec.partitionMap.length })
+      while (data.spec.partitionMap.length < newCount)
+        data.spec.partitionMap.push({
+          type: 'TUYA_FLASH_TYPE_APP',
+          startAddr: '0x000000',
+          endAddr: '0x000000',
+          size: 0,
+          blockSize: 4096,
+          desc: '',
+        })
+      data.spec.partitionMap = data.spec.partitionMap.slice(0, newCount)
+      data.count = newCount
+    } else {
+      const idx = Number(action.split(':')[1])
+      const p = data.spec.partitionMap[idx]
+
+      while (true) {
+        const sub = await select({
+          message: `Flash 分区${idx} 配置:`,
+          choices: [
+            { name: `类型: ${chalk.gray(p.type)}`, value: 'type' },
+            { name: `起始地址: ${chalk.gray(p.startAddr)}`, value: 'startAddr' },
+            { name: `结束地址: ${chalk.gray(p.endAddr)}`, value: 'endAddr' },
+            { name: `大小: ${chalk.gray(String(p.size) + ' bytes')}`, value: 'size' },
+            { name: `块大小: ${chalk.gray(String(p.blockSize) + ' bytes')}`, value: 'blockSize' },
+            { name: `描述: ${chalk.gray(p.desc ? '"' + p.desc + '"' : '""')}`, value: 'desc' },
+            { name: chalk.gray('← 返回'), value: 'back' },
+          ],
+        })
+
+        if (sub === 'back') break
+        if (sub === 'type') {
+          p.type = await select({
+            message: `分区${idx} 类型:`,
+            choices: data.spec.partitionTypes.map(t => ({ value: t })),
+            default: p.type,
+          })
+        } else if (sub === 'startAddr') {
+          p.startAddr = await input({ message: `分区${idx} 起始地址 (0x...):`, default: p.startAddr })
+        } else if (sub === 'endAddr') {
+          p.endAddr = await input({ message: `分区${idx} 结束地址 (0x...):`, default: p.endAddr })
+        } else if (sub === 'size') {
+          p.size = await number({ message: `分区${idx} 大小 (bytes):`, default: p.size })
+        } else if (sub === 'blockSize') {
+          p.blockSize = await number({ message: `分区${idx} 块大小 (bytes):`, default: p.blockSize })
+        } else if (sub === 'desc') {
+          p.desc = await input({ message: `分区${idx} 描述:`, default: p.desc })
+        }
+      }
+    }
   }
-  data.spec.partitionMap = partitionMap
+
   return data
 }

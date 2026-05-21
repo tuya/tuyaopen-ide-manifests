@@ -1,4 +1,5 @@
-import { checkbox } from '@inquirer/prompts'
+import { checkbox, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'kws', label: 'KWS (关键词唤醒)',
@@ -39,10 +40,22 @@ const ALL_WORDS = [
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.spec.wakeupWords = await checkbox({
-    message: 'KWS 支持的唤醒词:',
-    loop: false,
-    choices: ALL_WORDS.map(w => ({ name: w, value: w, checked: data.spec.wakeupWords.includes(w) })),
-  })
+  while (true) {
+    const field = await select({
+      message: 'KWS 配置:',
+      choices: [
+        { name: `支持唤醒词: ${data.spec.wakeupWords.length}个`, value: 'words' },
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+    if (field === 'done') break
+    if (field === 'words') {
+      data.spec.wakeupWords = await checkbox({
+        message: 'KWS 支持的唤醒词:',
+        loop: false,
+        choices: ALL_WORDS.map(w => ({ name: w, value: w, checked: data.spec.wakeupWords.includes(w) })),
+      })
+    }
+  }
   return data
 }

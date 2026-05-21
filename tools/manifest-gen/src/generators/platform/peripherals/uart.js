@@ -1,4 +1,5 @@
-import { number, confirm } from '@inquirer/prompts'
+import { number, confirm, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'uart',
@@ -61,18 +62,76 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  const count = await number({ message: 'UART 数量:', default: data.count || 1 })
-  data.count = count
+  while (true) {
+    // Sync ports array to match data.count
+    while (data.spec.ports.length < data.count) {
+      const i = data.spec.ports.length
+      data.spec.ports.push({ id: i, tx: 0, rx: 0, logPort: false })
+    }
+    if (data.spec.ports.length > data.count) {
+      data.spec.ports = data.spec.ports.slice(0, data.count)
+    }
 
-  const ports = []
-  for (let i = 0; i < count; i++) {
-    const ep = data.spec.ports[i]
-    const tx = await number({ message: `  UART[${i}] TX 引脚号:`, default: ep?.pinGroups[0]?.tx ?? 0 })
-    const rx = await number({ message: `  UART[${i}] RX 引脚号:`, default: ep?.pinGroups[0]?.rx ?? 0 })
-    const logPort = await confirm({ message: `  UART[${i}] 作为日志串口?`, default: ep?.logPort ?? false })
-    ports.push({ id: i, logPort, irq: ep?.irq ?? { rx: false, tx: false }, pinGroups: [{ tx, rx }] })
+    const portChoices = data.spec.ports.map((p, i) => {
+      const tx = p.pinGroups?.[0]?.tx ?? p.tx ?? 0
+      const rx = p.pinGroups?.[0]?.rx ?? p.rx ?? 0
+      const log = p.logPort ? chalk.yellow(' (log)') : ''
+      return { name: `端口 ${i}        ${chalk.gray(`TX:${tx} RX:${rx}`)}${log}`, value: `port:${i}` }
+    })
+
+    const field = await select({
+      message: 'UART 配置:',
+      choices: [
+        { name: `端口数       ${chalk.gray(String(data.count))}`, value: 'count' },
+        ...portChoices,
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+
+    if (field === 'done') break
+
+    if (field === 'count') {
+      data.count = await number({ message: 'UART 数量:', default: data.count || 1 })
+    } else if (field.startsWith('port:')) {
+      const idx = parseInt(field.slice(5), 10)
+      const port = data.spec.ports[idx]
+      const currentTx = port.pinGroups?.[0]?.tx ?? port.tx ?? 0
+      const currentRx = port.pinGroups?.[0]?.rx ?? port.rx ?? 0
+
+      // Port sub-menu
+      while (true) {
+        const sub = await select({
+          message: `UART[${idx}] 配置:`,
+          choices: [
+            { name: `TX 引脚      ${chalk.gray(String(currentTx))}`, value: 'tx' },
+            { name: `RX 引脚      ${chalk.gray(String(currentRx))}`, value: 'rx' },
+            { name: `日志端口     ${chalk.gray(port.logPort ? '是' : '否')}`, value: 'log' },
+            { name: chalk.gray('← 返回'), value: 'back' },
+          ],
+        })
+        if (sub === 'back') break
+        if (sub === 'tx') {
+          const tx = await number({ message: `UART[${idx}] TX 引脚号:`, default: currentTx })
+          if (port.pinGroups) port.pinGroups[0].tx = tx
+          else port.tx = tx
+        } else if (sub === 'rx') {
+          const rx = await number({ message: `UART[${idx}] RX 引脚号:`, default: currentRx })
+          if (port.pinGroups) port.pinGroups[0].rx = rx
+          else port.rx = rx
+        } else if (sub === 'log') {
+          port.logPort = await confirm({ message: `UART[${idx}] 作为日志串口?`, default: port.logPort ?? false })
+        }
+      }
+    }
   }
-  data.spec.ports = ports
+
+  // Normalize ports to canonical shape before returning
+  data.spec.ports = data.spec.ports.map((p, i) => ({
+    id: i,
+    logPort: p.logPort ?? false,
+    irq: p.irq ?? { rx: false, tx: false },
+    pinGroups: p.pinGroups ?? [{ tx: p.tx ?? 0, rx: p.rx ?? 0 }],
+  }))
 
   return data
 }

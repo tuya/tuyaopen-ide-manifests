@@ -1,4 +1,5 @@
-import { number } from '@inquirer/prompts'
+import { number, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'adc',
@@ -36,19 +37,59 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'ADC 端口数:', default: data.count })
+  while (true) {
+    const choices = [
+      { name: `端口数: ${chalk.gray(String(data.count))}`, value: 'count' },
+      ...data.spec.ports.map((port, i) => ({
+        name: `端口${i}  ${port.channels.length}通道`,
+        value: `port:${i}`,
+      })),
+      { name: chalk.green('✔ 完成'), value: 'done' },
+    ]
 
-  const ports = []
-  for (let i = 0; i < data.count; i++) {
-    const ex = data.spec.ports[i]
-    const chCount = await number({ message: `ADC[${i}] 通道数:`, default: ex?.channels?.length ?? 1 })
-    const channels = []
-    for (let j = 0; j < chCount; j++) {
-      const pin = await number({ message: `ADC[${i}] 通道${j} 引脚:`, default: ex?.channels?.[j]?.pin ?? 0 })
-      channels.push({ id: j, pin })
+    const action = await select({ message: 'ADC 配置:', choices })
+
+    if (action === 'done') break
+
+    if (action === 'count') {
+      const newCount = await number({ message: 'ADC 端口数:', default: data.count })
+      while (data.spec.ports.length < newCount)
+        data.spec.ports.push({ id: data.spec.ports.length, channels: [{ id: 0, pin: 0 }] })
+      data.spec.ports = data.spec.ports.slice(0, newCount)
+      data.count = newCount
+    } else {
+      const idx = Number(action.split(':')[1])
+      const port = data.spec.ports[idx]
+
+      while (true) {
+        const subChoices = [
+          { name: `通道数: ${chalk.gray(String(port.channels.length))}`, value: 'chcount' },
+          ...port.channels.map((ch, j) => ({
+            name: `通道${j}  pin:${ch.pin}`,
+            value: `ch:${j}`,
+          })),
+          { name: chalk.gray('← 返回'), value: 'back' },
+        ]
+
+        const sub = await select({ message: `ADC 端口${idx} 配置:`, choices: subChoices })
+
+        if (sub === 'back') break
+
+        if (sub === 'chcount') {
+          const newChCount = await number({ message: `端口${idx} 通道数:`, default: port.channels.length })
+          while (port.channels.length < newChCount)
+            port.channels.push({ id: port.channels.length, pin: 0 })
+          port.channels = port.channels.slice(0, newChCount)
+        } else {
+          const chIdx = Number(sub.split(':')[1])
+          port.channels[chIdx].pin = await number({
+            message: `端口${idx} 通道${chIdx} 引脚:`,
+            default: port.channels[chIdx].pin,
+          })
+        }
+      }
     }
-    ports.push({ id: i, channels })
   }
-  data.spec.ports = ports
+
   return data
 }

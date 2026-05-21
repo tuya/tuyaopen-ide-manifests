@@ -1,4 +1,5 @@
-import { number, input } from '@inquirer/prompts'
+import { number, input, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 import { parseRangePins, pinsToRangeStr } from './_pin-utils.js'
 
 export const meta = {
@@ -57,40 +58,83 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'RGB LCD 端口数:', default: data.count })
-
-  const ports = []
-  for (let i = 0; i < data.count; i++) {
-    const exPins = data.spec.ports[i]?.pins ?? {}
-    const dclk  = await number({ message: `RGB[${i}] DCLK 引脚:`,  default: exPins.dclk  ?? 0 })
-    const disp  = await number({ message: `RGB[${i}] DISP 引脚:`,  default: exPins.disp  ?? 0 })
-    const de    = await number({ message: `RGB[${i}] DE 引脚:`,    default: exPins.de    ?? 0 })
-    const hsync = await number({ message: `RGB[${i}] HSYNC 引脚:`, default: exPins.hsync ?? 0 })
-    const vsync = await number({ message: `RGB[${i}] VSYNC 引脚:`, default: exPins.vsync ?? 0 })
-
-    const rStr = await input({
-      message: `RGB[${i}] R 引脚列表（8个，如 0-7）:`,
-      default: pinsToRangeStr(exPins.r ?? Array(8).fill(0)),
-    })
-    const gStr = await input({
-      message: `RGB[${i}] G 引脚列表（8个，如 8-15）:`,
-      default: pinsToRangeStr(exPins.g ?? Array(8).fill(0)),
-    })
-    const bStr = await input({
-      message: `RGB[${i}] B 引脚列表（8个，如 16-23）:`,
-      default: pinsToRangeStr(exPins.b ?? Array(8).fill(0)),
-    })
-
-    ports.push({
-      id: i,
-      pins: {
-        dclk, disp, de, hsync, vsync,
-        r: parseRangePins(rStr).slice(0, 8),
-        g: parseRangePins(gStr).slice(0, 8),
-        b: parseRangePins(bStr).slice(0, 8),
-      },
-    })
+  // Ensure ports array is synced to count
+  while (data.spec.ports.length < data.count) {
+    const id = data.spec.ports.length
+    data.spec.ports.push({ id, pins: { dclk: 0, disp: 0, de: 0, hsync: 0, vsync: 0, r: Array(8).fill(0), g: Array(8).fill(0), b: Array(8).fill(0) } })
   }
-  data.spec.ports = ports
+
+  while (true) {
+    const choices = [
+      { name: `端口数: ${chalk.gray(data.count)}`, value: '__count__' },
+      ...data.spec.ports.map((p, i) => ({
+        name: `端口${i}  DCLK:${chalk.gray(p.pins.dclk)}`,
+        value: `__port_${i}__`,
+      })),
+      { name: chalk.green('✔ 完成'), value: 'done' },
+    ]
+
+    const action = await select({ message: 'RGB LCD 配置:', choices })
+
+    if (action === 'done') break
+
+    if (action === '__count__') {
+      const newCount = await number({ message: 'RGB LCD 端口数:', default: data.count })
+      data.count = newCount
+      // Sync ports array
+      while (data.spec.ports.length < data.count) {
+        const id = data.spec.ports.length
+        data.spec.ports.push({ id, pins: { dclk: 0, disp: 0, de: 0, hsync: 0, vsync: 0, r: Array(8).fill(0), g: Array(8).fill(0), b: Array(8).fill(0) } })
+      }
+      data.spec.ports = data.spec.ports.slice(0, data.count)
+      continue
+    }
+
+    const portIdx = parseInt(action.replace('__port_', '').replace('__', ''), 10)
+    const port = data.spec.ports[portIdx]
+    const p = port.pins
+
+    while (true) {
+      const rStr = pinsToRangeStr(p.r)
+      const gStr = pinsToRangeStr(p.g)
+      const bStr = pinsToRangeStr(p.b)
+      const field = await select({
+        message: `端口${portIdx} 配置:`,
+        choices: [
+          { name: `DCLK: ${chalk.gray(p.dclk)}`, value: 'dclk' },
+          { name: `DISP: ${chalk.gray(p.disp)}`, value: 'disp' },
+          { name: `DE: ${chalk.gray(p.de)}`, value: 'de' },
+          { name: `HSYNC: ${chalk.gray(p.hsync)}`, value: 'hsync' },
+          { name: `VSYNC: ${chalk.gray(p.vsync)}`, value: 'vsync' },
+          { name: `R 引脚: ${chalk.gray(rStr)}`, value: 'r' },
+          { name: `G 引脚: ${chalk.gray(gStr)}`, value: 'g' },
+          { name: `B 引脚: ${chalk.gray(bStr)}`, value: 'b' },
+          { name: chalk.gray('← 返回'), value: 'back' },
+        ],
+      })
+      if (field === 'back') break
+      if (field === 'dclk') {
+        p.dclk = await number({ message: `端口${portIdx} DCLK 引脚:`, default: p.dclk })
+      } else if (field === 'disp') {
+        p.disp = await number({ message: `端口${portIdx} DISP 引脚:`, default: p.disp })
+      } else if (field === 'de') {
+        p.de = await number({ message: `端口${portIdx} DE 引脚:`, default: p.de })
+      } else if (field === 'hsync') {
+        p.hsync = await number({ message: `端口${portIdx} HSYNC 引脚:`, default: p.hsync })
+      } else if (field === 'vsync') {
+        p.vsync = await number({ message: `端口${portIdx} VSYNC 引脚:`, default: p.vsync })
+      } else if (field === 'r') {
+        const s = await input({ message: `端口${portIdx} R 引脚列表（8个，如 0-7）:`, default: rStr })
+        p.r = parseRangePins(s).slice(0, 8)
+      } else if (field === 'g') {
+        const s = await input({ message: `端口${portIdx} G 引脚列表（8个，如 8-15）:`, default: gStr })
+        p.g = parseRangePins(s).slice(0, 8)
+      } else if (field === 'b') {
+        const s = await input({ message: `端口${portIdx} B 引脚列表（8个，如 16-23）:`, default: bStr })
+        p.b = parseRangePins(s).slice(0, 8)
+      }
+    }
+  }
+
   return data
 }
