@@ -1,4 +1,5 @@
-import { checkbox } from '@inquirer/prompts'
+import { checkbox, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'dma2d',
@@ -32,10 +33,25 @@ const ALL_FORMATS = ['TUYA_FRAME_FMT_YUV422', 'TUYA_FRAME_FMT_RGB565', 'TUYA_FRA
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.spec.formats = await checkbox({
-    message: 'DMA2D 支持的像素格式:',
-    loop: false,
-    choices: ALL_FORMATS.map(f => ({ name: f, value: f, checked: data.spec.formats.includes(f) })),
-  })
+  while (true) {
+    const formatsSummary = data.spec.formats.length > 0
+      ? `${data.spec.formats.join(', ')} (${data.spec.formats.length}个)`
+      : '(未选择)'
+    const field = await select({
+      message: 'DMA2D 配置:',
+      choices: [
+        { name: `支持格式: ${formatsSummary}`, value: 'formats' },
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+    if (field === 'done') break
+    if (field === 'formats') {
+      data.spec.formats = await checkbox({
+        message: 'DMA2D 支持的像素格式:',
+        loop: false,
+        choices: ALL_FORMATS.map(f => ({ name: f, value: f, checked: data.spec.formats.includes(f) })),
+      })
+    }
+  }
   return data
 }

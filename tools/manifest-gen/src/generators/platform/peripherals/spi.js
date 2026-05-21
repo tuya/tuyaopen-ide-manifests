@@ -1,4 +1,5 @@
-import { number, confirm } from '@inquirer/prompts'
+import { number, confirm, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'spi',
@@ -59,21 +60,84 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'SPI 端口数:', default: data.count })
-
-  const ports = []
-  for (let i = 0; i < data.count; i++) {
-    const ex = data.spec.ports[i]
-    const clk  = await number({ message: `SPI[${i}] CLK 引脚:`,  default: ex?.pinGroups?.[0]?.clk  ?? 0 })
-    const cs   = await number({ message: `SPI[${i}] CS 引脚:`,   default: ex?.pinGroups?.[0]?.cs   ?? 0 })
-    const mosi = await number({ message: `SPI[${i}] MOSI 引脚:`, default: ex?.pinGroups?.[0]?.mosi ?? 0 })
-    const miso = await number({ message: `SPI[${i}] MISO 引脚:`, default: ex?.pinGroups?.[0]?.miso ?? 0 })
-    const freqMin = await number({ message: `SPI[${i}] 最低频率 (Hz):`, default: ex?.freq?.min ?? 0 })
-    const freqMax = await number({ message: `SPI[${i}] 最高频率 (Hz):`, default: ex?.freq?.max ?? 0 })
-    const dma = await confirm({ message: `SPI[${i}] 支持 DMA?`, default: ex?.dma ?? false })
-    const irq = await confirm({ message: `SPI[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
-    ports.push({ id: i, backend: 'spi', irq, dma, freq: { min: freqMin, max: freqMax }, pinGroups: [{ clk, cs, mosi, miso }] })
+  // Sync ports array to match current count
+  function syncPorts(ports, count) {
+    const result = ports.slice(0, count)
+    for (let i = result.length; i < count; i++) {
+      result.push({ id: i, backend: 'spi', irq: false, dma: false, freq: { min: 0, max: 0 }, pinGroups: [{ clk: 0, cs: 0, mosi: 0, miso: 0 }] })
+    }
+    return result
   }
-  data.spec.ports = ports
+
+  while (true) {
+    const portChoices = data.spec.ports.map((p, i) => {
+      const pg = p.pinGroups[0] ?? { clk: 0, cs: 0, mosi: 0, miso: 0 }
+      return {
+        name: `端口 ${i}  CLK:${pg.clk} CS:${pg.cs} MOSI:${pg.mosi} MISO:${pg.miso}`,
+        value: `port:${i}`,
+      }
+    })
+
+    const field = await select({
+      message: 'SPI 配置:',
+      choices: [
+        { name: `端口数: ${data.count}`, value: 'count' },
+        ...portChoices,
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+
+    if (field === 'done') break
+
+    if (field === 'count') {
+      data.count = await number({ message: 'SPI 端口数:', default: data.count })
+      data.spec.ports = syncPorts(data.spec.ports, data.count)
+      continue
+    }
+
+    // port sub-menu
+    const portIdx = parseInt(field.split(':')[1], 10)
+    const port = data.spec.ports[portIdx]
+    const pg = port.pinGroups[0] ?? { clk: 0, cs: 0, mosi: 0, miso: 0 }
+    port.pinGroups[0] = pg
+
+    while (true) {
+      const portField = await select({
+        message: `SPI 端口 ${portIdx} 配置:`,
+        choices: [
+          { name: `CLK 引脚: ${pg.clk}`, value: 'clk' },
+          { name: `CS 引脚: ${pg.cs}`, value: 'cs' },
+          { name: `MOSI 引脚: ${pg.mosi}`, value: 'mosi' },
+          { name: `MISO 引脚: ${pg.miso}`, value: 'miso' },
+          { name: `最低频率(Hz): ${port.freq.min}`, value: 'freqMin' },
+          { name: `最高频率(Hz): ${port.freq.max}`, value: 'freqMax' },
+          { name: `DMA: ${port.dma ? '是' : '否'}`, value: 'dma' },
+          { name: `IRQ: ${port.irq ? '是' : '否'}`, value: 'irq' },
+          { name: chalk.gray('← 返回'), value: 'back' },
+        ],
+      })
+
+      if (portField === 'back') break
+
+      if (portField === 'clk') {
+        pg.clk = await number({ message: `SPI[${portIdx}] CLK 引脚:`, default: pg.clk })
+      } else if (portField === 'cs') {
+        pg.cs = await number({ message: `SPI[${portIdx}] CS 引脚:`, default: pg.cs })
+      } else if (portField === 'mosi') {
+        pg.mosi = await number({ message: `SPI[${portIdx}] MOSI 引脚:`, default: pg.mosi })
+      } else if (portField === 'miso') {
+        pg.miso = await number({ message: `SPI[${portIdx}] MISO 引脚:`, default: pg.miso })
+      } else if (portField === 'freqMin') {
+        port.freq.min = await number({ message: `SPI[${portIdx}] 最低频率 (Hz):`, default: port.freq.min })
+      } else if (portField === 'freqMax') {
+        port.freq.max = await number({ message: `SPI[${portIdx}] 最高频率 (Hz):`, default: port.freq.max })
+      } else if (portField === 'dma') {
+        port.dma = await confirm({ message: `SPI[${portIdx}] 支持 DMA?`, default: port.dma })
+      } else if (portField === 'irq') {
+        port.irq = await confirm({ message: `SPI[${portIdx}] 支持 IRQ?`, default: port.irq })
+      }
+    }
+  }
+
   return data
 }

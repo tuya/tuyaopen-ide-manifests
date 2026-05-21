@@ -1,4 +1,5 @@
-import { number } from '@inquirer/prompts'
+import { number, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'rtc', label: 'RTC',
@@ -19,6 +20,19 @@ export function validate(data, path) {
 
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
-  data.count = await number({ message: 'RTC 数量:', default: data.count })
+
+  while (true) {
+    const field = await select({
+      message: 'RTC 配置:',
+      choices: [
+        { name: `数量: ${data.count}`, value: 'count' },
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+    if (field === 'done') break
+    if (field === 'count') {
+      data.count = await number({ message: 'RTC 数量:', default: data.count })
+    }
+  }
   return data
 }

@@ -1,4 +1,5 @@
-import { number, confirm, checkbox } from '@inquirer/prompts'
+import { number, confirm, checkbox, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 
 export const meta = {
   key: 'i2c',
@@ -46,40 +47,123 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'I2C 端口数:', default: data.count })
+  // Sync ports array to match current count
+  function syncPorts(ports, count) {
+    const result = ports.slice(0, count)
+    for (let i = result.length; i < count; i++) {
+      result.push({ id: i, type: ['hw'], irq: false, swAnyGpio: false, pinGroups: [] })
+    }
+    return result
+  }
 
-  const ports = []
-  for (let i = 0; i < data.count; i++) {
-    const ex = data.spec.ports[i]
-    const types = await checkbox({
-      message: `I2C[${i}] 支持的模式（可多选）:`,
-      loop: false,
+  while (true) {
+    const portChoices = data.spec.ports.map((p, i) => {
+      const typeStr = p.type.join('/')
+      const anyGpio = p.swAnyGpio ? ' 任意GPIO' : ''
+      return { name: `端口 ${i}  [${typeStr}${anyGpio}]`, value: `port:${i}` }
+    })
+    const field = await select({
+      message: 'I2C 配置:',
       choices: [
-        { name: 'hw（硬件 I2C）', value: 'hw', checked: ex?.type?.includes('hw') ?? true },
-        { name: 'sw（软件模拟，任意 GPIO）', value: 'sw', checked: ex?.type?.includes('sw') ?? false },
+        { name: `端口数: ${data.count}`, value: 'count' },
+        ...portChoices,
+        { name: chalk.green('✔ 完成'), value: 'done' },
       ],
     })
-    const irq = await confirm({ message: `I2C[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
 
-    const pinGroups = []
+    if (field === 'done') break
 
-    if (types.includes('hw')) {
-      const hwCount = await number({
-        message: `I2C[${i}] 硬件引脚组合数（pinmux 可选的 SCL/SDA 组合）:`,
-        default: ex?.pinGroups?.length ?? 1,
-      })
-      for (let g = 0; g < hwCount; g++) {
-        const exG = ex?.pinGroups?.[g]
-        const scl = await number({ message: `I2C[${i}] HW 组合${g} SCL 引脚:`, default: exG?.scl ?? 0 })
-        const sda = await number({ message: `I2C[${i}] HW 组合${g} SDA 引脚:`, default: exG?.sda ?? 0 })
-        pinGroups.push({ scl, sda })
-      }
+    if (field === 'count') {
+      data.count = await number({ message: 'I2C 端口数:', default: data.count })
+      data.spec.ports = syncPorts(data.spec.ports, data.count)
+      continue
     }
 
-    const swAnyGpio = types.includes('sw')
+    // port sub-menu
+    const portIdx = parseInt(field.split(':')[1], 10)
+    const port = data.spec.ports[portIdx]
 
-    ports.push({ id: i, type: types, irq, swAnyGpio, pinGroups })
+    while (true) {
+      const hwPinGroupEntries = port.type.includes('hw')
+        ? port.pinGroups.map((pg, g) => ({
+            name: `HW 组${g}  SCL:${pg.scl} SDA:${pg.sda}`,
+            value: `pg:${g}`,
+          }))
+        : []
+
+      const hwCountEntry = port.type.includes('hw')
+        ? [{ name: `HW 引脚组合数: ${port.pinGroups.length}`, value: 'hwCount' }]
+        : []
+
+      const swAnyGpioEntry = port.type.includes('sw')
+        ? [{ name: `软件任意GPIO: ${port.swAnyGpio ? '是' : '否'}`, value: 'swAnyGpio' }]
+        : []
+
+      const portField = await select({
+        message: `I2C 端口 ${portIdx} 配置:`,
+        choices: [
+          { name: `模式: ${port.type.join(', ')}`, value: 'type' },
+          { name: `IRQ: ${port.irq ? '是' : '否'}`, value: 'irq' },
+          ...hwCountEntry,
+          ...hwPinGroupEntries,
+          ...swAnyGpioEntry,
+          { name: chalk.gray('← 返回'), value: 'back' },
+        ],
+      })
+
+      if (portField === 'back') break
+
+      if (portField === 'type') {
+        port.type = await checkbox({
+          message: `I2C[${portIdx}] 支持的模式（可多选）:`,
+          loop: false,
+          choices: [
+            { name: 'hw（硬件 I2C）', value: 'hw', checked: port.type.includes('hw') },
+            { name: 'sw（软件模拟，任意 GPIO）', value: 'sw', checked: port.type.includes('sw') },
+          ],
+        })
+        // Sync pinGroups: if hw removed, clear them; if sw removed, clear swAnyGpio
+        if (!port.type.includes('hw')) port.pinGroups = []
+        if (!port.type.includes('sw')) port.swAnyGpio = false
+      } else if (portField === 'irq') {
+        port.irq = await confirm({ message: `I2C[${portIdx}] 支持 IRQ?`, default: port.irq })
+      } else if (portField === 'hwCount') {
+        const hwCount = await number({
+          message: `I2C[${portIdx}] 硬件引脚组合数:`,
+          default: port.pinGroups.length || 1,
+        })
+        // Rebuild pinGroups to new count
+        const newGroups = port.pinGroups.slice(0, hwCount)
+        for (let g = newGroups.length; g < hwCount; g++) {
+          newGroups.push({ scl: 0, sda: 0 })
+        }
+        port.pinGroups = newGroups
+      } else if (portField === 'swAnyGpio') {
+        port.swAnyGpio = await confirm({ message: `I2C[${portIdx}] 软件任意 GPIO?`, default: port.swAnyGpio })
+      } else if (portField.startsWith('pg:')) {
+        const gIdx = parseInt(portField.split(':')[1], 10)
+        const pg = port.pinGroups[gIdx]
+
+        // pin group sub-sub-menu
+        while (true) {
+          const pgField = await select({
+            message: `I2C[${portIdx}] HW 组${gIdx}:`,
+            choices: [
+              { name: `SCL: ${pg.scl}`, value: 'scl' },
+              { name: `SDA: ${pg.sda}`, value: 'sda' },
+              { name: chalk.gray('← 返回'), value: 'back' },
+            ],
+          })
+          if (pgField === 'back') break
+          if (pgField === 'scl') {
+            pg.scl = await number({ message: `I2C[${portIdx}] HW 组${gIdx} SCL 引脚:`, default: pg.scl })
+          } else if (pgField === 'sda') {
+            pg.sda = await number({ message: `I2C[${portIdx}] HW 组${gIdx} SDA 引脚:`, default: pg.sda })
+          }
+        }
+      }
+    }
   }
-  data.spec.ports = ports
+
   return data
 }

@@ -1,4 +1,5 @@
-import { input, number } from '@inquirer/prompts'
+import { input, number, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 import { parseRangePins, pinsToRangeStr } from './_pin-utils.js'
 
 export const meta = {
@@ -27,12 +28,25 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'Timer 数量:', default: data.count })
-
-  const idsStr = await input({
-    message: 'Timer ID 列表（支持范围，如 0-3,6）:',
-    default: pinsToRangeStr(data.spec.ids),
-  })
-  data.spec.ids = parseRangePins(idsStr)
+  while (true) {
+    const field = await select({
+      message: 'Timer 配置:',
+      choices: [
+        { name: `数量: ${data.count}`, value: 'count' },
+        { name: `ID 列表: ${pinsToRangeStr(data.spec.ids)}`, value: 'ids' },
+        { name: chalk.green('✔ 完成'), value: 'done' },
+      ],
+    })
+    if (field === 'done') break
+    if (field === 'count') {
+      data.count = await number({ message: 'Timer 数量:', default: data.count })
+    } else if (field === 'ids') {
+      const idsStr = await input({
+        message: 'Timer ID 列表（支持范围，如 0-3,6）:',
+        default: pinsToRangeStr(data.spec.ids),
+      })
+      data.spec.ids = parseRangePins(idsStr)
+    }
+  }
   return data
 }

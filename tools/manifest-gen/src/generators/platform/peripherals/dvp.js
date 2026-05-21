@@ -1,4 +1,5 @@
-import { number, input } from '@inquirer/prompts'
+import { number, input, select } from '@inquirer/prompts'
+import chalk from 'chalk'
 import { parseRangePins, pinsToRangeStr } from './_pin-utils.js'
 
 export const meta = {
@@ -63,26 +64,70 @@ export function validate(data, path) {
 export async function configure(existing = null) {
   const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
 
-  data.count = await number({ message: 'DVP Camera 端口数:', default: data.count })
-
-  const ports = []
-  for (let i = 0; i < data.count; i++) {
-    const exPins = data.spec.ports[i]?.pins ?? {}
-    const mclk  = await number({ message: `DVP[${i}] MCLK 引脚:`,  default: exPins.mclk  ?? 0 })
-    const pclk  = await number({ message: `DVP[${i}] PCLK 引脚:`,  default: exPins.pclk  ?? 0 })
-    const hsync = await number({ message: `DVP[${i}] HSYNC 引脚:`, default: exPins.hsync ?? 0 })
-    const vsync = await number({ message: `DVP[${i}] VSYNC 引脚:`, default: exPins.vsync ?? 0 })
-
-    const dataStr = await input({
-      message: `DVP[${i}] DATA 引脚列表（8个，如 0-7）:`,
-      default: pinsToRangeStr(exPins.data ?? Array(8).fill(0)),
-    })
-
-    ports.push({
-      id: i,
-      pins: { mclk, pclk, hsync, vsync, data: parseRangePins(dataStr).slice(0, 8) },
-    })
+  // Ensure ports array is synced to count
+  while (data.spec.ports.length < data.count) {
+    const id = data.spec.ports.length
+    data.spec.ports.push({ id, pins: { mclk: 0, pclk: 0, hsync: 0, vsync: 0, data: Array(8).fill(0) } })
   }
-  data.spec.ports = ports
+
+  while (true) {
+    const choices = [
+      { name: `端口数: ${chalk.gray(data.count)}`, value: '__count__' },
+      ...data.spec.ports.map((port, i) => ({
+        name: `端口${i}  MCLK:${chalk.gray(port.pins.mclk)}`,
+        value: `__port_${i}__`,
+      })),
+      { name: chalk.green('✔ 完成'), value: 'done' },
+    ]
+
+    const action = await select({ message: 'DVP Camera 配置:', choices })
+
+    if (action === 'done') break
+
+    if (action === '__count__') {
+      const newCount = await number({ message: 'DVP Camera 端口数:', default: data.count })
+      data.count = newCount
+      // Sync ports array
+      while (data.spec.ports.length < data.count) {
+        const id = data.spec.ports.length
+        data.spec.ports.push({ id, pins: { mclk: 0, pclk: 0, hsync: 0, vsync: 0, data: Array(8).fill(0) } })
+      }
+      data.spec.ports = data.spec.ports.slice(0, data.count)
+      continue
+    }
+
+    const portIdx = parseInt(action.replace('__port_', '').replace('__', ''), 10)
+    const port = data.spec.ports[portIdx]
+    const p = port.pins
+
+    while (true) {
+      const dataStr = pinsToRangeStr(p.data)
+      const field = await select({
+        message: `端口${portIdx} 配置:`,
+        choices: [
+          { name: `MCLK: ${chalk.gray(p.mclk)}`, value: 'mclk' },
+          { name: `PCLK: ${chalk.gray(p.pclk)}`, value: 'pclk' },
+          { name: `HSYNC: ${chalk.gray(p.hsync)}`, value: 'hsync' },
+          { name: `VSYNC: ${chalk.gray(p.vsync)}`, value: 'vsync' },
+          { name: `DATA 引脚: ${chalk.gray(dataStr)}`, value: 'data' },
+          { name: chalk.gray('← 返回'), value: 'back' },
+        ],
+      })
+      if (field === 'back') break
+      if (field === 'mclk') {
+        p.mclk = await number({ message: `端口${portIdx} MCLK 引脚:`, default: p.mclk })
+      } else if (field === 'pclk') {
+        p.pclk = await number({ message: `端口${portIdx} PCLK 引脚:`, default: p.pclk })
+      } else if (field === 'hsync') {
+        p.hsync = await number({ message: `端口${portIdx} HSYNC 引脚:`, default: p.hsync })
+      } else if (field === 'vsync') {
+        p.vsync = await number({ message: `端口${portIdx} VSYNC 引脚:`, default: p.vsync })
+      } else if (field === 'data') {
+        const s = await input({ message: `端口${portIdx} DATA 引脚列表（8个，如 0-7）:`, default: dataStr })
+        p.data = parseRangePins(s).slice(0, 8)
+      }
+    }
+  }
+
   return data
 }
