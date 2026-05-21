@@ -66,6 +66,7 @@ export async function configure(existing = null) {
   while (true) {
     const field = await select({
       message: 'GPIO 配置:',
+      loop: false,
       choices: [
         { name: `数量         ${chalk.gray(String(data.count))}`, value: 'count' },
         { name: `引脚列表     ${chalk.gray(pinsToRangeStr(data.spec.pins) || '—')}`, value: 'pins' },

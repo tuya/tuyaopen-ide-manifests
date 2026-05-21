@@ -72,7 +72,7 @@ export async function configure(existing = null) {
       { name: chalk.green('✔ 完成'), value: 'done' },
     ]
 
-    const action = await select({ message: 'Flash 配置:', choices })
+    const action = await select({ message: 'Flash 配置:', loop: false, choices })
 
     if (action === 'done') break
 
@@ -96,6 +96,7 @@ export async function configure(existing = null) {
       while (true) {
         const sub = await select({
           message: `Flash 分区${idx} 配置:`,
+          loop: false,
           choices: [
             { name: `类型: ${chalk.gray(p.type)}`, value: 'type' },
             { name: `起始地址: ${chalk.gray(p.startAddr)}`, value: 'startAddr' },
@@ -111,6 +112,7 @@ export async function configure(existing = null) {
         if (sub === 'type') {
           p.type = await select({
             message: `分区${idx} 类型:`,
+            loop: false,
             choices: data.spec.partitionTypes.map(t => ({ value: t })),
             default: p.type,
           })

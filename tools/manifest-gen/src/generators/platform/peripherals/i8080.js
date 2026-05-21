@@ -74,7 +74,7 @@ export async function configure(existing = null) {
       { name: chalk.green('✔ 完成'), value: 'done' },
     ]
 
-    const action = await select({ message: 'MCU8080 配置:', choices })
+    const action = await select({ message: 'MCU8080 配置:', loop: false, choices })
 
     if (action === 'done') break
 
@@ -98,6 +98,7 @@ export async function configure(existing = null) {
       const dataStr = pinsToRangeStr(p.data)
       const field = await select({
         message: `端口${portIdx} 配置:`,
+        loop: false,
         choices: [
           { name: `RDX: ${chalk.gray(p.rdx)}`, value: 'rdx' },
           { name: `WDX: ${chalk.gray(p.wdx)}`, value: 'wdx' },

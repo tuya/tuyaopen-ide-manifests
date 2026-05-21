@@ -50,7 +50,7 @@ export async function configure(existing = null) {
       { name: chalk.green('✔ 完成'), value: 'done' },
     ]
 
-    const action = await select({ message: 'PWM 配置:', choices })
+    const action = await select({ message: 'PWM 配置:', loop: false, choices })
 
     if (action === 'done') break
 
@@ -67,6 +67,7 @@ export async function configure(existing = null) {
       while (true) {
         const sub = await select({
           message: `PWM 通道${idx} 配置:`,
+          loop: false,
           choices: [
             { name: `引脚: ${chalk.gray(String(ch.pin))}`, value: 'pin' },
             { name: `IRQ: ${chalk.gray(ch.irq ? '是' : '否')}`, value: 'irq' },

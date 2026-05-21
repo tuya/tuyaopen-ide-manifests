@@ -66,6 +66,7 @@ export async function configure(existing = null) {
 
     const field = await select({
       message: 'QSPI 配置:',
+      loop: false,
       choices: [
         { name: `端口数: ${data.count}`, value: 'count' },
         ...portChoices,
@@ -90,6 +91,7 @@ export async function configure(existing = null) {
     while (true) {
       const portField = await select({
         message: `QSPI 端口 ${portIdx} 配置:`,
+        loop: false,
         choices: [
           { name: `CLK 引脚: ${pins.clk}`, value: 'clk' },
           { name: `CS 引脚: ${pins.cs}`, value: 'cs' },

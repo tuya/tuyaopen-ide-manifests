@@ -31,6 +31,7 @@ export async function configure(existing = null) {
   while (true) {
     const field = await select({
       message: 'Timer 配置:',
+      loop: false,
       choices: [
         { name: `数量: ${data.count}`, value: 'count' },
         { name: `ID 列表: ${pinsToRangeStr(data.spec.ids)}`, value: 'ids' },

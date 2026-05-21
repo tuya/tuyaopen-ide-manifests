@@ -81,6 +81,7 @@ export async function configure(existing = null) {
 
     const field = await select({
       message: 'UART 配置:',
+      loop: false,
       choices: [
         { name: `端口数       ${chalk.gray(String(data.count))}`, value: 'count' },
         ...portChoices,
@@ -102,6 +103,7 @@ export async function configure(existing = null) {
       while (true) {
         const sub = await select({
           message: `UART[${idx}] 配置:`,
+          loop: false,
           choices: [
             { name: `TX 引脚      ${chalk.gray(String(currentTx))}`, value: 'tx' },
             { name: `RX 引脚      ${chalk.gray(String(currentRx))}`, value: 'rx' },

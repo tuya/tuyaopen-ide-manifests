@@ -80,6 +80,7 @@ export async function configure(existing = null) {
 
     const field = await select({
       message: 'SPI 配置:',
+      loop: false,
       choices: [
         { name: `端口数: ${data.count}`, value: 'count' },
         ...portChoices,
@@ -104,6 +105,7 @@ export async function configure(existing = null) {
     while (true) {
       const portField = await select({
         message: `SPI 端口 ${portIdx} 配置:`,
+        loop: false,
         choices: [
           { name: `CLK 引脚: ${pg.clk}`, value: 'clk' },
           { name: `CS 引脚: ${pg.cs}`, value: 'cs' },
