@@ -1,12 +1,17 @@
 import { input, select, checkbox, number, confirm } from '@inquirer/prompts'
+import chalk from 'chalk'
 import { peripheralModules } from '../registry.js'
 
-export async function runPlatformWizard() {
-  console.log('\n=== Platform JSON 生成向导 ===\n')
+export async function runPlatformWizard(defaults = {}) {
+  const isEdit = Object.keys(defaults).length > 0
+  console.log(isEdit ? '\n=== Platform JSON 编辑向导 ===\n' : '\n=== Platform JSON 生成向导 ===\n')
 
-  const platformId     = await input({ message: 'platformId (小写连字符，如 t5ai):' })
-  const variantId      = await input({ message: 'variantId（通常与 platformId 相同）:', default: platformId })
-  const name           = await input({ message: '平台显示名称（如 T5AI）:' })
+  const platformId = await input({ message: 'platformId (小写连字符，如 t5ai):', default: defaults.platformId })
+  const variantId  = await input({ message: 'variantId（通常与 platformId 相同）:', default: defaults.id ?? defaults.platformId })
+  const name       = await input({ message: '平台显示名称（如 T5AI）:', default: defaults.name })
+
+  const knownArches = ['arm-cortex-m33', 'arm-v5', 'xtensa-lx6', 'xtensa-lx7', 'risc-v']
+  const defaultArchIsKnown = knownArches.includes(defaults.arch)
   const archChoice = await select({
     message: '处理器架构:',
     choices: [
@@ -17,39 +22,45 @@ export async function runPlatformWizard() {
       { value: 'risc-v' },
       { name: '手动输入...', value: '__custom__' },
     ],
+    default: defaultArchIsKnown ? defaults.arch : (defaults.arch ? '__custom__' : undefined),
   })
   const arch = archChoice === '__custom__'
-    ? await input({ message: '请输入架构名称:' })
+    ? await input({ message: '请输入架构名称:', default: defaultArchIsKnown ? '' : (defaults.arch ?? '') })
     : archChoice
+
   const flashInterface = await select({
     message: 'Flash 接口:',
     choices: [{ value: 'qspi' }, { value: 'spi' }],
+    default: defaults.flashInterface,
   })
 
+  const dc = defaults.connectivity
   const connChoices = await checkbox({
     message: '选择连接方式:',
     loop: false,
     choices: [
-      { name: 'WiFi',     value: 'wifi',     checked: true },
-      { name: 'BLE',      value: 'ble',      checked: true },
-      { name: 'Ethernet', value: 'ethernet', checked: false },
-      { name: 'Cellular', value: 'cellular', checked: false },
+      { name: 'WiFi',     value: 'wifi',     checked: dc ? !!dc.wifi?.enabled     : true },
+      { name: 'BLE',      value: 'ble',      checked: dc ? !!dc.ble?.enabled      : true },
+      { name: 'Ethernet', value: 'ethernet', checked: dc ? !!dc.ethernet?.enabled  : false },
+      { name: 'Cellular', value: 'cellular', checked: dc ? !!dc.cellular?.enabled  : false },
     ],
   })
 
-  let wifiStandard = '802.11b/g/n'
+  let wifiStandard = dc?.wifi?.standard ?? '802.11b/g/n'
   if (connChoices.includes('wifi')) {
     wifiStandard = await select({
       message: 'WiFi 标准:',
       choices: [{ value: '802.11b/g/n' }, { value: '802.11b/g/n/ax' }],
+      default: wifiStandard,
     })
   }
 
-  let bleVersion = '5.4'
+  let bleVersion = dc?.ble?.version ?? '5.4'
   if (connChoices.includes('ble')) {
     bleVersion = await select({
       message: 'BLE 版本:',
       choices: [{ value: '5.0' }, { value: '5.2' }, { value: '5.4' }],
+      default: bleVersion,
     })
   }
 
@@ -64,21 +75,36 @@ export async function runPlatformWizard() {
     cellular: { enabled: connChoices.includes('cellular'), enableMacro: 'ENABLE_CELLULAR' },
   }
 
+  const dm = defaults.memory
   console.log('\n--- 内存配置 ---')
-  const sramKB     = await number({ message: 'SRAM 大小 (KB):', default: 0 })
-  const romKB      = await number({ message: 'ROM 大小 (KB):',  default: 0 })
-  const flashMaxKB = await number({ message: '最大 Flash 大小 (KB):', default: 0 })
-  const psramMaxKB = await number({ message: '最大 PSRAM 大小 (KB, 0=无):', default: 0 })
-  const efuse      = await confirm({ message: '是否支持 eFuse?', default: false })
+  const sramKB     = await number({ message: 'SRAM 大小 (KB):', default: dm ? Math.round(dm.sramBytes / 1024) : 0 })
+  const romKB      = await number({ message: 'ROM 大小 (KB):',  default: dm ? Math.round(dm.romBytes / 1024) : 0 })
+  const flashMaxKB = await number({ message: '最大 Flash 大小 (KB):', default: dm ? Math.round(dm.flashMaxBytes / 1024) : 0 })
+  const psramMaxKB = await number({ message: '最大 PSRAM 大小 (KB, 0=无):', default: dm ? Math.round(dm.psramMaxBytes / 1024) : 0 })
+  const efuse      = await confirm({ message: '是否支持 eFuse?', default: dm?.efuse ?? false })
 
-  const kconfigValue = await input({ message: 'PLATFORM_CHOICE Kconfig 值（如 T5AI）:' })
+  const kconfigValue = await input({ message: 'PLATFORM_CHOICE Kconfig 值（如 T5AI）:', default: defaults.kconfig?.PLATFORM_CHOICE })
 
   console.log('\n--- 外设选择 ---')
   const selectedPeripherals = await checkbox({
     message: '选择本平台支持的外设（空格选择，回车确认）:',
     loop: false,
-    choices: peripheralModules.map(m => ({ name: `${m.meta.label} (${m.meta.key})`, value: m.meta.key, checked: true })),
+    choices: peripheralModules.map(m => ({
+      name: `${m.meta.label} (${m.meta.key})`,
+      value: m.meta.key,
+      checked: defaults.peripherals ? !!defaults.peripherals[m.meta.key] : true,
+    })),
   })
+
+  // 第三层：逐外设配置
+  const peripheralConfigs = {}
+  for (const key of selectedPeripherals) {
+    const mod = peripheralModules.find(m => m.meta.key === key)
+    if (mod?.configure) {
+      console.log(chalk.cyan(`\n--- 配置 ${mod.meta.label} ---`))
+      peripheralConfigs[key] = await mod.configure(defaults.peripherals?.[key] ?? null)
+    }
+  }
 
   return {
     platformId,
@@ -90,5 +116,6 @@ export async function runPlatformWizard() {
     memory: { sramBytes: sramKB * 1024, romBytes: romKB * 1024, flashMaxBytes: flashMaxKB * 1024, psramMaxBytes: psramMaxKB * 1024, efuse },
     kconfig: { PLATFORM_CHOICE: kconfigValue },
     selectedPeripherals,
+    peripheralConfigs,
   }
 }

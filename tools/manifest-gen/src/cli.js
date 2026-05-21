@@ -33,4 +33,20 @@ platform
     await runPlatformNormalize(file, options.out)
   })
 
+platform
+  .command('show <file>')
+  .description('展示 platform JSON 摘要信息')
+  .action(async (file) => {
+    const { runPlatformShow } = await import('./commands/platform-show.js')
+    await runPlatformShow(file)
+  })
+
+platform
+  .command('edit <file>')
+  .description('交互向导修改已有 platform JSON')
+  .action(async (file) => {
+    const { runPlatformEdit } = await import('./commands/platform-edit.js')
+    await runPlatformEdit(file)
+  })
+
 program.parse()

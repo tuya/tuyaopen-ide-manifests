@@ -1,3 +1,5 @@
+import { number, confirm } from '@inquirer/prompts'
+
 export const meta = {
   key: 'uart',
   label: 'UART',
@@ -54,4 +56,23 @@ export function validate(data, path) {
     })
   }
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  const count = await number({ message: 'UART 数量:', default: data.count || 1 })
+  data.count = count
+
+  const ports = []
+  for (let i = 0; i < count; i++) {
+    const ep = data.spec.ports[i]
+    const tx = await number({ message: `  UART[${i}] TX 引脚号:`, default: ep?.pinGroups[0]?.tx ?? 0 })
+    const rx = await number({ message: `  UART[${i}] RX 引脚号:`, default: ep?.pinGroups[0]?.rx ?? 0 })
+    const logPort = await confirm({ message: `  UART[${i}] 作为日志串口?`, default: ep?.logPort ?? false })
+    ports.push({ id: i, logPort, irq: ep?.irq ?? { rx: false, tx: false }, pinGroups: [{ tx, rx }] })
+  }
+  data.spec.ports = ports
+
+  return data
 }
