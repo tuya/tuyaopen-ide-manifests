@@ -64,6 +64,7 @@ export async function configure(existing = null) {
     })
     const field = await select({
       message: 'I2C 配置:',
+      loop: false,
       choices: [
         { name: `端口数: ${data.count}`, value: 'count' },
         ...portChoices,
@@ -101,6 +102,7 @@ export async function configure(existing = null) {
 
       const portField = await select({
         message: `I2C 端口 ${portIdx} 配置:`,
+        loop: false,
         choices: [
           { name: `模式: ${port.type.join(', ')}`, value: 'type' },
           { name: `IRQ: ${port.irq ? '是' : '否'}`, value: 'irq' },
@@ -148,6 +150,7 @@ export async function configure(existing = null) {
         while (true) {
           const pgField = await select({
             message: `I2C[${portIdx}] HW 组${gIdx}:`,
+            loop: false,
             choices: [
               { name: `SCL: ${pg.scl}`, value: 'scl' },
               { name: `SDA: ${pg.sda}`, value: 'sda' },

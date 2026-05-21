@@ -39,6 +39,7 @@ export async function configure(existing = null) {
   while (true) {
     const field = await select({
       message: 'Pin Mux 配置:',
+      loop: false,
       choices: [
         ...funcs.map(fn => ({
           name: `${fn.toUpperCase()}: ${pinsToRangeStr(data.spec.remappableFuncs[fn] ?? [])}`,

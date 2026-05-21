@@ -47,7 +47,7 @@ export async function configure(existing = null) {
       { name: chalk.green('✔ 完成'), value: 'done' },
     ]
 
-    const action = await select({ message: 'ADC 配置:', choices })
+    const action = await select({ message: 'ADC 配置:', loop: false, choices })
 
     if (action === 'done') break
 

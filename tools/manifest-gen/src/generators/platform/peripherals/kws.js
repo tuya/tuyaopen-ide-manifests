@@ -43,6 +43,7 @@ export async function configure(existing = null) {
   while (true) {
     const field = await select({
       message: 'KWS 配置:',
+      loop: false,
       choices: [
         { name: `支持唤醒词: ${data.spec.wakeupWords.length}个`, value: 'words' },
         { name: chalk.green('✔ 完成'), value: 'done' },

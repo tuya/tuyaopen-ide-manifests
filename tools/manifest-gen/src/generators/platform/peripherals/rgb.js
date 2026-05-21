@@ -74,7 +74,7 @@ export async function configure(existing = null) {
       { name: chalk.green('✔ 完成'), value: 'done' },
     ]
 
-    const action = await select({ message: 'RGB LCD 配置:', choices })
+    const action = await select({ message: 'RGB LCD 配置:', loop: false, choices })
 
     if (action === 'done') break
 
@@ -100,6 +100,7 @@ export async function configure(existing = null) {
       const bStr = pinsToRangeStr(p.b)
       const field = await select({
         message: `端口${portIdx} 配置:`,
+        loop: false,
         choices: [
           { name: `DCLK: ${chalk.gray(p.dclk)}`, value: 'dclk' },
           { name: `DISP: ${chalk.gray(p.disp)}`, value: 'disp' },

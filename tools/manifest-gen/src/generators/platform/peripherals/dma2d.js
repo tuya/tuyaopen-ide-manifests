@@ -39,6 +39,7 @@ export async function configure(existing = null) {
       : '(未选择)'
     const field = await select({
       message: 'DMA2D 配置:',
+      loop: false,
       choices: [
         { name: `支持格式: ${formatsSummary}`, value: 'formats' },
         { name: chalk.green('✔ 完成'), value: 'done' },

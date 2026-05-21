@@ -24,6 +24,7 @@ export async function configure(existing = null) {
   while (true) {
     const field = await select({
       message: 'Watchdog 配置:',
+      loop: false,
       choices: [
         { name: `数量: ${data.count}`, value: 'count' },
         { name: chalk.green('✔ 完成'), value: 'done' },
