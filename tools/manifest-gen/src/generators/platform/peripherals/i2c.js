@@ -25,6 +25,7 @@ export function scaffold() {
           id: 0,
           type: ['hw', 'sw'],
           irq: false,
+          swAnyGpio: false,
           pinGroups: [{ scl: 0, sda: 0 }],
         },
       ],
@@ -55,7 +56,7 @@ export async function configure(existing = null) {
       loop: false,
       choices: [
         { name: 'hw（硬件 I2C）', value: 'hw', checked: ex?.type?.includes('hw') ?? true },
-        { name: 'sw（软件模拟，任意引脚）', value: 'sw', checked: ex?.type?.includes('sw') ?? false },
+        { name: 'sw（软件模拟，任意 GPIO）', value: 'sw', checked: ex?.type?.includes('sw') ?? false },
       ],
     })
     const irq = await confirm({ message: `I2C[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
@@ -75,21 +76,9 @@ export async function configure(existing = null) {
       }
     }
 
-    if (types.includes('sw')) {
-      const swOffset = pinGroups.length
-      const groupCount = await number({
-        message: `I2C[${i}] 软件模式引脚组合数（平台已验证的 SCL/SDA 组合）:`,
-        default: Math.max(ex?.pinGroups?.length ?? 1, swOffset + 1) - swOffset,
-      })
-      for (let g = 0; g < groupCount; g++) {
-        const exG = ex?.pinGroups?.[swOffset + g]
-        const scl = await number({ message: `I2C[${i}] SW 组合${g} SCL 引脚:`, default: exG?.scl ?? 0 })
-        const sda = await number({ message: `I2C[${i}] SW 组合${g} SDA 引脚:`, default: exG?.sda ?? 0 })
-        pinGroups.push({ scl, sda })
-      }
-    }
+    const swAnyGpio = types.includes('sw')
 
-    ports.push({ id: i, type: types, irq, pinGroups })
+    ports.push({ id: i, type: types, irq, swAnyGpio, pinGroups })
   }
   data.spec.ports = ports
   return data
