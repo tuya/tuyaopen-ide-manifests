@@ -173,8 +173,15 @@ export async function editPeripherals(answers) {
       if (enable) {
         answers.selectedPeripherals.push(key)
         if (mod?.configure) {
-          console.log(chalk.cyan(`\n--- 配置 ${mod.meta.label} ---`))
-          answers.peripheralConfigs[key] = await mod.configure(null)
+          console.log(chalk.cyan(`\n--- 配置 ${mod.meta.label} ---`) + chalk.gray('  （Ctrl+C 取消并返回）'))
+          try {
+            answers.peripheralConfigs[key] = await mod.configure(null)
+          } catch (e) {
+            if (e.name === 'ExitPromptError') {
+              answers.selectedPeripherals = answers.selectedPeripherals.filter(k => k !== key)
+              console.log(chalk.gray('\n已取消，未启用。'))
+            } else throw e
+          }
         }
       }
     } else {
@@ -187,8 +194,16 @@ export async function editPeripherals(answers) {
         ],
       })
       if (action === 'configure' && mod?.configure) {
-        console.log(chalk.cyan(`\n--- 配置 ${mod.meta.label} ---`))
-        answers.peripheralConfigs[key] = await mod.configure(answers.peripheralConfigs[key] ?? null)
+        const original = answers.peripheralConfigs[key]
+        console.log(chalk.cyan(`\n--- 配置 ${mod.meta.label} ---`) + chalk.gray('  （Ctrl+C 取消并返回）'))
+        try {
+          answers.peripheralConfigs[key] = await mod.configure(original ?? null)
+        } catch (e) {
+          if (e.name === 'ExitPromptError') {
+            answers.peripheralConfigs[key] = original
+            console.log(chalk.gray('\n已取消，保留原配置。'))
+          } else throw e
+        }
       } else if (action === 'disable') {
         answers.selectedPeripherals = answers.selectedPeripherals.filter(k => k !== key)
         delete answers.peripheralConfigs[key]
