@@ -1,4 +1,6 @@
 // src/generators/platform/peripherals/gpio.js
+import { input, number } from '@inquirer/prompts'
+
 export const meta = {
   key: 'gpio',
   label: 'GPIO',
@@ -54,4 +56,26 @@ export function validate(data, path) {
   if (!Array.isArray(data.spec?.irq?.pins))
     errors.push(`${path}.spec.irq.pins — 期望 array`)
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  data.count = await number({ message: 'GPIO 数量:', default: data.count })
+
+  const pinsStr = await input({
+    message: 'GPIO 引脚号列表（逗号分隔，如 0,1,2,3）:',
+    default: data.spec.pins.join(', '),
+  })
+  data.spec.pins = pinsStr.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
+
+  const irqStr = await input({
+    message: 'IRQ 支持引脚列表（逗号分隔，留空=同 pins）:',
+    default: data.spec.irq.pins.join(', '),
+  })
+  data.spec.irq.pins = irqStr.trim()
+    ? irqStr.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
+    : [...data.spec.pins]
+
+  return data
 }
