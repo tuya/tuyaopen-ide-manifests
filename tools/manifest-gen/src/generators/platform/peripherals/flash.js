@@ -1,3 +1,5 @@
+import { input, number, select } from '@inquirer/prompts'
+
 export const meta = {
   key: 'flash', label: 'Flash',
   enableMacro: null, tklHeader: 'tkl_flash.h', idPrefix: null,
@@ -54,4 +56,28 @@ export function validate(data, path) {
     })
   }
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  const partCount = await number({ message: 'Flash 分区数:', default: data.spec.partitionMap.length })
+
+  const partitionMap = []
+  for (let i = 0; i < partCount; i++) {
+    const ex = data.spec.partitionMap[i] ?? {}
+    const type      = await select({
+      message: `分区[${i}] 类型:`,
+      choices: data.spec.partitionTypes.map(t => ({ value: t })),
+      default: ex.type ?? data.spec.partitionTypes[0],
+    })
+    const startAddr = await input({ message: `分区[${i}] 起始地址 (0x...):`, default: ex.startAddr ?? '0x000000' })
+    const endAddr   = await input({ message: `分区[${i}] 结束地址 (0x...):`, default: ex.endAddr   ?? '0x000000' })
+    const size      = await number({ message: `分区[${i}] 大小 (bytes):`,      default: ex.size      ?? 0 })
+    const blockSize = await number({ message: `分区[${i}] 块大小 (bytes):`,    default: ex.blockSize ?? 4096 })
+    const desc      = await input({ message: `分区[${i}] 描述:`,               default: ex.desc      ?? '' })
+    partitionMap.push({ type, startAddr, endAddr, size, blockSize, desc })
+  }
+  data.spec.partitionMap = partitionMap
+  return data
 }

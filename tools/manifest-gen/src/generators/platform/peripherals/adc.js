@@ -1,3 +1,5 @@
+import { number } from '@inquirer/prompts'
+
 export const meta = {
   key: 'adc',
   label: 'ADC',
@@ -29,4 +31,24 @@ export function validate(data, path) {
   if (!Array.isArray(data.spec?.ports))
     errors.push(`${path}.spec.ports — 期望 array`)
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  data.count = await number({ message: 'ADC 端口数:', default: data.count })
+
+  const ports = []
+  for (let i = 0; i < data.count; i++) {
+    const ex = data.spec.ports[i]
+    const chCount = await number({ message: `ADC[${i}] 通道数:`, default: ex?.channels?.length ?? 1 })
+    const channels = []
+    for (let j = 0; j < chCount; j++) {
+      const pin = await number({ message: `ADC[${i}] 通道${j} 引脚:`, default: ex?.channels?.[j]?.pin ?? 0 })
+      channels.push({ id: j, pin })
+    }
+    ports.push({ id: i, channels })
+  }
+  data.spec.ports = ports
+  return data
 }

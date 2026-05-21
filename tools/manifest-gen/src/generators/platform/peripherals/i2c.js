@@ -1,3 +1,5 @@
+import { number, confirm, select } from '@inquirer/prompts'
+
 export const meta = {
   key: 'i2c',
   label: 'I2C',
@@ -38,4 +40,26 @@ export function validate(data, path) {
   if (!Array.isArray(data.spec?.ports))
     errors.push(`${path}.spec.ports — 期望 array`)
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  data.count = await number({ message: 'I2C 端口数:', default: data.count })
+
+  const ports = []
+  for (let i = 0; i < data.count; i++) {
+    const ex = data.spec.ports[i]
+    const type = await select({
+      message: `I2C[${i}] 类型:`,
+      choices: [{ value: 'hw' }, { value: 'sw' }],
+      default: ex?.type?.[0] ?? 'hw',
+    })
+    const scl = await number({ message: `I2C[${i}] SCL 引脚:`, default: ex?.pinGroups?.[0]?.scl ?? 0 })
+    const sda = await number({ message: `I2C[${i}] SDA 引脚:`, default: ex?.pinGroups?.[0]?.sda ?? 0 })
+    const irq = await confirm({ message: `I2C[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
+    ports.push({ id: i, type: [type], irq, pinGroups: [{ scl, sda }] })
+  }
+  data.spec.ports = ports
+  return data
 }

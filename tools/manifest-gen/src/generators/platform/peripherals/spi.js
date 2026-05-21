@@ -1,3 +1,5 @@
+import { number, confirm } from '@inquirer/prompts'
+
 export const meta = {
   key: 'spi',
   label: 'SPI',
@@ -52,4 +54,26 @@ export function validate(data, path) {
     })
   }
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  data.count = await number({ message: 'SPI 端口数:', default: data.count })
+
+  const ports = []
+  for (let i = 0; i < data.count; i++) {
+    const ex = data.spec.ports[i]
+    const clk  = await number({ message: `SPI[${i}] CLK 引脚:`,  default: ex?.pinGroups?.[0]?.clk  ?? 0 })
+    const cs   = await number({ message: `SPI[${i}] CS 引脚:`,   default: ex?.pinGroups?.[0]?.cs   ?? 0 })
+    const mosi = await number({ message: `SPI[${i}] MOSI 引脚:`, default: ex?.pinGroups?.[0]?.mosi ?? 0 })
+    const miso = await number({ message: `SPI[${i}] MISO 引脚:`, default: ex?.pinGroups?.[0]?.miso ?? 0 })
+    const freqMin = await number({ message: `SPI[${i}] 最低频率 (Hz):`, default: ex?.freq?.min ?? 0 })
+    const freqMax = await number({ message: `SPI[${i}] 最高频率 (Hz):`, default: ex?.freq?.max ?? 0 })
+    const dma = await confirm({ message: `SPI[${i}] 支持 DMA?`, default: ex?.dma ?? false })
+    const irq = await confirm({ message: `SPI[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
+    ports.push({ id: i, backend: 'spi', irq, dma, freq: { min: freqMin, max: freqMax }, pinGroups: [{ clk, cs, mosi, miso }] })
+  }
+  data.spec.ports = ports
+  return data
 }
