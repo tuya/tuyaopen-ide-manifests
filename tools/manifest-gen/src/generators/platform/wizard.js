@@ -11,6 +11,7 @@ export async function runPlatformWizard() {
     message: '处理器架构:',
     choices: [
       { value: 'arm-cortex-m33' },
+      { value: 'arm-v5' },
       { value: 'xtensa-lx6' },
       { value: 'xtensa-lx7' },
       { value: 'risc-v' },
