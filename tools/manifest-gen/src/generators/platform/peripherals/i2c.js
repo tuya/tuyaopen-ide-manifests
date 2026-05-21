@@ -55,10 +55,28 @@ export async function configure(existing = null) {
       choices: [{ value: 'hw' }, { value: 'sw' }],
       default: ex?.type?.[0] ?? 'hw',
     })
-    const scl = await number({ message: `I2C[${i}] SCL 引脚:`, default: ex?.pinGroups?.[0]?.scl ?? 0 })
-    const sda = await number({ message: `I2C[${i}] SDA 引脚:`, default: ex?.pinGroups?.[0]?.sda ?? 0 })
     const irq = await confirm({ message: `I2C[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
-    ports.push({ id: i, type: [type], irq, pinGroups: [{ scl, sda }] })
+
+    let pinGroups
+    if (type === 'hw') {
+      const scl = await number({ message: `I2C[${i}] SCL 引脚:`, default: ex?.pinGroups?.[0]?.scl ?? 0 })
+      const sda = await number({ message: `I2C[${i}] SDA 引脚:`, default: ex?.pinGroups?.[0]?.sda ?? 0 })
+      pinGroups = [{ scl, sda }]
+    } else {
+      // sw: any GPIO can be used — collect multiple validated pin combinations
+      const groupCount = await number({
+        message: `I2C[${i}] (SW) 引脚组合数（平台上已验证的 SCL/SDA 组合）:`,
+        default: ex?.pinGroups?.length ?? 1,
+      })
+      pinGroups = []
+      for (let g = 0; g < groupCount; g++) {
+        const scl = await number({ message: `I2C[${i}] 组合${g} SCL 引脚:`, default: ex?.pinGroups?.[g]?.scl ?? 0 })
+        const sda = await number({ message: `I2C[${i}] 组合${g} SDA 引脚:`, default: ex?.pinGroups?.[g]?.sda ?? 0 })
+        pinGroups.push({ scl, sda })
+      }
+    }
+
+    ports.push({ id: i, type: [type], irq, pinGroups })
   }
   data.spec.ports = ports
   return data
