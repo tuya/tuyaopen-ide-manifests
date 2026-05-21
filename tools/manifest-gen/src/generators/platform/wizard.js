@@ -64,11 +64,11 @@ export async function runPlatformWizard() {
   }
 
   console.log('\n--- 内存配置 ---')
-  const sramBytes     = await number({ message: 'SRAM 大小 (bytes):', default: 0 })
-  const romBytes      = await number({ message: 'ROM 大小 (bytes):',  default: 0 })
-  const flashMaxBytes = await number({ message: '最大 Flash 大小 (bytes):', default: 0 })
-  const psramMaxBytes = await number({ message: '最大 PSRAM 大小 (bytes, 0=无):', default: 0 })
-  const efuse         = await confirm({ message: '是否支持 eFuse?', default: false })
+  const sramKB     = await number({ message: 'SRAM 大小 (KB):', default: 0 })
+  const romKB      = await number({ message: 'ROM 大小 (KB):',  default: 0 })
+  const flashMaxKB = await number({ message: '最大 Flash 大小 (KB):', default: 0 })
+  const psramMaxKB = await number({ message: '最大 PSRAM 大小 (KB, 0=无):', default: 0 })
+  const efuse      = await confirm({ message: '是否支持 eFuse?', default: false })
 
   const kconfigValue = await input({ message: 'PLATFORM_CHOICE Kconfig 值（如 T5AI）:' })
 
@@ -85,7 +85,7 @@ export async function runPlatformWizard() {
     arch,
     flashInterface,
     connectivity,
-    memory: { sramBytes, romBytes, flashMaxBytes, psramMaxBytes, efuse },
+    memory: { sramBytes: sramKB * 1024, romBytes: romKB * 1024, flashMaxBytes: flashMaxKB * 1024, psramMaxBytes: psramMaxKB * 1024, efuse },
     kconfig: { PLATFORM_CHOICE: kconfigValue },
     selectedPeripherals,
   }
