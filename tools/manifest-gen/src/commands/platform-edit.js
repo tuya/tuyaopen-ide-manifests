@@ -1,16 +1,15 @@
 import { promises as fs } from 'fs'
 import prettier from 'prettier'
 import chalk from 'chalk'
-import { select, checkbox } from '@inquirer/prompts'
+import { select } from '@inquirer/prompts'
 import {
-  configureBasicInfo,
-  configureConnectivity,
-  configureMemory,
-  configureKconfig,
-  configurePeripherals,
+  editBasicInfo,
+  editConnectivity,
+  editMemory,
+  editKconfig,
+  editPeripherals,
 } from '../generators/platform/wizard.js'
 import { buildPlatform } from '../generators/platform/builder.js'
-import { peripheralModules } from '../generators/registry.js'
 
 export async function runPlatformEdit(filePath) {
   let raw
@@ -79,35 +78,16 @@ export async function runPlatformEdit(filePath) {
       return
     }
 
-    const defaults = toDefaults()
-
     if (section === 'basic') {
-      Object.assign(answers, await configureBasicInfo(defaults))
+      await editBasicInfo(answers)
     } else if (section === 'connectivity') {
-      const { connectivity } = await configureConnectivity(defaults)
-      answers.connectivity = connectivity
+      await editConnectivity(answers)
     } else if (section === 'memory') {
-      const { memory } = await configureMemory(defaults)
-      answers.memory = memory
+      await editMemory(answers)
     } else if (section === 'kconfig') {
-      const { kconfig } = await configureKconfig(defaults)
-      answers.kconfig = kconfig
+      await editKconfig(answers)
     } else if (section === 'peripherals') {
-      const currentKeys = Object.keys(answers.peripheralConfigs)
-      let reconfigureKeys = []
-      if (currentKeys.length > 0) {
-        reconfigureKeys = await checkbox({
-          message: '哪些外设需要重新配置？（未勾选的保留现有配置，新增外设自动配置）',
-          loop: false,
-          choices: currentKeys.map(key => {
-            const mod = peripheralModules.find(m => m.meta.key === key)
-            return { name: `${mod?.meta.label ?? key} (${key})`, value: key, checked: false }
-          }),
-        })
-      }
-      const { selectedPeripherals, peripheralConfigs } = await configurePeripherals(defaults, reconfigureKeys)
-      answers.selectedPeripherals = selectedPeripherals
-      answers.peripheralConfigs   = peripheralConfigs
+      await editPeripherals(answers)
     }
 
     console.log(chalk.gray('✓ 已更新，回到菜单\n'))
