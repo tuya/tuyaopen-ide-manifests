@@ -63,13 +63,20 @@ export async function configure(existing = null) {
     const pinGroups = []
 
     if (types.includes('hw')) {
-      const scl = await number({ message: `I2C[${i}] 硬件 SCL 引脚:`, default: ex?.pinGroups?.[0]?.scl ?? 0 })
-      const sda = await number({ message: `I2C[${i}] 硬件 SDA 引脚:`, default: ex?.pinGroups?.[0]?.sda ?? 0 })
-      pinGroups.push({ scl, sda })
+      const hwCount = await number({
+        message: `I2C[${i}] 硬件引脚组合数（pinmux 可选的 SCL/SDA 组合）:`,
+        default: ex?.pinGroups?.length ?? 1,
+      })
+      for (let g = 0; g < hwCount; g++) {
+        const exG = ex?.pinGroups?.[g]
+        const scl = await number({ message: `I2C[${i}] HW 组合${g} SCL 引脚:`, default: exG?.scl ?? 0 })
+        const sda = await number({ message: `I2C[${i}] HW 组合${g} SDA 引脚:`, default: exG?.sda ?? 0 })
+        pinGroups.push({ scl, sda })
+      }
     }
 
     if (types.includes('sw')) {
-      const swOffset = types.includes('hw') ? 1 : 0
+      const swOffset = pinGroups.length
       const groupCount = await number({
         message: `I2C[${i}] 软件模式引脚组合数（平台已验证的 SCL/SDA 组合）:`,
         default: Math.max(ex?.pinGroups?.length ?? 1, swOffset + 1) - swOffset,
