@@ -10,6 +10,7 @@ export async function editBasicInfo(answers) {
   while (true) {
     const field = await select({
       message: '基本信息 — 选择字段:',
+      loop: false,
       choices: [
         { name: `platformId      ${chalk.gray(answers.platformId ?? '—')}`, value: 'platformId' },
         { name: `variantId       ${chalk.gray(answers.variantId ?? '—')}`, value: 'variantId' },
@@ -30,6 +31,7 @@ export async function editBasicInfo(answers) {
       const defaultArchIsKnown = KNOWN_ARCHES.includes(answers.arch)
       const archChoice = await select({
         message: '处理器架构:',
+        loop: false,
         choices: [
           { value: 'arm-cortex-m33' },
           { value: 'arm-v5' },
@@ -46,6 +48,7 @@ export async function editBasicInfo(answers) {
     } else if (field === 'flashInterface') {
       answers.flashInterface = await select({
         message: 'Flash 接口:',
+        loop: false,
         choices: [{ value: 'qspi' }, { value: 'spi' }],
         default: answers.flashInterface,
       })
@@ -58,6 +61,7 @@ export async function editConnectivity(answers) {
     const c = answers.connectivity
     const field = await select({
       message: '连接方式 — 选择条目:',
+      loop: false,
       choices: [
         { name: `WiFi      ${c?.wifi?.enabled    ? chalk.green(`✓  ${c.wifi.standard}`) : chalk.gray('✗')}`, value: 'wifi' },
         { name: `BLE       ${c?.ble?.enabled     ? chalk.green(`✓  v${c.ble.version}`) : chalk.gray('✗')}`, value: 'ble' },
@@ -72,6 +76,7 @@ export async function editConnectivity(answers) {
       if (enabled) {
         const standard = await select({
           message: 'WiFi 标准:',
+          loop: false,
           choices: [{ value: '802.11b/g/n' }, { value: '802.11b/g/n/ax' }],
           default: c?.wifi?.standard ?? '802.11b/g/n',
         })
@@ -84,6 +89,7 @@ export async function editConnectivity(answers) {
       if (enabled) {
         const version = await select({
           message: 'BLE 版本:',
+          loop: false,
           choices: [{ value: '5.0' }, { value: '5.2' }, { value: '5.4' }],
           default: c?.ble?.version ?? '5.4',
         })
@@ -111,6 +117,7 @@ export async function editMemory(answers) {
 
     const field = await select({
       message: '内存配置 — 选择字段:',
+      loop: false,
       choices: [
         { name: `SRAM        ${chalk.gray(sramKB + ' KB')}`, value: 'sram' },
         { name: `ROM         ${chalk.gray(romKB + ' KB')}`, value: 'rom' },
@@ -139,6 +146,7 @@ export async function editKconfig(answers) {
   while (true) {
     const field = await select({
       message: 'Kconfig — 选择字段:',
+      loop: false,
       choices: [
         { name: `PLATFORM_CHOICE  ${chalk.gray(answers.kconfig?.PLATFORM_CHOICE ?? '—')}`, value: 'choice' },
         { name: chalk.gray('← 返回'), value: 'back' },
@@ -162,7 +170,7 @@ export async function editPeripherals(answers) {
     })
     choices.push({ name: chalk.gray('← 返回'), value: 'back' })
 
-    const key = await select({ message: '外设配置 — 选择外设:', choices })
+    const key = await select({ message: '外设配置 — 选择外设:', loop: false, choices })
     if (key === 'back') break
 
     const mod = peripheralModules.find(m => m.meta.key === key)
@@ -187,6 +195,7 @@ export async function editPeripherals(answers) {
     } else {
       const action = await select({
         message: `${mod.meta.label}:`,
+        loop: false,
         choices: [
           { name: '重新配置', value: 'configure' },
           { name: chalk.red('禁用'), value: 'disable' },
@@ -222,6 +231,7 @@ export async function configureBasicInfo(defaults = {}) {
   const defaultArchIsKnown = KNOWN_ARCHES.includes(defaults.arch)
   const archChoice = await select({
     message: '处理器架构:',
+    loop: false,
     choices: [
       { value: 'arm-cortex-m33' },
       { value: 'arm-v5' },
@@ -238,6 +248,7 @@ export async function configureBasicInfo(defaults = {}) {
 
   const flashInterface = await select({
     message: 'Flash 接口:',
+    loop: false,
     choices: [{ value: 'qspi' }, { value: 'spi' }],
     default: defaults.flashInterface,
   })
@@ -262,6 +273,7 @@ export async function configureConnectivity(defaults = {}) {
   if (connChoices.includes('wifi')) {
     wifiStandard = await select({
       message: 'WiFi 标准:',
+      loop: false,
       choices: [{ value: '802.11b/g/n' }, { value: '802.11b/g/n/ax' }],
       default: wifiStandard,
     })
@@ -271,6 +283,7 @@ export async function configureConnectivity(defaults = {}) {
   if (connChoices.includes('ble')) {
     bleVersion = await select({
       message: 'BLE 版本:',
+      loop: false,
       choices: [{ value: '5.0' }, { value: '5.2' }, { value: '5.4' }],
       default: bleVersion,
     })

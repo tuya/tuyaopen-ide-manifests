@@ -60,6 +60,7 @@ export async function runPlatformEdit(filePath) {
   while (true) {
     const section = await select({
       message: '选择要编辑的部分:',
+      loop: false,
       choices: [
         { name: '基本信息（platformId / name / arch / flashInterface）', value: 'basic' },
         { name: '连接方式', value: 'connectivity' },
