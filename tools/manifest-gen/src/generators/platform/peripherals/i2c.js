@@ -1,4 +1,4 @@
-import { number, confirm, select } from '@inquirer/prompts'
+import { number, confirm, checkbox } from '@inquirer/prompts'
 
 export const meta = {
   key: 'i2c',
@@ -50,33 +50,39 @@ export async function configure(existing = null) {
   const ports = []
   for (let i = 0; i < data.count; i++) {
     const ex = data.spec.ports[i]
-    const type = await select({
-      message: `I2C[${i}] 类型:`,
-      choices: [{ value: 'hw' }, { value: 'sw' }],
-      default: ex?.type?.[0] ?? 'hw',
+    const types = await checkbox({
+      message: `I2C[${i}] 支持的模式（可多选）:`,
+      loop: false,
+      choices: [
+        { name: 'hw（硬件 I2C）', value: 'hw', checked: ex?.type?.includes('hw') ?? true },
+        { name: 'sw（软件模拟，任意引脚）', value: 'sw', checked: ex?.type?.includes('sw') ?? false },
+      ],
     })
     const irq = await confirm({ message: `I2C[${i}] 支持 IRQ?`, default: ex?.irq ?? false })
 
-    let pinGroups
-    if (type === 'hw') {
-      const scl = await number({ message: `I2C[${i}] SCL 引脚:`, default: ex?.pinGroups?.[0]?.scl ?? 0 })
-      const sda = await number({ message: `I2C[${i}] SDA 引脚:`, default: ex?.pinGroups?.[0]?.sda ?? 0 })
-      pinGroups = [{ scl, sda }]
-    } else {
-      // sw: any GPIO can be used — collect multiple validated pin combinations
+    const pinGroups = []
+
+    if (types.includes('hw')) {
+      const scl = await number({ message: `I2C[${i}] 硬件 SCL 引脚:`, default: ex?.pinGroups?.[0]?.scl ?? 0 })
+      const sda = await number({ message: `I2C[${i}] 硬件 SDA 引脚:`, default: ex?.pinGroups?.[0]?.sda ?? 0 })
+      pinGroups.push({ scl, sda })
+    }
+
+    if (types.includes('sw')) {
+      const swOffset = types.includes('hw') ? 1 : 0
       const groupCount = await number({
-        message: `I2C[${i}] (SW) 引脚组合数（平台上已验证的 SCL/SDA 组合）:`,
-        default: ex?.pinGroups?.length ?? 1,
+        message: `I2C[${i}] 软件模式引脚组合数（平台已验证的 SCL/SDA 组合）:`,
+        default: Math.max(ex?.pinGroups?.length ?? 1, swOffset + 1) - swOffset,
       })
-      pinGroups = []
       for (let g = 0; g < groupCount; g++) {
-        const scl = await number({ message: `I2C[${i}] 组合${g} SCL 引脚:`, default: ex?.pinGroups?.[g]?.scl ?? 0 })
-        const sda = await number({ message: `I2C[${i}] 组合${g} SDA 引脚:`, default: ex?.pinGroups?.[g]?.sda ?? 0 })
+        const exG = ex?.pinGroups?.[swOffset + g]
+        const scl = await number({ message: `I2C[${i}] SW 组合${g} SCL 引脚:`, default: exG?.scl ?? 0 })
+        const sda = await number({ message: `I2C[${i}] SW 组合${g} SDA 引脚:`, default: exG?.sda ?? 0 })
         pinGroups.push({ scl, sda })
       }
     }
 
-    ports.push({ id: i, type: [type], irq, pinGroups })
+    ports.push({ id: i, type: types, irq, pinGroups })
   }
   data.spec.ports = ports
   return data
