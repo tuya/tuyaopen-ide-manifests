@@ -64,18 +64,46 @@ export async function configure(existing = null) {
   data.count = await number({ message: 'GPIO 数量:', default: data.count })
 
   const pinsStr = await input({
-    message: 'GPIO 引脚号列表（逗号分隔，如 0,1,2,3）:',
-    default: data.spec.pins.join(', '),
+    message: 'GPIO 引脚号列表（支持范围，如 0-5,8-10,15,20-25）:',
+    default: pinsToRangeStr(data.spec.pins),
   })
-  data.spec.pins = pinsStr.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
+  data.spec.pins = parseRangePins(pinsStr)
 
   const irqStr = await input({
-    message: 'IRQ 支持引脚列表（逗号分隔，留空=同 pins）:',
-    default: data.spec.irq.pins.join(', '),
+    message: 'IRQ 支持引脚列表（格式同上，留空=同 pins）:',
+    default: pinsToRangeStr(data.spec.irq.pins),
   })
-  data.spec.irq.pins = irqStr.trim()
-    ? irqStr.split(',').map(s => parseInt(s.trim(), 10)).filter(n => !isNaN(n))
-    : [...data.spec.pins]
+  data.spec.irq.pins = irqStr.trim() ? parseRangePins(irqStr) : [...data.spec.pins]
 
   return data
+}
+
+function parseRangePins(str) {
+  const pins = []
+  for (const seg of str.split(',')) {
+    const s = seg.trim()
+    if (!s) continue
+    const m = s.match(/^(\d+)-(\d+)$/)
+    if (m) {
+      const [from, to] = [parseInt(m[1], 10), parseInt(m[2], 10)]
+      for (let i = from; i <= to; i++) pins.push(i)
+    } else {
+      const n = parseInt(s, 10)
+      if (!isNaN(n)) pins.push(n)
+    }
+  }
+  return pins
+}
+
+function pinsToRangeStr(pins) {
+  if (!pins?.length) return ''
+  const sorted = [...new Set(pins)].sort((a, b) => a - b)
+  const parts = []
+  let start = sorted[0], end = sorted[0]
+  for (let i = 1; i <= sorted.length; i++) {
+    if (sorted[i] === end + 1) { end = sorted[i]; continue }
+    parts.push(start === end ? `${start}` : `${start}-${end}`)
+    start = end = sorted[i]
+  }
+  return parts.join(', ')
 }
