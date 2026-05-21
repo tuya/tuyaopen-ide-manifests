@@ -1,3 +1,5 @@
+import { checkbox } from '@inquirer/prompts'
+
 export const meta = {
   key: 'dma2d',
   label: 'DMA2D',
@@ -23,4 +25,17 @@ export function validate(data, path) {
   if (!Array.isArray(data.spec?.formats))
     errors.push(`${path}.spec.formats — 期望 array`)
   return errors
+}
+
+const ALL_FORMATS = ['TUYA_FRAME_FMT_YUV422', 'TUYA_FRAME_FMT_RGB565', 'TUYA_FRAME_FMT_RGB888']
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+
+  data.spec.formats = await checkbox({
+    message: 'DMA2D 支持的像素格式:',
+    loop: false,
+    choices: ALL_FORMATS.map(f => ({ name: f, value: f, checked: data.spec.formats.includes(f) })),
+  })
+  return data
 }

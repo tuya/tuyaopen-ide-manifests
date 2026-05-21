@@ -1,3 +1,5 @@
+import { number } from '@inquirer/prompts'
+
 export const meta = {
   key: 'wdt', label: 'Watchdog',
   enableMacro: 'ENABLE_WATCHDOG', tklHeader: 'tkl_watchdog.h', idPrefix: null,
@@ -13,4 +15,10 @@ export function validate(data, path) {
   if (typeof data.count !== 'number')
     errors.push(`${path}.count — 期望 number，实际 ${typeof data.count}`)
   return errors
+}
+
+export async function configure(existing = null) {
+  const data = existing ? JSON.parse(JSON.stringify(existing)) : scaffold()
+  data.count = await number({ message: 'Watchdog 数量:', default: data.count })
+  return data
 }
