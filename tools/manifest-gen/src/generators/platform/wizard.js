@@ -28,6 +28,7 @@ export async function runPlatformWizard() {
 
   const connChoices = await checkbox({
     message: '选择连接方式:',
+    loop: false,
     choices: [
       { name: 'WiFi',     value: 'wifi',     checked: true },
       { name: 'BLE',      value: 'ble',      checked: true },
@@ -75,6 +76,7 @@ export async function runPlatformWizard() {
   console.log('\n--- 外设选择 ---')
   const selectedPeripherals = await checkbox({
     message: '选择本平台支持的外设（空格选择，回车确认）:',
+    loop: false,
     choices: peripheralModules.map(m => ({ name: `${m.meta.label} (${m.meta.key})`, value: m.meta.key, checked: true })),
   })
 
