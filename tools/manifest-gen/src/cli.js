@@ -1,4 +1,6 @@
 import { Command } from 'commander'
+import { registerRegistryCommands } from './commands/registry.js'
+import { registerSkillsCommands } from './commands/skills.js'
 
 const program = new Command()
 program
@@ -48,5 +50,8 @@ platform
     const { runPlatformEdit } = await import('./commands/platform-edit.js')
     await runPlatformEdit(file)
   })
+
+registerRegistryCommands(program)
+registerSkillsCommands(program)
 
 program.parse()

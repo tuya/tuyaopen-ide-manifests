@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "id": "tuya-t5ai-pocket",
+  "name": { "en": "Tuya T5AI Pocket", "zh-CN": "涂鸦 T5AI Pocket 板" },
+  "summary": {
+    "en": "Compact T5AI handheld board with audio AEC, ST7305 SPI display, GC2145 camera, BMI270 IMU, AXP2101 PMIC, joystick, and cellular",
+    "zh-CN": "搭载音频 AEC、ST7305 SPI 屏、GC2145 摄像头、BMI270 IMU、AXP2101 电源管理、摇杆与蜂窝模块的 T5AI 掌机板"
+  },
+  "brand": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "manufacturer": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "platformId": "t5ai",
+  "variantId": "t5ai",
+
+  "peripheralPatterns": {
+
+    "audio": [
+      {
+        "model": null,
+        "name": { "en": "Audio", "zh-CN": "音频" },
+        "interface": "INTERNAL",
+        "pins": {
+          "INTERNAL": [
+            { "role": "spk_en",  "gpio": 42 },
+            { "role": "mux_sel", "gpio": 23 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "AEC enabled. mux_sel: low = mic to MIC2, high = speaker loopback.",
+          "zh-CN": "AEC 已启用。mux_sel：低电平接麦克风，高电平接扬声器回环。"
+        }
+      }
+    ],
+
+    "display": [
+      {
+        "model": "ST7305",
+        "name": { "en": "Monochrome Display", "zh-CN": "单色屏" },
+        "resolution": "168x384",
+        "interface": "SPI",
+        "pins": {
+          "SPI": [
+            { "role": "sck",  "gpio": 44 },
+            { "role": "mosi", "gpio": 46 },
+            { "role": "cs",   "gpio": 45 },
+            { "role": "dc",   "gpio": 47 },
+            { "role": "rst",  "gpio": 43 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Mono. SPI0 pinmux group 2 — MISO(47) repurposed as DC. LVGL supported.",
+          "zh-CN": "单色屏。SPI0 引脚复用组 2，MISO(47) 复用为 DC。支持 LVGL。"
+        }
+      }
+    ],
+
+    "camera": [
+      {
+        "model": "GC2145",
+        "name": { "en": "Camera", "zh-CN": "摄像头" },
+        "interface": "DVP",
+        "pins": {
+          "DVP": [
+            { "role": "i2c_scl", "gpio": 20 },
+            { "role": "i2c_sda", "gpio": 21 },
+            { "role": "mclk",    "gpio": 27 },
+            { "role": "pclk",    "gpio": 29 },
+            { "role": "hsync",   "gpio": 30 },
+            { "role": "vsync",   "gpio": 31 },
+            { "role": "d0",      "gpio": 32 },
+            { "role": "d1",      "gpio": 33 },
+            { "role": "d2",      "gpio": 34 },
+            { "role": "d3",      "gpio": 35 },
+            { "role": "d4",      "gpio": 36 },
+            { "role": "d5",      "gpio": 37 },
+            { "role": "d6",      "gpio": 38 },
+            { "role": "d7",      "gpio": 39 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "I2C0 shared with IMU and PMIC. Power and reset managed by AXP2101 LDOs.",
+          "zh-CN": "I2C0 与 IMU 和 PMIC 共享。电源和复位由 AXP2101 LDO 管理。"
+        }
+      }
+    ],
+
+    "imu": [
+      {
+        "model": "BMI270",
+        "name": { "en": "6-Axis IMU", "zh-CN": "六轴 IMU" },
+        "axes": 6,
+        "interface": "I2C",
+        "pins": {
+          "I2C": [
+            { "role": "scl", "gpio": 20 },
+            { "role": "sda", "gpio": 21 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "I2C0 shared with camera and PMIC.",
+          "zh-CN": "I2C0 与摄像头和 PMIC 共享。"
+        }
+      }
+    ],
+
+    "pmic": [
+      {
+        "model": "AXP2101",
+        "name": { "en": "Power Management", "zh-CN": "电源管理" },
+        "interface": "I2C",
+        "pins": {
+          "I2C": [
+            { "role": "scl", "gpio": 20 },
+            { "role": "sda", "gpio": 21 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Must init before all other peripherals. Manages battery, MCU 3V3, camera rails, SD card 3V3.",
+          "zh-CN": "须在所有外设之前初始化。管理电池、MCU 3V3、摄像头供电及 SD 卡 3V3。"
+        }
+      }
+    ],
+
+    "joystick": [
+      {
+        "name": { "en": "Joystick", "zh-CN": "摇杆" },
+        "count": 1,
+        "interface": "ADC",
+        "pins": {
+          "ADC": [
+            { "role": "x",   "gpio": 13 },
+            { "role": "y",   "gpio": 12 },
+            { "role": "btn", "gpio": 9  }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "X on ADC0 ch15, Y on ADC0 ch14. btn active low.",
+          "zh-CN": "X 轴 ADC0 通道 15，Y 轴 ADC0 通道 14。按键低有效。"
+        }
+      }
+    ],
+
+    "led": [
+      {
+        "model": null,
+        "name": { "en": "Indicator LED", "zh-CN": "指示灯" },
+        "count": 1,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "led", "gpio": 28 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active high.",
+          "zh-CN": "高有效。"
+        }
+      }
+    ],
+
+    "button": [
+      {
+        "name": { "en": "User Buttons", "zh-CN": "用户按键" },
+        "count": 4,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "btn_0", "gpio": 17 },
+            { "role": "btn_1", "gpio": 18 },
+            { "role": "btn_2", "gpio": 19 },
+            { "role": "btn_3", "gpio": 26 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      }
+    ]
+
+  },
+
+  "links": {
+    "schematic": null,
+    "datasheet": null,
+    "productPage": null
+  },
+  "tags": ["wifi", "ble", "edge-ai", "audio", "display", "camera", "imu", "pmic", "cellular"]
+}

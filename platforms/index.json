@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "domain": "platforms",
+  "publishedAt": "2026-05-13T00:00:00Z",
+  "items": [
+    {
+      "id": "t5ai",
+      "name": { "en": "Tuya T5AI", "zh-CN": "涂鸦 T5AI" },
+      "summary": {
+        "en": "Tuya T5AI platform — ARM Cortex-M33 with Wi-Fi 6 / BLE 5.4 for edge-AI applications.",
+        "zh-CN": "涂鸦 T5AI 平台 — ARM Cortex-M33，支持 Wi-Fi 6 / BLE 5.4，面向端侧 AI 应用。"
+      },
+      "variantRefs": [
+        { "id": "t5ai", "detailUrl": "platforms/t5ai/t5ai.json" }
+      ]
+    }
+  ]
+}

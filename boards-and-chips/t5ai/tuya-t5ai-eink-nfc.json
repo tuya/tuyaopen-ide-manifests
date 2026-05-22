@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "id": "tuya-t5ai-eink-nfc",
+  "name": { "en": "Tuya T5AI E-Ink NFC", "zh-CN": "涂鸦 T5AI 墨水屏 NFC 板" },
+  "summary": {
+    "en": "T5AI board with UC8276 e-ink display, FT6336 capacitive touch, audio AEC, and 6 user buttons",
+    "zh-CN": "搭载 UC8276 墨水屏、FT6336 电容触控、音频 AEC 和 6 颗用户按键的 T5AI 开发板"
+  },
+  "brand": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "manufacturer": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "platformId": "t5ai",
+  "variantId": "t5ai",
+
+  "peripheralPatterns": {
+
+    "audio": [
+      {
+        "model": null,
+        "name": { "en": "Audio", "zh-CN": "音频" },
+        "interface": "INTERNAL",
+        "pins": {
+          "INTERNAL": [
+            { "role": "spk_en", "gpio": 42 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "AEC enabled by default.",
+          "zh-CN": "默认启用 AEC。"
+        }
+      }
+    ],
+
+    "display": [
+      {
+        "model": "UC8276",
+        "name": { "en": "E-Ink Display", "zh-CN": "墨水屏" },
+        "resolution": "400x300",
+        "interface": "SPI",
+        "pins": {
+          "SPI": [
+            { "role": "sck",  "gpio": 44 },
+            { "role": "mosi", "gpio": 46 },
+            { "role": "cs",   "gpio": 45 },
+            { "role": "dc",   "gpio": 47 },
+            { "role": "rst",  "gpio": 43 },
+            { "role": "busy", "gpio": 13 },
+            { "role": "bl",   "gpio": 33 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "SPI0 pinmux group 2 — MISO(47) repurposed as DC. Front light via PWM9. Refresh ~1–2 s.",
+          "zh-CN": "SPI0 引脚复用组 2，MISO(47) 复用为 DC。前置灯 PWM9。刷新约 1–2 秒。"
+        }
+      }
+    ],
+
+    "touchpad": [
+      {
+        "model": "FT6336",
+        "name": { "en": "Capacitive Touch", "zh-CN": "电容触控" },
+        "interface": "I2C",
+        "pins": {
+          "I2C": [
+            { "role": "scl", "gpio": 20 },
+            { "role": "sda", "gpio": 21 },
+            { "role": "rst", "gpio": 37 },
+            { "role": "int", "gpio": 36 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Overlaid on e-ink. Up to 2-point touch.",
+          "zh-CN": "覆盖在墨水屏上，最多 2 点触控。"
+        }
+      }
+    ],
+
+    "led": [
+      {
+        "model": null,
+        "name": { "en": "Indicator LED", "zh-CN": "指示灯" },
+        "count": 1,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "led", "gpio": 9 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active high.",
+          "zh-CN": "高有效。"
+        }
+      }
+    ],
+
+    "button": [
+      {
+        "name": { "en": "User Buttons", "zh-CN": "用户按键" },
+        "count": 6,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "up",     "gpio": 22 },
+            { "role": "down",   "gpio": 23 },
+            { "role": "enter",  "gpio": 24 },
+            { "role": "return", "gpio": 25 },
+            { "role": "left",   "gpio": 26 },
+            { "role": "right",  "gpio": 28 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      }
+    ]
+
+  },
+
+  "links": {
+    "schematic": null,
+    "datasheet": null,
+    "productPage": null
+  },
+  "tags": ["wifi", "ble", "edge-ai", "audio", "display", "touch"]
+}

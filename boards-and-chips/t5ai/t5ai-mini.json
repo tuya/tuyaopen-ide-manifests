@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "id": "t5ai-mini",
+  "name": { "en": "T5AI Mini", "zh-CN": "T5AI Mini 开发板" },
+  "summary": {
+    "en": "Minimal T5AI board with audio AEC and optional SPI display expansion module",
+    "zh-CN": "搭载音频 AEC 的 T5AI Mini 开发板，支持可选 SPI 显示扩展模块"
+  },
+  "brand": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "manufacturer": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "platformId": "t5ai",
+  "variantId": "t5ai",
+
+  "peripheralPatterns": {
+
+    "audio": [
+      {
+        "model": null,
+        "name": { "en": "Audio", "zh-CN": "音频" },
+        "interface": "INTERNAL",
+        "pins": {
+          "INTERNAL": [
+            { "role": "spk_en", "gpio": 27 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "AEC enabled by default.",
+          "zh-CN": "默认启用 AEC。"
+        }
+      }
+    ],
+
+    "display": [
+      {
+        "model": "ST7789",
+        "name": { "en": "ST7789 LCD Module", "zh-CN": "ST7789 LCD 模块" },
+        "resolution": "240x240",
+        "interface": "SPI",
+        "pins": {
+          "SPI": [
+            { "role": "sck",  "gpio": 22 },
+            { "role": "mosi", "gpio": 24 },
+            { "role": "cs",   "gpio": 23 },
+            { "role": "dc",   "gpio": 17 },
+            { "role": "rst",  "gpio": 18 },
+            { "role": "bl",   "gpio": 25 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "T5AI_MINI_EX_MODULE_13565LCD": 1 },
+        "note": {
+          "en": "BL active high.",
+          "zh-CN": "背光高有效。"
+        }
+      },
+      {
+        "model": "ST7735S",
+        "name": { "en": "ST7735S LCD Module", "zh-CN": "ST7735S LCD 模块" },
+        "resolution": "160x80",
+        "interface": "SPI",
+        "pins": {
+          "SPI": [
+            { "role": "sck",  "gpio": 22 },
+            { "role": "mosi", "gpio": 24 },
+            { "role": "cs",   "gpio": 23 },
+            { "role": "dc",   "gpio": 17 },
+            { "role": "rst",  "gpio": 18 },
+            { "role": "bl",   "gpio": 25 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "T5AI_MINI_EX_MODULE_ST7735S_XLT": 1 },
+        "note": {
+          "en": "BL active high.",
+          "zh-CN": "背光高有效。"
+        }
+      }
+    ]
+
+  },
+
+  "links": {
+    "schematic": null,
+    "datasheet": null,
+    "productPage": null
+  },
+  "tags": ["wifi", "ble", "edge-ai", "audio"]
+}

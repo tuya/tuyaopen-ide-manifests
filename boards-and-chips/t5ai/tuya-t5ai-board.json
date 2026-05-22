@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "id": "tuya-t5ai-board",
+  "name": { "en": "Tuya T5AI Board", "zh-CN": "涂鸦 T5AI 评估板" },
+  "summary": {
+    "en": "Tuya T5AI general-purpose board with audio codec, LED, and button; optional display, camera, and printer expansion via Kconfig",
+    "zh-CN": "涂鸦 T5AI 通用评估板，配备音频编解码器、LED 和按键，支持可选显示屏、摄像头及打印机扩展"
+  },
+  "brand": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "manufacturer": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "platformId": "t5ai",
+  "variantId": "t5ai",
+
+  "peripheralPatterns": {
+
+    "audio": [
+      {
+        "model": null,
+        "name": { "en": "Audio", "zh-CN": "音频" },
+        "interface": "INTERNAL",
+        "pins": {
+          "INTERNAL": [
+            { "role": "spk_en", "gpio": 28 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "AEC available on v1.0.2+.",
+          "zh-CN": "AEC 在 v1.0.2+ 硬件上可用。"
+        }
+      }
+    ],
+
+    "display": [
+      {
+        "model": "ILI9488",
+        "name": { "en": "3.5-inch LCD Display", "zh-CN": "3.5 寸 LCD 屏" },
+        "resolution": "480x320",
+        "interface": "RGB",
+        "pins": {
+          "RGB": [
+            { "role": "pclk",  "gpio": 14 },
+            { "role": "de",    "gpio": 16 },
+            { "role": "hsync", "gpio": 17 },
+            { "role": "vsync", "gpio": 18 },
+            { "role": "r0",    "gpio": 22 },
+            { "role": "r1",    "gpio": 23 },
+            { "role": "r2",    "gpio": 48 },
+            { "role": "r3",    "gpio": 49 },
+            { "role": "r4",    "gpio": 50 },
+            { "role": "g0",    "gpio": 26 },
+            { "role": "g1",    "gpio": 40 },
+            { "role": "g2",    "gpio": 41 },
+            { "role": "g3",    "gpio": 42 },
+            { "role": "g4",    "gpio": 51 },
+            { "role": "g5",    "gpio": 52 },
+            { "role": "b0",    "gpio": 46 },
+            { "role": "b1",    "gpio": 47 },
+            { "role": "b2",    "gpio": 53 },
+            { "role": "b3",    "gpio": 54 },
+            { "role": "b4",    "gpio": 55 }
+          ],
+          "SW_SPI": [
+            { "role": "sck",  "gpio": 50 },
+            { "role": "mosi", "gpio": 49 },
+            { "role": "cs",   "gpio": 48 },
+            { "role": "rst",  "gpio": 53 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "TUYA_T5AI_BOARD_LCD_35565": 1 },
+        "note": {
+          "en": "SW SPI for init only; RGB data pins are platform-fixed.",
+          "zh-CN": "SW SPI 仅用于初始化，RGB 数据脚为平台固定引脚。"
+        }
+      },
+      {
+        "model": "ST7735S",
+        "name": { "en": "Dual Eye Screen (Mirrored)", "zh-CN": "双眼屏-同显" },
+        "resolution": "128x128",
+        "interface": "SPI",
+        "group": "lcd-eyes-a",
+        "role": "left",
+        "pins": {
+          "SPI": [
+            { "role": "sck", "gpio": 22 },
+            { "role": "cs",  "gpio": 23 },
+            { "role": "dc",  "gpio": 7  },
+            { "role": "rst", "gpio": 6  },
+            { "role": "bl",  "gpio": 25 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "TUYA_T5AI_BOARD_LCD_EYES": 1, "ENABLE_EYES_TWO_LCD": 0 },
+        "note": {
+          "en": "Both screens share all pins — always show identical content.",
+          "zh-CN": "两块屏共享所有引脚，始终显示相同内容。"
+        }
+      },
+      {
+        "model": "ST7735S",
+        "name": { "en": "Dual Eye Screen (Mirrored)", "zh-CN": "双眼屏-同显" },
+        "resolution": "128x128",
+        "interface": "SPI",
+        "group": "lcd-eyes-a",
+        "role": "right",
+        "pins": {
+          "SPI": [
+            { "role": "sck", "gpio": 22 },
+            { "role": "cs",  "gpio": 23 },
+            { "role": "dc",  "gpio": 7  },
+            { "role": "rst", "gpio": 6  },
+            { "role": "bl",  "gpio": 25 }
+          ]
+        },
+        "optional": true,
+        "kconfig": null,
+        "note": null
+      },
+      {
+        "model": "ST7735S",
+        "name": { "en": "Dual Eye Screen (Independent)", "zh-CN": "双眼屏-异显" },
+        "resolution": "128x128",
+        "interface": "SPI",
+        "group": "lcd-eyes-b",
+        "role": "left",
+        "pins": {
+          "SPI": [
+            { "role": "sck", "gpio": 22 },
+            { "role": "cs",  "gpio": 23 },
+            { "role": "dc",  "gpio": 7  },
+            { "role": "rst", "gpio": 6  },
+            { "role": "bl",  "gpio": 25 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "TUYA_T5AI_BOARD_LCD_EYES": 1, "ENABLE_EYES_TWO_LCD": 1 },
+        "note": null
+      },
+      {
+        "model": "ST7735S",
+        "name": { "en": "Dual Eye Screen (Independent)", "zh-CN": "双眼屏-异显" },
+        "resolution": "128x128",
+        "interface": "SPI",
+        "group": "lcd-eyes-b",
+        "role": "right",
+        "pins": {
+          "SPI": [
+            { "role": "sck", "gpio": 2  },
+            { "role": "cs",  "gpio": 3  },
+            { "role": "dc",  "gpio": 5  },
+            { "role": "rst", "gpio": 45 },
+            { "role": "bl",  "gpio": 25 }
+          ]
+        },
+        "optional": true,
+        "kconfig": null,
+        "note": null
+      },
+      {
+        "model": "SSD1306",
+        "name": { "en": "0.96-inch OLED", "zh-CN": "0.96 寸 OLED 屏" },
+        "resolution": "128x64",
+        "interface": "I2C",
+        "pins": {
+          "I2C": [
+            { "role": "scl", "gpio": 20 },
+            { "role": "sda", "gpio": 21 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "TUYA_T5AI_BOARD_LCD_096_OLED": 1 },
+        "note": null
+      }
+    ],
+
+    "camera": [
+      {
+        "model": "GC2145",
+        "name": { "en": "Camera", "zh-CN": "摄像头" },
+        "interface": "DVP",
+        "pins": {
+          "DVP": [
+            { "role": "i2c_scl", "gpio": 13 },
+            { "role": "i2c_sda", "gpio": 15 },
+            { "role": "rst",     "gpio": 51 },
+            { "role": "mclk",    "gpio": 27 },
+            { "role": "pclk",    "gpio": 29 },
+            { "role": "hsync",   "gpio": 30 },
+            { "role": "vsync",   "gpio": 31 },
+            { "role": "d0",      "gpio": 32 },
+            { "role": "d1",      "gpio": 33 },
+            { "role": "d2",      "gpio": 34 },
+            { "role": "d3",      "gpio": 35 },
+            { "role": "d4",      "gpio": 36 },
+            { "role": "d5",      "gpio": 37 },
+            { "role": "d6",      "gpio": 38 },
+            { "role": "d7",      "gpio": 39 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "TUYA_T5AI_BOARD_CAMERA": 1 },
+        "note": null
+      }
+    ],
+
+    "printer": [
+      {
+        "model": "DP48A",
+        "name": { "en": "Thermal Printer", "zh-CN": "热敏打印机" },
+        "interface": "UART",
+        "pins": {
+          "UART": [
+            { "role": "tx", "gpio": 11 },
+            { "role": "rx", "gpio": 10 }
+          ]
+        },
+        "optional": true,
+        "kconfig": { "TUYA_T5AI_BOARD_PRINTER_DP48": 1 },
+        "note": {
+          "en": "9600 bps.",
+          "zh-CN": "9600 bps。"
+        }
+      }
+    ],
+
+    "led": [
+      {
+        "model": null,
+        "name": { "en": "Indicator LED", "zh-CN": "指示灯" },
+        "count": 1,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "led", "gpio": 1 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active high.",
+          "zh-CN": "高有效。"
+        }
+      }
+    ],
+
+    "button": [
+      {
+        "name": { "en": "User Button", "zh-CN": "用户按键" },
+        "count": 1,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "btn", "gpio": 12 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      }
+    ]
+
+  },
+
+  "links": {
+    "schematic": null,
+    "datasheet": null,
+    "productPage": null
+  },
+  "tags": ["wifi", "ble", "edge-ai", "audio"]
+}

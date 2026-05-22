@@ -3,29 +3,33 @@
 ## 1. Find the right category
 
 ```bash
-# Flat list of AI-enabled standard categories with breadcrumb paths
+# Flat list of all leaf categories with breadcrumb paths
 tuya-devplat-cli product category-tree --type standard --format json
 
-# Narrow by keyword
+# Narrow by keyword (recommended — the full list is large)
 tuya-devplat-cli product category-tree --type standard --keyword "灯" --format json
 ```
 
-Each leaf entry returns:
-- `categoryCode` — **front-end category code** for `create-common` (e.g. `wf_ble_dj`)
-- `id` — category node ID
-- `path` — breadcrumb like `电工 > 照明 > 灯具`
+Returns a flat array. Key fields per entry:
+- `categoryCode` — **sub-category code** (e.g. `kg`, `dj`)
+- `categoryName` — display name in Chinese
+- `path` — breadcrumb like `电工 > 开关`
 
-## 2. Get solutions for the category
+> **Note:** `create-common` requires a **front-end category code** (e.g. `wf_ble_dj`) which
+> combines a communication-type prefix with the sub-category code.
+> `category-tree` returns only the sub-category code portion (`dj`).
+> Obtain the full front-end code from: `product detail --id <existingPid>` → `categoryCode` field,
+> or construct it as `<commPrefix>_<subCode>` (e.g. WiFi+BLE prefix = `wf_ble_`, giving `wf_ble_dj`).
 
-**Common mode** (recommended):
+## 2. Get the solution ID
+
+`solution-list` currently returns empty results for all category codes — use the Tuya Developer
+Platform web UI (`iot.tuya.com`) to find a valid `solutionId` for your category, or copy the
+`solutionId` from an existing product via `product detail --id <pid>`.
+
 ```bash
-tuya-devplat-cli product solution-list --category-code <frontEndCategoryCode> --format json
-```
-
-**Custom mode** (needs explicit hardware solution + communication type):
-```bash
-tuya-devplat-cli product custom-list --category-code <subCategoryCode> --format json
-tuya-devplat-cli product communication-list --docking-group-id <id> --format json
+# Inspect an existing product to borrow its IDs
+tuya-devplat-cli product detail --id <existingPid> --format json
 ```
 
 ## 3. Create the product
@@ -51,8 +55,8 @@ tuya-devplat-cli product create-common \
 ```bash
 tuya-devplat-cli product create-custom \
   --name "My Device" \
-  --category-code dj \
-  --solution-id 456 \
+  --category-code qt \
+  --solution-id 1243004929182797887 \
   --communication-type 1025 \
   --project-id $PROJECT_ID \
   --dry-run --format json
@@ -83,4 +87,3 @@ tuya-devplat-cli product detail --id <pid> --format json
 ## Next steps after creation
 
 1. Add DPs — a new product has none by default. See `dp-operations.md`.
-2. Attach a panel or release the product. See `panel-release.md`.

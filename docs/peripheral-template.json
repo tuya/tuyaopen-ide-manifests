@@ -1,0 +1,65 @@
+{
+  "_version": 1,
+  "_description": "Peripheral entry schema templates for TuyaOpen platform variant JSON",
+
+  "patterns": {
+
+    "A_countOnly": {
+      "_use": "No user-configurable pins; count is the only meaningful info",
+      "_examples": ["wdt", "rtc", "irda", "smartCard", "lin", "ethernet", "dma2d"],
+      "<peripheralName>": "<number>"
+    },
+
+    "B_portArray": {
+      "_use": "Multiple numbered instances, each with its own pin assignment",
+      "_examples": ["uart", "i2c", "spi", "qspi"],
+      "<peripheralName>": [
+        {
+          "id": "<string: TKL constant, e.g. TUYA_UART_NUM_0>",
+          "pins": { "<signal>": "<pin>" },
+          "note": "<optional: reserved ports, limitations>"
+        },
+        {
+          "id": "<string: TKL constant>",
+          "pinGroups": [
+            { "<signal>": "<pin>" },
+            { "<signal>": "<pin>" }
+          ],
+          "note": "Call tkl_io_pinmux_config before init to select group"
+        }
+      ]
+    },
+
+    "C_channelMap": {
+      "_use": "Many indexed channels, each maps to one pin or a small fixed set of pins",
+      "_examples": ["pwm", "adc"],
+      "<peripheralName>": {
+        "idPrefix": "TUYA_XXX_NUM_",
+        "<specField>": "<value>",
+        "channels": [
+          { "id": "TUYA_XXX_NUM_0", "pin": "<pin>" }
+        ]
+      }
+    },
+
+    "D_pinBlock": {
+      "_use": "Sequential bank where all instances share a pin-range and a prefix-based ID",
+      "_examples": ["gpio"],
+      "<peripheralName>": {
+        "count": "<number>",
+        "pins": "<range notation, e.g. P0-P55>",
+        "idPrefix": "TUYA_XXX_NUM_"
+      }
+    }
+  },
+
+  "fieldConventions": {
+    "id":        "Full TKL constant string (e.g. TUYA_UART_NUM_0)",
+    "idPrefix":  "TKL constant prefix for sequentially numbered instances (e.g. TUYA_GPIO_NUM_)",
+    "pins":      "Object — single fixed pin group { signal: pin }",
+    "pinGroups": "Array of pin-group objects — selectable alternates (mutually exclusive)",
+    "pin":       "String — single-pin entry used in channelMap channels",
+    "note":      "Human-readable caveat: reserved ports, init requirements, production restrictions",
+    "count":     "Integer — number of instances"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "demos",
-  "publishedAt": "2026-05-12T00:00:00Z",
+  "publishedAt": "2026-05-13T00:00:00Z",
   "items": [
     {
       "id": "switch-3-iot",
@@ -11,7 +11,7 @@
         "zh-CN": "三路智能开关 + 涂鸦云端联动示例。"
       },
       "tags": ["wifi", "switch", "device-control"],
-      "boards": ["tuya-t5", "esp32-c3-devkitm-1"],
+      "boards": ["tuya-t5ai-board"],
       "source": {
         "repo": "https://github.com/tuya/TuyaOpen",
         "subpath": "examples/3-switches-iot",
@@ -22,11 +22,11 @@
       "id": "voice-assistant",
       "name": { "en": "Voice Assistant Demo", "zh-CN": "语音助手示例" },
       "summary": {
-        "en": "On-device wake word + cloud LLM round-trip on T5.",
-        "zh-CN": "T5 上的本地唤醒 + 云端 LLM 推理示例。"
+        "en": "On-device wake word + cloud LLM round-trip on T5AI.",
+        "zh-CN": "T5AI 上的本地唤醒 + 云端 LLM 推理示例。"
       },
       "tags": ["ai", "voice", "edge-cloud"],
-      "boards": ["tuya-t5"],
+      "boards": ["tuya-t5ai-board", "tuya-t5ai-evb", "tuya-t5ai-core", "tuya-t5ai-pixel", "tuya-t5ai-pocket", "t5ai-mini"],
       "source": {
         "repo": "https://github.com/tuya/TuyaOpen",
         "subpath": "examples/voice-assistant",

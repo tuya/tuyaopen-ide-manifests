@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "id": "tuya-t5ai-evb",
+  "name": { "en": "Tuya T5AI EVB", "zh-CN": "涂鸦 T5AI 工程验证板" },
+  "summary": {
+    "en": "T5AI engineering validation board with audio AEC, ST7789 SPI display, and 2 user buttons",
+    "zh-CN": "搭载音频 AEC、ST7789 SPI 显示屏和 2 颗用户按键的 T5AI 工程验证板"
+  },
+  "brand": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "manufacturer": { "en": "Tuya", "zh-CN": "涂鸦智能" },
+  "platformId": "t5ai",
+  "variantId": "t5ai",
+
+  "peripheralPatterns": {
+
+    "audio": [
+      {
+        "model": null,
+        "name": { "en": "Audio", "zh-CN": "音频" },
+        "interface": "INTERNAL",
+        "pins": {
+          "INTERNAL": [
+            { "role": "spk_en", "gpio": 19 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "AEC enabled by default.",
+          "zh-CN": "默认启用 AEC。"
+        }
+      }
+    ],
+
+    "display": [
+      {
+        "model": "ST7789",
+        "name": { "en": "240×240 LCD Display", "zh-CN": "240×240 LCD 显示屏" },
+        "resolution": "240x240",
+        "interface": "SPI",
+        "pins": {
+          "SPI": [
+            { "role": "sck",   "gpio": 14 },
+            { "role": "mosi",  "gpio": 16 },
+            { "role": "cs",    "gpio": 15 },
+            { "role": "dc",    "gpio": 17 },
+            { "role": "rst",   "gpio": 6  },
+            { "role": "bl",    "gpio": 5  },
+            { "role": "power", "gpio": 7  }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "LVGL supported. BL and power active high.",
+          "zh-CN": "支持 LVGL。背光和电源高有效。"
+        }
+      }
+    ],
+
+    "led": [
+      {
+        "model": null,
+        "name": { "en": "Indicator LED", "zh-CN": "指示灯" },
+        "count": 1,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "led", "gpio": 8 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active high.",
+          "zh-CN": "高有效。"
+        }
+      }
+    ],
+
+    "button": [
+      {
+        "name": { "en": "User Buttons", "zh-CN": "用户按键" },
+        "count": 2,
+        "interface": "GPIO",
+        "pins": {
+          "GPIO": [
+            { "role": "btn_0", "gpio": 4  },
+            { "role": "btn_1", "gpio": 12 }
+          ]
+        },
+        "optional": false,
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      }
+    ]
+
+  },
+
+  "links": {
+    "schematic": null,
+    "datasheet": null,
+    "productPage": null
+  },
+  "tags": ["wifi", "ble", "edge-ai", "audio", "display"]
+}

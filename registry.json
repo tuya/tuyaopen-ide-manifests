@@ -2,22 +2,27 @@
   "schemaVersion": 1,
   "name": "tuyaopen-ide-manifests",
   "description": "Top-level index. IDE fetches this first and uses the URLs below to lazy-load each domain's index.json.",
-  "publishedAt": "2026-05-12T00:00:00Z",
+  "publishedAt": "2026-05-13T00:00:00Z",
   "manifests": {
+    "platforms": {
+      "url": "platforms/index.json",
+      "version": "0.1.0",
+      "summary": "芯片平台与变体（T5AI）"
+    },
     "boardsAndChips": {
       "url": "boards-and-chips/index.json",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "summary": "开发板与芯片(官方 + 生态)"
     },
     "demos": {
       "url": "demos/index.json",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "summary": "示例工程"
     },
     "skills": {
       "url": "skills/index.json",
       "version": "0.1.0",
-      "summary": "Cursor Skills"
+      "summary": "AI agent skills (Cursor, Claude Code, etc.)"
     }
   }
 }
