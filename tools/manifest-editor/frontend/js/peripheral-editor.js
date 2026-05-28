@@ -147,7 +147,7 @@ function renderForm(type, item, index) {
   const allPins = [];
   for (const [ifName, pins] of Object.entries(existingPins)) {
     if (Array.isArray(pins)) {
-      for (const p of pins) allPins.push({ iface: ifName, role: p.role, gpio: p.gpio });
+      for (const p of pins) allPins.push({ iface: ifName, role: p.role, gpio: p.gpio, activeLevel: p.activeLevel || '' });
     }
   }
 
@@ -199,14 +199,14 @@ function renderForm(type, item, index) {
     <div class="peri-pin-section">
       <label>${esc(t('periPinMapping'))}</label>
       <table class="peri-pin-table">
-        <thead><tr><th>Interface</th><th>Role</th><th>GPIO</th><th></th></tr></thead>
+        <thead><tr><th>Interface</th><th>Role</th><th>GPIO</th><th>Active</th><th></th></tr></thead>
         <tbody>`;
 
   for (const pin of allPins) {
-    html += renderPinRow(pin.iface, pin.role, pin.gpio);
+    html += renderPinRow(pin.iface, pin.role, pin.gpio, pin.activeLevel);
   }
   if (allPins.length === 0) {
-    html += renderPinRow(iface, '', '');
+    html += renderPinRow(iface, '', '', '');
   }
 
   html += `</tbody></table>
@@ -244,11 +244,16 @@ function renderForm(type, item, index) {
   return html;
 }
 
-function renderPinRow(iface, role, gpio) {
+function renderPinRow(iface, role, gpio, activeLevel) {
   return `<tr class="peri-pin-row">
     <td><input type="text" class="peri-pin-iface" value="${esc(iface)}" placeholder="I2S"></td>
     <td><input type="text" class="peri-pin-role" value="${esc(role)}" placeholder="role"></td>
     <td><input type="text" class="peri-pin-gpio" value="${esc(gpio)}" placeholder="GPIO"></td>
+    <td><select class="peri-pin-active">
+      <option value="" ${!activeLevel ? 'selected' : ''}>—</option>
+      <option value="high" ${activeLevel === 'high' ? 'selected' : ''}>High</option>
+      <option value="low" ${activeLevel === 'low' ? 'selected' : ''}>Low</option>
+    </select></td>
     <td><button type="button" class="peri-pin-remove-btn" title="Remove">×</button></td>
   </tr>`;
 }
@@ -289,7 +294,7 @@ function bindEvents(root) {
   form.querySelector('.peri-pin-add-btn')?.addEventListener('click', () => {
     const tbody = form.querySelector('.peri-pin-table tbody');
     const ifaceVal = form.querySelector('[name="interface"]')?.value || '';
-    tbody.insertAdjacentHTML('beforeend', renderPinRow(ifaceVal, '', ''));
+    tbody.insertAdjacentHTML('beforeend', renderPinRow(ifaceVal, '', '', ''));
     bindPinRemoveButtons(form);
   });
 
@@ -333,10 +338,13 @@ function saveFromForm(form) {
     const pIface = tr.querySelector('.peri-pin-iface')?.value.trim();
     const pRole = tr.querySelector('.peri-pin-role')?.value.trim();
     const pGpio = tr.querySelector('.peri-pin-gpio')?.value.trim();
+    const pActive = tr.querySelector('.peri-pin-active')?.value || '';
     if (pIface && pRole && pGpio) {
       if (!pins[pIface]) pins[pIface] = [];
       const gpioVal = /^\d+$/.test(pGpio) ? parseInt(pGpio) : pGpio;
-      pins[pIface].push({ role: pRole, gpio: gpioVal });
+      const pinEntry = { role: pRole, gpio: gpioVal };
+      if (pActive) pinEntry.activeLevel = pActive;
+      pins[pIface].push(pinEntry);
     }
   });
   if (Object.keys(pins).length > 0) item.pins = pins;
@@ -368,15 +376,23 @@ function saveFromForm(form) {
   const origType = form.dataset.formType;
 
   if (formIndex >= 0 && origType) {
-    // Editing existing: remove old, add to (possibly new) type
-    if (peripheralData[origType]) {
-      peripheralData[origType].splice(formIndex, 1);
-      if (peripheralData[origType].length === 0) delete peripheralData[origType];
+    if (origType === type) {
+      // Same type: replace in place
+      peripheralData[origType][formIndex] = item;
+    } else {
+      // Type changed: remove from old, add to new
+      if (peripheralData[origType]) {
+        peripheralData[origType].splice(formIndex, 1);
+        if (peripheralData[origType].length === 0) delete peripheralData[origType];
+      }
+      if (!peripheralData[type]) peripheralData[type] = [];
+      peripheralData[type].push(item);
     }
+  } else {
+    // New item
+    if (!peripheralData[type]) peripheralData[type] = [];
+    peripheralData[type].push(item);
   }
-
-  if (!peripheralData[type]) peripheralData[type] = [];
-  peripheralData[type].push(item);
 
   dirty = true;
   editingKey = null;

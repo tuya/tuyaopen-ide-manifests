@@ -455,7 +455,8 @@
           "GPIO": [
             {
               "role": "btn",
-              "gpio": 12
+              "gpio": 12,
+              "activeLevel": "low"
             }
           ]
         },
