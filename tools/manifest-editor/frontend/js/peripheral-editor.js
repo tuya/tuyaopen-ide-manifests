@@ -123,7 +123,7 @@ function renderCard(type, item, index) {
     ? (item.mounting === 'accessory' ? '配件' : '板载')
     : (item.mounting === 'accessory' ? 'accessory' : 'onboard');
   const mountingTag = `<span class="peri-card-mounting peri-card-mounting--${item.mounting === 'accessory' ? 'accessory' : 'onboard'}">${esc(mountingLabel)}</span>`;
-  const lockedTag = item.pinLocked ? `<span class="peri-card-locked">🔒</span>` : `<span class="peri-card-unlocked">🔓</span>`;
+  const lockedTag = item.pinLocked ? `<span class="peri-card-locked">🔒</span>` : '';
   const roleTag = item.role ? `<span class="peri-card-role">${esc(item.role)}</span>` : '';
   const key = `${type}:${index}`;
 

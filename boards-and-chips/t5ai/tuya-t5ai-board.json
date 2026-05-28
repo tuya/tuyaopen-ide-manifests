@@ -503,31 +503,6 @@
         "pinLocked": false
       }
     ],
-    "button": [
-      {
-        "name": {
-          "en": "User Button",
-          "zh-CN": "用户按键"
-        },
-        "interface": "GPIO",
-        "mounting": "onboard",
-        "pinLocked": false,
-        "count": 1,
-        "pins": {
-          "GPIO": [
-            {
-              "role": "btn",
-              "gpio": 12
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "Active low.",
-          "zh-CN": "低有效。"
-        }
-      }
-    ],
     "led": [
       {
         "name": {
@@ -550,6 +525,31 @@
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
+        }
+      }
+    ],
+    "button": [
+      {
+        "name": {
+          "en": "User Button",
+          "zh-CN": "用户按键"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "count": 1,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "gpio": 12
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
         }
       }
     ]
