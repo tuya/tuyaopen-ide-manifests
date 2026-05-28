@@ -536,7 +536,7 @@
         },
         "interface": "GPIO",
         "mounting": "onboard",
-        "pinLocked": false,
+        "pinLocked": true,
         "count": 1,
         "pins": {
           "GPIO": [
