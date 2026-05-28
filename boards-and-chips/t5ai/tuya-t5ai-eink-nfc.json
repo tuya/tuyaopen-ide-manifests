@@ -160,33 +160,41 @@
           "en": "User Buttons",
           "zh-CN": "用户按键"
         },
-        "count": 6,
         "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "count": 6,
         "pins": {
           "GPIO": [
             {
               "role": "up",
-              "gpio": 22
+              "gpio": 22,
+              "activeLevel": "low"
             },
             {
               "role": "down",
-              "gpio": 23
+              "gpio": 23,
+              "activeLevel": "low"
             },
             {
               "role": "enter",
-              "gpio": 24
+              "gpio": 24,
+              "activeLevel": "low"
             },
             {
               "role": "return",
-              "gpio": 25
+              "gpio": 25,
+              "activeLevel": "low"
             },
             {
               "role": "left",
-              "gpio": 26
+              "gpio": 26,
+              "activeLevel": "low"
             },
             {
               "role": "right",
-              "gpio": 28
+              "gpio": 28,
+              "activeLevel": "low"
             }
           ]
         },
@@ -194,9 +202,7 @@
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ]
   },
