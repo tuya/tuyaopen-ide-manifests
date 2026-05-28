@@ -339,34 +339,6 @@
         "mounting": "onboard",
         "pinLocked": true
       }
-    ],
-    "expansion": [
-      {
-        "name": {
-          "en": "Expansion Pads",
-          "zh-CN": "扩展焊盘"
-        },
-        "interface": "GPIO",
-        "mounting": "accessory",
-        "pinLocked": false,
-        "pins": {
-          "GPIO": [
-            {
-              "role": "io40_uart2_rx",
-              "gpio": 40
-            },
-            {
-              "role": "io41_uart2_tx",
-              "gpio": 41
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "Solder pads. IO40/41 muxable as UART2 or GPS TX/RX. IO32–38 are space-reserved pads. USB host pads (T5D_N/T5D_P) also available.",
-          "zh-CN": "焊盘。IO40/41 可复用为 UART2 或 GPS TX/RX。IO32–38 为预留空间焊盘。另有 USB Host 焊盘（T5D_N/T5D_P）。"
-        }
-      }
     ]
   },
   "links": {
