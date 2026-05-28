@@ -96,18 +96,20 @@
     ],
     "led": [
       {
-        "model": null,
         "name": {
           "en": "Indicator LED",
           "zh-CN": "指示灯"
         },
-        "count": 1,
         "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "count": 1,
         "pins": {
           "GPIO": [
             {
               "role": "led",
-              "gpio": 47
+              "gpio": 47,
+              "activeLevel": "high"
             }
           ]
         },
@@ -115,9 +117,7 @@
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ],
     "button": [
