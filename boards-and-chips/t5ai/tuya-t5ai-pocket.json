@@ -43,13 +43,15 @@
     ],
     "display": [
       {
-        "model": "ST7305",
         "name": {
           "en": "Monochrome Display",
           "zh-CN": "单色屏"
         },
-        "resolution": "168x384",
         "interface": "SPI",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "model": "ST7305",
+        "resolution": "168x384",
         "pins": {
           "SPI": [
             {
@@ -78,9 +80,7 @@
         "note": {
           "en": "Mono. SPI0 pinmux group 2 — MISO(47) repurposed as DC. LVGL supported.",
           "zh-CN": "单色屏。SPI0 引脚复用组 2，MISO(47) 复用为 DC。支持 LVGL。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ],
     "camera": [
