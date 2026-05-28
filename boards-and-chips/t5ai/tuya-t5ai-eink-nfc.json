@@ -18,54 +18,19 @@
   "peripheralPatterns": {
     "audio": [
       {
-        "model": null,
         "name": {
           "en": "Audio",
           "zh-CN": "音频"
         },
         "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": true,
         "pins": {
           "INTERNAL": [
             {
               "role": "spk_en",
-              "gpio": 42
-            }
-          ],
-          "ANALOG": [
-            {
-              "role": "spk_p",
-              "gpio": null,
-              "pin": "LP"
-            },
-            {
-              "role": "spk_n",
-              "gpio": null,
-              "pin": "LN"
-            },
-            {
-              "role": "mic1_p",
-              "gpio": null,
-              "pin": "MP1"
-            },
-            {
-              "role": "mic1_n",
-              "gpio": null,
-              "pin": "MN1"
-            },
-            {
-              "role": "mic2_p",
-              "gpio": null,
-              "pin": "MP2"
-            },
-            {
-              "role": "mic2_n",
-              "gpio": null,
-              "pin": "MN2"
-            },
-            {
-              "role": "micbias",
-              "gpio": null,
-              "pin": "MBS"
+              "gpio": 42,
+              "activeLevel": "high"
             }
           ]
         },
@@ -73,9 +38,7 @@
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ],
     "display": [
