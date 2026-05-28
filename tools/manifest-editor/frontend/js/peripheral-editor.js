@@ -396,6 +396,9 @@ function deletePeripheral(type, index) {
 async function persistAndRender() {
   try {
     await apiClient.updatePeripherals(currentBoardId, { peripheralPatterns: peripheralData });
+    // Re-fetch from server to ensure consistency
+    const resp = await apiClient.getPeripherals(currentBoardId);
+    peripheralData = resp.peripheralPatterns || {};
     dirty = false;
   } catch (err) {
     alert('Save failed: ' + err.message);
