@@ -16,68 +16,6 @@
   "platformId": "t5ai",
   "variantId": "t5ai",
   "peripheralPatterns": {
-    "audio": [
-      {
-        "model": null,
-        "name": {
-          "en": "Audio",
-          "zh-CN": "音频"
-        },
-        "interface": "INTERNAL",
-        "pins": {
-          "INTERNAL": [
-            {
-              "role": "spk_en",
-              "gpio": 28
-            }
-          ],
-          "ANALOG": [
-            {
-              "role": "spk_p",
-              "gpio": null,
-              "pin": "LP"
-            },
-            {
-              "role": "spk_n",
-              "gpio": null,
-              "pin": "LN"
-            },
-            {
-              "role": "mic1_p",
-              "gpio": null,
-              "pin": "MP1"
-            },
-            {
-              "role": "mic1_n",
-              "gpio": null,
-              "pin": "MN1"
-            },
-            {
-              "role": "mic2_p",
-              "gpio": null,
-              "pin": "MP2"
-            },
-            {
-              "role": "mic2_n",
-              "gpio": null,
-              "pin": "MN2"
-            },
-            {
-              "role": "micbias",
-              "gpio": null,
-              "pin": "MBS"
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "AEC available on v1.0.2+.",
-          "zh-CN": "AEC 在 v1.0.2+ 硬件上可用。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
-      }
-    ],
     "display": [
       {
         "model": "ILI9488",
@@ -550,6 +488,30 @@
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
+        }
+      }
+    ],
+    "audio": [
+      {
+        "name": {
+          "en": "Audio",
+          "zh-CN": "音频"
+        },
+        "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "INTERNAL": [
+            {
+              "role": "spk_en",
+              "gpio": 28
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "AEC available on v1.0.2+.",
+          "zh-CN": "AEC 在 v1.0.2+ 硬件上可用。"
         }
       }
     ]
