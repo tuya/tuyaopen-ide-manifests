@@ -480,7 +480,8 @@
           "INTERNAL": [
             {
               "role": "spk_en",
-              "gpio": 28
+              "gpio": 28,
+              "activeLevel": "high"
             }
           ]
         },
