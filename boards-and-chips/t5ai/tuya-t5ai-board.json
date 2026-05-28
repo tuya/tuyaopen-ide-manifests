@@ -441,31 +441,6 @@
         "pinLocked": false
       }
     ],
-    "led": [
-      {
-        "name": {
-          "en": "Indicator LED",
-          "zh-CN": "指示灯"
-        },
-        "interface": "GPIO",
-        "mounting": "onboard",
-        "pinLocked": false,
-        "count": 1,
-        "pins": {
-          "GPIO": [
-            {
-              "role": "led",
-              "gpio": 1
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "Active high.",
-          "zh-CN": "高有效。"
-        }
-      }
-    ],
     "button": [
       {
         "name": {
@@ -512,6 +487,31 @@
         "note": {
           "en": "AEC available on v1.0.2+.",
           "zh-CN": "AEC 在 v1.0.2+ 硬件上可用。"
+        }
+      }
+    ],
+    "led": [
+      {
+        "name": {
+          "en": "Indicator LED",
+          "zh-CN": "指示灯"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "count": 1,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "led",
+              "gpio": 1
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active high.",
+          "zh-CN": "高有效。"
         }
       }
     ]
