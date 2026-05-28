@@ -499,7 +499,7 @@
         },
         "interface": "INTERNAL",
         "mounting": "onboard",
-        "pinLocked": true,
+        "pinLocked": false,
         "pins": {
           "INTERNAL": [
             {
