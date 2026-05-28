@@ -70,13 +70,15 @@
     ],
     "led-pixel": [
       {
-        "model": "WS2812B",
         "name": {
           "en": "RGB LED Matrix",
           "zh-CN": "RGB 灯矩阵"
         },
-        "count": 8,
         "interface": "SPI",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "model": "WS2812B",
+        "count": 8,
         "pins": {
           "SPI": [
             {
@@ -89,9 +91,7 @@
         "note": {
           "en": "Timing strict — do not change SPI clock.",
           "zh-CN": "时序严格，勿修改 SPI 时钟频率。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ],
     "led": [
