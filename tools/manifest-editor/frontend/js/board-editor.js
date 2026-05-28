@@ -70,7 +70,7 @@ export function renderBoardForm(board = null) {
           id="boardId"
           name="id"
           class="form-input"
-          pattern="^[a-z0-9-]+$"
+          pattern="^[a-z0-9\\-]+$"
           placeholder="例如: tuya-t5ai-board"
           value="${board ? escapeHtml(board.id) : ''}"
           ${!isNew ? 'readonly' : ''}
