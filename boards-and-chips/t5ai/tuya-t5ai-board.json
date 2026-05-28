@@ -506,7 +506,8 @@
           "GPIO": [
             {
               "role": "led",
-              "gpio": 1
+              "gpio": 1,
+              "activeLevel": "high"
             }
           ]
         },
