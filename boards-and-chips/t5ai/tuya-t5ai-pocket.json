@@ -18,58 +18,19 @@
   "peripheralPatterns": {
     "audio": [
       {
-        "model": null,
         "name": {
           "en": "Audio",
           "zh-CN": "音频"
         },
         "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": true,
         "pins": {
           "INTERNAL": [
             {
               "role": "spk_en",
-              "gpio": 42
-            },
-            {
-              "role": "mux_sel",
-              "gpio": 23
-            }
-          ],
-          "ANALOG": [
-            {
-              "role": "spk_p",
-              "gpio": null,
-              "pin": "LP"
-            },
-            {
-              "role": "spk_n",
-              "gpio": null,
-              "pin": "LN"
-            },
-            {
-              "role": "mic1_p",
-              "gpio": null,
-              "pin": "MP1"
-            },
-            {
-              "role": "mic1_n",
-              "gpio": null,
-              "pin": "MN1"
-            },
-            {
-              "role": "mic2_p",
-              "gpio": null,
-              "pin": "MP2"
-            },
-            {
-              "role": "mic2_n",
-              "gpio": null,
-              "pin": "MN2"
-            },
-            {
-              "role": "micbias",
-              "gpio": null,
-              "pin": "MBS"
+              "gpio": 42,
+              "activeLevel": "high"
             }
           ]
         },
@@ -77,9 +38,7 @@
         "note": {
           "en": "AEC enabled. mux_sel: low = mic to MIC2, high = speaker loopback.",
           "zh-CN": "AEC 已启用。mux_sel：低电平接麦克风，高电平接扬声器回环。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ],
     "display": [
