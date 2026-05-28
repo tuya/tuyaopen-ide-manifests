@@ -18,54 +18,19 @@
   "peripheralPatterns": {
     "audio": [
       {
-        "model": null,
         "name": {
           "en": "Audio",
           "zh-CN": "音频"
         },
         "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": true,
         "pins": {
           "INTERNAL": [
             {
               "role": "pa_ctrl",
-              "gpio": 28
-            }
-          ],
-          "ANALOG": [
-            {
-              "role": "spk_p",
-              "gpio": null,
-              "pin": "LP"
-            },
-            {
-              "role": "spk_n",
-              "gpio": null,
-              "pin": "LN"
-            },
-            {
-              "role": "mic1_p",
-              "gpio": null,
-              "pin": "MP1"
-            },
-            {
-              "role": "mic1_n",
-              "gpio": null,
-              "pin": "MN1"
-            },
-            {
-              "role": "mic2_p",
-              "gpio": null,
-              "pin": "MP2"
-            },
-            {
-              "role": "mic2_n",
-              "gpio": null,
-              "pin": "MN2"
-            },
-            {
-              "role": "micbias",
-              "gpio": null,
-              "pin": "MBS"
+              "gpio": 28,
+              "activeLevel": "high"
             }
           ]
         },
@@ -73,9 +38,7 @@
         "note": {
           "en": "AEC enabled. 2 audio ADCs (mic), 1 DAC. Speaker via MX1.25 connector (8Ω 1W/2W). pa_ctrl active low. MIC1 = microphone input, MIC2 = AEC reference, LP/LN = differential speaker output.",
           "zh-CN": "已启用 AEC。2 路音频 ADC（麦克风），1 路 DAC。扬声器通过 MX1.25 接口（8Ω 1W/2W）。pa_ctrl 低有效。MIC1 = 麦克风输入，MIC2 = AEC 回采，LP/LN = 差分喇叭输出。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        }
       }
     ],
     "display": [
