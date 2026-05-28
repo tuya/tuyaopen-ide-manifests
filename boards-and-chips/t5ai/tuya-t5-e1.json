@@ -9,10 +9,6 @@
     "en": "T5-E1 Wi-Fi & Bluetooth module based on the T5 chip. Available in two packages: T5-E1 (onboard PCB antenna) and T5-E1-IPEX (IPEX antenna connector). Suitable for custom hardware designs starting from scratch.",
     "zh-CN": "基于 T5 芯片的 Wi-Fi 和蓝牙模组。提供两种封装：T5-E1（板载 PCB 天线）和 T5-E1-IPEX（IPEX 天线接口）。适合从零开始的自定义硬件设计。"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -51,15 +47,13 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
-    "module",
-    "chip"
+    "ai",
+    "module"
   ],
   "scaffold": {
     "template": "tools/app_template/base",
     "baseConfig": {
       "CONFIG_BOARD_CHOICE_T5AI": "y"
     }
-  },
-  "demos": []
+  }
 }

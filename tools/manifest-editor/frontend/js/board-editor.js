@@ -6,17 +6,25 @@ import { openImageUploadModal } from './image-uploader.js';
 import i18n from './i18n.js';
 
 let globalTagsList = [];
+let globalTagCategories = [];
 
 export async function initGlobalTags() {
   try {
     const result = await apiClient.getTags();
-    if (result.success && result.tags) {
-      globalTagsList = result.tags.map(t => ({
-        id: t.id,
-        label: i18n.getLanguage() === 'zh-CN' ? t['zh-CN'] : t.en,
-        en: t.en,
-        zh: t['zh-CN'],
-      }));
+    if (result.success && result.categories) {
+      globalTagCategories = result.categories;
+      globalTagsList = [];
+      for (const cat of result.categories) {
+        for (const t of cat.tags) {
+          globalTagsList.push({
+            id: t.id,
+            categoryId: cat.id,
+            label: i18n.getLanguage() === 'zh-CN' ? t['zh-CN'] : t.en,
+            en: t.en,
+            zh: t['zh-CN'],
+          });
+        }
+      }
     }
   } catch (error) {
     console.error('Error loading tags:', error);
@@ -133,45 +141,36 @@ export function renderBoardForm(board = null) {
         <small style="color: var(--color-muted);" data-i18n="boardKconfigIdHint">Must match SDK board directory name (e.g. TUYA_T5AI_EVB)</small>
       </div>
 
-      <!-- Scaffold Settings -->
-      <fieldset class="form-fieldset" style="border: 1px solid var(--color-border); border-radius: 6px; padding: 16px; margin-bottom: 24px;">
-        <legend style="font-weight: 600; font-size: 0.9em; padding: 0 8px;" data-i18n="boardScaffold">Scaffold Settings</legend>
-        <div class="form-group">
-          <label class="form-label" for="scaffoldTemplate" data-i18n="boardScaffoldTemplate">Template Path</label>
-          <input
-            type="text"
-            id="scaffoldTemplate"
-            name="scaffoldTemplate"
-            class="form-input"
-            placeholder="tools/app_template/base"
-            value="${board && board.scaffold ? escapeHtml(board.scaffold.template || '') : 'tools/app_template/base'}"
-          >
+      <!-- Scaffold Settings (collapsible, optional) -->
+      <details class="form-details">
+        <summary class="form-details-summary" data-i18n="boardScaffold">⚙️ Scaffold Settings（可选，不填则自动生成）</summary>
+        <div class="form-details-body">
+          <div style="background-color: var(--color-hover); padding: 10px 12px; border-radius: 4px; margin-bottom: 12px; font-size: 0.85em; color: var(--color-muted);">
+            默认值：Template = <code>tools/app_template/base</code>，Base Config 根据 Platform 和 Kconfig ID 自动生成。
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="scaffoldTemplate" data-i18n="boardScaffoldTemplate">Template Path</label>
+            <input
+              type="text"
+              id="scaffoldTemplate"
+              name="scaffoldTemplate"
+              class="form-input"
+              placeholder="tools/app_template/base"
+              value="${board && board.scaffold ? escapeHtml(board.scaffold.template || '') : ''}"
+            >
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="scaffoldBaseConfig" data-i18n="boardScaffoldBaseConfig">Base Config (JSON)</label>
+            <textarea
+              id="scaffoldBaseConfig"
+              name="scaffoldBaseConfig"
+              class="form-textarea form-monospace"
+              rows="4"
+              placeholder='自动生成，例如：{"CONFIG_BOARD_CHOICE_T5AI": "y", "CONFIG_BOARD_CHOICE_TUYA_T5AI_EVB": "y"}'
+            >${board && board.scaffold?.baseConfig ? escapeHtml(JSON.stringify(board.scaffold.baseConfig, null, 2)) : ''}</textarea>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="scaffoldBaseConfig" data-i18n="boardScaffoldBaseConfig">Base Config (JSON)</label>
-          <textarea
-            id="scaffoldBaseConfig"
-            name="scaffoldBaseConfig"
-            class="form-textarea form-monospace"
-            rows="4"
-            placeholder='{"CONFIG_PLATFORM_CHOICE": "T5AI", "CONFIG_BOARD_CHOICE_TUYA_T5AI_EVB": "y"}'
-          >${board && board.scaffold?.baseConfig ? escapeHtml(JSON.stringify(board.scaffold.baseConfig, null, 2)) : ''}</textarea>
-        </div>
-      </fieldset>
-
-      <!-- Associated Demos (read-only) -->
-      <div class="form-group">
-        <label class="form-label" data-i18n="boardAssociatedDemos">Associated Demos</label>
-        <input
-          type="text"
-          id="boardAssociatedDemos"
-          class="form-input"
-          value="${board && board.demos ? escapeHtml(board.demos.join(', ')) : ''}"
-          readonly
-          style="background: var(--color-hover); color: var(--color-muted);"
-        >
-        <small style="color: var(--color-muted);">Read-only — managed via demo definitions</small>
-      </div>
+      </details>
 
       <!-- EN/ZH Pair: Summary -->
       <div class="form-group form-row-2col">
@@ -199,32 +198,18 @@ export function renderBoardForm(board = null) {
         </div>
       </div>
 
-      <!-- EN/ZH Pair: Manufacturer & Brand -->
-      <div class="form-group form-row-2col">
-        <div class="form-col-half">
-          <label class="form-label" for="manufacturer">Manufacturer / 制造商</label>
-          <input
-            type="text"
-            id="manufacturer"
-            name="manufacturer"
-            class="form-input"
-            placeholder="e.g., Tuya, Espressif"
-            value="${board ? escapeHtml(getLocalizedString(board.manufacturer) || board.manufacturer?.en || '') : ''}"
-          >
-          <small style="color: var(--color-muted);">Board manufacturer name</small>
-        </div>
-        <div class="form-col-half">
-          <label class="form-label" for="brand">Brand / Ecosystem / 品牌/生态</label>
-          <input
-            type="text"
-            id="brand"
-            name="brand"
-            class="form-input"
-            placeholder="e.g., Tuya Official, 生态伙伴"
-            value="${board ? escapeHtml(getLocalizedString(board.brand) || board.brand?.en || '') : ''}"
-          >
-          <small style="color: var(--color-muted);">Official/Ecosystem Partner indicator</small>
-        </div>
+      <!-- Manufacturer -->
+      <div class="form-group">
+        <label class="form-label" for="manufacturer">Manufacturer / 制造商</label>
+        <input
+          type="text"
+          id="manufacturer"
+          name="manufacturer"
+          class="form-input"
+          placeholder="e.g., Tuya, Espressif"
+          value="${board ? escapeHtml(getLocalizedString(board.manufacturer) || board.manufacturer?.en || '') : ''}"
+        >
+        <small style="color: var(--color-muted);">Board manufacturer name</small>
       </div>
 
       <!-- Tags Selection -->
@@ -448,6 +433,33 @@ export function renderBoardForm(board = null) {
       .form-col-half { display: flex; flex-direction: column; gap: 8px; }
       .form-col-half .form-label { margin-bottom: 0; }
 
+      .form-details {
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        margin-bottom: 24px;
+      }
+      .form-details-summary {
+        font-weight: 600;
+        font-size: 0.9em;
+        padding: 12px 16px;
+        cursor: pointer;
+        user-select: none;
+        list-style: none;
+      }
+      .form-details-summary::-webkit-details-marker { display: none; }
+      .form-details-summary::before {
+        content: '▶ ';
+        font-size: 0.8em;
+        transition: transform 0.2s;
+        display: inline-block;
+      }
+      .form-details[open] > .form-details-summary::before {
+        content: '▼ ';
+      }
+      .form-details-body {
+        padding: 0 16px 16px;
+      }
+
       .tags-input-wrapper { position: relative; }
       .tags-dropdown {
         position: absolute;
@@ -483,6 +495,27 @@ export function renderBoardForm(board = null) {
         font-size: 12px;
         margin-top: 4px;
         display: block;
+      }
+
+      .tag-category-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 10px;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--color-border, #eee);
+      }
+      .tag-category-group:last-child {
+        border-bottom: none;
+      }
+      .tag-category-label {
+        font-size: 0.75em;
+        font-weight: 600;
+        color: var(--color-muted);
+        min-width: 80px;
+        margin-right: 4px;
+        flex-shrink: 0;
       }
     </style>
   `;
@@ -526,7 +559,6 @@ export async function saveBoardForm(formElement) {
   const nameZh = document.getElementById('boardNameZh')?.value;
   const platformId = document.getElementById('platformId')?.value;
   const manufacturer = document.getElementById('manufacturer')?.value;
-  const brand = document.getElementById('brand')?.value;
   const summaryEn = document.getElementById('boardSummary')?.value;
   const summaryZh = document.getElementById('boardSummaryZh')?.value;
   const schematicLink = document.getElementById('schematicLink')?.value;
@@ -589,7 +621,6 @@ export async function saveBoardForm(formElement) {
     name: { en: nameEn },
     platformId,
     manufacturer: manufacturer || { en: 'Unknown' },
-    brand: brand || { en: 'Ecosystem' },
     summary: { en: summaryEn },
     tags,
     published: document.getElementById('boardPublished')?.checked ?? true,
@@ -601,7 +632,7 @@ export async function saveBoardForm(formElement) {
     boardData.kconfigId = kconfigId;
   }
 
-  // Add scaffold if any field is set
+  // Add scaffold if any field is set, otherwise auto-derive from platformId + kconfigId
   if (scaffoldTemplate || scaffoldBaseConfig) {
     boardData.scaffold = {};
     if (scaffoldTemplate) {
@@ -610,6 +641,16 @@ export async function saveBoardForm(formElement) {
     if (scaffoldBaseConfig) {
       boardData.scaffold.baseConfig = scaffoldBaseConfig;
     }
+  } else if (kconfigId && platformId) {
+    // Auto-derive default scaffold
+    const platformKconfigId = platformId.toUpperCase();
+    boardData.scaffold = {
+      template: 'tools/app_template/base',
+      baseConfig: {
+        [`CONFIG_BOARD_CHOICE_${platformKconfigId}`]: 'y',
+        [`CONFIG_BOARD_CHOICE_${kconfigId}`]: 'y',
+      },
+    };
   }
 
   if (nameZh) {
@@ -738,16 +779,17 @@ function initTagsChipSelector() {
       dropdown.style.display = 'none';
       return;
     }
+    const isZh = i18n.getLanguage() === 'zh-CN';
     const matches = globalTagsList.filter(t =>
       !selectedTagIds.includes(t.id) &&
-      (t.id.includes(query) || t.label.toLowerCase().includes(query))
+      (t.id.includes(query) || (isZh ? t.zh : t.en).toLowerCase().includes(query))
     );
     if (matches.length === 0) {
       dropdown.style.display = 'none';
       return;
     }
     dropdown.innerHTML = matches.map(t =>
-      `<div class="tags-dropdown-item" data-tag-id="${escapeHtml(t.id)}">${escapeHtml(t.label)}</div>`
+      `<div class="tags-dropdown-item" data-tag-id="${escapeHtml(t.id)}">${escapeHtml(isZh ? t.zh : t.en)}</div>`
     ).join('');
     dropdown.style.display = 'block';
   });
@@ -802,7 +844,7 @@ function renderChips() {
   if (!container) return;
   container.innerHTML = selectedTagIds.map(id => {
     const tag = globalTagsList.find(t => t.id === id);
-    const label = tag ? tag.label : id;
+    const label = tag ? (i18n.getLanguage() === 'zh-CN' ? tag.zh : tag.en) : id;
     return `<span class="tag-chip" data-tag-id="${escapeHtml(id)}">${escapeHtml(label)}<button type="button" class="tag-chip-remove">&times;</button></span>`;
   }).join('');
 }
@@ -810,10 +852,19 @@ function renderChips() {
 function renderAvailablePool() {
   const pool = document.getElementById('tagsAvailablePool');
   if (!pool) return;
-  const available = globalTagsList.filter(t => !selectedTagIds.includes(t.id));
-  pool.innerHTML = available.map(t =>
-    `<span class="tag-pool-item" data-tag-id="${escapeHtml(t.id)}">${escapeHtml(t.label)}</span>`
-  ).join('');
+  let html = '';
+  for (const cat of globalTagCategories) {
+    const available = cat.tags.filter(t => !selectedTagIds.includes(t.id));
+    if (available.length === 0) continue;
+    const catLabel = i18n.getLanguage() === 'zh-CN' ? cat.name['zh-CN'] : cat.name.en;
+    html += `<div class="tag-category-group"><span class="tag-category-label">${escapeHtml(catLabel)}</span>`;
+    html += available.map(t => {
+      const label = i18n.getLanguage() === 'zh-CN' ? t['zh-CN'] : t.en;
+      return `<span class="tag-pool-item" data-tag-id="${escapeHtml(t.id)}">${escapeHtml(label)}</span>`;
+    }).join('');
+    html += '</div>';
+  }
+  pool.innerHTML = html;
 }
 
 function syncHiddenInput() {

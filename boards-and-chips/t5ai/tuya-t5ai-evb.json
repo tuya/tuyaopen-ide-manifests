@@ -9,10 +9,6 @@
     "en": "T5AI engineering validation board with audio AEC, ST7789 SPI display, and 2 user buttons",
     "zh-CN": "搭载音频 AEC、ST7789 SPI 显示屏和 2 颗用户按键的 T5AI 工程验证板"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "display": [
@@ -94,12 +119,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "LVGL supported. BL and power active high.",
           "zh-CN": "支持 LVGL。背光和电源高有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led": [
@@ -119,12 +145,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "button": [
@@ -147,12 +174,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ]
   },
@@ -164,7 +192,7 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "display"
   ],
@@ -175,14 +203,5 @@
       "CONFIG_BOARD_CHOICE_T5AI": "y",
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_EVB": "y"
     }
-  },
-  "demos": [
-    "games-lvgl-games",
-    "tuya-ai-your-chat-bot",
-    "graphics-lvgl-demo",
-    "peripherals-button",
-    "peripherals-display-fill-color",
-    "peripherals-display-picture",
-    "peripherals-led"
-  ]
+  }
 }

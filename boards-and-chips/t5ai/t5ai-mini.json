@@ -9,10 +9,6 @@
     "en": "Minimal T5AI board with audio AEC and optional SPI display expansion module",
     "zh-CN": "搭载音频 AEC 的 T5AI Mini 开发板，支持可选 SPI 显示扩展模块"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "display": [
@@ -90,14 +115,15 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "T5AI_MINI_EX_MODULE_13565LCD": 1
         },
         "note": {
           "en": "BL active high.",
           "zh-CN": "背光高有效。"
-        }
+        },
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": "ST7735S",
@@ -135,14 +161,15 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "T5AI_MINI_EX_MODULE_ST7735S_XLT": 1
         },
         "note": {
           "en": "BL active high.",
           "zh-CN": "背光高有效。"
-        }
+        },
+        "mounting": "accessory",
+        "pinLocked": false
       }
     ]
   },
@@ -158,7 +185,7 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "compact"
   ],
@@ -169,10 +196,5 @@
       "CONFIG_BOARD_CHOICE_T5AI": "y",
       "CONFIG_BOARD_CHOICE_T5AI_MINI": "y"
     }
-  },
-  "demos": [
-    "tuya-ai-your-desk-emoji",
-    "peripherals-button",
-    "peripherals-led"
-  ]
+  }
 }

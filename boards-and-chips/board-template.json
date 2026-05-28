@@ -1,16 +1,20 @@
 {
   "schemaVersion": 1,
   "id": "<kebab-case-board-id, e.g. tuya-t5ai-evb>",
-  "name": { "en": "<Board Display Name>", "zh-CN": "<板子中文显示名称>" },
+  "name": {
+    "en": "<Board Display Name>",
+    "zh-CN": "<板子中文显示名称>"
+  },
   "summary": {
     "en": "<One-sentence board description for IDE list view and AI context, e.g. T5AI evaluation board with audio codec, RGB display, and dual-mic AEC>",
     "zh-CN": "<一句话板子简介，用于 IDE 列表展示与 AI 上下文，例如：搭载音频编解码器、RGB 显示屏和双麦 AEC 的 T5AI 评估板>"
   },
-  "brand": { "en": "<Brand>", "zh-CN": "<品牌中文名>" },
-  "manufacturer": { "en": "<Manufacturer>", "zh-CN": "<制造商中文名>" },
+  "manufacturer": {
+    "en": "<Manufacturer>",
+    "zh-CN": "<制造商中文名>"
+  },
   "platformId": "<platform-id: t5ai | ...>",
   "variantId": "<id field from variants[] in platforms/<platformId>.json, e.g. t5ai>",
-
   "image": {
     "url": "<path or URL to board image, e.g. /images/board-id-500x500.jpg>",
     "alt": {
@@ -20,37 +24,67 @@
     "width": 500,
     "height": 500
   },
-
-  "demoIds": [
-    "<demo-id-1>",
-    "<demo-id-2>"
-  ],
-
   "peripheralPatterns": {
     "audio": [
       {
         "model": "<IC model, e.g. ES8311; null if unknown or interface is INTERNAL>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "interface": "<I2S | PDM | INTERNAL | PWM>",
         "pins": {
           "I2S": [
-            { "role": "bck",    "gpio": "<gpio-number>" },
-            { "role": "ws",     "gpio": "<gpio-number>" },
-            { "role": "din",    "gpio": "<gpio-number>" },
-            { "role": "dout",   "gpio": "<gpio-number>" },
-            { "role": "mclk",   "gpio": "<gpio-number — omit if unused>" },
-            { "role": "spk_en", "gpio": "<gpio-number — omit if no amplifier enable pin>" }
+            {
+              "role": "bck",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "ws",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "din",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "dout",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "mclk",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "spk_en",
+              "gpio": "<gpio-number — omit if no amplifier enable pin>"
+            }
           ],
           "PDM": [
-            { "role": "clk",    "gpio": "<gpio-number>" },
-            { "role": "dat",    "gpio": "<gpio-number>" },
-            { "role": "spk_en", "gpio": "<gpio-number — omit if no amplifier enable pin>" }
+            {
+              "role": "clk",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "dat",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "spk_en",
+              "gpio": "<gpio-number — omit if no amplifier enable pin>"
+            }
           ],
           "INTERNAL": [
-            { "role": "spk_en", "gpio": "<gpio-number — omit if no amplifier enable pin>" }
+            {
+              "role": "spk_en",
+              "gpio": "<gpio-number — omit if no amplifier enable pin>"
+            }
           ],
           "PWM": [
-            { "role": "pwm",    "gpio": "<gpio-number>" }
+            {
+              "role": "pwm",
+              "gpio": "<gpio-number>"
+            }
           ]
         },
         "optional": "<boolean: false = soldered onboard | true = via connector, not always installed>",
@@ -63,92 +97,289 @@
         }
       }
     ],
-
     "display": [
       {
         "model": "<driver IC: SSD1306 | ST7789 | ST7735S | ST7796S | GC9A01 | GC9D01 | ILI9341 | ILI9488 | ST7701S | ST7701SN | NV3041 | CO5300 | ST7305 | ST7306 | UC8276 | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "resolution": "<WxH in pixels, e.g. 240x240>",
         "interface": "<SPI | I2C | RGB | QSPI | MCU8080>",
         "group": "<optional: kebab-case id — links multiple peripheral entries of the same accessory>",
         "role": "<optional: role within the group, e.g. left | right | main | secondary>",
         "pins": {
           "SPI": [
-            { "role": "sck",   "gpio": "<gpio-number>" },
-            { "role": "mosi",  "gpio": "<gpio-number>" },
-            { "role": "cs",    "gpio": "<gpio-number>" },
-            { "role": "dc",    "gpio": "<gpio-number>" },
-            { "role": "rst",   "gpio": "<gpio-number — omit if unused>" },
-            { "role": "bl",    "gpio": "<gpio-number — omit if no backlight control>" },
-            { "role": "power", "gpio": "<gpio-number — omit if no dedicated power control>" }
+            {
+              "role": "sck",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "mosi",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "cs",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "dc",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "bl",
+              "gpio": "<gpio-number — omit if no backlight control>"
+            },
+            {
+              "role": "power",
+              "gpio": "<gpio-number — omit if no dedicated power control>"
+            }
           ],
           "SW_SPI": [
-            { "role": "sck",   "gpio": "<gpio-number — software SPI init only>" },
-            { "role": "mosi",  "gpio": "<gpio-number>" },
-            { "role": "cs",    "gpio": "<gpio-number>" },
-            { "role": "dc",    "gpio": "<gpio-number — omit if unused>" },
-            { "role": "rst",   "gpio": "<gpio-number — omit if unused>" }
+            {
+              "role": "sck",
+              "gpio": "<gpio-number — software SPI init only>"
+            },
+            {
+              "role": "mosi",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "cs",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "dc",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            }
           ],
           "QSPI": [
-            { "role": "sck",   "gpio": "<gpio-number>" },
-            { "role": "cs",    "gpio": "<gpio-number>" },
-            { "role": "d0",    "gpio": "<gpio-number>" },
-            { "role": "d1",    "gpio": "<gpio-number>" },
-            { "role": "d2",    "gpio": "<gpio-number>" },
-            { "role": "d3",    "gpio": "<gpio-number>" },
-            { "role": "dc",    "gpio": "<gpio-number>" },
-            { "role": "rst",   "gpio": "<gpio-number — omit if unused>" },
-            { "role": "bl",    "gpio": "<gpio-number — omit if no backlight control>" },
-            { "role": "power", "gpio": "<gpio-number — omit if no dedicated power control>" }
+            {
+              "role": "sck",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "cs",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d0",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d1",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d2",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d3",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "dc",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "bl",
+              "gpio": "<gpio-number — omit if no backlight control>"
+            },
+            {
+              "role": "power",
+              "gpio": "<gpio-number — omit if no dedicated power control>"
+            }
           ],
           "I2C": [
-            { "role": "scl",   "gpio": "<gpio-number>" },
-            { "role": "sda",   "gpio": "<gpio-number>" },
-            { "role": "rst",   "gpio": "<gpio-number — omit if unused>" },
-            { "role": "bl",    "gpio": "<gpio-number — omit if no backlight control>" },
-            { "role": "power", "gpio": "<gpio-number — omit if no dedicated power control>" }
+            {
+              "role": "scl",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "sda",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "bl",
+              "gpio": "<gpio-number — omit if no backlight control>"
+            },
+            {
+              "role": "power",
+              "gpio": "<gpio-number — omit if no dedicated power control>"
+            }
           ],
           "RGB": [
-            { "role": "pclk",  "gpio": "<gpio-number>" },
-            { "role": "de",    "gpio": "<gpio-number>" },
-            { "role": "hsync", "gpio": "<gpio-number>" },
-            { "role": "vsync", "gpio": "<gpio-number>" },
-            { "role": "r0",    "gpio": "<gpio-number>" },
-            { "role": "r1",    "gpio": "<gpio-number>" },
-            { "role": "r2",    "gpio": "<gpio-number>" },
-            { "role": "r3",    "gpio": "<gpio-number>" },
-            { "role": "r4",    "gpio": "<gpio-number>" },
-            { "role": "g0",    "gpio": "<gpio-number>" },
-            { "role": "g1",    "gpio": "<gpio-number>" },
-            { "role": "g2",    "gpio": "<gpio-number>" },
-            { "role": "g3",    "gpio": "<gpio-number>" },
-            { "role": "g4",    "gpio": "<gpio-number>" },
-            { "role": "g5",    "gpio": "<gpio-number>" },
-            { "role": "b0",    "gpio": "<gpio-number>" },
-            { "role": "b1",    "gpio": "<gpio-number>" },
-            { "role": "b2",    "gpio": "<gpio-number>" },
-            { "role": "b3",    "gpio": "<gpio-number>" },
-            { "role": "b4",    "gpio": "<gpio-number>" },
-            { "role": "rst",   "gpio": "<gpio-number — omit if unused>" },
-            { "role": "bl",    "gpio": "<gpio-number — omit if no backlight control>" },
-            { "role": "power", "gpio": "<gpio-number — omit if no dedicated power control>" }
+            {
+              "role": "pclk",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "de",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "hsync",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "vsync",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "r0",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "r1",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "r2",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "r3",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "r4",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "g0",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "g1",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "g2",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "g3",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "g4",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "g5",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "b0",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "b1",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "b2",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "b3",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "b4",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "bl",
+              "gpio": "<gpio-number — omit if no backlight control>"
+            },
+            {
+              "role": "power",
+              "gpio": "<gpio-number — omit if no dedicated power control>"
+            }
           ],
           "MCU8080": [
-            { "role": "wr",    "gpio": "<gpio-number>" },
-            { "role": "rd",    "gpio": "<gpio-number>" },
-            { "role": "cs",    "gpio": "<gpio-number>" },
-            { "role": "dc",    "gpio": "<gpio-number>" },
-            { "role": "d0",    "gpio": "<gpio-number>" },
-            { "role": "d1",    "gpio": "<gpio-number>" },
-            { "role": "d2",    "gpio": "<gpio-number>" },
-            { "role": "d3",    "gpio": "<gpio-number>" },
-            { "role": "d4",    "gpio": "<gpio-number>" },
-            { "role": "d5",    "gpio": "<gpio-number>" },
-            { "role": "d6",    "gpio": "<gpio-number>" },
-            { "role": "d7",    "gpio": "<gpio-number>" },
-            { "role": "rst",   "gpio": "<gpio-number — omit if unused>" },
-            { "role": "bl",    "gpio": "<gpio-number — omit if no backlight control>" },
-            { "role": "power", "gpio": "<gpio-number — omit if no dedicated power control>" }
+            {
+              "role": "wr",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rd",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "cs",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "dc",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d0",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d1",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d2",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d3",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d4",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d5",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d6",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d7",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "bl",
+              "gpio": "<gpio-number — omit if no backlight control>"
+            },
+            {
+              "role": "power",
+              "gpio": "<gpio-number — omit if no dedicated power control>"
+            }
           ]
         },
         "optional": "<boolean>",
@@ -159,23 +390,41 @@
         }
       }
     ],
-
     "touchpad": [
       {
         "model": "<controller IC: GT911 | GT1151 | FT6336 | CST816X | CST92XX | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "interface": "I2C",
         "pins": {
           "I2C": [
-            { "role": "scl", "gpio": "<gpio-number>" },
-            { "role": "sda", "gpio": "<gpio-number>" },
-            { "role": "int", "gpio": "<gpio-number — omit if unused>" },
-            { "role": "rst", "gpio": "<gpio-number — omit if unused>" }
+            {
+              "role": "scl",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "sda",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "int",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -183,39 +432,99 @@
         }
       }
     ],
-
     "camera": [
       {
         "model": "<sensor IC: OV2640 | GC2145 | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "interface": "<DVP | UVC>",
         "pins": {
           "DVP": [
-            { "role": "pclk",    "gpio": "<gpio-number>" },
-            { "role": "vsync",   "gpio": "<gpio-number>" },
-            { "role": "hsync",   "gpio": "<gpio-number>" },
-            { "role": "mclk",    "gpio": "<gpio-number>" },
-            { "role": "rst",     "gpio": "<gpio-number — omit if unused>" },
-            { "role": "pwdn",    "gpio": "<gpio-number — omit if unused>" },
-            { "role": "i2c_scl", "gpio": "<gpio-number>" },
-            { "role": "i2c_sda", "gpio": "<gpio-number>" },
-            { "role": "d0",      "gpio": "<gpio-number>" },
-            { "role": "d1",      "gpio": "<gpio-number>" },
-            { "role": "d2",      "gpio": "<gpio-number>" },
-            { "role": "d3",      "gpio": "<gpio-number>" },
-            { "role": "d4",      "gpio": "<gpio-number>" },
-            { "role": "d5",      "gpio": "<gpio-number>" },
-            { "role": "d6",      "gpio": "<gpio-number>" },
-            { "role": "d7",      "gpio": "<gpio-number>" }
+            {
+              "role": "pclk",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "vsync",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "hsync",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "mclk",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "pwdn",
+              "gpio": "<gpio-number — omit if unused>"
+            },
+            {
+              "role": "i2c_scl",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "i2c_sda",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d0",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d1",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d2",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d3",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d4",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d5",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d6",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "d7",
+              "gpio": "<gpio-number>"
+            }
           ],
           "UVC": [
-            { "role": "pwr_en", "gpio": "<gpio-number — omit if no dedicated power control>" },
-            { "role": "rst",    "gpio": "<gpio-number — omit if unused>" }
+            {
+              "role": "pwr_en",
+              "gpio": "<gpio-number — omit if no dedicated power control>"
+            },
+            {
+              "role": "rst",
+              "gpio": "<gpio-number — omit if unused>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -223,30 +532,60 @@
         }
       }
     ],
-
     "imu": [
       {
         "model": "<sensor IC: BMI270 | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "axes": "<integer: 3 | 6 | 9>",
         "interface": "<I2C | SPI>",
         "pins": {
           "I2C": [
-            { "role": "scl", "gpio": "<gpio-number>" },
-            { "role": "sda", "gpio": "<gpio-number>" },
-            { "role": "int", "gpio": "<gpio-number — omit if unused>" }
+            {
+              "role": "scl",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "sda",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "int",
+              "gpio": "<gpio-number — omit if unused>"
+            }
           ],
           "SPI": [
-            { "role": "sck",  "gpio": "<gpio-number>" },
-            { "role": "mosi", "gpio": "<gpio-number>" },
-            { "role": "miso", "gpio": "<gpio-number>" },
-            { "role": "cs",   "gpio": "<gpio-number>" },
-            { "role": "int",  "gpio": "<gpio-number — omit if unused>" }
+            {
+              "role": "sck",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "mosi",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "miso",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "cs",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "int",
+              "gpio": "<gpio-number — omit if unused>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -254,21 +593,33 @@
         }
       }
     ],
-
     "button": [
       {
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "count": "<integer>",
         "interface": "GPIO",
         "pins": {
           "GPIO": [
-            { "role": "<btn | btn_0 | up | ok | ...>", "gpio": "<gpio-number>" },
-            { "role": "<btn_1 | down | ...>",           "gpio": "<gpio-number per additional button — omit if only one>" }
+            {
+              "role": "<btn | btn_0 | up | ok | ...>",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "<btn_1 | down | ...>",
+              "gpio": "<gpio-number per additional button — omit if only one>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -276,25 +627,40 @@
         }
       }
     ],
-
     "led": [
       {
         "model": "<IC model, e.g. WS2812B; null if plain GPIO LED>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "count": "<integer>",
         "interface": "<GPIO | SPI>",
         "pins": {
           "GPIO": [
-            { "role": "<led | led_0 | ...>", "gpio": "<gpio-number>" },
-            { "role": "<led_1 | ...>",        "gpio": "<gpio-number per additional LED — omit if only one>" }
+            {
+              "role": "<led | led_0 | ...>",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "<led_1 | ...>",
+              "gpio": "<gpio-number per additional LED — omit if only one>"
+            }
           ],
           "SPI": [
-            { "role": "data", "gpio": "<gpio-number>" }
+            {
+              "role": "data",
+              "gpio": "<gpio-number>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -302,25 +668,40 @@
         }
       }
     ],
-
     "led-pixel": [
       {
         "model": "<IC model: WS2812 | WS2812B | SM16703P | YX1903B | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "count": "<integer: total number of LEDs>",
         "interface": "<SPI | PWM>",
         "pins": {
           "SPI": [
-            { "role": "data", "gpio": "<gpio-number>" },
-            { "role": "sck",  "gpio": "<gpio-number>" }
+            {
+              "role": "data",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "sck",
+              "gpio": "<gpio-number>"
+            }
           ],
           "PWM": [
-            { "role": "data", "gpio": "<gpio-number>" }
+            {
+              "role": "data",
+              "gpio": "<gpio-number>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -328,22 +709,37 @@
         }
       }
     ],
-
     "encoder": [
       {
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "count": "<integer, usually 1>",
         "interface": "GPIO",
         "pins": {
           "GPIO": [
-            { "role": "a",    "gpio": "<gpio-number>" },
-            { "role": "b",    "gpio": "<gpio-number>" },
-            { "role": "push", "gpio": "<gpio-number — omit if no push button>" }
+            {
+              "role": "a",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "b",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "push",
+              "gpio": "<gpio-number — omit if no push button>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -351,21 +747,33 @@
         }
       }
     ],
-
     "ir": [
       {
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "count": "<integer: number of IR transceivers>",
         "interface": "GPIO",
         "pins": {
           "GPIO": [
-            { "role": "tx", "gpio": "<gpio-number — omit if TX not present>" },
-            { "role": "rx", "gpio": "<gpio-number — omit if RX not present>" }
+            {
+              "role": "tx",
+              "gpio": "<gpio-number — omit if TX not present>"
+            },
+            {
+              "role": "rx",
+              "gpio": "<gpio-number — omit if RX not present>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -373,22 +781,37 @@
         }
       }
     ],
-
     "joystick": [
       {
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "count": "<integer, usually 1>",
         "interface": "ADC",
         "pins": {
           "ADC": [
-            { "role": "x",   "gpio": "<gpio-number>" },
-            { "role": "y",   "gpio": "<gpio-number>" },
-            { "role": "btn", "gpio": "<gpio-number — omit if no push button>" }
+            {
+              "role": "x",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "y",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "btn",
+              "gpio": "<gpio-number — omit if no push button>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -396,21 +819,33 @@
         }
       }
     ],
-
     "pmic": [
       {
         "model": "<IC model: AXP2101 | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "interface": "I2C",
         "pins": {
           "I2C": [
-            { "role": "scl", "gpio": "<gpio-number>" },
-            { "role": "sda", "gpio": "<gpio-number>" }
+            {
+              "role": "scl",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "sda",
+              "gpio": "<gpio-number>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -418,26 +853,47 @@
         }
       }
     ],
-
     "printer": [
       {
         "model": "<printer mechanism: MTP02 | DP48A | null>",
-        "name": { "en": "<peripheral display name>", "zh-CN": "<外设显示名称>" },
+        "name": {
+          "en": "<peripheral display name>",
+          "zh-CN": "<外设显示名称>"
+        },
         "interface": "<UART | SPI>",
         "pins": {
           "UART": [
-            { "role": "tx", "gpio": "<gpio-number>" },
-            { "role": "rx", "gpio": "<gpio-number>" }
+            {
+              "role": "tx",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "rx",
+              "gpio": "<gpio-number>"
+            }
           ],
           "SPI": [
-            { "role": "mosi", "gpio": "<gpio-number>" },
-            { "role": "sck",  "gpio": "<gpio-number>" },
-            { "role": "cs",   "gpio": "<gpio-number — omit if unused>" }
+            {
+              "role": "mosi",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "sck",
+              "gpio": "<gpio-number>"
+            },
+            {
+              "role": "cs",
+              "gpio": "<gpio-number — omit if unused>"
+            }
           ]
         },
         "optional": "<boolean>",
         "kconfig": "<{ SYMBOL: value, ... } | null>",
-        "group": { "id": "<optional: kebab-case id>", "en": "<display name>", "zh-CN": "<中文显示名称>" },
+        "group": {
+          "id": "<optional: kebab-case id>",
+          "en": "<display name>",
+          "zh-CN": "<中文显示名称>"
+        },
         "role": "<optional: role within the group>",
         "note": {
           "en": "<non-obvious notes only; null if nothing special>",
@@ -446,17 +902,14 @@
       }
     ]
   },
-
   "links": {
     "schematic": "<URL or null>",
     "datasheet": "<URL or null>",
     "productPage": "<URL or null>"
   },
-
   "tags": [
     "<wifi | ble | zigbee | thread | edge-ai | audio | display | camera | imu | led-pixel | pmic | cellular | ...>"
   ],
-
   "source": {
     "repo": "<source repository URL or null>",
     "ref": "<branch or tag, e.g. main>",

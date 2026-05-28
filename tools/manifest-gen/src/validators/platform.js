@@ -28,8 +28,8 @@ export function validatePlatform(data) {
   if (data.connectivity == null || typeof data.connectivity !== 'object' || Array.isArray(data.connectivity))
     errors.push('connectivity — 期望 object')
 
-  if (data.kconfig == null || typeof data.kconfig !== 'object' || Array.isArray(data.kconfig))
-    errors.push('kconfig — 期望 object')
+  if (typeof data.kconfigId !== 'string' || data.kconfigId.length === 0)
+    errors.push('kconfigId — 期望非空 string')
 
   if (data.peripherals && typeof data.peripherals === 'object') {
     for (const mod of peripheralModules) {

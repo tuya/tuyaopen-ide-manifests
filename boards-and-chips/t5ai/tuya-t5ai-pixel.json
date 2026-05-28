@@ -9,10 +9,6 @@
     "en": "T5AI evaluation board with audio AEC, 8× WS2812B pixel LED matrix, BMI270 6-axis IMU, and 3 user buttons",
     "zh-CN": "搭载音频 AEC、8 颗 WS2812B 像素灯珠矩阵、BMI270 六轴 IMU 和 3 颗用户按键的 T5AI 评估板"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "imu": [
@@ -74,9 +99,10 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
-        "note": null
+        "note": null,
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led-pixel": [
@@ -96,12 +122,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Timing strict — do not change SPI clock.",
           "zh-CN": "时序严格，勿修改 SPI 时钟频率。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led": [
@@ -121,12 +148,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "button": [
@@ -153,12 +181,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ]
   },
@@ -173,10 +202,11 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "led-pixel",
-    "imu"
+    "imu",
+    "production-form"
   ],
   "kconfigId": "TUYA_T5AI_PIXEL",
   "scaffold": {
@@ -186,15 +216,6 @@
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_PIXEL": "y"
     }
   },
-  "demos": [
-    "tuya-t5-pixel-tuya-t5-pixel-bongocat-kb",
-    "tuya-t5-pixel-tuya-t5-pixel-demo",
-    "tuya-t5-pixel-tuya-t5-pixel-mic-spectrum-meter",
-    "tuya-t5-pixel-tuya-t5-pixel-simple-shapes",
-    "tuya-t5-pixel-tuya-t5-pixel-sphere-effect",
-    "tuya-t5-pixel-tuya-t5-pixel-weather",
-    "peripherals-leds-pixel"
-  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_PIXEL"
   }

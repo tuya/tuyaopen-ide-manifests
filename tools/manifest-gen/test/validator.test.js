@@ -12,7 +12,7 @@ const validAnswers = {
     cellular: { enabled: false, enableMacro: 'ENABLE_CELLULAR' },
   },
   memory: { sramBytes: 655360, romBytes: 65536, flashMaxBytes: 16777216, psramMaxBytes: 16777216, efuse: true },
-  kconfig: { PLATFORM_CHOICE: 'T5AI' },
+  kconfigId: 'T5AI',
   selectedPeripherals: ['gpio', 'uart'],
 }
 

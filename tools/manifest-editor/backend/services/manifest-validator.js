@@ -46,18 +46,6 @@ const BOARD_SCHEMA = {
         },
       ],
     },
-    brand: {
-      oneOf: [
-        { type: 'string' },
-        {
-          type: 'object',
-          properties: {
-            en: { type: 'string' },
-            'zh-CN': { type: 'string' },
-          },
-        },
-      ],
-    },
     image: {
       oneOf: [
         { type: 'null' },

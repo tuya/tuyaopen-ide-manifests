@@ -9,10 +9,6 @@
     "en": "T5AI board with UC8276 E-Ink display, NFC, FT6336 capacitive touch panel, audio AEC, 6-button layout, battery management, and SD card.",
     "zh-CN": "搭载 UC8276 电子墨水屏、NFC、FT6336 电容触控、音频 AEC、6 按键、电池管理与 SD 卡的 T5AI 板。"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "display": [
@@ -94,12 +119,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "SPI0 pinmux group 2 — MISO(47) repurposed as DC. Front light via PWM9. Refresh ~1–2 s.",
           "zh-CN": "SPI0 引脚复用组 2，MISO(47) 复用为 DC。前置灯 PWM9。刷新约 1–2 秒。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "touchpad": [
@@ -130,12 +156,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Overlaid on e-ink. Up to 2-point touch.",
           "zh-CN": "覆盖在墨水屏上，最多 2 点触控。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led": [
@@ -155,12 +182,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "button": [
@@ -199,12 +227,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ]
   },
@@ -216,11 +245,12 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "display",
     "nfc",
     "touch",
-    "battery"
+    "battery",
+    "production-form"
   ],
   "kconfigId": "TUYA_T5AI_EINK_NFC",
   "scaffold": {
@@ -229,8 +259,5 @@
       "CONFIG_BOARD_CHOICE_T5AI": "y",
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_EINK_NFC": "y"
     }
-  },
-  "demos": [
-    "graphics-u8g2-tdl-disp"
-  ]
+  }
 }

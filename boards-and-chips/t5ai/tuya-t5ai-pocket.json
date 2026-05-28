@@ -9,10 +9,6 @@
     "en": "Compact T5AI handheld board with audio AEC, ST7305 SPI display, GC2145 camera, BMI270 IMU, AXP2101 PMIC, joystick, and cellular",
     "zh-CN": "搭载音频 AEC、ST7305 SPI 屏、GC2145 摄像头、BMI270 IMU、AXP2101 电源管理、摇杆与蜂窝模块的 T5AI 掌机板"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -40,21 +36,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled. mux_sel: low = mic to MIC2, high = speaker loopback.",
           "zh-CN": "AEC 已启用。mux_sel：低电平接麦克风，高电平接扬声器回环。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "display": [
@@ -90,12 +115,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Mono. SPI0 pinmux group 2 — MISO(47) repurposed as DC. LVGL supported.",
           "zh-CN": "单色屏。SPI0 引脚复用组 2，MISO(47) 复用为 DC。支持 LVGL。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "camera": [
@@ -166,12 +192,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "I2C0 shared with IMU and PMIC. Power and reset managed by AXP2101 LDOs.",
           "zh-CN": "I2C0 与 IMU 和 PMIC 共享。电源和复位由 AXP2101 LDO 管理。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "imu": [
@@ -195,12 +222,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "I2C0 shared with camera and PMIC.",
           "zh-CN": "I2C0 与摄像头和 PMIC 共享。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "pmic": [
@@ -223,12 +251,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Must init before all other peripherals. Manages battery, MCU 3V3, camera rails, SD card 3V3.",
           "zh-CN": "须在所有外设之前初始化。管理电池、MCU 3V3、摄像头供电及 SD 卡 3V3。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "joystick": [
@@ -255,12 +284,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "X on ADC0 ch15, Y on ADC0 ch14. btn active low.",
           "zh-CN": "X 轴 ADC0 通道 15，Y 轴 ADC0 通道 14。按键低有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led": [
@@ -280,12 +310,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "button": [
@@ -316,12 +347,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ]
   },
@@ -336,13 +368,14 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "display",
     "camera",
     "imu",
     "pmic",
-    "cellular"
+    "cellular",
+    "production-form"
   ],
   "kconfigId": "TUYA_T5AI_POCKET",
   "scaffold": {
@@ -352,27 +385,6 @@
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_POCKET": "y"
     }
   },
-  "demos": [
-    "tuya-t5-pocket-tuya-t5-pocket-ai",
-    "graphics-lvgl-demo",
-    "graphics-lvgl-gif",
-    "graphics-lvgl-label",
-    "graphics-u8g2-tdl-disp",
-    "multimedia-audio-kws",
-    "multimedia-audio-player-music",
-    "multimedia-audio-player-tts",
-    "multimedia-audio-recorder-output-sdcard",
-    "multimedia-audio-vad",
-    "peripherals-audio-codecs",
-    "peripherals-button",
-    "peripherals-camera-output-display",
-    "peripherals-camera-output-sdcard",
-    "peripherals-display-fill-color",
-    "peripherals-display-picture",
-    "peripherals-joystick",
-    "peripherals-led",
-    "peripherals-sd"
-  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_POCKET"
   }

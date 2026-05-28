@@ -31,5 +31,5 @@ export async function runPlatformShow(filePath) {
 
   const periList = Object.keys(data.peripherals ?? {})
   console.log(`  外设 (${periList.length})：${periList.join(', ') || '无'}`)
-  console.log(`  Schema: v${data.schemaVersion}  |  Kconfig: PLATFORM_CHOICE=${data.kconfig?.PLATFORM_CHOICE ?? '?'}\n`)
+  console.log(`  Schema: v${data.schemaVersion}  |  kconfigId: ${data.kconfigId ?? '?'}\n`)
 }

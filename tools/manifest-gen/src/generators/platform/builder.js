@@ -1,7 +1,7 @@
 import { peripheralModules } from '../registry.js'
 
 export function buildPlatform(answers) {
-  const { platformId, variantId, name, arch, flashInterface, connectivity, memory, kconfig, selectedPeripherals, peripheralConfigs = {} } = answers
+  const { platformId, variantId, name, arch, flashInterface, connectivity, memory, kconfigId, selectedPeripherals, peripheralConfigs = {} } = answers
 
   const peripherals = {}
   for (const mod of peripheralModules) {
@@ -20,7 +20,7 @@ export function buildPlatform(answers) {
     connectivity,
     memory,
     peripherals,
-    kconfig,
+    kconfigId,
   }
 }
 

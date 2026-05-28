@@ -9,10 +9,6 @@
     "en": "Waveshare 1.75-inch 466×466 Touch AMOLED board based on T5-E1 module with CO5300 display driver, CST9217 capacitive touch, QMI8658 6-axis IMU, PCF85063 RTC, audio AEC with speaker output, battery management, Micro SD slot, and LVGL support.",
     "zh-CN": "基于 T5-E1 模组的微雪 1.75 寸 466×466 触摸 AMOLED 开发板，搭载 CO5300 显示驱动、CST9217 电容触控、QMI8658 六轴 IMU、PCF85063 实时时钟、音频 AEC 及扬声器输出、电池管理、Micro SD 卡槽，支持 LVGL。"
   },
-  "brand": {
-    "en": "Waveshare",
-    "zh-CN": "微雪电子"
-  },
   "manufacturer": {
     "en": "Waveshare",
     "zh-CN": "微雪电子"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled. 2 audio ADCs (mic), 1 DAC. Speaker via MX1.25 connector (8Ω 1W/2W). pa_ctrl active low. MIC1 = microphone input, MIC2 = AEC reference, LP/LN = differential speaker output.",
           "zh-CN": "已启用 AEC。2 路音频 ADC（麦克风），1 路 DAC。扬声器通过 MX1.25 接口（8Ω 1W/2W）。pa_ctrl 低有效。MIC1 = 麦克风输入，MIC2 = AEC 回采，LP/LN = 差分喇叭输出。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "display": [
@@ -98,12 +123,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "QSPI Port 0, 80 MHz. 16.7M colors, RGB565. LVGL supported with dual display buffer. Backlight controlled via CO5300 command.",
           "zh-CN": "QSPI 端口 0，80 MHz。1670 万色，RGB565。支持 LVGL 双显示缓冲。背光通过 CO5300 命令控制。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "touchpad": [
@@ -134,12 +160,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "I2C0. Tempered glass with self-capacitance design. Mirror X/Y enabled.",
           "zh-CN": "I2C0。钢化玻璃自电容设计。X/Y 轴镜像已启用。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "imu": [
@@ -171,12 +198,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "I2C0 shared with touch and RTC. 3-axis accelerometer + 3-axis gyroscope.",
           "zh-CN": "I2C0 与触控和 RTC 共享。三轴加速度计 + 三轴陀螺仪。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "rtc": [
@@ -203,12 +231,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "I2C0 shared with touch and IMU.",
           "zh-CN": "I2C0 与触控和 IMU 共享。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "sd_card": [
@@ -251,12 +280,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "4-bit SDIO. Card detect on GPIO 8.",
           "zh-CN": "4 位 SDIO。卡检测引脚 GPIO 8。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led": [
@@ -276,12 +306,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active high. Also exposed on breakout header.",
           "zh-CN": "高有效。同时引出至排针。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "button": [
@@ -300,12 +331,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low with pull-up. Separate reset button also present.",
           "zh-CN": "低有效带上拉。另有独立复位按键。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "power": [
@@ -336,12 +368,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "sys_en: power latch, active high — hold high after boot. sys_out: power button detect, active low. bat_adc: battery voltage ADC. bat_chg: charge status.",
           "zh-CN": "sys_en：电源锁存，高有效——启动后须保持高电平。sys_out：电源按键检测，低有效。bat_adc：电池电压 ADC。bat_chg：充电状态。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "expansion": [
@@ -376,12 +409,13 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": null,
         "note": {
           "en": "8-pin 2.54mm header. Pin 1: 5V, Pin 2: GND, Pin 3: 3V3, Pin 4–8: IO14, IO15, IO16, IO17, IO47. IO47 also drives on-board LED.",
           "zh-CN": "8 针 2.54mm 排针。Pin 1: 5V、Pin 2: GND、Pin 3: 3V3、Pin 4–8: IO14、IO15、IO16、IO17、IO47。IO47 同时驱动板载 LED。"
-        }
+        },
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": null,
@@ -442,12 +476,13 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": null,
         "note": {
           "en": "Solder pads. IO40/41 muxable as UART2 or GPS TX/RX. IO32–38 are space-reserved pads. USB host pads (T5D_N/T5D_P) also available.",
           "zh-CN": "焊盘。IO40/41 可复用为 UART2 或 GPS TX/RX。IO32–38 为预留空间焊盘。另有 USB Host 焊盘（T5D_N/T5D_P）。"
-        }
+        },
+        "mounting": "accessory",
+        "pinLocked": false
       }
     ]
   },
@@ -466,15 +501,15 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "display",
     "touch",
-    "amoled",
+    "led",
     "imu",
-    "rtc",
     "battery",
-    "sd-card"
+    "sd-card",
+    "production-form"
   ],
   "kconfigId": "WAVESHARE_T5AI_TOUCH_AMOLED_1_75",
   "scaffold": {
@@ -484,13 +519,6 @@
       "CONFIG_BOARD_CHOICE_WAVESHARE_T5AI_TOUCH_AMOLED_1_75": "y"
     }
   },
-  "demos": [
-    "tuya-ai-your-chat-bot",
-    "graphics-lvgl-demo",
-    "graphics-lvgl-gif",
-    "peripherals-display-fill-color",
-    "peripherals-display-picture"
-  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/WAVESHARE_T5AI_TOUCH_AMOLED_1_75"
   }

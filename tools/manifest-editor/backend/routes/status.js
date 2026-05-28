@@ -23,7 +23,7 @@ router.get('/', asyncHandler(async (req, res) => {
     const boards = manifestLoader.getBoards();
     const tags = manifestLoader.getTags();
     const boardCount = boards?.items?.length || 0;
-    const tagCount = tags?.tags?.length || 0;
+    const tagCount = tags?.categories?.reduce((sum, cat) => sum + (cat.tags?.length || 0), 0) || 0;
 
     res.json({
       success: true,
@@ -95,7 +95,7 @@ router.get('/tags', asyncHandler(async (req, res) => {
 
   res.json({
     success: true,
-    tags: tagsData.tags || [],
+    categories: tagsData.categories || [],
   });
 }));
 

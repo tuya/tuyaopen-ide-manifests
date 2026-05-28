@@ -464,5 +464,5 @@
       "count": 1
     }
   },
-  "kconfig": {"PLATFORM_CHOICE": "<PLATFORM_KCONFIG_VALUE>"}
+  "kconfigId": "<PLATFORM_KCONFIG_VALUE>"
 }

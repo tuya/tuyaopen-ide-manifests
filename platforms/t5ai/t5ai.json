@@ -667,5 +667,5 @@
     {"pin": 69, "name": "MP2", "gpio": null, "type": "AI", "functions": ["Microphone 2 positive input (MIC2_P)"], "note": "Speaker AEC reference"},
     {"pin": 70, "name": "MBS", "gpio": null, "type": "AO", "functions": ["Microphone bias output (MICBIAS)"]}
   ],
-  "kconfig": {"PLATFORM_CHOICE": "T5AI"}
+  "kconfigId": "T5AI"
 }

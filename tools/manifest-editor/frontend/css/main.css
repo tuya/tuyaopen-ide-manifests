@@ -859,7 +859,7 @@ body {
 
 .tags-available-pool {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 6px;
   margin-top: 10px;
 }
@@ -1269,6 +1269,32 @@ body {
   border: 1px dashed var(--color-border);
   border-radius: 8px;
 }
+.peri-group {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  background: rgba(14, 165, 233, 0.02);
+}
+.peri-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(14, 165, 233, 0.05);
+  border-radius: 8px 8px 0 0;
+}
+.peri-group-icon { font-size: 14px; }
+.peri-group-name { font-weight: 600; font-size: 12px; color: var(--color-primary); }
+.peri-group-count {
+  font-size: 11px;
+  background: var(--color-primary);
+  color: white;
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+.peri-group-items { padding: 4px 8px; }
+.peri-group-items .peri-card { margin-left: 8px; }
 .peri-card {
   display: flex;
   align-items: center;
@@ -1291,6 +1317,34 @@ body {
   border-radius: 4px;
   margin-right: 6px;
   text-transform: capitalize;
+}
+.peri-card-mounting {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+  font-weight: 500;
+}
+.peri-card-mounting--onboard {
+  background: rgba(16, 185, 129, 0.1);
+  color: #065f46;
+}
+.peri-card-mounting--accessory {
+  background: #fef3c7;
+  color: #92400e;
+}
+.peri-card-locked, .peri-card-unlocked {
+  font-size: 12px;
+  margin-left: 4px;
+}
+.peri-card-role {
+  font-size: 10px;
+  background: rgba(139, 92, 246, 0.1);
+  color: #7c3aed;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 4px;
+  font-weight: 500;
 }
 .peri-card-opt {
   font-size: 10px;

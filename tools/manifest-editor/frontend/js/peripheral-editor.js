@@ -1,5 +1,5 @@
 import { apiClient } from './api-client.js';
-import { t } from './i18n.js';
+import i18n, { t } from './i18n.js';
 
 let currentBoardId = null;
 let peripheralData = {};
@@ -58,13 +58,52 @@ function renderList() {
     html += `<div class="peri-empty">${esc(t('periEmpty'))}</div>`;
   }
 
-  for (const { type, index, item } of items) {
+  // Organize items: ungrouped first (onboard before accessory), then grouped
+  const ungrouped = items.filter(i => !i.item.group);
+  ungrouped.sort((a, b) => {
+    const aOnboard = a.item.mounting !== 'accessory' ? 0 : 1;
+    const bOnboard = b.item.mounting !== 'accessory' ? 0 : 1;
+    return aOnboard - bOnboard;
+  });
+  const grouped = {};
+  for (const entry of items) {
+    if (!entry.item.group) continue;
+    const g = entry.item.group;
+    if (!grouped[g]) grouped[g] = [];
+    grouped[g].push(entry);
+  }
+
+  // Render ungrouped items
+  for (const { type, index, item } of ungrouped) {
     const key = `${type}:${index}`;
     if (editingKey === key) {
       html += renderForm(type, item, index);
     } else {
       html += renderCard(type, item, index);
     }
+  }
+
+  // Render grouped items
+  for (const [groupName, entries] of Object.entries(grouped)) {
+    const groupDisplayName = (i18n.getLanguage() === 'zh-CN'
+      ? entries[0]?.item?.name?.['zh-CN'] || entries[0]?.item?.name?.en
+      : entries[0]?.item?.name?.en || entries[0]?.item?.name?.['zh-CN']) || groupName;
+    html += `<div class="peri-group">
+      <div class="peri-group-header">
+        <span class="peri-group-icon">⛓</span>
+        <span class="peri-group-name">${esc(groupDisplayName)}</span>
+        <span class="peri-group-count">${entries.length}</span>
+      </div>
+      <div class="peri-group-items">`;
+    for (const { type, index, item } of entries) {
+      const key = `${type}:${index}`;
+      if (editingKey === key) {
+        html += renderForm(type, item, index);
+      } else {
+        html += renderCard(type, item, index);
+      }
+    }
+    html += `</div></div>`;
   }
 
   if (editingKey === 'new') {
@@ -76,17 +115,23 @@ function renderList() {
 }
 
 function renderCard(type, item, index) {
-  const name = item.name?.en || item.name?.['zh-CN'] || item.model || 'Unnamed';
+  const isZh = i18n.getLanguage() === 'zh-CN';
+  const name = (isZh ? item.name?.['zh-CN'] || item.name?.en : item.name?.en || item.name?.['zh-CN']) || item.model || 'Unnamed';
   const iface = item.interface || '';
   const model = item.model || '';
-  const opt = item.optional ? `<span class="peri-card-opt">${esc(t('periOptional'))}</span>` : '';
+  const mountingLabel = i18n.getLanguage() === 'zh-CN'
+    ? (item.mounting === 'accessory' ? '配件' : '板载')
+    : (item.mounting === 'accessory' ? 'accessory' : 'onboard');
+  const mountingTag = `<span class="peri-card-mounting peri-card-mounting--${item.mounting === 'accessory' ? 'accessory' : 'onboard'}">${esc(mountingLabel)}</span>`;
+  const lockedTag = item.pinLocked ? `<span class="peri-card-locked">🔒</span>` : `<span class="peri-card-unlocked">🔓</span>`;
+  const roleTag = item.role ? `<span class="peri-card-role">${esc(item.role)}</span>` : '';
   const key = `${type}:${index}`;
 
   return `<div class="peri-card" data-key="${esc(key)}">
     <div class="peri-card-info">
       <div class="peri-card-name">
         <span class="peri-card-type-badge">${esc(type)}</span>
-        ${esc(name)} ${opt}
+        ${esc(name)} ${roleTag} ${mountingTag} ${lockedTag}
       </div>
       <div class="peri-card-meta">${model ? esc(model) + ' · ' : ''}${esc(iface)}</div>
     </div>
@@ -139,8 +184,15 @@ function renderForm(type, item, index) {
         <input type="text" class="peri-input" name="resolution" value="${esc(item?.resolution || '')}" placeholder="240x240">
       </div>
       <div class="peri-field-row">
+        <label>Mounting</label>
+        <select class="peri-input" name="mounting">
+          <option value="onboard" ${item?.mounting !== 'accessory' ? 'selected' : ''}>Onboard / 板载</option>
+          <option value="accessory" ${item?.mounting === 'accessory' ? 'selected' : ''}>Accessory / 配件</option>
+        </select>
+      </div>
+      <div class="peri-field-row">
         <label class="peri-checkbox-label">
-          <input type="checkbox" name="optional" ${item?.optional ? 'checked' : ''}> ${esc(t('periOptional'))}
+          <input type="checkbox" name="pinLocked" ${item?.pinLocked !== false ? 'checked' : ''}> Pin Locked / 引脚锁定
         </label>
       </div>
     </div>
@@ -258,12 +310,13 @@ function saveFromForm(form) {
   const nameEn = form.querySelector('[name="name_en"]').value.trim();
   const nameZh = form.querySelector('[name="name_zh"]').value.trim();
   const iface = form.querySelector('[name="interface"]').value.trim();
-  const optional = form.querySelector('[name="optional"]').checked;
+  const mounting = form.querySelector('[name="mounting"]').value;
+  const pinLocked = form.querySelector('[name="pinLocked"]').checked;
 
   if (!type) { alert(t('periTypeRequired')); return; }
   if (!nameEn) { alert(t('periNameRequired')); return; }
 
-  const item = { name: { en: nameEn }, interface: iface || undefined, optional };
+  const item = { name: { en: nameEn }, interface: iface || undefined, mounting, pinLocked };
   if (nameZh) item.name['zh-CN'] = nameZh;
 
   const model = form.querySelector('[name="model"]')?.value.trim();

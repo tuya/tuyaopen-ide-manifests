@@ -37,7 +37,6 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if (detail.variantId) merged.variantId = detail.variantId;
     if (detail.kconfigId) merged.kconfigId = detail.kconfigId;
     if (detail.scaffold) merged.scaffold = detail.scaffold;
-    if (detail.demos) merged.demos = detail.demos;
     if (detail.links) merged.links = detail.links;
     if (detail.peripheralPatterns) merged.peripheralPatterns = detail.peripheralPatterns;
     if (detail.source) merged.source = detail.source;
@@ -70,7 +69,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/boards - Create new board
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, name, platformId, manufacturer, brand, summary, tags, published } = req.body;
+  const { id, name, platformId, manufacturer, summary, tags, published } = req.body;
 
   // Validate required fields
   if (!id || !name || !platformId) {
@@ -86,13 +85,11 @@ router.post('/', asyncHandler(async (req, res) => {
     name,
     platformId,
     manufacturer: manufacturer || { en: 'Unknown' },
-    brand: brand || { en: 'Ecosystem' },
     summary: summary || {},
     tags: tags || [],
     image: null,
     detailUrl: `boards-and-chips/${platformId}/${id}.json`,
     published: published !== undefined ? published : true,
-    recommendedDemos: [],
   };
 
   // Validate ID uniqueness
@@ -115,22 +112,29 @@ router.post('/', asyncHandler(async (req, res) => {
   // Save manifest
   await manifestLoader.saveBoardsIndex(boards);
 
+  // Auto-derive scaffold baseConfig from platformId + kconfigId if not provided
+  const boardKconfigId = req.body.kconfigId || '';
+  const derivedBaseConfig = boardKconfigId && platformId
+    ? {
+        [`CONFIG_BOARD_CHOICE_${platformId.toUpperCase()}`]: 'y',
+        [`CONFIG_BOARD_CHOICE_${boardKconfigId}`]: 'y',
+      }
+    : {};
+
   // Create initial detail file
   const initialDetail = {
     schemaVersion: 1,
     id,
     name,
     summary: summary || {},
-    brand: brand || { en: 'Ecosystem' },
     manufacturer: manufacturer || { en: 'Unknown' },
     platformId,
     variantId: platformId,
     peripheralPatterns: {},
     links: { schematic: null, datasheet: null, productPage: null },
     tags: tags || [],
-    kconfigId: '',
-    scaffold: { template: 'tools/app_template/base', baseConfig: {} },
-    demos: [],
+    kconfigId: boardKconfigId,
+    scaffold: req.body.scaffold || { template: 'tools/app_template/base', baseConfig: derivedBaseConfig },
   };
   await manifestLoader.saveBoardDetail(id, initialDetail);
 
@@ -189,7 +193,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   }
 
   // Fields that go to the index
-  const indexFields = ['name', 'platformId', 'manufacturer', 'brand', 'summary', 'tags', 'image', 'published'];
+  const indexFields = ['name', 'platformId', 'manufacturer', 'summary', 'tags', 'image', 'published'];
   for (const key of indexFields) {
     if (updates[key] !== undefined) {
       board[key] = updates[key];
@@ -200,7 +204,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   await manifestLoader.saveBoardsIndex(boards);
 
   // Fields that go to the detail file: kconfigId, scaffold, variantId, demos, peripheralPatterns, links, source
-  const detailFields = ['kconfigId', 'scaffold', 'variantId', 'demos', 'links', 'source'];
+  const detailFields = ['kconfigId', 'scaffold', 'variantId', 'links', 'source'];
   // Map editor link fields back to nested links object (merge with existing)
   const editorLinkFields = ['schematicLink', 'guideDocs', 'purchaseLink', 'threeDModelLink'];
   const hasEditorLinks = editorLinkFields.some(k => updates[k] !== undefined);
@@ -234,7 +238,6 @@ router.patch('/:id', asyncHandler(async (req, res) => {
         id: req.params.id,
         name: board.name,
         summary: board.summary || {},
-        brand: board.brand || {},
         manufacturer: board.manufacturer || {},
         platformId: board.platformId,
         variantId: board.variantId || board.platformId,
@@ -343,7 +346,6 @@ router.patch('/:id/peripherals', asyncHandler(async (req, res) => {
       id: req.params.id,
       name: item.name,
       summary: item.summary || {},
-      brand: item.brand || {},
       manufacturer: item.manufacturer || {},
       platformId: item.platformId,
       variantId: item.variantId || item.platformId,

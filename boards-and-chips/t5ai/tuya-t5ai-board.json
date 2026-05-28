@@ -9,10 +9,6 @@
     "en": "Tuya T5AI flagship evaluation board with audio codec, LED, and configurable display/camera modules.",
     "zh-CN": "涂鸦 T5AI 旗舰评估板，搭载音频编解码器、LED，支持可配置显示屏与摄像头模块。"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC available on v1.0.2+.",
           "zh-CN": "AEC 在 v1.0.2+ 硬件上可用。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "display": [
@@ -164,14 +189,15 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "TUYA_T5AI_BOARD_LCD_35565": 1
         },
         "note": {
           "en": "SW SPI for init only; RGB data pins are platform-fixed.",
           "zh-CN": "SW SPI 仅用于初始化，RGB 数据脚为平台固定引脚。"
-        }
+        },
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": "ST7735S",
@@ -207,7 +233,6 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "TUYA_T5AI_BOARD_LCD_EYES": 1,
           "ENABLE_EYES_TWO_LCD": 0
@@ -215,7 +240,9 @@
         "note": {
           "en": "Both screens share all pins — always show identical content.",
           "zh-CN": "两块屏共享所有引脚，始终显示相同内容。"
-        }
+        },
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": "ST7735S",
@@ -251,9 +278,10 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": null,
-        "note": null
+        "note": null,
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": "ST7735S",
@@ -289,12 +317,13 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "TUYA_T5AI_BOARD_LCD_EYES": 1,
           "ENABLE_EYES_TWO_LCD": 1
         },
-        "note": null
+        "note": null,
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": "ST7735S",
@@ -330,9 +359,10 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": null,
-        "note": null
+        "note": null,
+        "mounting": "accessory",
+        "pinLocked": false
       },
       {
         "model": "SSD1306",
@@ -354,11 +384,12 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "TUYA_T5AI_BOARD_LCD_096_OLED": 1
         },
-        "note": null
+        "note": null,
+        "mounting": "accessory",
+        "pinLocked": false
       }
     ],
     "camera": [
@@ -433,11 +464,12 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "TUYA_T5AI_BOARD_CAMERA": 1
         },
-        "note": null
+        "note": null,
+        "mounting": "accessory",
+        "pinLocked": false
       }
     ],
     "printer": [
@@ -460,39 +492,15 @@
             }
           ]
         },
-        "optional": true,
         "kconfig": {
           "TUYA_T5AI_BOARD_PRINTER_DP48": 1
         },
         "note": {
           "en": "9600 bps.",
           "zh-CN": "9600 bps。"
-        }
-      }
-    ],
-    "led": [
-      {
-        "model": null,
-        "name": {
-          "en": "Indicator LED",
-          "zh-CN": "指示灯"
         },
-        "count": 1,
-        "interface": "GPIO",
-        "pins": {
-          "GPIO": [
-            {
-              "role": "led",
-              "gpio": 1
-            }
-          ]
-        },
-        "optional": false,
-        "kconfig": null,
-        "note": {
-          "en": "Active high.",
-          "zh-CN": "高有效。"
-        }
+        "mounting": "accessory",
+        "pinLocked": false
       }
     ],
     "button": [
@@ -511,11 +519,37 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
+        },
+        "mounting": "onboard",
+        "pinLocked": true
+      }
+    ],
+    "led": [
+      {
+        "name": {
+          "en": "Indicator LED",
+          "zh-CN": "指示灯"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "count": 1,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "led",
+              "gpio": 1
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active high.",
+          "zh-CN": "高有效。"
         }
       }
     ]
@@ -535,7 +569,7 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "configurable"
   ],
@@ -547,17 +581,6 @@
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_BOARD": "y"
     }
   },
-  "demos": [
-    "multimedia-audio-kws",
-    "multimedia-audio-player-music",
-    "multimedia-audio-player-tts",
-    "multimedia-audio-recorder-output-sdcard",
-    "multimedia-audio-vad",
-    "peripherals-audio-codecs",
-    "peripherals-button",
-    "peripherals-led",
-    "peripherals-sd"
-  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_BOARD"
   }

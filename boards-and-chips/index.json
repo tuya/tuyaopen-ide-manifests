@@ -4,33 +4,53 @@
   "publishedAt": "2026-05-13T00:00:00Z",
   "items": [
     {
+      "id": "tuya-t5-e1",
+      "name": {
+        "en": "Tuya T5-E1 Module",
+        "zh-CN": "涂鸦 T5-E1 模组"
+      },
+      "manufacturer": "Tuya",
+      "platformId": "t5ai",
+      "summary": {
+        "en": "T5-E1 Wi-Fi & Bluetooth chip module. Two packages: T5-E1 (onboard antenna) and T5-E1-IPEX (IPEX connector). Start from scratch with default platform overlay.",
+        "zh-CN": "T5-E1 Wi-Fi 和蓝牙芯片模组。两种封装：T5-E1（板载天线）和 T5-E1-IPEX（IPEX 接口）。使用默认平台配置从零开始开发。"
+      },
+      "image": {
+        "url": "images/tuya-t5-e1/tuya-t5-e1.jpg"
+      },
+      "detailUrl": "boards-and-chips/t5ai/tuya-t5-e1.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "module"
+      ]
+    },
+    {
       "id": "tuya-t5ai-board",
       "name": {
         "en": "Tuya T5AI Board",
         "zh-CN": "涂鸦 T5AI-Board 开发板"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "Tuya T5AI-Board is a voice and screen multi-interaction development board based on the T5-E1-IPEX module, which is an embedded Wi-Fi and Bluetooth combo module developed by Tuya. The board is equipped with 2 microphones and 1 speaker, supporting voice recognition and playback to enable voice interaction functionality.\n\nThrough the I/O connectors on the board, you can use an LCD display stack module to implement touchscreen and camera capture capabilities. You can also design your own LCD screen, supporting multiple interfaces including I2C, SPI, 8080, and RGB.",
         "zh-CN": "涂鸦 T5AI-Board 是一款基于 T5-E1-IPEX 的语音和屏幕多交互开发板，T5-E1-IPEX 是涂鸦智能开发的嵌入式 Wi-Fi 和蓝牙组合模块。该开发板配备 2 个麦克风和 1 个扬声器，支持语音识别和播放，提供语音交互功能。\n\n通过开发板上的 I/O 连接器，您可以使用 LCD 显示堆叠模块来实现触摸屏和摄像头捕获功能。您还可以设计自己的 LCD 屏幕，支持多种接口，包括 I2C、SPI、8080 和 RGB 接口"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "audio"
-      ],
       "image": {
         "url": "images/tuya-t5ai-board/tuya-t5ai-board.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-board.json",
-      "recommendedDemos": [
-        "voice-assistant",
-        "switch-3-iot"
-      ],
-      "published": true
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "configurable"
+      ]
     },
     {
       "id": "tuya-t5ai-evb",
@@ -38,26 +58,22 @@
         "en": "Tuya T5AI EVB",
         "zh-CN": "涂鸦 T5AI 白盒"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "Tuya T5AI engineering validation board with audio AEC and display.",
         "zh-CN": "涂鸦 T5AI 工程验证板，集成音频回声消除与显示屏。"
       },
+      "image": null,
+      "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-evb.json",
+      "published": false,
       "tags": [
         "wifi",
         "ble",
-        "edge-ai",
+        "ai",
         "audio",
         "display"
-      ],
-      "image": null,
-      "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-evb.json",
-      "recommendedDemos": [
-        "voice-assistant"
-      ],
-      "published": false
+      ]
     },
     {
       "id": "tuya-t5ai-core",
@@ -65,32 +81,27 @@
         "en": "Tuya T5AI-Core",
         "zh-CN": "涂鸦 T5AI-Core 核心板"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "Tuya T5AI-Core Development Kit is a highly integrated voice core development board based on the T5-E1 module. The T5-E1 module, independently developed by Tuya Smart, incorporates embedded Wi-Fi and Bluetooth capabilities, making it suitable for a variety of smart hardware scenarios. This board features an onboard microphone and speaker, supporting local voice recognition and audio playback to meet the requirements of voice interaction applications.\n\nThe board is equipped with a 44-pin header, making it easy for you to quickly develop and prototype AIoT projects. An onboard lithium battery power management circuit supports low-power design, suitable for developing mobile and portable smart devices.\n\nThis board provides extensive hardware interfaces and comprehensive voice functionality, so it stands out as an ideal choice for you to develop AIoT voice interaction applications.",
         "zh-CN": "涂鸦 T5AI-Core 开发套件是一款基于 T5-E1 模组的高集成度语音核心开发板。T5-E1 模组由涂鸦智能自主研发，集成了嵌入式 Wi-Fi 与蓝牙功能，适用于多种智能硬件场景。T5AI-Core 开发板板载 1 个麦克风和 1 个扬声器，支持本地语音识别与音频播放，满足语音交互应用需求。\n\n开发板配备 44 Pin 排针，便于开发者进行快速的 AIoT 项目开发与原型验证。板载锂电池电源管理电路，支持低功耗设计，适合移动和便携式智能设备的开发。\n\n本开发板提供了丰富的硬件接口和完善的语音功能，是 AIoT 语音交互应用开发的理想选择。"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "audio",
-        "compact",
-        "bluetooth",
-        "starter-kit",
-        "development",
-        "battery"
-      ],
       "image": {
         "url": "images/tuya-t5ai-core/tuya-t5ai-core.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-core.json",
-      "recommendedDemos": [
-        "voice-assistant"
-      ],
-      "published": true
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "compact",
+        "starter-kit",
+        "development",
+        "battery"
+      ]
     },
     {
       "id": "tuya-t5ai-pixel",
@@ -98,29 +109,26 @@
         "en": "Tuya T5AI Pixel",
         "zh-CN": "涂鸦 T5AI Pixel 板"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "Pixel Art with 32x32 high pixel density LED panel. WIFI/BTE connected with Tuya T5-E1 chipset. On board with WS2812B pixel LEDs, BMI270 6-axis IMU, buzzer, and multi-button layout. Audio, mic and speakers. Make suited for AI + Pixel applications.",
         "zh-CN": "搭载 32×32 高密度像素 LED 屏，采用涂鸦 T5-E1 芯片实现蓝牙、Wi-Fi 双联网。板载 WS2812B 像素灯珠、BMI270 六轴姿态传感器、蜂鸣器与多功能按键，配备完整收音及扬声组件，专为人工智能与像素创意应用量身打造。\n"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "audio",
-        "led-pixel",
-        "imu"
-      ],
       "image": {
         "url": "images/tuya-t5ai-pixel/tuya-t5ai-pixel.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-pixel.json",
-      "recommendedDemos": [
-        "voice-assistant"
-      ],
-      "published": true
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "led-pixel",
+        "imu",
+        "production-form"
+      ]
     },
     {
       "id": "tuya-t5ai-pocket",
@@ -128,31 +136,29 @@
         "en": "Tuya T5AI Pocket",
         "zh-CN": "涂鸦 T5AI Pocket 板"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "Tuya-T5-Pocket is a portable handheld device built on the open-source TuyaOpen framework. It supports deep integration with multimodal AI Agent and large language models, as well as audio-video multimodal large models.\nPowered by Tuya T5 Wi-Fi & Bluetooth chip module, the project features fully open-source hardware design and software code. It comes with abundant onboard sensors and powerful external expansion compatibility.\nThis compact T5 AI board integrates mono display screen, camera, AXP2101 power management unit, BMI270 IMU, joystick and cellular module.",
         "zh-CN": "Tuya-T5-Pocket 是一款基于 TuyaOpen 开源框架打造的便携掌机。可深度接入多模态 AI-Agent LLM 大模型和音视频多模态大模型。本项目搭配涂鸦 T5 WiFi/蓝牙芯片模组，从硬件设计到软件代码完全开源，内置丰富的传感器并具备强大的外置扩展能力。.便携式 T5AI 板，集成显示屏、摄像头、AXP2101 电源管理、BMI270 IMU、摇杆与蜂窝模块。"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "display",
-        "camera",
-        "imu",
-        "pmic",
-        "cellular"
-      ],
       "image": {
         "url": "images/tuya-t5ai-pocket/tuya-t5ai-pocket.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-pocket.json",
-      "recommendedDemos": [
-        "voice-assistant"
-      ],
-      "published": true
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "display",
+        "camera",
+        "imu",
+        "pmic",
+        "cellular",
+        "production-form"
+      ]
     },
     {
       "id": "tuya-t5ai-eink-nfc",
@@ -160,55 +166,27 @@
         "en": "Tuya T5AI E-Ink NFC",
         "zh-CN": "涂鸦 T5AI 墨水屏 NFC 板"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "T5AI board with UC8276 E-Ink display, NFC, touch panel, 6-button layout, battery management, and SD card.",
         "zh-CN": "搭载 UC8276 电子墨水屏、NFC、触摸屏、6 按键、电池管理与 SD 卡的 T5AI 板。"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "display",
-        "nfc",
-        "touch",
-        "battery"
-      ],
       "image": {
         "url": "images/tuya-t5ai-eink-nfc/tuya-t5ai-eink-nfc.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-eink-nfc.json",
-      "recommendedDemos": [],
-      "published": true
-    },
-    {
-      "id": "tuya-t5-e1",
-      "name": {
-        "en": "Tuya T5-E1 Module",
-        "zh-CN": "涂鸦 T5-E1 模组"
-      },
-      "brand": "Tuya",
-      "manufacturer": "Tuya",
-      "platformId": "t5ai",
-      "summary": {
-        "en": "T5-E1 Wi-Fi & Bluetooth chip module. Two packages: T5-E1 (onboard antenna) and T5-E1-IPEX (IPEX connector). Start from scratch with default platform overlay.",
-        "zh-CN": "T5-E1 Wi-Fi 和蓝牙芯片模组。两种封装：T5-E1（板载天线）和 T5-E1-IPEX（IPEX 接口）。使用默认平台配置从零开始开发。"
-      },
+      "published": true,
       "tags": [
         "wifi",
         "ble",
-        "edge-ai",
-        "module",
-        "chip"
-      ],
-      "image": {
-        "url": "images/tuya-t5-e1/tuya-t5-e1.jpg"
-      },
-      "detailUrl": "boards-and-chips/t5ai/tuya-t5-e1.json",
-      "recommendedDemos": [],
-      "published": true
+        "ai",
+        "display",
+        "nfc",
+        "touch",
+        "battery",
+        "production-form"
+      ]
     },
     {
       "id": "t5ai-mini",
@@ -216,28 +194,24 @@
         "en": "T5AI Mini",
         "zh-CN": "T5AI Mini 开发板"
       },
-      "brand": "Tuya",
       "manufacturer": "Tuya",
       "platformId": "t5ai",
       "summary": {
         "en": "The T5-E1-Mini is a dedicated controller board for dual-mode intelligent robots, built on the open-source Otto DIY ecosystem and tailored for makers, students, and robotics enthusiasts. Equipped with the Tuya T5-E1 chip, it supports dual Wi-Fi and Bluetooth connectivity and features a lively display for expressive facial interaction. It delivers 6-channel servo control and supports one-click switching between walking mode and wheeled racing mode for flexible and versatile operation. Leveraging its mature hardware design and open-source ecosystem, it enables a wide range of creative applications, including desktop intelligent companionship, AI interaction, and real-time voice dialogue.",
         "zh-CN": "T5-E1-Mini 是一款基于 Otto DIY 开源生态打造的双模式智能机器人专用板卡，专为创客、在校学生及机器人爱好者量身定制。设备搭载涂鸦 T5-E1 芯片，支持 Wi-Fi、蓝牙双模组连接，配备灵动可爱的显示屏表情交互设计。支持6路舵机控制。设备支持步行模式、轮式竞速模式一键自由切换，功能形态灵活多变。依托成熟的硬件配置与开源生态，可轻松实现桌面智能陪伴、AI 智能交互、实时语音对话等多元创意场景。"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "audio",
-        "compact"
-      ],
       "image": {
         "url": "images/t5ai-mini/t5ai-mini.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/t5ai-mini.json",
-      "recommendedDemos": [
-        "voice-assistant"
-      ],
-      "published": true
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "compact"
+      ]
     },
     {
       "id": "waveshare-t5ai-touch-amoled-175",
@@ -245,34 +219,30 @@
         "en": "Waveshare T5AI Touch AMOLED 1.75\"",
         "zh-CN": "微雪 T5AI 1.75 寸触摸 AMOLED"
       },
-      "brand": "Waveshare",
       "manufacturer": "Waveshare",
       "platformId": "t5ai",
       "summary": {
         "en": "Waveshare 1.75\" 466×466 AMOLED board with T5-E1 module, capacitive touch, QMI8658 IMU, RTC, audio AEC, battery management, and SD card.",
         "zh-CN": "微雪 1.75 寸 466×466 AMOLED 开发板，基于 T5-E1 模组，搭载电容触控、QMI8658 IMU、RTC、音频 AEC、电池管理与 SD 卡。"
       },
-      "tags": [
-        "wifi",
-        "ble",
-        "edge-ai",
-        "audio",
-        "display",
-        "touch",
-        "amoled",
-        "imu",
-        "rtc",
-        "battery",
-        "sd-card"
-      ],
       "image": {
         "url": "images/waveshare-t5ai-touch-amoled-175/waveshare-t5ai-touch-amoled-175.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/waveshare-t5ai-touch-amoled-175.json",
-      "recommendedDemos": [
-        "voice-assistant"
-      ],
-      "published": true
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "display",
+        "touch",
+        "led",
+        "imu",
+        "battery",
+        "sd-card",
+        "production-form"
+      ]
     }
   ]
 }

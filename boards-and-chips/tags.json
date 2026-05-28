@@ -1,106 +1,61 @@
 {
-  "version": 1,
+  "version": 2,
   "description": "Global tag registry for board categorization and search",
-  "tags": [
+  "categories": [
     {
-      "id": "wifi",
-      "en": "WiFi",
-      "zh-CN": "WiFi 无线网络"
+      "id": "connectivity",
+      "name": { "en": "Connectivity", "zh-CN": "连接方式" },
+      "tags": [
+        { "id": "wifi", "en": "WiFi", "zh-CN": "WiFi" },
+        { "id": "ble", "en": "Bluetooth LE", "zh-CN": "低功耗蓝牙" },
+        { "id": "zigbee", "en": "Zigbee", "zh-CN": "Zigbee" },
+        { "id": "thread", "en": "Thread", "zh-CN": "Thread" },
+        { "id": "cellular", "en": "Cellular", "zh-CN": "蜂窝网络" }
+      ]
     },
     {
-      "id": "bluetooth",
-      "en": "Bluetooth",
-      "zh-CN": "蓝牙"
+      "id": "peripherals",
+      "name": { "en": "Peripherals", "zh-CN": "外设/硬件特性" },
+      "tags": [
+        { "id": "camera", "en": "Camera", "zh-CN": "摄像头" },
+        { "id": "display", "en": "Display", "zh-CN": "显示屏" },
+        { "id": "led", "en": "LED", "zh-CN": "LED" },
+        { "id": "touch", "en": "Touch", "zh-CN": "触摸" },
+        { "id": "audio", "en": "Audio", "zh-CN": "音频" },
+        { "id": "sd-card", "en": "SD Card", "zh-CN": "SD 卡" },
+        { "id": "imu", "en": "IMU", "zh-CN": "惯性传感器" },
+        { "id": "led-pixel", "en": "LED Pixel", "zh-CN": "LED 像素灯" },
+        { "id": "pmic", "en": "PMIC", "zh-CN": "电源管理" },
+        { "id": "nfc", "en": "NFC", "zh-CN": "NFC 近场通信" },
+        { "id": "sensor", "en": "Sensor", "zh-CN": "传感器" },
+        { "id": "button", "en": "Button", "zh-CN": "按键" }
+      ]
     },
     {
-      "id": "zigbee",
-      "en": "Zigbee",
-      "zh-CN": "Zigbee"
+      "id": "application",
+      "name": { "en": "Application", "zh-CN": "应用场景" },
+      "tags": [
+        { "id": "iot", "en": "IoT", "zh-CN": "物联网" },
+        { "id": "smart-home", "en": "Smart Home", "zh-CN": "智能家居" },
+        { "id": "wearable", "en": "Wearable", "zh-CN": "可穿戴设备" },
+        { "id": "ai", "en": "AI", "zh-CN": "人工智能" },
+        { "id": "industrial", "en": "Industrial", "zh-CN": "工业级" },
+        { "id": "gateway", "en": "Gateway", "zh-CN": "网关" },
+        { "id": "education", "en": "Education", "zh-CN": "学习/教育" },
+        { "id": "toy", "en": "Toy", "zh-CN": "玩具" }
+      ]
     },
     {
-      "id": "thread",
-      "en": "Thread",
-      "zh-CN": "Thread"
-    },
-    {
-      "id": "nfc",
-      "en": "NFC",
-      "zh-CN": "NFC 近场通信"
-    },
-    {
-      "id": "camera",
-      "en": "Camera",
-      "zh-CN": "摄像头"
-    },
-    {
-      "id": "display",
-      "en": "Display",
-      "zh-CN": "显示屏"
-    },
-    {
-      "id": "usb",
-      "en": "USB",
-      "zh-CN": "USB"
-    },
-    {
-      "id": "battery",
-      "en": "Battery Powered",
-      "zh-CN": "电池供电"
-    },
-    {
-      "id": "industrial",
-      "en": "Industrial",
-      "zh-CN": "工业级"
-    },
-    {
-      "id": "ai",
-      "en": "AI / ML",
-      "zh-CN": "人工智能 / 机器学习"
-    },
-    {
-      "id": "edge-computing",
-      "en": "Edge Computing",
-      "zh-CN": "边缘计算"
-    },
-    {
-      "id": "iot",
-      "en": "IoT",
-      "zh-CN": "物联网"
-    },
-    {
-      "id": "smart-home",
-      "en": "Smart Home",
-      "zh-CN": "智能家居"
-    },
-    {
-      "id": "wearable",
-      "en": "Wearable",
-      "zh-CN": "可穿戴设备"
-    },
-    {
-      "id": "sensor",
-      "en": "Sensor Hub",
-      "zh-CN": "传感器中心"
-    },
-    {
-      "id": "gateway",
-      "en": "Gateway",
-      "zh-CN": "网关"
-    },
-    {
-      "id": "starter-kit",
-      "en": "Starter Kit",
-      "zh-CN": "入门套件"
-    },
-    {
-      "id": "development",
-      "en": "Development Board",
-      "zh-CN": "开发板"
-    },
-    {
-      "id": "prototyping",
-      "en": "Prototyping",
-      "zh-CN": "原型设计"
+      "id": "form-factor",
+      "name": { "en": "Form Factor", "zh-CN": "板型/形态" },
+      "tags": [
+        { "id": "development", "en": "Development Board", "zh-CN": "开发板" },
+        { "id": "starter-kit", "en": "Starter Kit", "zh-CN": "入门套件" },
+        { "id": "module", "en": "Module", "zh-CN": "模组" },
+        { "id": "compact", "en": "Compact", "zh-CN": "小型化" },
+        { "id": "production-form", "en": "Production Form", "zh-CN": "成品形态" },
+        { "id": "battery", "en": "Battery Powered", "zh-CN": "电池供电" }
+      ]
     }
   ]
 }

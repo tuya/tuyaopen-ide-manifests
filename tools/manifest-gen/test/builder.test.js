@@ -14,7 +14,7 @@ const minimalAnswers = {
     cellular: { enabled: false, enableMacro: 'ENABLE_CELLULAR' },
   },
   memory: { sramBytes: 1024, romBytes: 512, flashMaxBytes: 4096, psramMaxBytes: 0, efuse: false },
-  kconfig: { PLATFORM_CHOICE: 'TEST_PLAT' },
+  kconfigId: 'TEST_PLAT',
   selectedPeripherals: ['gpio', 'uart'],
 }
 

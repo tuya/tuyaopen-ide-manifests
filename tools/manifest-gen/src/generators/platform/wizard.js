@@ -145,16 +145,16 @@ export async function editMemory(answers) {
 export async function editKconfig(answers) {
   while (true) {
     const field = await select({
-      message: 'Kconfig — 选择字段:',
+      message: 'Kconfig ID — 选择字段:',
       loop: false,
       choices: [
-        { name: `PLATFORM_CHOICE  ${chalk.gray(answers.kconfig?.PLATFORM_CHOICE ?? '—')}`, value: 'choice' },
+        { name: `kconfigId  ${chalk.gray(answers.kconfigId ?? '—')}`, value: 'choice' },
         { name: chalk.gray('← 返回'), value: 'back' },
       ],
     })
     if (field === 'back') break
     if (field === 'choice') {
-      answers.kconfig = { PLATFORM_CHOICE: await input({ message: 'PLATFORM_CHOICE:', default: answers.kconfig?.PLATFORM_CHOICE }) }
+      answers.kconfigId = await input({ message: 'kconfigId (如 T5AI):', default: answers.kconfigId })
     }
   }
 }
@@ -314,8 +314,8 @@ export async function configureMemory(defaults = {}) {
 }
 
 export async function configureKconfig(defaults = {}) {
-  const kconfigValue = await input({ message: 'PLATFORM_CHOICE Kconfig 值（如 T5AI）:', default: defaults.kconfig?.PLATFORM_CHOICE })
-  return { kconfig: { PLATFORM_CHOICE: kconfigValue } }
+  const kconfigId = await input({ message: 'kconfigId（平台 Kconfig 标识，如 T5AI）:', default: defaults.kconfigId })
+  return { kconfigId }
 }
 
 // reconfigureKeys: null = configure all selected (create mode)
@@ -356,9 +356,9 @@ export async function runPlatformWizard(defaults = {}) {
   const { connectivity } = await configureConnectivity(defaults)
   console.log('\n--- 内存配置 ---')
   const { memory } = await configureMemory(defaults)
-  const { kconfig } = await configureKconfig(defaults)
+  const { kconfigId } = await configureKconfig(defaults)
   console.log('\n--- 外设选择 ---')
   const { selectedPeripherals, peripheralConfigs } = await configurePeripherals(defaults, null)
 
-  return { ...basic, connectivity, memory, kconfig, selectedPeripherals, peripheralConfigs }
+  return { ...basic, connectivity, memory, kconfigId, selectedPeripherals, peripheralConfigs }
 }

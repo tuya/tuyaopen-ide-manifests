@@ -9,10 +9,6 @@
     "en": "Tuya T5AI-Core Development Kit is a highly integrated voice core development board based on the T5-E1 module. The T5-E1 module, independently developed by Tuya Smart, incorporates embedded Wi-Fi and Bluetooth capabilities, making it suitable for a variety of smart hardware scenarios. This board features an onboard microphone and speaker, supporting local voice recognition and audio playback to meet the requirements of voice interaction applications.\n\nThe board is equipped with a 44-pin header, making it easy for you to quickly develop and prototype AIoT projects. An onboard lithium battery power management circuit supports low-power design, suitable for developing mobile and portable smart devices.\n\nThis board provides extensive hardware interfaces and comprehensive voice functionality, so it stands out as an ideal choice for you to develop AIoT voice interaction applications.",
     "zh-CN": "涂鸦 T5AI-Core 开发套件是一款基于 T5-E1 模组的高集成度语音核心开发板。T5-E1 模组由涂鸦智能自主研发，集成了嵌入式 Wi-Fi 与蓝牙功能，适用于多种智能硬件场景。T5AI-Core 开发板板载 1 个麦克风和 1 个扬声器，支持本地语音识别与音频播放，满足语音交互应用需求。\n\n开发板配备 44 Pin 排针，便于开发者进行快速的 AIoT 项目开发与原型验证。板载锂电池电源管理电路，支持低功耗设计，适合移动和便携式智能设备的开发。\n\n本开发板提供了丰富的硬件接口和完善的语音功能，是 AIoT 语音交互应用开发的理想选择。"
   },
-  "brand": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
   "manufacturer": {
     "en": "Tuya",
     "zh-CN": "涂鸦智能"
@@ -36,21 +32,50 @@
             }
           ],
           "ANALOG": [
-            { "role": "spk_p", "gpio": null, "pin": "LP" },
-            { "role": "spk_n", "gpio": null, "pin": "LN" },
-            { "role": "mic1_p", "gpio": null, "pin": "MP1" },
-            { "role": "mic1_n", "gpio": null, "pin": "MN1" },
-            { "role": "mic2_p", "gpio": null, "pin": "MP2" },
-            { "role": "mic2_n", "gpio": null, "pin": "MN2" },
-            { "role": "micbias", "gpio": null, "pin": "MBS" }
+            {
+              "role": "spk_p",
+              "gpio": null,
+              "pin": "LP"
+            },
+            {
+              "role": "spk_n",
+              "gpio": null,
+              "pin": "LN"
+            },
+            {
+              "role": "mic1_p",
+              "gpio": null,
+              "pin": "MP1"
+            },
+            {
+              "role": "mic1_n",
+              "gpio": null,
+              "pin": "MN1"
+            },
+            {
+              "role": "mic2_p",
+              "gpio": null,
+              "pin": "MP2"
+            },
+            {
+              "role": "mic2_n",
+              "gpio": null,
+              "pin": "MN2"
+            },
+            {
+              "role": "micbias",
+              "gpio": null,
+              "pin": "MBS"
+            }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "AEC enabled by default; designed for far-field voice interaction.",
           "zh-CN": "默认启用 AEC，适合远场语音交互。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "led": [
@@ -70,12 +95,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ],
     "button": [
@@ -94,12 +120,13 @@
             }
           ]
         },
-        "optional": false,
         "kconfig": null,
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "mounting": "onboard",
+        "pinLocked": true
       }
     ]
   },
@@ -117,10 +144,9 @@
   "tags": [
     "wifi",
     "ble",
-    "edge-ai",
+    "ai",
     "audio",
     "compact",
-    "bluetooth",
     "starter-kit",
     "development",
     "battery"
@@ -133,10 +159,6 @@
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_CORE": "y"
     }
   },
-  "demos": [
-    "tuya-ai-your-chat-bot",
-    "tuya-ai-your-serial-chat-bot"
-  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_CORE"
   }
