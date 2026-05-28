@@ -342,45 +342,6 @@
     ],
     "expansion": [
       {
-        "model": null,
-        "name": {
-          "en": "8P 2.54mm Expansion Header",
-          "zh-CN": "8P 2.54mm 扩展排针"
-        },
-        "interface": "GPIO",
-        "pins": {
-          "GPIO": [
-            {
-              "role": "io14",
-              "gpio": 14
-            },
-            {
-              "role": "io15",
-              "gpio": 15
-            },
-            {
-              "role": "io16",
-              "gpio": 16
-            },
-            {
-              "role": "io17",
-              "gpio": 17
-            },
-            {
-              "role": "io47",
-              "gpio": 47
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "8-pin 2.54mm header. Pin 1: 5V, Pin 2: GND, Pin 3: 3V3, Pin 4–8: IO14, IO15, IO16, IO17, IO47. IO47 also drives on-board LED.",
-          "zh-CN": "8 针 2.54mm 排针。Pin 1: 5V、Pin 2: GND、Pin 3: 3V3、Pin 4–8: IO14、IO15、IO16、IO17、IO47。IO47 同时驱动板载 LED。"
-        },
-        "mounting": "accessory",
-        "pinLocked": false
-      },
-      {
         "name": {
           "en": "Expansion Pads",
           "zh-CN": "扩展焊盘"
