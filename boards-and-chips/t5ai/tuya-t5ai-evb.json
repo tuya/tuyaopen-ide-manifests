@@ -203,5 +203,6 @@
       "CONFIG_BOARD_CHOICE_T5AI": "y",
       "CONFIG_BOARD_CHOICE_TUYA_T5AI_EVB": "y"
     }
-  }
+  },
+  "expansionPins": []
 }

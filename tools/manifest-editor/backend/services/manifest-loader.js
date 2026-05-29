@@ -162,6 +162,17 @@ class ManifestLoader {
     return filePath;
   }
 
+  async loadPlatformDetail(platformId) {
+    try {
+      const filePath = path.join(config.paths.platforms, platformId, `${platformId}.json`);
+      await fs.access(filePath);
+      const content = await fs.readFile(filePath, 'utf-8');
+      return JSON.parse(content);
+    } catch {
+      return null;
+    }
+  }
+
   // --- Demos ---
 
   async saveDemosIndex(data) {

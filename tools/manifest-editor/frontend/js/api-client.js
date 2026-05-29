@@ -144,6 +144,19 @@ class ApiClient {
     return this.request('PATCH', `/boards/${boardId}/peripherals`, data);
   }
 
+  // Expansion pins endpoints
+  async getExpansionPins(boardId) {
+    return this.request('GET', `/boards/${boardId}/expansion-pins`);
+  }
+
+  async updateExpansionPins(boardId, gpios) {
+    return this.request('PATCH', `/boards/${boardId}/expansion-pins`, { gpios });
+  }
+
+  async getPlatformPinout(platformId) {
+    return this.request('GET', `/boards/platforms/${platformId}/pinout`);
+  }
+
   // Demo endpoints
   async getDemos() {
     return this.request('GET', '/demos');

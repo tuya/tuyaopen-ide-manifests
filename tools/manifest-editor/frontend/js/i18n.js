@@ -155,6 +155,7 @@ const TRANSLATIONS = {
     // Peripheral Editor
     boardInfoTab: 'Board Info',
     peripheralsTab: 'Peripherals',
+    expansionPinsTab: 'Expansion Pins',
     periAddPeripheral: '+ Add',
     periEmpty: 'No peripherals defined for this type yet.',
     periEdit: 'Edit',
@@ -385,6 +386,7 @@ const TRANSLATIONS = {
     // Peripheral Editor
     boardInfoTab: '开发板信息',
     peripheralsTab: '外设',
+    expansionPinsTab: '扩展引脚',
     periAddPeripheral: '+ 添加',
     periEmpty: '暂无此类型外设。',
     periEdit: '编辑',

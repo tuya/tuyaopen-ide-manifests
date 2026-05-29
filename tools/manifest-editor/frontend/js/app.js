@@ -5,6 +5,7 @@ import { formatDate, showNotification, showError, debounce, escapeHtml } from '.
 import imageUploader from './image-uploader.js';
 import { renderBoardCard, renderBoardForm, saveBoardForm, deleteBoardPrompt, setupFormValidation, initGlobalTags, setSelectedTags } from './board-editor.js';
 import { renderPeripheralEditor, isDirty as periIsDirty } from './peripheral-editor.js';
+import { renderExpansionPinsEditor } from './expansion-pins-editor.js';
 import { renderDemoCard, renderDemoForm, saveDemoForm, deleteDemoAction } from './demo-editor.js';
 import i18n from './i18n.js';
 
@@ -368,25 +369,41 @@ async function openBoardForm(boardId = null) {
   const tabsEl = document.getElementById('boardModalTabs');
   const infoPane = document.getElementById('boardFormContainer');
   const periPane = document.getElementById('peripheralEditorContainer');
-  if (tabsEl && infoPane && periPane) {
+  const expPinsPane = document.getElementById('expansionPinsContainer');
+  if (tabsEl && infoPane && periPane && expPinsPane) {
     if (boardId) {
       tabsEl.style.display = '';
+      // Reset to info tab
+      infoPane.style.display = '';
+      infoPane.classList.add('active');
+      periPane.style.display = 'none';
+      periPane.classList.remove('active');
+      expPinsPane.style.display = 'none';
+      expPinsPane.classList.remove('active');
       tabsEl.querySelectorAll('.board-tab').forEach(tab => {
         tab.classList.toggle('active', tab.dataset.boardTab === 'info');
-        tab.addEventListener('click', () => {
+        const newTab = tab.cloneNode(true);
+        tab.parentNode.replaceChild(newTab, tab);
+        newTab.addEventListener('click', () => {
           tabsEl.querySelectorAll('.board-tab').forEach(t => t.classList.remove('active'));
-          tab.classList.add('active');
-          const target = tab.dataset.boardTab;
+          newTab.classList.add('active');
+          const target = newTab.dataset.boardTab;
           infoPane.style.display = target === 'info' ? '' : 'none';
           infoPane.classList.toggle('active', target === 'info');
           periPane.style.display = target === 'peripherals' ? '' : 'none';
           periPane.classList.toggle('active', target === 'peripherals');
+          expPinsPane.style.display = target === 'expansion-pins' ? '' : 'none';
+          expPinsPane.classList.toggle('active', target === 'expansion-pins');
+          if (target === 'expansion-pins') {
+            renderExpansionPinsEditor('expansionPinsContainer', boardId, board.platformId);
+          }
         });
       });
       renderPeripheralEditor('peripheralEditorContainer', boardId);
     } else {
       tabsEl.style.display = 'none';
       periPane.style.display = 'none';
+      expPinsPane.style.display = 'none';
       infoPane.style.display = '';
     }
   }

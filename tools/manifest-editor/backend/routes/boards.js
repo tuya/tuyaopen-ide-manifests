@@ -327,6 +327,73 @@ router.get('/:id/peripherals', asyncHandler(async (req, res) => {
   res.json({ success: true, peripheralPatterns: detail.peripheralPatterns || {} });
 }));
 
+// GET /api/boards/:id/expansion-pins - Get expansion pins for a board
+router.get('/:id/expansion-pins', asyncHandler(async (req, res) => {
+  const detail = await manifestLoader.loadBoardDetail(req.params.id);
+  if (!detail) {
+    return res.json({ success: true, expansionPins: [] });
+  }
+  res.json({ success: true, expansionPins: detail.expansionPins || [] });
+}));
+
+// PATCH /api/boards/:id/expansion-pins - Update expansion pins (auto-resolve functions from platform pinout)
+router.patch('/:id/expansion-pins', asyncHandler(async (req, res) => {
+  const { gpios } = req.body;
+  if (!Array.isArray(gpios)) {
+    return res.status(400).json({ success: false, error: 'Missing gpios array' });
+  }
+
+  let detail = await manifestLoader.loadBoardDetail(req.params.id);
+  if (!detail) {
+    const boards = await manifestLoader.loadBoards();
+    const item = boards?.items?.find(b => b.id === req.params.id);
+    if (!item) {
+      return res.status(404).json({ success: false, error: `Board "${req.params.id}" not found` });
+    }
+    detail = {
+      schemaVersion: 1,
+      id: req.params.id,
+      name: item.name,
+      summary: item.summary || {},
+      manufacturer: item.manufacturer || {},
+      platformId: item.platformId,
+      variantId: item.variantId || item.platformId,
+    };
+  }
+
+  // Load platform pinout for function resolution
+  const platformDetail = await manifestLoader.loadPlatformDetail(detail.platformId);
+  const pinout = platformDetail?.pinout || [];
+
+  // Resolve functions for each GPIO
+  const expansionPins = gpios.map(gpio => {
+    const pinEntry = pinout.find(p => p.gpio === gpio);
+    return {
+      gpio,
+      functions: pinEntry?.functions || [`GPIO${gpio}`],
+    };
+  });
+
+  detail.expansionPins = expansionPins;
+  await manifestLoader.saveBoardDetail(req.params.id, detail);
+
+  if (req.body.autoCommit !== false) {
+    await gitSync.autoCommit(`feat(boards): update ${req.params.id} expansion pins`);
+  }
+
+  res.json({ success: true, expansionPins, message: `Expansion pins updated for "${req.params.id}"` });
+}));
+
+// GET /api/platforms/:platformId/pinout - Get platform pinout for GPIO selection
+router.get('/platforms/:platformId/pinout', asyncHandler(async (req, res) => {
+  const platformDetail = await manifestLoader.loadPlatformDetail(req.params.platformId);
+  if (!platformDetail) {
+    return res.status(404).json({ success: false, error: `Platform "${req.params.platformId}" not found` });
+  }
+  const pinout = (platformDetail.pinout || []).filter(p => p.gpio !== null);
+  res.json({ success: true, pinout });
+}));
+
 // PATCH /api/boards/:id/peripherals - Update peripheral patterns
 router.patch('/:id/peripherals', asyncHandler(async (req, res) => {
   const { peripheralPatterns } = req.body;

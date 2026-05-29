@@ -1709,3 +1709,81 @@ body {
   padding-top: var(--spacing-md);
   border-top: 1px solid var(--color-border);
 }
+
+/* ========== Expansion Pins Editor ========== */
+.exp-pins-editor {
+  padding: var(--spacing-md);
+}
+
+.exp-pins-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-md);
+}
+
+.exp-pins-count {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.exp-pins-empty {
+  text-align: center;
+  color: var(--color-muted);
+  padding: var(--spacing-lg) 0;
+}
+
+.exp-pins-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing-md);
+  font-size: 0.85rem;
+}
+
+.exp-pins-table th {
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 2px solid var(--color-border);
+  color: var(--color-muted);
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.exp-pins-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.exp-pins-gpio {
+  font-weight: 600;
+  font-family: monospace;
+}
+
+.exp-pins-name {
+  font-family: monospace;
+  color: var(--color-primary);
+}
+
+.exp-pins-funcs {
+  font-size: 0.8rem;
+  color: var(--color-fg);
+  letter-spacing: 0.02em;
+}
+
+.exp-pins-add-section {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: var(--spacing-sm);
+}
+
+.exp-pins-select {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
+}

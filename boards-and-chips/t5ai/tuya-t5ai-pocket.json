@@ -350,5 +350,92 @@
   },
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_POCKET"
-  }
+  },
+  "expansionPins": [
+    {
+      "gpio": 2,
+      "functions": [
+        "GPIO2",
+        "SPI1_SCK",
+        "SDIO_CLK",
+        "SC_RSTN",
+        "LIN_SLEEP",
+        "QSPI1_SCK"
+      ]
+    },
+    {
+      "gpio": 3,
+      "functions": [
+        "GPIO3",
+        "SPI1_CSN",
+        "SDIO_CMD",
+        "SC_VCC",
+        "QSPI1_CS"
+      ]
+    },
+    {
+      "gpio": 4,
+      "functions": [
+        "GPIO4",
+        "SPI1_MOSI",
+        "SDIO_DATA0",
+        "COM6",
+        "QSPI1_IO0",
+        "SEG30"
+      ]
+    },
+    {
+      "gpio": 5,
+      "functions": [
+        "GPIO5",
+        "SPI1_MISO",
+        "SDIO_DATA1",
+        "COM7",
+        "QSPI1_IO1",
+        "SEG31"
+      ]
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO6",
+        "I2S0_SCK",
+        "QSPI1_IO2"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO7",
+        "I2S0_SYNC",
+        "QSPI1_IO3"
+      ]
+    },
+    {
+      "gpio": 40,
+      "functions": [
+        "GPIO40",
+        "UART2_RX",
+        "I2S1_SCK",
+        "LIN_RXD",
+        "SC_CLK",
+        "RGB_G4",
+        "I8080_D7",
+        "SEG3"
+      ]
+    },
+    {
+      "gpio": 41,
+      "functions": [
+        "GPIO41",
+        "UART2_TX",
+        "I2S1_SYNC",
+        "LIN_TXD",
+        "SC_IO",
+        "RGB_G3",
+        "I8080_D6",
+        "SEG2"
+      ]
+    }
+  ]
 }

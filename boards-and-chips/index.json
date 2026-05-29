@@ -53,29 +53,6 @@
       ]
     },
     {
-      "id": "tuya-t5ai-evb",
-      "name": {
-        "en": "Tuya T5AI EVB",
-        "zh-CN": "涂鸦 T5AI 白盒"
-      },
-      "manufacturer": "Tuya",
-      "platformId": "t5ai",
-      "summary": {
-        "en": "Tuya T5AI engineering validation board with audio AEC and display.",
-        "zh-CN": "涂鸦 T5AI 工程验证板，集成音频回声消除与显示屏。"
-      },
-      "image": null,
-      "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-evb.json",
-      "published": false,
-      "tags": [
-        "wifi",
-        "ble",
-        "ai",
-        "audio",
-        "display"
-      ]
-    },
-    {
       "id": "tuya-t5ai-core",
       "name": {
         "en": "Tuya T5AI-Core",
@@ -242,6 +219,29 @@
         "battery",
         "sd-card",
         "production-form"
+      ]
+    },
+    {
+      "id": "tuya-t5ai-evb",
+      "name": {
+        "en": "Tuya T5AI EVB",
+        "zh-CN": "涂鸦 T5AI 白盒"
+      },
+      "manufacturer": "Tuya",
+      "platformId": "t5ai",
+      "summary": {
+        "en": "Tuya T5AI engineering validation board with audio AEC and display.",
+        "zh-CN": "涂鸦 T5AI 工程验证板，集成音频回声消除与显示屏。"
+      },
+      "image": null,
+      "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-evb.json",
+      "published": false,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "display"
       ]
     }
   ]

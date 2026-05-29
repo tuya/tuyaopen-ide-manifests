@@ -61,8 +61,8 @@ export function getLocalizedString(value) {
     return value;
   }
   if (typeof value === 'object' && value !== null) {
-    const locale = navigator.language.replace('-', '_');
-    return value[locale] || value.en || Object.values(value)[0] || '';
+    const lang = document.getElementById('languageSwitcher')?.value || navigator.language || 'en';
+    return value[lang] || value.en || Object.values(value)[0] || '';
   }
   return '';
 }
