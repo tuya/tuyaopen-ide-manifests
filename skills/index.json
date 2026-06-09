@@ -243,6 +243,268 @@
       "installPayload": "embedded/tuyaopen/env-setup",
       "related": ["tuyaopen/build"],
       "source": { "devSkills": true, "subpath": "skills/tuyaopen/env-setup" }
+    },
+    {
+      "id": "miniapp/ray-common",
+      "order": 100,
+      "name": { "en": "Ray Common Development", "zh-CN": "Ray 通用开发" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Index-first navigation and implementation constraints for Ray miniapp development. Covers Ray APIs, components, framework conventions, lifecycle, routing.",
+        "zh-CN": "Ray 小程序开发的索引导航与实现约束。覆盖 Ray API、组件、框架约定、生命周期、路由等核心知识。"
+      },
+      "whenToUse": {
+        "en": "Use for any Ray miniapp UI/page/component work, Ray API integration, device capability binding, lifecycle, routing, image-to-code, i18n, or troubleshooting.",
+        "zh-CN": "面板/页面/组件开发、Ray API 与设备能力集成、生命周期与路由、图片转代码、多语言与样式、或排障与升级时使用。"
+      },
+      "tags": ["miniapp", "ray", "panel"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/ray-common",
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/RayCommonDevelopSkill",
+          "skillName": "ray-common-develop-skill"
+        }
+      }
+    },
+    {
+      "id": "miniapp/smart-ui",
+      "order": 101,
+      "name": { "en": "Smart UI Components", "zh-CN": "Smart UI 组件库" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Meta-first workflow for generating and modifying pages and components with Ray smart-ui.",
+        "zh-CN": "基于 meta-first 工作流，协助 Ray 小程序 smart-ui 的页面与组件生成、改造、表单交互。"
+      },
+      "whenToUse": {
+        "en": "Use for UI scaffolding, component customization, form/feedback interactions, navigation, image-to-code, or smart-ui troubleshooting / upgrades.",
+        "zh-CN": "UI 搭建、组件改造、表单与反馈、导航展示、图片转代码、smart-ui 排障升级时使用。"
+      },
+      "tags": ["miniapp", "ray", "smart-ui", "components"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/smart-ui",
+      "related": ["miniapp/ray-common"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/SmartUiSkill",
+          "skillName": "smart-ui-skill"
+        }
+      }
+    },
+    {
+      "id": "miniapp/lamp-panel",
+      "order": 110,
+      "name": { "en": "Lighting Panel", "zh-CN": "照明面板" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Tuya lighting category Ray miniapp panel development — lamp DPs, lamp-* components, hooks, work_mode state machine.",
+        "zh-CN": "涂鸦照明品类 Ray 小程序面板开发，涵盖灯具 DP、lamp-* 组件、hook 选型、work_mode 状态机。"
+      },
+      "whenToUse": {
+        "en": "Use when building or modifying a lighting panel (bright/temp/colour/scene/music DPs, lamp-* components, useProps/useActions hooks, work_mode FSM).",
+        "zh-CN": "创建或修改灯具面板、读写 bright/temp/colour/scene/music 等 DP、使用 lamp-* 组件、选 useProps/useActions hook、设计 work_mode 状态机时使用。"
+      },
+      "tags": ["miniapp", "ray", "panel", "lamp", "lighting"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/lamp-panel",
+      "related": ["miniapp/ray-common", "miniapp/smart-ui"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/LampCommonSkill",
+          "skillName": "ai-lamp-common-skill"
+        }
+      }
+    },
+    {
+      "id": "miniapp/socket-panel",
+      "order": 111,
+      "name": { "en": "Socket / Power Strip Panel", "zh-CN": "插座/排插面板" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Tuya electrician socket / power-strip / smart-switch miniapp panel development.",
+        "zh-CN": "涂鸦电工插座/排插/智能开关面板小程序开发指南。"
+      },
+      "whenToUse": {
+        "en": "Use to build/modify socket panels — multi-channel switches, countdowns, energy stats DPs, function-page navigation, DP value-mapping rules.",
+        "zh-CN": "多路开关渲染、倒计时、用电量统计、功能页跳转、DP 换算规则等场景使用。"
+      },
+      "tags": ["miniapp", "ray", "panel", "socket", "electrician"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/socket-panel",
+      "related": ["miniapp/ray-common", "miniapp/electrician-timing", "miniapp/energy-stats"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/ElectricalSocketExpert",
+          "skillName": "socket-panel-development-guidelines"
+        }
+      }
+    },
+    {
+      "id": "miniapp/robot-vacuum",
+      "order": 112,
+      "name": { "en": "Robot Vacuum Panel", "zh-CN": "扫地机面板" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Tuya sweep robot / robot vacuum panel development — map, DPs, protocol, @ray-js/robot-* SDKs.",
+        "zh-CN": "涂鸦扫地机面板开发：地图、DP、协议、@ray-js/robot-* SDK 全链路。"
+      },
+      "whenToUse": {
+        "en": "Use for RobotMap component, sweep robot DPs (switch_go, mode, suction, command_trans), room/zone/spot cleaning, virtual walls, raster protocols.",
+        "zh-CN": "扫地机地图组件、DP、分区/禁区/虚拟墙、栅格协议编解码等场景使用。"
+      },
+      "tags": ["miniapp", "ray", "panel", "robot-vacuum", "map"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/robot-vacuum",
+      "related": ["miniapp/ray-common"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/RobotVacuumDevelopSkills",
+          "skillName": "robot-vacuum-develop-skills"
+        }
+      }
+    },
+    {
+      "id": "miniapp/ipc-panel",
+      "order": 113,
+      "name": { "en": "IPC Camera Panel", "zh-CN": "IPC 摄像机面板" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Tuya IPC camera panel template (panel-ipc / PublicPanelIpc) — declarative grid, integrated player, VAS banner, PTZ, path cruise.",
+        "zh-CN": "涂鸦 IPC 摄像机面板模板，涵盖 FeatureMenu/TabBar 宫格、融合播放器、VAS 运营位、PTZ、路径巡航。"
+      },
+      "whenToUse": {
+        "en": "Use in panel-ipc / public-ipc-template / tuya-ray-materials PublicPanelIpc — LayoutFeature/Footer, configData, IPCPlayerIntegration, SDM, panel-sdk DP wiring.",
+        "zh-CN": "在 panel-ipc 仓库中开发主页宫格/底部 TabBar/弹窗/枚举 DP/PTZ/隐私模式/回放/云存/相册/对讲/品牌色等功能时使用。"
+      },
+      "tags": ["miniapp", "ray", "panel", "ipc", "camera"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/ipc-panel",
+      "related": ["miniapp/ray-common"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/IpcPanelSkill",
+          "skillName": "tuya-ipc-panel-template"
+        }
+      }
+    },
+    {
+      "id": "miniapp/charts-library",
+      "order": 120,
+      "name": { "en": "Charts Library", "zh-CN": "图表组件库" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Integrate @ray/charts-library — scene cards, DataSourceProvider, period controls, chart options helpers.",
+        "zh-CN": "在 Ray 小程序中集成 @ray/charts-library：场景卡片、计量数据源、周期控件、图表配置工具。"
+      },
+      "whenToUse": {
+        "en": "Use when adding electricity/temperature/humidity/illuminance charts to Ray miniapp pages, building period-switching charts, or customizing with withXAxis/withTooltip.",
+        "zh-CN": "向 Ray 小程序页面添加用电量/温湿度/照度/计量图表、构建周期切换图表、使用 withXAxis/withTooltip 自定义配置时使用。"
+      },
+      "tags": ["miniapp", "ray", "charts", "visualization"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/charts-library",
+      "related": ["miniapp/ray-common", "miniapp/energy-stats"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/ChartsLibrarySkill",
+          "skillName": "charts-library-skill"
+        }
+      }
+    },
+    {
+      "id": "miniapp/electrician-timing",
+      "order": 121,
+      "name": { "en": "Electrician Timing SDK", "zh-CN": "电工定时 SDK" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Integrate @ray-js/electrician-timing-sdk — cloud timer, cycle, random, inching, countdown.",
+        "zh-CN": "接入 @ray-js/electrician-timing-sdk：云定时、循环、随机、点动、倒计时五大能力。"
+      },
+      "whenToUse": {
+        "en": "Use when integrating timing SDK in a Ray miniapp panel — app onLaunch init, changeConfig on device/group switch, ConflictPopup + useDefaultModal, six timer kinds.",
+        "zh-CN": "Ray 面板小程序接入电工定时 SDK、changeConfig 设备/群组切换、ConflictPopup 联动、六类定时实现时使用。"
+      },
+      "tags": ["miniapp", "ray", "electrician", "timing"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/electrician-timing",
+      "related": ["miniapp/socket-panel"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/EleTimer",
+          "skillName": "electrician-timing-sdk-integration"
+        }
+      }
+    },
+    {
+      "id": "miniapp/energy-stats",
+      "order": 122,
+      "name": { "en": "Energy Statistics", "zh-CN": "电量统计" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Generate energy / electricity-cost statistics code using @tuya-miniapp/cloud-api — peak-valley pricing, budgets, IndicatorCode.",
+        "zh-CN": "通过 @tuya-miniapp/cloud-api 生成电量统计、电费统计、用电成本追踪代码，覆盖峰谷电价、电量/电费预算等场景。"
+      },
+      "whenToUse": {
+        "en": "Use for electricity statistics, energy billing, cost tracking, peak-valley pricing, budget warnings, getDeviceData, currency settings.",
+        "zh-CN": "电量/电费统计、用电成本追踪、峰谷电价、预算提醒、getDeviceData、币种设置等场景使用。"
+      },
+      "tags": ["miniapp", "ray", "energy", "statistics"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/energy-stats",
+      "related": ["miniapp/charts-library", "miniapp/socket-panel"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/EnergyStats",
+          "skillName": "energy-stats"
+        }
+      }
+    },
+    {
+      "id": "miniapp/requirement-guide",
+      "order": 130,
+      "name": { "en": "Requirement Creating Guide", "zh-CN": "需求创建指南" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Guide for capturing and structuring miniapp product requirements before implementation.",
+        "zh-CN": "在动手开发前，规范化捕获并结构化小程序产品需求的指南。"
+      },
+      "whenToUse": {
+        "en": "Use at project kick-off when scoping a new miniapp — capturing user stories, page flows, DP usage plans.",
+        "zh-CN": "项目启动阶段规划新小程序时使用 —— 捕获用户故事、页面流程、DP 使用方案。"
+      },
+      "tags": ["miniapp", "ray", "requirement", "planning"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/requirement-guide",
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/RequirementCreatingGuide-beta",
+          "skillName": "requirement-creating-guide-skill"
+        }
+      }
+    },
+    {
+      "id": "miniapp/performance-ux-guard",
+      "order": 131,
+      "name": { "en": "Performance & UX Guard", "zh-CN": "性能与体验守护" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Performance and UX guardrails for Tuya Ray miniapp panels — rendering, interaction latency, loading states.",
+        "zh-CN": "Ray 小程序面板的性能与体验红线，覆盖渲染、交互延迟、加载状态等关键指标。"
+      },
+      "whenToUse": {
+        "en": "Use during code review or optimization to validate panel performance and UX against established guardrails.",
+        "zh-CN": "代码评审或性能优化阶段，按既定红线校验面板的性能与体验。"
+      },
+      "tags": ["miniapp", "ray", "performance", "ux"],
+      "defaultEnabled": false,
+      "installPayload": "miniapp/performance-ux-guard",
+      "related": ["miniapp/ray-common"],
+      "source": {
+        "wellKnown": {
+          "url": "https://developer.tuya.com/material/skills/MiniappPerformanceUxGuard",
+          "skillName": "miniapp-performance-ux-guard"
+        }
+      }
     }
   ]
 }
