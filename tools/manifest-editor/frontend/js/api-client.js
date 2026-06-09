@@ -157,6 +157,10 @@ class ApiClient {
     return this.request('GET', `/boards/platforms/${platformId}/pinout`);
   }
 
+  async getPlatformPeripherals(platformId) {
+    return this.request('GET', `/boards/platforms/${platformId}/peripherals`);
+  }
+
   // Demo endpoints
   async getDemos() {
     return this.request('GET', '/demos');

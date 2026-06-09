@@ -38,7 +38,8 @@
         "note": {
           "en": "AEC enabled by default; designed for far-field voice interaction.",
           "zh-CN": "默认启用 AEC，适合远场语音交互。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "led": [
@@ -50,7 +51,6 @@
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 1,
         "pins": {
           "GPIO": [
             {
@@ -64,7 +64,8 @@
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "id": "led"
       }
     ],
     "button": [
@@ -76,7 +77,6 @@
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 1,
         "pins": {
           "GPIO": [
             {
@@ -90,7 +90,8 @@
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "id": "button"
       }
     ]
   },
@@ -127,30 +128,6 @@
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_CORE"
   },
   "expansionPins": [
-    {
-      "gpio": 0,
-      "functions": [
-        "GPIO0",
-        "UART1_TX",
-        "I2C1_SCL",
-        "SWCLK",
-        "SC_IO",
-        "ADC12",
-        "LIN_TXD"
-      ]
-    },
-    {
-      "gpio": 1,
-      "functions": [
-        "GPIO1",
-        "UART1_RX",
-        "I2C1_SDA",
-        "SWDIO",
-        "SC_CLK",
-        "ADC13",
-        "LIN_RXD"
-      ]
-    },
     {
       "gpio": 2,
       "functions": [
@@ -403,27 +380,6 @@
         "RGB_G5",
         "I8080_RDX",
         "SEG4"
-      ]
-    },
-    {
-      "gpio": 28,
-      "functions": [
-        "GPIO28",
-        "I2S_MCLK",
-        "ADC4",
-        "TOUCH2",
-        "CLK_AUXS_CIS",
-        "SEG18"
-      ]
-    },
-    {
-      "gpio": 29,
-      "functions": [
-        "GPIO29",
-        "CIS_PCLK",
-        "ENET_MDC",
-        "TOUCH3",
-        "SEG19"
       ]
     },
     {

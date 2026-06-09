@@ -38,7 +38,8 @@
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "imu": [
@@ -65,11 +66,13 @@
         "kconfig": null,
         "note": null,
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "imu"
       }
     ],
     "led-pixel": [
       {
+        "id": "led-pixel",
         "name": {
           "en": "RGB LED Matrix",
           "zh-CN": "RGB 灯矩阵"
@@ -77,13 +80,20 @@
         "interface": "SPI",
         "mounting": "onboard",
         "pinLocked": true,
+        "port": 0,
         "model": "WS2812B",
-        "count": 8,
+        "timing": {
+          "lineSeq": "RGB"
+        },
         "pins": {
           "SPI": [
             {
               "role": "data",
               "gpio": 16
+            },
+            {
+              "role": "sck",
+              "gpio": 14
             }
           ]
         },
@@ -103,7 +113,6 @@
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 1,
         "pins": {
           "GPIO": [
             {
@@ -117,33 +126,71 @@
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "id": "led"
       }
     ],
     "button": [
       {
         "name": {
-          "en": "User Buttons",
-          "zh-CN": "用户按键"
+          "en": "OK",
+          "zh-CN": "确定"
         },
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 3,
         "pins": {
           "GPIO": [
             {
-              "role": "ok",
+              "role": "btn",
               "gpio": 44,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-ok"
+      },
+      {
+        "name": {
+          "en": "A",
+          "zh-CN": "A"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "a",
+              "role": "btn",
               "gpio": 45,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-a"
+      },
+      {
+        "name": {
+          "en": "B",
+          "zh-CN": "B"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "b",
+              "role": "btn",
               "gpio": 46,
               "activeLevel": "low"
             }
@@ -153,7 +200,8 @@
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "id": "button-b"
       }
     ]
   },
@@ -516,5 +564,6 @@
         "SEG0"
       ]
     }
-  ]
+  ],
+  "peripheralGroups": {}
 }

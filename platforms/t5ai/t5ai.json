@@ -459,9 +459,9 @@
       "spec": {
         "pixelFmt": ["TUYA_PIXEL_FMT_RGB565", "TUYA_PIXEL_FMT_RGB666", "TUYA_PIXEL_FMT_RGB888"],
         "pixelFmtDataBits": {
-          "TUYA_PIXEL_FMT_RGB565": [8, 16],
-          "TUYA_PIXEL_FMT_RGB666": [9, 18],
-          "TUYA_PIXEL_FMT_RGB888": [8, 16, 24]
+          "TUYA_PIXEL_FMT_RGB565": [8],
+          "TUYA_PIXEL_FMT_RGB666": [18],
+          "TUYA_PIXEL_FMT_RGB888": [8, 16]
         },
         "clkFreq": {"min": 8000000, "max": 80000000},
         "ports": [
@@ -473,7 +473,7 @@
               "rsx": 24,
               "reset": 23,
               "csx": 22,
-              "data": [47, 46, 45, 44, 43, 42, 41, 40, 21, 20, 19, 18, 17, 16, 15, 14, 48, 49, null, null, null, null, null, null]
+              "data": [47, 46, 45, 44, 43, 42, 41, 40, 21, 20, 19, 18, 17, 16, 15, 14, 48, 49]
             }
           }
         ]

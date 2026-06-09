@@ -38,7 +38,8 @@
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "display": [
@@ -48,7 +49,6 @@
           "en": "ST7789 LCD Module",
           "zh-CN": "ST7789 LCD 模块"
         },
-        "resolution": "240x240",
         "interface": "SPI",
         "pins": {
           "SPI": [
@@ -86,7 +86,10 @@
           "zh-CN": "背光高有效。"
         },
         "mounting": "accessory",
-        "pinLocked": false
+        "pinLocked": false,
+        "id": "display-st7789",
+        "width": 240,
+        "height": 240
       },
       {
         "model": "ST7735S",
@@ -94,7 +97,6 @@
           "en": "ST7735S LCD Module",
           "zh-CN": "ST7735S LCD 模块"
         },
-        "resolution": "160x80",
         "interface": "SPI",
         "pins": {
           "SPI": [
@@ -132,7 +134,10 @@
           "zh-CN": "背光高有效。"
         },
         "mounting": "accessory",
-        "pinLocked": false
+        "pinLocked": false,
+        "id": "display-st7735s",
+        "width": 160,
+        "height": 80
       }
     ]
   },

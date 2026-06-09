@@ -38,7 +38,8 @@
         "note": {
           "en": "AEC enabled. 2 audio ADCs (mic), 1 DAC. Speaker via MX1.25 connector (8Ω 1W/2W). pa_ctrl active low. MIC1 = microphone input, MIC2 = AEC reference, LP/LN = differential speaker output.",
           "zh-CN": "已启用 AEC。2 路音频 ADC（麦克风），1 路 DAC。扬声器通过 MX1.25 接口（8Ω 1W/2W）。pa_ctrl 低有效。MIC1 = 麦克风输入，MIC2 = AEC 回采，LP/LN = 差分喇叭输出。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "display": [
@@ -48,7 +49,6 @@
           "en": "1.75-inch AMOLED Display",
           "zh-CN": "1.75 寸 AMOLED 屏"
         },
-        "resolution": "466x466",
         "interface": "QSPI",
         "pins": {
           "QSPI": [
@@ -92,7 +92,10 @@
           "zh-CN": "QSPI 端口 0，80 MHz。1670 万色，RGB565。支持 LVGL 双显示缓冲。背光通过 CO5300 命令控制。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "display",
+        "width": 466,
+        "height": 466
       }
     ],
     "touchpad": [
@@ -129,78 +132,8 @@
           "zh-CN": "I2C0。钢化玻璃自电容设计。X/Y 轴镜像已启用。"
         },
         "mounting": "onboard",
-        "pinLocked": true
-      }
-    ],
-    "imu": [
-      {
-        "model": "QMI8658",
-        "name": {
-          "en": "6-Axis IMU",
-          "zh-CN": "六轴 IMU"
-        },
-        "axes": 6,
-        "interface": "I2C",
-        "pins": {
-          "I2C": [
-            {
-              "role": "scl",
-              "gpio": 20
-            },
-            {
-              "role": "sda",
-              "gpio": 21
-            },
-            {
-              "role": "int1",
-              "gpio": 7
-            },
-            {
-              "role": "int2",
-              "gpio": 9
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "I2C0 shared with touch and RTC. 3-axis accelerometer + 3-axis gyroscope.",
-          "zh-CN": "I2C0 与触控和 RTC 共享。三轴加速度计 + 三轴陀螺仪。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
-      }
-    ],
-    "rtc": [
-      {
-        "model": "PCF85063",
-        "name": {
-          "en": "Real-Time Clock",
-          "zh-CN": "实时时钟"
-        },
-        "interface": "I2C",
-        "pins": {
-          "I2C": [
-            {
-              "role": "scl",
-              "gpio": 20
-            },
-            {
-              "role": "sda",
-              "gpio": 21
-            },
-            {
-              "role": "int",
-              "gpio": 6
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "I2C0 shared with touch and IMU.",
-          "zh-CN": "I2C0 与触控和 IMU 共享。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "touchpad"
       }
     ],
     "sd_card": [
@@ -249,7 +182,8 @@
           "zh-CN": "4 位 SDIO。卡检测引脚 GPIO 8。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "sd-card"
       }
     ],
     "led": [
@@ -259,7 +193,6 @@
           "en": "Indicator LED",
           "zh-CN": "指示灯"
         },
-        "count": 1,
         "interface": "GPIO",
         "pins": {
           "GPIO": [
@@ -275,7 +208,8 @@
           "zh-CN": "高有效。同时引出至排针。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "led"
       }
     ],
     "button": [
@@ -284,12 +218,13 @@
           "en": "User Button",
           "zh-CN": "用户按键"
         },
-        "count": 1,
         "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
         "pins": {
           "GPIO": [
             {
-              "role": "key",
+              "role": "btn",
               "gpio": 12
             }
           ]
@@ -299,8 +234,7 @@
           "en": "Active low with pull-up. Separate reset button also present.",
           "zh-CN": "低有效带上拉。另有独立复位按键。"
         },
-        "mounting": "onboard",
-        "pinLocked": true
+        "id": "button"
       }
     ],
     "power": [
@@ -337,7 +271,8 @@
           "zh-CN": "sys_en：电源锁存，高有效——启动后须保持高电平。sys_out：电源按键检测，低有效。bat_adc：电池电压 ADC。bat_chg：充电状态。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "power"
       }
     ]
   },

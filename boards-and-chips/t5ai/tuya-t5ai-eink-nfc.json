@@ -38,7 +38,8 @@
         "note": {
           "en": "AEC enabled by default.",
           "zh-CN": "默认启用 AEC。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "display": [
@@ -48,7 +49,6 @@
           "en": "E-Ink Display",
           "zh-CN": "墨水屏"
         },
-        "resolution": "400x300",
         "interface": "SPI",
         "pins": {
           "SPI": [
@@ -88,7 +88,10 @@
           "zh-CN": "SPI0 引脚复用组 2，MISO(47) 复用为 DC。前置灯 PWM9。刷新约 1–2 秒。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "display",
+        "width": 400,
+        "height": 300
       }
     ],
     "touchpad": [
@@ -125,7 +128,8 @@
           "zh-CN": "覆盖在墨水屏上，最多 2 点触控。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "touchpad"
       }
     ],
     "led": [
@@ -137,7 +141,6 @@
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 1,
         "pins": {
           "GPIO": [
             {
@@ -151,48 +154,143 @@
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "id": "led"
       }
     ],
     "button": [
       {
         "name": {
-          "en": "User Buttons",
-          "zh-CN": "用户按键"
+          "en": "Up",
+          "zh-CN": "上"
         },
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 6,
         "pins": {
           "GPIO": [
             {
-              "role": "up",
+              "role": "btn",
               "gpio": 22,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-up"
+      },
+      {
+        "name": {
+          "en": "Down",
+          "zh-CN": "下"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "down",
+              "role": "btn",
               "gpio": 23,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-down"
+      },
+      {
+        "name": {
+          "en": "Enter",
+          "zh-CN": "确认"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "enter",
+              "role": "btn",
               "gpio": 24,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-enter"
+      },
+      {
+        "name": {
+          "en": "Return",
+          "zh-CN": "返回"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "return",
+              "role": "btn",
               "gpio": 25,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-return"
+      },
+      {
+        "name": {
+          "en": "Left",
+          "zh-CN": "左"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "left",
+              "role": "btn",
               "gpio": 26,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        },
+        "id": "button-left"
+      },
+      {
+        "name": {
+          "en": "Right",
+          "zh-CN": "右"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "right",
+              "role": "btn",
               "gpio": 28,
               "activeLevel": "low"
             }
@@ -202,7 +300,8 @@
         "note": {
           "en": "Active low.",
           "zh-CN": "低有效。"
-        }
+        },
+        "id": "button-right"
       }
     ]
   },

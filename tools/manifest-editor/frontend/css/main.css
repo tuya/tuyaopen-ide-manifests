@@ -1256,6 +1256,10 @@ body {
   justify-content: space-between;
   margin-bottom: var(--spacing-md);
 }
+.peri-list-actions {
+  display: flex;
+  gap: 8px;
+}
 .peri-list-count {
   font-size: 13px;
   color: var(--color-muted);
@@ -1356,15 +1360,20 @@ body {
   font-weight: 500;
 }
 .peri-card-meta { font-size: 11px; color: var(--color-muted); margin-top: 2px; }
+.peri-card-id {
+  font-family: monospace;
+  font-size: 11px;
+  color: var(--color-muted);
+  background: var(--color-hover);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
 .peri-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
 
 /* Peripheral Form */
 .peri-form {
-  border: 1px solid var(--color-primary);
-  border-radius: 8px;
   padding: var(--spacing-md);
   margin-bottom: var(--spacing-md);
-  background: var(--color-hover);
 }
 .peri-form-title {
   font-weight: 600;
@@ -1379,6 +1388,9 @@ body {
 }
 .peri-field-row {
   margin-bottom: 0;
+}
+.peri-field-row:has(.peri-checkbox-label) {
+  grid-column: 1 / -1;
 }
 .peri-field-row label {
   display: block;
@@ -1411,6 +1423,10 @@ body {
 /* Pin Table */
 .peri-pin-section { margin-bottom: 12px; }
 .peri-pin-section > label { font-size: 12px; font-weight: 500; color: var(--color-muted); margin-bottom: 6px; display: block; }
+.peri-res-inputs { display: flex; align-items: center; gap: 6px; }
+.peri-res-inputs input { flex: 1; min-width: 0; }
+.peri-res-sep { color: var(--color-muted); flex-shrink: 0; }
+.peri-touch-transform { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
 .peri-pin-table {
   width: 100%;
   border-collapse: collapse;
@@ -1436,6 +1452,14 @@ body {
   background: var(--color-bg);
 }
 .peri-pin-table input[readonly] { background: var(--color-hover); color: var(--color-muted); }
+.peri-pin-group-header td { background: var(--color-sidebar); color: var(--color-muted); font-size: 11px; font-weight: 600; padding: 5px 6px 2px; letter-spacing: 0.04em; border-top: 1px solid var(--color-border); }
+.peri-pin-group-header:first-child td { border-top: none; }
+.peri-iface-extra-section { margin: 10px 0 4px; border-top: 1px solid var(--color-border); padding-top: 10px; }
+.peri-pin-section-label { font-size: 12px; font-weight: 600; color: var(--color-muted); margin-bottom: 6px; letter-spacing: 0.03em; text-transform: uppercase; }
+.peri-pin-locked-row { margin-bottom: 6px; }
+.peri-iface-extra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+.peri-blpwm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; }
+#periBlPwmConfigSection { grid-column: 1 / -1; }
 .peri-pin-add-btn { margin-top: 4px; }
 .peri-pin-remove-btn {
   background: none;
@@ -1448,6 +1472,93 @@ body {
   line-height: 1;
 }
 .peri-pin-remove-btn:hover { background: rgba(239, 68, 68, 0.1); }
+
+/* Peripheral Type Selector */
+.peri-type-selector { padding: 4px 0; }
+.peri-type-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.peri-type-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+}
+.peri-type-card:hover {
+  border-color: var(--color-primary);
+  background: var(--color-hover);
+}
+.peri-type-card-name { font-weight: 600; font-size: 13px; color: var(--color-fg); }
+.peri-type-card-ifaces { font-size: 11px; color: var(--color-muted); }
+.peri-type-card--custom {
+  border-style: dashed;
+}
+
+/* Templated pin role label */
+.peri-pin-role-label {
+  font-family: monospace;
+  font-size: 12px;
+  background: var(--color-hover);
+  padding: 2px 6px;
+  border-radius: 3px;
+  color: var(--color-fg);
+}
+
+/* Group management modal */
+.peri-group-mgmt { display: flex; flex-direction: column; gap: 16px; }
+.peri-group-mgmt-new {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.peri-group-mgmt-new input { flex: 1; }
+.peri-group-mgmt-empty { color: var(--color-muted); font-size: 13px; text-align: center; padding: 12px; }
+.peri-group-mgmt-section {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 10px;
+}
+.peri-group-kconfig { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--color-border); }
+.peri-group-kconfig-label { font-size: 11px; font-weight: 600; color: var(--color-muted); text-transform: uppercase; margin-bottom: 4px; }
+.peri-group-mgmt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+.peri-group-mgmt-name { font-weight: 600; font-size: 13px; }
+.peri-group-mgmt-name-inputs {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex: 1;
+}
+.peri-group-mgmt-name-inputs input { font-size: 12px; padding: 4px 8px; }
+.peri-group-mgmt-members { display: flex; flex-direction: column; gap: 6px; }
+.peri-group-mgmt-member {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 8px;
+  background: var(--color-sidebar);
+  border-radius: 4px;
+  font-size: 12px;
+}
+.peri-group-mgmt-member-actions { display: flex; gap: 6px; align-items: center; }
+.peri-group-role-input { font-size: 11px !important; padding: 3px 6px !important; }
+.peri-group-mgmt-add { margin-top: 8px; }
+.peri-group-mgmt-add select { font-size: 12px; }
+.peri-group-mgmt-ungrouped { border-style: dashed; opacity: 0.7; }
 
 .peri-form-actions {
   display: flex;

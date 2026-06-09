@@ -104,7 +104,6 @@
           "en": "<peripheral display name>",
           "zh-CN": "<外设显示名称>"
         },
-        "resolution": "<WxH in pixels, e.g. 240x240>",
         "interface": "<SPI | I2C | RGB | QSPI | MCU8080>",
         "group": "<optional: kebab-case id — links multiple peripheral entries of the same accessory>",
         "role": "<optional: role within the group, e.g. left | right | main | secondary>",

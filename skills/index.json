@@ -14,7 +14,10 @@
     {
       "id": "tuyaopen/build",
       "order": 1,
-      "name": { "en": "TuyaOpen Build", "zh-CN": "TuyaOpen 编译" },
+      "name": {
+        "en": "TuyaOpen Build",
+        "zh-CN": "TuyaOpen 编译"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Compile the current TuyaOpen project via tos.py build.",
@@ -24,17 +27,31 @@
         "en": "Use when the user asks to build, compile, or rebuild the active project.",
         "zh-CN": "当用户要求编译、构建或重新编译当前项目时使用。"
       },
-      "tags": ["build", "tos.py"],
-      "commands": ["tuyaopen.skill.build"],
+      "tags": [
+        "build",
+        "tos.py"
+      ],
+      "commands": [
+        "tuyaopen.skill.build"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/build",
-      "related": ["tuyaopen/dev-loop", "tuyaopen/project-config"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/build" }
+      "related": [
+        "tuyaopen/dev-loop",
+        "tuyaopen/project-config"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/build"
+      }
     },
     {
       "id": "tuyaopen/project-config",
       "order": 6,
-      "name": { "en": "TuyaOpen Project Config", "zh-CN": "TuyaOpen 项目配置" },
+      "name": {
+        "en": "TuyaOpen Project Config",
+        "zh-CN": "TuyaOpen 项目配置"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Read or update the tuyaopen.project.ini for the active project.",
@@ -44,17 +61,30 @@
         "en": "Use when the user wants to change platform, rename, or edit project settings.",
         "zh-CN": "当用户希望更换平台、重命名或修改项目级设置时使用。"
       },
-      "tags": ["config", "project"],
-      "commands": ["tuyaopen.skill.editProjectConfig"],
+      "tags": [
+        "config",
+        "project"
+      ],
+      "commands": [
+        "tuyaopen.skill.editProjectConfig"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/project-config",
-      "related": ["tuyaopen/build"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/project-config" }
+      "related": [
+        "tuyaopen/build"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/project-config"
+      }
     },
     {
       "id": "ecosystem-wire-cmake",
       "order": 8,
-      "name": { "en": "Wire ecosystem library into CMake", "zh-CN": "将生态库接入 CMake" },
+      "name": {
+        "en": "Wire ecosystem library into CMake",
+        "zh-CN": "将生态库接入 CMake"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Register a freshly-downloaded PlatformIO library with the active TuyaOpen project's build system. Reads the pinned version from the project lockfile, then patches CMakeLists.txt and Kconfig where applicable.",
@@ -64,17 +94,31 @@
         "en": "Use immediately after the IDE downloads a library from the Library → Ecosystem tab.",
         "zh-CN": "当 IDE 通过库 → 生态标签页下载新库后立即触发。"
       },
-      "tags": ["cmake", "dependencies", "vibeCode"],
-      "commands": ["tuyaopen.skill.wireCmake"],
+      "tags": [
+        "cmake",
+        "dependencies",
+        "vibeCode"
+      ],
+      "commands": [
+        "tuyaopen.skill.wireCmake"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/ecosystem-wire-cmake",
-      "related": ["tuyaopen/build", "tuyaopen/project-config"],
-      "source": { "localPath": "skills/embedded/ecosystem-wire-cmake" }
+      "related": [
+        "tuyaopen/build",
+        "tuyaopen/project-config"
+      ],
+      "source": {
+        "localPath": "skills/embedded/ecosystem-wire-cmake"
+      }
     },
     {
       "id": "tuya-iot-platform",
       "order": 9,
-      "name": { "en": "Tuya IoT Platform", "zh-CN": "涂鸦 IoT 平台操作" },
+      "name": {
+        "en": "Tuya IoT Platform",
+        "zh-CN": "涂鸦 IoT 平台操作"
+      },
       "surface": "cloud",
       "summary": {
         "en": "Create products, get PID, query and configure DPs on the Tuya Developer Platform via tuya-devplat-cli.",
@@ -84,17 +128,31 @@
         "en": "Use when creating a Tuya product, retrieving a PID, querying or adding DPs (data points / 功能点), binding panels, releasing products, or performing any operation on the Tuya Developer Platform (iot.tuya.com).",
         "zh-CN": "创建涂鸦产品、获取 PID、查询或添加功能点（DP）、绑定面板、发布产品，以及任何需要在涂鸦开发者平台（iot.tuya.com）上操作时使用。"
       },
-      "tags": ["cloud", "product", "dp", "tuya-devplat-cli"],
-      "commands": ["tuyaopen.skill.tuyaIotPlatform"],
+      "tags": [
+        "cloud",
+        "product",
+        "dp",
+        "tuya-devplat-cli"
+      ],
+      "commands": [
+        "tuyaopen.skill.tuyaIotPlatform"
+      ],
       "defaultEnabled": true,
       "installPayload": "cloud/tuya-iot-platform",
-      "related": ["tuyaopen/device-auth"],
-      "source": { "localPath": "skills/cloud/tuya-iot-platform" }
+      "related": [
+        "tuyaopen/device-auth"
+      ],
+      "source": {
+        "localPath": "skills/cloud/tuya-iot-platform"
+      }
     },
     {
       "id": "smart-product-dev",
       "order": 10,
-      "name": { "en": "Smart Product Dev", "zh-CN": "智能产品开发" },
+      "name": {
+        "en": "Smart Product Dev",
+        "zh-CN": "智能产品开发"
+      },
       "surface": "embedded",
       "summary": {
         "en": "End-to-end IoT product development: requirements → Tuya Platform product/DP creation → complete embedded firmware. State-machine detects project state and picks up from wherever development stands.",
@@ -104,17 +162,73 @@
         "en": "Use when developer wants to build a complete IoT product from scratch, or to continue from any mid-point in the development flow.",
         "zh-CN": "当开发者要从零开始做 IoT 产品，或从中途继续开发时使用。"
       },
-      "tags": ["product", "dp", "pid", "embedded", "iot", "workflow", "orchestration"],
-      "commands": ["tuyaopen.skill.smartProductDev"],
+      "tags": [
+        "product",
+        "dp",
+        "pid",
+        "embedded",
+        "iot",
+        "workflow",
+        "orchestration"
+      ],
+      "commands": [
+        "tuyaopen.skill.smartProductDev"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/smart-product-dev",
-      "related": ["tuya-iot-platform", "tuyaopen/dev-loop", "tuyaopen/project-config"],
-      "source": { "localPath": "skills/embedded/smart-product-dev" }
+      "related": [
+        "tuya-iot-platform",
+        "tuyaopen/dev-loop",
+        "tuyaopen/project-config"
+      ],
+      "source": {
+        "localPath": "skills/embedded/smart-product-dev"
+      }
+    },
+    {
+      "id": "hardware-vibe-coding",
+      "order": 11,
+      "name": {
+        "en": "Hardware Vibe Coding",
+        "zh-CN": "硬件 Vibe Coding"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Hardware-aware code generation for TuyaOpen embedded projects. Reads .tuyaopen/board-context.md, confirms peripheral selection, and generates TDL-layer usage code. Includes peripheral skills for display (LVGL/raw), camera, button, and LED.",
+        "zh-CN": "TuyaOpen 嵌入式项目的硬件感知代码生成。读取 .tuyaopen/board-context.md，确认外设选型，生成 TDL 层使用代码。包含显示屏（LVGL/原始）、摄像头、按键、指示灯等外设 skill。"
+      },
+      "whenToUse": {
+        "en": "Use when the user asks to initialize or drive a hardware peripheral: display, camera, IMU, LED strip, touchpad, printer, button, joystick, PMIC, or any board hardware. Also use for 'vibe coding' or any hardware-related code generation request.",
+        "zh-CN": "当用户要求初始化或使用硬件外设时使用：显示屏、摄像头、IMU、LED 灯带、触摸屏、打印机、按键、摇杆、PMIC 等。也适用于 'vibe coding' 或任何硬件相关代码生成请求。"
+      },
+      "tags": [
+        "hardware",
+        "gpio",
+        "peripheral",
+        "vibe-coding",
+        "display",
+        "camera",
+        "imu",
+        "led"
+      ],
+      "defaultEnabled": true,
+      "installPayload": "embedded/hardware-vibe-coding",
+      "related": [
+        "smart-product-dev",
+        "tuyaopen/build",
+        "tuyaopen/project-config"
+      ],
+      "source": {
+        "localPath": "skills/embedded/hardware-vibe-coding"
+      }
     },
     {
       "id": "tyutool/cli",
       "order": 15,
-      "name": { "en": "tyutool CLI", "zh-CN": "tyutool 命令行工具" },
+      "name": {
+        "en": "tyutool CLI",
+        "zh-CN": "tyutool 命令行工具"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Flash firmware, read flash, hardware reset (DTR/RTS), and authorize devices (UUID/AuthKey via UART) using tyutool_cli directly.",
@@ -124,16 +238,31 @@
         "en": "Use when the agent needs to flash firmware, read flash memory, hardware-reset a device, or write UUID/AuthKey credentials over UART using tyutool_cli directly.",
         "zh-CN": "当需要直接使用 tyutool_cli 烧录固件、读取 Flash、硬件复位设备或通过 UART 写入 UUID/AuthKey 授权码时使用。"
       },
-      "tags": ["flash", "tyutool", "uart", "authorize", "reset"],
+      "tags": [
+        "flash",
+        "tyutool",
+        "uart",
+        "authorize",
+        "reset"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tyutool_cli",
-      "related": ["tuyaopen/dev-loop", "tuyaopen/device-auth", "tuyaopen/debug-helper"],
-      "source": { "localPath": "skills/embedded/tyutool_cli" }
+      "related": [
+        "tuyaopen/dev-loop",
+        "tuyaopen/device-auth",
+        "tuyaopen/debug-helper"
+      ],
+      "source": {
+        "localPath": "skills/embedded/tyutool_cli"
+      }
     },
     {
       "id": "tuyaopen/debug-helper",
       "order": 20,
-      "name": { "en": "TuyaOpen Debug Helper", "zh-CN": "TuyaOpen 调试助手" },
+      "name": {
+        "en": "TuyaOpen Debug Helper",
+        "zh-CN": "TuyaOpen 调试助手"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Non-blocking background serial log capture for TuyaOpen devices. Runs tos.py monitor -l in background, writes logs to <project_dir>/.target_logging/, lets agent tail or stop at any time.",
@@ -143,16 +272,30 @@
         "en": "Use when the agent needs to capture device serial logs without blocking, monitor UART output during a build-flash-analyze loop, or read device logs asynchronously.",
         "zh-CN": "当 AI 代理需要在不阻塞的情况下捕获设备串口日志、在编译-烧录-分析闭环中监控 UART 输出，或异步读取设备日志时使用。"
       },
-      "tags": ["debug", "serial", "monitor", "log"],
+      "tags": [
+        "debug",
+        "serial",
+        "monitor",
+        "log"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/debug-helper",
-      "related": ["tuyaopen/dev-loop", "tuyaopen/device-auth"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/debug-helper" }
+      "related": [
+        "tuyaopen/dev-loop",
+        "tuyaopen/device-auth"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/debug-helper"
+      }
     },
     {
       "id": "tuyaopen/add-board",
       "order": 21,
-      "name": { "en": "Add Board (BSP)", "zh-CN": "新增开发板(BSP)" },
+      "name": {
+        "en": "Add Board (BSP)",
+        "zh-CN": "新增开发板(BSP)"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Add a new board / BSP to TuyaOpen — directory, Kconfig, drivers, and pin map.",
@@ -162,16 +305,29 @@
         "en": "Use when the user wants to add support for a new development board or BSP (Board Support Package) to the TuyaOpen SDK — creating directories, Kconfig entries, drivers, and pin maps.",
         "zh-CN": "当用户希望为 TuyaOpen SDK 新增开发板或 BSP（板级支持包）支持时使用，包括创建目录、Kconfig 条目、驱动及引脚映射。"
       },
-      "tags": ["bsp", "board", "hardware"],
+      "tags": [
+        "bsp",
+        "board",
+        "hardware"
+      ],
       "defaultEnabled": false,
       "installPayload": "embedded/tuyaopen/add-board",
-      "related": ["tuyaopen/build", "tuyaopen/project-config"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/add-board" }
+      "related": [
+        "tuyaopen/build",
+        "tuyaopen/project-config"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/add-board"
+      }
     },
     {
       "id": "tuyaopen/code-check",
       "order": 22,
-      "name": { "en": "Code Check", "zh-CN": "代码检查" },
+      "name": {
+        "en": "Code Check",
+        "zh-CN": "代码检查"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Validate C/C++ formatting, file headers (@copyright required), and forbidden Chinese characters via clang-format and check_format.py.",
@@ -181,16 +337,28 @@
         "en": "Use when the user asks to check code formatting, validate file headers, run clang-format, or verify code quality before submitting or merging.",
         "zh-CN": "当用户要求检查代码格式、校验文件头、运行 clang-format 或在提交/合并前验证代码质量时使用。"
       },
-      "tags": ["lint", "format", "quality"],
+      "tags": [
+        "lint",
+        "format",
+        "quality"
+      ],
       "defaultEnabled": false,
       "installPayload": "embedded/tuyaopen/code-check",
-      "related": ["tuyaopen/build"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/code-check" }
+      "related": [
+        "tuyaopen/build"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/code-check"
+      }
     },
     {
       "id": "tuyaopen/dev-loop",
       "order": 23,
-      "name": { "en": "Build–Flash–Monitor Loop", "zh-CN": "编译—烧录—监控闭环" },
+      "name": {
+        "en": "Build–Flash–Monitor Loop",
+        "zh-CN": "编译—烧录—监控闭环"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Automated build–flash–monitor–analyze loop for TuyaOpen devices, with log analysis and error-pattern matching.",
@@ -200,16 +368,29 @@
         "en": "Use when the user wants a full automated build–flash–monitor cycle, log analysis, or error-pattern matching on a TuyaOpen device.",
         "zh-CN": "当用户希望执行完整的自动化编译—烧录—监控闭环、分析设备日志或匹配错误模式时使用。"
       },
-      "tags": ["build", "flash", "workflow"],
+      "tags": [
+        "build",
+        "flash",
+        "workflow"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/dev-loop",
-      "related": ["tuyaopen/build", "tuyaopen/debug-helper"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/dev-loop" }
+      "related": [
+        "tuyaopen/build",
+        "tuyaopen/debug-helper"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/dev-loop"
+      }
     },
     {
       "id": "tuyaopen/device-auth",
       "order": 24,
-      "name": { "en": "Device Authorization", "zh-CN": "设备授权" },
+      "name": {
+        "en": "Device Authorization",
+        "zh-CN": "设备授权"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Write UUID/AuthKey/PID to TuyaOpen devices — via tuya_config.h (source code) or serial KV flash (UART shell). Obtain authorization codes from platform.tuya.com.",
@@ -219,16 +400,29 @@
         "en": "Use when the user mentions device authorization, UUID, AuthKey, PID configuration, network provisioning, device pairing, or cloud connection setup.",
         "zh-CN": "当用户提到设备授权、UUID、AuthKey、PID 配置、网络配网、设备配对或云连接设置时使用。"
       },
-      "tags": ["provision", "auth", "uuid"],
+      "tags": [
+        "provision",
+        "auth",
+        "uuid"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/device-auth",
-      "related": ["tuyaopen/dev-loop", "tuyaopen/project-config"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/device-auth" }
+      "related": [
+        "tuyaopen/dev-loop",
+        "tuyaopen/project-config"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/device-auth"
+      }
     },
     {
       "id": "tuyaopen/env-setup",
       "order": 25,
-      "name": { "en": "Environment Setup", "zh-CN": "环境搭建" },
+      "name": {
+        "en": "Environment Setup",
+        "zh-CN": "环境搭建"
+      },
       "surface": "embedded",
       "summary": {
         "en": "Install dependencies and activate the TuyaOpen development environment via export.sh / export.ps1 / export.bat. Sets OPEN_SDK_ROOT and OPEN_SDK_PYTHON.",
@@ -238,16 +432,28 @@
         "en": "Use when the user first sets up the TuyaOpen development environment, installs dependencies, or needs to activate the SDK environment. Also use when tos.py is not found or OPEN_SDK_ROOT is not set.",
         "zh-CN": "当用户首次搭建 TuyaOpen 开发环境、安装依赖，或需要激活 SDK 环境时使用。当 tos.py 找不到或 OPEN_SDK_ROOT 未设置时也使用。"
       },
-      "tags": ["environment", "sdk", "deps"],
+      "tags": [
+        "environment",
+        "sdk",
+        "deps"
+      ],
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/env-setup",
-      "related": ["tuyaopen/build"],
-      "source": { "devSkills": true, "subpath": "skills/tuyaopen/env-setup" }
+      "related": [
+        "tuyaopen/build"
+      ],
+      "source": {
+        "devSkills": true,
+        "subpath": "skills/tuyaopen/env-setup"
+      }
     },
     {
       "id": "miniapp/ray-common",
       "order": 100,
-      "name": { "en": "Ray Common Development", "zh-CN": "Ray 通用开发" },
+      "name": {
+        "en": "Ray Common Development",
+        "zh-CN": "Ray 通用开发"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Index-first navigation and implementation constraints for Ray miniapp development. Covers Ray APIs, components, framework conventions, lifecycle, routing.",
@@ -257,7 +463,11 @@
         "en": "Use for any Ray miniapp UI/page/component work, Ray API integration, device capability binding, lifecycle, routing, image-to-code, i18n, or troubleshooting.",
         "zh-CN": "面板/页面/组件开发、Ray API 与设备能力集成、生命周期与路由、图片转代码、多语言与样式、或排障与升级时使用。"
       },
-      "tags": ["miniapp", "ray", "panel"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "panel"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/ray-common",
       "source": {
@@ -270,7 +480,10 @@
     {
       "id": "miniapp/smart-ui",
       "order": 101,
-      "name": { "en": "Smart UI Components", "zh-CN": "Smart UI 组件库" },
+      "name": {
+        "en": "Smart UI Components",
+        "zh-CN": "Smart UI 组件库"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Meta-first workflow for generating and modifying pages and components with Ray smart-ui.",
@@ -280,10 +493,17 @@
         "en": "Use for UI scaffolding, component customization, form/feedback interactions, navigation, image-to-code, or smart-ui troubleshooting / upgrades.",
         "zh-CN": "UI 搭建、组件改造、表单与反馈、导航展示、图片转代码、smart-ui 排障升级时使用。"
       },
-      "tags": ["miniapp", "ray", "smart-ui", "components"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "smart-ui",
+        "components"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/smart-ui",
-      "related": ["miniapp/ray-common"],
+      "related": [
+        "miniapp/ray-common"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/SmartUiSkill",
@@ -294,7 +514,10 @@
     {
       "id": "miniapp/lamp-panel",
       "order": 110,
-      "name": { "en": "Lighting Panel", "zh-CN": "照明面板" },
+      "name": {
+        "en": "Lighting Panel",
+        "zh-CN": "照明面板"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Tuya lighting category Ray miniapp panel development — lamp DPs, lamp-* components, hooks, work_mode state machine.",
@@ -304,10 +527,19 @@
         "en": "Use when building or modifying a lighting panel (bright/temp/colour/scene/music DPs, lamp-* components, useProps/useActions hooks, work_mode FSM).",
         "zh-CN": "创建或修改灯具面板、读写 bright/temp/colour/scene/music 等 DP、使用 lamp-* 组件、选 useProps/useActions hook、设计 work_mode 状态机时使用。"
       },
-      "tags": ["miniapp", "ray", "panel", "lamp", "lighting"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "panel",
+        "lamp",
+        "lighting"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/lamp-panel",
-      "related": ["miniapp/ray-common", "miniapp/smart-ui"],
+      "related": [
+        "miniapp/ray-common",
+        "miniapp/smart-ui"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/LampCommonSkill",
@@ -318,7 +550,10 @@
     {
       "id": "miniapp/socket-panel",
       "order": 111,
-      "name": { "en": "Socket / Power Strip Panel", "zh-CN": "插座/排插面板" },
+      "name": {
+        "en": "Socket / Power Strip Panel",
+        "zh-CN": "插座/排插面板"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Tuya electrician socket / power-strip / smart-switch miniapp panel development.",
@@ -328,10 +563,20 @@
         "en": "Use to build/modify socket panels — multi-channel switches, countdowns, energy stats DPs, function-page navigation, DP value-mapping rules.",
         "zh-CN": "多路开关渲染、倒计时、用电量统计、功能页跳转、DP 换算规则等场景使用。"
       },
-      "tags": ["miniapp", "ray", "panel", "socket", "electrician"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "panel",
+        "socket",
+        "electrician"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/socket-panel",
-      "related": ["miniapp/ray-common", "miniapp/electrician-timing", "miniapp/energy-stats"],
+      "related": [
+        "miniapp/ray-common",
+        "miniapp/electrician-timing",
+        "miniapp/energy-stats"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/ElectricalSocketExpert",
@@ -342,7 +587,10 @@
     {
       "id": "miniapp/robot-vacuum",
       "order": 112,
-      "name": { "en": "Robot Vacuum Panel", "zh-CN": "扫地机面板" },
+      "name": {
+        "en": "Robot Vacuum Panel",
+        "zh-CN": "扫地机面板"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Tuya sweep robot / robot vacuum panel development — map, DPs, protocol, @ray-js/robot-* SDKs.",
@@ -352,10 +600,18 @@
         "en": "Use for RobotMap component, sweep robot DPs (switch_go, mode, suction, command_trans), room/zone/spot cleaning, virtual walls, raster protocols.",
         "zh-CN": "扫地机地图组件、DP、分区/禁区/虚拟墙、栅格协议编解码等场景使用。"
       },
-      "tags": ["miniapp", "ray", "panel", "robot-vacuum", "map"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "panel",
+        "robot-vacuum",
+        "map"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/robot-vacuum",
-      "related": ["miniapp/ray-common"],
+      "related": [
+        "miniapp/ray-common"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/RobotVacuumDevelopSkills",
@@ -366,7 +622,10 @@
     {
       "id": "miniapp/ipc-panel",
       "order": 113,
-      "name": { "en": "IPC Camera Panel", "zh-CN": "IPC 摄像机面板" },
+      "name": {
+        "en": "IPC Camera Panel",
+        "zh-CN": "IPC 摄像机面板"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Tuya IPC camera panel template (panel-ipc / PublicPanelIpc) — declarative grid, integrated player, VAS banner, PTZ, path cruise.",
@@ -376,10 +635,18 @@
         "en": "Use in panel-ipc / public-ipc-template / tuya-ray-materials PublicPanelIpc — LayoutFeature/Footer, configData, IPCPlayerIntegration, SDM, panel-sdk DP wiring.",
         "zh-CN": "在 panel-ipc 仓库中开发主页宫格/底部 TabBar/弹窗/枚举 DP/PTZ/隐私模式/回放/云存/相册/对讲/品牌色等功能时使用。"
       },
-      "tags": ["miniapp", "ray", "panel", "ipc", "camera"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "panel",
+        "ipc",
+        "camera"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/ipc-panel",
-      "related": ["miniapp/ray-common"],
+      "related": [
+        "miniapp/ray-common"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/IpcPanelSkill",
@@ -390,7 +657,10 @@
     {
       "id": "miniapp/charts-library",
       "order": 120,
-      "name": { "en": "Charts Library", "zh-CN": "图表组件库" },
+      "name": {
+        "en": "Charts Library",
+        "zh-CN": "图表组件库"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Integrate @ray/charts-library — scene cards, DataSourceProvider, period controls, chart options helpers.",
@@ -400,10 +670,18 @@
         "en": "Use when adding electricity/temperature/humidity/illuminance charts to Ray miniapp pages, building period-switching charts, or customizing with withXAxis/withTooltip.",
         "zh-CN": "向 Ray 小程序页面添加用电量/温湿度/照度/计量图表、构建周期切换图表、使用 withXAxis/withTooltip 自定义配置时使用。"
       },
-      "tags": ["miniapp", "ray", "charts", "visualization"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "charts",
+        "visualization"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/charts-library",
-      "related": ["miniapp/ray-common", "miniapp/energy-stats"],
+      "related": [
+        "miniapp/ray-common",
+        "miniapp/energy-stats"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/ChartsLibrarySkill",
@@ -414,7 +692,10 @@
     {
       "id": "miniapp/electrician-timing",
       "order": 121,
-      "name": { "en": "Electrician Timing SDK", "zh-CN": "电工定时 SDK" },
+      "name": {
+        "en": "Electrician Timing SDK",
+        "zh-CN": "电工定时 SDK"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Integrate @ray-js/electrician-timing-sdk — cloud timer, cycle, random, inching, countdown.",
@@ -424,10 +705,17 @@
         "en": "Use when integrating timing SDK in a Ray miniapp panel — app onLaunch init, changeConfig on device/group switch, ConflictPopup + useDefaultModal, six timer kinds.",
         "zh-CN": "Ray 面板小程序接入电工定时 SDK、changeConfig 设备/群组切换、ConflictPopup 联动、六类定时实现时使用。"
       },
-      "tags": ["miniapp", "ray", "electrician", "timing"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "electrician",
+        "timing"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/electrician-timing",
-      "related": ["miniapp/socket-panel"],
+      "related": [
+        "miniapp/socket-panel"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/EleTimer",
@@ -438,7 +726,10 @@
     {
       "id": "miniapp/energy-stats",
       "order": 122,
-      "name": { "en": "Energy Statistics", "zh-CN": "电量统计" },
+      "name": {
+        "en": "Energy Statistics",
+        "zh-CN": "电量统计"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Generate energy / electricity-cost statistics code using @tuya-miniapp/cloud-api — peak-valley pricing, budgets, IndicatorCode.",
@@ -448,10 +739,18 @@
         "en": "Use for electricity statistics, energy billing, cost tracking, peak-valley pricing, budget warnings, getDeviceData, currency settings.",
         "zh-CN": "电量/电费统计、用电成本追踪、峰谷电价、预算提醒、getDeviceData、币种设置等场景使用。"
       },
-      "tags": ["miniapp", "ray", "energy", "statistics"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "energy",
+        "statistics"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/energy-stats",
-      "related": ["miniapp/charts-library", "miniapp/socket-panel"],
+      "related": [
+        "miniapp/charts-library",
+        "miniapp/socket-panel"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/EnergyStats",
@@ -462,7 +761,10 @@
     {
       "id": "miniapp/requirement-guide",
       "order": 130,
-      "name": { "en": "Requirement Creating Guide", "zh-CN": "需求创建指南" },
+      "name": {
+        "en": "Requirement Creating Guide",
+        "zh-CN": "需求创建指南"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Guide for capturing and structuring miniapp product requirements before implementation.",
@@ -472,7 +774,12 @@
         "en": "Use at project kick-off when scoping a new miniapp — capturing user stories, page flows, DP usage plans.",
         "zh-CN": "项目启动阶段规划新小程序时使用 —— 捕获用户故事、页面流程、DP 使用方案。"
       },
-      "tags": ["miniapp", "ray", "requirement", "planning"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "requirement",
+        "planning"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/requirement-guide",
       "source": {
@@ -485,7 +792,10 @@
     {
       "id": "miniapp/performance-ux-guard",
       "order": 131,
-      "name": { "en": "Performance & UX Guard", "zh-CN": "性能与体验守护" },
+      "name": {
+        "en": "Performance & UX Guard",
+        "zh-CN": "性能与体验守护"
+      },
       "surface": "miniapp",
       "summary": {
         "en": "Performance and UX guardrails for Tuya Ray miniapp panels — rendering, interaction latency, loading states.",
@@ -495,10 +805,17 @@
         "en": "Use during code review or optimization to validate panel performance and UX against established guardrails.",
         "zh-CN": "代码评审或性能优化阶段，按既定红线校验面板的性能与体验。"
       },
-      "tags": ["miniapp", "ray", "performance", "ux"],
+      "tags": [
+        "miniapp",
+        "ray",
+        "performance",
+        "ux"
+      ],
       "defaultEnabled": false,
       "installPayload": "miniapp/performance-ux-guard",
-      "related": ["miniapp/ray-common"],
+      "related": [
+        "miniapp/ray-common"
+      ],
       "source": {
         "wellKnown": {
           "url": "https://developer.tuya.com/material/skills/MiniappPerformanceUxGuard",

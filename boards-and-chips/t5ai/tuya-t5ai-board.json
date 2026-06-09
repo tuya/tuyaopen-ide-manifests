@@ -18,15 +18,60 @@
   "peripheralPatterns": {
     "display": [
       {
-        "model": "ILI9488",
+        "id": "display-rgb-main",
         "name": {
           "en": "3.5-inch LCD Display",
           "zh-CN": "3.5 寸 LCD 屏"
         },
-        "resolution": "480x320",
         "interface": "RGB",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "model": "ILI9488",
+        "width": 480,
+        "height": 320,
+        "pixelFormat": "RGB565",
+        "backlight": "PWM",
+        "blPwmChannel": 7,
+        "blPwm": {
+          "polarity": "negative",
+          "countMode": "up",
+          "duty": 10000,
+          "cycle": 0,
+          "freq": 1000
+        },
+        "timing": {
+          "syncMode": "VH",
+          "clk": 15000000,
+          "clkEdge": "rising",
+          "hbp": 80,
+          "hfp": 80,
+          "vbp": 8,
+          "vfp": 8,
+          "hsw": 20,
+          "vsw": 4
+        },
         "pins": {
           "RGB": [
+            {
+              "role": "spi_sck",
+              "gpio": 49
+            },
+            {
+              "role": "spi_mosi",
+              "gpio": 50
+            },
+            {
+              "role": "spi_cs",
+              "gpio": 48
+            },
+            {
+              "role": "rst",
+              "gpio": 53
+            },
+            {
+              "role": "bl",
+              "gpio": 9
+            },
             {
               "role": "pclk",
               "gpio": 14
@@ -44,18 +89,6 @@
               "gpio": 18
             },
             {
-              "role": "r0",
-              "gpio": 22
-            },
-            {
-              "role": "r1",
-              "gpio": 23
-            },
-            {
-              "role": "r2",
-              "gpio": 48
-            },
-            {
               "role": "r3",
               "gpio": 49
             },
@@ -64,12 +97,16 @@
               "gpio": 50
             },
             {
-              "role": "g0",
-              "gpio": 26
+              "role": "r5",
+              "gpio": 21
             },
             {
-              "role": "g1",
-              "gpio": 40
+              "role": "r6",
+              "gpio": 20
+            },
+            {
+              "role": "r7",
+              "gpio": 19
             },
             {
               "role": "g2",
@@ -88,16 +125,12 @@
               "gpio": 52
             },
             {
-              "role": "b0",
-              "gpio": 46
+              "role": "g6",
+              "gpio": 25
             },
             {
-              "role": "b1",
-              "gpio": 47
-            },
-            {
-              "role": "b2",
-              "gpio": 53
+              "role": "g7",
+              "gpio": 24
             },
             {
               "role": "b3",
@@ -106,136 +139,63 @@
             {
               "role": "b4",
               "gpio": 55
-            }
-          ],
-          "SW_SPI": [
-            {
-              "role": "sck",
-              "gpio": 50
             },
             {
-              "role": "mosi",
-              "gpio": 49
+              "role": "b5",
+              "gpio": 45
             },
             {
-              "role": "cs",
-              "gpio": 48
+              "role": "b6",
+              "gpio": 44
             },
             {
-              "role": "rst",
-              "gpio": 53
-            }
-          ]
-        },
-        "kconfig": {
-          "TUYA_T5AI_BOARD_LCD_35565": 1
-        },
-        "note": {
-          "en": "SW SPI for init only; RGB data pins are platform-fixed.",
-          "zh-CN": "SW SPI 仅用于初始化，RGB 数据脚为平台固定引脚。"
-        },
-        "mounting": "accessory",
-        "pinLocked": false
-      },
-      {
-        "model": "ST7735S",
-        "name": {
-          "en": "Dual Eye Screen (Mirrored)",
-          "zh-CN": "双眼屏-同显"
-        },
-        "resolution": "128x128",
-        "interface": "SPI",
-        "group": "lcd-eyes-a",
-        "role": "left",
-        "pins": {
-          "SPI": [
-            {
-              "role": "sck",
-              "gpio": 22
-            },
-            {
-              "role": "cs",
-              "gpio": 23
-            },
-            {
-              "role": "dc",
-              "gpio": 7
-            },
-            {
-              "role": "rst",
-              "gpio": 6
-            },
-            {
-              "role": "bl",
-              "gpio": 25
-            }
-          ]
-        },
-        "kconfig": {
-          "TUYA_T5AI_BOARD_LCD_EYES": 1,
-          "ENABLE_EYES_TWO_LCD": 0
-        },
-        "note": {
-          "en": "Both screens share all pins — always show identical content.",
-          "zh-CN": "两块屏共享所有引脚，始终显示相同内容。"
-        },
-        "mounting": "accessory",
-        "pinLocked": false
-      },
-      {
-        "model": "ST7735S",
-        "name": {
-          "en": "Dual Eye Screen (Mirrored)",
-          "zh-CN": "双眼屏-同显"
-        },
-        "resolution": "128x128",
-        "interface": "SPI",
-        "group": "lcd-eyes-a",
-        "role": "right",
-        "pins": {
-          "SPI": [
-            {
-              "role": "sck",
-              "gpio": 22
-            },
-            {
-              "role": "cs",
-              "gpio": 23
-            },
-            {
-              "role": "dc",
-              "gpio": 7
-            },
-            {
-              "role": "rst",
-              "gpio": 6
-            },
-            {
-              "role": "bl",
-              "gpio": 25
+              "role": "b7",
+              "gpio": 43
             }
           ]
         },
         "kconfig": null,
         "note": null,
-        "mounting": "accessory",
-        "pinLocked": false
+        "group": "group-mpxn93yq"
       },
       {
-        "model": "ST7735S",
+        "id": "display-dual-eye-mirror-left",
         "name": {
-          "en": "Dual Eye Screen (Independent)",
-          "zh-CN": "双眼屏-异显"
+          "en": "Dual Eye Screen (Mirrored)  Left",
+          "zh-CN": "双眼屏-同显-左眼"
         },
-        "resolution": "128x128",
         "interface": "SPI",
-        "group": "lcd-eyes-b",
-        "role": "left",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 2,
+        "model": "ST7735S",
+        "width": 128,
+        "height": 128,
+        "pixelFormat": "RGB565",
+        "backlight": "GPIO",
+        "blPwmChannel": 0,
+        "timing": {
+          "syncMode": "VH",
+          "clkEdge": "rising"
+        },
         "pins": {
           "SPI": [
             {
+              "role": "rst",
+              "gpio": 6
+            },
+            {
+              "role": "bl",
+              "gpio": 25,
+              "activeLevel": "high"
+            },
+            {
               "role": "sck",
               "gpio": 22
+            },
+            {
+              "role": "mosi",
+              "gpio": 24
             },
             {
               "role": "cs",
@@ -244,40 +204,162 @@
             {
               "role": "dc",
               "gpio": 7
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Both screens share all pins — always show identical content.",
+          "zh-CN": "两块屏共享所有引脚，始终显示相同内容。"
+        },
+        "group": "lcd-eyes-a"
+      },
+      {
+        "id": "display-dual-eye-mirror-right",
+        "name": {
+          "en": "Dual Eye Screen (Mirrored) Right",
+          "zh-CN": "双眼屏-同显-右眼"
+        },
+        "interface": "SPI",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 2,
+        "model": "ST7735S",
+        "width": 128,
+        "height": 128,
+        "pixelFormat": "RGB565",
+        "backlight": "GPIO",
+        "blPwmChannel": 0,
+        "timing": {
+          "syncMode": "VH",
+          "clkEdge": "rising"
+        },
+        "pins": {
+          "SPI": [
             {
               "role": "rst",
               "gpio": 6
             },
             {
               "role": "bl",
-              "gpio": 25
+              "gpio": 25,
+              "activeLevel": "high"
+            },
+            {
+              "role": "sck",
+              "gpio": 22
+            },
+            {
+              "role": "mosi",
+              "gpio": 16
+            },
+            {
+              "role": "cs",
+              "gpio": 23
+            },
+            {
+              "role": "dc",
+              "gpio": 7
             }
           ]
         },
-        "kconfig": {
-          "TUYA_T5AI_BOARD_LCD_EYES": 1,
-          "ENABLE_EYES_TWO_LCD": 1
-        },
+        "kconfig": null,
         "note": null,
-        "mounting": "accessory",
-        "pinLocked": false
+        "group": "lcd-eyes-a",
+        "role": "right"
       },
       {
-        "model": "ST7735S",
+        "id": "display-dual-eye-independent-left",
         "name": {
-          "en": "Dual Eye Screen (Independent)",
-          "zh-CN": "双眼屏-异显"
+          "en": "Dual Eye Screen (Independent) Left",
+          "zh-CN": "双眼屏-异显-左眼"
         },
-        "resolution": "128x128",
         "interface": "SPI",
-        "group": "lcd-eyes-b",
-        "role": "right",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 2,
+        "model": "ST7735S",
+        "width": 128,
+        "height": 128,
+        "pixelFormat": "RGB565",
+        "backlight": "GPIO",
+        "blPwmChannel": 0,
+        "timing": {
+          "syncMode": "VH",
+          "clkEdge": "rising"
+        },
         "pins": {
           "SPI": [
             {
+              "role": "rst",
+              "gpio": 6
+            },
+            {
+              "role": "bl",
+              "gpio": 25,
+              "activeLevel": "high"
+            },
+            {
+              "role": "sck",
+              "gpio": 22
+            },
+            {
+              "role": "mosi",
+              "gpio": 16
+            },
+            {
+              "role": "cs",
+              "gpio": 23
+            },
+            {
+              "role": "dc",
+              "gpio": 7
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null,
+        "group": "lcd-eyes-b",
+        "role": "left"
+      },
+      {
+        "id": "display-dual-eye-independent-right",
+        "name": {
+          "en": "Dual Eye Screen (Independent) Right",
+          "zh-CN": "双眼屏-异显-右眼"
+        },
+        "interface": "SPI",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 3,
+        "model": "ST7735S",
+        "width": 128,
+        "height": 128,
+        "pixelFormat": "RGB565",
+        "backlight": "GPIO",
+        "blPwmChannel": 0,
+        "timing": {
+          "syncMode": "VH",
+          "clkEdge": "rising"
+        },
+        "pins": {
+          "SPI": [
+            {
+              "role": "rst",
+              "gpio": 45
+            },
+            {
+              "role": "bl",
+              "gpio": 25,
+              "activeLevel": "high"
+            },
+            {
               "role": "sck",
               "gpio": 2
+            },
+            {
+              "role": "mosi",
+              "gpio": 4
             },
             {
               "role": "cs",
@@ -286,30 +368,33 @@
             {
               "role": "dc",
               "gpio": 5
-            },
-            {
-              "role": "rst",
-              "gpio": 45
-            },
-            {
-              "role": "bl",
-              "gpio": 25
             }
           ]
         },
         "kconfig": null,
         "note": null,
-        "mounting": "accessory",
-        "pinLocked": false
+        "group": "lcd-eyes-b",
+        "role": "right"
       },
       {
-        "model": "SSD1306",
+        "id": "display-oled",
         "name": {
           "en": "0.96-inch OLED",
           "zh-CN": "0.96 寸 OLED 屏"
         },
-        "resolution": "128x64",
         "interface": "I2C",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 0,
+        "model": "SSD1306",
+        "width": 128,
+        "height": 64,
+        "pixelFormat": "MONOCHROME",
+        "backlight": "NONE",
+        "timing": {
+          "syncMode": "VH",
+          "clkEdge": "rising"
+        },
         "pins": {
           "I2C": [
             {
@@ -325,9 +410,7 @@
         "kconfig": {
           "TUYA_T5AI_BOARD_LCD_096_OLED": 1
         },
-        "note": null,
-        "mounting": "accessory",
-        "pinLocked": false
+        "note": null
       }
     ],
     "camera": [
@@ -407,17 +490,25 @@
         },
         "note": null,
         "mounting": "accessory",
-        "pinLocked": false
+        "pinLocked": false,
+        "id": "camera"
       }
     ],
     "printer": [
       {
-        "model": "DP48A",
+        "id": "printer",
         "name": {
           "en": "Thermal Printer",
           "zh-CN": "热敏打印机"
         },
         "interface": "UART",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 0,
+        "model": "DP48A",
+        "timing": {
+          "baudRate": 9600
+        },
         "pins": {
           "UART": [
             {
@@ -433,16 +524,12 @@
         "kconfig": {
           "TUYA_T5AI_BOARD_PRINTER_DP48": 1
         },
-        "note": {
-          "en": "9600 bps.",
-          "zh-CN": "9600 bps。"
-        },
-        "mounting": "accessory",
-        "pinLocked": false
+        "note": null
       }
     ],
     "button": [
       {
+        "id": "button",
         "name": {
           "en": "User Button",
           "zh-CN": "用户按键"
@@ -450,7 +537,6 @@
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": false,
-        "count": 1,
         "pins": {
           "GPIO": [
             {
@@ -461,10 +547,7 @@
           ]
         },
         "kconfig": null,
-        "note": {
-          "en": "Active low.",
-          "zh-CN": "低有效。"
-        }
+        "note": null
       }
     ],
     "audio": [
@@ -489,19 +572,20 @@
         "note": {
           "en": "AEC available on v1.0.2+.",
           "zh-CN": "AEC 在 v1.0.2+ 硬件上可用。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "led": [
       {
+        "id": "led",
         "name": {
           "en": "Indicator LED",
           "zh-CN": "指示灯"
         },
         "interface": "GPIO",
         "mounting": "onboard",
-        "pinLocked": false,
-        "count": 1,
+        "pinLocked": true,
         "pins": {
           "GPIO": [
             {
@@ -512,10 +596,41 @@
           ]
         },
         "kconfig": null,
-        "note": {
-          "en": "Active high.",
-          "zh-CN": "高有效。"
-        }
+        "note": null
+      }
+    ],
+    "touchpad": [
+      {
+        "id": "touchpad",
+        "name": {
+          "en": "Touchpad",
+          "zh-CN": "触控板"
+        },
+        "interface": "I2C",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 0,
+        "model": "GT1151",
+        "xMax": 480,
+        "yMax": 320,
+        "mirrorX": false,
+        "mirrorY": false,
+        "swapXY": false,
+        "pins": {
+          "I2C": [
+            {
+              "role": "scl",
+              "gpio": 13
+            },
+            {
+              "role": "sda",
+              "gpio": 15
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null,
+        "group": "group-mpxn93yq"
       }
     ]
   },
@@ -1034,5 +1149,35 @@
         "RGB_B0"
       ]
     }
-  ]
+  ],
+  "peripheralGroups": {
+    "lcd-eyes-a": {
+      "name": {
+        "zh-CN": "双眼屏-同显",
+        "en": "Dual Sync Eyes"
+      },
+      "kconfig": {
+        "TUYA_T5AI_BOARD_LCD_EYES": 1
+      }
+    },
+    "lcd-eyes-b": {
+      "name": {
+        "zh-CN": "双眼屏-异显",
+        "en": "Dual Async Eyes"
+      },
+      "kconfig": {
+        "TUYA_T5AI_BOARD_LCD_EYES": 1,
+        "ENABLE_EYES_TWO_LCD": 1
+      }
+    },
+    "group-mpxn93yq": {
+      "name": {
+        "en": "3.5-LCD-Touch",
+        "zh-CN": "3.5寸 LCD 触摸屏"
+      },
+      "kconfig": {
+        "TUYA_T5AI_BOARD_LCD_35565": 1
+      }
+    }
+  }
 }

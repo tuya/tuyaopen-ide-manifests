@@ -322,9 +322,9 @@ router.post('/:id/validate', asyncHandler(async (req, res) => {
 router.get('/:id/peripherals', asyncHandler(async (req, res) => {
   const detail = await manifestLoader.loadBoardDetail(req.params.id);
   if (!detail) {
-    return res.json({ success: true, peripheralPatterns: {} });
+    return res.json({ success: true, peripheralPatterns: {}, peripheralGroups: {} });
   }
-  res.json({ success: true, peripheralPatterns: detail.peripheralPatterns || {} });
+  res.json({ success: true, peripheralPatterns: detail.peripheralPatterns || {}, peripheralGroups: detail.peripheralGroups || {} });
 }));
 
 // GET /api/boards/:id/expansion-pins - Get expansion pins for a board
@@ -394,9 +394,18 @@ router.get('/platforms/:platformId/pinout', asyncHandler(async (req, res) => {
   res.json({ success: true, pinout });
 }));
 
+// GET /api/platforms/:platformId/peripherals - Get platform peripheral hardware specs (default GPIO mappings)
+router.get('/platforms/:platformId/peripherals', asyncHandler(async (req, res) => {
+  const platformDetail = await manifestLoader.loadPlatformDetail(req.params.platformId);
+  if (!platformDetail) {
+    return res.status(404).json({ success: false, error: `Platform "${req.params.platformId}" not found` });
+  }
+  res.json({ success: true, peripherals: platformDetail.peripherals || {} });
+}));
+
 // PATCH /api/boards/:id/peripherals - Update peripheral patterns
 router.patch('/:id/peripherals', asyncHandler(async (req, res) => {
-  const { peripheralPatterns } = req.body;
+  const { peripheralPatterns, peripheralGroups } = req.body;
   if (!peripheralPatterns || typeof peripheralPatterns !== 'object') {
     return res.status(400).json({ success: false, error: 'Missing peripheralPatterns object' });
   }
@@ -420,6 +429,9 @@ router.patch('/:id/peripherals', asyncHandler(async (req, res) => {
   }
 
   detail.peripheralPatterns = peripheralPatterns;
+  if (peripheralGroups !== undefined) {
+    detail.peripheralGroups = peripheralGroups;
+  }
   await manifestLoader.saveBoardDetail(req.params.id, detail);
 
   if (req.body.autoCommit !== false) {

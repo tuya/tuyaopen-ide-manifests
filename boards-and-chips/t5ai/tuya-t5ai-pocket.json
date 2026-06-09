@@ -38,11 +38,13 @@
         "note": {
           "en": "AEC enabled. mux_sel: low = mic to MIC2, high = speaker loopback.",
           "zh-CN": "AEC 已启用。mux_sel：低电平接麦克风，高电平接扬声器回环。"
-        }
+        },
+        "id": "audio"
       }
     ],
     "display": [
       {
+        "id": "display",
         "name": {
           "en": "Monochrome Display",
           "zh-CN": "单色屏"
@@ -50,29 +52,30 @@
         "interface": "SPI",
         "mounting": "onboard",
         "pinLocked": true,
+        "port": 0,
         "model": "ST7305",
-        "resolution": "168x384",
+        "width": 168,
+        "height": 384,
+        "pixelFormat": "MONOCHROME",
+        "backlight": "GPIO",
+        "blPwmChannel": 0,
+        "timing": {
+          "syncMode": "VH",
+          "clkEdge": "rising"
+        },
         "pins": {
           "SPI": [
             {
               "role": "sck",
-              "gpio": 44
+              "gpio": 14
             },
             {
               "role": "mosi",
-              "gpio": 46
+              "gpio": 16
             },
             {
               "role": "cs",
-              "gpio": 45
-            },
-            {
-              "role": "dc",
-              "gpio": 47
-            },
-            {
-              "role": "rst",
-              "gpio": 43
+              "gpio": 15
             }
           ]
         },
@@ -157,7 +160,8 @@
           "zh-CN": "I2C0 与 IMU 和 PMIC 共享。电源和复位由 AXP2101 LDO 管理。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "camera"
       }
     ],
     "imu": [
@@ -187,7 +191,8 @@
           "zh-CN": "I2C0 与摄像头和 PMIC 共享。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "imu"
       }
     ],
     "pmic": [
@@ -216,7 +221,8 @@
           "zh-CN": "须在所有外设之前初始化。管理电池、MCU 3V3、摄像头供电及 SD 卡 3V3。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "pmic"
       }
     ],
     "joystick": [
@@ -225,7 +231,6 @@
           "en": "Joystick",
           "zh-CN": "摇杆"
         },
-        "count": 1,
         "interface": "ADC",
         "pins": {
           "ADC": [
@@ -249,7 +254,8 @@
           "zh-CN": "X 轴 ADC0 通道 15，Y 轴 ADC0 通道 14。按键低有效。"
         },
         "mounting": "onboard",
-        "pinLocked": true
+        "pinLocked": true,
+        "id": "joystick"
       }
     ],
     "led": [
@@ -261,7 +267,6 @@
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 1,
         "pins": {
           "GPIO": [
             {
@@ -275,38 +280,96 @@
         "note": {
           "en": "Active high.",
           "zh-CN": "高有效。"
-        }
+        },
+        "id": "led"
       }
     ],
     "button": [
       {
+        "id": "button",
         "name": {
-          "en": "User Buttons",
-          "zh-CN": "用户按键"
+          "en": "Button_Menu",
+          "zh-CN": "菜单键"
         },
         "interface": "GPIO",
         "mounting": "onboard",
         "pinLocked": true,
-        "count": 4,
         "pins": {
           "GPIO": [
             {
-              "role": "btn_0",
+              "role": "btn",
               "gpio": 17,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      },
+      {
+        "id": "button-2",
+        "name": {
+          "en": "Button_Enter",
+          "zh-CN": "选择键"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "btn_1",
+              "role": "btn",
               "gpio": 18,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      },
+      {
+        "id": "button-3",
+        "name": {
+          "en": "Button_ESC",
+          "zh-CN": "退出键"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "btn_2",
+              "role": "btn",
               "gpio": 19,
               "activeLevel": "low"
-            },
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Active low.",
+          "zh-CN": "低有效。"
+        }
+      },
+      {
+        "id": "button-4",
+        "name": {
+          "en": "Button_AI",
+          "zh-CN": "AI 功能键"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
             {
-              "role": "btn_3",
+              "role": "btn",
               "gpio": 26,
               "activeLevel": "low"
             }
@@ -437,5 +500,6 @@
         "SEG2"
       ]
     }
-  ]
+  ],
+  "peripheralGroups": {}
 }

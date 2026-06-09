@@ -182,7 +182,7 @@ export function renderBoardForm(board = null) {
             class="form-textarea"
             placeholder="e.g., High-performance board with WiFi, BLE, AI acceleration, built-in microphone and LED"
             style="min-height: 80px;"
-          >${board ? escapeHtml(getLocalizedString(board.summary) || board.summary?.en || '') : ''}</textarea>
+          >${board ? escapeHtml(board.summary?.en || '') : ''}</textarea>
           <small style="color: var(--color-muted);">Concise description of key features and capabilities</small>
         </div>
         <div class="form-col-half">
