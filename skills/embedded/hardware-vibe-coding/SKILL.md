@@ -47,6 +47,11 @@ This skill is the authority. Read these yourself before doing anything:
    - **`count`** + **`spec`** — instance count and valid config (ports, pins, ranges,
      enums). Read these instead of hardcoding; values differ per platform.
    Consult before writing any on-chip code.
+4. **`.tuyaopen/ide/board.json` → `expansionPins`** — the **only pins the developer
+   may freely wire** (the board's broken-out pins), each with the `functions` it can mux
+   to (`GPIO`, `UART2_TX`, `I2C1_SCL`, …). This — **not** the full SoC pinout — is the
+   basis for "available pins". **Empty/absent → the board is sealed: there are NO free
+   pins**; you can only use already-wired onboard peripherals.
 
 ## Rules (must follow)
 
@@ -57,6 +62,12 @@ This skill is the authority. Read these yourself before doing anything:
   multiple-choice prompt if your tooling supports one** (otherwise list the options as text).
 - **Record before code.** As soon as the selection is settled, **full-overwrite**
   `used-peripherals.json` (Step 3) BEFORE writing any code; update it if the set changes.
+- **Pick user-peripheral pins from `expansionPins` only.** When you choose a pin for a
+  user/on-chip peripheral or a usr_board device, pick a `gpio` from
+  `board.json.expansionPins` whose `functions` include the role you need (e.g. a UART2
+  TX pin must list `UART2_TX`; a plain output needs `GPIO`). Never pick a pin that is not
+  in `expansionPins` — it isn't physically accessible. If `expansionPins` is empty/absent,
+  tell the user the board exposes no free pins and you cannot wire an external peripheral.
 - **"串口 / serial / UART" is ambiguous → ASK first.** It may mean the debug/log
   console (`PR_*` — often a USB-serial the PC already sees; **no** peripheral, nothing
   recorded) OR a dedicated user UART (`tal_uart` on its own instance + pins —

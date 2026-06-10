@@ -35,6 +35,11 @@ e.g. `[[0,55]]` = GPIO0–55, or `[[0,9],[12,55]]` = 0–9 and 12–55 (10–11 
 Check the user's pin falls inside one of the ranges (and inside `irq.pins` for an
 interrupt).
 
+But `gpio.spec.pins` is the **SoC superset**. For a USER pin, pick only from
+`board.json.expansionPins` (the pins actually broken out, each with its muxable
+`functions` — a plain GPIO pin must list `GPIO`). If `expansionPins` is empty/absent,
+the board is sealed — no free GPIO; tell the user.
+
 ## Output + input + IRQ
 
 ```c
