@@ -33,6 +33,21 @@ All skills are **board-agnostic** — they describe TDL API usage only.
 | Joystick (2-axis + button) | `peripheral-joystick/SKILL.md` | `tdl_joystick_create()`, `tdl_joystick_event_register()`, `tdl_joystick_calibrated_xy()` |
 | Addressable LED strip | `peripheral-leds-pixel/SKILL.md` | `tdl_pixel_dev_find()`, `tdl_pixel_set_single_color_all()`, `tdl_pixel_dev_refresh()` |
 
+## On-chip peripherals (SoC buses/pins — `tal_*` / `tkl_*`, no TDD)
+
+These are **not** catalogued device parts. They call the on-chip API directly —
+no `board_register_hardware()`, no `CONFIG_ENABLE_*` (platform-selected). Confirm
+the instance + pins and record as `onchip:<type><n>` in `used-peripherals.json`.
+
+| Peripheral | Skill file | Key APIs |
+|-----------|-----------|---------|
+| UART (user serial, **not** PR_* log) | `onchip-uart/SKILL.md` | `tal_uart_init()`, `tal_uart_write()`, `tal_uart_read()` |
+| GPIO | `onchip-gpio/SKILL.md` | `tkl_gpio_init()`, `tkl_gpio_write()`, `tkl_gpio_read()`, `tkl_gpio_irq_init()` |
+| PWM | `onchip-pwm/SKILL.md` | `tkl_pwm_init()`, `tkl_pwm_start()`, `tkl_pwm_info_set()` |
+| I2C master | `onchip-i2c/SKILL.md` | `tkl_i2c_init()`, `tkl_i2c_master_send()`, `tkl_i2c_master_receive()` |
+| SPI master | `onchip-spi/SKILL.md` | `tkl_spi_init()`, `tkl_spi_send()`, `tkl_spi_transfer()` |
+| ADC | `onchip-adc/SKILL.md` | `tkl_adc_init()`, `tkl_adc_read_single_channel()` |
+
 ## Usage flow
 
 1. Call `board_register_hardware()` to register all board hardware (TDD layer — no manual code needed)

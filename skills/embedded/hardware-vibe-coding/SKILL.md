@@ -1,14 +1,20 @@
 ---
 name: tuyaopen/hardware-vibe-coding
 description: >-
-  Hardware-aware code generation workflow for TuyaOpen embedded projects.
-  Reads .tuyaopen/board-context.md, confirms peripheral selection with user,
-  checks Kconfig, then delegates to the appropriate peripheral skill.
-  外设初始化、硬件驱动、Vibe Coding、使用外设、硬件相关代码。
+  Hardware-aware code generation for TuyaOpen embedded projects. Reads the
+  project's confirmed hardware (.tuyaopen/used-peripherals.json) + board catalog
+  (.tuyaopen/board-context.md), confirms the selection with the user, records it
+  BEFORE writing code, then delegates to the matching peripheral sub-skill.
+  外设初始化、硬件驱动、Vibe Coding、使用外设、硬件相关代码、点灯、点亮 LED、按键、
+  屏幕、显示、摄像头、音频、录音、播放、触摸、打印、红外、摇杆、灯带、串口、UART、
+  GPIO、PWM、I2C、SPI、ADC、传感器、引脚、片上外设、发送数据、读取传感器。
 when_to_use: >-
-  Use when the user asks to use or initialize any hardware peripheral,
-  or for any hardware-related code generation. This is the entry point
-  that routes to specific peripheral skills (display, camera, button, LED, etc).
+  Use for ANY hardware / peripheral / pin request on a TuyaOpen board — using or
+  initializing a peripheral, serial / UART, GPIO, PWM, I2C, SPI, ADC, display,
+  camera, button, LED, audio, touch, sensor, or any "make the hardware do X" task.
+  Load this skill FIRST; it is the entry point that reads the project's confirmed
+  hardware, enforces confirm-before-code, and routes to the specific peripheral
+  sub-skill. 任何涉及硬件/外设/引脚/串口的需求都先加载本 skill。
 
 id: hardware-vibe-coding
 surfaces: [embedded]
@@ -21,13 +27,46 @@ tags: [hardware, peripheral, vibe-coding, routing]
 
 TDD (driver registration) → TDL (device management) → App (business logic).
 
-**Do not write TDD code.** `board_register_hardware()` already does this.
+**Do not write TDD code** for device peripherals — `board_register_hardware()`
+already does this. (On-chip peripherals and usr_board customs are the exception —
+see Rules.)
+
+## Read these files first (your hardware context)
+
+This skill is the authority. Read these yourself before doing anything:
+
+1. **`.tuyaopen/used-peripherals.json`** — the **already-confirmed** hardware
+   (device `ID:`s and/or `onchip:<type><n>`s). This is your **INPUT**: generate
+   code for exactly these. Empty/missing → nothing confirmed yet.
+2. **`.tuyaopen/board-context.md`** — the board's **device** peripheral catalog
+   (display/camera/led/button/audio/touch/printer/…) with `ID:` / `Pins:` / `Kconfig:`.
+3. **`.tuyaopen/ide/platform.json` → `peripherals`** — **on-chip** availability
+   (uart/gpio/pwm/i2c/spi/adc: counts, id prefixes, muxable pins). Consult when the
+   request is a bus/pin (serial, GPIO, PWM, I2C, SPI, ADC).
+
+## Rules (must follow)
+
+- **Confirm before code (hard gate).** Generate code ONLY for hardware listed in
+  `used-peripherals.json`. If the request needs something not yet confirmed, or the
+  catalog has multiple matches / any `## group —`, **ASK the user which one and
+  wait** — never auto-pick.
+- **Record before code.** As soon as the selection is settled, **full-overwrite**
+  `used-peripherals.json` (Step 3) BEFORE writing any code; update it if the set changes.
+- **"串口 / serial / UART" is ambiguous → ASK first.** It may mean the debug/log
+  console (`PR_*` — often a USB-serial the PC already sees; **no** peripheral, nothing
+  recorded) OR a dedicated user UART (`tal_uart` on its own instance + pins —
+  `onchip:uart<N>`). Do NOT assume `PR_*`; ask which before writing code.
+- **Device vs on-chip.** Device peripherals (catalog) → auto-registered by
+  `board_register_hardware()`; never write `CONFIG_ENABLE_*`. On-chip
+  (uart/gpio/pwm/i2c/spi/adc) → call `tal_*`/`tkl_*` directly; **no** `CONFIG_ENABLE_*`,
+  **no** `board_register_hardware()`.
+- Never write platform-level macros (`CONFIG_ENABLE_SPI` / `_I2C` / `_GPIO`).
 
 ---
 
-## Step 1: Read Hardware Context
+## Step 1: Read the hardware context
 
-Read `.tuyaopen/board-context.md`. Field reference:
+Read the three files above. `board-context.md` field reference:
 
 | Field | Meaning |
 |-------|---------|
@@ -61,7 +100,40 @@ The group's `Devices:` line tells you how many logical devices to register.
 
 ---
 
-## Step 3: Check Kconfig
+## Step 3: Record the Confirmed Hardware (before writing code)
+
+The confirmed selection is the **input** to code generation, not an afterthought.
+**As soon as the peripheral selection is settled (Step 2) — and BEFORE writing any
+code — full-overwrite** `.tuyaopen/used-peripherals.json` with the confirmed set.
+Steps 4–5 then generate code for exactly those instances.
+
+- `peripherals` = the **`ID:` values** from board-context.md for the confirmed
+  instances (e.g. `display-rgb-main`, `camera`). Use the **confirmed instance**,
+  not every option of that type — if the board has several displays and the user
+  chose the 3.5" LCD, list only that one's ID.
+- List **all** instances the project will use (already-used + this turn's), not
+  just this turn's additions — it is a full snapshot, not a diff.
+- For a custom peripheral added via usr-board with no board-context.md `ID:`,
+  use its `usr_board` device name as the id.
+- If the set changes while you are writing code, **update this file again** so it
+  always matches what the code targets.
+
+This file drives the Vibe Coding Hardware View diagram in Project Details, and on
+later turns the host feeds it back to you as the **confirmed hardware context** —
+so getting it right here is what lets you skip re-confirming next time.
+
+```json
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-01-01T00:00:00Z",
+  "source": "vibe",
+  "peripherals": ["display-rgb-main", "camera"]
+}
+```
+
+---
+
+## Step 4: Check Kconfig
 
 **Board-adapted peripherals (listed in board-context.md)**:
 
@@ -79,7 +151,7 @@ Never write platform-level macros (`CONFIG_ENABLE_SPI`, `CONFIG_ENABLE_I2C`,
 
 ---
 
-## Step 4: Delegate to Peripheral Skill
+## Step 5: Delegate to Peripheral Skill (generate code)
 
 | Type | Skill file |
 |------|-----------|
@@ -100,30 +172,26 @@ add the matching `CONFIG_ENABLE_*` macro to `app_default.config`.
 
 Not in board-context.md → `peripheral-drivers/usr-board/SKILL.md`.
 
----
+### On-chip peripherals (SoC buses/pins — not catalogued device parts)
 
-## Step 5: Record Used Peripherals
+For raw on-chip use (serial data, pin toggling, PWM, bus access, analog read).
+These call `tal_*` / `tkl_*` directly — **no** `board_register_hardware()`, **no**
+`CONFIG_ENABLE_*` (platform-selected). Confirm the instance + pins and record as
+`onchip:<type><n>` in `used-peripherals.json`.
 
-After writing the code, **full-overwrite** `.tuyaopen/used-peripherals.json` so the
-Hardware IO diagram in Project Details highlights the exact devices this project uses.
+| Type | Skill file |
+|------|-----------|
+| `uart` / serial (user serial, **not** PR_* logging) | `peripheral-drivers/onchip-uart/SKILL.md` |
+| `gpio` / pin level / edge IRQ | `peripheral-drivers/onchip-gpio/SKILL.md` |
+| `pwm` / dimming / buzzer / servo | `peripheral-drivers/onchip-pwm/SKILL.md` |
+| `i2c` / `iic` / sensor bus | `peripheral-drivers/onchip-i2c/SKILL.md` |
+| `spi` bus master | `peripheral-drivers/onchip-spi/SKILL.md` |
+| `adc` / analog read / voltage | `peripheral-drivers/onchip-adc/SKILL.md` |
 
-- `peripherals` = the **`ID:` values** from board-context.md for the specific
-  instances you wrote code for (e.g. `display-rgb-main`, `camera`). Use the
-  **confirmed instance**, not every option of that type — if the board has
-  several displays and the user chose the 3.5" LCD, list only that one's ID.
-- List **all** instances the project currently uses, not just this turn's
-  additions (it is a full snapshot, not a diff).
-- For a custom peripheral added via usr-board with no board-context.md `ID:`,
-  use its `usr_board` device name as the id.
-
-```json
-{
-  "schemaVersion": 1,
-  "updatedAt": "2026-01-01T00:00:00Z",
-  "source": "vibe",
-  "peripherals": ["display-rgb-main", "camera"]
-}
-```
+**Serial "hello world" is ambiguous — ask first, don't auto-pick.** "用串口发 X" can
+mean the debug/log console (`PR_*`, often a USB-serial the PC already sees — no
+peripheral, nothing recorded) OR a dedicated user UART (`tal_uart` on its own
+instance + pins — `onchip-uart`, a confirmed peripheral). Ask which before coding.
 
 ---
 
