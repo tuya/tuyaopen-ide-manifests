@@ -51,9 +51,10 @@
       "count": 0,
       "spec": {
         "pins": [
-          0,
-          1,
-          2
+          [
+            0,
+            2
+          ]
         ],
         "direction": [
           "TUYA_GPIO_INPUT",
@@ -77,9 +78,10 @@
             "TUYA_GPIO_IRQ_HIGH"
           ],
           "pins": [
-            0,
-            1,
-            2
+            [
+              0,
+              2
+            ]
           ]
         }
       }

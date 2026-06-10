@@ -26,10 +26,14 @@ tags: [gpio, pin, input, output, interrupt, on-chip]
 ## Platform spec — read, don't hardcode
 
 Valid pins/modes for THIS board are in `.tuyaopen/ide/platform.json` →
-`peripherals.gpio.spec`: `pins` (usable GPIO numbers), `mode` (allowed pull/drive
-modes), `irq.triggers` + `irq.pins` (which pins support edge IRQ). The enum names
-below are SDK-wide, but the **pin set differs per platform** — take the user's pin
-and check it against `spec.pins` (and `spec.irq.pins` for interrupts).
+`peripherals.gpio.spec`: `pins` (usable GPIOs), `mode` (allowed pull/drive modes),
+`irq.triggers` + `irq.pins` (which pins support edge IRQ). The enum names below are
+SDK-wide, but the **pin set differs per platform**.
+
+`pins` / `irq.pins` are **inclusive `[start,end]` range pairs** (multi-segment),
+e.g. `[[0,55]]` = GPIO0–55, or `[[0,9],[12,55]]` = 0–9 and 12–55 (10–11 excluded).
+Check the user's pin falls inside one of the ranges (and inside `irq.pins` for an
+interrupt).
 
 ## Output + input + IRQ
 
