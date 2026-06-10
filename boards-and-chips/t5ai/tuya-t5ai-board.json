@@ -741,6 +741,14 @@
       ]
     },
     {
+      "gpio": 7,
+      "functions": [
+        "GPIO7",
+        "I2S0_SYNC",
+        "QSPI1_IO3"
+      ]
+    },
+    {
       "gpio": 14,
       "functions": [
         "GPIO14",
