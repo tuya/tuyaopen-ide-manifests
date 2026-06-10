@@ -690,6 +690,17 @@
       ]
     },
     {
+      "gpio": 2,
+      "functions": [
+        "GPIO2",
+        "SPI1_SCK",
+        "SDIO_CLK",
+        "SC_RSTN",
+        "LIN_SLEEP",
+        "QSPI1_SCK"
+      ]
+    },
+    {
       "gpio": 6,
       "functions": [
         "GPIO6",
