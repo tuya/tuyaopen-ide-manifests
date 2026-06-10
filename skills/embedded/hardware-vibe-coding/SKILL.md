@@ -131,6 +131,10 @@ Steps 4–5 then generate code for exactly those instances.
   just this turn's additions — it is a full snapshot, not a diff.
 - For a custom peripheral added via usr-board with no board-context.md `ID:`,
   use its `usr_board` device name as the id.
+- **On-chip peripherals** use `onchip:<type><n>` (e.g. `onchip:uart2`). Record them as
+  an **object with the pins your code occupies** so the diagram can mark those GPIOs:
+  `{ "id": "onchip:uart2", "pins": [{"role":"tx","gpio":41},{"role":"rx","gpio":40}] }`.
+  (A bare string `"onchip:uart2"` is allowed but won't show pin occupancy.)
 - If the set changes while you are writing code, **update this file again** so it
   always matches what the code targets.
 
@@ -143,7 +147,11 @@ so getting it right here is what lets you skip re-confirming next time.
   "schemaVersion": 1,
   "updatedAt": "2026-01-01T00:00:00Z",
   "source": "vibe",
-  "peripherals": ["display-rgb-main", "camera"]
+  "peripherals": [
+    "display-rgb-main",
+    "camera",
+    { "id": "onchip:uart2", "pins": [{ "role": "tx", "gpio": 41 }, { "role": "rx", "gpio": 40 }] }
+  ]
 }
 ```
 
