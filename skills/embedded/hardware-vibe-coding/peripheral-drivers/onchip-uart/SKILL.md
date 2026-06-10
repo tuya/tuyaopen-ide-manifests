@@ -39,11 +39,10 @@ tags: [uart, serial, on-chip, tal_uart]
   - `role` — its **power-on default purpose**: `"log"` (debug/log console),
     `"download"` (flash/download port), or `"general"` (free for app use). This is the
     default and is **reconfigurable in code**, but treat it as the guide.
-  - `logPort` — `true` for the log console (matches `role:"log"`).
   - `pinGroups` — its available TX/RX pin set(s).
 
   For a user UART, **prefer a `role:"general"` port**. **Never** use the log port
-  (`role:"log"` / `logPort:true`). The `download` port is fine — its use is only
+  (`role:"log"`). The `download` port is fine — its use is only
   transient during flashing, so it's free at runtime. Confirm the chosen instance with
   the user; don't infer roles from general board knowledge.
 

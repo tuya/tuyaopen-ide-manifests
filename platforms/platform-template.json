@@ -120,7 +120,6 @@
           {
             "id": 0,
             "role": "general",
-            "logPort": false,
             "irq": {
               "rx": false,
               "tx": false

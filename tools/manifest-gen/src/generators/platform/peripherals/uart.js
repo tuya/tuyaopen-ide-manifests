@@ -1,4 +1,4 @@
-import { number, confirm, select } from '@inquirer/prompts'
+import { number, select } from '@inquirer/prompts'
 import chalk from 'chalk'
 
 export const meta = {
@@ -34,7 +34,7 @@ export function scaffold() {
       ports: [
         {
           id: 0,
-          logPort: false,
+          role: 'general',
           irq: { rx: false, tx: false },
           pinGroups: [{ tx: 0, rx: 0 }],
         },
@@ -66,7 +66,7 @@ export async function configure(existing = null) {
     // Sync ports array to match data.count
     while (data.spec.ports.length < data.count) {
       const i = data.spec.ports.length
-      data.spec.ports.push({ id: i, tx: 0, rx: 0, logPort: false })
+      data.spec.ports.push({ id: i, tx: 0, rx: 0, role: 'general' })
     }
     if (data.spec.ports.length > data.count) {
       data.spec.ports = data.spec.ports.slice(0, data.count)
@@ -75,8 +75,8 @@ export async function configure(existing = null) {
     const portChoices = data.spec.ports.map((p, i) => {
       const tx = p.pinGroups?.[0]?.tx ?? p.tx ?? 0
       const rx = p.pinGroups?.[0]?.rx ?? p.rx ?? 0
-      const log = p.logPort ? chalk.yellow(' (log)') : ''
-      return { name: `端口 ${i}        ${chalk.gray(`TX:${tx} RX:${rx}`)}${log}`, value: `port:${i}` }
+      const roleTag = p.role && p.role !== 'general' ? chalk.yellow(` (${p.role})`) : ''
+      return { name: `端口 ${i}        ${chalk.gray(`TX:${tx} RX:${rx}`)}${roleTag}`, value: `port:${i}` }
     })
 
     const field = await select({
@@ -107,7 +107,7 @@ export async function configure(existing = null) {
           choices: [
             { name: `TX 引脚      ${chalk.gray(String(currentTx))}`, value: 'tx' },
             { name: `RX 引脚      ${chalk.gray(String(currentRx))}`, value: 'rx' },
-            { name: `日志端口     ${chalk.gray(port.logPort ? '是' : '否')}`, value: 'log' },
+            { name: `默认用途     ${chalk.gray(port.role ?? 'general')}`, value: 'role' },
             { name: chalk.gray('← 返回'), value: 'back' },
           ],
         })
@@ -120,8 +120,16 @@ export async function configure(existing = null) {
           const rx = await number({ message: `UART[${idx}] RX 引脚号:`, default: currentRx })
           if (port.pinGroups) port.pinGroups[0].rx = rx
           else port.rx = rx
-        } else if (sub === 'log') {
-          port.logPort = await confirm({ message: `UART[${idx}] 作为日志串口?`, default: port.logPort ?? false })
+        } else if (sub === 'role') {
+          port.role = await select({
+            message: `UART[${idx}] 默认用途:`,
+            default: port.role ?? 'general',
+            choices: [
+              { name: 'general（通用，可自由使用）', value: 'general' },
+              { name: 'log（调试/日志控制台）', value: 'log' },
+              { name: 'download（烧录/下载口，运行时空闲）', value: 'download' },
+            ],
+          })
         }
       }
     }
@@ -130,7 +138,7 @@ export async function configure(existing = null) {
   // Normalize ports to canonical shape before returning
   data.spec.ports = data.spec.ports.map((p, i) => ({
     id: i,
-    logPort: p.logPort ?? false,
+    role: p.role ?? 'general',
     irq: p.irq ?? { rx: false, tx: false },
     pinGroups: p.pinGroups ?? [{ tx: p.tx ?? 0, rx: p.rx ?? 0 }],
   }))

@@ -215,7 +215,7 @@ Collect from ALL sources:
 - `board.json peripheralPatterns[*].pins[*][*].gpio`
 - `platform.json flashAndDebug.flash.pins`
 - `platform.json flashAndDebug.debug` port → look up TX/RX via `pinout[]`
-- `platform.json peripherals.uart[*]` where `logPort === true` → look up TX/RX via `pinout[]`
+- `platform.json peripherals.uart[*]` where `role === "log"` → look up TX/RX via `pinout[]`
 
 Available after subtracting reserved:
 - **PWM:** `peripherals.pwm.spec.channels[]` — each channel lists valid pin options; exclude options whose GPIO is reserved
