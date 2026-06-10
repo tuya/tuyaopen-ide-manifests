@@ -119,6 +119,7 @@
         "ports": [
           {
             "id": 0,
+            "role": "download",
             "logPort": false,
             "irq": {
               "rx": true,
@@ -135,6 +136,7 @@
           },
           {
             "id": 1,
+            "role": "log",
             "logPort": true,
             "irq": {
               "rx": true,
@@ -149,6 +151,7 @@
           },
           {
             "id": 2,
+            "role": "general",
             "logPort": false,
             "irq": {
               "rx": true,
