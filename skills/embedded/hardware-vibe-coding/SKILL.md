@@ -191,6 +191,9 @@ These call `tal_*` / `tkl_*` directly — **no** `board_register_hardware()`, **
 | `timer` / hardware timer / periodic callback | `peripheral-drivers/onchip-timer/SKILL.md` |
 | `watchdog` / `wdt` / feed dog | `peripheral-drivers/onchip-watchdog/SKILL.md` |
 | `rtc` / real-time clock | `peripheral-drivers/onchip-rtc/SKILL.md` |
+| `dma2d` / pixel-format convert / fast blit | `peripheral-drivers/onchip-dma2d/SKILL.md` |
+| `vad` / voice activity (speech vs silence) | `peripheral-drivers/onchip-vad/SKILL.md` |
+| `kws` / wake word / keyword spotting | `peripheral-drivers/onchip-kws/SKILL.md` |
 
 **Serial "hello world" is ambiguous — ask first, don't auto-pick.** "用串口发 X" can
 mean the debug/log console (`PR_*`, often a USB-serial the PC already sees — no

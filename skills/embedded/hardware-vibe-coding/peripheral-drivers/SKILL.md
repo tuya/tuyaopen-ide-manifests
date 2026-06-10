@@ -51,6 +51,9 @@ the instance + pins and record as `onchip:<type><n>` in `used-peripherals.json`.
 | Hardware timer | `onchip-timer/SKILL.md` | `tkl_timer_init()`, `tkl_timer_start()` |
 | Watchdog | `onchip-watchdog/SKILL.md` | `tkl_watchdog_init()`, `tkl_watchdog_refresh()` |
 | RTC | `onchip-rtc/SKILL.md` | `tkl_rtc_init()`, `tkl_rtc_time_set()`, `tkl_rtc_time_get()` |
+| DMA2D (2D accel) | `onchip-dma2d/SKILL.md` | `tal_dma2d_init()`, `tal_dma2d_convert()`, `tal_dma2d_wait_finish()` |
+| VAD (voice activity) | `onchip-vad/SKILL.md` | `tkl_vad_init()`, `tkl_vad_feed()`, `tkl_vad_get_status()` |
+| KWS (wake word) | `onchip-kws/SKILL.md` | `tkl_kws_init()`, `tkl_kws_reg_wakeup_cb()`, `tkl_kws_enable()` |
 
 ## Usage flow
 
