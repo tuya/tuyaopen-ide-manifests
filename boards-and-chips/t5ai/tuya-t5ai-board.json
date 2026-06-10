@@ -787,6 +787,15 @@
       ]
     },
     {
+      "gpio": 13,
+      "functions": [
+        "GPIO13",
+        "UART0_CTS",
+        "TOUCH1",
+        "ADC15"
+      ]
+    },
+    {
       "gpio": 14,
       "functions": [
         "GPIO14",
