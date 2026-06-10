@@ -759,6 +759,15 @@
       ]
     },
     {
+      "gpio": 9,
+      "functions": [
+        "GPIO9",
+        "I2S0_DOUT",
+        "DMIC_DAT",
+        "32K_XI"
+      ]
+    },
+    {
       "gpio": 10,
       "functions": [
         "GPIO10",
