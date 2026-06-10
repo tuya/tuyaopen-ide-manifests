@@ -23,7 +23,8 @@ When the user says anything like "用串口发 X" / "send X over serial" / "发�
 writing any code or choosing an API. **Do NOT infer** — "发给电脑" / "USB 串口" do
 **not** imply the log console.
 
-Ask these two fixed options and wait for the user's choice:
+Ask these two fixed options and wait for the user's choice — **prefer an interactive
+multiple-choice prompt if your tooling supports one; otherwise list them as text**:
 
 > 你要用哪种串口?
 > 1. **调试日志口**（`PR_*`；T5AI 上就是 USB 转串口、电脑直接能收;零配置)

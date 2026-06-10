@@ -53,7 +53,8 @@ This skill is the authority. Read these yourself before doing anything:
 - **Confirm before code (hard gate).** Generate code ONLY for hardware listed in
   `used-peripherals.json`. If the request needs something not yet confirmed, or the
   catalog has multiple matches / any `## group —`, **ASK the user which one and
-  wait** — never auto-pick.
+  wait** — never auto-pick. When asking the user to choose, **prefer an interactive
+  multiple-choice prompt if your tooling supports one** (otherwise list the options as text).
 - **Record before code.** As soon as the selection is settled, **full-overwrite**
   `used-peripherals.json` (Step 3) BEFORE writing any code; update it if the set changes.
 - **"串口 / serial / UART" is ambiguous → ASK first.** It may mean the debug/log
