@@ -46,6 +46,7 @@ the instance + pins and record as `onchip:<type><n>` in `used-peripherals.json`.
 | PWM | `onchip-pwm/SKILL.md` | `tkl_pwm_init()`, `tkl_pwm_start()`, `tkl_pwm_info_set()` |
 | I2C master | `onchip-i2c/SKILL.md` | `tkl_i2c_init()`, `tkl_i2c_master_send()`, `tkl_i2c_master_receive()` |
 | SPI master | `onchip-spi/SKILL.md` | `tkl_spi_init()`, `tkl_spi_send()`, `tkl_spi_transfer()` |
+| QSPI master (raw) | `onchip-qspi/SKILL.md` | `tkl_qspi_init()`, `tkl_qspi_comand()`, `tkl_qspi_send()` |
 | ADC | `onchip-adc/SKILL.md` | `tkl_adc_init()`, `tkl_adc_read_single_channel()` |
 | Hardware timer | `onchip-timer/SKILL.md` | `tkl_timer_init()`, `tkl_timer_start()` |
 | Watchdog | `onchip-watchdog/SKILL.md` | `tkl_watchdog_init()`, `tkl_watchdog_refresh()` |

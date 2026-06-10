@@ -186,6 +186,7 @@ These call `tal_*` / `tkl_*` directly — **no** `board_register_hardware()`, **
 | `pwm` / dimming / buzzer / servo | `peripheral-drivers/onchip-pwm/SKILL.md` |
 | `i2c` / `iic` / sensor bus | `peripheral-drivers/onchip-i2c/SKILL.md` |
 | `spi` bus master | `peripheral-drivers/onchip-spi/SKILL.md` |
+| `qspi` / quad-SPI (raw; catalogued QSPI LCD → display skill) | `peripheral-drivers/onchip-qspi/SKILL.md` |
 | `adc` / analog read / voltage | `peripheral-drivers/onchip-adc/SKILL.md` |
 | `timer` / hardware timer / periodic callback | `peripheral-drivers/onchip-timer/SKILL.md` |
 | `watchdog` / `wdt` / feed dog | `peripheral-drivers/onchip-watchdog/SKILL.md` |
