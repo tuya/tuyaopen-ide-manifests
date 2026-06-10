@@ -722,6 +722,17 @@
       ]
     },
     {
+      "gpio": 5,
+      "functions": [
+        "GPIO5",
+        "SPI1_MISO",
+        "SDIO_DATA1",
+        "COM7",
+        "QSPI1_IO1",
+        "SEG31"
+      ]
+    },
+    {
       "gpio": 6,
       "functions": [
         "GPIO6",
