@@ -187,6 +187,9 @@ These call `tal_*` / `tkl_*` directly — **no** `board_register_hardware()`, **
 | `i2c` / `iic` / sensor bus | `peripheral-drivers/onchip-i2c/SKILL.md` |
 | `spi` bus master | `peripheral-drivers/onchip-spi/SKILL.md` |
 | `adc` / analog read / voltage | `peripheral-drivers/onchip-adc/SKILL.md` |
+| `timer` / hardware timer / periodic callback | `peripheral-drivers/onchip-timer/SKILL.md` |
+| `watchdog` / `wdt` / feed dog | `peripheral-drivers/onchip-watchdog/SKILL.md` |
+| `rtc` / real-time clock | `peripheral-drivers/onchip-rtc/SKILL.md` |
 
 **Serial "hello world" is ambiguous — ask first, don't auto-pick.** "用串口发 X" can
 mean the debug/log console (`PR_*`, often a USB-serial the PC already sees — no
