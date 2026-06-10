@@ -749,6 +749,16 @@
       ]
     },
     {
+      "gpio": 8,
+      "functions": [
+        "GPIO8",
+        "I2S0_DIN",
+        "DMIC_CLK",
+        "ADC10",
+        "32K_XO"
+      ]
+    },
+    {
       "gpio": 14,
       "functions": [
         "GPIO14",
