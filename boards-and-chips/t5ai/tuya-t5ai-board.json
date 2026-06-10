@@ -759,6 +759,16 @@
       ]
     },
     {
+      "gpio": 10,
+      "functions": [
+        "GPIO10",
+        "DL_UART_RX",
+        "SDIO_DATA2",
+        "CLK_AUXS_CIS",
+        "UART0_RX"
+      ]
+    },
+    {
       "gpio": 14,
       "functions": [
         "GPIO14",
