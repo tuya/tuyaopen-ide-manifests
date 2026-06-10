@@ -769,6 +769,15 @@
       ]
     },
     {
+      "gpio": 11,
+      "functions": [
+        "GPIO11",
+        "DL_UART_TX",
+        "UART0_TX",
+        "SDIO_DATA3"
+      ]
+    },
+    {
       "gpio": 14,
       "functions": [
         "GPIO14",
