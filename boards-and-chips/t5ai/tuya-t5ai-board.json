@@ -701,6 +701,16 @@
       ]
     },
     {
+      "gpio": 3,
+      "functions": [
+        "GPIO3",
+        "SPI1_CSN",
+        "SDIO_CMD",
+        "SC_VCC",
+        "QSPI1_CS"
+      ]
+    },
+    {
       "gpio": 6,
       "functions": [
         "GPIO6",
