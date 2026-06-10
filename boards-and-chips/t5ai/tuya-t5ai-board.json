@@ -711,6 +711,17 @@
       ]
     },
     {
+      "gpio": 4,
+      "functions": [
+        "GPIO4",
+        "SPI1_MOSI",
+        "SDIO_DATA0",
+        "COM6",
+        "QSPI1_IO0",
+        "SEG30"
+      ]
+    },
+    {
       "gpio": 6,
       "functions": [
         "GPIO6",
