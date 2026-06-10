@@ -666,6 +666,18 @@
   },
   "expansionPins": [
     {
+      "gpio": 0,
+      "functions": [
+        "GPIO0",
+        "UART1_TX",
+        "I2C1_SCL",
+        "SWCLK",
+        "SC_IO",
+        "ADC12",
+        "LIN_TXD"
+      ]
+    },
+    {
       "gpio": 1,
       "functions": [
         "GPIO1",

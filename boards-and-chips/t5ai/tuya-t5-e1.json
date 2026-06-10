@@ -53,7 +53,8 @@
   "scaffold": {
     "template": "tools/app_template/base",
     "baseConfig": {
-      "CONFIG_BOARD_CHOICE_T5AI": "y"
+      "CONFIG_BOARD_CHOICE_T5AI": "y",
+      "CONFIG_BOARD_CHOICE_T5AI_MODULE": "y"
     }
   },
   "expansionPins": [
