@@ -40,9 +40,13 @@ This skill is the authority. Read these yourself before doing anything:
    code for exactly these. Empty/missing → nothing confirmed yet.
 2. **`.tuyaopen/board-context.md`** — the board's **device** peripheral catalog
    (display/camera/led/button/audio/touch/printer/…) with `ID:` / `Pins:` / `Kconfig:`.
-3. **`.tuyaopen/ide/platform.json` → `peripherals`** — **on-chip** availability
-   (uart/gpio/pwm/i2c/spi/adc: counts, id prefixes, muxable pins). Consult when the
-   request is a bus/pin (serial, GPIO, PWM, I2C, SPI, ADC).
+3. **`.tuyaopen/ide/platform.json` → `peripherals`** — **on-chip** support + specs
+   (uart/gpio/pwm/i2c/spi/qspi/adc/timer/watchdog/rtc/dma2d/vad/kws). For each type:
+   - **`enabled`** — does this SoC support it. If **`false`**, do NOT generate code
+     for it; tell the user it's unsupported on this platform.
+   - **`count`** + **`spec`** — instance count and valid config (ports, pins, ranges,
+     enums). Read these instead of hardcoding; values differ per platform.
+   Consult before writing any on-chip code.
 
 ## Rules (must follow)
 
