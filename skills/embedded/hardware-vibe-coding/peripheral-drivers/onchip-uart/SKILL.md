@@ -16,6 +16,25 @@ tags: [uart, serial, on-chip, tal_uart]
 
 # TuyaOpen On-Chip UART (user serial)
 
+## ⛔ STOP — for a "serial / 串口" request, confirm WHICH serial before ANY code
+
+When the user says anything like "用串口发 X" / "send X over serial" / "发给电脑" /
+"用 USB 串口" without explicitly stating which kind, you **MUST ask and WAIT** before
+writing any code or choosing an API. **Do NOT infer** — "发给电脑" / "USB 串口" do
+**not** imply the log console.
+
+Ask these two fixed options and wait for the user's choice:
+
+> 你要用哪种串口?
+> 1. **调试日志口**（`PR_*`；T5AI 上就是 USB 转串口、电脑直接能收;零配置)
+> 2. **独立用户串口**（`tal_uart`；独立 UART 实例 + 自定义引脚)
+
+- Picked **1** → just `PR_NOTICE(...)`; no UART init, nothing recorded. Done.
+- Picked **2** → continue with this skill (confirm instance + pins, record `onchip:uart<N>`).
+
+❌ BAD: user says "用串口发 hello world 给电脑" → you write `PR_DEBUG("hello world")` without asking.
+✅ GOOD: you ask the two options, wait for the answer, then write code only for the chosen path.
+
 ## RED LINE — user UART vs log console (do not confuse)
 
 | | API | What it is |
@@ -23,17 +42,9 @@ tags: [uart, serial, on-chip, tal_uart]
 | **User serial port** | `tal_uart_init` / `tal_uart_write` / `tal_uart_read` | A real UART peripheral you open on chosen pins. **This skill.** |
 | **Debug / log output** | `PR_DEBUG` / `PR_INFO` / `PR_NOTICE` / `PR_ERR` (tal_log) | The logging console. NOT a user peripheral — do not model it as one. |
 
-- **"串口 / serial" is ambiguous — ASK before coding, do NOT silently pick.** A bare
-  request like "用串口给电脑发 hello world" / "send hello world over serial" does not
-  say which path. Ask the user which they mean:
-  - **Debug / log console** (`PR_*`) — on most boards (incl. T5AI) this is a USB-serial
-    the PC already sees; zero setup, best for just viewing output / debug prints. It is
-    **not** a user peripheral and is **not** recorded in `used-peripherals.json`.
-  - **Dedicated user UART** (`tal_uart`) — a real UART peripheral on its own instance +
-    pins, for a serial protocol / external device. This **is** a confirmed on-chip
-    peripheral → confirm the instance + pins, record `onchip:uart<N>`.
-- Only after the user picks the dedicated-UART path do you use `tal_uart_*` (this skill).
-  For the debug/log path, just `PR_NOTICE(...)` — no UART init, nothing recorded.
+- **Which serial?** → see the **⛔ STOP** above: ask the two fixed options and wait;
+  never assume the log console. `PR_*` = log console (not a peripheral, nothing recorded);
+  `tal_uart` = dedicated user UART (this skill; confirm instance + pins, record `onchip:uart<N>`).
 - **Pick the UART from `platform.json` — do NOT guess roles.** Read
   `.tuyaopen/ide/platform.json` → `peripherals.uart.spec.ports[]`. Each port carries:
   - `role` — its **power-on default purpose**: `"log"` (debug/log console),
