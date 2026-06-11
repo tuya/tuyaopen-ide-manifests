@@ -40,8 +40,8 @@ This skill is the authority. Read these yourself before doing anything:
    code for exactly these. Empty/missing → nothing confirmed yet.
 2. **`.tuyaopen/board-context.md`** — a slim **index** of the board's **device**
    peripherals (display/camera/led/button/audio/touch/printer/…): each device's
-   `ID:`, how they're grouped, and per-group registration semantics. Raw
-   per-device data (pins / driver IC / Kconfig macro / resolution) is **not** here —
+   `ID:`, enable `Kconfig:`, grouping, and per-group registration semantics. Raw
+   per-device data (pins / driver IC / resolution / timing) is **not** here —
    read it from `.tuyaopen/ide/board.json` (the same JSON, full detail).
 3. **`.tuyaopen/ide/platform.json` → `peripherals`** — **on-chip** support + specs
    (uart/gpio/pwm/i2c/spi/qspi/adc/timer/watchdog/rtc/dma2d/vad/kws). For each type:
@@ -94,12 +94,13 @@ Read the files above. `board-context.md` is the slim **index**; its fields:
 | `Devices:` (under a group) | Registration semantics — how many logical devices to register (shared bus → 1) |
 | `Note:` (under a group) | Bus sharing, init order, etc. |
 | `- <type> — <name> (ID: <id>) · <interface>` | One device. `ID:` is the key you record in used-peripherals.json (Step 3) |
+| `Kconfig:` (indented under a device) | That device's enable macro(s) to write to `app_default.config` |
 | `## Ungrouped devices` | Devices that belong to no group |
 
-**Per-device pins, driver IC, per-device Kconfig macro, resolution and timing are
-NOT in board-context.md** — look the device up by its `ID:` in
+**Per-device pins, driver IC, resolution and timing are NOT in board-context.md**
+— look the device up by its `ID:` in
 `.tuyaopen/ide/board.json` (`peripheralPatterns.<type>[]`, matched on `id`) and read
-`pins` / `model` / `kconfig` / `width`×`height` there.
+`pins` / `model` / `width`×`height` there. (The enable `Kconfig:` is already in the index above.)
 
 ---
 
@@ -166,9 +167,9 @@ so getting it right here is what lets you skip re-confirming next time.
 
 **Board-adapted peripherals (listed in board-context.md)**:
 
-- **Kconfig to activate** — for a **group**, write the group's `Kconfig:` (shown in
-  board-context.md) to `app_default.config`. For a standalone device, read its
-  `kconfig` from `.tuyaopen/ide/board.json` (looked up by `ID:`) and write those.
+- **Kconfig to activate** — write the `Kconfig:` shown in board-context.md to
+  `app_default.config`: the group-level `Kconfig:` for a group, or the device's
+  own indented `Kconfig:` for a standalone device.
 - **Driver-enable macros** (`ENABLE_DISPLAY`, `DISPLAY_NAME`, etc.) — already
   selected by the board Kconfig internally. Do NOT write these.
 
