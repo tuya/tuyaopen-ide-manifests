@@ -661,5 +661,6 @@
         "RGB_B0"
       ]
     }
-  ]
+  ],
+  "kconfigId": "T5AI_MODULE"
 }
