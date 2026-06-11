@@ -218,7 +218,7 @@ has no node for it unless you record it. Write **both** files:
   "peripherals": [
     {
       "id": "usr_ext_led",
-      "devName": "External status LED",
+      "devName": "External LED",
       "category": "led",
       "model": "GPIO LED",
       "pins": [{ "role": "led", "gpio": 28 }],
@@ -231,9 +231,9 @@ has no node for it unless you record it. Write **both** files:
 | Field | Meaning |
 |-------|---------|
 | `id` | The registered device name — **must match** the `tdd_*_register("<id>", …)` name and the id in used-peripherals.json |
-| `devName` | Human label shown on the diagram node |
+| `devName` | **Short** human label for the diagram node (≤ ~16 chars). A plain noun like `External LED`, `WS2812 strip`, `IR blaster`. **Do NOT** put the GPIO number in it (`GPIO47 LED` ✗) and **do NOT** repeat the `model`/IC (`WS2812 strip WS2812` ✗) — the node shows only this label, so keep it clean |
 | `category` | Peripheral type (`led` / `display` / `leds-pixel` / `ir` / `joystick` / …) — sets the node icon/type |
-| `model` | Driver IC / part, or `null` |
+| `model` | Driver IC / part only (e.g. `WS2812`, `GC9307`), or `null` for a plain GPIO part — not a description |
 | `pins` | `[{ "role": "<role>", "gpio": <n> }]` — every GPIO the device occupies; drives pin-table occupancy |
 | `source` | `"vibe"` |
 
