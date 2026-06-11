@@ -220,6 +220,7 @@ has no node for it unless you record it. Write **both** files:
       "id": "usr_ext_led",
       "devName": "External LED",
       "category": "led",
+      "interface": "GPIO",
       "model": "GPIO LED",
       "pins": [{ "role": "led", "gpio": 28 }],
       "source": "vibe"
@@ -233,6 +234,7 @@ has no node for it unless you record it. Write **both** files:
 | `id` | The registered device name — **must match** the `tdd_*_register("<id>", …)` name and the id in used-peripherals.json |
 | `devName` | **Short** human label for the diagram node (≤ ~16 chars). A plain noun like `External LED`, `WS2812 strip`, `IR blaster`. **Do NOT** put the GPIO number in it (`GPIO47 LED` ✗) and **do NOT** repeat the `model`/IC (`WS2812 strip WS2812` ✗) — the node shows only this label, so keep it clean |
 | `category` | Peripheral type (`led` / `display` / `leds-pixel` / `ir` / `joystick` / …) — sets the node icon/type |
+| `interface` | The **real bus** the TDD driver uses: `GPIO` / `SPI` / `I2C` / `UART` / `PWM` / `RMT` / … — **not** `CUSTOM`. This is the diagram's connection-line label + color, so it must be the actual driver bus (a `tdd_led_gpio_register` LED → `GPIO`; a WS2812 driven over SPI → `SPI`) |
 | `model` | Driver IC / part only (e.g. `WS2812`, `GC9307`), or `null` for a plain GPIO part — not a description |
 | `pins` | `[{ "role": "<role>", "gpio": <n> }]` — every GPIO the device occupies; drives pin-table occupancy |
 | `source` | `"vibe"` |
