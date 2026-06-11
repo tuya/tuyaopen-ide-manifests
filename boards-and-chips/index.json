@@ -19,7 +19,7 @@
         "url": "images/tuya-t5-e1/tuya-t5-e1.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/tuya-t5-e1.json",
-      "published": true,
+      "published": false,
       "tags": [
         "wifi",
         "ble",
