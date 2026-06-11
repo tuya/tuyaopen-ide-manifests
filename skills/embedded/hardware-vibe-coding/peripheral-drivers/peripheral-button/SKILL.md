@@ -36,7 +36,7 @@ static OPERATE_RET __usr_register_button(void)
 }
 ```
 
-GPIO number and active level come from `.tuyaopen/board-context.md` `Pins:` field.
+GPIO number and active level come from the button device's `pins` in `.tuyaopen/ide/board.json` (looked up by its `ID:`).
 
 ### New Button IC (not in SDK)
 

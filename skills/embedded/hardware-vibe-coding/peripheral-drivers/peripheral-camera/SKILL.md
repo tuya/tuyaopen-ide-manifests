@@ -20,14 +20,14 @@ tags: [camera, dvp, yuv, jpeg, h264, vision]
 For **board-adapted cameras**, `board_register_hardware()` handles this automatically.
 
 For **custom cameras**, register the driver manually.
-Use the per-IC registration function (from `board-context.md` `Driver:` field):
+Use the per-IC registration function (the driver IC is the device `model` in `.tuyaopen/ide/board.json`):
 
 | Driver IC | Header | Register function |
 |-----------|--------|------------------|
 | GC2145 | `tdd_camera_gc2145.h` | `tdd_camera_dvp_gc2145_register()` |
 | OV2640 | `tdd_camera_ov2640.h` | `tdd_camera_dvp_ov2640_register()` |
 
-**Example** (values from `board-context.md`):
+**Example** (values from `.tuyaopen/ide/board.json`):
 
 ```c
 #include "tdd_camera_gc2145.h"

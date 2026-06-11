@@ -49,7 +49,7 @@ static OPERATE_RET app_joystick_register(void)
 }
 ```
 
-GPIO / ADC numbers come from `.tuyaopen/board-context.md` (or the user) for a
+GPIO / ADC numbers come from `.tuyaopen/ide/board.json` (or the user) for a
 custom build.
 
 ---

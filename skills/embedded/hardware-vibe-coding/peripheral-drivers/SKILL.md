@@ -59,5 +59,6 @@ the instance + pins and record as `onchip:<type><n>` in `used-peripherals.json`.
 
 1. Call `board_register_hardware()` to register all board hardware (TDD layer — no manual code needed)
 2. Refer to the matching peripheral SKILL.md for TDL API usage
-3. For GPIO assignments and Kconfig values, consult `.tuyaopen/board-context.md`
+3. For per-device pins and Kconfig, look the device up by its `ID:` (from
+   `.tuyaopen/board-context.md`) in `.tuyaopen/ide/board.json`
    (handled by the `hardware-vibe-coding` skill)

@@ -38,8 +38,11 @@ This skill is the authority. Read these yourself before doing anything:
 1. **`.tuyaopen/used-peripherals.json`** — the **already-confirmed** hardware
    (device `ID:`s and/or `onchip:<type><n>`s). This is your **INPUT**: generate
    code for exactly these. Empty/missing → nothing confirmed yet.
-2. **`.tuyaopen/board-context.md`** — the board's **device** peripheral catalog
-   (display/camera/led/button/audio/touch/printer/…) with `ID:` / `Pins:` / `Kconfig:`.
+2. **`.tuyaopen/board-context.md`** — a slim **index** of the board's **device**
+   peripherals (display/camera/led/button/audio/touch/printer/…): each device's
+   `ID:`, how they're grouped, and per-group registration semantics. Raw
+   per-device data (pins / driver IC / Kconfig macro / resolution) is **not** here —
+   read it from `.tuyaopen/ide/board.json` (the same JSON, full detail).
 3. **`.tuyaopen/ide/platform.json` → `peripherals`** — **on-chip** support + specs
    (uart/gpio/pwm/i2c/spi/qspi/adc/timer/watchdog/rtc/dma2d/vad/kws). For each type:
    - **`enabled`** — does this SoC support it. If **`false`**, do NOT generate code
@@ -82,19 +85,21 @@ This skill is the authority. Read these yourself before doing anything:
 
 ## Step 1: Read the hardware context
 
-Read the three files above. `board-context.md` field reference:
+Read the files above. `board-context.md` is the slim **index**; its fields:
 
 | Field | Meaning |
 |-------|---------|
-| `## <type>` | Peripheral type |
-| `## group — <id>` | Multi-peripheral accessory / configuration |
-| `### type — name` | Member inside a group |
-| `ID:` | Stable instance id — record this in used-peripherals.json (Step 5) |
-| `Kconfig:` | Board-level config options — write these to `app_default.config` to activate the peripheral/group |
-| `Driver:` | Driver IC model |
-| `Interface:` | Hardware interface and port |
-| `Pins:` | GPIO assignments: `role=GPIOx` |
-| `Note:` | Bus sharing, init order, etc. |
+| `## group — <id>` | A multi-peripheral accessory / board configuration |
+| `Kconfig:` (under a group) | Group-level config to write to `app_default.config` to activate the whole group |
+| `Devices:` (under a group) | Registration semantics — how many logical devices to register (shared bus → 1) |
+| `Note:` (under a group) | Bus sharing, init order, etc. |
+| `- <type> — <name> (ID: <id>) · <interface>` | One device. `ID:` is the key you record in used-peripherals.json (Step 3) |
+| `## Ungrouped devices` | Devices that belong to no group |
+
+**Per-device pins, driver IC, per-device Kconfig macro, resolution and timing are
+NOT in board-context.md** — look the device up by its `ID:` in
+`.tuyaopen/ide/board.json` (`peripheralPatterns.<type>[]`, matched on `id`) and read
+`pins` / `model` / `kconfig` / `width`×`height` there.
 
 ---
 
@@ -109,8 +114,8 @@ Read the three files above. `board-context.md` field reference:
 > 1. <name/group> — <brief description>
 > 2. ..."
 
-Wait for reply. Use `### type — name` entries inside the chosen group for pin/config details.
-The group's `Devices:` line tells you how many logical devices to register.
+Wait for reply. The group's `Devices:` line tells you how many logical devices to
+register; look up each member's `ID:` in `.tuyaopen/ide/board.json` for pin/config details.
 
 - **Not in board-context.md at all** → ask for interface and GPIO details.
 
@@ -161,8 +166,9 @@ so getting it right here is what lets you skip re-confirming next time.
 
 **Board-adapted peripherals (listed in board-context.md)**:
 
-- **`Kconfig:` field** — write these values to `app_default.config`. These are
-  board-level config options that must be explicitly selected by the project.
+- **Kconfig to activate** — for a **group**, write the group's `Kconfig:` (shown in
+  board-context.md) to `app_default.config`. For a standalone device, read its
+  `kconfig` from `.tuyaopen/ide/board.json` (looked up by `ID:`) and write those.
 - **Driver-enable macros** (`ENABLE_DISPLAY`, `DISPLAY_NAME`, etc.) — already
   selected by the board Kconfig internally. Do NOT write these.
 

@@ -129,7 +129,7 @@ A successful build with stale `tuya_kconfig.h` still compiles **without** `LED_N
 
 `board_register_hardware()` registers the onboard LED — **no app TDD code**.
 
-Read GPIO and active level from `.tuyaopen/board-context.md`:
+Read GPIO and active level from the led device in `.tuyaopen/ide/board.json` (looked up by its `ID:`):
 
 ```text
 ## led — Indicator LED
@@ -148,7 +148,7 @@ Register the **second** device name (`LED_NAME_2`), not `LED_NAME`:
 #include "tdd_led_gpio.h"
 #include "tal_api.h"
 
-#define USR_EXT_LED_GPIO           TUYA_GPIO_NUM_28   /* from user / board-context */
+#define USR_EXT_LED_GPIO           TUYA_GPIO_NUM_28   /* from user / ide/board.json */
 #define USR_EXT_LED_ACTIVE_LEVEL   TUYA_GPIO_LEVEL_HIGH
 
 #if defined(LED_NAME_2)
@@ -181,7 +181,7 @@ board_register_hardware();
 usr_register_hardware();      /* after board, before TDL open */
 ```
 
-Check `board-context.md` **Note:** and reserved pins — e.g. on T5AI-Board, GPIO28 is also `spk_en` (speaker enable). Pick a free GPIO or accept the conflict.
+Check the device `note` and other devices' pins in `.tuyaopen/ide/board.json` for reserved pins — e.g. on T5AI-Board, GPIO28 is also `spk_en` (speaker enable). Pick a free GPIO or accept the conflict.
 
 ### New LED IC (not GPIO)
 

@@ -20,7 +20,7 @@ tags: [display, lcd, graphics, framebuffer]
 For **board-adapted displays**, `board_register_hardware()` handles this automatically.
 
 For **custom displays**, register the driver manually.
-The TDD header depends on the Driver IC (from `board-context.md` `Driver:` field):
+The TDD header depends on the Driver IC (the device `model` in `.tuyaopen/ide/board.json`):
 
 | Interface | Driver IC examples | Header |
 |-----------|-------------------|--------|
@@ -28,7 +28,7 @@ The TDD header depends on the Driver IC (from `board-context.md` `Driver:` field
 | RGB | ST7701S, GC9503 | `tdd_display_rgb.h` |
 | MCU8080 | GC9307 | `tdd_display_mcu8080.h` |
 
-**SPI display example** (values from `board-context.md`):
+**SPI display example** (values from `.tuyaopen/ide/board.json`):
 
 ```c
 #include "tdd_disp_st7789.h"   // match header to Driver IC
