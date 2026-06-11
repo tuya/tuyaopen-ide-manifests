@@ -1,0 +1,73 @@
+{
+  "skill": "requirement-creating-guide-skill",
+  "cases": [
+    {
+      "id": "full-panel-prd",
+      "description": "业务场景：生成完整小程序面板需求文档",
+      "prompt": "请为“智能香薰机小程序面板”起草一份完整 Markdown 需求文档，按照模板顺序输出版本记录表、需求背景、协作方与交付件、产品总览、产品基本信息、DP 点说明、小程序功能说明和附件。已知信息：支持 Wi-Fi，覆盖语言为中文和英文，主题跟随 App，有开关、雾量、定时 3 个 DP。其余未知信息请保留占位，不要编造。",
+      "expected_output": "输出完整模板化 Markdown 文档，包含版本记录表、五个主章节、产品基本信息表、DP 点说明表、至少一个页面功能表和附件表；未知信息使用明确占位，不混入旧版结构。",
+      "assertions": [
+        { "type": "contains", "value": "版本号" },
+        { "type": "contains", "value": "一、需求背景" },
+        { "type": "contains", "value": "二、协作方与交付件" },
+        { "type": "contains", "value": "三、产品总览" },
+        { "type": "contains", "value": "1、产品基本信息" },
+        { "type": "contains", "value": "2、DP 点说明" },
+        { "type": "contains", "value": "四、小程序功能说明" },
+        { "type": "contains", "value": "五、附件" },
+        { "type": "contains_any", "value": ["√", "x"] },
+        { "type": "contains", "value": "|" },
+        { "type": "not_contains", "value": "DP 适配类型" },
+        { "type": "not_contains", "value": "项目团队成员" }
+      ]
+    },
+    {
+      "id": "placeholder-template",
+      "description": "业务场景：信息不全时输出完整占位模板",
+      "prompt": "现在只有产品代号 PANEL-001，请先输出一份可直接复制的完整 Markdown 模板，章节和表格要齐全，未知信息全部写成待业务确认或待补充，不要编造角色成员、客户名或链接。",
+      "expected_output": "输出完整模板骨架，所有主章节和关键表格都保留，未知信息使用明确占位语，不出现旧版章节。",
+      "assertions": [
+        { "type": "contains", "value": "一、需求背景" },
+        { "type": "contains", "value": "二、协作方与交付件" },
+        { "type": "contains", "value": "三、产品总览" },
+        { "type": "contains", "value": "四、小程序功能说明" },
+        { "type": "contains", "value": "五、附件" },
+        { "type": "contains_any", "value": ["待业务确认", "待补充链接", "待补充示意图"] },
+        { "type": "contains", "value": "DP ID" },
+        { "type": "not_contains", "value": "DP 适配类型" }
+      ]
+    },
+    {
+      "id": "feature-section-only",
+      "description": "业务场景：只输出小程序功能说明章节",
+      "prompt": "只帮我写“四、小程序功能说明”这一章，不要输出其他章节。页面一是首页，页面二是定时。首页包含开关、模式切换和状态展示；定时页包含新增、编辑和删除定时。请按模板里的页面分块和表格格式来写。",
+      "expected_output": "只输出小程序功能说明章节，包含两个页面块和对应表格，不带需求背景、产品总览等其他章节。",
+      "assertions": [
+        { "type": "contains", "value": "四、小程序功能说明" },
+        { "type": "contains", "value": "页面一" },
+        { "type": "contains", "value": "页面二" },
+        { "type": "contains", "value": "序号" },
+        { "type": "contains", "value": "交互说明" },
+        { "type": "contains", "value": "UI 图" },
+        { "type": "not_contains", "value": "一、需求背景" },
+        { "type": "not_contains", "value": "三、产品总览" }
+      ]
+    },
+    {
+      "id": "implicit-prd-request",
+      "description": "业务场景：隐式请求模板化 PRD",
+      "prompt": "帮我整理一个智能灯带面板的 PRD，先把章节和表格搭出来，不确定的地方留待确认。要能直接给产品和研发一起看。",
+      "expected_output": "即使用户没有显式提到模板，也应输出小程序面板需求文档结构，包含版本表、主章节和关键表格，并用占位语承接未知信息。",
+      "assertions": [
+        { "type": "contains", "value": "版本号" },
+        { "type": "contains", "value": "二、协作方与交付件" },
+        { "type": "contains", "value": "1、产品基本信息" },
+        { "type": "contains", "value": "2、DP 点说明" },
+        { "type": "contains", "value": "四、小程序功能说明" },
+        { "type": "contains_any", "value": ["待业务确认", "待补充"] },
+        { "type": "contains", "value": "|" },
+        { "type": "not_contains", "value": "项目团队成员" }
+      ]
+    }
+  ]
+}

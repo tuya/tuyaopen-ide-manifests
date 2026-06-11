@@ -1,0 +1,340 @@
+{
+  "skill": "electrician-timing-sdk-integration",
+  "cases": [
+    {
+      "id": "init-onlaunch-fields",
+      "description": "业务场景：Ray 面板 init 接入与 conflictModallId 约定",
+      "prompt": "我要把 @ray-js/electrician-timing-sdk 接入 Ray 面板小程序。init() 应该在哪里调用？type 为 'ele' 时必须传哪些字段？另外，init 和页面冲突弹窗之间的 id 约定是怎样的？",
+      "expected_output": "回答指出应在 src/app.tsx 的 onLaunch（或等价首启钩子）中、早于任何定时 hook / API 之前调用 init()。列出 type: 'ele' 的 README 字段：devId / groupId 至少一个，supportCloud / supportCycle / supportRandom / supportInching 接受 'auto' | 'y' | 'n'。说明 init 的 conflictModallId 必须等于页面 ConflictPopup 的 id（通常 smart-conflict-popup）。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "onLaunch"
+        },
+        {
+          "type": "contains",
+          "value": "init"
+        },
+        {
+          "type": "contains",
+          "value": "supportCloud"
+        },
+        {
+          "type": "contains",
+          "value": "supportCycle"
+        },
+        {
+          "type": "contains",
+          "value": "supportRandom"
+        },
+        {
+          "type": "contains",
+          "value": "supportInching"
+        },
+        {
+          "type": "contains",
+          "value": "conflictModallId"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "before any",
+            "earliest",
+            "prior to",
+            "first",
+            "ahead of",
+            "之前",
+            "最早",
+            "先于",
+            "在任何",
+            "早于"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "group-cloud-timer-astronomical",
+      "description": "业务场景：群组云定时限制与天文入口",
+      "prompt": "我的面板有群组场景（多设备一起控制）。我在群组下调 addCloudTimer 死活不生效，是不是 SDK 出 bug 了？另外群组下天文定时入口要不要展示？",
+      "expected_output": "回答说明：群组默认**不支持云定时**，这是 README 的预期行为，不是 SDK bug。能力解析为不支持时应在 UI 上隐藏云定时入口或禁用对应操作。同时建议在存在 groupId 时同步关闭天文入口（supportAstronomical=n），因为群组通常没有逐设备坐标，无法解析日出 / 日落。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "群组"
+        },
+        {
+          "type": "contains",
+          "value": "云定时"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "不支持云定时",
+            "do not support cloud",
+            "does not support cloud",
+            "no cloud timer",
+            "群组默认无云",
+            "群组默认不支持",
+            "group does not support",
+            "groups don't support",
+            "cloud timers are not",
+            "群组下不支持"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "预期行为",
+            "不是 bug",
+            "不是BUG",
+            "不是 SDK",
+            "by design",
+            "expected behavior",
+            "not a bug",
+            "README",
+            "符合预期"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "supportAstronomical",
+            "关闭天文",
+            "天文入口",
+            "群组通常",
+            "无坐标",
+            "无逐设备坐标",
+            "建议关闭",
+            "禁用天文"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "reject-electri-astronomical",
+      "description": "业务场景：纠正 electri.astronomical 误用",
+      "prompt": "帮我用 electri.astronomical 接入天文定时；如果 electri 下没有，就用 addDpTimer 顶上。",
+      "expected_output": "回答需纠正用户：天文定时**不**在 @ray-js/electrician-timing-sdk 中；electri.astronomical 这个命名空间不存在；addDpTimer 也无法实现日出 / 日落（无法解析地理日出日落时刻）。应改用 @ray-js/ray 的天文 API（addAstronomical 等）并在业务代码中维护 CRUD / 状态。",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "value": "electri.astronomical("
+        },
+        {
+          "type": "not_contains",
+          "value": "electri.astronomical.add"
+        },
+        {
+          "type": "not_contains",
+          "value": "electri.astronomical.update"
+        },
+        {
+          "type": "not_contains",
+          "value": "electri.astronomical.remove"
+        },
+        {
+          "type": "not_contains",
+          "value": "await electri.astronomical"
+        },
+        {
+          "type": "not_contains",
+          "value": "调用 electri.astronomical"
+        },
+        {
+          "type": "not_contains",
+          "value": "使用 electri.astronomical"
+        },
+        {
+          "type": "contains",
+          "value": "astronomical"
+        },
+        {
+          "type": "contains",
+          "value": "@ray-js/ray"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "not in",
+            "not part of",
+            "does not",
+            "outside",
+            "no CRUD",
+            "no such",
+            "not provided",
+            "isn't available",
+            "is not available",
+            "不在",
+            "非 SDK",
+            "not a part",
+            "不属于",
+            "没有提供",
+            "不存在",
+            "不要",
+            "不支持",
+            "不能用"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "conflict-popup-cancel",
+      "description": "业务场景：ConflictPopup 挂载与 cancel 语义",
+      "prompt": "我刚把云定时页落到 src/pages/schedule，调 addCloudTimer 有时候返回 cancel，而且看不到冲突弹窗，是哪里出问题了？",
+      "expected_output": "回答指出：useDefaultModal: true 要求当前页面根节点挂载 ConflictPopup，且其 id 必须等于 init 时传入的 conflictModallId（通常 smart-conflict-popup）。冲突组件**不要**挂到 app 外壳（如 src/app.tsx）上。同时说明 cancel 表示用户主动取消了弹窗，不是系统错误，不应作为重试目标。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "useDefaultModal"
+        },
+        {
+          "type": "contains",
+          "value": "ConflictPopup"
+        },
+        {
+          "type": "contains",
+          "value": "conflictModallId"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "page root",
+            "per page",
+            "current page",
+            "not the app",
+            "not on app",
+            "每页",
+            "页面根",
+            "页面级",
+            "不要挂",
+            "不挂在 app",
+            "勿挂"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "cancel",
+            "dismissed",
+            "user closed",
+            "user dismissed",
+            "用户关闭",
+            "取消",
+            "用户取消"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sunrise-astronomical-params",
+      "description": "业务场景：单设备日出前天文定时参数",
+      "prompt": "在某个单设备的 Ray 面板上，我想做一个「每天日出前 4 分钟触发、把 DP 1 置为 true」的天文定时。应该调用哪个 API？需要传哪些参数？",
+      "expected_output": "回答引导用户使用 @ray-js/ray 的 addAstronomical（**不是** @ray-js/electrician-timing-sdk，也不是 electri.astronomical 或 addDpTimer）。列出必需字段：bizId（deviceId）+ bizType=0 表示单设备、astronomicalType=0 表示日出、loops='1111111' 表示每天、dps 形如 { 1: true }、time='00:04' 作为 HH:mm 偏移、offsetType=-1 表示早于日出、timezone（如 '+08:00'）、lon 与 lat。可补充：后续刷新通过 getAstronomicalList，注意 id 类型漂移与列表响应 dps 为 JSON 字符串需解析。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "addAstronomical"
+        },
+        {
+          "type": "contains",
+          "value": "@ray-js/ray"
+        },
+        {
+          "type": "contains",
+          "value": "bizId"
+        },
+        {
+          "type": "contains",
+          "value": "astronomicalType"
+        },
+        {
+          "type": "contains",
+          "value": "loops"
+        },
+        {
+          "type": "contains",
+          "value": "offsetType"
+        },
+        {
+          "type": "contains",
+          "value": "lon"
+        },
+        {
+          "type": "contains",
+          "value": "lat"
+        },
+        {
+          "type": "contains",
+          "value": "timezone"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "astronomicalType: 0",
+            "astronomicalType=0",
+            "astronomicalType = 0",
+            "0 for sunrise",
+            "0: sunrise",
+            "0：日出",
+            "0 日出",
+            "sunrise is 0",
+            "sunrise=0"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "offsetType: -1",
+            "offsetType=-1",
+            "offsetType = -1",
+            "-1 means",
+            "-1 for",
+            "-1 (",
+            "-1：向前",
+            "向前",
+            "earlier than",
+            "before sunrise",
+            "prior to sunrise",
+            "ahead of sunrise",
+            "minus",
+            "早于",
+            "日出前",
+            "提前"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "bizType: 0",
+            "bizType=0",
+            "bizType = 0",
+            "bizType of 0",
+            "0 for single device",
+            "0 for device",
+            "0：设备",
+            "0 设备",
+            "single device (0)",
+            "device (0)",
+            "单设备"
+          ]
+        },
+        {
+          "type": "not_contains",
+          "value": "electri.astronomical("
+        },
+        {
+          "type": "not_contains",
+          "value": "electri.astronomical.add"
+        },
+        {
+          "type": "not_contains",
+          "value": "await electri.astronomical"
+        },
+        {
+          "type": "not_contains",
+          "value": "addDpTimer("
+        }
+      ]
+    }
+  ]
+}

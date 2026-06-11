@@ -1,0 +1,161 @@
+{
+  "skill": "ray-common-develop-skill",
+  "cases": [
+    {
+      "id": "A1",
+      "description": "业务场景：Ray 设置页面搭建",
+      "prompt": "创建一个 Ray 小程序设置页面：展示用户信息、消息通知与深色模式两个开关、底部退出登录按钮。组件选型请遵循：优先品类/业务 skill 中的业务组件，其次查阅 smart-ui skill，再回退 Ray 原生组件文档；输出完整页面 TSX 示例并简要说明选型依据。",
+      "expected_output": "使用 Ray 标签（View、Text 等）搭建页面，体现业务组件 → smart-ui skill → Ray 原生的优先级，开关与按钮有合理事件占位，文案可走 Strings.getLang",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["<View", "<Text", "View", "Text"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["业务", "smart-ui", "品类", "Ray 原生", "原生组件"]
+        },
+        {
+          "type": "not_contains",
+          "value": "wx."
+        },
+        {
+          "type": "not_contains",
+          "value": "wx["
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "description": "业务场景：温度控制组件抽取",
+      "prompt": "我有一个设备控制页面，里面的温度控制模块代码比较重复，包含温度显示、加减按钮和模式选择。帮我把它抽成一个可复用的 TemperatureControl 组件。",
+      "expected_output": "将温度控制逻辑封装成独立的 TemperatureControl 组件，props 定义清晰，可在多个设备类型中复用",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["interface", "Props", "type Props"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["export default", "export function", "export const"]
+        },
+        {
+          "type": "not_contains",
+          "value": "wx."
+        },
+        {
+          "type": "not_contains",
+          "value": "wx["
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "description": "业务场景：网络请求与重试",
+      "prompt": "我需要在 Ray 小程序中实现一个网络请求功能，调用设备详情接口获取设备信息，并处理请求失败的重试逻辑。请提供完整的代码实现。",
+      "expected_output": "使用 Ray 的 network API 发起 HTTP 请求，包含错误处理、重试逻辑和类型定义",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["ray.request", "network", "from '@ray-js/ray'"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["catch", "try", "error", "fail"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["retry", "attempt", "count"]
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "description": "业务场景：页面生命周期与路由参数",
+      "prompt": "我正在开发一个 Ray 小程序页面，需要了解完整的页面生命周期顺序，以及如何在页面显示时获取路由参数并初始化数据。请提供正确的实现方式。",
+      "expected_output": "解释 Ray 页面生命周期，展示 onLoad/onShow 中正确获取路由参数和初始化数据的方式",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["onLoad", "onShow", "onReady", "onHide", "onUnload"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["顺序", "首先", "然后", "之后", "首先执行"]
+        },
+        {
+          "type": "not_contains",
+          "value": "useEffect(()"
+        },
+        {
+          "type": "not_contains",
+          "value": "useState("
+        }
+      ]
+    },
+    {
+      "id": "E1",
+      "description": "业务场景：登录页图片转代码",
+      "prompt": "根据登录页结构描述（顶部 Logo、用户名与密码输入、主操作登录按钮、忘记密码链接），还原为 Ray 小程序页面。优先在品类/业务 skill 中找可复用模块，其次 smart-ui skill，再回退 Ray 原生组件；使用 View/Text 等 Ray 标签，禁止 div/span。",
+      "expected_output": "生成完整 Ray 页面结构，体现组件优先级说明，表单与按钮有合理占位，必要时提及查阅 references/ray/INDEX.md 或路由文档",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "View"
+        },
+        {
+          "type": "contains",
+          "value": "Text"
+        },
+        {
+          "type": "contains_any",
+          "value": ["Field", "Input", "Button", "Password"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["业务", "smart-ui", "INDEX", "文档", "tag-mapping"]
+        }
+      ]
+    },
+    {
+      "id": "F1",
+      "description": "业务场景：页面多语言改造",
+      "prompt": "我需要把现有的 Ray 小程序页面改造成支持多语言版本。目前页面中硬编码了很多中文文案，请帮我梳理出需要国际化的部分，并展示如何正确使用实现。",
+      "expected_output": "识别页面中的中文硬编码文案，展示如何提取到语言包并使用 Strings.getLang 替换",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["Strings.getLang", "getLang("]
+        },
+        {
+          "type": "contains_any",
+          "value": ["lang", "i18n", "strings", "locales"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["多语言", "国际化", "i18n", "语言包"]
+        }
+      ]
+    },
+    {
+      "id": "G1",
+      "description": "业务场景：升级后蓝牙兼容排障",
+      "prompt": "我的 Ray 小程序在升级后出现了兼容性问题，之前能正常工作的蓝牙设备连接功能现在报错了。请帮我分析可能的原因，并提供排查思路和解决方案。",
+      "expected_output": "分析蓝牙连接升级的潜在问题，提供排查步骤和修复建议，遵循排障路线卡",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["文档", "INDEX", "reference", "读取"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["API", "接口", "变更", "升级", "版本"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["排查", "检查", "步骤", "定位"]
+        }
+      ]
+    }
+  ]
+}

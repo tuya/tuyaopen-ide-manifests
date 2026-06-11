@@ -1,0 +1,8 @@
+export interface TemperatureControlProps {
+  value: number;
+  onChange: (v: number) => void;
+}
+
+export function TemperatureControl(props: TemperatureControlProps) {
+  return null;
+}

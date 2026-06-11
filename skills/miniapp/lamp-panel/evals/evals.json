@@ -1,0 +1,539 @@
+{
+  "skill": "ai-lamp-common-skill",
+  "cases": [
+    {
+      "id": "lamp-biz-001",
+      "description": "业务场景：从零搭建白光+彩光面板",
+      "prompt": "帮我搭建一个支持白光和彩光模式的灯面板，需要亮度、色温滑条和彩光色盘，用户在色盘上滑动时要实时预览。",
+      "expected_output": "使用 LampRectPickerColor（矩形彩光色盘）、LampBrightSlider（亮度滑条）、LampTempSlider（色温滑条）。所有 lamp 组件用 default export 导入。同时持有 useActions（下发 work_mode / switch_led / bright_value / temp_value）和 useStructuredActions（下发 colour_data / control_data）。所有 DP 下发必须使用 .set() 方法（如 actions.work_mode.set('white')、structuredActions.control_data.set({...})）。onTouchMove 回调下发 control_data 做实时预览，onTouchEnd 下发真实 DP（colour_data 或 bright_value / temp_value）。colour_data 和 control_data 在 protocols/index.ts 注册 Transformer。Transformer 中使用 import { utils } from '@ray-js/panel-sdk' 导入工具函数。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "useActions"
+        },
+        {
+          "type": "contains",
+          "value": "useStructuredActions"
+        },
+        {
+          "type": "contains",
+          "value": "control_data"
+        },
+        {
+          "type": "contains",
+          "value": "onTouchMove"
+        },
+        {
+          "type": "contains",
+          "value": "onTouchEnd"
+        },
+        {
+          "type": "contains_any",
+          "value": ["import LampRectPickerColor from", "import LampBrightSlider from", "import LampTempSlider from"]
+        },
+        {
+          "type": "contains",
+          "value": "protocols"
+        },
+        {
+          "type": "not_contains",
+          "value": "import { LampBrightSlider }"
+        },
+        {
+          "type": "contains",
+          "value": ".set("
+        },
+        {
+          "type": "not_contains",
+          "value": "from '@ray-js/panel-sdk/lib/utils'"
+        }
+      ]
+    },
+    {
+      "id": "lamp-biz-002",
+      "description": "业务场景：接入功能页（断电记忆+灯光渐变）",
+      "prompt": "面板设置区要加断电记忆和灯光渐变两个功能入口，点击后跳转到对应功能页。如果设备不支持这些 DP 则隐藏入口。",
+      "expected_output": "断电记忆使用 LampPowerMemoryFunctional（appid: tyabzhlpuchrkh7pe8），灯光渐变使用 LampMutationFunctional（appid: tytj0ivsldjndnlnld）。两个 appid 都需要在 global.config.ts 中注册。跳转前必须调 ty.presetFunctionalData({ url, data, success, fail }) 预设数据，然后 navigateTo。使用 useSupport 判断设备是否支持对应 DP（power_memory / switch_gradient），不支持则隐藏入口。useSupport 的前提是在 src/devices/index.ts 中注册 SmartSupportAbility 能力（import SmartSupportAbility from '@ray-js/panel-sdk'，在 abilities 数组中实例化，并通过泛型 Abilities 传入设备模型）。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "tyabzhlpuchrkh7pe8"
+        },
+        {
+          "type": "contains",
+          "value": "tytj0ivsldjndnlnld"
+        },
+        {
+          "type": "contains",
+          "value": "global.config"
+        },
+        {
+          "type": "contains",
+          "value": "presetFunctionalData"
+        },
+        {
+          "type": "contains",
+          "value": "navigateTo"
+        },
+        {
+          "type": "contains",
+          "value": "useSupport"
+        },
+        {
+          "type": "contains",
+          "value": "SmartSupportAbility"
+        }
+      ]
+    },
+    {
+      "id": "lamp-biz-003",
+      "description": "业务场景：实现音乐律动功能",
+      "prompt": "帮我实现音乐律动 Tab，用户点击播放后麦克风采集环境音，灯光跟随节拍变化。",
+      "expected_output": "使用 LampMusicCard 渲染预设音乐模式列表。点击播放时设 work_mode='music' 并注册 onMusic2RgbChange 回调。回调中将 dB 40-80 映射亮度 0-1000，节流 300ms 下发 music_data（通过 useStructuredActions）。music_data 为 Complex DP，需要注册 Transformer。LampMusicCard 用 default export 导入，musicColorArr 可用 named export。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "LampMusicCard"
+        },
+        {
+          "type": "contains",
+          "value": "onMusic2RgbChange"
+        },
+        {
+          "type": "contains",
+          "value": "music_data"
+        },
+        {
+          "type": "contains",
+          "value": "useStructuredActions"
+        },
+        {
+          "type": "contains",
+          "value": "work_mode"
+        },
+        {
+          "type": "contains_any",
+          "value": ["300", "throttle", "节流"]
+        }
+      ]
+    },
+    {
+      "id": "lamp-biz-004",
+      "description": "业务场景：开关按钮+倒计时+生物节律联动",
+      "prompt": "实现灯的开关按钮，要处理倒计时场景，还要和生物节律联动。",
+      "expected_output": "点击开关下发 switch_led。若 countdown > 0，同步下发 countdown: 0 清零倒计时。若为开灯操作且生物节律已启用，需重新下发 rhythm_mode 使节律生效。switch_led 是 Basic DP，用 useActions 下发。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "switch_led"
+        },
+        {
+          "type": "contains",
+          "value": "countdown"
+        },
+        {
+          "type": "contains_any",
+          "value": ["countdown: 0", "countdown:0", "清零", "清除"]
+        },
+        {
+          "type": "contains",
+          "value": "rhythm_mode"
+        },
+        {
+          "type": "contains",
+          "value": "useActions"
+        }
+      ]
+    },
+    {
+      "id": "lamp-biz-005",
+      "description": "业务场景：彩光预设色卡管理",
+      "prompt": "彩光模式下需要展示预设颜色，点击切换，还要支持用户自定义添加和删除预设色，最多 8 个。",
+      "expected_output": "云端存储使用 cloudConfig 封装（getCloudConfig / saveCloudConfig）读写 colourPresets，不直接调用 getDeviceProperty / setDeviceProperty。点击预设下发 colour_data + work_mode='colour'。colour_data 通过 useStructuredActions 下发。最多 8 个预设，添加时检查重复。颜色预览渲染用 hsv2rgbString，禁止 HSL 拼色。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["cloudConfig", "getCloudConfig", "saveCloudConfig"]
+        },
+        {
+          "type": "contains",
+          "value": "colourPresets"
+        },
+        {
+          "type": "contains",
+          "value": "colour_data"
+        },
+        {
+          "type": "contains",
+          "value": "work_mode"
+        },
+        {
+          "type": "not_contains",
+          "value": "getDeviceProperty"
+        },
+        {
+          "type": "contains_any",
+          "value": ["8", "八"]
+        },
+        {
+          "type": "contains",
+          "value": "hsv2rgbString"
+        }
+      ]
+    },
+    {
+      "id": "lamp-biz-007",
+      "description": "业务场景：推荐场景Tab完整实现",
+      "prompt": "帮我实现场景 Tab，展示系统推荐场景列表，点击可切换灯光效果，要有选中态高亮。",
+      "expected_output": "从场景 API 拉取推荐场景，禁止伪造兜底数据，推荐展示前 8 个，空态需提供重试入口。选中态：比较设备当前 scene_data DP 与条目的 scene_data，一致则高亮，DP 变化时同步更新。执行场景下发 scene_data（通过 useStructuredActions），若 work_mode 非 scene 则同步下发 work_mode='scene'（通过 useActions），灯关则先下发 switch_led=true。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "scene_data"
+        },
+        {
+          "type": "contains",
+          "value": "work_mode"
+        },
+        {
+          "type": "contains",
+          "value": "switch_led"
+        },
+        {
+          "type": "contains_any",
+          "value": ["选中", "高亮", "active", "selected"]
+        },
+        {
+          "type": "not_contains",
+          "value": "兜底数据"
+        },
+        {
+          "type": "contains",
+          "value": "useStructuredActions"
+        }
+      ]
+    },
+    {
+      "id": "lamp-biz-008",
+      "description": "业务场景：白光面板含色温亮度滑条及预设",
+      "prompt": "帮我做一个纯白光面板，需要色温和亮度滑条，滑动时实时预览，还要展示白光预设列表。白光预设颜色要能正确渲染。",
+      "expected_output": "使用 LampTempSlider（色温）和 LampBrightSlider（亮度），均用 default export 导入。onTouchMove 下发 control_data 实时预览，onTouchEnd 下发 temp_value / bright_value + work_mode='white'。白光预设从云端 cloudConfig 的 whitePresets 读取，点击下发 temp_value + bright_value + work_mode='white'。颜色预览用 brightKelvin2rgba，禁止 HSL 拼色。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "LampTempSlider"
+        },
+        {
+          "type": "contains",
+          "value": "LampBrightSlider"
+        },
+        {
+          "type": "contains",
+          "value": "control_data"
+        },
+        {
+          "type": "contains",
+          "value": "onTouchMove"
+        },
+        {
+          "type": "contains",
+          "value": "whitePresets"
+        },
+        {
+          "type": "contains",
+          "value": "brightKelvin2rgba"
+        },
+        {
+          "type": "not_contains",
+          "value": "hsl"
+        }
+      ]
+    },
+    {
+      "id": "lamp-011",
+      "description": "覆盖：@ray-js/ray 禁止 default export",
+      "prompt": "我需要用 @ray-js/ray 的 View、navigateTo 和 ty，请给出正确的 import 写法。",
+      "expected_output": "使用命名导入：import { View, navigateTo } from '@ray-js/ray' 和 import { ty } from '@ray-js/ray'。@ray-js/ray 没有 default export，import ty from '@ray-js/ray' 是错误写法。",
+      "assertions": [
+        {
+          "type": "not_contains",
+          "value": "import ty from '@ray-js/ray'"
+        },
+        {
+          "type": "contains",
+          "value": "import { ty } from '@ray-js/ray'"
+        },
+        {
+          "type": "contains_any",
+          "value": ["import { View", "import { navigateTo"]
+        }
+      ]
+    },
+    {
+      "id": "lamp-012",
+      "description": "覆盖：云端存储必须走 cloudConfig 封装",
+      "prompt": "我要保存用户自定义的彩光预设到云端，可以直接用 @ray-js/ray 的 setDeviceProperty 吗？",
+      "expected_output": "不可以直接使用 setDeviceProperty。云端持久化必须通过 src/api/cloudConfig.ts 的 getCloudConfig / saveCloudConfig 封装，禁止直接调用 @ray-js/ray 的 getDeviceProperty / setDeviceProperty。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["不可以", "不能", "禁止", "不要", "不得"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["cloudConfig", "getCloudConfig", "saveCloudConfig"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["封装", "统一", "cloudConfig.ts"]
+        }
+      ]
+    },
+    {
+      "id": "lamp-013",
+      "description": "覆盖：global.config.ts 注册 appid 后才能跳转功能页",
+      "prompt": "我要跳转到断电记忆功能页，直接 navigateTo 就行了吗？",
+      "expected_output": "不能直接 navigateTo。需要先在 global.config.ts 中注册 appid（tyabzhlpuchrkh7pe8），然后跳转前必须调 ty.presetFunctionalData({ url, data, success, fail }) 预设数据，最后才 navigateTo({ url: jumpUrl })。presetFunctionalData 使用对象参数形式，包含 url/data/success/fail。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "global.config"
+        },
+        {
+          "type": "contains",
+          "value": "tyabzhlpuchrkh7pe8"
+        },
+        {
+          "type": "contains",
+          "value": "presetFunctionalData"
+        },
+        {
+          "type": "contains",
+          "value": "navigateTo"
+        }
+      ]
+    },
+    {
+      "id": "lamp-014",
+      "description": "覆盖：关灯禁用 — 优先用组件自身 disable/closed prop",
+      "prompt": "灯关了以后，亮度滑条和彩光色盘应该怎么禁用？",
+      "expected_output": "switch_led=false 时，LampBrightSlider / LampTempSlider / LampRectPickerColor / LampCirclePickerColor 等 lamp 组件优先使用组件自身的 disable 或 closed prop 来禁用，不要自己写遮罩层。预设色卡、模式 Tab 等自绘控件则用 pointerEvents: 'none' + opacity: 0.4。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": ["disable", "closed"]
+        },
+        {
+          "type": "contains",
+          "value": "switch_led"
+        },
+        {
+          "type": "contains_any",
+          "value": ["组件自身", "prop", "属性"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["pointerEvents", "pointer-events"]
+        }
+      ]
+    },
+    {
+      "id": "lamp-015",
+      "description": "覆盖：useSupport 隐藏不支持的功能入口",
+      "prompt": "设备不支持断电记忆功能，面板上这个入口应该怎么处理？",
+      "expected_output": "使用 useSupport hook 判断设备是否支持对应 DP（如 power_memory），如果不支持则隐藏该功能入口，而不是显示禁用态。对应 DP 不存在时隐藏功能入口是 Must 级规则。useSupport 需要先在 src/devices/index.ts 中注册 SmartSupportAbility 能力。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "useSupport"
+        },
+        {
+          "type": "contains_any",
+          "value": ["隐藏", "hide", "不显示", "不展示"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["power_memory", "DP"]
+        },
+        {
+          "type": "contains",
+          "value": "SmartSupportAbility"
+        }
+      ]
+    },
+    {
+      "id": "lamp-016",
+      "description": "覆盖：颜色预览渲染 — 禁止 HSL 拼色",
+      "prompt": "我想在预设色卡上渲染颜色预览，彩光模式用什么函数？白光模式呢？可以用 hsl() 拼接吗？",
+      "expected_output": "彩光用 hsv2rgbString(h, s/10, v/10, 1)，白光用 brightKelvin2rgba(brightness, temperature)。禁止用 HSL 拼色或经验公式替代这两个工具函数。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "hsv2rgbString"
+        },
+        {
+          "type": "contains",
+          "value": "brightKelvin2rgba"
+        },
+        {
+          "type": "contains_any",
+          "value": ["禁止", "不要", "不能", "不可以"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["HSL", "hsl"]
+        }
+      ]
+    },
+    {
+      "id": "lamp-017",
+      "description": "覆盖：推荐场景选中态 + 灯关先开灯",
+      "prompt": "推荐场景列表需要实现选中高亮，怎么判断哪个场景是当前选中的？如果灯是关的用户点了场景怎么办？",
+      "expected_output": "选中态判断：比较设备当前 scene_data DP 值与场景条目的 scene_data，一致则高亮，DP 变化时同步更新选中态。灯关时执行场景：必须先下发 switch_led=true 开灯，再下发 scene_data，若 work_mode 非 scene 则同步下发 work_mode='scene'。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "scene_data"
+        },
+        {
+          "type": "contains",
+          "value": "switch_led"
+        },
+        {
+          "type": "contains_any",
+          "value": ["比较", "对比", "一致", "match", "compare"]
+        },
+        {
+          "type": "contains_any",
+          "value": ["先开灯", "先下发 switch_led", "switch_led=true", "switch_led: true"]
+        }
+      ]
+    },
+    {
+      "id": "lamp-001",
+      "description": "白光灯 DP 类型定义",
+      "prompt": "帮我为白光灯面板创建 TypeScript DP 类型定义，包含开关、亮度、色温三个 DP。",
+      "expected_output": "包含 switch_led（boolean）、bright_value（number, 10–1000）、temp_value（number, 0–1000）的 TypeScript interface 或 type，并注明值域。",
+      "assertions": [
+        { "type": "contains", "value": "switch_led" },
+        { "type": "contains", "value": "bright_value" },
+        { "type": "contains", "value": "temp_value" },
+        { "type": "not_contains", "value": "bright_value_v2" },
+        { "type": "not_contains", "value": "temp_value_v2" }
+      ]
+    },
+    {
+      "id": "lamp-002",
+      "description": "colour_data 编解码：12-bit hex 格式，通过 useStructuredActions 下发",
+      "prompt": "切换到彩光模式，当前颜色 hue=120, saturation=800, value=900，请写出正确的下发方式。",
+      "expected_output": "使用 useStructuredActions 的 .set() 方法下发 colour_data（如 structuredActions.colour_data.set({ hue: 120, saturation: 800, value: 900 })），值由 ColourTransformer.formatter 编码为 12 位 hex 字符串（hhhhssssvvvv），同时通过 useActions 的 .set() 方法下发 work_mode='colour'（如 actions.work_mode.set('colour')）。不能用 JSON.stringify，不能直接调 putDeviceDps 下发 colour_data。",
+      "assertions": [
+        { "type": "contains", "value": "useStructuredActions" },
+        { "type": "contains", "value": "colour_data" },
+        { "type": "contains", "value": "work_mode" },
+        { "type": "not_contains", "value": "JSON.stringify" },
+        { "type": "not_contains", "value": "colour_data_v2" },
+        { "type": "contains", "value": ".set(" }
+      ]
+    },
+    {
+      "id": "lamp-003",
+      "description": "bright_value 边界保护：最小值为 10",
+      "prompt": "用户把亮度滑条拖到最左边（值为 0），如何下发亮度 DP？",
+      "expected_output": "将值 clamp 到最小值 10 后再通过 useActions 下发 bright_value，不能直接发送 0，并说明设备会静默拒绝越界值。",
+      "assertions": [
+        { "type": "contains", "value": "bright_value" },
+        { "type": "contains", "value": "10" },
+        { "type": "contains_any", "value": ["clamp", "Math.max", "Math.min"] },
+        { "type": "not_contains", "value": "bright_value_v2" }
+      ]
+    },
+    {
+      "id": "lamp-004",
+      "description": "状态机：四种 work_mode 的切换与 DP 下发规则",
+      "prompt": "照明面板有 white、colour、scene、music 四种模式，请设计状态机，说明各模式切换时需要下发哪些 DP。",
+      "expected_output": "描述四种 LampMode，white 时下发 work_mode+bright_value+temp_value，colour 时下发 work_mode+colour_data（useStructuredActions），scene 时下发 work_mode+scene_data，music 时下发 work_mode+music_data，并说明 Basic DP 用 useActions、Complex DP 用 useStructuredActions。",
+      "assertions": [
+        { "type": "contains", "value": "white" },
+        { "type": "contains", "value": "colour" },
+        { "type": "contains", "value": "scene" },
+        { "type": "contains", "value": "work_mode" },
+        { "type": "contains_any", "value": ["useActions", "useStructuredActions"] }
+      ]
+    },
+    {
+      "id": "lamp-005",
+      "description": "负例：非照明品类不应触发",
+      "prompt": "帮我开发一个智能门锁面板，需要支持密码开锁和远程开门。",
+      "expected_output": "明确说明本技能只覆盖照明品类，不适用于门锁；建议使用门锁专项技能或通用面板开发指南。",
+      "assertions": [
+        { "type": "not_contains", "value": "bright_value" },
+        { "type": "not_contains", "value": "colour_data" },
+        { "type": "contains_any", "value": ["不适用", "照明", "门锁"] }
+      ]
+    },
+    {
+      "id": "lamp-006",
+      "description": "LampBrightSlider 组件：正确导入与 props",
+      "prompt": "用亮度滑条组件实现亮度控制，值范围 10–1000，滑动中实时预览，松手后持久化。",
+      "expected_output": "使用 `import LampBrightSlider from '@ray-js/lamp-bright-slider'`（default export，不能命名导入）；onTouchMove 下发 control_data 实时预览，onTouchEnd 下发 bright_value 持久化；value prop 传入当前亮度，min 为 10。",
+      "assertions": [
+        { "type": "contains", "value": "LampBrightSlider" },
+        { "type": "contains", "value": "lamp-bright-slider" },
+        { "type": "contains", "value": "onTouchMove" },
+        { "type": "contains", "value": "onTouchEnd" },
+        { "type": "not_contains", "value": "{ LampBrightSlider }" }
+      ]
+    },
+    {
+      "id": "lamp-007",
+      "description": "control_data 模式：onTouchMove 下发实时预览，onTouchEnd 持久化",
+      "prompt": "用户拖动色温滑条，如何正确实现实时预览和持久化下发？",
+      "expected_output": "onTouchMove 回调中通过 useStructuredActions 下发 control_data（mode=1，填入对应 brightness/temperature 值）实现实时预览；onTouchEnd 回调中通过 useActions 下发 temp_value + work_mode='white' 持久化。两个动作不能合并成一次，也不能在 onTouchMove 中直接下发 temp_value。",
+      "assertions": [
+        { "type": "contains", "value": "control_data" },
+        { "type": "contains", "value": "onTouchMove" },
+        { "type": "contains", "value": "onTouchEnd" },
+        { "type": "contains", "value": "temp_value" },
+        { "type": "not_contains", "value": "onChange" }
+      ]
+    },
+    {
+      "id": "lamp-008",
+      "description": "ty.presetFunctionalData：对象参签名，非位置参",
+      "prompt": "跳转到断电记忆功能页之前需要预设数据，请写出正确的调用方式。",
+      "expected_output": "调用 ty.presetFunctionalData({ url, data, success: () => ..., fail: err => ... })，参数为对象形式，url 与 navigateTo 的 url 完全一致；推荐封装成 Promise 后 await；之后再调 navigateTo({ url })。不能把 url 和 data 作为位置参数传入。",
+      "assertions": [
+        { "type": "contains", "value": "presetFunctionalData" },
+        { "type": "contains", "value": "success" },
+        { "type": "contains", "value": "fail" },
+        { "type": "contains", "value": "navigateTo" },
+        { "type": "not_contains", "value": "presetFunctionalData(url" }
+      ]
+    },
+    {
+      "id": "lamp-009",
+      "description": "lamp-* 组件导入：必须 default export，命名导入构建失败",
+      "prompt": "我想用命名导入的方式引入 LampTempSlider，像这样：import { LampTempSlider } from '@ray-js/lamp-temp-slider'，这样对吗？",
+      "expected_output": "错误。所有 @ray-js/lamp-* 组件均为 default export，命名导入会导致构建失败。正确写法是：import LampTempSlider from '@ray-js/lamp-temp-slider'。",
+      "assertions": [
+        { "type": "contains", "value": "default" },
+        { "type": "contains", "value": "LampTempSlider" },
+        { "type": "contains_any", "value": ["错误", "不对", "构建失败", "不能"] },
+        { "type": "not_contains", "value": "{ LampTempSlider }" }
+      ]
+    },
+    {
+      "id": "lamp-010",
+      "description": "Complex DP 读取：必须用 useStructuredProps，禁止用 useProps",
+      "prompt": "我想读取当前设备的 colour_data 值，直接用 useProps('colour_data') 可以吗？",
+      "expected_output": "不可以。colour_data 是 Complex DP，必须用 useStructuredProps 读取（前提是已在 protocols/index.ts 中注册 ColourTransformer）。useProps 读到的是原始 hex 字符串，不会自动解码为 { hue, saturation, value } 结构体。",
+      "assertions": [
+        { "type": "contains", "value": "useStructuredProps" },
+        { "type": "contains", "value": "colour_data" },
+        { "type": "contains_any", "value": ["不可以", "不能", "错误", "禁止"] },
+        { "type": "not_contains", "value": "useProps('colour_data')" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+Ray 页面生命周期顺序：首先执行 onLoad，然后 onShow，之后 onReady。onHide、onUnload 在页面隐藏与卸载时调用。

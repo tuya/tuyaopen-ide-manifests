@@ -448,6 +448,25 @@
       }
     },
     {
+      "id": "miniapp/panel-foundation",
+      "order": 99,
+      "name": { "en": "Panel Foundation", "zh-CN": "面板基础约束" },
+      "surface": "miniapp",
+      "summary": {
+        "en": "Foundational guide: architecture, dev conventions, and upload audit checklist for Tuya Ray panel miniapp projects.",
+        "zh-CN": "Tuya Ray 面板小程序项目的基础指南：架构、开发铁律、上传审核自检清单。"
+      },
+      "whenToUse": {
+        "en": "Use FIRST in any panel miniapp project — before category-specific skills and before claiming a feature is ready to upload. Also use whenever AI generates React patterns (useState/fetch) for things that should go through panel-sdk hooks or cloud-api.",
+        "zh-CN": "进入任何面板小程序项目时必先读 —— 早于品类专属 skill，早于声明功能完成可上传。AI 用 useState 管 DP 或 fetch 直连后端时也立即触发本 skill。"
+      },
+      "tags": ["miniapp", "panel", "ray", "foundation", "architecture", "audit"],
+      "defaultEnabled": true,
+      "installPayload": "miniapp/panel-foundation",
+      "related": ["miniapp/ray-common", "miniapp/smart-ui", "miniapp/performance-ux-guard"],
+      "source": { "localPath": "skills/miniapp/panel-foundation" }
+    },
+    {
       "id": "miniapp/ray-common",
       "order": 100,
       "name": {
@@ -463,19 +482,10 @@
         "en": "Use for any Ray miniapp UI/page/component work, Ray API integration, device capability binding, lifecycle, routing, image-to-code, i18n, or troubleshooting.",
         "zh-CN": "面板/页面/组件开发、Ray API 与设备能力集成、生命周期与路由、图片转代码、多语言与样式、或排障与升级时使用。"
       },
-      "tags": [
-        "miniapp",
-        "ray",
-        "panel"
-      ],
-      "defaultEnabled": false,
+      "tags": ["miniapp", "ray", "panel"],
+      "defaultEnabled": true,
       "installPayload": "miniapp/ray-common",
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/RayCommonDevelopSkill",
-          "skillName": "ray-common-develop-skill"
-        }
-      }
+      "source": { "localPath": "skills/miniapp/ray-common" }
     },
     {
       "id": "miniapp/smart-ui",
@@ -501,15 +511,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/smart-ui",
-      "related": [
-        "miniapp/ray-common"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/SmartUiSkill",
-          "skillName": "smart-ui-skill"
-        }
-      }
+      "related": ["miniapp/ray-common"],
+      "source": { "localPath": "skills/miniapp/smart-ui" }
     },
     {
       "id": "miniapp/lamp-panel",
@@ -536,16 +539,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/lamp-panel",
-      "related": [
-        "miniapp/ray-common",
-        "miniapp/smart-ui"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/LampCommonSkill",
-          "skillName": "ai-lamp-common-skill"
-        }
-      }
+      "related": ["miniapp/ray-common", "miniapp/smart-ui"],
+      "source": { "localPath": "skills/miniapp/lamp-panel" }
     },
     {
       "id": "miniapp/socket-panel",
@@ -572,17 +567,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/socket-panel",
-      "related": [
-        "miniapp/ray-common",
-        "miniapp/electrician-timing",
-        "miniapp/energy-stats"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/ElectricalSocketExpert",
-          "skillName": "socket-panel-development-guidelines"
-        }
-      }
+      "related": ["miniapp/ray-common", "miniapp/electrician-timing", "miniapp/energy-stats"],
+      "source": { "localPath": "skills/miniapp/socket-panel" }
     },
     {
       "id": "miniapp/robot-vacuum",
@@ -609,15 +595,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/robot-vacuum",
-      "related": [
-        "miniapp/ray-common"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/RobotVacuumDevelopSkills",
-          "skillName": "robot-vacuum-develop-skills"
-        }
-      }
+      "related": ["miniapp/ray-common"],
+      "source": { "localPath": "skills/miniapp/robot-vacuum" }
     },
     {
       "id": "miniapp/ipc-panel",
@@ -644,15 +623,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/ipc-panel",
-      "related": [
-        "miniapp/ray-common"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/IpcPanelSkill",
-          "skillName": "tuya-ipc-panel-template"
-        }
-      }
+      "related": ["miniapp/ray-common"],
+      "source": { "localPath": "skills/miniapp/ipc-panel" }
     },
     {
       "id": "miniapp/charts-library",
@@ -678,16 +650,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/charts-library",
-      "related": [
-        "miniapp/ray-common",
-        "miniapp/energy-stats"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/ChartsLibrarySkill",
-          "skillName": "charts-library-skill"
-        }
-      }
+      "related": ["miniapp/ray-common", "miniapp/energy-stats"],
+      "source": { "localPath": "skills/miniapp/charts-library" }
     },
     {
       "id": "miniapp/electrician-timing",
@@ -713,15 +677,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/electrician-timing",
-      "related": [
-        "miniapp/socket-panel"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/EleTimer",
-          "skillName": "electrician-timing-sdk-integration"
-        }
-      }
+      "related": ["miniapp/socket-panel"],
+      "source": { "localPath": "skills/miniapp/electrician-timing" }
     },
     {
       "id": "miniapp/energy-stats",
@@ -747,16 +704,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/energy-stats",
-      "related": [
-        "miniapp/charts-library",
-        "miniapp/socket-panel"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/EnergyStats",
-          "skillName": "energy-stats"
-        }
-      }
+      "related": ["miniapp/charts-library", "miniapp/socket-panel"],
+      "source": { "localPath": "skills/miniapp/energy-stats" }
     },
     {
       "id": "miniapp/requirement-guide",
@@ -782,12 +731,7 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/requirement-guide",
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/RequirementCreatingGuide-beta",
-          "skillName": "requirement-creating-guide-skill"
-        }
-      }
+      "source": { "localPath": "skills/miniapp/requirement-guide" }
     },
     {
       "id": "miniapp/performance-ux-guard",
@@ -813,15 +757,8 @@
       ],
       "defaultEnabled": false,
       "installPayload": "miniapp/performance-ux-guard",
-      "related": [
-        "miniapp/ray-common"
-      ],
-      "source": {
-        "wellKnown": {
-          "url": "https://developer.tuya.com/material/skills/MiniappPerformanceUxGuard",
-          "skillName": "miniapp-performance-ux-guard"
-        }
-      }
+      "related": ["miniapp/ray-common"],
+      "source": { "localPath": "skills/miniapp/performance-ux-guard" }
     }
   ]
 }

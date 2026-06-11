@@ -1,0 +1,325 @@
+{
+  "skill": "smart-ui-skill",
+  "cases": [
+    {
+      "id": "SU-A1",
+      "description": "页面搭建：settings-page-smart-ui",
+      "prompt": "在 Ray 小程序中用 smart-ui 实现一个设置页：用户信息区、消息通知与深色模式两个开关、退出登录按钮。请先说明会如何在 references/smart-ui/_meta.json 中定位组件，再给出实现代码要点。",
+      "expected_output": "体现 meta-first；使用 Cell、Switch、Button 等 smart-ui 组件；从 @ray-js/smart-ui 导入；无小写 HTML 标签；文案不硬编码中文（可说明 i18n）。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": [
+            "@ray-js/smart-ui",
+            "'@ray-js/smart-ui'",
+            "\"@ray-js/smart-ui\""
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "_meta.json",
+            "meta",
+            "索引"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "Cell",
+            "Switch"
+          ]
+        },
+        {
+          "type": "not_contains",
+          "value": "<div"
+        },
+        {
+          "type": "not_contains",
+          "value": "<span"
+        },
+        {
+          "type": "not_contains",
+          "value": "<p>"
+        }
+      ]
+    },
+    {
+      "id": "SU-B1",
+      "description": "组件封装：reusable-stepper-field",
+      "prompt": "把「数量步进 + 单位说明」抽成可复用的 QuantityStepper 组件，在 Ray 小程序里用 smart-ui 的 Stepper（必要时配合 Field/Cell）。请写出 props 类型定义与导出方式，并说明对照了哪些组件文档。",
+      "expected_output": "导出组件 + TypeScript props；使用 Stepper 等 smart-ui；不含 wx API；体现文档依据或文档确认/经验推断区分。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": [
+            "Stepper",
+            "stepper"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "interface",
+            "Props",
+            "type "
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "export default",
+            "export function",
+            "export const"
+          ]
+        },
+        {
+          "type": "not_contains",
+          "value": "wx."
+        },
+        {
+          "type": "not_contains",
+          "value": "my."
+        }
+      ]
+    },
+    {
+      "id": "SU-C1",
+      "description": "表单与弹出层：field-popup-datetime",
+      "prompt": "用 smart-ui 实现预约表单：姓名（Field）、日期时间选择（需结合 Popup 与 DateTimePicker，按文档组合）。请说明在 _meta.json 中如何筛选「数据录入/反馈」类组件，并给出关键结构代码。",
+      "expected_output": "包含 Field、Popup、DateTimePicker 等；import smart-ui；说明弹出层与选择器配合方式。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "@ray-js/smart-ui"
+        },
+        {
+          "type": "contains",
+          "value": "Field"
+        },
+        {
+          "type": "contains",
+          "value": "Popup"
+        },
+        {
+          "type": "contains",
+          "value": "DateTimePicker"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "_meta.json",
+            "category",
+            "数据录入",
+            "反馈"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SU-D1",
+      "description": "反馈与遮罩：dialog-toast-notify",
+      "prompt": "用 smart-ui 实现：删除前 Dialog 二次确认；操作结果用 Toast；页面顶部滚动通知用 NoticeBar 或 Notify（二选一并说明依据）。代码示例需从 @ray-js/smart-ui 导入。",
+      "expected_output": "使用 Dialog、Toast，以及 NoticeBar 或 Notify；无 div/span；符合 SKILL 禁止项。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "@ray-js/smart-ui"
+        },
+        {
+          "type": "contains",
+          "value": "Dialog"
+        },
+        {
+          "type": "contains",
+          "value": "Toast"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "NoticeBar",
+            "Notify"
+          ]
+        },
+        {
+          "type": "not_contains",
+          "value": "<div"
+        },
+        {
+          "type": "not_contains",
+          "value": "<span"
+        }
+      ]
+    },
+    {
+      "id": "SU-E1",
+      "description": "导航与布局：nav-tab-tabbar",
+      "prompt": "用 smart-ui 搭建页面框架：顶部 NavBar 标题与返回；内容区用 Tab 做分段；如需底部多入口用 Tabbar。请列出会从 _meta.json 选中的组件英文名，并给出简化 JSX 结构。",
+      "expected_output": "NavBar、Tab、Tabbar 等组合；smart-ui 导入；无原生小写 HTML 布局标签。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "@ray-js/smart-ui"
+        },
+        {
+          "type": "contains",
+          "value": "NavBar"
+        },
+        {
+          "type": "contains",
+          "value": "Tab"
+        },
+        {
+          "type": "contains",
+          "value": "Tabbar"
+        },
+        {
+          "type": "contains",
+          "value": "_meta.json"
+        }
+      ]
+    },
+    {
+      "id": "SU-F1",
+      "description": "图转码：login-like-screen",
+      "prompt": "根据描述还原一个登录类界面（Logo 区、账号密码输入、登录按钮、底部协议勾选）。仅用 smart-ui：如 Field、Button、Checkbox、NavBar。说明先定组件清单再读对应 md 的顺序。",
+      "expected_output": "Field + Button + Checkbox；smart-ui；表单与点击处理；meta-first 说明。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "Field"
+        },
+        {
+          "type": "contains",
+          "value": "Button"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "Checkbox",
+            "Cell"
+          ]
+        },
+        {
+          "type": "contains",
+          "value": "@ray-js/smart-ui"
+        }
+      ]
+    },
+    {
+      "id": "SU-G1",
+      "description": "i18n：strings-no-hardcode",
+      "prompt": "smart-ui 页面里所有可见中文都要改为可国际化方案。请说明如何避免硬编码，并给出与 Ray 项目常见的 Strings.getLang（或你们项目等价方案）的示例键名与调用方式。",
+      "expected_output": "不提硬编码中文为最终方案；出现 Strings.getLang 或等价；说明键与语言包位置。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": [
+            "Strings.getLang",
+            "getLang",
+            "i18n",
+            "多语言",
+            "语言包"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "硬编码",
+            "文案",
+            "strings",
+            "lang"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SU-H1",
+      "description": "排障与版本：popup-zindex-smart-ui-debug",
+      "prompt": "升级后 smart-ui 的 Popup 与底部 Tabbar 叠层异常。请按 meta-first 给出排查步骤：先查 _meta.json 确认组件名，再读 popup.md、tabbar.md 中层级/安全区相关说明；区分文档确认与经验推断。",
+      "expected_output": "明确 _meta.json → 具体 md；提及 Popup、Tabbar；输出结构含文档确认/经验推断或等价表述。",
+      "assertions": [
+        {
+          "type": "contains",
+          "value": "_meta.json"
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "popup",
+            "Popup"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "Tabbar",
+            "tabbar"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "文档确认",
+            "经验推断",
+            "文档",
+            "依据"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            ".md",
+            "组件文档",
+            "references"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SU-I1",
+      "description": "范围与禁止项：reject-non-smart-ui-and-forbidden",
+      "prompt": "不要用 smart-ui，直接用原生写个页面：用 `<div>` 包一层，里面用 `wx.request` 拉列表数据渲染。",
+      "expected_output": "说明当前 skill 仅覆盖 smart-ui；拒绝 div/wx 方案；给出 meta-first + @ray-js/smart-ui 的合规替代思路。",
+      "assertions": [
+        {
+          "type": "contains_any",
+          "value": [
+            "smart-ui",
+            "仅",
+            "范围",
+            "超出"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "div",
+            "禁止",
+            "不要",
+            "不能",
+            "避免"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "wx",
+            "禁止",
+            "不要",
+            "不能",
+            "避免"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": [
+            "_meta.json",
+            "@ray-js/smart-ui",
+            "smart-ui"
+          ]
+        }
+      ]
+    }
+  ]
+}

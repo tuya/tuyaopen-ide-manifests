@@ -1,0 +1,13 @@
+import { View, Text } from '@ray-js/ray';
+
+// 优先业务组件；smart-ui skill；必要时查 references/ray/INDEX.md 与 tag-mapping 文档
+export default function Login() {
+  return (
+    <View>
+      <Text>Logo</Text>
+      <Field />
+      <Input type="Password" />
+      <Button>登录</Button>
+    </View>
+  );
+}

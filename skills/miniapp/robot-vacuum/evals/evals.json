@@ -1,0 +1,139 @@
+{
+  "skill": "robot-vacuum-develop-skills",
+  "cases": [
+    {
+      "id": "room-colors-config",
+      "description": "业务场景：修改地图房间颜色配置",
+      "prompt": "我想修改地图上房间的颜色，应该配置什么？",
+      "expected_output": "应该引导开发者查找 config 相关的配置项，提到 RobotMap 组件的房间颜色配置",
+      "assertions": [
+        { "type": "contains_any", "value": ["RobotMap", "robot-map", "config"] },
+        { "type": "contains_any", "value": ["room.colors", "room.color", "active", "inactive", "normal"] }
+      ]
+    },
+    {
+      "id": "zone-clean-command-trans",
+      "description": "业务场景：command_trans 下发选区清扫",
+      "prompt": "怎么给机器人下发选区清扫指令？我代码里用的是 command_trans 这个 DP 来透传数据的",
+      "expected_output": "应该识别出使用 command_trans 是点阵格式协议，引导开发者查看编码函数和选区清扫的指令码",
+      "assertions": [
+        { "type": "contains_any", "value": ["command_trans", "commandTrans"] },
+        { "type": "contains_any", "value": ["点阵", "raw", "encode"] },
+        { "type": "contains_any", "value": ["选区", "zone", "ZoneClean"] }
+      ]
+    },
+    {
+      "id": "switch-go-dp",
+      "description": "业务场景：switch_go DP 含义速查",
+      "prompt": "switch_go 这个 DP 是干什么的？",
+      "expected_output": "直接从 DP 速查表回答：switch_go 是开始/停止清扫的控制指令",
+      "assertions": [
+        { "type": "contains", "value": "switch_go" },
+        { "type": "contains_any", "value": ["开始", "停止", "清扫", "start", "stop"] }
+      ]
+    },
+    {
+      "id": "map-hex-decode",
+      "description": "业务场景：地图 hex 原始数据解码",
+      "prompt": "我收到了一堆 hex 数据，是地图的原始数据，不知道怎么解码处理，有什么解码函数可以用吗？",
+      "expected_output": "应该识别出 hex 数据是点阵格式协议的地图数据，引导到 map-decode 相关文档，说明 LZ4 解压 + 像素矩阵解析流程",
+      "assertions": [
+        { "type": "contains_any", "value": ["LZ4", "lz4", "解压", "decompress"] },
+        { "type": "contains_any", "value": ["parseMapData", "decodeMap", "map-decode", "mapDecode"] },
+        { "type": "contains_any", "value": ["0xaa", "0xab", "aa", "ab", "帧", "frame"] }
+      ]
+    },
+    {
+      "id": "use-zone-clean-mqtt",
+      "description": "业务场景：useZoneClean MQTT 消息格式",
+      "prompt": "我项目里用了 useZoneClean 这个 hook 下发选区清扫，但消息格式不太对，能告诉我正确的消息格式吗？",
+      "expected_output": "应该识别出 useZoneClean 是结构化协议的 MQTT hook，引导到 mqtt-hooks 文档，说明 MQTT 消息格式",
+      "assertions": [
+        { "type": "contains", "value": "useZoneClean" },
+        { "type": "contains_any", "value": ["reqType", "taskId", "version", "MQTT", "mqtt"] },
+        { "type": "contains_any", "value": ["JSON", "json", "结构化"] }
+      ]
+    },
+    {
+      "id": "use-p2p-data-stream",
+      "description": "业务场景：useP2PDataStream 获取实时地图",
+      "prompt": "useP2PDataStream 这个 hook 怎么用？我想获取实时地图数据",
+      "expected_output": "应该引导到 references/data-stream/reference/p2p-stream.md 或 useP2PDataStream.md，说明 P2P 连接获取 map.bin 和 cleanPath.bin 的流程",
+      "assertions": [
+        { "type": "contains", "value": "useP2PDataStream" },
+        { "type": "contains_any", "value": ["map.bin", "cleanPath.bin", "P2P", "p2p"] },
+        { "type": "contains_any", "value": ["p2p-stream", "data-stream"] }
+      ]
+    },
+    {
+      "id": "forbidden-zone-render-order",
+      "description": "业务场景：禁扫/禁拖框绘制层级",
+      "prompt": "有办法修改禁扫和禁拖框的绘制层级吗，我想让红色的禁扫框显示在黄色的禁拖框的上面",
+      "expected_output": "应该引导到 config.controls.renderOrder 配置项，说明通过调整数组顺序控制控制元素层级，禁扫在禁拖后面即可显示在上层",
+      "assertions": [
+        { "type": "contains_any", "value": ["renderOrder", "controls.renderOrder"] },
+        { "type": "contains_any", "value": ["forbiddenSweepZone", "forbiddenMopZone"] },
+        { "type": "contains_any", "value": ["层级", "顺序", "order", "上层", "后面"] }
+      ]
+    },
+    {
+      "id": "fullscreen-map-auto-fit-offset",
+      "description": "业务场景：全屏地图首次渲染视觉居中",
+      "prompt": "使用全屏地图的时候(global.containerHeight=100%)，希望在首次渲染时，地图位置可以向上偏移一些，达到视觉上的\"地图居中\"(图中框出的位置)，有办法实现吗？我查了SDK文档，没找到类似于这样的配置",
+      "expected_output": "应该引导到 config.map.autoFitOffset 配置项，说明可以设置 { x, y } 偏移量来调整地图自适应居中时的位置",
+      "assertions": [
+        { "type": "contains_any", "value": ["autoFitOffset", "map.autoFitOffset"] },
+        { "type": "contains_any", "value": ["x", "y", "offset", "偏移"] }
+      ]
+    },
+    {
+      "id": "room-properties-hide-icons",
+      "description": "业务场景：隐藏房间吸力/水量图标",
+      "prompt": "可以隐藏某个房间的吸力或水量图标吗？不是通过config room displayOrder",
+      "expected_output": "应该引导开发者理解组件的纯受控设计理念：roomProperties 是数据驱动的，要隐藏某个房间的属性图标，只需要在传入的 roomProperties 数据中不包含对应字段即可，不需要额外的 config",
+      "assertions": [
+        { "type": "contains", "value": "roomProperties" },
+        { "type": "contains_any", "value": ["受控", "数据驱动", "controlled"] },
+        { "type": "not_contains", "value": "displayOrder" }
+      ]
+    },
+    {
+      "id": "furniture-full-implementation",
+      "description": "业务场景：地图家具功能完整实现",
+      "prompt": "我想在地图上添加家具功能，让用户可以在地图上放置床、沙发等家具图片。请告诉我需要用到哪些 API 和 props，给出完整的实现代码。",
+      "expected_output": "应该给出基于 RobotMap 组件的家具功能完整实现，包括 furnitures 数据 prop、config.furniture 配置、runtime.editingFurnitureIds 状态、三个回调函数、以及 getFurniturePointsByViewportCenter 方法",
+      "assertions": [
+        { "type": "contains", "value": "furnitures" },
+        { "type": "contains_any", "value": ["config.furniture", "furniture.assets"] },
+        { "type": "contains", "value": "editingFurnitureIds" },
+        { "type": "contains_any", "value": ["onUpdateFurniture", "onRemoveFurniture", "onClickFurniture"] },
+        { "type": "contains", "value": "getFurniturePointsByViewportCenter" },
+        { "type": "contains_any", "value": ["useState", "setFurnitures"] }
+      ]
+    },
+    {
+      "id": "furniture-config-options",
+      "description": "业务场景：家具 config 可自定义项",
+      "prompt": "家具功能的 config 有哪些可以自定义的配置？比如编辑时的样式、缩放限制、旋转方向等",
+      "expected_output": "应该列出 config.furniture 下的主要配置项：assets、opacity、rotateDirection、minScaleRatio、maxScaleRatio、编辑态轮廓样式（outlineOffset/StrokeColor/StrokeWidth/FillColor/Dashed/DashArray）、尺寸文字（showSizeText/textColor/textPosition/textOffset）、按钮颜色（iconWrapperFillColor）",
+      "assertions": [
+        { "type": "contains_any", "value": ["config.furniture", "furniture.assets", "FurnitureAsset"] },
+        { "type": "contains_any", "value": ["minScaleRatio", "maxScaleRatio"] },
+        { "type": "contains_any", "value": ["rotateDirection", "cw", "ccw"] },
+        { "type": "contains_any", "value": ["outlineStrokeColor", "outlineDashed", "outlineOffset"] }
+      ]
+    },
+    {
+      "id": "furniture-selection-panel",
+      "description": "业务场景：家具选择面板实现",
+      "prompt": "我已经实现了基本的家具放置功能，现在想增加一个家具选择面板，让用户从多种家具中选择后添加到地图上。请基于现有的家具 API 给出实现思路和关键代码。",
+      "expected_output": "应该给出一个家具选择面板的实现方案：定义多个 FurnitureAsset（不同 type 对应不同家具），面板 UI 展示可选家具列表，点击后调用 getFurniturePointsByViewportCenter 并传入对应的 furnitureType，将新家具添加到 state 中",
+      "assertions": [
+        { "type": "contains_any", "value": ["furniture.assets", "FurnitureAsset", "assets"] },
+        { "type": "contains", "value": "getFurniturePointsByViewportCenter" },
+        { "type": "contains_any", "value": ["furnitureType", "type:"] },
+        { "type": "contains_any", "value": ["面板", "列表", "选择", "panel", "list"] }
+      ]
+    }
+  ]
+}

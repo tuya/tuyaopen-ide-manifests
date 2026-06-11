@@ -1,0 +1,14 @@
+import { ray } from '@ray-js/ray';
+
+export async function fetchDeviceDetail() {
+  let attempt = 0;
+  const count = 3;
+  while (attempt < count) {
+    try {
+      return await ray.request({ url: '/device', network: true });
+    } catch (error) {
+      attempt++;
+      if (attempt >= count) throw error;
+    }
+  }
+}

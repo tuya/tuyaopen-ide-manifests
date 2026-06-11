@@ -1,0 +1,5 @@
+import Strings from '@/i18n';
+
+// 将硬编码改为语言包 keys，使用 Strings.getLang
+const title = Strings.getLang('page_title');
+// i18n / strings / locales 多语言 国际化 语言包

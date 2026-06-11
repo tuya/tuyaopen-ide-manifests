@@ -1,0 +1,10 @@
+import Strings from '@/i18n';
+
+export default function SettingsPage() {
+  return (
+    <View className="page">
+      <Text>{Strings.getLang('user_info')}</Text>
+      {/* 选型：品类业务组件优先，其次 smart-ui skill，再回退 Ray 原生组件 */}
+    </View>
+  );
+}

@@ -1,0 +1,86 @@
+{
+  "skill": "miniapp-performance-ux-guard",
+  "cases": [
+    {
+      "id": "miniapp-biz-001",
+      "description": "业务场景：接手 AI 生成的页面代码，先收口到项目现有模式",
+      "prompt": "这是 AI 刚生成的订单页，功能能跑，但提交流程只写了 happy path，文案、按钮状态和错误处理也都很散。别帮我重构大架构，先按我项目现有模式把这段代码收口。",
+      "expected_output": "Agent 应先强调沿现有项目组件、请求封装、状态流和文案模式收口，不凭空发明新 hooks、store 或目录结构；同时补齐 loading / error / empty / submitting / i18n / 验证证据，避免只修 happy path。",
+      "assertions": [
+        { "type": "contains_any", "value": ["现有模式", "已有组件", "请求封装", "状态流"] },
+        { "type": "contains_any", "value": ["loading", "error", "empty", "submitting"] },
+        { "type": "contains_any", "value": ["i18n", "文案"] },
+        { "type": "contains_any", "value": ["验证", "证据", "lint", "build"] }
+      ]
+    },
+    {
+      "id": "miniapp-biz-002",
+      "description": "业务场景：用户反馈“点了没反应”，需要同时补交互反馈和问题归因",
+      "prompt": "线上有人反馈“按钮点了没反应，失败了也没提示”。我不只想修这一次，还想让后面能知道问题到底卡在哪。你帮我把这条交互链路补完整。",
+      "expected_output": "Agent 应补齐关键按钮的 loading / disabled / 防重复点击、失败提示、重试或恢复路径；同时补充反馈归因、关键埋点、trace 关联或告警阈值，形成可追踪的问题闭环，而不是只改一个按钮文案。",
+      "assertions": [
+        { "type": "contains_any", "value": ["loading", "disabled", "防重复"] },
+        { "type": "contains_any", "value": ["toast", "失败提示", "重试", "恢复"] },
+        { "type": "contains_any", "value": ["埋点", "trace", "反馈", "归因", "告警"] }
+      ]
+    },
+    {
+      "id": "miniapp-biz-003",
+      "description": "业务场景：列表滑动掉帧、弹窗闪动，要求按小程序/Ray 约束排查",
+      "prompt": "设备列表一滑就掉帧，滚动时页面还会闪，筛选面板打开也卡。按小程序 / Ray 项目的问题来查。",
+      "expected_output": "Agent 应优先检查 setData 粒度与频率、滚动高频更新、列表渐进渲染或虚拟化、CSS 动画优先于 JS、以及生命周期清理等问题；回答应贴合小程序/Ray 约束，而不是泛谈浏览器层优化。",
+      "assertions": [
+        { "type": "contains_any", "value": ["setData", "高频", "粒度", "节流"] },
+        { "type": "contains_any", "value": ["渐进渲染", "虚拟列表", "incremental", "virtualization"] },
+        { "type": "contains_any", "value": ["CSS", "动画", "cleanup", "清理"] }
+      ]
+    },
+    {
+      "id": "miniapp-biz-004",
+      "description": "业务场景：首页白屏明显，启动阶段同步 API 和全局注入过多",
+      "prompt": "首页冷启动要 3 秒，白屏很明显，app.ts 里还有一堆同步 API 和全局注入。帮我梳理一下从包体到首屏的优化顺序，先说最值得动的。",
+      "expected_output": "Agent 应给出符合 Tuya miniapp / Ray 约束的优化优先级，重点覆盖主包体积、同步 API、全局注入、首屏阻塞请求、渐进渲染、Smart UI 按需加载、误引 react-dom、预加载和缓存，不应只给泛泛建议。",
+      "assertions": [
+        { "type": "contains_any", "value": ["主包", "package size", "2MB"] },
+        { "type": "contains_any", "value": ["同步 API", "sync API", "全局注入"] },
+        { "type": "contains_any", "value": ["Smart UI", "react-dom", "预加载", "缓存"] },
+        { "type": "contains_any", "value": ["首屏", "白屏", "渐进渲染"] }
+      ]
+    },
+    {
+      "id": "miniapp-biz-005",
+      "description": "业务场景：按 MasterGo 设计稿还原页面，优先复用 Smart UI 和现有组件",
+      "prompt": "我拿到一份 MasterGo 设计稿，要还原一个带筛选抽屉和底部操作栏的页面。优先复用 Smart UI 和项目已有组件，不要给我新造一套组件体系。",
+      "expected_output": "Agent 应先给组件映射和拆分方案，优先复用项目已有组件与 Smart UI；方案中应覆盖容器组件选型、app 设计 Token、safe area，以及 loading / empty / error / disabled 等关键视觉状态，不应默认走全自定义实现。",
+      "assertions": [
+        { "type": "contains_any", "value": ["Smart UI", "已有组件", "复用"] },
+        { "type": "contains_any", "value": ["组件拆分", "映射", "选型"] },
+        { "type": "contains_any", "value": ["--app-", "safe area", "Token"] },
+        { "type": "contains_any", "value": ["loading", "empty", "error", "disabled"] }
+      ]
+    },
+    {
+      "id": "miniapp-biz-006",
+      "description": "业务场景：上线前评审，先给 blocking 问题和放行结论",
+      "prompt": "这周要发版了，帮我审一下当前改动能不能上线。先给我 blocking 问题，再告诉我最终能不能放行。",
+      "expected_output": "Agent 应以代码评审姿态先给 Findings，再给放行 / 阻断结论、质量等级和验证缺口；问题需要可定位、可验证、与本次发布相关，不能只给宽泛建议或总结。",
+      "assertions": [
+        { "type": "contains_any", "value": ["Findings", "问题", "阻断"] },
+        { "type": "contains_any", "value": ["放行", "阻断", "PASS", "BLOCKED"] },
+        { "type": "contains_any", "value": ["Quality Grade", "质量等级", "A/B/C/D"] },
+        { "type": "contains_any", "value": ["验证缺口", "Verification Gaps", "Residual risk"] }
+      ]
+    },
+    {
+      "id": "miniapp-biz-007",
+      "description": "业务场景：从设计稿落地到上线，且不能恶化首页性能",
+      "prompt": "新功能要从设计稿落地到本周上线，页面还没做，同时首页不能再变慢。你帮我把这整个事情排一下，先做什么后做什么。",
+      "expected_output": "Agent 应给出从设计、开发、性能到发布的串行推进顺序：先收敛页面结构和复用边界，再落地代码下限和交互闭环，然后检查首屏 / 包体影响，最后做上线前评审；不应并行跳步，也不应直接给一版大而全重构方案。",
+      "assertions": [
+        { "type": "contains_any", "value": ["先", "再", "最后", "顺序"] },
+        { "type": "contains_any", "value": ["复用", "组件拆分", "代码下限", "交互闭环"] },
+        { "type": "contains_any", "value": ["首屏", "包体", "上线前评审", "放行"] }
+      ]
+    }
+  ]
+}

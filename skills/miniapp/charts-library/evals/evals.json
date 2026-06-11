@@ -1,0 +1,145 @@
+{
+  "skill": "charts-library-skill",
+  "cases": [
+    {
+      "id": "ele-chart-card-metering",
+      "description": "业务场景：用电量图表卡片（EleChartCard）",
+      "prompt": "帮我在一个 Ray 小程序页面里加一个用电量图表卡片，devId 用 'demo-dev'，DP id 是 18，单位 kWh，默认按天显示。",
+      "expected_output": "Pattern 1: DataSourceProvider + EleChartCard, with devId/dpId/unit/initialGranularity correctly set",
+      "assertions": [
+        { "type": "contains", "value": "@ray/charts-library" },
+        { "type": "contains", "value": "DataSourceProvider" },
+        { "type": "contains", "value": "EleChartCard" },
+        { "type": "contains", "value": "kWh" },
+        { "type": "contains_any", "value": ["dpId={18}", "dpId: 18", "dpId={ 18 }"] },
+        { "type": "contains_any", "value": ["initialGranularity=\"day\"", "initialGranularity='day'", "initialGranularity: 'day'"] },
+        { "type": "not_contains", "value": "ChartCard" },
+        { "type": "not_contains", "value": "EnergyChart" }
+      ]
+    },
+    {
+      "id": "temp-hum-chart-card",
+      "description": "业务场景：温湿度可切换图表卡片",
+      "prompt": "我想做一个温度湿度可切换的图表卡片，温度 DP 101（单位 ℃，正常范围 18-26），湿度 DP 102（单位 %，正常范围 40-70），默认展示温度。",
+      "expected_output": "Pattern 2: TempAndHumChartCard with temperature and humidity configs, thresholds, and defaultMetric='temp'",
+      "assertions": [
+        { "type": "contains", "value": "TempAndHumChartCard" },
+        { "type": "contains", "value": "defaultMetric" },
+        { "type": "contains_any", "value": ["defaultMetric=\"temp\"", "defaultMetric='temp'", "defaultMetric: 'temp'"] },
+        { "type": "contains_any", "value": ["dpId: 101", "dpId={101}"] },
+        { "type": "contains_any", "value": ["dpId: 102", "dpId={102}"] },
+        { "type": "contains", "value": "threshold" }
+      ]
+    },
+    {
+      "id": "illuminance-chart-card",
+      "description": "业务场景：照度图表卡片",
+      "prompt": "给我加一个照度图表，设备 id 跟前面一样，DP 103，单位 lux。",
+      "expected_output": "Pattern 3: IlluminanceChartCard with devId, dpId=103, unit='lux'",
+      "assertions": [
+        { "type": "contains", "value": "IlluminanceChartCard" },
+        { "type": "contains", "value": "lux" },
+        { "type": "contains_any", "value": ["dpId={103}", "dpId: 103", "dpId={ 103 }"] }
+      ]
+    },
+    {
+      "id": "composable-period-layout",
+      "description": "业务场景：自定义布局 + 周期组合件",
+      "prompt": "我想自己排布页面，标题 + 粒度切换 + 左右翻页 + 图表，但周期状态和拉数逻辑用你这个库的，数据源还是 Tuya 计量接口，DP 18。",
+      "expected_output": "Pattern 4: DataSourceProvider -> ChartPeriodProvider -> ChartGranularityPicker + ChartPeriodNavigator + ChartSeriesPanel",
+      "assertions": [
+        { "type": "contains", "value": "DataSourceProvider" },
+        { "type": "contains", "value": "ChartPeriodProvider" },
+        { "type": "contains", "value": "ChartGranularityPicker" },
+        { "type": "contains", "value": "ChartPeriodNavigator" },
+        { "type": "contains", "value": "ChartSeriesPanel" }
+      ]
+    },
+    {
+      "id": "use-chart-period-context",
+      "description": "业务场景：复用周期 Context Hook",
+      "prompt": "我已经有自己的 tab 和图表组件了，只想复用你库里的周期切换状态，DP 18 数据。",
+      "expected_output": "Pattern 5: useChartPeriodContext hook inside DataSourceProvider + ChartPeriodProvider tree",
+      "assertions": [
+        { "type": "contains", "value": "useChartPeriodContext" },
+        { "type": "contains", "value": "DataSourceProvider" },
+        { "type": "contains", "value": "ChartPeriodProvider" }
+      ]
+    },
+    {
+      "id": "custom-http-load-data",
+      "description": "业务场景：自定义 HTTP 数据源 + 周期控件",
+      "prompt": "我的数据不是 Tuya 计量接口，是我们自己的 HTTP API：GET /api/trend?g=&start=&end= 返回 { labels, values }。我想要库里的日/周/月切换 + 导航条 + 图表。",
+      "expected_output": "ChartPeriodProvider standalone (no DataSourceProvider) with custom loadData",
+      "assertions": [
+        { "type": "contains", "value": "ChartPeriodProvider" },
+        { "type": "contains", "value": "loadData" },
+        { "type": "not_contains", "value": "DataSourceProvider" }
+      ]
+    },
+    {
+      "id": "build-option-with-helpers",
+      "description": "业务场景：自定义 ECharts option 辅助函数",
+      "prompt": "我想自己控制 ECharts option，希望横轴按粒度稀疏显示，带个 tooltip，剩下的还是用 EleChartCard。",
+      "expected_output": "DataSourceProvider with custom buildOption using withXAxis + withTooltip",
+      "assertions": [
+        { "type": "contains", "value": "withXAxis" },
+        { "type": "contains", "value": "withTooltip" },
+        { "type": "contains", "value": "buildOption" },
+        { "type": "contains", "value": "DataSourceProvider" }
+      ]
+    },
+    {
+      "id": "custom-granularity-limitation",
+      "description": "业务场景：自定义日期区间（custom 粒度）",
+      "prompt": "我想让用户选任意日期区间（custom 粒度）来看 DP 18 的曲线，还是走 Tuya 接口。",
+      "expected_output": "Explains that DataSourceProvider does NOT support custom granularity; suggests ChartPeriodProvider + own loadData + shiftCustomRange",
+      "assertions": [
+        { "type": "contains_any", "value": ["custom granularity", "custom 粒度", "does not support custom", "不支持 custom"] },
+        { "type": "contains_any", "value": ["ChartPeriodProvider", "loadData", "shiftCustomRange"] },
+        { "type": "not_contains", "value": "initialGranularity=\"custom\"" },
+        { "type": "not_contains", "value": "initialGranularity='custom'" }
+      ]
+    },
+    {
+      "id": "english-ui-messages",
+      "description": "业务场景：图表组件英文界面",
+      "prompt": "这个页面要英文界面，帮我把图表组件切到英文。",
+      "expected_output": "Uses CHART_MESSAGES_EN for ChartPeriodProvider or granularityLabels for scene cards",
+      "assertions": [
+        { "type": "contains_any", "value": ["CHART_MESSAGES_EN", "granularityLabels"] }
+      ]
+    },
+    {
+      "id": "troubleshoot-empty-chart",
+      "description": "业务场景：双 Provider 嵌套曲线不显示排错",
+      "prompt": "我同时用了 DataSourceProvider 和 ChartPeriodProvider，但曲线没显示，可能是什么问题？",
+      "expected_output": "Diagnoses common issues: double loadData override, wrong nesting order, or missing algorithmType config match",
+      "assertions": [
+        { "type": "contains_any", "value": ["loadData", "nesting", "algorithmType", "嵌套", "覆盖"] }
+      ]
+    },
+    {
+      "id": "negative-pie-chart",
+      "description": "业务场景：负例 - 无关饼图需求",
+      "prompt": "帮我写一个 ECharts 饼图，展示三种水果的销量。",
+      "expected_output": "Does NOT use @ray/charts-library components (negative test - unrelated topic)",
+      "assertions": [
+        { "type": "not_contains", "value": "EleChartCard" },
+        { "type": "not_contains", "value": "DataSourceProvider" },
+        { "type": "not_contains", "value": "@ray/charts-library" }
+      ]
+    },
+    {
+      "id": "negative-npm-error",
+      "description": "业务场景：负例 - 无关 npm 安装报错",
+      "prompt": "我 npm install 报错 EPERM，怎么办？",
+      "expected_output": "Does NOT mention @ray/charts-library at all (negative test - completely unrelated)",
+      "assertions": [
+        { "type": "not_contains", "value": "@ray/charts-library" },
+        { "type": "not_contains", "value": "EleChartCard" },
+        { "type": "contains_any", "value": ["npm", "EPERM", "permission", "权限"] }
+      ]
+    }
+  ]
+}

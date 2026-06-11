@@ -1,0 +1,129 @@
+{
+  "skill": "socket-panel-development-guidelines",
+  "cases": [
+    {
+      "id": "socket-biz-001",
+      "description": "业务场景：多路开关面板渲染",
+      "prompt": "帮我搭建一个插座面板，需要支持 1~6 路开关动态渲染，每路都有独立的倒计时功能。",
+      "expected_output": "定义 SWITCH_DPS 数组（switch_1~switch_6），通过 schema 动态过滤出设备实际支持的路数（activeChannels），不硬编码路数。每路对应一个 countdown_N（秒），展示格式化为「下一次将在 HH:MM 关闭」。倒计时秒数转触发时间：new Date(Date.now() + remainingSeconds * 1000)。",
+      "assertions": [
+        { "type": "contains", "value": "switch_1" },
+        { "type": "contains_any", "value": ["schema", "filter", "activeChannels"] },
+        { "type": "contains", "value": "countdown" },
+        { "type": "contains_any", "value": ["HH:MM", "padStart"] },
+        { "type": "not_contains", "value": "硬编码" }
+      ]
+    },
+    {
+      "id": "socket-biz-002",
+      "description": "业务场景：用电统计页面开发",
+      "prompt": "我要实现用电统计功能，展示今日/昨日用电量、按小时的用电分布柱形图、按月的趋势折线图。",
+      "expected_output": "使用 getStatisticsRangDay 获取今日/昨日用电量，getStatisticsRangHour 获取小时级分布，getStatisticsRangMonth 获取月度趋势。所有 API 从 @ray-js/ray（>= 1.2.12）导入。add_ele 原始值除以 100 转为 kWh。可使用 @ray-js/stat-charts 的 StatCharts 组件渲染图表，支持 bar/line/line-area 类型。设备无 add_ele DP 时不展示用电统计入口。",
+      "assertions": [
+        { "type": "contains", "value": "getStatisticsRangDay" },
+        { "type": "contains", "value": "getStatisticsRangHour" },
+        { "type": "contains", "value": "getStatisticsRangMonth" },
+        { "type": "contains_any", "value": ["100", "kWh", "÷ 100", "/ 100"] },
+        { "type": "contains_any", "value": ["1.2.12", "@ray-js/ray"] },
+        { "type": "contains_any", "value": ["StatCharts", "stat-charts"] }
+      ]
+    },
+    {
+      "id": "socket-biz-003",
+      "description": "业务场景：功能页接入（电工定时+电费设置）",
+      "prompt": "面板设置区要加电工定时和电费设置两个功能入口，点击跳转到对应功能页。",
+      "expected_output": "电工定时使用 ElectricianTimer（appid: typtepohxfeukudmyi），电费设置使用 ElectricityCostFunctional（appid: tyfqg0bbutva4kcghp）。两个 appid 都需要在 global.config.ts 的 functionalPages 中注册。跳转 URL 格式为 functional://ElectricianTimer/home?deviceId=xxx，所有参数使用 encodeURIComponent。电费设置需要设备有 add_ele DP。",
+      "assertions": [
+        { "type": "contains", "value": "typtepohxfeukudmyi" },
+        { "type": "contains", "value": "tyfqg0bbutva4kcghp" },
+        { "type": "contains", "value": "global.config" },
+        { "type": "contains", "value": "encodeURIComponent" },
+        { "type": "contains", "value": "navigateTo" },
+        { "type": "contains_any", "value": ["functional://", "ElectricianTimer"] }
+      ]
+    },
+    {
+      "id": "socket-biz-004",
+      "description": "业务场景：设备操作日志查询与展示",
+      "prompt": "帮我实现设备操作日志页面，展示开关操作和故障告警的历史记录。",
+      "expected_output": "使用 getDpReportLog 从 @ray-js/ray 导入查询日志，传入 devId、dpIds、offset、limit。switch_1 的 value 为字符串 'true'/'false'，需转为 'on'/'off' 再通过 Strings.getDpLang 获取多语言文本。fault 为 bitmap 类型，Number(log.value).toString(2) 按位解析。timeStamp 为秒级时间戳，展示时需 new Date(timeStamp * 1000)。DP 名称通过 idCodes[dpId] 获取 dpCode。",
+      "assertions": [
+        { "type": "contains", "value": "getDpReportLog" },
+        { "type": "contains_any", "value": ["timeStamp", "* 1000", "秒级"] },
+        { "type": "contains_any", "value": ["true", "false", "on", "off"] },
+        { "type": "contains_any", "value": ["bitmap", "toString(2)", "按位"] },
+        { "type": "contains", "value": "idCodes" }
+      ]
+    },
+    {
+      "id": "socket-biz-005",
+      "description": "业务场景：Complex DP（cycle_time/random_time/switch_inching）注册",
+      "prompt": "插座面板需要支持循环定时、随机时间和开关点动功能，这些 DP 怎么处理？",
+      "expected_output": "cycle_time、random_time、switch_inching 都是 Complex DP（string 类型），必须在 protocols/index.ts 中注册对应的 Transformer 解析器后才能正确读写。注册后通过 useStructuredProps 读取、useStructuredActions 下发。",
+      "assertions": [
+        { "type": "contains", "value": "cycle_time" },
+        { "type": "contains", "value": "random_time" },
+        { "type": "contains", "value": "switch_inching" },
+        { "type": "contains", "value": "protocols" },
+        { "type": "contains_any", "value": ["Transformer", "解析器", "注册"] }
+      ]
+    },
+    {
+      "id": "socket-011",
+      "description": "覆盖：DP 换算规则准确性",
+      "prompt": "设备上报 add_ele=12500, cur_power=3200, cur_voltage=2200, cur_current=1455，请给出实际物理量。",
+      "expected_output": "add_ele 12500 / 100 = 125 kWh，cur_power 3200 / 10 = 320 W，cur_voltage 2200 / 10 = 220 V，cur_current 1455 mA（无需换算）。",
+      "assertions": [
+        { "type": "contains", "value": "125" },
+        { "type": "contains", "value": "320" },
+        { "type": "contains", "value": "220" },
+        { "type": "contains", "value": "1455" },
+        { "type": "contains_any", "value": ["kWh", "度"] }
+      ]
+    },
+    {
+      "id": "socket-012",
+      "description": "覆盖：无 add_ele DP 时禁止展示用电统计",
+      "prompt": "这个插座设备没有 add_ele DP，我能展示用电统计入口吗？",
+      "expected_output": "不能。设备没有 add_ele DP 时禁止展示用电统计入口，这是 Must not 级规则。应在渲染前检查 schema 中是否存在 add_ele，不存在则隐藏入口。",
+      "assertions": [
+        { "type": "contains_any", "value": ["不能", "不可以", "禁止", "不应"] },
+        { "type": "contains", "value": "add_ele" },
+        { "type": "contains_any", "value": ["隐藏", "hide", "不展示", "不显示"] }
+      ]
+    },
+    {
+      "id": "socket-013",
+      "description": "覆盖：定时 UI 禁止自行实现",
+      "prompt": "我想自己实现一个定时设置页面，不用内置功能页，可以吗？",
+      "expected_output": "不可以。定时 UI 必须统一使用内置功能页 ElectricianTimer，不自行实现定时界面，这是 Must not 级规则。跳转方式为 navigateTo 到 functional://ElectricianTimer/home。",
+      "assertions": [
+        { "type": "contains_any", "value": ["不可以", "不能", "禁止", "不要"] },
+        { "type": "contains", "value": "ElectricianTimer" },
+        { "type": "contains_any", "value": ["功能页", "functional://", "内置"] }
+      ]
+    },
+    {
+      "id": "socket-014",
+      "description": "覆盖：清除电量确认交互",
+      "prompt": "用户点击清除用电数据按钮后，应该用什么交互方式确认？",
+      "expected_output": "使用 Toast 确认，不用 Modal 弹窗。调用 resetStatistics 清除数据后，用 Toast 提示用户操作成功。",
+      "assertions": [
+        { "type": "contains_any", "value": ["Toast", "toast"] },
+        { "type": "contains_any", "value": ["不用 Modal", "不使用 Modal", "Modal"] },
+        { "type": "contains_any", "value": ["resetStatistics", "清除"] }
+      ]
+    },
+    {
+      "id": "socket-015",
+      "description": "负例：非电工品类不应触发",
+      "prompt": "帮我开发一个智能灯面板，需要支持彩光和白光模式切换。",
+      "expected_output": "明确说明本技能只覆盖电工插座/排插/智能开关品类，不适用于照明灯具；建议使用照明品类专项技能。",
+      "assertions": [
+        { "type": "not_contains", "value": "bright_value" },
+        { "type": "not_contains", "value": "colour_data" },
+        { "type": "contains_any", "value": ["不适用", "电工", "插座", "照明"] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "skill": "tuya-ipc-panel-template",
+  "cases": [
+    {
+      "id": "ipc-biz-001",
+      "description": "业务场景：主页新增一个 bool DP 开关（防闪烁）",
+      "prompt": "我想给 panel-ipc 模板的主页加一个『防闪烁』开关，DP 叫 anti_flicker（type=bool）。该改哪些文件？给出最小可运行代码。",
+      "expected_output": "Agent 应给出 3 处改动：\n1. src/devices/schema.ts —— 追加一条 { id, code: 'anti_flicker', mode: 'rw', property: { type: 'bool' }, type: 'obj', name: '防闪烁' }；并提醒 mode 字段不要写成 'node' 或 'wr'。\n2. src/components/layout-feature/configData.ts —— 追加 FeatureMenu 条目，type: FeatureType.bool，dpCode: 'anti_flicker'，onClick 用 publishDpOutTime(item.dpCode, !item.dpValue)，listen: true + dpListenCallback 里 currentItem.hasClick && clearPublishDpOutTime()，visibilityCondition 用 getDpCodeIsExist，initDpValue 用 getDpValueByDevices。\n3. src/i18n/strings.ts —— 增加 zh / en 两份文案。\n并提醒：模板会缓存到 ${deviceId}_layout_feature_menu，新增 DP 后冷启动或清缓存才能立即生效。",
+      "assertions": [
+        { "type": "contains", "value": "src/devices/schema.ts" },
+        { "type": "contains", "value": "src/components/layout-feature/configData.ts" },
+        { "type": "contains", "value": "src/i18n/strings.ts" },
+        { "type": "contains", "value": "FeatureType.bool" },
+        { "type": "contains", "value": "publishDpOutTime" },
+        { "type": "contains", "value": "getDpCodeIsExist" },
+        { "type": "contains", "value": "dpListenCallback" },
+        { "type": "contains", "value": "anti_flicker" },
+        { "type": "not_contains", "value": "publishDps({ anti_flicker" }
+      ]
+    },
+    {
+      "id": "ipc-biz-002",
+      "description": "业务场景：枚举 DP 弹底部 ActionSheet（夜视模式）",
+      "prompt": "给主页加一个夜视模式选择器，对应 DP 是 nightvision_mode（枚举 0/1/2/3）。点击应该弹底部菜单。",
+      "expected_output": "Agent 应使用 FeatureType.enum，onClick 中通过 changePanelInfoState('showSmartActionSheet', { status: true, actionData: getTargetEnumDpActionSheetData('nightvision_mode') }) 打开 ActionSheet。i18n 强制按 dp_nightvision_mode_0 / _1 / _2 / _3 命名。**不要**在 onClick 内自己 publishDpOutTime —— home 已自动 wire onSelectActionSheet → publishDpOutTime。",
+      "assertions": [
+        { "type": "contains", "value": "FeatureType.enum" },
+        { "type": "contains", "value": "getTargetEnumDpActionSheetData" },
+        { "type": "contains", "value": "showSmartActionSheet" },
+        { "type": "contains", "value": "changePanelInfoState" },
+        { "type": "contains", "value": "dp_nightvision_mode_" },
+        { "type": "not_contains", "value": "onClick: () => publishDpOutTime('nightvision_mode'" }
+      ]
+    },
+    {
+      "id": "ipc-biz-003",
+      "description": "业务场景：自定义 popup 组件（摇篮曲）三处串联",
+      "prompt": "我想加一个底部弹窗叫『摇篮曲』，里面要展示播放/停止按钮，DP 是 ipc_lullaby（bool）。怎么把它挂到模板里？",
+      "expected_output": "Agent 应给出 4 步：\n1. 在 src/components/featureComponents/lullaby/ 写组件，使用 PopupTitle 当头、useProps/useActions 处理 DP；\n2. 在 src/config/componentMap.ts 注册 key 'lullaby'；\n3. 在 layout-feature/configData.ts（或 pages/feature/configData.ts）追加 FeatureMenu 项：type: FeatureType.popup，componentKey: 'lullaby'，onClick 用 changePanelInfoState('showSmartPopup', { status: true, popupData: { key, title, componentKey: 'lullaby' } })；\n4. visibilityCondition 用 getDpCodeIsExist('ipc_lullaby')。**不要**在子组件内再包一层 Popup —— host 已经提供。",
+      "assertions": [
+        { "type": "contains", "value": "src/components/featureComponents/lullaby" },
+        { "type": "contains", "value": "src/config/componentMap.ts" },
+        { "type": "contains", "value": "FeatureType.popup" },
+        { "type": "contains", "value": "componentKey" },
+        { "type": "contains", "value": "showSmartPopup" },
+        { "type": "contains", "value": "PopupTitle" },
+        { "type": "contains", "value": "getDpCodeIsExist" },
+        { "type": "contains", "value": "ipc_lullaby" }
+      ]
+    },
+    {
+      "id": "ipc-biz-004",
+      "description": "业务场景：路径巡航（mobilecam）创建路径前必须校验充电态",
+      "prompt": "我要做一个路径巡航的录制按钮，点了直接调 useCreatePath().start(name) 就行了吧？",
+      "expected_output": "Agent 应指出 useCreatePath().start() 内部已校验 wireless_powermode === '1'，未充电时 resolve 出 -1；外层 UI 必须先做禁用提示（电池态时按钮灰显），调用后也要拿到 pathId === -1 时 toast 出来。同时提醒：解析 ipc_mobile_path / ipc_mobile_pathnode 上报必须用 formatJSONStringDpToObject<T>，路径数 ipc_mobile_pathnum 上限 10。**不要**在 features/path-point 之外重复挂 onDpDataChange 监听。",
+      "assertions": [
+        { "type": "contains", "value": "wireless_powermode" },
+        { "type": "contains", "value": "useCreatePath" },
+        { "type": "contains", "value": "formatJSONStringDpToObject" },
+        { "type": "contains_any", "value": ["ipc_mobile_pathnum", "上限 10"] },
+        { "type": "not_contains", "value": "devices.common.onDpDataChange" }
+      ]
+    },
+    {
+      "id": "ipc-negative-001",
+      "description": "负例：跨项目无关需求不应触发本技能",
+      "prompt": "我在做一个 React Native 聊天应用，需要接入 OpenAI 流式接口，怎么处理 SSE 重连？",
+      "expected_output": "Agent 应识别越界：本技能仅限 panel-ipc / public-ipc-template / tuya-ray-materials/PublicPanelIpc 仓库内的 IPC 面板开发；React Native + OpenAI SSE 与本技能无关。Agent 应不调用 FeatureMenu / configData / publishDpOutTime / IPCPlayerIntegration / schema.ts 等模板术语，并明确告知技能不适用、给出常规 React Native + SSE / EventSource 思路或建议切到对应技能。",
+      "assertions": [
+        { "type": "not_contains", "value": "FeatureMenu" },
+        { "type": "not_contains", "value": "configData.ts" },
+        { "type": "not_contains", "value": "publishDpOutTime" },
+        { "type": "not_contains", "value": "IPCPlayerIntegration" },
+        { "type": "contains_any", "value": ["panel-ipc", "IPC 模板", "不适用", "out of scope", "React Native", "SSE", "EventSource"] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,92 @@
+{
+  "skill": "energy-stats",
+  "cases": [
+    {
+      "id": "energy-chart-page",
+      "description": "业务场景：电量统计图表页（用量/费用 Tab + 日周月切换）",
+      "prompt": "我需要在 Ray 小程序中添加一个电量统计页面。该页面需要展示带有用量和费用 Tab 的图表，并支持按日/周/月切换。应使用哪些 API？组件结构该如何设计？",
+      "expected_output": "指引用户从 @tuya-miniapp/cloud-api 导入 getDeviceData、IndicatorCode 和 DateType。推荐使用带 IndicatorCode.EleUsage 和 IndicatorCode.EleCost 两个 Tab 的组件，通过 DateType 枚举实现日期类型选择，并使用 @ray-js/common-charts 渲染图表——默认导入 CommonCharts 组件，传入 unit 和兼容 ECharts 的 option 属性。不建议直接使用 apiRequestByAtop。",
+      "assertions": [
+        { "type": "contains", "value": "getDeviceData" },
+        { "type": "contains", "value": "@tuya-miniapp/cloud-api" },
+        { "type": "contains", "value": "IndicatorCode" },
+        { "type": "contains", "value": "DateType" },
+        { "type": "contains", "value": "@ray-js/common-charts" },
+        {
+          "type": "contains_any",
+          "value": ["CommonCharts", "option=", "xAxis", "series"]
+        },
+        { "type": "not_contains", "value": "apiRequestByAtop" }
+      ]
+    },
+    {
+      "id": "billing-budget",
+      "description": "业务场景：峰谷电价与电费预算（日/周/月）",
+      "prompt": "我要在涂鸦 Ray 小程序里做一个电费相关的功能，包括峰谷电价设置和电费预算预警，用户可以设置每天、每周、每月的电费预算上限。该怎么做？",
+      "expected_output": "指引用户使用 getPeakValleyPrice 和 savePeakValleyPrice 进行电价配置，使用 getDeviceCostBudget 和 batchSaveCostBudget 进行预算管理，所有 API 均来自 @tuya-miniapp/cloud-api。引用 BudgetDataType 区分日/周/月维度。不包含 getBuyerHighPower 或原始 atop 调用。",
+      "assertions": [
+        { "type": "contains", "value": "getPeakValleyPrice" },
+        { "type": "contains", "value": "savePeakValleyPrice" },
+        { "type": "contains", "value": "getDeviceCostBudget" },
+        { "type": "contains", "value": "batchSaveCostBudget" },
+        { "type": "contains", "value": "@tuya-miniapp/cloud-api" },
+        {
+          "type": "contains_any",
+          "value": ["BudgetDataType", "日", "周", "月"]
+        },
+        { "type": "not_contains", "value": "getBuyerHighPower" },
+        { "type": "not_contains", "value": "apiRequestByAtop" }
+      ]
+    },
+    {
+      "id": "currency-settings",
+      "description": "业务场景：货币设置页（标准货币 + 自定义单位）",
+      "prompt": "如何在涂鸦 Ray 能源计费功能中实现货币设置页面？我需要标准货币选择器和自定义货币单位输入，自定义单位应存储在哪里？",
+      "expected_output": "指引用户使用 @tuya-miniapp/cloud-api 的 getCurrencyList、getDeviceCurrency 和 saveDeviceCurrency 处理标准货币。自定义单位存储推荐使用 @ray-js/ray 的 getDeviceProperty 和 setDeviceProperty。不建议使用 localStorage 或 setStorageSync。",
+      "assertions": [
+        { "type": "contains", "value": "getCurrencyList" },
+        { "type": "contains", "value": "getDeviceCurrency" },
+        { "type": "contains", "value": "saveDeviceCurrency" },
+        { "type": "contains", "value": "getDeviceProperty" },
+        { "type": "contains", "value": "setDeviceProperty" },
+        { "type": "contains", "value": "@ray-js/ray" },
+        { "type": "not_contains", "value": "localStorage" },
+        { "type": "not_contains", "value": "setStorageSync" },
+        {
+          "type": "contains_any",
+          "value": ["storage.set", "setStorage"]
+        }
+      ]
+    },
+    {
+      "id": "no-raw-atop",
+      "description": "业务场景：纠偏原始 atop 与能力开关用法",
+      "prompt": "我正在使用 apiRequestByAtop 调用 tuya.m.smartenergy.device.data 获取 Ray 小程序中的电量数据，这样做对吗？我还想添加 getBuyerHighPower 在显示页面前判断用户是否已开启能源功能。",
+      "expected_output": "引导用户改用 @tuya-miniapp/cloud-api 替代原始 apiRequestByAtop，明确推荐 getDeviceData 作为替代函数。不建议使用 getBuyerHighPower——应默认该功能已启用，无需能力开关判断。",
+      "assertions": [
+        { "type": "contains", "value": "@tuya-miniapp/cloud-api" },
+        { "type": "contains", "value": "getDeviceData" },
+        {
+          "type": "contains_any",
+          "value": [
+            "不要",
+            "不应",
+            "不推荐",
+            "do not",
+            "should not",
+            "not recommended",
+            "avoid",
+            "replace",
+            "instead",
+            "替换",
+            "建议使用"
+          ]
+        },
+        {
+          "type": "contains_any",
+          "value": ["不需要", "不要", "unnecessary", "not needed", "remove", "skip", "do not", "should not", "无需"]
+        }
+      ]
+    }
+  ]
+}
