@@ -136,7 +136,9 @@ Steps 4–5 then generate code for exactly those instances.
 - List **all** instances the project will use (already-used + this turn's), not
   just this turn's additions — it is a full snapshot, not a diff.
 - For a custom peripheral added via usr-board with no board-context.md `ID:`,
-  use its `usr_board` device name as the id.
+  use its `usr_board` device name as the id. **Also** record it in
+  `.tuyaopen/custom-peripherals.json` (id + category + pins) so the hardware view
+  draws a node for it and marks its GPIOs — see `usr-board/SKILL.md` Step 6.
 - **On-chip peripherals** use `onchip:<type><n>` (e.g. `onchip:uart2`). Record them as
   an **object with the pins your code occupies** so the diagram can mark those GPIOs:
   `{ "id": "onchip:uart2", "pins": [{"role":"tx","gpio":41},{"role":"rx","gpio":40}] }`.

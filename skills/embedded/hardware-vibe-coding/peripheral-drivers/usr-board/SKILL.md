@@ -199,6 +199,49 @@ void user_main(void)
 
 ---
 
+## Step 6: Record the custom peripheral (so it shows in the hardware view)
+
+A usr_board peripheral is **not** in `board.json`, so the Vibe Coding Hardware View
+has no node for it unless you record it. Write **both** files:
+
+1. **`.tuyaopen/used-peripherals.json`** — add the device name (the `id` you passed
+   to `tdd_*_register("<id>", …)`) to `peripherals`, same as any confirmed peripheral.
+2. **`.tuyaopen/custom-peripherals.json`** — full-overwrite with one descriptor per
+   custom peripheral. This is what draws the extra node **and** marks its GPIOs as
+   occupied in the pin table:
+
+```json
+{
+  "schemaVersion": 1,
+  "updatedAt": "2026-01-01T00:00:00Z",
+  "source": "vibe",
+  "peripherals": [
+    {
+      "id": "usr_ext_led",
+      "devName": "External status LED",
+      "category": "led",
+      "model": "GPIO LED",
+      "pins": [{ "role": "led", "gpio": 28 }],
+      "source": "vibe"
+    }
+  ]
+}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `id` | The registered device name — **must match** the `tdd_*_register("<id>", …)` name and the id in used-peripherals.json |
+| `devName` | Human label shown on the diagram node |
+| `category` | Peripheral type (`led` / `display` / `leds-pixel` / `ir` / `joystick` / …) — sets the node icon/type |
+| `model` | Driver IC / part, or `null` |
+| `pins` | `[{ "role": "<role>", "gpio": <n> }]` — every GPIO the device occupies; drives pin-table occupancy |
+| `source` | `"vibe"` |
+
+Full-overwrite the file with the **complete** custom set each time (all customs the
+project uses, not just this turn's) — it is a snapshot, not a diff.
+
+---
+
 ## Adding More Peripherals Later
 
 To add another custom peripheral, only touch `usr_board.c`:
