@@ -15,6 +15,33 @@ tags: [led, gpio, indicator]
 
 # TuyaOpen TDL LED Indicator
 
+## ⛔ Always drive an LED through the `tdl_led` component
+
+An LED — onboard **or** an extra GPIO LED you wire — is **always** driven via the
+`tdl_led` component: register it (TDD) with `tdd_led_gpio_register(LED_NAME_n, …)`,
+then control it with `tdl_led_find_dev` / `tdl_led_open` / `tdl_led_set_status` /
+`tdl_led_flash` / `tdl_led_blink`.
+
+**Do NOT toggle an LED with raw `tkl_gpio_write` / `tal_gpio_*`** — even if the user
+says "GPIO47 high = on" and a one-line write looks easier. Raw GPIO loses flash /
+blink / toggle patterns and the software-timer management, and breaks the
+TDD→TDL→App layering the project relies on. "It lights up" is not the bar.
+
+```c
+// ❌ BAD — raw GPIO, no component
+tkl_gpio_init(TUYA_GPIO_NUM_47, &out_cfg);
+tkl_gpio_write(TUYA_GPIO_NUM_47, TUYA_GPIO_LEVEL_HIGH);
+
+// ✅ GOOD — register on the next free slot, drive via tdl_led (see Steps below)
+tdd_led_gpio_register(LED_NAME_2, &led_cfg);          // usr_board (TDD)
+TDL_LED_HANDLE_T h = tdl_led_find_dev(LED_NAME_2);    // app (TDL)
+tdl_led_open(h);
+tdl_led_set_status(h, TDL_LED_ON);
+```
+
+`onchip-gpio` is for non-LED digital pins only. If the load is an LED, you are in
+the right skill — keep going; do not fall back to `onchip-gpio`.
+
 ## Choose the right path first
 
 Each LED is a **named slot** turned on by its **own enable flag**, chained 1→4.

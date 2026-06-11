@@ -16,6 +16,15 @@ tags: [gpio, pin, input, output, interrupt, on-chip]
 
 # TuyaOpen On-Chip GPIO
 
+## ⛔ STOP if the load is an LED, button, or other catalogued device type
+
+This skill is for **raw digital pins only** (an enable line, a relay, a generic
+logic signal). If what's on the pin is an **LED** (incl. an external/extra GPIO
+LED) → use `peripheral-led`; a **button/key** → `peripheral-button`. Those go
+through the `tdl_*` component, not `tkl_gpio_write`. Do **not** drive an LED with
+`tkl_gpio_write` here just because the user named a GPIO — "GPIO47 high = on LED"
+is still an LED. The `tkl_gpio` example below is for non-LED loads.
+
 ## On-chip — no Kconfig, no TDD
 
 - Provided by the platform. **Do NOT** write `CONFIG_ENABLE_GPIO` — platform-selected. No `app_default.config` change needed.
