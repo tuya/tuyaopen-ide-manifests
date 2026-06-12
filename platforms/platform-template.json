@@ -674,5 +674,5 @@
       "count": 1
     }
   },
-  "kconfigId": "<PLATFORM_KCONFIG_VALUE>"
+  "platformSymbol": "<PLATFORM_KCONFIG_VALUE>"
 }

@@ -403,14 +403,7 @@
     "cellular",
     "production-form"
   ],
-  "kconfigId": "TUYA_T5AI_POCKET",
-  "scaffold": {
-    "template": "tools/app_template/base",
-    "baseConfig": {
-      "CONFIG_BOARD_CHOICE_T5AI": "y",
-      "CONFIG_BOARD_CHOICE_TUYA_T5AI_POCKET": "y"
-    }
-  },
+  "boardSymbol": "TUYA_T5AI_POCKET",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_POCKET"
   },

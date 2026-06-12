@@ -653,14 +653,7 @@
     "audio",
     "configurable"
   ],
-  "kconfigId": "TUYA_T5AI_BOARD",
-  "scaffold": {
-    "template": "tools/app_template/base",
-    "baseConfig": {
-      "CONFIG_BOARD_CHOICE_T5AI": "y",
-      "CONFIG_BOARD_CHOICE_TUYA_T5AI_BOARD": "y"
-    }
-  },
+  "boardSymbol": "TUYA_T5AI_BOARD",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_BOARD"
   },

@@ -157,13 +157,6 @@
     "audio",
     "compact"
   ],
-  "kconfigId": "T5AI_MINI",
-  "scaffold": {
-    "template": "tools/app_template/base",
-    "baseConfig": {
-      "CONFIG_BOARD_CHOICE_T5AI": "y",
-      "CONFIG_BOARD_CHOICE_T5AI_MINI": "y"
-    }
-  },
+  "boardSymbol": "T5AI_MINI",
   "expansionPins": []
 }
