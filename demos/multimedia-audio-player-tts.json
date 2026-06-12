@@ -1,38 +1,14 @@
 {
   "id": "multimedia-audio-player-tts",
-  "name": {
-    "en": "TTS Audio Playback",
-    "zh-CN": "TTS 语音播放"
-  },
-  "summary": {
-    "en": "Plays a pre-embedded MP3 speech audio array through the audio player service.",
-    "zh-CN": "通过音频播放服务播放预嵌入的 MP3 语音数组。"
-  },
-  "tags": [
-    "example",
-    "audio"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/multimedia/audio_player/tts",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_AI_PLAYER": "y"
   },
   "configs": {
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

@@ -1,5 +1,6 @@
 {
   "id": "your-demo-id",
+  "type": "example",
   "name": {
     "en": "Demo Display Name",
     "zh-CN": "示例显示名称"
@@ -9,7 +10,7 @@
     "zh-CN": "简短中文描述"
   },
   "tags": [
-    "example"
+    "peripheral"
   ],
   "compatibilityType": "board-specific",
   "boards": [
@@ -25,8 +26,7 @@
   },
   "configs": {
     "TUYA_T5AI_EVB": {
-      "file": "config/TUYA_T5AI_EVB.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_EVB.config"
     }
   },
   "documentation": {

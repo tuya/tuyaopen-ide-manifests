@@ -1,24 +1,5 @@
 {
   "id": "system-os-semaphore",
-  "name": {
-    "en": "Semaphore Synchronization",
-    "zh-CN": "信号量同步"
-  },
-  "summary": {
-    "en": "Producer thread posts a semaphore and consumer thread waits on it.",
-    "zh-CN": "生产者线程释放信号量，消费者线程等待并获取。"
-  },
-  "tags": [
-    "example",
-    "system"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/system/os_semaphore",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_semaphore/README.md",

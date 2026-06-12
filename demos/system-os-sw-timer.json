@@ -1,25 +1,5 @@
 {
   "id": "system-os-sw-timer",
-  "name": {
-    "en": "Software Timer",
-    "zh-CN": "软件定时器"
-  },
-  "summary": {
-    "en": "Creates a periodic software timer and stops it after a set number of callbacks.",
-    "zh-CN": "创建周期性软件定时器，回调指定次数后停止。"
-  },
-  "tags": [
-    "example",
-    "system",
-    "timer"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/system/os_sw_timer",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -39,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_sw_timer/README.md",

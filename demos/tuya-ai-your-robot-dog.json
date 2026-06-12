@@ -1,31 +1,8 @@
 {
   "id": "tuya-ai-your-robot-dog",
-  "name": {
-    "en": "AI Robot Dog",
-    "zh-CN": "AI 机器狗"
-  },
-  "summary": {
-    "en": "Voice-driven AI chat robot dog with servo actions and emotion display on LCD.",
-    "zh-CN": "语音驱动的 AI 聊天机器狗，支持舵机动作和表情显示。"
-  },
-  "tags": [
-    "app",
-    "ai",
-    "robotics"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-robot-dog"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya.ai/your_robot_dog",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_ROBOT_DOG": {
-      "file": "config/TUYA_T5AI_ROBOT_DOG.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_ROBOT_DOG.config"
     }
   },
   "documentation": {
@@ -33,13 +10,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog/README_zh.md"
     }
-  },
-  "image": {
-    "url": "images/tuya-ai-your-robot-dog/tuya-ai-your-robot-dog.jpg"
-  },
-  "publish": true,
-  "defaultConfig": {},
-  "boardConfigs": [
-    "TUYA_T5AI_ROBOT_DOG"
-  ]
+  }
 }

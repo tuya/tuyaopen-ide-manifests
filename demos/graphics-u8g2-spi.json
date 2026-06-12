@@ -1,27 +1,5 @@
 {
   "id": "graphics-u8g2-spi",
-  "name": {
-    "en": "U8g2 Display via SPI",
-    "zh-CN": "U8g2 SPI 显示"
-  },
-  "summary": {
-    "en": "Drives an ST7305 display over SPI using U8g2 full-buffer mode rendering.",
-    "zh-CN": "使用 U8g2 全缓冲模式通过 SPI 驱动 ST7305 显示屏。"
-  },
-  "tags": [
-    "example",
-    "display",
-    "spi"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/u8g2_spi",
-    "ref": "master"
-  },
   "defaultConfig": {
     "TUYA_T5AI_POCKET_LCD_ROTATION_0": "y",
     "ENABLE_MBEDTLS_SSL_MAX_CONTENT_LEN": "4096",
@@ -29,8 +7,7 @@
   },
   "configs": {
     "T5AI": {
-      "file": "config/T5AI.config",
-      "overrides": {}
+      "file": "config/T5AI.config"
     }
   }
 }

@@ -1,26 +1,5 @@
 {
   "id": "graphics-lvgl-simulator",
-  "name": {
-    "en": "LVGL PC Simulator",
-    "zh-CN": "LVGL PC 模拟器"
-  },
-  "summary": {
-    "en": "Runs LVGL UIs on desktop via SDL2 without hardware.",
-    "zh-CN": "通过 SDL2 在桌面端运行 LVGL 界面，无需硬件。"
-  },
-  "tags": [
-    "example",
-    "display",
-    "imu"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/lvgl_simulator",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_simulator/README_zh.md"

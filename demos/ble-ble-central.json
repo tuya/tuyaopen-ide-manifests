@@ -1,24 +1,5 @@
 {
   "id": "ble-ble-central",
-  "name": {
-    "en": "BLE Central",
-    "zh-CN": "BLE Central"
-  },
-  "summary": {
-    "en": "Enables Bluetooth Central (host) mode, scans for nearby BLE devices, and reports discovery results.",
-    "zh-CN": "启用蓝牙中心设备（主机）模式，扫描附近 BLE 设备并上报发现结果。"
-  },
-  "tags": [
-    "example",
-    "ble"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/ble/ble_central",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_central/README.md",

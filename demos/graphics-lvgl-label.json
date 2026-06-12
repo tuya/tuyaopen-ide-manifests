@@ -1,54 +1,23 @@
 {
   "id": "graphics-lvgl-label",
-  "name": {
-    "en": "LVGL Label Rendering",
-    "zh-CN": "LVGL 标签显示"
-  },
-  "summary": {
-    "en": "Initializes the LVGL graphics library and renders a centered text label on the screen.",
-    "zh-CN": "初始化 LVGL 图形库并在屏幕居中渲染文本标签。"
-  },
-  "tags": [
-    "example",
-    "display",
-    "lvgl"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "atk-t5ai-mini-board",
-    "tuya-t5ai-board-096-oled",
-    "tuya-t5ai-board-29-e-ink",
-    "tuya-t5ai-board-lcd-3-5",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/lvgl_label",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_LIBLVGL": "y"
   },
   "configs": {
     "ATK_T5AI_MINI_BOARD": {
-      "file": "config/ATK_T5AI_MINI_BOARD.config",
-      "overrides": {}
+      "file": "config/ATK_T5AI_MINI_BOARD.config"
     },
     "TUYA_T5AI_BOARD_096_OLED": {
-      "file": "config/TUYA_T5AI_BOARD_096_OLED.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_096_OLED.config"
     },
     "TUYA_T5AI_BOARD_29_E-INK": {
-      "file": "config/TUYA_T5AI_BOARD_29_E-INK.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_29_E-INK.config"
     },
     "TUYA_T5AI_BOARD_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

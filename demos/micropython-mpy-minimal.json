@@ -1,46 +1,11 @@
 {
   "id": "micropython-mpy-minimal",
-  "name": {
-    "en": "MicroPython Minimal Boot",
-    "zh-CN": "MicroPython 最小启动"
-  },
-  "summary": {
-    "en": "Boots a minimal firmware that initializes a MicroPython REPL on UART.",
-    "zh-CN": "启动最小固件，在 UART 上初始化 MicroPython REPL 交互环境。"
-  },
-  "tags": [
-    "app",
-    "micropython"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai-core"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/micropython/mpy_minimal",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_MICROPYTHON": "y"
   },
   "configs": {
     "T5AI_CORE": {
-      "file": "config/T5AI_CORE.config",
-      "overrides": {}
+      "file": "config/T5AI_CORE.config"
     }
-  },
-  "image": {
-    "url": "images/micropython-mpy-minimal/micropython-mpy-minimal.jpg"
-  },
-  "publish": true,
-  "documentation": {
-    "readme": {
-      "en": null,
-      "zh-CN": null
-    }
-  },
-  "boardConfigs": [
-    "T5AI_CORE"
-  ]
+  }
 }

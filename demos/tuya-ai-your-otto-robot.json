@@ -1,31 +1,5 @@
 {
   "id": "tuya-ai-your-otto-robot",
-  "name": {
-    "en": "DIY Otto Robot Guide",
-    "zh-CN": "DIY Otto Robot 指南"
-  },
-  "summary": {
-    "en": "Otto Robot is an open-source humanoid robot platform that supports multiple functional extensions.",
-    "zh-CN": "Otto Robot 是一个开源的人形机器人平台，支持多种功能扩展。本指南将帮助您快速搭建和配置属于自己的 Otto 机器人，并通过涂鸦智能APP实现远程控制。"
-  },
-  "tags": [
-    "app",
-    "ai",
-    "robotics",
-    "lvgl",
-    "tuya-iot"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai-otto-lcd-gc9d01",
-    "t5ai-otto-lcd-st7735s",
-    "t5ai-otto-lcd-st7789"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya.ai/your_otto_robot",
-    "ref": "master"
-  },
   "defaultConfig": {
     "PROJECT_VERSION": "1.0.2",
     "TUYA_PRODUCT_ID": "b05nl7xoijx4fwae",
@@ -35,16 +9,13 @@
   },
   "configs": {
     "T5AI_OTTO_LCD_GC9D01": {
-      "file": "config/T5AI_OTTO_LCD_GC9D01.config",
-      "overrides": {}
+      "file": "config/T5AI_OTTO_LCD_GC9D01.config"
     },
     "T5AI_OTTO_LCD_ST7735S": {
-      "file": "config/T5AI_OTTO_LCD_ST7735S.config",
-      "overrides": {}
+      "file": "config/T5AI_OTTO_LCD_ST7735S.config"
     },
     "T5AI_OTTO_LCD_ST7789": {
-      "file": "config/T5AI_OTTO_LCD_ST7789.config",
-      "overrides": {}
+      "file": "config/T5AI_OTTO_LCD_ST7789.config"
     }
   },
   "documentation": {
@@ -52,14 +23,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README_zh.md"
     }
-  },
-  "image": {
-    "url": "images/tuya-ai-your-otto-robot/tuya-ai-your-otto-robot.jpg"
-  },
-  "publish": true,
-  "boardConfigs": [
-    "T5AI_OTTO_LCD_GC9D01",
-    "T5AI_OTTO_LCD_ST7735S",
-    "T5AI_OTTO_LCD_ST7789"
-  ]
+  }
 }

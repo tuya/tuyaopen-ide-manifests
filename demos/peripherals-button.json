@@ -1,51 +1,20 @@
 {
   "id": "peripherals-button",
-  "name": {
-    "en": "Button Input",
-    "zh-CN": "按键输入"
-  },
-  "summary": {
-    "en": "Detects button press-down and long-press events via callback-driven event handling.",
-    "zh-CN": "通过回调驱动的事件处理检测按键按下和长按事件。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "button"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "raspberrypi",
-    "t5ai-mini",
-    "tuya-t5ai-board",
-    "tuya-t5ai-evb",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/button",
-    "ref": "master"
-  },
   "configs": {
     "RaspberryPi": {
-      "file": "config/RaspberryPi.config",
-      "overrides": {}
+      "file": "config/RaspberryPi.config"
     },
     "T5AI_MINI": {
-      "file": "config/T5AI_MINI.config",
-      "overrides": {}
+      "file": "config/T5AI_MINI.config"
     },
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_EVB": {
-      "file": "config/TUYA_T5AI_EVB.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_EVB.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

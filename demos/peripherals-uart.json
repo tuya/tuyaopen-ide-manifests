@@ -1,25 +1,5 @@
 {
   "id": "peripherals-uart",
-  "name": {
-    "en": "UART Serial Communication",
-    "zh-CN": "UART 串口通信"
-  },
-  "summary": {
-    "en": "Sends and receives data over UART with configurable baud rate, data bits, and parity.",
-    "zh-CN": "通过 UART 收发数据，支持配置波特率、数据位和校验位。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "uart"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/uart",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -39,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/uart/README.md",

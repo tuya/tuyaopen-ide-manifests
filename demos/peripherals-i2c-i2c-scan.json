@@ -1,26 +1,5 @@
 {
   "id": "peripherals-i2c-i2c-scan",
-  "name": {
-    "en": "I2C Bus Scanner",
-    "zh-CN": "I2C 总线扫描"
-  },
-  "summary": {
-    "en": "Scans all 7-bit I2C addresses and reports detected device addresses.",
-    "zh-CN": "扫描所有 7 位 I2C 地址并输出已检测到的设备地址。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "i2c"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/i2c/i2c_scan",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/i2c/i2c_scan/README_CN.md"

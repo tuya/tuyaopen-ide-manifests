@@ -1,30 +1,8 @@
 {
   "id": "tuya-ai-your-desk-emoji",
-  "name": {
-    "en": "AI Desk Emoji Robot",
-    "zh-CN": "AI 桌面表情机器人"
-  },
-  "summary": {
-    "en": "AI desk companion with gesture recognition, servo control, emoji display, and weather clock.",
-    "zh-CN": "集手势识别、舵机控制、表情显示和天气时钟的 AI 桌面伴侣。"
-  },
-  "tags": [
-    "app",
-    "ai"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai-mini"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya.ai/your_desk_emoji",
-    "ref": "master"
-  },
   "configs": {
     "T5AI_MINI": {
-      "file": "config/T5AI_MINI.config",
-      "overrides": {}
+      "file": "config/T5AI_MINI.config"
     }
   },
   "documentation": {
@@ -32,13 +10,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_desk_emoji/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_desk_emoji/README_zh.md"
     }
-  },
-  "image": {
-    "url": "images/tuya-ai-your-desk-emoji/tuya-ai-your-desk-emoji.jpg"
-  },
-  "publish": true,
-  "defaultConfig": {},
-  "boardConfigs": [
-    "T5AI_MINI"
-  ]
+  }
 }

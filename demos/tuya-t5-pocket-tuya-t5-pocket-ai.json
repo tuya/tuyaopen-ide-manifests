@@ -1,27 +1,5 @@
 {
   "id": "tuya-t5-pocket-tuya-t5-pocket-ai",
-  "name": {
-    "en": "Pocket AI Virtual Pet",
-    "zh-CN": "口袋 AI 虚拟宠物"
-  },
-  "summary": {
-    "en": "Virtual pet device with AI chat, LVGL UI, mini-games, camera, and peripheral sensors.",
-    "zh-CN": "虚拟宠物设备，集成 AI 对话、LVGL 界面、小游戏、摄像头和传感器。"
-  },
-  "tags": [
-    "app",
-    "ai"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-linux-lvgl-simulator",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya_t5_pocket/tuya_t5_pocket_ai",
-    "ref": "master"
-  },
   "defaultConfig": {
     "PROJECT_VERSION": "0.0.1",
     "BUTTON_NAME": "btn_menu",
@@ -31,26 +9,10 @@
   },
   "configs": {
     "TUYA_LINUX_LVGL_SIMULATOR": {
-      "file": "config/TUYA_LINUX_LVGL_SIMULATOR.config",
-      "overrides": {}
+      "file": "config/TUYA_LINUX_LVGL_SIMULATOR.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
-  },
-  "image": {
-    "url": "images/tuya-t5-pocket-tuya-t5-pocket-ai/tuya-t5-pocket-tuya-t5-pocket-ai.jpg"
-  },
-  "publish": true,
-  "documentation": {
-    "readme": {
-      "en": null,
-      "zh-CN": null
-    }
-  },
-  "boardConfigs": [
-    "TUYA_LINUX_LVGL_SIMULATOR",
-    "TUYA_T5AI_POCKET"
-  ]
+  }
 }

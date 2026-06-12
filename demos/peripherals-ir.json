@@ -1,31 +1,8 @@
 {
   "id": "peripherals-ir",
-  "name": {
-    "en": "Infrared Transceiver",
-    "zh-CN": "红外收发"
-  },
-  "summary": {
-    "en": "Transmits and receives infrared signals using NEC protocol and raw timecode modes.",
-    "zh-CN": "使用 NEC 协议和原始时序模式收发红外信号。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "ir"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/ir",
-    "ref": "master"
-  },
   "configs": {
     "T5AI": {
-      "file": "config/T5AI.config",
-      "overrides": {}
+      "file": "config/T5AI.config"
     }
   }
 }

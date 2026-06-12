@@ -1,26 +1,5 @@
 {
   "id": "peripherals-timer",
-  "name": {
-    "en": "Hardware Timer",
-    "zh-CN": "硬件定时器"
-  },
-  "summary": {
-    "en": "Creates a periodic hardware timer that fires callbacks and self-releases after a set count.",
-    "zh-CN": "创建周期性硬件定时器，回调指定次数后自行释放。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "timer"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/timer",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/timer/README.md",

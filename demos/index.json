@@ -5,6 +5,7 @@
   "items": [
     {
       "id": "ble-ble-central",
+      "type": "example",
       "name": {
         "en": "BLE Central",
         "zh-CN": "BLE Central"
@@ -14,7 +15,6 @@
         "zh-CN": "启用蓝牙中心设备（主机）模式，扫描附近 BLE 设备并上报发现结果。"
       },
       "tags": [
-        "example",
         "ble"
       ],
       "boards": [],
@@ -28,6 +28,7 @@
     },
     {
       "id": "ble-ble-peripher",
+      "type": "example",
       "name": {
         "en": "BLE Peripheral",
         "zh-CN": "BLE Peripheral"
@@ -37,7 +38,6 @@
         "zh-CN": "启用蓝牙外围设备（从机）模式，允许手机作为中心设备连接。"
       },
       "tags": [
-        "example",
         "ble"
       ],
       "boards": [],
@@ -51,6 +51,7 @@
     },
     {
       "id": "e-paper-1-54inch-e-paper",
+      "type": "example",
       "name": {
         "en": "E-Paper 1.54\" Display",
         "zh-CN": "1.54 寸电子墨水屏"
@@ -60,7 +61,6 @@
         "zh-CN": "通过 SPI 驱动 1.54 寸电子墨水屏，渲染图像、文字和图形。"
       },
       "tags": [
-        "example",
         "e-paper"
       ],
       "boards": [],
@@ -74,6 +74,7 @@
     },
     {
       "id": "e-paper-2-13inch-e-paper-touch",
+      "type": "example",
       "name": {
         "en": "E-Paper 2.13\" Touch Display",
         "zh-CN": "2.13 寸触摸电子墨水屏"
@@ -83,7 +84,6 @@
         "zh-CN": "驱动 2.13 寸电子墨水屏，配合触摸实现菜单导航与白板绘图。"
       },
       "tags": [
-        "example",
         "e-paper",
         "touch"
       ],
@@ -98,6 +98,7 @@
     },
     {
       "id": "e-paper-4-26inch-e-paper",
+      "type": "example",
       "name": {
         "en": "E-Paper 4.26\" Display",
         "zh-CN": "4.26 寸电子墨水屏"
@@ -107,7 +108,6 @@
         "zh-CN": "通过 SPI 驱动 4.26 寸电子墨水屏，渲染图像、文字和图形。"
       },
       "tags": [
-        "example",
         "e-paper"
       ],
       "boards": [],
@@ -121,6 +121,7 @@
     },
     {
       "id": "games-lvgl-games",
+      "type": "app",
       "name": {
         "en": "LVGL Retro Games",
         "zh-CN": "LVGL 复古游戏合集"
@@ -130,7 +131,6 @@
         "zh-CN": "在 T5AI 触摸屏开发板上运行基于 LVGL 的经典游戏（2048、植物大战僵尸、消消乐）。"
       },
       "tags": [
-        "app",
         "display",
         "game",
         "lvgl"
@@ -148,13 +148,14 @@
         "subpath": "apps/games/lvgl_games",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/games-lvgl-games/games-lvgl-games.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "get-started-cxx",
+      "type": "example",
       "name": {
         "en": "C++ Integration Starter",
         "zh-CN": "C++ 集成入门"
@@ -164,7 +165,6 @@
         "zh-CN": "演示在 TuyaOpen 项目中混合使用 C++ 类与 C 代码。"
       },
       "tags": [
-        "example",
         "getting-started"
       ],
       "boards": [],
@@ -178,6 +178,7 @@
     },
     {
       "id": "get-started-sample-project",
+      "type": "example",
       "name": {
         "en": "Minimal Project Template",
         "zh-CN": "最小工程模板"
@@ -187,7 +188,6 @@
         "zh-CN": "包含日志输出和基本控制流的最小 hello-world 工程模板。"
       },
       "tags": [
-        "example",
         "getting-started"
       ],
       "boards": [],
@@ -201,6 +201,7 @@
     },
     {
       "id": "graphics-lvgl-camera",
+      "type": "example",
       "name": {
         "en": "LVGL Camera Preview",
         "zh-CN": "LVGL 摄像头预览"
@@ -210,7 +211,6 @@
         "zh-CN": "通过按键在 LVGL 界面与摄像头实时预览之间切换显示。"
       },
       "tags": [
-        "example",
         "display",
         "camera",
         "lvgl"
@@ -228,6 +228,7 @@
     },
     {
       "id": "graphics-lvgl-demo",
+      "type": "example",
       "name": {
         "en": "LVGL Widgets Demo",
         "zh-CN": "LVGL 控件演示"
@@ -237,7 +238,6 @@
         "zh-CN": "在屏幕上运行 LVGL 内置控件演示，支持触摸和编码器。"
       },
       "tags": [
-        "example",
         "display",
         "lvgl"
       ],
@@ -265,6 +265,7 @@
     },
     {
       "id": "graphics-lvgl-gif",
+      "type": "example",
       "name": {
         "en": "LVGL GIF Animation",
         "zh-CN": "LVGL GIF 动画播放"
@@ -274,7 +275,6 @@
         "zh-CN": "使用 LVGL 在单屏或双屏上显示 GIF 动画图像。"
       },
       "tags": [
-        "example",
         "display",
         "lvgl"
       ],
@@ -297,6 +297,7 @@
     },
     {
       "id": "graphics-lvgl-label",
+      "type": "example",
       "name": {
         "en": "LVGL Label Rendering",
         "zh-CN": "LVGL 标签显示"
@@ -306,7 +307,6 @@
         "zh-CN": "初始化 LVGL 图形库并在屏幕居中渲染文本标签。"
       },
       "tags": [
-        "example",
         "display",
         "lvgl"
       ],
@@ -327,6 +327,7 @@
     },
     {
       "id": "graphics-lvgl-simulator",
+      "type": "example",
       "name": {
         "en": "LVGL PC Simulator",
         "zh-CN": "LVGL PC 模拟器"
@@ -336,7 +337,6 @@
         "zh-CN": "通过 SDL2 在桌面端运行 LVGL 界面，无需硬件。"
       },
       "tags": [
-        "example",
         "display",
         "imu"
       ],
@@ -351,6 +351,7 @@
     },
     {
       "id": "graphics-u8g2-i2c",
+      "type": "example",
       "name": {
         "en": "U8g2 OLED via I2C",
         "zh-CN": "U8g2 I2C OLED 显示"
@@ -360,7 +361,6 @@
         "zh-CN": "使用 U8g2 页模式通过 I2C 驱动 SSD1306 128x64 OLED。"
       },
       "tags": [
-        "example",
         "display",
         "i2c"
       ],
@@ -377,6 +377,7 @@
     },
     {
       "id": "graphics-u8g2-spi",
+      "type": "example",
       "name": {
         "en": "U8g2 Display via SPI",
         "zh-CN": "U8g2 SPI 显示"
@@ -386,7 +387,6 @@
         "zh-CN": "使用 U8g2 全缓冲模式通过 SPI 驱动 ST7305 显示屏。"
       },
       "tags": [
-        "example",
         "display",
         "spi"
       ],
@@ -403,6 +403,7 @@
     },
     {
       "id": "graphics-u8g2-tdl-disp",
+      "type": "example",
       "name": {
         "en": "U8g2 via TDL Display Layer",
         "zh-CN": "U8g2 TDL 显示驱动"
@@ -412,7 +413,6 @@
         "zh-CN": "通过 TDL 显示抽象层渲染 U8g2 图形，实现硬件无关输出。"
       },
       "tags": [
-        "example",
         "display"
       ],
       "boards": [
@@ -430,6 +430,7 @@
     },
     {
       "id": "micropython-mpy-minimal",
+      "type": "app",
       "name": {
         "en": "MicroPython Minimal Boot",
         "zh-CN": "MicroPython 最小启动"
@@ -439,7 +440,6 @@
         "zh-CN": "启动最小固件，在 UART 上初始化 MicroPython REPL 交互环境。"
       },
       "tags": [
-        "app",
         "micropython"
       ],
       "boards": [
@@ -451,13 +451,14 @@
         "subpath": "apps/micropython/mpy_minimal",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/micropython-mpy-minimal/micropython-mpy-minimal.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "mimiclaw",
+      "type": "app",
       "name": {
         "en": "MimiClaw AI Agent",
         "zh-CN": "MimiClaw AI 智能体"
@@ -466,9 +467,7 @@
         "en": "Local-first AI assistant with LLM chat via Feishu, Telegram, or Discord.",
         "zh-CN": "本地优先的 AI 助手，支持飞书/Telegram/Discord 聊天。"
       },
-      "tags": [
-        "app"
-      ],
+      "tags": [],
       "boards": [
         "linux",
         "t5ai"
@@ -479,13 +478,14 @@
         "subpath": "apps/mimiclaw",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/mimiclaw/mimiclaw.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "multimedia-audio-kws",
+      "type": "example",
       "name": {
         "en": "Audio Keyword Spotting",
         "zh-CN": "语音关键词唤醒"
@@ -495,7 +495,6 @@
         "zh-CN": "采集麦克风音频并在设备端执行关键词唤醒识别。"
       },
       "tags": [
-        "example",
         "audio"
       ],
       "boards": [
@@ -512,6 +511,7 @@
     },
     {
       "id": "multimedia-audio-player-music",
+      "type": "example",
       "name": {
         "en": "Network Music Player",
         "zh-CN": "网络音乐播放"
@@ -521,7 +521,6 @@
         "zh-CN": "连接 Wi-Fi 后从 URL 串流 MP3 音乐进行解码播放。"
       },
       "tags": [
-        "example",
         "audio"
       ],
       "boards": [
@@ -538,6 +537,7 @@
     },
     {
       "id": "multimedia-audio-player-tts",
+      "type": "example",
       "name": {
         "en": "TTS Audio Playback",
         "zh-CN": "TTS 语音播放"
@@ -547,7 +547,6 @@
         "zh-CN": "通过音频播放服务播放预嵌入的 MP3 语音数组。"
       },
       "tags": [
-        "example",
         "audio"
       ],
       "boards": [
@@ -564,6 +563,7 @@
     },
     {
       "id": "multimedia-audio-recorder-output-sdcard",
+      "type": "example",
       "name": {
         "en": "Audio Recorder to SD Card",
         "zh-CN": "录音存 SD 卡"
@@ -573,7 +573,6 @@
         "zh-CN": "录制麦克风 PCM 音频，编码为 WAV 格式并保存到 SD 卡。"
       },
       "tags": [
-        "example",
         "audio",
         "sd-card"
       ],
@@ -591,6 +590,7 @@
     },
     {
       "id": "multimedia-audio-vad",
+      "type": "example",
       "name": {
         "en": "Voice Activity Detection",
         "zh-CN": "语音活动检测"
@@ -600,7 +600,6 @@
         "zh-CN": "将音频帧送入 VAD 引擎并报告语音起止状态变化。"
       },
       "tags": [
-        "example",
         "audio"
       ],
       "boards": [
@@ -617,6 +616,7 @@
     },
     {
       "id": "peripherals-adc",
+      "type": "example",
       "name": {
         "en": "ADC Analog-to-Digital",
         "zh-CN": "ADC 模数转换"
@@ -626,7 +626,6 @@
         "zh-CN": "从 ADC 通道读取模拟电压并转换为数字值。"
       },
       "tags": [
-        "example",
         "peripheral"
       ],
       "boards": [],
@@ -640,6 +639,7 @@
     },
     {
       "id": "peripherals-audio-codecs",
+      "type": "example",
       "name": {
         "en": "Audio Codec Record/Playback",
         "zh-CN": "Audio Codec 录放音"
@@ -649,7 +649,6 @@
         "zh-CN": "按键录制 PCM 音频到环形缓冲区并通过编解码器回放。"
       },
       "tags": [
-        "example",
         "peripheral",
         "audio"
       ],
@@ -668,6 +667,7 @@
     },
     {
       "id": "peripherals-button",
+      "type": "example",
       "name": {
         "en": "Button Input",
         "zh-CN": "按键输入"
@@ -677,7 +677,6 @@
         "zh-CN": "通过回调驱动的事件处理检测按键按下和长按事件。"
       },
       "tags": [
-        "example",
         "peripheral",
         "button"
       ],
@@ -698,6 +697,7 @@
     },
     {
       "id": "peripherals-camera-output-display",
+      "type": "example",
       "name": {
         "en": "Camera Display Output",
         "zh-CN": "摄像头屏幕输出"
@@ -707,7 +707,6 @@
         "zh-CN": "采集摄像头画面并输出到 LCD 显示，支持旋转。"
       },
       "tags": [
-        "example",
         "peripheral",
         "display",
         "camera"
@@ -728,6 +727,7 @@
     },
     {
       "id": "peripherals-camera-output-sdcard",
+      "type": "example",
       "name": {
         "en": "Camera Capture to SD Card",
         "zh-CN": "摄像头抓帧存 SD 卡"
@@ -737,7 +737,6 @@
         "zh-CN": "从摄像头捕获 H.264 视频帧并保存到 SD 卡文件。"
       },
       "tags": [
-        "example",
         "peripheral",
         "camera",
         "sd-card"
@@ -756,6 +755,7 @@
     },
     {
       "id": "peripherals-display-fill-color",
+      "type": "example",
       "name": {
         "en": "Display Color Fill",
         "zh-CN": "显示屏颜色填充"
@@ -765,7 +765,6 @@
         "zh-CN": "以随机颜色持续填充整块显示屏以验证驱动程序。"
       },
       "tags": [
-        "example",
         "peripheral",
         "display"
       ],
@@ -787,6 +786,7 @@
     },
     {
       "id": "peripherals-display-picture",
+      "type": "example",
       "name": {
         "en": "Display Image Rendering",
         "zh-CN": "显示屏图片渲染"
@@ -796,7 +796,6 @@
         "zh-CN": "将预存的 RGB565 图片数组经像素格式转换渲染到显示屏。"
       },
       "tags": [
-        "example",
         "peripheral",
         "display"
       ],
@@ -818,6 +817,7 @@
     },
     {
       "id": "peripherals-encoder",
+      "type": "example",
       "name": {
         "en": "Rotary Encoder Input",
         "zh-CN": "旋转编码器输入"
@@ -827,7 +827,6 @@
         "zh-CN": "以固定间隔轮询旋转编码器的角度变化和按键事件。"
       },
       "tags": [
-        "example",
         "peripheral",
         "encoder"
       ],
@@ -842,6 +841,7 @@
     },
     {
       "id": "peripherals-flash",
+      "type": "example",
       "name": {
         "en": "Flash Read/Write",
         "zh-CN": "Flash 读写"
@@ -851,7 +851,6 @@
         "zh-CN": "对片上用户 Flash 分区执行擦除、写入和回读验证操作。"
       },
       "tags": [
-        "example",
         "peripheral",
         "flash"
       ],
@@ -866,6 +865,7 @@
     },
     {
       "id": "peripherals-gpio",
+      "type": "example",
       "name": {
         "en": "GPIO Input/Output",
         "zh-CN": "GPIO 输入输出"
@@ -875,7 +875,6 @@
         "zh-CN": "演示 GPIO 引脚的输入、输出及中断功能的使用方法。"
       },
       "tags": [
-        "example",
         "peripheral",
         "gpio"
       ],
@@ -890,6 +889,7 @@
     },
     {
       "id": "peripherals-i2c-i2c-scan",
+      "type": "example",
       "name": {
         "en": "I2C Bus Scanner",
         "zh-CN": "I2C 总线扫描"
@@ -899,7 +899,6 @@
         "zh-CN": "扫描所有 7 位 I2C 地址并输出已检测到的设备地址。"
       },
       "tags": [
-        "example",
         "peripheral",
         "i2c"
       ],
@@ -914,6 +913,7 @@
     },
     {
       "id": "peripherals-i2c-sht3x-4x-sensor",
+      "type": "example",
       "name": {
         "en": "SHT3x/SHT4x Temperature Sensor",
         "zh-CN": "SHT3x/SHT4x 温湿度传感器"
@@ -923,7 +923,6 @@
         "zh-CN": "通过 I2C 读取 SHT3x 或 SHT4x 传感器的温湿度数据。"
       },
       "tags": [
-        "example",
         "peripheral",
         "i2c"
       ],
@@ -938,6 +937,7 @@
     },
     {
       "id": "peripherals-imu-bmi270",
+      "type": "example",
       "name": {
         "en": "BMI270 IMU Sensor",
         "zh-CN": "BMI270 惯性传感器"
@@ -947,7 +947,6 @@
         "zh-CN": "通过 I2C 读取 BMI270 IMU 传感器的加速度和陀螺仪数据。"
       },
       "tags": [
-        "example",
         "peripheral",
         "imu"
       ],
@@ -962,6 +961,7 @@
     },
     {
       "id": "peripherals-ir",
+      "type": "example",
       "name": {
         "en": "Infrared Transceiver",
         "zh-CN": "红外收发"
@@ -971,7 +971,6 @@
         "zh-CN": "使用 NEC 协议和原始时序模式收发红外信号。"
       },
       "tags": [
-        "example",
         "peripheral",
         "ir"
       ],
@@ -988,6 +987,7 @@
     },
     {
       "id": "peripherals-joystick",
+      "type": "example",
       "name": {
         "en": "Joystick Input",
         "zh-CN": "摇杆输入"
@@ -997,7 +997,6 @@
         "zh-CN": "通过 ADC 和 GPIO 读取摇杆方向及按键事件。"
       },
       "tags": [
-        "example",
         "peripheral",
         "joystick"
       ],
@@ -1014,6 +1013,7 @@
     },
     {
       "id": "peripherals-led",
+      "type": "example",
       "name": {
         "en": "LED Control",
         "zh-CN": "LED 控制"
@@ -1023,7 +1023,6 @@
         "zh-CN": "控制 LED 实现开关切换、可配置次数闪烁及持续闪烁模式。"
       },
       "tags": [
-        "example",
         "peripheral",
         "led"
       ],
@@ -1044,6 +1043,7 @@
     },
     {
       "id": "peripherals-leds-pixel",
+      "type": "example",
       "name": {
         "en": "LED Pixel Strip",
         "zh-CN": "LED 像素灯带"
@@ -1053,7 +1053,6 @@
         "zh-CN": "驱动可寻址 LED 灯带(WS2812、SK6812)进行 RGB 颜色循环。"
       },
       "tags": [
-        "example",
         "peripheral",
         "pixel-art",
         "led"
@@ -1071,6 +1070,7 @@
     },
     {
       "id": "peripherals-pwm",
+      "type": "example",
       "name": {
         "en": "PWM Pulse Width Modulation",
         "zh-CN": "PWM 脉宽调制"
@@ -1080,7 +1080,6 @@
         "zh-CN": "输出可配置频率和占空比的 PWM 信号，用于模拟控制。"
       },
       "tags": [
-        "example",
         "peripheral",
         "pwm"
       ],
@@ -1095,6 +1094,7 @@
     },
     {
       "id": "peripherals-sd",
+      "type": "example",
       "name": {
         "en": "SD Card File I/O",
         "zh-CN": "SD 卡文件读写"
@@ -1104,7 +1104,6 @@
         "zh-CN": "挂载 SD 卡并执行文件写入、读取和内容比对验证。"
       },
       "tags": [
-        "example",
         "peripheral",
         "sd-card"
       ],
@@ -1122,6 +1121,7 @@
     },
     {
       "id": "peripherals-spi",
+      "type": "example",
       "name": {
         "en": "SPI Master/Slave",
         "zh-CN": "SPI 主从通信"
@@ -1131,7 +1131,6 @@
         "zh-CN": "配置 SPI 主机发送数据、从机接收，演示全双工串行通信。"
       },
       "tags": [
-        "example",
         "peripheral",
         "spi"
       ],
@@ -1146,6 +1145,7 @@
     },
     {
       "id": "peripherals-timer",
+      "type": "example",
       "name": {
         "en": "Hardware Timer",
         "zh-CN": "硬件定时器"
@@ -1155,7 +1155,6 @@
         "zh-CN": "创建周期性硬件定时器，回调指定次数后自行释放。"
       },
       "tags": [
-        "example",
         "peripheral",
         "timer"
       ],
@@ -1170,6 +1169,7 @@
     },
     {
       "id": "peripherals-touch",
+      "type": "example",
       "name": {
         "en": "Capacitive Touch Driver",
         "zh-CN": "电容触摸驱动"
@@ -1179,7 +1179,6 @@
         "zh-CN": "驱动电容触摸传感器检测触摸事件并上报坐标。"
       },
       "tags": [
-        "example",
         "peripheral",
         "touch"
       ],
@@ -1194,6 +1193,7 @@
     },
     {
       "id": "peripherals-tp",
+      "type": "example",
       "name": {
         "en": "Touch Panel Input",
         "zh-CN": "触摸屏输入"
@@ -1203,7 +1203,6 @@
         "zh-CN": "在持续轮询循环中读取触摸屏的多点触控坐标。"
       },
       "tags": [
-        "example",
         "peripheral"
       ],
       "boards": [
@@ -1219,6 +1218,7 @@
     },
     {
       "id": "peripherals-uart",
+      "type": "example",
       "name": {
         "en": "UART Serial Communication",
         "zh-CN": "UART 串口通信"
@@ -1228,7 +1228,6 @@
         "zh-CN": "通过 UART 收发数据，支持配置波特率、数据位和校验位。"
       },
       "tags": [
-        "example",
         "peripheral",
         "uart"
       ],
@@ -1243,6 +1242,7 @@
     },
     {
       "id": "peripherals-watchdog",
+      "type": "example",
       "name": {
         "en": "Watchdog Timer",
         "zh-CN": "看门狗定时器"
@@ -1252,7 +1252,6 @@
         "zh-CN": "初始化看门狗并定期喂狗，停止后触发系统复位。"
       },
       "tags": [
-        "example",
         "peripheral",
         "watchdog"
       ],
@@ -1267,6 +1266,7 @@
     },
     {
       "id": "protocols-http-client",
+      "type": "example",
       "name": {
         "en": "HTTP Client",
         "zh-CN": "HTTP 客户端"
@@ -1276,7 +1276,6 @@
         "zh-CN": "网络连接后发送 HTTP GET 请求并打印响应内容。"
       },
       "tags": [
-        "example",
         "networking"
       ],
       "boards": [],
@@ -1290,6 +1289,7 @@
     },
     {
       "id": "protocols-https-client",
+      "type": "example",
       "name": {
         "en": "HTTPS Client",
         "zh-CN": "HTTPS 客户端"
@@ -1299,7 +1299,6 @@
         "zh-CN": "使用 TLS 证书验证发送 HTTPS GET 请求。"
       },
       "tags": [
-        "example",
         "networking"
       ],
       "boards": [],
@@ -1313,6 +1312,7 @@
     },
     {
       "id": "protocols-mqtt-client",
+      "type": "example",
       "name": {
         "en": "MQTT Client",
         "zh-CN": "MQTT 客户端"
@@ -1322,7 +1322,6 @@
         "zh-CN": "连接 MQTT Broker，订阅主题并发布消息。"
       },
       "tags": [
-        "example",
         "networking"
       ],
       "boards": [],
@@ -1336,6 +1335,7 @@
     },
     {
       "id": "protocols-tcp-client",
+      "type": "example",
       "name": {
         "en": "TCP Client",
         "zh-CN": "TCP 客户端"
@@ -1345,7 +1345,6 @@
         "zh-CN": "创建 TCP 连接并向服务器重复发送数据。"
       },
       "tags": [
-        "example",
         "networking"
       ],
       "boards": [],
@@ -1359,6 +1358,7 @@
     },
     {
       "id": "protocols-tcp-server",
+      "type": "example",
       "name": {
         "en": "TCP Echo Server",
         "zh-CN": "TCP 回显服务器"
@@ -1368,7 +1368,6 @@
         "zh-CN": "监听 TCP 端口，接受连接并将收到的数据回传。"
       },
       "tags": [
-        "example",
         "networking"
       ],
       "boards": [],
@@ -1382,6 +1381,7 @@
     },
     {
       "id": "system-os-event",
+      "type": "example",
       "name": {
         "en": "OS Event System",
         "zh-CN": "OS 事件系统"
@@ -1391,7 +1391,6 @@
         "zh-CN": "在线程间订阅和发布命名事件。"
       },
       "tags": [
-        "example",
         "system"
       ],
       "boards": [],
@@ -1405,6 +1404,7 @@
     },
     {
       "id": "system-os-kv",
+      "type": "example",
       "name": {
         "en": "Key-Value Storage",
         "zh-CN": "KV 键值存储"
@@ -1414,7 +1414,6 @@
         "zh-CN": "在 Flash 中写入、读取和删除持久化键值对。"
       },
       "tags": [
-        "example",
         "system"
       ],
       "boards": [],
@@ -1428,6 +1427,7 @@
     },
     {
       "id": "system-os-mutex",
+      "type": "example",
       "name": {
         "en": "Mutex Synchronization",
         "zh-CN": "互斥锁同步"
@@ -1437,7 +1437,6 @@
         "zh-CN": "两个线程通过互斥锁保护共享计数器，演示安全访问。"
       },
       "tags": [
-        "example",
         "system"
       ],
       "boards": [],
@@ -1451,6 +1450,7 @@
     },
     {
       "id": "system-os-queue",
+      "type": "example",
       "name": {
         "en": "Message Queue",
         "zh-CN": "消息队列"
@@ -1460,7 +1460,6 @@
         "zh-CN": "一个线程向队列投递消息，另一个线程接收处理。"
       },
       "tags": [
-        "example",
         "system"
       ],
       "boards": [],
@@ -1474,6 +1473,7 @@
     },
     {
       "id": "system-os-semaphore",
+      "type": "example",
       "name": {
         "en": "Semaphore Synchronization",
         "zh-CN": "信号量同步"
@@ -1483,7 +1483,6 @@
         "zh-CN": "生产者线程释放信号量，消费者线程等待并获取。"
       },
       "tags": [
-        "example",
         "system"
       ],
       "boards": [],
@@ -1497,6 +1496,7 @@
     },
     {
       "id": "system-os-sw-timer",
+      "type": "example",
       "name": {
         "en": "Software Timer",
         "zh-CN": "软件定时器"
@@ -1506,7 +1506,6 @@
         "zh-CN": "创建周期性软件定时器，回调指定次数后停止。"
       },
       "tags": [
-        "example",
         "system",
         "timer"
       ],
@@ -1521,6 +1520,7 @@
     },
     {
       "id": "system-os-thread",
+      "type": "example",
       "name": {
         "en": "Thread Management",
         "zh-CN": "线程管理"
@@ -1530,7 +1530,6 @@
         "zh-CN": "创建线程执行循环任务，完成后自行删除。"
       },
       "tags": [
-        "example",
         "system"
       ],
       "boards": [],
@@ -1544,6 +1543,7 @@
     },
     {
       "id": "tflite-tflite-helloworld",
+      "type": "example",
       "name": {
         "en": "TFLite Micro Inference",
         "zh-CN": "TFLite Micro 推理"
@@ -1553,7 +1553,6 @@
         "zh-CN": "在设备端运行 TensorFlow Lite Micro 模型，近似计算正弦函数。"
       },
       "tags": [
-        "example",
         "tflite"
       ],
       "boards": [],
@@ -1566,30 +1565,8 @@
       "publish": true
     },
     {
-      "id": "tuya-ai-ai-components",
-      "name": {
-        "en": "AI Chat Component Library",
-        "zh-CN": "AI 对话组件库"
-      },
-      "summary": {
-        "en": "Reusable AI chat components: agent, audio I/O, MCP server, skills, and voice modes.",
-        "zh-CN": "可复用 AI 对话组件，含 Agent、音频 I/O、MCP 服务器和语音模式。"
-      },
-      "tags": [
-        "app",
-        "ai"
-      ],
-      "boards": [],
-      "compatibilityType": "universal",
-      "source": {
-        "repo": "https://github.com/tuya/TuyaOpen",
-        "subpath": "apps/tuya.ai/ai_components",
-        "ref": "master"
-      },
-      "publish": false
-    },
-    {
       "id": "tuya-ai-duo-eye-mood",
+      "type": "app",
       "name": {
         "en": "AI Chatbot with Mood Eyes",
         "zh-CN": "AI 情绪眼睛聊天"
@@ -1599,7 +1576,6 @@
         "zh-CN": "AI 语音聊天机器人，在双 OLED 屏上显示情绪动画眼睛表情。"
       },
       "tags": [
-        "app",
         "ai"
       ],
       "boards": [
@@ -1616,6 +1592,7 @@
     },
     {
       "id": "tuya-ai-your-chat-bot",
+      "type": "app",
       "name": {
         "en": "[Multi Board Supported] AI Voice Chatbot",
         "zh-CN": "【多板卡支持】AI 语音聊天机器人"
@@ -1625,7 +1602,6 @@
         "zh-CN": "基于涂鸦 AI 的大模型语音聊天机器人，支持语音识别与屏幕实时显示对话。"
       },
       "tags": [
-        "app",
         "ai",
         "tuya-iot"
       ],
@@ -1653,13 +1629,14 @@
         "subpath": "apps/tuya.ai/your_chat_bot",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-ai-your-chat-bot/tuya-ai-your-chat-bot.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-ai-your-desk-emoji",
+      "type": "app",
       "name": {
         "en": "AI Desk Emoji Robot",
         "zh-CN": "AI 桌面表情机器人"
@@ -1669,7 +1646,6 @@
         "zh-CN": "集手势识别、舵机控制、表情显示和天气时钟的 AI 桌面伴侣。"
       },
       "tags": [
-        "app",
         "ai"
       ],
       "boards": [
@@ -1681,13 +1657,14 @@
         "subpath": "apps/tuya.ai/your_desk_emoji",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-ai-your-desk-emoji/tuya-ai-your-desk-emoji.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-ai-your-otto-robot",
+      "type": "app",
       "name": {
         "en": "DIY Otto Robot Guide",
         "zh-CN": "DIY Otto Robot 指南"
@@ -1697,7 +1674,6 @@
         "zh-CN": "Otto Robot 是一个开源的人形机器人平台，支持多种功能扩展。本指南将帮助您快速搭建和配置属于自己的 Otto 机器人，并通过涂鸦智能APP实现远程控制。"
       },
       "tags": [
-        "app",
         "ai",
         "robotics",
         "lvgl",
@@ -1714,13 +1690,14 @@
         "subpath": "apps/tuya.ai/your_otto_robot",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-ai-your-otto-robot/tuya-ai-your-otto-robot.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-ai-your-robot-dog",
+      "type": "app",
       "name": {
         "en": "AI Robot Dog",
         "zh-CN": "AI 机器狗"
@@ -1730,7 +1707,6 @@
         "zh-CN": "语音驱动的 AI 聊天机器狗，支持舵机动作和表情显示。"
       },
       "tags": [
-        "app",
         "ai",
         "robotics"
       ],
@@ -1743,13 +1719,14 @@
         "subpath": "apps/tuya.ai/your_robot_dog",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-ai-your-robot-dog/tuya-ai-your-robot-dog.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-ai-your-serial-chat-bot",
+      "type": "app",
       "name": {
         "en": "AI Serial Chat Bot",
         "zh-CN": "AI 串口聊天机器人"
@@ -1759,7 +1736,6 @@
         "zh-CN": "将 UART 文本转发至云端 AI 并通过串口返回回复。"
       },
       "tags": [
-        "app",
         "ai"
       ],
       "boards": [
@@ -1774,13 +1750,14 @@
         "subpath": "apps/tuya.ai/your_serial_chat_bot",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-ai-your-serial-chat-bot/tuya-ai-your-serial-chat-bot.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-cloud-camera-demo",
+      "type": "app",
       "name": {
         "en": "Cloud IPC Camera",
         "zh-CN": "云端 IPC 摄像头"
@@ -1790,7 +1767,6 @@
         "zh-CN": "实现 IPC 功能，支持 P2P 视频流、OTA 和云端设备管理。"
       },
       "tags": [
-        "app",
         "cloud",
         "camera"
       ],
@@ -1803,13 +1779,14 @@
         "subpath": "apps/tuya_cloud/camera_demo",
         "ref": "master"
       },
-      "publish": false,
       "image": {
         "url": "images/tuya-cloud-camera-demo/tuya-cloud-camera-demo.jpg"
-      }
+      },
+      "publish": false
     },
     {
       "id": "tuya-cloud-switch-demo",
+      "type": "example",
       "name": {
         "en": "IoT Switch",
         "zh-CN": "IoT 开关"
@@ -1819,7 +1796,6 @@
         "zh-CN": "支持 App 配网、远程控制、局域网和蓝牙控制的云端开关。"
       },
       "tags": [
-        "example",
         "cloud",
         "switch"
       ],
@@ -1830,13 +1806,14 @@
         "subpath": "apps/tuya_cloud/switch_demo",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-cloud-switch-demo/tuya-cloud-switch-demo.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-cloud-weather-get-demo",
+      "type": "example",
       "name": {
         "en": "Cloud Weather Query",
         "zh-CN": "云端天气查询"
@@ -1846,7 +1823,6 @@
         "zh-CN": "从云端天气 API 获取实况天气、预报和日出日落数据。"
       },
       "tags": [
-        "example",
         "cloud"
       ],
       "boards": [],
@@ -1856,13 +1832,14 @@
         "subpath": "apps/tuya_cloud/weather_get_demo",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-cloud-weather-get-demo/tuya-cloud-weather-get-demo.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-t5-pixel-tuya-t5-pixel-bongocat-kb",
+      "type": "app",
       "name": {
         "en": "Pixel Bongo Cat Keyboard",
         "zh-CN": "像素 Bongo Cat 键盘"
@@ -1872,7 +1849,6 @@
         "zh-CN": "在 32x32 LED 矩阵上显示 Bongo Cat 动画，响应键盘输入。"
       },
       "tags": [
-        "app",
         "pixel-art",
         "tuya-iot"
       ],
@@ -1885,13 +1861,14 @@
         "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_bongocat_kb",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-t5-pixel-tuya-t5-pixel-bongocat-kb/tuya-t5-pixel-tuya-t5-pixel-bongocat-kb.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-t5-pixel-tuya-t5-pixel-demo",
+      "type": "app",
       "name": {
         "en": "Pixel Art with Sand Physics",
         "zh-CN": "像素动画与沙粒物理"
@@ -1901,7 +1878,6 @@
         "zh-CN": "在 32x32 LED 矩阵上播放像素动画，支持加速度计沙粒物理效果。"
       },
       "tags": [
-        "app",
         "pixel-art",
         "tuya-iot"
       ],
@@ -1914,13 +1890,14 @@
         "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_demo",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-t5-pixel-tuya-t5-pixel-demo/tuya-t5-pixel-tuya-t5-pixel-demo.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-t5-pixel-tuya-t5-pixel-mic-spectrum-meter",
+      "type": "app",
       "name": {
         "en": "Pixel Audio Spectrum Meter",
         "zh-CN": "像素音频频谱仪"
@@ -1930,7 +1907,6 @@
         "zh-CN": "对麦克风输入做 FFT，在 32x32 LED 矩阵上显示 8 频段频谱。"
       },
       "tags": [
-        "app",
         "pixel-art",
         "tuya-iot"
       ],
@@ -1943,13 +1919,14 @@
         "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_mic_spectrum_meter",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-t5-pixel-tuya-t5-pixel-mic-spectrum-meter/tuya-t5-pixel-tuya-t5-pixel-mic-spectrum-meter.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-t5-pixel-tuya-t5-pixel-simple-shapes",
+      "type": "app",
       "name": {
         "en": "Pixel Shape Drawing",
         "zh-CN": "像素基础图形绘制"
@@ -1959,7 +1936,6 @@
         "zh-CN": "在 32x32 LED 矩阵上绘制方框、圆形、线条和三角形。"
       },
       "tags": [
-        "app",
         "pixel-art",
         "tuya-iot"
       ],
@@ -1972,13 +1948,14 @@
         "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_simple_shapes",
         "ref": "master"
       },
-      "publish": false,
       "image": {
         "url": "images/tuya-t5-pixel-tuya-t5-pixel-simple-shapes/tuya-t5-pixel-tuya-t5-pixel-simple-shapes.jpg"
-      }
+      },
+      "publish": false
     },
     {
       "id": "tuya-t5-pixel-tuya-t5-pixel-sphere-effect",
+      "type": "app",
       "name": {
         "en": "Pixel 3D Sphere Effect",
         "zh-CN": "像素 3D 球体效果"
@@ -1988,7 +1965,6 @@
         "zh-CN": "在 32x32 LED 矩阵上渲染旋转 3D 球体，速度随音频变化。"
       },
       "tags": [
-        "app",
         "pixel-art",
         "tuya-iot"
       ],
@@ -2001,13 +1977,14 @@
         "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_sphere_effect",
         "ref": "master"
       },
-      "publish": false,
       "image": {
         "url": "images/tuya-t5-pixel-tuya-t5-pixel-sphere-effect/tuya-t5-pixel-tuya-t5-pixel-sphere-effect.jpg"
-      }
+      },
+      "publish": false
     },
     {
       "id": "tuya-t5-pixel-tuya-t5-pixel-weather",
+      "type": "app",
       "name": {
         "en": "Pixel Weather Clock",
         "zh-CN": "像素天气时钟"
@@ -2017,7 +1994,6 @@
         "zh-CN": "在 32x32 LED 矩阵上循环显示天气图标、温度和时间。"
       },
       "tags": [
-        "app",
         "pixel-art",
         "tuya-iot"
       ],
@@ -2030,13 +2006,14 @@
         "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_weather",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-t5-pixel-tuya-t5-pixel-weather/tuya-t5-pixel-tuya-t5-pixel-weather.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "tuya-t5-pocket-tuya-t5-pocket-ai",
+      "type": "app",
       "name": {
         "en": "Pocket AI Virtual Pet",
         "zh-CN": "口袋 AI 虚拟宠物"
@@ -2046,7 +2023,6 @@
         "zh-CN": "虚拟宠物设备，集成 AI 对话、LVGL 界面、小游戏、摄像头和传感器。"
       },
       "tags": [
-        "app",
         "ai"
       ],
       "boards": [
@@ -2059,13 +2035,14 @@
         "subpath": "apps/tuya_t5_pocket/tuya_t5_pocket_ai",
         "ref": "master"
       },
-      "publish": true,
       "image": {
         "url": "images/tuya-t5-pocket-tuya-t5-pocket-ai/tuya-t5-pocket-tuya-t5-pocket-ai.jpg"
-      }
+      },
+      "publish": true
     },
     {
       "id": "wifi-ap",
+      "type": "example",
       "name": {
         "en": "Wi-Fi Access Point",
         "zh-CN": "Wi-Fi 热点"
@@ -2075,7 +2052,6 @@
         "zh-CN": "启动可配置 SSID 的 Wi-Fi 热点并发送 UDP 广播。"
       },
       "tags": [
-        "example",
         "wifi"
       ],
       "boards": [],
@@ -2089,6 +2065,7 @@
     },
     {
       "id": "wifi-low-power",
+      "type": "example",
       "name": {
         "en": "Wi-Fi Low Power",
         "zh-CN": "Wi-Fi 低功耗"
@@ -2098,7 +2075,6 @@
         "zh-CN": "在多任务中交替启用和禁用 Wi-Fi 低功耗模式。"
       },
       "tags": [
-        "example",
         "wifi"
       ],
       "boards": [],
@@ -2112,6 +2088,7 @@
     },
     {
       "id": "wifi-scan",
+      "type": "example",
       "name": {
         "en": "Wi-Fi Scan",
         "zh-CN": "Wi-Fi 扫描"
@@ -2121,7 +2098,6 @@
         "zh-CN": "扫描附近 Wi-Fi 网络并输出信道号和 SSID。"
       },
       "tags": [
-        "example",
         "wifi"
       ],
       "boards": [],
@@ -2135,6 +2111,7 @@
     },
     {
       "id": "wifi-sta",
+      "type": "example",
       "name": {
         "en": "Wi-Fi Station Connect",
         "zh-CN": "Wi-Fi Station 连接"
@@ -2144,7 +2121,6 @@
         "zh-CN": "以 Station 模式连接指定 Wi-Fi 热点并上报连接状态。"
       },
       "tags": [
-        "example",
         "wifi"
       ],
       "boards": [],

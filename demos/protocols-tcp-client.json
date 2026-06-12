@@ -1,24 +1,5 @@
 {
   "id": "protocols-tcp-client",
-  "name": {
-    "en": "TCP Client",
-    "zh-CN": "TCP 客户端"
-  },
-  "summary": {
-    "en": "Creates a TCP socket, connects to a server, and sends data repeatedly.",
-    "zh-CN": "创建 TCP 连接并向服务器重复发送数据。"
-  },
-  "tags": [
-    "example",
-    "networking"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/protocols/tcp_client",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/tcp_client/README.md",

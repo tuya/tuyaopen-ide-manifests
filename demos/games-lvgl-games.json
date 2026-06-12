@@ -1,32 +1,5 @@
 {
   "id": "games-lvgl-games",
-  "name": {
-    "en": "LVGL Retro Games",
-    "zh-CN": "LVGL 复古游戏合集"
-  },
-  "summary": {
-    "en": "Runs classic retro games (2048, Plants vs Zombies, match-3) using LVGL on T5AI touchscreen boards.",
-    "zh-CN": "在 T5AI 触摸屏开发板上运行基于 LVGL 的经典游戏（2048、植物大战僵尸、消消乐）。"
-  },
-  "tags": [
-    "app",
-    "display",
-    "game",
-    "lvgl"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t3-lcd-devkit-1-28",
-    "tuya-t5ai-board-eyes",
-    "tuya-t5ai-board-lcd-3-5",
-    "tuya-t5ai-evb",
-    "tuya-t5ai-moji-1-28"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/games/lvgl_games",
-    "ref": "master"
-  },
   "defaultConfig": {
     "PROJECT_NAME": "lvgl_games",
     "MEM_SIZE": "51200",
@@ -52,24 +25,19 @@
   },
   "configs": {
     "T3_LCD_DEVKIT_1_28": {
-      "file": "config/T3_LCD_DEVKIT_1_28.config",
-      "overrides": {}
+      "file": "config/T3_LCD_DEVKIT_1_28.config"
     },
     "TUYA_T5AI_BOARD_EYES": {
-      "file": "config/TUYA_T5AI_BOARD_EYES.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_EYES.config"
     },
     "TUYA_T5AI_BOARD_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config"
     },
     "TUYA_T5AI_EVB": {
-      "file": "config/TUYA_T5AI_EVB.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_EVB.config"
     },
     "TUYA_T5AI_MOJI_1_28": {
-      "file": "config/TUYA_T5AI_MOJI_1_28.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_MOJI_1_28.config"
     }
   },
   "documentation": {
@@ -77,16 +45,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/games/lvgl_games/README.md",
       "zh-CN": null
     }
-  },
-  "image": {
-    "url": "images/games-lvgl-games/games-lvgl-games.jpg"
-  },
-  "publish": true,
-  "boardConfigs": [
-    "T3_LCD_DEVKIT_1_28",
-    "TUYA_T5AI_BOARD_EYES",
-    "TUYA_T5AI_BOARD_LCD_3.5",
-    "TUYA_T5AI_EVB",
-    "TUYA_T5AI_MOJI_1_28"
-  ]
+  }
 }

@@ -1,26 +1,5 @@
 {
   "id": "peripherals-spi",
-  "name": {
-    "en": "SPI Master/Slave",
-    "zh-CN": "SPI 主从通信"
-  },
-  "summary": {
-    "en": "Configures SPI master to send data and slave to receive, demonstrating full-duplex communication.",
-    "zh-CN": "配置 SPI 主机发送数据、从机接收，演示全双工串行通信。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "spi"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/spi",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/spi/README.md",

@@ -1,35 +1,9 @@
 {
   "id": "tuya-cloud-switch-demo",
-  "name": {
-    "en": "IoT Switch",
-    "zh-CN": "IoT 开关"
-  },
-  "summary": {
-    "en": "Cloud-connected switch with app pairing, remote control, LAN, and Bluetooth control.",
-    "zh-CN": "支持 App 配网、远程控制、局域网和蓝牙控制的云端开关。"
-  },
-  "tags": [
-    "example",
-    "cloud",
-    "switch"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya_cloud/switch_demo",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/switch_demo/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/switch_demo/README_CN.md"
     }
-  },
-  "image": {
-    "url": "images/tuya-cloud-switch-demo/tuya-cloud-switch-demo.jpg"
-  },
-  "publish": true,
-  "defaultConfig": {}
+  }
 }

@@ -1,35 +1,11 @@
 {
   "id": "multimedia-audio-kws",
-  "name": {
-    "en": "Audio Keyword Spotting",
-    "zh-CN": "语音关键词唤醒"
-  },
-  "summary": {
-    "en": "Captures microphone audio and performs on-device keyword wake-word recognition.",
-    "zh-CN": "采集麦克风音频并在设备端执行关键词唤醒识别。"
-  },
-  "tags": [
-    "example",
-    "audio"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/multimedia/audio_kws",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

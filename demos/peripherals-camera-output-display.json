@@ -1,47 +1,17 @@
 {
   "id": "peripherals-camera-output-display",
-  "name": {
-    "en": "Camera Display Output",
-    "zh-CN": "摄像头屏幕输出"
-  },
-  "summary": {
-    "en": "Captures camera frames and renders them on an LCD with optional rotation.",
-    "zh-CN": "采集摄像头画面并输出到 LCD 显示，支持旋转。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "display",
-    "camera"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "atk-t5ai-mini-board-camera-8080-md0240",
-    "atk-t5ai-mini-board-camera-rgb-md0700r",
-    "tuya-t5ai-board-camera-lcd-3-5",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/camera/output_display",
-    "ref": "master"
-  },
   "configs": {
     "ATK_T5AI_MINI_BOARD_CAMERA_8080_MD0240": {
-      "file": "config/ATK_T5AI_MINI_BOARD_CAMERA_8080_MD0240.config",
-      "overrides": {}
+      "file": "config/ATK_T5AI_MINI_BOARD_CAMERA_8080_MD0240.config"
     },
     "ATK_T5AI_MINI_BOARD_CAMERA_RGB_MD0700R": {
-      "file": "config/ATK_T5AI_MINI_BOARD_CAMERA_RGB_MD0700R.config",
-      "overrides": {}
+      "file": "config/ATK_T5AI_MINI_BOARD_CAMERA_RGB_MD0700R.config"
     },
     "TUYA_T5AI_BOARD_CAMERA_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_CAMERA_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_CAMERA_LCD_3.5.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   },
   "documentation": {

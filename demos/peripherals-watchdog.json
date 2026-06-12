@@ -1,25 +1,5 @@
 {
   "id": "peripherals-watchdog",
-  "name": {
-    "en": "Watchdog Timer",
-    "zh-CN": "看门狗定时器"
-  },
-  "summary": {
-    "en": "Initializes a watchdog timer, feeds it periodically, then stops to trigger a reset.",
-    "zh-CN": "初始化看门狗并定期喂狗，停止后触发系统复位。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "watchdog"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/watchdog",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -39,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/watchdog/README.md",

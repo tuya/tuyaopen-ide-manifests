@@ -1,24 +1,5 @@
 {
   "id": "protocols-tcp-server",
-  "name": {
-    "en": "TCP Echo Server",
-    "zh-CN": "TCP 回显服务器"
-  },
-  "summary": {
-    "en": "Listens on a TCP port, accepts connections, and echoes received data back.",
-    "zh-CN": "监听 TCP 端口，接受连接并将收到的数据回传。"
-  },
-  "tags": [
-    "example",
-    "networking"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/protocols/tcp_server",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/tcp_server/README.md",

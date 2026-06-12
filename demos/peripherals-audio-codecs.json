@@ -1,41 +1,14 @@
 {
   "id": "peripherals-audio-codecs",
-  "name": {
-    "en": "Audio Codec Record/Playback",
-    "zh-CN": "Audio Codec 录放音"
-  },
-  "summary": {
-    "en": "Records PCM audio into a ring buffer on button press and plays it back through the codec.",
-    "zh-CN": "按键录制 PCM 音频到环形缓冲区并通过编解码器回放。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "audio"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "raspberrypi",
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/audio_codecs",
-    "ref": "master"
-  },
   "configs": {
     "RaspberryPi": {
-      "file": "config/RaspberryPi.config",
-      "overrides": {}
+      "file": "config/RaspberryPi.config"
     },
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

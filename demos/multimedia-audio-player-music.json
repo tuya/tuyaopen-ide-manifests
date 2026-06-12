@@ -1,39 +1,15 @@
 {
   "id": "multimedia-audio-player-music",
-  "name": {
-    "en": "Network Music Player",
-    "zh-CN": "网络音乐播放"
-  },
-  "summary": {
-    "en": "Connects to Wi-Fi and streams MP3 music from a URL for decoded audio playback.",
-    "zh-CN": "连接 Wi-Fi 后从 URL 串流 MP3 音乐进行解码播放。"
-  },
-  "tags": [
-    "example",
-    "audio"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/multimedia/audio_player/music",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_AI_PLAYER": "y",
     "ENABLE_MBEDTLS_SSL_MAX_CONTENT_LEN": "4096"
   },
   "configs": {
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

@@ -1,42 +1,5 @@
 {
   "id": "tuya-ai-your-chat-bot",
-  "name": {
-    "en": "[Multi Board Supported] AI Voice Chatbot",
-    "zh-CN": "【多板卡支持】AI 语音聊天机器人"
-  },
-  "summary": {
-    "en": "An open-source LLM chatbot that captures voice, performs speech recognition, and displays conversations on screen.",
-    "zh-CN": "基于涂鸦 AI 的大模型语音聊天机器人，支持语音识别与屏幕实时显示对话。"
-  },
-  "tags": [
-    "app",
-    "ai",
-    "tuya-iot"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "dnesp32s3",
-    "dnesp32s3-box",
-    "dnesp32s3-box2-wifi",
-    "dshanpi-a1",
-    "esp32s3-bread-compact-wifi",
-    "raspberrypi",
-    "t5ai-mini-lcd-1-54",
-    "t5ai-moji-1-28",
-    "tuya-t5ai-board-lcd-3-5",
-    "tuya-t5ai-board-lcd-3-5-camera",
-    "tuya-t5ai-board-lcd-3-5-v101",
-    "tuya-t5ai-core",
-    "tuya-t5ai-evb",
-    "waveshare-esp32s3-touch-amoled-1-8",
-    "waveshare-t5ai-touch-amoled-1-75",
-    "xingzhi-esp32s3-cube-0-96oled-wifi"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya.ai/your_chat_bot",
-    "ref": "master"
-  },
   "defaultConfig": {
     "PROJECT_VERSION": "1.0.1",
     "TUYA_PRODUCT_ID": "alon7qgyjj8yus74",
@@ -47,68 +10,52 @@
   },
   "configs": {
     "DNESP32S3": {
-      "file": "config/DNESP32S3.config",
-      "overrides": {}
+      "file": "config/DNESP32S3.config"
     },
     "DNESP32S3_BOX": {
-      "file": "config/DNESP32S3_BOX.config",
-      "overrides": {}
+      "file": "config/DNESP32S3_BOX.config"
     },
     "DNESP32S3_BOX2_WIFI": {
-      "file": "config/DNESP32S3_BOX2_WIFI.config",
-      "overrides": {}
+      "file": "config/DNESP32S3_BOX2_WIFI.config"
     },
     "DshanPi_A1": {
-      "file": "config/DshanPi_A1.config",
-      "overrides": {}
+      "file": "config/DshanPi_A1.config"
     },
     "ESP32S3_BREAD_COMPACT_WIFI": {
-      "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config",
-      "overrides": {}
+      "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config"
     },
     "RaspberryPi": {
-      "file": "config/RaspberryPi.config",
-      "overrides": {}
+      "file": "config/RaspberryPi.config"
     },
     "T5AI_MINI_LCD_1.54": {
-      "file": "config/T5AI_MINI_LCD_1.54.config",
-      "overrides": {}
+      "file": "config/T5AI_MINI_LCD_1.54.config"
     },
     "T5AI_MOJI_1.28": {
-      "file": "config/T5AI_MOJI_1.28.config",
-      "overrides": {}
+      "file": "config/T5AI_MOJI_1.28.config"
     },
     "TUYA_T5AI_BOARD_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config"
     },
     "TUYA_T5AI_BOARD_LCD_3.5_CAMERA": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config"
     },
     "TUYA_T5AI_BOARD_LCD_3.5_v101": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5_v101.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5_v101.config"
     },
     "TUYA_T5AI_CORE": {
-      "file": "config/TUYA_T5AI_CORE.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_CORE.config"
     },
     "TUYA_T5AI_EVB": {
-      "file": "config/TUYA_T5AI_EVB.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_EVB.config"
     },
     "WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8": {
-      "file": "config/WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8.config",
-      "overrides": {}
+      "file": "config/WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8.config"
     },
     "WAVESHARE_T5AI_TOUCH_AMOLED_1_75": {
-      "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config",
-      "overrides": {}
+      "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config"
     },
     "XINGZHI_ESP32S3_Cube_0_96OLED_WIFI": {
-      "file": "config/XINGZHI_ESP32S3_Cube_0_96OLED_WIFI.config",
-      "overrides": {}
+      "file": "config/XINGZHI_ESP32S3_Cube_0_96OLED_WIFI.config"
     }
   },
   "documentation": {
@@ -116,27 +63,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_chat_bot/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_chat_bot/README_zh.md"
     }
-  },
-  "image": {
-    "url": "images/tuya-ai-your-chat-bot/tuya-ai-your-chat-bot.jpg"
-  },
-  "publish": true,
-  "boardConfigs": [
-    "DNESP32S3",
-    "DNESP32S3_BOX",
-    "DNESP32S3_BOX2_WIFI",
-    "DshanPi_A1",
-    "ESP32S3_BREAD_COMPACT_WIFI",
-    "RaspberryPi",
-    "T5AI_MINI_LCD_1.54",
-    "T5AI_MOJI_1.28",
-    "TUYA_T5AI_BOARD_LCD_3.5",
-    "TUYA_T5AI_BOARD_LCD_3.5_CAMERA",
-    "TUYA_T5AI_BOARD_LCD_3.5_v101",
-    "TUYA_T5AI_CORE",
-    "TUYA_T5AI_EVB",
-    "WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8",
-    "WAVESHARE_T5AI_TOUCH_AMOLED_1_75",
-    "XINGZHI_ESP32S3_Cube_0_96OLED_WIFI"
-  ]
+  }
 }

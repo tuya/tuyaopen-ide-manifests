@@ -1,37 +1,11 @@
 {
   "id": "peripherals-camera-output-sdcard",
-  "name": {
-    "en": "Camera Capture to SD Card",
-    "zh-CN": "摄像头抓帧存 SD 卡"
-  },
-  "summary": {
-    "en": "Captures H.264 video frames from a camera and saves them as files on an SD card.",
-    "zh-CN": "从摄像头捕获 H.264 视频帧并保存到 SD 卡文件。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "camera",
-    "sd-card"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board-camera-lcd-3-5",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/camera/output_sdcard",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD_CAMERA_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_CAMERA_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_CAMERA_LCD_3.5.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

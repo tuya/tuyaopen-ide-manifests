@@ -1,45 +1,17 @@
 {
   "id": "tuya-ai-your-serial-chat-bot",
-  "name": {
-    "en": "AI Serial Chat Bot",
-    "zh-CN": "AI 串口聊天机器人"
-  },
-  "summary": {
-    "en": "Relays UART text to cloud AI and returns responses over serial.",
-    "zh-CN": "将 UART 文本转发至云端 AI 并通过串口返回回复。"
-  },
-  "tags": [
-    "app",
-    "ai"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board-lcd-3-5",
-    "tuya-t5ai-core",
-    "waveshare-esp32s3-touch-amoled-1-8",
-    "xingzhi-esp32s3-cube-0-96oled-wifi"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya.ai/your_serial_chat_bot",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config"
     },
     "TUYA_T5AI_CORE": {
-      "file": "config/TUYA_T5AI_CORE.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_CORE.config"
     },
     "WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8": {
-      "file": "config/WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8.config",
-      "overrides": {}
+      "file": "config/WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8.config"
     },
     "XINGZHI_ESP32S3_Cube_0_96OLED_WIFI": {
-      "file": "config/XINGZHI_ESP32S3_Cube_0_96OLED_WIFI.config",
-      "overrides": {}
+      "file": "config/XINGZHI_ESP32S3_Cube_0_96OLED_WIFI.config"
     }
   },
   "documentation": {
@@ -47,16 +19,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_serial_chat_bot/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_serial_chat_bot/README_zh.md"
     }
-  },
-  "image": {
-    "url": "images/tuya-ai-your-serial-chat-bot/tuya-ai-your-serial-chat-bot.jpg"
-  },
-  "publish": true,
-  "defaultConfig": {},
-  "boardConfigs": [
-    "TUYA_T5AI_BOARD_LCD_3.5",
-    "TUYA_T5AI_CORE",
-    "WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8",
-    "XINGZHI_ESP32S3_Cube_0_96OLED_WIFI"
-  ]
+  }
 }

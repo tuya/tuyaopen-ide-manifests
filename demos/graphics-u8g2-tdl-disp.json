@@ -1,28 +1,5 @@
 {
   "id": "graphics-u8g2-tdl-disp",
-  "name": {
-    "en": "U8g2 via TDL Display Layer",
-    "zh-CN": "U8g2 TDL 显示驱动"
-  },
-  "summary": {
-    "en": "Renders U8g2 graphics through the TDL display abstraction layer for hardware-agnostic output.",
-    "zh-CN": "通过 TDL 显示抽象层渲染 U8g2 图形，实现硬件无关输出。"
-  },
-  "tags": [
-    "example",
-    "display"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board-0-96oled",
-    "tuya-t5ai-eink-nfc",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/u8g2_tdl_disp",
-    "ref": "master"
-  },
   "defaultConfig": {
     "TUYA_T5AI_POCKET_LCD_ROTATION_0": "y",
     "ENABLE_MBEDTLS_SSL_MAX_CONTENT_LEN": "4096",
@@ -30,16 +7,13 @@
   },
   "configs": {
     "TUYA_T5AI_BOARD_0.96OLED": {
-      "file": "config/TUYA_T5AI_BOARD_0.96OLED.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_0.96OLED.config"
     },
     "TUYA_T5AI_EINK_NFC": {
-      "file": "config/TUYA_T5AI_EINK_NFC.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_EINK_NFC.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

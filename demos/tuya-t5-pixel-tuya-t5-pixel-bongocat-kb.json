@@ -1,27 +1,5 @@
 {
   "id": "tuya-t5-pixel-tuya-t5-pixel-bongocat-kb",
-  "name": {
-    "en": "Pixel Bongo Cat Keyboard",
-    "zh-CN": "像素 Bongo Cat 键盘"
-  },
-  "summary": {
-    "en": "Displays animated Bongo Cat pixel art on a 32x32 LED matrix that reacts to keyboard input.",
-    "zh-CN": "在 32x32 LED 矩阵上显示 Bongo Cat 动画，响应键盘输入。"
-  },
-  "tags": [
-    "app",
-    "pixel-art",
-    "tuya-iot"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-pixel"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya_t5_pixel/tuya_t5_pixel_bongocat_kb",
-    "ref": "master"
-  },
   "defaultConfig": {
     "PROJECT_VERSION": "1.0.1",
     "TUYA_PRODUCT_ID": "u9bu0onwwwj6eyov",
@@ -29,21 +7,7 @@
   },
   "configs": {
     "TUYA_T5AI_PIXEL": {
-      "file": "config/TUYA_T5AI_PIXEL.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_PIXEL.config"
     }
-  },
-  "image": {
-    "url": "images/tuya-t5-pixel-tuya-t5-pixel-bongocat-kb/tuya-t5-pixel-tuya-t5-pixel-bongocat-kb.jpg"
-  },
-  "publish": true,
-  "documentation": {
-    "readme": {
-      "en": null,
-      "zh-CN": null
-    }
-  },
-  "boardConfigs": [
-    "TUYA_T5AI_PIXEL"
-  ]
+  }
 }

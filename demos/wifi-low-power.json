@@ -1,24 +1,5 @@
 {
   "id": "wifi-low-power",
-  "name": {
-    "en": "Wi-Fi Low Power",
-    "zh-CN": "Wi-Fi 低功耗"
-  },
-  "summary": {
-    "en": "Toggles Wi-Fi low-power mode on and off from multiple tasks.",
-    "zh-CN": "在多任务中交替启用和禁用 Wi-Fi 低功耗模式。"
-  },
-  "tags": [
-    "example",
-    "wifi"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/wifi/low_power",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/low_power/README.md",

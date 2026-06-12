@@ -1,51 +1,20 @@
 {
   "id": "peripherals-led",
-  "name": {
-    "en": "LED Control",
-    "zh-CN": "LED 控制"
-  },
-  "summary": {
-    "en": "Controls an LED with on/off switching, configurable blink count, and continuous flash modes.",
-    "zh-CN": "控制 LED 实现开关切换、可配置次数闪烁及持续闪烁模式。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "led"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai-mini",
-    "tuya-t5ai-board",
-    "tuya-t5ai-evb",
-    "tuya-t5ai-pocket",
-    "waveshare-esp32c6-dev-kit-n16"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/led",
-    "ref": "master"
-  },
   "configs": {
     "T5AI_MINI": {
-      "file": "config/T5AI_MINI.config",
-      "overrides": {}
+      "file": "config/T5AI_MINI.config"
     },
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_EVB": {
-      "file": "config/TUYA_T5AI_EVB.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_EVB.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     },
     "WAVESHARE_ESP32C6_DEV_KIT_N16": {
-      "file": "config/WAVESHARE_ESP32C6_DEV_KIT_N16.config",
-      "overrides": {}
+      "file": "config/WAVESHARE_ESP32C6_DEV_KIT_N16.config"
     }
   }
 }

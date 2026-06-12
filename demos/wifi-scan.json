@@ -1,24 +1,5 @@
 {
   "id": "wifi-scan",
-  "name": {
-    "en": "Wi-Fi Scan",
-    "zh-CN": "Wi-Fi 扫描"
-  },
-  "summary": {
-    "en": "Scans nearby Wi-Fi networks and reports channel numbers and SSIDs.",
-    "zh-CN": "扫描附近 Wi-Fi 网络并输出信道号和 SSID。"
-  },
-  "tags": [
-    "example",
-    "wifi"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/wifi/scan",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/scan/README.md",

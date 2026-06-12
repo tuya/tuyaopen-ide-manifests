@@ -1,24 +1,5 @@
 {
   "id": "system-os-queue",
-  "name": {
-    "en": "Message Queue",
-    "zh-CN": "消息队列"
-  },
-  "summary": {
-    "en": "One thread posts messages to a queue and another receives them.",
-    "zh-CN": "一个线程向队列投递消息，另一个线程接收处理。"
-  },
-  "tags": [
-    "example",
-    "system"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/system/os_queue",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_queue/README.md",

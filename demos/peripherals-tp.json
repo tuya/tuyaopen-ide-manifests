@@ -1,30 +1,8 @@
 {
   "id": "peripherals-tp",
-  "name": {
-    "en": "Touch Panel Input",
-    "zh-CN": "触摸屏输入"
-  },
-  "summary": {
-    "en": "Reads multi-point touch coordinates from a touch panel in a continuous polling loop.",
-    "zh-CN": "在持续轮询循环中读取触摸屏的多点触控坐标。"
-  },
-  "tags": [
-    "example",
-    "peripheral"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-desktop-robot"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/tp",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_DESKTOP_ROBOT": {
-      "file": "config/TUYA_T5AI_DESKTOP_ROBOT.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_DESKTOP_ROBOT.config"
     }
   }
 }

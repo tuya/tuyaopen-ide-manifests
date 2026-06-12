@@ -1,24 +1,5 @@
 {
   "id": "wifi-sta",
-  "name": {
-    "en": "Wi-Fi Station Connect",
-    "zh-CN": "Wi-Fi Station 连接"
-  },
-  "summary": {
-    "en": "Connects to a Wi-Fi access point in station mode and reports link status.",
-    "zh-CN": "以 Station 模式连接指定 Wi-Fi 热点并上报连接状态。"
-  },
-  "tags": [
-    "example",
-    "wifi"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/wifi/sta",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/sta/README.md",

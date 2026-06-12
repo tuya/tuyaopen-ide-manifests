@@ -1,32 +1,8 @@
 {
   "id": "peripherals-leds-pixel",
-  "name": {
-    "en": "LED Pixel Strip",
-    "zh-CN": "LED 像素灯带"
-  },
-  "summary": {
-    "en": "Drives addressable LED strips (WS2812, SK6812) with sequential RGB color cycling.",
-    "zh-CN": "驱动可寻址 LED 灯带(WS2812、SK6812)进行 RGB 颜色循环。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "pixel-art",
-    "led"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-pixel"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/leds-pixel",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_PIXEL": {
-      "file": "config/TUYA_T5AI_PIXEL.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_PIXEL.config"
     }
   }
 }

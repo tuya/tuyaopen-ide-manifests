@@ -1,25 +1,5 @@
 {
   "id": "peripherals-adc",
-  "name": {
-    "en": "ADC Analog-to-Digital",
-    "zh-CN": "ADC 模数转换"
-  },
-  "summary": {
-    "en": "Reads analog voltage from an ADC channel and converts it to a digital value.",
-    "zh-CN": "从 ADC 通道读取模拟电压并转换为数字值。"
-  },
-  "tags": [
-    "example",
-    "peripheral"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/adc",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/adc/README.md",

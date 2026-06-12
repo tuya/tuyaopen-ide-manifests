@@ -1,24 +1,5 @@
 {
   "id": "system-os-event",
-  "name": {
-    "en": "OS Event System",
-    "zh-CN": "OS 事件系统"
-  },
-  "summary": {
-    "en": "Subscribes to and publishes named events between threads.",
-    "zh-CN": "在线程间订阅和发布命名事件。"
-  },
-  "tags": [
-    "example",
-    "system"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/system/os_event",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_event/README.md",

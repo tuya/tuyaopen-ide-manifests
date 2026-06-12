@@ -1,32 +1,11 @@
 {
   "id": "peripherals-touch",
-  "name": {
-    "en": "Capacitive Touch Driver",
-    "zh-CN": "电容触摸驱动"
-  },
-  "summary": {
-    "en": "Drives a capacitive touch sensor to detect touch events and report coordinates.",
-    "zh-CN": "驱动电容触摸传感器检测触摸事件并上报坐标。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "touch"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/touch",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_BUTTON": "y",
     "ENABLE_LED": "y",
     "ENABLE_AUDIO_CODECS": "y",
     "ENABLE_AUDIO_AEC": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/touch/README.md",

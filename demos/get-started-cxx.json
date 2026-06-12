@@ -1,24 +1,5 @@
 {
   "id": "get-started-cxx",
-  "name": {
-    "en": "C++ Integration Starter",
-    "zh-CN": "C++ 集成入门"
-  },
-  "summary": {
-    "en": "Demonstrates mixing C++ classes with C code in a TuyaOpen project.",
-    "zh-CN": "演示在 TuyaOpen 项目中混合使用 C++ 类与 C 代码。"
-  },
-  "tags": [
-    "example",
-    "getting-started"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/get-started/cxx",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -37,6 +18,5 @@
     "LWIP_NETIF_STATUS_CALLBACK": "1",
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
-  },
-  "configs": {}
+  }
 }

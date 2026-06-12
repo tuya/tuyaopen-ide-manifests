@@ -1,35 +1,11 @@
 {
   "id": "multimedia-audio-vad",
-  "name": {
-    "en": "Voice Activity Detection",
-    "zh-CN": "语音活动检测"
-  },
-  "summary": {
-    "en": "Feeds audio frames to a VAD engine and reports speech-start and speech-end transitions.",
-    "zh-CN": "将音频帧送入 VAD 引擎并报告语音起止状态变化。"
-  },
-  "tags": [
-    "example",
-    "audio"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/multimedia/audio_vad",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

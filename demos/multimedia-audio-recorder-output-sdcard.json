@@ -1,36 +1,11 @@
 {
   "id": "multimedia-audio-recorder-output-sdcard",
-  "name": {
-    "en": "Audio Recorder to SD Card",
-    "zh-CN": "录音存 SD 卡"
-  },
-  "summary": {
-    "en": "Records microphone audio as PCM, encodes it to WAV, and saves the file to an SD card.",
-    "zh-CN": "录制麦克风 PCM 音频，编码为 WAV 格式并保存到 SD 卡。"
-  },
-  "tags": [
-    "example",
-    "audio",
-    "sd-card"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/multimedia/audio_recorder/output_sdcard",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

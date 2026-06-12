@@ -1,26 +1,5 @@
 {
   "id": "mimiclaw",
-  "name": {
-    "en": "MimiClaw AI Agent",
-    "zh-CN": "MimiClaw AI 智能体"
-  },
-  "summary": {
-    "en": "Local-first AI assistant with LLM chat via Feishu, Telegram, or Discord.",
-    "zh-CN": "本地优先的 AI 助手，支持飞书/Telegram/Discord 聊天。"
-  },
-  "tags": [
-    "app"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "linux",
-    "t5ai"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/mimiclaw",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_MBEDTLS_SSL_MAX_FRAGMENT_LENGTH": "y",
     "ENABLE_MBEDTLS_SSL_MAX_CONTENT_LEN": "4096",
@@ -32,12 +11,10 @@
   },
   "configs": {
     "Linux": {
-      "file": "config/Linux.config",
-      "overrides": {}
+      "file": "config/Linux.config"
     },
     "T5AI": {
-      "file": "config/T5AI.config",
-      "overrides": {}
+      "file": "config/T5AI.config"
     }
   },
   "documentation": {
@@ -45,13 +22,5 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/mimiclaw/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/mimiclaw/README_zh.md"
     }
-  },
-  "image": {
-    "url": "images/mimiclaw/mimiclaw.jpg"
-  },
-  "publish": true,
-  "boardConfigs": [
-    "Linux",
-    "T5AI"
-  ]
+  }
 }

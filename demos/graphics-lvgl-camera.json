@@ -1,35 +1,11 @@
 {
   "id": "graphics-lvgl-camera",
-  "name": {
-    "en": "LVGL Camera Preview",
-    "zh-CN": "LVGL 摄像头预览"
-  },
-  "summary": {
-    "en": "Switches between an LVGL GUI and live camera preview on an LCD via button press.",
-    "zh-CN": "通过按键在 LVGL 界面与摄像头实时预览之间切换显示。"
-  },
-  "tags": [
-    "example",
-    "display",
-    "camera",
-    "lvgl"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board-lcd-3-5"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/lvgl_camera",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_LIBLVGL": "y"
   },
   "configs": {
     "TUYA_T5AI_BOARD_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config"
     }
   },
   "documentation": {

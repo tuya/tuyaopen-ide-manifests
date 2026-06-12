@@ -1,31 +1,8 @@
 {
   "id": "graphics-u8g2-i2c",
-  "name": {
-    "en": "U8g2 OLED via I2C",
-    "zh-CN": "U8g2 I2C OLED 显示"
-  },
-  "summary": {
-    "en": "Drives an SSD1306 128x64 OLED over I2C using U8g2 page-mode rendering.",
-    "zh-CN": "使用 U8g2 页模式通过 I2C 驱动 SSD1306 128x64 OLED。"
-  },
-  "tags": [
-    "example",
-    "display",
-    "i2c"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "t5ai"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/u8g2_i2c",
-    "ref": "master"
-  },
   "configs": {
     "T5AI": {
-      "file": "config/T5AI.config",
-      "overrides": {}
+      "file": "config/T5AI.config"
     }
   }
 }

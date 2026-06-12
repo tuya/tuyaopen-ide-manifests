@@ -1,64 +1,29 @@
 {
   "id": "graphics-lvgl-gif",
-  "name": {
-    "en": "LVGL GIF Animation",
-    "zh-CN": "LVGL GIF 动画播放"
-  },
-  "summary": {
-    "en": "Displays animated GIF images on one or two LCD screens using LVGL.",
-    "zh-CN": "使用 LVGL 在单屏或双屏上显示 GIF 动画图像。"
-  },
-  "tags": [
-    "example",
-    "display",
-    "lvgl"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "atk-t5ai-mini-board",
-    "tuya-t5ai-board-29-e-ink",
-    "tuya-t5ai-board-eyes",
-    "tuya-t5ai-board-eyes-two-lcd",
-    "tuya-t5ai-board-lcd-3-5",
-    "tuya-t5ai-pocket",
-    "waveshare-t5ai-touch-amoled-1-75"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/graphics/lvgl_gif",
-    "ref": "master"
-  },
   "defaultConfig": {
     "ENABLE_LIBLVGL": "y"
   },
   "configs": {
     "ATK_T5AI_MINI_BOARD": {
-      "file": "config/ATK_T5AI_MINI_BOARD.config",
-      "overrides": {}
+      "file": "config/ATK_T5AI_MINI_BOARD.config"
     },
     "TUYA_T5AI_BOARD_29_E-INK": {
-      "file": "config/TUYA_T5AI_BOARD_29_E-INK.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_29_E-INK.config"
     },
     "TUYA_T5AI_BOARD_EYES": {
-      "file": "config/TUYA_T5AI_BOARD_EYES.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_EYES.config"
     },
     "TUYA_T5AI_BOARD_EYES_TWO_LCD": {
-      "file": "config/TUYA_T5AI_BOARD_EYES_TWO_LCD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_EYES_TWO_LCD.config"
     },
     "TUYA_T5AI_BOARD_LCD_3.5": {
-      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_LCD_3.5.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     },
     "WAVESHARE_T5AI_TOUCH_AMOLED_1_75": {
-      "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config",
-      "overrides": {}
+      "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config"
     }
   },
   "documentation": {

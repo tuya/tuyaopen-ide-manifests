@@ -1,24 +1,5 @@
 {
   "id": "wifi-ap",
-  "name": {
-    "en": "Wi-Fi Access Point",
-    "zh-CN": "Wi-Fi 热点"
-  },
-  "summary": {
-    "en": "Starts a Wi-Fi AP with configurable SSID and broadcasts UDP packets.",
-    "zh-CN": "启动可配置 SSID 的 Wi-Fi 热点并发送 UDP 广播。"
-  },
-  "tags": [
-    "example",
-    "wifi"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/wifi/ap",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/ap/README.md",

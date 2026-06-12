@@ -1,36 +1,11 @@
 {
   "id": "peripherals-sd",
-  "name": {
-    "en": "SD Card File I/O",
-    "zh-CN": "SD 卡文件读写"
-  },
-  "summary": {
-    "en": "Mounts an SD card and performs file write, read, and content comparison verification.",
-    "zh-CN": "挂载 SD 卡并执行文件写入、读取和内容比对验证。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "sd-card"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board",
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/sd",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD": {
-      "file": "config/TUYA_T5AI_BOARD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD.config"
     },
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   }
 }

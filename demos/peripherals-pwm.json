@@ -1,26 +1,5 @@
 {
   "id": "peripherals-pwm",
-  "name": {
-    "en": "PWM Pulse Width Modulation",
-    "zh-CN": "PWM 脉宽调制"
-  },
-  "summary": {
-    "en": "Outputs PWM signals with configurable frequency and duty cycle for analog control.",
-    "zh-CN": "输出可配置频率和占空比的 PWM 信号，用于模拟控制。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "pwm"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/pwm",
-    "ref": "master"
-  },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/pwm/README.md",

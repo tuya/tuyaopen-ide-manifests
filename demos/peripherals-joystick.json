@@ -1,31 +1,8 @@
 {
   "id": "peripherals-joystick",
-  "name": {
-    "en": "Joystick Input",
-    "zh-CN": "摇杆输入"
-  },
-  "summary": {
-    "en": "Reads analog joystick direction and button events via ADC and GPIO.",
-    "zh-CN": "通过 ADC 和 GPIO 读取摇杆方向及按键事件。"
-  },
-  "tags": [
-    "example",
-    "peripheral",
-    "joystick"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-pocket"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/peripherals/joystick",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_POCKET": {
-      "file": "config/TUYA_T5AI_POCKET.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_POCKET.config"
     }
   },
   "documentation": {

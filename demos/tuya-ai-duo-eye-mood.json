@@ -1,47 +1,11 @@
 {
   "id": "tuya-ai-duo-eye-mood",
-  "name": {
-    "en": "AI Chatbot with Mood Eyes",
-    "zh-CN": "AI 情绪眼睛聊天"
-  },
-  "summary": {
-    "en": "AI voice chatbot that displays animated mood-based eye expressions on dual OLED screens.",
-    "zh-CN": "AI 语音聊天机器人，在双 OLED 屏上显示情绪动画眼睛表情。"
-  },
-  "tags": [
-    "app",
-    "ai"
-  ],
-  "compatibilityType": "board-specific",
-  "boards": [
-    "tuya-t5ai-board-eyes",
-    "tuya-t5ai-board-eyes-two-lcd"
-  ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/tuya.ai/duo_eye_mood",
-    "ref": "master"
-  },
   "configs": {
     "TUYA_T5AI_BOARD_EYES": {
-      "file": "config/TUYA_T5AI_BOARD_EYES.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_EYES.config"
     },
     "TUYA_T5AI_BOARD_EYES_TWO_LCD": {
-      "file": "config/TUYA_T5AI_BOARD_EYES_TWO_LCD.config",
-      "overrides": {}
+      "file": "config/TUYA_T5AI_BOARD_EYES_TWO_LCD.config"
     }
-  },
-  "publish": false,
-  "defaultConfig": {},
-  "documentation": {
-    "readme": {
-      "en": null,
-      "zh-CN": null
-    }
-  },
-  "boardConfigs": [
-    "TUYA_T5AI_BOARD_EYES",
-    "TUYA_T5AI_BOARD_EYES_TWO_LCD"
-  ]
+  }
 }

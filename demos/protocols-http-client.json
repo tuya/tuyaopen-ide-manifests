@@ -1,24 +1,5 @@
 {
   "id": "protocols-http-client",
-  "name": {
-    "en": "HTTP Client",
-    "zh-CN": "HTTP 客户端"
-  },
-  "summary": {
-    "en": "Sends an HTTP GET request and prints the response after network link-up.",
-    "zh-CN": "网络连接后发送 HTTP GET 请求并打印响应内容。"
-  },
-  "tags": [
-    "example",
-    "networking"
-  ],
-  "compatibilityType": "universal",
-  "boards": [],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "examples/protocols/http_client",
-    "ref": "master"
-  },
   "defaultConfig": {
     "MEM_SIZE": "51200",
     "MEMP_NUM_UDP_PCB": "10",
@@ -38,7 +19,6 @@
     "LWIP_TIMEVAL_PRIVATE": "0",
     "IN_ADDR_T_DEFINED": "y"
   },
-  "configs": {},
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/http_client/README.md",
