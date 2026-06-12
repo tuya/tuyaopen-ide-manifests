@@ -110,14 +110,15 @@
             <button id="addDemoBtn" class="btn btn-primary" data-i18n="demoAdd">+ Add Demo</button>
           </div>
 
+          <!-- Type tabs: Examples / Apps -->
+          <div class="demos-tabs" id="demosTabs">
+            <button class="demos-tab active" data-demo-type="app" data-i18n="demoFilterApps">Apps</button>
+            <button class="demos-tab" data-demo-type="example" data-i18n="demoFilterExamples">Examples</button>
+          </div>
+
           <!-- Filters -->
           <div class="demos-filters">
             <input type="text" id="demoSearch" class="form-input" placeholder="Search demos..." data-i18n-placeholder="demoSearchPlaceholder">
-            <select id="demoFilterType" class="form-input demo-filter-select">
-              <option value="" data-i18n="demoFilterAll">All Types</option>
-              <option value="app" data-i18n="demoFilterApps">Apps (Board-specific)</option>
-              <option value="example" data-i18n="demoFilterExamples">Examples (Universal)</option>
-            </select>
           </div>
 
           <!-- Demos List -->

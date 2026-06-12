@@ -43,193 +43,163 @@ function validateHttpsUrl(url) {
 
 export function renderBoardForm(board = null) {
   const isNew = !board;
-  const title = isNew ? 'Create New Board' : 'Edit Board';
+  const title = isNew ? i18n.t('boardFormCreateTitle') : i18n.t('boardFormEditTitle');
 
   const formHtml = `
     <form id="boardForm" class="board-form" style="max-width: none; width: 100%; padding: 24px;">
       <!-- Quality Guidance Banner -->
       <div style="background-color: #f0f9ff; border-left: 4px solid #0284c7; padding: 16px; border-radius: 6px; margin-bottom: 24px;">
-        <div style="font-weight: 600; color: #0c4a6e; margin-bottom: 8px;">💡 质量提示</div>
+        <div style="font-weight: 600; color: #0c4a6e; margin-bottom: 8px;">${i18n.t('boardQualityTip')}</div>
         <div style="color: #0c4a6e; font-size: 0.95em; line-height: 1.6;">
-          <strong>优质的开发板信息是开发者的第一步。</strong> 请认真完整地填写以下内容：
+          <strong>${i18n.t('boardQualityMessage')}</strong>
           <ul style="margin: 8px 0; padding-left: 20px;">
-            <li>✓ 准确的Board ID - 与TuyaOpen SDK中的board.config匹配</li>
-            <li>✓ 清晰的描述 - 用简明的语言说明开发板的功能和特性</li>
-            <li>✓ 完整的文档链接 - 提供原理图、用户指南等重要资源</li>
-            <li>✓ 正确的采购链接 - 帮助开发者快速获取硬件</li>
+            <li>${i18n.t('boardQualityPoint1')}</li>
+            <li>${i18n.t('boardQualityPoint2')}</li>
+            <li>${i18n.t('boardQualityPoint3')}</li>
+            <li>${i18n.t('boardQualityPoint4')}</li>
+            <li>${i18n.t('boardQualityPoint5')}</li>
           </ul>
         </div>
       </div>
       <div class="form-group">
-        <label class="form-label required" for="boardId">Board ID</label>
-        <div style="background-color: var(--color-warning); color: var(--color-fg); padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 0.9em; border-left: 4px solid #f59e0b;">
-          <strong>⚠️ 关键字段:</strong> Board ID 必须与 TuyaOpen SDK 中 board.config 完全匹配。创建后无法更改！
-        </div>
+        <label class="form-label required" for="boardId">${i18n.t('boardId')}</label>
         <input
           type="text"
           id="boardId"
           name="id"
           class="form-input"
           pattern="^[a-z0-9\\-]+$"
-          placeholder="例如: tuya-t5ai-board"
+          placeholder="${escapeHtml(i18n.t('boardIdPlaceholder'))}"
           value="${board ? escapeHtml(board.id) : ''}"
-          ${!isNew ? 'readonly' : ''}
+          ${!isNew ? 'readonly aria-readonly="true" style="background: var(--color-hover); cursor: not-allowed;"' : ''}
           required
         >
-        <small style="color: var(--color-muted);">格式: 小写字母、数字、连字符 (kebab-case)</small>
+        <small style="color: var(--color-muted);">${isNew ? i18n.t('boardIdHintNew') : i18n.t('boardIdHintEdit')}</small>
         <div class="form-error" id="idError"></div>
       </div>
 
       <!-- Published Toggle -->
       <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
         <input type="checkbox" id="boardPublished" name="published" ${board?.published !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-        <label for="boardPublished" style="margin: 0; cursor: pointer; font-weight: 500;">Published</label>
-        <small style="color: var(--color-muted); margin-left: auto;">Visible in IDE when checked</small>
+        <label for="boardPublished" style="margin: 0; cursor: pointer; font-weight: 500;">${i18n.t('boardPublished')}</label>
+        <small style="color: var(--color-muted); margin-left: auto;">${i18n.t('boardPublishedHint')}</small>
       </div>
 
       <!-- EN/ZH Pair: Board Name -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
-          <label class="form-label required" for="boardName">Board Name (English)</label>
+          <label class="form-label required" for="boardName">${i18n.t('boardNameEn')}</label>
           <input
             type="text"
             id="boardName"
             name="name_en"
             class="form-input"
-            placeholder="e.g., Tuya T5AI Development Board"
+            placeholder="${escapeHtml(i18n.t('boardNameEnPlaceholder'))}"
             value="${board ? escapeHtml(getLocalizedString(board.name) || board.name?.en || '') : ''}"
             required
           >
-          <small style="color: var(--color-muted);">Official name, concise and accurate</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardNameEnHint')}</small>
         </div>
         <div class="form-col-half">
-          <label class="form-label" for="boardNameZh">开发板名称 (中文)</label>
+          <label class="form-label" for="boardNameZh">${i18n.t('boardNameZh')}</label>
           <input
             type="text"
             id="boardNameZh"
             name="name_zh"
             class="form-input"
-            placeholder="例如: 涂鸦 T5AI 开发板"
+            placeholder="${escapeHtml(i18n.t('boardNameZhPlaceholder'))}"
             value="${board ? escapeHtml(board.name?.['zh-CN'] || '') : ''}"
           >
-          <small style="color: var(--color-muted);">中文官方名称</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardNameZhHint')}</small>
         </div>
       </div>
 
       <div class="form-group">
-        <label class="form-label required" for="platformId">Chip Platform / 芯片平台</label>
+        <label class="form-label required" for="platformId">${i18n.t('boardPlatform')}</label>
         <select id="platformId" name="platformId" class="form-select" required>
-          <option value="">-- Select Platform / 选择平台 --</option>
+          <option value="">${i18n.t('boardPlatformSelect')}</option>
           ${board ? `<option value="${escapeHtml(board.platformId)}" selected>${escapeHtml(board.platformId)}</option>` : ''}
         </select>
-        <small style="color: var(--color-muted);">Select the chip platform this board is based on</small>
+        <small style="color: var(--color-muted);">${i18n.t('boardPlatformHint')}</small>
         <div class="form-error" id="platformError"></div>
       </div>
 
-      <!-- Kconfig ID -->
+      <!-- Board Config Name (SDK board directory symbol; data field: boardSymbol) -->
       <div class="form-group">
-        <label class="form-label" for="kconfigId" data-i18n="boardKconfigId">Kconfig ID</label>
+        <label class="form-label" for="boardSymbol">${i18n.t('boardKconfigId')}</label>
+        <div style="background-color: var(--color-warning); color: var(--color-fg); padding: 8px; border-radius: 4px; margin-bottom: 8px; font-size: 0.9em; border-left: 4px solid #f59e0b;">
+          ${i18n.t('boardKconfigWarning')}
+        </div>
         <input
           type="text"
-          id="kconfigId"
-          name="kconfigId"
+          id="boardSymbol"
+          name="boardSymbol"
           class="form-input"
           pattern="^[A-Z0-9][A-Z0-9_.]*$"
-          placeholder="TUYA_T5AI_EVB"
-          value="${board ? escapeHtml(board.kconfigId || '') : ''}"
+          placeholder="TUYA_T5AI_BOARD"
+          value="${board ? escapeHtml((board.boardSymbol ?? board.kconfigId) || '') : ''}"
         >
-        <small style="color: var(--color-muted);" data-i18n="boardKconfigIdHint">Must match SDK board directory name (e.g. TUYA_T5AI_EVB)</small>
+        <small style="color: var(--color-muted);">${i18n.t('boardKconfigIdHint')}</small>
       </div>
-
-      <!-- Scaffold Settings (collapsible, optional) -->
-      <details class="form-details">
-        <summary class="form-details-summary" data-i18n="boardScaffold">⚙️ Scaffold Settings（可选，不填则自动生成）</summary>
-        <div class="form-details-body">
-          <div style="background-color: var(--color-hover); padding: 10px 12px; border-radius: 4px; margin-bottom: 12px; font-size: 0.85em; color: var(--color-muted);">
-            默认值：Template = <code>tools/app_template/base</code>，Base Config 根据 Platform 和 Kconfig ID 自动生成。
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="scaffoldTemplate" data-i18n="boardScaffoldTemplate">Template Path</label>
-            <input
-              type="text"
-              id="scaffoldTemplate"
-              name="scaffoldTemplate"
-              class="form-input"
-              placeholder="tools/app_template/base"
-              value="${board && board.scaffold ? escapeHtml(board.scaffold.template || '') : ''}"
-            >
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="scaffoldBaseConfig" data-i18n="boardScaffoldBaseConfig">Base Config (JSON)</label>
-            <textarea
-              id="scaffoldBaseConfig"
-              name="scaffoldBaseConfig"
-              class="form-textarea form-monospace"
-              rows="4"
-              placeholder='自动生成，例如：{"CONFIG_BOARD_CHOICE_T5AI": "y", "CONFIG_BOARD_CHOICE_TUYA_T5AI_EVB": "y"}'
-            >${board && board.scaffold?.baseConfig ? escapeHtml(JSON.stringify(board.scaffold.baseConfig, null, 2)) : ''}</textarea>
-          </div>
-        </div>
-      </details>
 
       <!-- EN/ZH Pair: Summary -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
-          <label class="form-label" for="boardSummary">Function Description (English)</label>
+          <label class="form-label" for="boardSummary">${i18n.t('boardSummaryEn')}</label>
           <textarea
             id="boardSummary"
             name="summary_en"
             class="form-textarea"
-            placeholder="e.g., High-performance board with WiFi, BLE, AI acceleration, built-in microphone and LED"
+            placeholder="${escapeHtml(i18n.t('boardSummaryEnPlaceholder'))}"
             style="min-height: 80px;"
           >${board ? escapeHtml(board.summary?.en || '') : ''}</textarea>
-          <small style="color: var(--color-muted);">Concise description of key features and capabilities</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardSummaryEnHint')}</small>
         </div>
         <div class="form-col-half">
-          <label class="form-label" for="boardSummaryZh">功能描述 (中文)</label>
+          <label class="form-label" for="boardSummaryZh">${i18n.t('boardSummaryZh')}</label>
           <textarea
             id="boardSummaryZh"
             name="summary_zh"
             class="form-textarea"
-            placeholder="功能描述的中文版本"
+            placeholder="${escapeHtml(i18n.t('boardSummaryZhPlaceholder'))}"
             style="min-height: 80px;"
           >${board ? escapeHtml(board.summary?.['zh-CN'] || '') : ''}</textarea>
-          <small style="color: var(--color-muted);">中文版功能描述</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardSummaryZhHint')}</small>
         </div>
       </div>
 
       <!-- Manufacturer -->
       <div class="form-group">
-        <label class="form-label" for="manufacturer">Manufacturer / 制造商</label>
+        <label class="form-label" for="manufacturer">${i18n.t('boardManufacturer')}</label>
         <input
           type="text"
           id="manufacturer"
           name="manufacturer"
           class="form-input"
-          placeholder="e.g., Tuya, Espressif"
+          placeholder="${escapeHtml(i18n.t('boardManufacturerPlaceholder'))}"
           value="${board ? escapeHtml(getLocalizedString(board.manufacturer) || board.manufacturer?.en || '') : ''}"
         >
-        <small style="color: var(--color-muted);">Board manufacturer name</small>
+        <small style="color: var(--color-muted);">${i18n.t('boardManufacturerHint')}</small>
       </div>
 
       <!-- Tags Selection -->
       <div class="form-group">
-        <label class="form-label" for="tags">Tags / 标签</label>
+        <label class="form-label" for="tags">${i18n.t('boardTags')}</label>
         <div id="tagsContainer" class="tags-chip-input">
           <div id="selectedTags" class="tags-chips"></div>
           <div class="tags-add-wrapper">
-            <input type="text" id="tagsSearchInput" class="form-input tags-search" placeholder="Type to search tags..." autocomplete="off">
+            <input type="text" id="tagsSearchInput" class="form-input tags-search" placeholder="${escapeHtml(i18n.t('boardTagsSearchPlaceholder'))}" autocomplete="off">
             <div id="tagsDropdown" class="tags-dropdown" style="display: none;"></div>
           </div>
         </div>
         <input type="hidden" id="tags" name="tags">
-        <small style="color: var(--color-muted);">Click tags below to add, or type to filter. Click × to remove.</small>
+        <small style="color: var(--color-muted);">${i18n.t('boardTagsHint')}</small>
         <div id="tagsAvailablePool" class="tags-available-pool"></div>
       </div>
 
       <!-- Links: Schematic -->
       <div class="form-group">
-        <label class="form-label" for="schematicLink">Schematic Link (HTTPS) / 原理图链接</label>
+        <label class="form-label" for="schematicLink">${i18n.t('boardSchematic')}</label>
         <input
           type="url"
           id="schematicLink"
@@ -239,14 +209,14 @@ export function renderBoardForm(board = null) {
           value="${board ? escapeHtml(board.schematicLink || '') : ''}"
           data-url-type="schematicLink"
         >
-        <small style="color: var(--color-muted);">Direct link to board schematic PDF or image</small>
+        <small style="color: var(--color-muted);">${i18n.t('boardSchematicHint')}</small>
         <div class="form-error" id="schematicError"></div>
       </div>
 
       <!-- EN/ZH Pair: Guide Docs -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
-          <label class="form-label" for="guideDocs">User Manual (English) / 用户手册</label>
+          <label class="form-label" for="guideDocs">${i18n.t('boardGuideEn')}</label>
           <input
             type="url"
             id="guideDocs"
@@ -256,11 +226,11 @@ export function renderBoardForm(board = null) {
             value="${board ? escapeHtml(board.guideDocs?.en || '') : ''}"
             data-url-type="guideDocs_en"
           >
-          <small style="color: var(--color-muted);">User guide with pin definitions and usage</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardGuideEnHint')}</small>
           <div class="form-error" id="guideDocsError"></div>
         </div>
         <div class="form-col-half">
-          <label class="form-label" for="guideDocsZh">用户手册 (中文)</label>
+          <label class="form-label" for="guideDocsZh">${i18n.t('boardGuideZh')}</label>
           <input
             type="url"
             id="guideDocsZh"
@@ -270,7 +240,7 @@ export function renderBoardForm(board = null) {
             value="${board ? escapeHtml(board.guideDocs?.['zh-CN'] || '') : ''}"
             data-url-type="guideDocs_zh"
           >
-          <small style="color: var(--color-muted);">中文版用户手册</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardGuideZhHint')}</small>
           <div class="form-error" id="guideDocsZhError"></div>
         </div>
       </div>
@@ -278,7 +248,7 @@ export function renderBoardForm(board = null) {
       <!-- EN/ZH Pair: Purchase Links -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
-          <label class="form-label" for="purchaseLink">Purchase Link (English) / 采购链接</label>
+          <label class="form-label" for="purchaseLink">${i18n.t('boardPurchaseEn')}</label>
           <input
             type="url"
             id="purchaseLink"
@@ -288,11 +258,11 @@ export function renderBoardForm(board = null) {
             value="${board ? escapeHtml(board.purchaseLink?.en || '') : ''}"
             data-url-type="purchaseLink_en"
           >
-          <small style="color: var(--color-muted);">Official or authorized sales channel</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardPurchaseEnHint')}</small>
           <div class="form-error" id="purchaseLinkError"></div>
         </div>
         <div class="form-col-half">
-          <label class="form-label" for="purchaseLinkZh">采购链接 (中文)</label>
+          <label class="form-label" for="purchaseLinkZh">${i18n.t('boardPurchaseZh')}</label>
           <input
             type="url"
             id="purchaseLinkZh"
@@ -302,14 +272,14 @@ export function renderBoardForm(board = null) {
             value="${board ? escapeHtml(board.purchaseLink?.['zh-CN'] || '') : ''}"
             data-url-type="purchaseLink_zh"
           >
-          <small style="color: var(--color-muted);">中文采购渠道</small>
+          <small style="color: var(--color-muted);">${i18n.t('boardPurchaseZhHint')}</small>
           <div class="form-error" id="purchaseLinkZhError"></div>
         </div>
       </div>
 
       <!-- Links: 3D Model -->
       <div class="form-group">
-        <label class="form-label" for="threeDModelLink">3D Model Link (HTTPS) / 3D 模型链接</label>
+        <label class="form-label" for="threeDModelLink">${i18n.t('board3dModel')}</label>
         <input
           type="url"
           id="threeDModelLink"
@@ -319,18 +289,18 @@ export function renderBoardForm(board = null) {
           value="${board ? escapeHtml(board.threeDModelLink || '') : ''}"
           data-url-type="threeDModelLink"
         >
-        <small style="color: var(--color-muted);">Link to 3D model file (STEP/ZIP)</small>
+        <small style="color: var(--color-muted);">${i18n.t('board3dModelHint')}</small>
         <div class="form-error" id="threeDModelLinkError"></div>
       </div>
 
       <!-- Source: Board BSP -->
       <div class="form-group">
         <label class="form-label" style="display:inline-flex;align-items:center;gap:6px">
-          Board BSP Source / 板级BSP驱动源代码
-          <span title="提供板级 BSP 驱动源代码链接供用户参考，与实际创建项目的代码无逻辑关联。" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--color-border,#ddd);color:var(--color-muted,#666);font-size:11px;font-weight:700;cursor:help;">?</span>
+          ${i18n.t('boardBspSource')}
+          <span title="${escapeHtml(i18n.t('boardBspTooltip'))}" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--color-border,#ddd);color:var(--color-muted,#666);font-size:11px;font-weight:700;cursor:help;">?</span>
         </label>
         <div style="margin-bottom:8px">
-          <label class="form-label" for="sourceRepo" style="font-size:12px">Repository URL</label>
+          <label class="form-label" for="sourceRepo" style="font-size:12px">${i18n.t('boardBspRepo')}</label>
           <input
             type="url"
             id="sourceRepo"
@@ -342,7 +312,7 @@ export function renderBoardForm(board = null) {
           >
           <div class="form-error" id="sourceRepoError"></div>
         </div>
-        <label class="form-label" for="sourceSubpath" style="font-size:12px">Subpath within repo</label>
+        <label class="form-label" for="sourceSubpath" style="font-size:12px">${i18n.t('boardBspSubpath')}</label>
         <input
           type="text"
           id="sourceSubpath"
@@ -351,21 +321,21 @@ export function renderBoardForm(board = null) {
           placeholder="platform/t5ai/boards/tuya-t5-e1"
           value="${board?.source?.subpath ? escapeHtml(board.source.subpath) : ''}"
         >
-        <small style="color: var(--color-muted);">供用户参考的 BSP 源代码链接，与项目生成逻辑无关</small>
+        <small style="color: var(--color-muted);">${i18n.t('boardBspHint')}</small>
       </div>
 
       <!-- Image Section -->
       <div class="form-group">
-        <label class="form-label">Board Image</label>
+        <label class="form-label">${i18n.t('boardImage')}</label>
         ${board ? `
           <div class="image-upload-inline">
             <!-- Image Source Tabs -->
             <div style="display: flex; gap: 8px; margin-bottom: 12px; border-bottom: 1px solid var(--color-border); padding-bottom: 8px;">
               <button type="button" class="image-source-tab active" data-source="file" style="background: none; border: none; padding: 8px; cursor: pointer; font-weight: 500; color: var(--color-primary);">
-                📁 Upload File
+                ${i18n.t('boardImageUploadFile')}
               </button>
               <button type="button" class="image-source-tab" data-source="url" style="background: none; border: none; padding: 8px; cursor: pointer; font-weight: 500; color: var(--color-muted);">
-                🔗 From URL
+                ${i18n.t('boardImageFromUrl')}
               </button>
             </div>
 
@@ -377,13 +347,13 @@ export function renderBoardForm(board = null) {
                   <polyline points="17 8 12 3 7 8"></polyline>
                   <line x1="12" y1="3" x2="12" y2="15"></line>
                 </svg>
-                <p class="upload-text">Drag and drop image here or <strong>click to select</strong></p>
-                <p class="image-recommendation">Recommended: 500×500 (1:1 square). Must be at least 500px.</p>
+                <p class="upload-text">${i18n.t('boardImageDrop')}</p>
+                <p class="image-recommendation">${i18n.t('boardImageRecommend')}</p>
                 <input type="file" id="boardImageInput" style="display: none;" accept="image/*" data-board-id="${escapeHtml(board.id)}">
               </div>
               <div id="uploadProgress" class="upload-progress" style="display: none;">
                 <div class="progress-bar"></div>
-                <p id="uploadStatus">Uploading...</p>
+                <p id="uploadStatus">${i18n.t('boardImageUploading')}</p>
               </div>
             </div>
 
@@ -397,15 +367,15 @@ export function renderBoardForm(board = null) {
                 style="margin-bottom: 8px;"
                 data-url-type="imageUrl"
               >
-              <small style="color: var(--color-muted); display: block; margin-bottom: 8px;">Enter a valid HTTPS image URL (JPEG, PNG, WebP)</small>
+              <small style="color: var(--color-muted); display: block; margin-bottom: 8px;">${i18n.t('boardImageUrlHint')}</small>
               <div style="display: flex; gap: 8px;">
-                <button type="button" id="confirmUrlBtn" class="btn btn-primary">Use This URL</button>
+                <button type="button" id="confirmUrlBtn" class="btn btn-primary">${i18n.t('boardImageUseUrl')}</button>
               </div>
               <div id="urlPreview" class="image-preview hidden" style="margin-top: 12px;">
                 <img id="urlPreviewImage" alt="Preview">
                 <div class="preview-actions">
-                  <button type="button" id="confirmUrlPreviewBtn" class="btn btn-primary">Confirm</button>
-                  <button type="button" id="cancelUrlBtn" class="btn btn-outline">Cancel</button>
+                  <button type="button" id="confirmUrlPreviewBtn" class="btn btn-primary">${i18n.t('boardImageConfirm')}</button>
+                  <button type="button" id="cancelUrlBtn" class="btn btn-outline">${i18n.t('cancelBtn')}</button>
                 </div>
               </div>
             </div>
@@ -413,17 +383,17 @@ export function renderBoardForm(board = null) {
             ${board.image?.url ? `
               <div class="current-image-preview" style="margin-top: 12px; padding: 12px; background-color: var(--color-hover); border-radius: 8px; text-align: center;">
                 <img src="/api/images/${escapeHtml(board.image.url.replace('images/', ''))}" alt="Current board image" style="max-width: 200px; max-height: 200px; object-fit: contain; border-radius: 4px; border: 1px solid var(--color-border);">
-                <small style="display: block; margin-top: 8px; color: var(--color-muted);">Current: ${escapeHtml(board.image.url)}</small>
+                <small style="display: block; margin-top: 8px; color: var(--color-muted);">${i18n.t('boardImageCurrentLabel')}: ${escapeHtml(board.image.url)}</small>
               </div>
-            ` : '<small style="color: var(--color-muted);">No image set yet</small>'}
+            ` : `<small style="color: var(--color-muted);">${i18n.t('boardImageNoneSet')}</small>`}
           </div>
-        ` : '<small style="color: var(--color-muted);">Save board first to upload images</small>'}
+        ` : `<small style="color: var(--color-muted);">${i18n.t('boardImageSaveFirst')}</small>`}
       </div>
 
       <div class="form-actions" style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--color-border);">
-        <button type="button" id="cancelBtn" class="btn btn-outline">取消</button>
+        <button type="button" id="cancelBtn" class="btn btn-outline">${i18n.t('cancelBtn')}</button>
         <button type="submit" class="btn btn-primary">
-          ${isNew ? '✓ 创建开发板' : '✓ 保存修改'}
+          ${isNew ? i18n.t('boardCreateBtn') : i18n.t('boardSaveBtn')}
         </button>
       </div>
     </form>
@@ -600,21 +570,8 @@ export async function saveBoardForm(formElement) {
     return false;
   }
 
-  // Collect kconfigId
-  const kconfigId = document.getElementById('kconfigId')?.value?.trim();
-
-  // Collect scaffold settings
-  const scaffoldTemplate = document.getElementById('scaffoldTemplate')?.value?.trim();
-  const scaffoldBaseConfigRaw = document.getElementById('scaffoldBaseConfig')?.value?.trim();
-  let scaffoldBaseConfig = null;
-  if (scaffoldBaseConfigRaw) {
-    try {
-      scaffoldBaseConfig = JSON.parse(scaffoldBaseConfigRaw);
-    } catch {
-      showError('Invalid JSON', 'Scaffold Base Config must be valid JSON');
-      return false;
-    }
-  }
+  // Collect board symbol (SDK board directory name)
+  const boardSymbol = document.getElementById('boardSymbol')?.value?.trim();
 
   const boardData = {
     id: boardId,
@@ -627,30 +584,10 @@ export async function saveBoardForm(formElement) {
     autoCommit: true,
   };
 
-  // Add kconfigId if provided
-  if (kconfigId) {
-    boardData.kconfigId = kconfigId;
-  }
-
-  // Add scaffold if any field is set, otherwise auto-derive from platformId + kconfigId
-  if (scaffoldTemplate || scaffoldBaseConfig) {
-    boardData.scaffold = {};
-    if (scaffoldTemplate) {
-      boardData.scaffold.template = scaffoldTemplate;
-    }
-    if (scaffoldBaseConfig) {
-      boardData.scaffold.baseConfig = scaffoldBaseConfig;
-    }
-  } else if (kconfigId && platformId) {
-    // Auto-derive default scaffold
-    const platformKconfigId = platformId.toUpperCase();
-    boardData.scaffold = {
-      template: 'tools/app_template/base',
-      baseConfig: {
-        [`CONFIG_BOARD_CHOICE_${platformKconfigId}`]: 'y',
-        [`CONFIG_BOARD_CHOICE_${kconfigId}`]: 'y',
-      },
-    };
+  // Add board symbol if provided. Board selection config is derived at
+  // project-creation time from platformId + boardSymbol — no scaffold stored.
+  if (boardSymbol) {
+    boardData.boardSymbol = boardSymbol;
   }
 
   if (nameZh) {

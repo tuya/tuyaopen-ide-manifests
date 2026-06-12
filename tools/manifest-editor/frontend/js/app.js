@@ -250,13 +250,13 @@ async function openBoardForm(boardId = null) {
     try {
       const result = await apiClient.getBoard(boardId);
       board = result.board;
-      modalTitle.textContent = `Edit Board: ${boardId}`;
+      modalTitle.textContent = `${i18n.t('boardFormEditTitle')}: ${boardId}`;
     } catch (error) {
       showError('Load Failed', `Failed to load board "${boardId}"`);
       return;
     }
   } else {
-    modalTitle.textContent = 'Create New Board';
+    modalTitle.textContent = i18n.t('boardFormCreateTitle');
   }
 
   // Load platforms if not already loaded
@@ -411,11 +411,13 @@ async function openBoardForm(boardId = null) {
 
 // ========== Demos Tab ==========
 let demosCache = [];
+// Active demos type tab: 'example' or 'app'. Apps tab is first / default.
+let demosActiveType = 'app';
 
 function setupDemosTab() {
   const addBtn = document.getElementById('addDemoBtn');
   const searchInput = document.getElementById('demoSearch');
-  const filterSelect = document.getElementById('demoFilterType');
+  const tabs = document.getElementById('demosTabs');
 
   if (addBtn) {
     addBtn.addEventListener('click', () => openDemoForm(null));
@@ -425,9 +427,79 @@ function setupDemosTab() {
     searchInput.addEventListener('input', debounce(() => filterDemos(), 200));
   }
 
-  if (filterSelect) {
-    filterSelect.addEventListener('change', () => filterDemos());
+  if (tabs) {
+    tabs.addEventListener('click', (e) => {
+      const tab = e.target.closest('.demos-tab');
+      if (!tab) return;
+      demosActiveType = tab.dataset.demoType === 'app' ? 'app' : 'example';
+      tabs.querySelectorAll('.demos-tab').forEach(t => t.classList.toggle('active', t === tab));
+      filterDemos();
+    });
   }
+}
+
+// Searchable multi-select for a demo's "Boards" field, sourced from the live
+// boards list. Selected ids are mirrored into the hidden #demoBoards input
+// (comma-separated) so saveDemoForm reads them unchanged.
+function setupDemoBoardsSelect(allBoards) {
+  const root = document.getElementById('demoBoardsSelect');
+  const hidden = document.getElementById('demoBoards');
+  const chipsEl = document.getElementById('demoBoardsChips');
+  const searchEl = document.getElementById('demoBoardsSearch');
+  const dropdownEl = document.getElementById('demoBoardsDropdown');
+  if (!root || !hidden || !chipsEl || !searchEl || !dropdownEl) return;
+
+  const lang = i18n.getLanguage();
+  const labelOf = (b) => (b.name && (b.name[lang] || b.name.en || b.name['zh-CN'])) || b.id;
+  let selected = (hidden.value || '').split(',').map(s => s.trim()).filter(Boolean);
+
+  const sync = () => { hidden.value = selected.join(','); };
+
+  const renderChips = () => {
+    chipsEl.innerHTML = selected.map(id => {
+      const b = allBoards.find(x => x.id === id);
+      const text = b ? labelOf(b) : id;
+      return `<span class="board-ms-chip" title="${escapeHtml(id)}">${escapeHtml(text)}` +
+        `<button type="button" class="board-ms-chip-x" data-id="${escapeHtml(id)}">×</button></span>`;
+    }).join('');
+  };
+
+  const renderDropdown = () => {
+    const q = (searchEl.value || '').toLowerCase().trim();
+    const avail = allBoards.filter(b => !selected.includes(b.id) &&
+      (!q || b.id.toLowerCase().includes(q) || labelOf(b).toLowerCase().includes(q)));
+    dropdownEl.innerHTML = avail.length
+      ? avail.map(b => `<div class="board-ms-item" data-id="${escapeHtml(b.id)}">` +
+          `<span class="board-ms-item-name">${escapeHtml(labelOf(b))}</span>` +
+          `<span class="board-ms-item-id">${escapeHtml(b.id)}</span></div>`).join('')
+      : `<div class="board-ms-empty">${i18n.t('demoBoardsNoMatch') || 'No matching boards'}</div>`;
+  };
+
+  renderChips();
+
+  const open = () => { renderDropdown(); dropdownEl.style.display = 'block'; };
+  searchEl.addEventListener('focus', open);
+  searchEl.addEventListener('input', open);
+
+  // mousedown + preventDefault so selecting an item doesn't blur the search first
+  dropdownEl.addEventListener('mousedown', (e) => {
+    const item = e.target.closest('.board-ms-item');
+    if (!item) return;
+    e.preventDefault();
+    if (!selected.includes(item.dataset.id)) selected.push(item.dataset.id);
+    sync(); renderChips(); searchEl.value = ''; renderDropdown(); searchEl.focus();
+  });
+
+  chipsEl.addEventListener('click', (e) => {
+    const x = e.target.closest('.board-ms-chip-x');
+    if (!x) return;
+    selected = selected.filter(id => id !== x.dataset.id);
+    sync(); renderChips(); renderDropdown();
+  });
+
+  document.addEventListener('mousedown', (e) => {
+    if (!root.contains(e.target)) dropdownEl.style.display = 'none';
+  });
 }
 
 async function loadDemos() {
@@ -448,13 +520,11 @@ async function loadDemos() {
 
 function filterDemos() {
   const searchVal = (document.getElementById('demoSearch')?.value || '').toLowerCase();
-  const filterVal = document.getElementById('demoFilterType')?.value || '';
 
-  let filtered = demosCache;
-
-  if (filterVal) {
-    filtered = filtered.filter(d => d.tags?.includes(filterVal));
-  }
+  // Always scoped to the active type tab (example / app);
+  // fall back to legacy tags for un-migrated data.
+  let filtered = demosCache.filter(d =>
+    d.type ? d.type === demosActiveType : (demosActiveType === 'app' ? d.tags?.includes('app') : !d.tags?.includes('app')));
 
   if (searchVal) {
     filtered = filtered.filter(d => {
@@ -521,6 +591,23 @@ async function openDemoForm(demoId = null) {
   }
 
   formContainer.innerHTML = renderDemoForm(demo);
+
+  // Translate the freshly-injected form into the active language
+  // (updateUILanguage only runs on init / language switch, not on modal open).
+  formContainer.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = i18n.t(el.getAttribute('data-i18n'));
+  });
+  formContainer.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = i18n.t(el.getAttribute('data-i18n-placeholder'));
+  });
+
+  // Populate the boards multi-select from the live boards list
+  try {
+    const boardsResult = await apiClient.getBoards();
+    setupDemoBoardsSelect(boardsResult.boards || boardsResult.items || []);
+  } catch (err) {
+    console.error('[openDemoForm] boards load failed:', err);
+  }
 
   // Wire compatibility radio → boards field visibility
   const radios = formContainer.querySelectorAll('input[name="compatibilityType"]');

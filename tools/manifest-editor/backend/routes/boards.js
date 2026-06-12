@@ -30,13 +30,14 @@ router.get('/:id', asyncHandler(async (req, res) => {
     });
   }
 
-  // Merge detail fields (kconfigId, scaffold, variantId, demos, peripheralPatterns, links)
+  // Merge detail fields (boardSymbol, variantId, demos, peripheralPatterns, links)
   const detail = await manifestLoader.loadBoardDetail(req.params.id);
   const merged = { ...board };
   if (detail) {
     if (detail.variantId) merged.variantId = detail.variantId;
-    if (detail.kconfigId) merged.kconfigId = detail.kconfigId;
-    if (detail.scaffold) merged.scaffold = detail.scaffold;
+    // boardSymbol (formerly kconfigId) — read both for backward compatibility
+    const sym = detail.boardSymbol ?? detail.kconfigId;
+    if (sym) merged.boardSymbol = sym;
     if (detail.links) merged.links = detail.links;
     if (detail.peripheralPatterns) merged.peripheralPatterns = detail.peripheralPatterns;
     if (detail.source) merged.source = detail.source;
@@ -112,14 +113,9 @@ router.post('/', asyncHandler(async (req, res) => {
   // Save manifest
   await manifestLoader.saveBoardsIndex(boards);
 
-  // Auto-derive scaffold baseConfig from platformId + kconfigId if not provided
-  const boardKconfigId = req.body.kconfigId || '';
-  const derivedBaseConfig = boardKconfigId && platformId
-    ? {
-        [`CONFIG_BOARD_CHOICE_${platformId.toUpperCase()}`]: 'y',
-        [`CONFIG_BOARD_CHOICE_${boardKconfigId}`]: 'y',
-      }
-    : {};
+  // Board selection config is derived at project-creation time from
+  // platformId + boardSymbol — no scaffold stored in the manifest.
+  const boardSymbol = req.body.boardSymbol ?? req.body.kconfigId ?? '';
 
   // Create initial detail file
   const initialDetail = {
@@ -133,8 +129,7 @@ router.post('/', asyncHandler(async (req, res) => {
     peripheralPatterns: {},
     links: { schematic: null, datasheet: null, productPage: null },
     tags: tags || [],
-    kconfigId: boardKconfigId,
-    scaffold: req.body.scaffold || { template: 'tools/app_template/base', baseConfig: derivedBaseConfig },
+    boardSymbol: boardSymbol,
   };
   await manifestLoader.saveBoardDetail(id, initialDetail);
 
@@ -171,23 +166,18 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   delete updates.schemaVersion;
   delete updates.autoCommit;
 
-  // Validate kconfigId if provided
-  if (updates.kconfigId !== undefined) {
-    if (updates.kconfigId && !/^[A-Z0-9][A-Z0-9_.]*$/.test(updates.kconfigId)) {
-      return res.status(400).json({
-        success: false,
-        error: 'kconfigId must be UPPER_CASE (letters, numbers, underscores, dots)',
-      });
-    }
+  // Accept legacy kconfigId as an alias for boardSymbol
+  if (updates.kconfigId !== undefined && updates.boardSymbol === undefined) {
+    updates.boardSymbol = updates.kconfigId;
   }
+  delete updates.kconfigId;
 
-  // Validate scaffold.baseConfig keys
-  if (updates.scaffold?.baseConfig) {
-    const invalidKeys = Object.keys(updates.scaffold.baseConfig).filter(k => !k.startsWith('CONFIG_'));
-    if (invalidKeys.length > 0) {
+  // Validate boardSymbol if provided
+  if (updates.boardSymbol !== undefined) {
+    if (updates.boardSymbol && !/^[A-Z0-9][A-Z0-9_.]*$/.test(updates.boardSymbol)) {
       return res.status(400).json({
         success: false,
-        error: `scaffold.baseConfig keys must start with CONFIG_: ${invalidKeys.join(', ')}`,
+        error: 'boardSymbol must be UPPER_CASE (letters, numbers, underscores, dots)',
       });
     }
   }
@@ -203,8 +193,8 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   // Save index
   await manifestLoader.saveBoardsIndex(boards);
 
-  // Fields that go to the detail file: kconfigId, scaffold, variantId, demos, peripheralPatterns, links, source
-  const detailFields = ['kconfigId', 'scaffold', 'variantId', 'links', 'source'];
+  // Fields that go to the detail file: boardSymbol, variantId, demos, peripheralPatterns, links, source
+  const detailFields = ['boardSymbol', 'variantId', 'links', 'source'];
   // Map editor link fields back to nested links object (merge with existing)
   const editorLinkFields = ['schematicLink', 'guideDocs', 'purchaseLink', 'threeDModelLink'];
   const hasEditorLinks = editorLinkFields.some(k => updates[k] !== undefined);

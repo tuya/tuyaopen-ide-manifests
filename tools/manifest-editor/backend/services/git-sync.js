@@ -37,6 +37,11 @@ class GitSync {
 
   async autoCommit(message) {
     try {
+      // Honor the AUTO_COMMIT switch — when disabled, never touch git.
+      if (!config.autoCommit) {
+        return { success: true, message: 'Auto-commit disabled', sha: null };
+      }
+
       // Check if there are changes
       const status = await this.git.status();
       if (status.files.length === 0) {

@@ -5,6 +5,32 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
+const isEmptyObj = (o) => !o || typeof o !== 'object' || Object.keys(o).length === 0;
+
+// Build the incremental detail object: only fields that don't live in the index.
+// Strips empty defaultConfig, strips configs[*].overrides, drops all-null readme.
+// Returns null when there is nothing detail-specific to store (caller deletes the file).
+function buildDemoDetail(id, { defaultConfig, configs, documentation }) {
+  const detail = { id };
+
+  if (!isEmptyObj(defaultConfig)) detail.defaultConfig = defaultConfig;
+
+  if (!isEmptyObj(configs)) {
+    const cleaned = {};
+    for (const [key, val] of Object.entries(configs)) {
+      const file = typeof val === 'object' ? val.file : val;
+      if (file) cleaned[key] = { file }; // overrides intentionally dropped
+    }
+    if (!isEmptyObj(cleaned)) detail.configs = cleaned;
+  }
+
+  const readme = documentation?.readme;
+  const readmeHasValue = readme && Object.values(readme).some((v) => v != null && v !== '');
+  if (readmeHasValue) detail.documentation = { readme };
+
+  return Object.keys(detail).length > 1 ? detail : null;
+}
+
 // GET /api/demos - List all demos
 router.get('/', asyncHandler(async (req, res) => {
   const demos = await manifestLoader.loadDemos();
@@ -15,23 +41,25 @@ router.get('/', asyncHandler(async (req, res) => {
   });
 }));
 
-// GET /api/demos/:id - Get single demo detail
+// GET /api/demos/:id - Get single demo (index entry merged with detail delta)
+// Detail files are incremental (id + defaultConfig/configs/documentation only);
+// identity/classification fields live in index.json. Merge so the editor form
+// gets a complete object to populate.
 router.get('/:id', asyncHandler(async (req, res) => {
-  const detail = await manifestLoader.loadDemoDetail(req.params.id);
-  if (!detail) {
-    const demos = await manifestLoader.loadDemos();
-    const item = demos?.items?.find(d => d.id === req.params.id);
-    if (!item) {
-      return res.status(404).json({ success: false, error: `Demo "${req.params.id}" not found` });
-    }
-    return res.json({ success: true, demo: item });
+  const demos = await manifestLoader.loadDemos();
+  const item = demos?.items?.find(d => d.id === req.params.id);
+  if (!item) {
+    return res.status(404).json({ success: false, error: `Demo "${req.params.id}" not found` });
   }
-  res.json({ success: true, demo: detail });
+  const detail = await manifestLoader.loadDemoDetail(req.params.id);
+  // index first (identity/classification), then overlay detail delta (build/docs)
+  const merged = { ...item, ...(detail || {}) };
+  res.json({ success: true, demo: merged });
 }));
 
 // POST /api/demos - Create new demo
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, name, summary, tags, boards, compatibilityType, source, defaultConfig, configs, documentation, publish } = req.body;
+  const { id, type, name, summary, tags, boards, compatibilityType, source, defaultConfig, configs, documentation, publish } = req.body;
 
   if (!id || !name?.en || !source?.repo || !source?.subpath) {
     return res.status(400).json({
@@ -53,7 +81,7 @@ router.post('/', asyncHandler(async (req, res) => {
     if (invalidKeys.length > 0) {
       return res.status(400).json({
         success: false,
-        error: `Invalid kconfigId keys in configs: ${invalidKeys.join(', ')}. Must be alphanumeric with underscores/dots.`,
+        error: `Invalid board-symbol keys in configs: ${invalidKeys.join(', ')}. Must be alphanumeric with underscores/dots.`,
       });
     }
     for (const [key, val] of Object.entries(configs)) {
@@ -71,14 +99,12 @@ router.post('/', asyncHandler(async (req, res) => {
     return res.status(409).json({ success: false, error: `Demo "${id}" already exists` });
   }
 
-  // Derive boardConfigs from configs keys for backward compat
-  const derivedBoardConfigs = configs ? Object.keys(configs) : undefined;
-
   const indexEntry = {
     id,
+    type: type === 'app' ? 'app' : 'example',
     name: name || { en: '' },
     summary: summary || { en: '', 'zh-CN': '' },
-    tags: tags || [],
+    tags: (tags || []).filter(t => t !== 'app' && t !== 'example'),
     boards: boards || [],
     compatibilityType: compatibilityType || 'universal',
     source: {
@@ -92,20 +118,15 @@ router.post('/', asyncHandler(async (req, res) => {
   demos.items.push(indexEntry);
   await manifestLoader.saveDemosIndex(demos);
 
-  const detailEntry = {
-    ...indexEntry,
-    defaultConfig: defaultConfig || {},
-    configs: configs || {},
-    boardConfigs: derivedBoardConfigs || [],
-    documentation: documentation || { readme: { en: null, 'zh-CN': null } },
-  };
-  await manifestLoader.saveDemoDetail(id, detailEntry);
+  // Detail file is incremental: only fields not already in the index entry.
+  const detailEntry = buildDemoDetail(id, { defaultConfig, configs, documentation });
+  if (detailEntry) await manifestLoader.saveDemoDetail(id, detailEntry);
 
   if (req.body.autoCommit !== false) {
     await gitSync.autoCommit(`feat(demos): add ${id}`);
   }
 
-  res.status(201).json({ success: true, demo: detailEntry, message: `Demo "${id}" created` });
+  res.status(201).json({ success: true, demo: { ...indexEntry, ...(detailEntry || {}) }, message: `Demo "${id}" created` });
 }));
 
 // PATCH /api/demos/:id - Update demo
@@ -127,36 +148,35 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     if (invalidKeys.length > 0) {
       return res.status(400).json({
         success: false,
-        error: `Invalid kconfigId keys in configs: ${invalidKeys.join(', ')}. Must be alphanumeric with underscores/dots.`,
+        error: `Invalid board-symbol keys in configs: ${invalidKeys.join(', ')}. Must be alphanumeric with underscores/dots.`,
       });
     }
-    // Regenerate boardConfigs from configs keys for backward compat
-    updates.boardConfigs = Object.keys(updates.configs);
   }
 
-  // Update index entry (only index-level fields)
-  const indexFields = ['name', 'summary', 'tags', 'boards', 'compatibilityType', 'source', 'publish'];
+  // Update index entry (identity / classification fields only)
+  const item = demos.items[idx];
+  const indexFields = ['type', 'name', 'summary', 'boards', 'compatibilityType', 'source', 'publish'];
   for (const key of indexFields) {
-    if (updates[key] !== undefined) {
-      demos.items[idx][key] = updates[key];
-    }
+    if (updates[key] !== undefined) item[key] = updates[key];
   }
+  if (updates.type !== undefined) item.type = updates.type === 'app' ? 'app' : 'example';
+  if (updates.tags !== undefined) item.tags = updates.tags.filter(t => t !== 'app' && t !== 'example');
   await manifestLoader.saveDemosIndex(demos);
 
-  // Update detail file
-  let detail = await manifestLoader.loadDemoDetail(req.params.id);
-  if (!detail) {
-    detail = { ...demos.items[idx] };
-  }
-  Object.assign(detail, updates);
-  detail.id = req.params.id;
-  await manifestLoader.saveDemoDetail(req.params.id, detail);
+  // Rebuild detail file as incremental delta (build/docs only); delete if empty.
+  const detail = buildDemoDetail(req.params.id, {
+    defaultConfig: updates.defaultConfig,
+    configs: updates.configs,
+    documentation: updates.documentation,
+  });
+  if (detail) await manifestLoader.saveDemoDetail(req.params.id, detail);
+  else await manifestLoader.deleteDemoDetail(req.params.id);
 
   if (req.body.autoCommit !== false) {
     await gitSync.autoCommit(`fix(demos): update ${req.params.id}`);
   }
 
-  res.json({ success: true, demo: detail, message: `Demo "${req.params.id}" updated` });
+  res.json({ success: true, demo: { ...item, ...(detail || {}) }, message: `Demo "${req.params.id}" updated` });
 }));
 
 // DELETE /api/demos/:id - Delete demo
