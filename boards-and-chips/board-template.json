@@ -910,8 +910,6 @@
     "<wifi | ble | zigbee | thread | edge-ai | audio | display | camera | imu | led-pixel | pmic | cellular | ...>"
   ],
   "source": {
-    "repo": "<source repository URL or null>",
-    "ref": "<branch or tag, e.g. main>",
-    "subpath": "<path within repo, e.g. boards/board-id>"
+    "repo": "<board BSP source URL or null>"
   }
 }

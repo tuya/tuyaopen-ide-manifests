@@ -293,34 +293,22 @@ export function renderBoardForm(board = null) {
         <div class="form-error" id="threeDModelLinkError"></div>
       </div>
 
-      <!-- Source: Board BSP -->
+      <!-- Source: Board BSP (single reference URL) -->
       <div class="form-group">
-        <label class="form-label" style="display:inline-flex;align-items:center;gap:6px">
+        <label class="form-label" for="sourceRepo" style="display:inline-flex;align-items:center;gap:6px">
           ${i18n.t('boardBspSource')}
           <span title="${escapeHtml(i18n.t('boardBspTooltip'))}" style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--color-border,#ddd);color:var(--color-muted,#666);font-size:11px;font-weight:700;cursor:help;">?</span>
         </label>
-        <div style="margin-bottom:8px">
-          <label class="form-label" for="sourceRepo" style="font-size:12px">${i18n.t('boardBspRepo')}</label>
-          <input
-            type="url"
-            id="sourceRepo"
-            name="sourceRepo"
-            class="form-input url-input"
-            placeholder="https://github.com/tuya/tuyaopen.git"
-            value="${board?.source?.repo ? escapeHtml(board.source.repo) : ''}"
-            data-url-type="sourceRepo"
-          >
-          <div class="form-error" id="sourceRepoError"></div>
-        </div>
-        <label class="form-label" for="sourceSubpath" style="font-size:12px">${i18n.t('boardBspSubpath')}</label>
         <input
-          type="text"
-          id="sourceSubpath"
-          name="sourceSubpath"
-          class="form-input"
-          placeholder="platform/t5ai/boards/tuya-t5-e1"
-          value="${board?.source?.subpath ? escapeHtml(board.source.subpath) : ''}"
+          type="url"
+          id="sourceRepo"
+          name="sourceRepo"
+          class="form-input url-input"
+          placeholder="https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_BOARD"
+          value="${board?.source?.repo ? escapeHtml(board.source.repo) : ''}"
+          data-url-type="sourceRepo"
         >
+        <div class="form-error" id="sourceRepoError"></div>
         <small style="color: var(--color-muted);">${i18n.t('boardBspHint')}</small>
       </div>
 
@@ -621,12 +609,10 @@ export async function saveBoardForm(formElement) {
     boardData.threeDModelLink = threeDModelLink;
   }
 
-  // Collect source (BSP repo)
+  // Collect BSP source — a single reference URL (no subpath).
   const sourceRepo = document.getElementById('sourceRepo')?.value?.trim();
-  const sourceSubpath = document.getElementById('sourceSubpath')?.value?.trim();
   if (sourceRepo) {
     boardData.source = { repo: sourceRepo };
-    if (sourceSubpath) boardData.source.subpath = sourceSubpath;
   }
 
   try {
