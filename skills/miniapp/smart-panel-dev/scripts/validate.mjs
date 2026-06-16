@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * panel-foundation/validate.mjs
+ * smart-panel-dev/validate.mjs
  *
  * Pre-submission validator for Tuya Ray panel miniapp projects.
  * Run from anywhere inside a panel project; the script finds the
@@ -480,13 +480,13 @@ async function main() {
   const start = argv[0] ? path.resolve(argv[0]) : process.cwd();
   const root = findProjectRoot(start);
   if (!root) {
-    console.error(`\x1b[31m[panel-foundation] cannot find project.tuya.json starting from ${start}\x1b[0m`);
+    console.error(`\x1b[31m[smart-panel-dev] cannot find project.tuya.json starting from ${start}\x1b[0m`);
     console.error('   run this from inside a Tuya Ray panel project (the directory with project.tuya.json),');
     console.error('   or pass the path explicitly: node validate.mjs /path/to/source/miniapp');
     process.exit(3);
   }
 
-  console.log(`[panel-foundation] validating: ${root}\n`);
+  console.log(`[smart-panel-dev] validating: ${root}\n`);
 
   const report = new Report();
   await checkProjectTuyaJson(root, report);
@@ -503,6 +503,6 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error(`\x1b[31m[panel-foundation] crash: ${e.stack ?? e.message ?? e}\x1b[0m`);
+  console.error(`\x1b[31m[smart-panel-dev] crash: ${e.stack ?? e.message ?? e}\x1b[0m`);
   process.exit(4);
 });

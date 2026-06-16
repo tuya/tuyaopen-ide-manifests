@@ -448,23 +448,35 @@
       }
     },
     {
-      "id": "miniapp-panel-foundation",
+      "id": "smart-panel-dev",
       "order": 99,
-      "name": { "en": "Panel Foundation", "zh-CN": "面板基础约束" },
+      "name": { "en": "Smart Panel Dev (Master)", "zh-CN": "面板开发主入口" },
       "surface": "miniapp",
       "summary": {
-        "en": "Foundational guide: architecture, dev conventions, and upload audit checklist for Tuya Ray panel miniapp projects.",
-        "zh-CN": "Tuya Ray 面板小程序项目的基础指南：架构、开发铁律、上传审核自检清单。"
+        "en": "Single entry point and orchestrator for Tuya Ray panel miniapp development. Covers architecture, dev conventions, upload audit, and dispatches to category- or topic-specific skills (ray-common, smart-ui, charts-library, lamp/socket/robot-vacuum/ipc/electrician-timing/energy-stats, performance-ux-guard, requirement-guide) when deeper detail is needed.",
+        "zh-CN": "Tuya Ray 面板小程序开发的统一入口与调度器。涵盖架构、开发铁律、上传审核自检，并按需分派到子技能（ray-common、smart-ui、charts-library、灯/插座/扫地机/IPC/电工定时/能耗统计、performance-ux-guard、requirement-guide）。通过本技能即可跑通整条面板开发流水线。"
       },
       "whenToUse": {
-        "en": "Use FIRST in any panel miniapp project — before category-specific skills and before claiming a feature is ready to upload. Also use whenever AI generates React patterns (useState/fetch) for things that should go through panel-sdk hooks or cloud-api.",
-        "zh-CN": "进入任何面板小程序项目时必先读 —— 早于品类专属 skill，早于声明功能完成可上传。AI 用 useState 管 DP 或 fetch 直连后端时也立即触发本 skill。"
+        "en": "Use the moment any panel miniapp work begins — opening a project, reading or writing a DP, picking a category template, designing a page, writing PRD, reviewing code, preparing for upload. From here, dispatch to ray-common / smart-ui / category skill / performance-ux-guard / requirement-guide as the task demands.",
+        "zh-CN": "凡涉及面板小程序的开发任务都从本技能进入——打开项目、读写 DP、选品类模板、写 PRD、code review、上传准备一律先走这里，再按需分派到 ray-common / smart-ui / 品类技能 / performance-ux-guard / requirement-guide。"
       },
-      "tags": ["miniapp", "panel", "ray", "foundation", "architecture", "audit"],
+      "tags": ["miniapp", "panel", "ray", "orchestrator", "entry-point", "architecture", "audit"],
       "defaultEnabled": true,
-      "installPayload": "miniapp-panel-foundation",
-      "related": ["miniapp-ray-common", "miniapp-smart-ui", "miniapp-performance-ux-guard"],
-      "source": { "localPath": "skills/miniapp/panel-foundation" }
+      "installPayload": "smart-panel-dev",
+      "related": [
+        "miniapp-ray-common",
+        "miniapp-smart-ui",
+        "miniapp-charts-library",
+        "miniapp-socket-panel",
+        "miniapp-lamp-panel",
+        "miniapp-robot-vacuum",
+        "miniapp-ipc-panel",
+        "miniapp-electrician-timing",
+        "miniapp-energy-stats",
+        "miniapp-performance-ux-guard",
+        "miniapp-requirement-guide"
+      ],
+      "source": { "localPath": "skills/miniapp/smart-panel-dev" }
     },
     {
       "id": "miniapp-ray-common",
