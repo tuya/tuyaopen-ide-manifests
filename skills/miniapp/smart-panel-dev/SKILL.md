@@ -41,7 +41,7 @@ related:
   - miniapp-requirement-guide
 ---
 
-# Tuya Smart Panel Dev — 主入口 / 调度器
+# 智能面板开发（Smart Panel Development）
 
 ## 概述 {#description}
 

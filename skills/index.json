@@ -450,7 +450,7 @@
     {
       "id": "smart-panel-dev",
       "order": 99,
-      "name": { "en": "Smart Panel Dev (Master)", "zh-CN": "面板开发主入口" },
+      "name": { "en": "Smart Panel Development", "zh-CN": "智能面板开发" },
       "surface": "miniapp",
       "summary": {
         "en": "Single entry point and orchestrator for Tuya Ray panel miniapp development. Covers architecture, dev conventions, upload audit, and dispatches to category- or topic-specific skills (ray-common, smart-ui, charts-library, lamp/socket/robot-vacuum/ipc/electrician-timing/energy-stats, performance-ux-guard, requirement-guide) when deeper detail is needed.",
