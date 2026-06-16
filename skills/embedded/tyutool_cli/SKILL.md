@@ -1,5 +1,5 @@
 ---
-name: tyutool/cli
+name: tyutool-cli
 description: >-
   Direct tyutool_cli usage for TuyaOpen hardware: list serial ports,
   flash firmware (write), read flash, hardware reset (DTR/RTS), and

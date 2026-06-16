@@ -1,5 +1,5 @@
 ---
-name: miniapp/ray-common
+name: miniapp-ray-common
 description: 面向 Ray 小程序开发提供以索引为先的文档导航与实现约束，在用户进行页面或 UI 搭建、组件封装与改造、Ray API 与设备能力集成、生命周期与路由、图片转代码、多语言与样式、或排障与升级时使用；实现前须依据 references/ray/INDEX.md 与路由文档定位能力，禁止虚构 API 与生命周期钩子。
 ---
 

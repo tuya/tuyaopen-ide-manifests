@@ -12,7 +12,7 @@
   },
   "items": [
     {
-      "id": "tuyaopen/build",
+      "id": "tuyaopen-build",
       "order": 1,
       "name": {
         "en": "TuyaOpen Build",
@@ -37,8 +37,8 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/build",
       "related": [
-        "tuyaopen/dev-loop",
-        "tuyaopen/project-config"
+        "tuyaopen-dev-loop",
+        "tuyaopen-project-config"
       ],
       "source": {
         "devSkills": true,
@@ -46,7 +46,7 @@
       }
     },
     {
-      "id": "tuyaopen/project-config",
+      "id": "tuyaopen-project-config",
       "order": 6,
       "name": {
         "en": "TuyaOpen Project Config",
@@ -71,7 +71,7 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/project-config",
       "related": [
-        "tuyaopen/build"
+        "tuyaopen-build"
       ],
       "source": {
         "devSkills": true,
@@ -105,8 +105,8 @@
       "defaultEnabled": true,
       "installPayload": "embedded/ecosystem-wire-cmake",
       "related": [
-        "tuyaopen/build",
-        "tuyaopen/project-config"
+        "tuyaopen-build",
+        "tuyaopen-project-config"
       ],
       "source": {
         "localPath": "skills/embedded/ecosystem-wire-cmake"
@@ -140,7 +140,7 @@
       "defaultEnabled": true,
       "installPayload": "cloud/tuya-iot-platform",
       "related": [
-        "tuyaopen/device-auth"
+        "tuyaopen-device-auth"
       ],
       "source": {
         "localPath": "skills/cloud/tuya-iot-platform"
@@ -178,8 +178,8 @@
       "installPayload": "embedded/smart-product-dev",
       "related": [
         "tuya-iot-platform",
-        "tuyaopen/dev-loop",
-        "tuyaopen/project-config"
+        "tuyaopen-dev-loop",
+        "tuyaopen-project-config"
       ],
       "source": {
         "localPath": "skills/embedded/smart-product-dev"
@@ -215,15 +215,15 @@
       "installPayload": "embedded/hardware-vibe-coding",
       "related": [
         "smart-product-dev",
-        "tuyaopen/build",
-        "tuyaopen/project-config"
+        "tuyaopen-build",
+        "tuyaopen-project-config"
       ],
       "source": {
         "localPath": "skills/embedded/hardware-vibe-coding"
       }
     },
     {
-      "id": "tyutool/cli",
+      "id": "tyutool-cli",
       "order": 15,
       "name": {
         "en": "tyutool CLI",
@@ -248,16 +248,16 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tyutool_cli",
       "related": [
-        "tuyaopen/dev-loop",
-        "tuyaopen/device-auth",
-        "tuyaopen/debug-helper"
+        "tuyaopen-dev-loop",
+        "tuyaopen-device-auth",
+        "tuyaopen-debug-helper"
       ],
       "source": {
         "localPath": "skills/embedded/tyutool_cli"
       }
     },
     {
-      "id": "tuyaopen/debug-helper",
+      "id": "tuyaopen-debug-helper",
       "order": 20,
       "name": {
         "en": "TuyaOpen Debug Helper",
@@ -281,8 +281,8 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/debug-helper",
       "related": [
-        "tuyaopen/dev-loop",
-        "tuyaopen/device-auth"
+        "tuyaopen-dev-loop",
+        "tuyaopen-device-auth"
       ],
       "source": {
         "devSkills": true,
@@ -290,7 +290,7 @@
       }
     },
     {
-      "id": "tuyaopen/add-board",
+      "id": "tuyaopen-add-board",
       "order": 21,
       "name": {
         "en": "Add Board (BSP)",
@@ -313,8 +313,8 @@
       "defaultEnabled": false,
       "installPayload": "embedded/tuyaopen/add-board",
       "related": [
-        "tuyaopen/build",
-        "tuyaopen/project-config"
+        "tuyaopen-build",
+        "tuyaopen-project-config"
       ],
       "source": {
         "devSkills": true,
@@ -322,7 +322,7 @@
       }
     },
     {
-      "id": "tuyaopen/code-check",
+      "id": "tuyaopen-code-check",
       "order": 22,
       "name": {
         "en": "Code Check",
@@ -345,7 +345,7 @@
       "defaultEnabled": false,
       "installPayload": "embedded/tuyaopen/code-check",
       "related": [
-        "tuyaopen/build"
+        "tuyaopen-build"
       ],
       "source": {
         "devSkills": true,
@@ -353,7 +353,7 @@
       }
     },
     {
-      "id": "tuyaopen/dev-loop",
+      "id": "tuyaopen-dev-loop",
       "order": 23,
       "name": {
         "en": "Build–Flash–Monitor Loop",
@@ -376,8 +376,8 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/dev-loop",
       "related": [
-        "tuyaopen/build",
-        "tuyaopen/debug-helper"
+        "tuyaopen-build",
+        "tuyaopen-debug-helper"
       ],
       "source": {
         "devSkills": true,
@@ -385,7 +385,7 @@
       }
     },
     {
-      "id": "tuyaopen/device-auth",
+      "id": "tuyaopen-device-auth",
       "order": 24,
       "name": {
         "en": "Device Authorization",
@@ -408,8 +408,8 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/device-auth",
       "related": [
-        "tuyaopen/dev-loop",
-        "tuyaopen/project-config"
+        "tuyaopen-dev-loop",
+        "tuyaopen-project-config"
       ],
       "source": {
         "devSkills": true,
@@ -417,7 +417,7 @@
       }
     },
     {
-      "id": "tuyaopen/env-setup",
+      "id": "tuyaopen-env-setup",
       "order": 25,
       "name": {
         "en": "Environment Setup",
@@ -440,7 +440,7 @@
       "defaultEnabled": true,
       "installPayload": "embedded/tuyaopen/env-setup",
       "related": [
-        "tuyaopen/build"
+        "tuyaopen-build"
       ],
       "source": {
         "devSkills": true,
@@ -448,7 +448,7 @@
       }
     },
     {
-      "id": "miniapp/panel-foundation",
+      "id": "miniapp-panel-foundation",
       "order": 99,
       "name": { "en": "Panel Foundation", "zh-CN": "面板基础约束" },
       "surface": "miniapp",
@@ -462,12 +462,12 @@
       },
       "tags": ["miniapp", "panel", "ray", "foundation", "architecture", "audit"],
       "defaultEnabled": true,
-      "installPayload": "miniapp/panel-foundation",
-      "related": ["miniapp/ray-common", "miniapp/smart-ui", "miniapp/performance-ux-guard"],
+      "installPayload": "miniapp-panel-foundation",
+      "related": ["miniapp-ray-common", "miniapp-smart-ui", "miniapp-performance-ux-guard"],
       "source": { "localPath": "skills/miniapp/panel-foundation" }
     },
     {
-      "id": "miniapp/ray-common",
+      "id": "miniapp-ray-common",
       "order": 100,
       "name": {
         "en": "Ray Common Development",
@@ -484,11 +484,11 @@
       },
       "tags": ["miniapp", "ray", "panel"],
       "defaultEnabled": true,
-      "installPayload": "miniapp/ray-common",
+      "installPayload": "miniapp-ray-common",
       "source": { "localPath": "skills/miniapp/ray-common" }
     },
     {
-      "id": "miniapp/smart-ui",
+      "id": "miniapp-smart-ui",
       "order": 101,
       "name": {
         "en": "Smart UI Components",
@@ -510,12 +510,12 @@
         "components"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/smart-ui",
-      "related": ["miniapp/ray-common"],
+      "installPayload": "miniapp-smart-ui",
+      "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/smart-ui" }
     },
     {
-      "id": "miniapp/lamp-panel",
+      "id": "miniapp-lamp-panel",
       "order": 110,
       "name": {
         "en": "Lighting Panel",
@@ -538,12 +538,12 @@
         "lighting"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/lamp-panel",
-      "related": ["miniapp/ray-common", "miniapp/smart-ui"],
+      "installPayload": "miniapp-lamp-panel",
+      "related": ["miniapp-ray-common", "miniapp-smart-ui"],
       "source": { "localPath": "skills/miniapp/lamp-panel" }
     },
     {
-      "id": "miniapp/socket-panel",
+      "id": "miniapp-socket-panel",
       "order": 111,
       "name": {
         "en": "Socket / Power Strip Panel",
@@ -566,12 +566,12 @@
         "electrician"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/socket-panel",
-      "related": ["miniapp/ray-common", "miniapp/electrician-timing", "miniapp/energy-stats"],
+      "installPayload": "miniapp-socket-panel",
+      "related": ["miniapp-ray-common", "miniapp-electrician-timing", "miniapp-energy-stats"],
       "source": { "localPath": "skills/miniapp/socket-panel" }
     },
     {
-      "id": "miniapp/robot-vacuum",
+      "id": "miniapp-robot-vacuum",
       "order": 112,
       "name": {
         "en": "Robot Vacuum Panel",
@@ -594,12 +594,12 @@
         "map"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/robot-vacuum",
-      "related": ["miniapp/ray-common"],
+      "installPayload": "miniapp-robot-vacuum",
+      "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/robot-vacuum" }
     },
     {
-      "id": "miniapp/ipc-panel",
+      "id": "miniapp-ipc-panel",
       "order": 113,
       "name": {
         "en": "IPC Camera Panel",
@@ -622,12 +622,12 @@
         "camera"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/ipc-panel",
-      "related": ["miniapp/ray-common"],
+      "installPayload": "miniapp-ipc-panel",
+      "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/ipc-panel" }
     },
     {
-      "id": "miniapp/charts-library",
+      "id": "miniapp-charts-library",
       "order": 120,
       "name": {
         "en": "Charts Library",
@@ -649,12 +649,12 @@
         "visualization"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/charts-library",
-      "related": ["miniapp/ray-common", "miniapp/energy-stats"],
+      "installPayload": "miniapp-charts-library",
+      "related": ["miniapp-ray-common", "miniapp-energy-stats"],
       "source": { "localPath": "skills/miniapp/charts-library" }
     },
     {
-      "id": "miniapp/electrician-timing",
+      "id": "miniapp-electrician-timing",
       "order": 121,
       "name": {
         "en": "Electrician Timing SDK",
@@ -676,12 +676,12 @@
         "timing"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/electrician-timing",
-      "related": ["miniapp/socket-panel"],
+      "installPayload": "miniapp-electrician-timing",
+      "related": ["miniapp-socket-panel"],
       "source": { "localPath": "skills/miniapp/electrician-timing" }
     },
     {
-      "id": "miniapp/energy-stats",
+      "id": "miniapp-energy-stats",
       "order": 122,
       "name": {
         "en": "Energy Statistics",
@@ -703,12 +703,12 @@
         "statistics"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/energy-stats",
-      "related": ["miniapp/charts-library", "miniapp/socket-panel"],
+      "installPayload": "miniapp-energy-stats",
+      "related": ["miniapp-charts-library", "miniapp-socket-panel"],
       "source": { "localPath": "skills/miniapp/energy-stats" }
     },
     {
-      "id": "miniapp/requirement-guide",
+      "id": "miniapp-requirement-guide",
       "order": 130,
       "name": {
         "en": "Requirement Creating Guide",
@@ -730,11 +730,11 @@
         "planning"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/requirement-guide",
+      "installPayload": "miniapp-requirement-guide",
       "source": { "localPath": "skills/miniapp/requirement-guide" }
     },
     {
-      "id": "miniapp/performance-ux-guard",
+      "id": "miniapp-performance-ux-guard",
       "order": 131,
       "name": {
         "en": "Performance & UX Guard",
@@ -756,8 +756,8 @@
         "ux"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/performance-ux-guard",
-      "related": ["miniapp/ray-common"],
+      "installPayload": "miniapp-performance-ux-guard",
+      "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/performance-ux-guard" }
     }
   ]

@@ -1,5 +1,5 @@
 ---
-name: miniapp/smart-ui
+name: miniapp-smart-ui
 description: 面向 Ray 小程序 smart-ui，基于 meta-first 工作流协助生成与修改页面与组件。在用户提出 UI 搭建、组件改造、表单与反馈交互、导航展示、图片转代码或 smart-ui 排障升级时使用；仅覆盖 smart-ui，实现前须查阅 _meta.json 与组件文档，禁止虚构 props、事件与能力。
 ---
 

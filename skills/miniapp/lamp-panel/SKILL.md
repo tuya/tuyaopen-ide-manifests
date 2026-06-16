@@ -1,5 +1,5 @@
 ---
-name: miniapp/lamp-panel
+name: miniapp-lamp-panel
 description: Use this skill for Tuya（涂鸦）照明品类 Ray 小程序面板开发。当用户涉及以下任意场景时触发：创建或修改灯具面板、DP 类型定义；读写 bright_value / temp_value / colour_data / control_data / scene_data / music_data 等照明 DP；使用 LampBrightSlider、LampTempSlider、LampRectPickerColor 等 lamp-* 组件（含 import 方式、onTouchMove / onTouchEnd 回调）；在 useProps / useStructuredProps / useActions / useStructuredActions 之间选择正确 hook；调用 ty.presetFunctionalData 跳转功能页（定时、断电记忆、灯光渐变）；设计 work_mode 白光/彩光/场景/音乐状态机；排查照明 DP 下发无响应或值域越界。非照明品类（门锁、插座等）不触发。
 ---
 

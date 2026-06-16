@@ -1,5 +1,5 @@
 ---
-name: miniapp/panel-foundation
+name: miniapp-panel-foundation
 description: >-
   Foundational guide for Tuya Ray miniapp panel projects scaffolded by
   TuyaOpen IDE. Covers the real on-disk project layout (`project.tuya.json`,
@@ -17,7 +17,7 @@ when_to_use: >-
   (useState/useEffect) for things that should go through panel-sdk hooks.
   Do NOT use for non-panel miniapps, web pages, or pure smart-ui
   documentation questions (use smart-ui-skill instead).
-id: miniapp/panel-foundation
+id: miniapp-panel-foundation
 surface: miniapp
 tags: [miniapp, panel, ray, foundation, architecture, audit, upload]
 license: Apache-2.0
