@@ -1,5 +1,5 @@
 ---
-name: tuya-ipc-panel-template
+name: miniapp/ipc-panel
 description: 涂鸦 IPC（摄像机）面板小程序模板（panel-ipc / public-ipc-template / tuya-ray-materials PublicPanelIpc）开发专家，指导 AI Agent 在该模板内为外部开发者新增/修改功能项、串联 DP、配置融合播放器、接入 VAS 运营位、实现路径巡航等能力。当用户在 panel-ipc 仓库中提到 LayoutFeature / LayoutFooter / FeatureMenu / configData / publishDpOutTime / IPCPlayerIntegration / SDM / @ray-js/ipc-player-integration / @ray-js/ray-ipc-utils / @ray-js/panel-sdk / ipc_mobile_path / memory_point_set，或询问主页宫格/底部 TabBar/弹窗/枚举 DP/PTZ/隐私模式/回放/云存/相册/对讲/品牌色/骨架屏/横屏 时触发。Tuya IPC mini-app panel — declarative FeatureMenu/TabBar grid, integrated player, VAS banner, PTZ + collect points, path cruise (mobilecam), DP wiring conventions.
 ---
 

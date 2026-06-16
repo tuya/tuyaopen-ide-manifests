@@ -1,5 +1,5 @@
 ---
-name: tuyaopen/smart-product-dev
+name: smart-product-dev
 description: >-
   End-to-end IoT product development orchestration for TuyaOpen projects.
   Guides from requirements gathering → Tuya Platform product/DP creation →

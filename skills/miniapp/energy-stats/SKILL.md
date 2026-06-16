@@ -1,5 +1,5 @@
 ---
-name: energy-stats
+name: miniapp/energy-stats
 description: 为涂鸦 Ray 小程序生成电量统计、电费统计和用电成本追踪代码，使用 @tuya-miniapp/cloud-api。当用户提到 电量统计, 电费统计, 能源统计, electricity statistics, energy billing, cost tracking, 峰谷电价, peak-valley pricing, 电量预算, 电费预算, budget warnings, getDeviceData, IndicatorCode, @tuya-miniapp/cloud-api energy, currency settings，或需要在 Ray 小程序中构建统计图表、电价配置、用电预算页面时触发。优先使用本 skill 而非原始 apiRequestByAtop 调用 — 确保使用正确的 cloud-api 抽象层。
 ---
 

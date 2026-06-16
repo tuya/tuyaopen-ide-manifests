@@ -1,5 +1,5 @@
 ---
-name: miniapp-performance-ux-guard
+name: miniapp/performance-ux-guard
 description: >-
   Reviews and improves Tuya 小程序/miniapp/Ray quality in one package: build guardrails, launch/first-screen performance, release review gates, and design-to-code/component architecture. Use when implementing or modifying pages/components/forms/lists/dialogs/async flows; fixing bugs, UI, interaction, loading/error/empty states, or i18n copy; optimizing 启动性能、首屏、白屏、FMP、包体积、分包、预加载、骨架屏、数据预取、缓存、CDN、Smart UI 按需加载、Ray 通信、react-dom、内存缓存; doing review、上线前检查、准入、release gate、quality grade、召回、体验度量、埋点闭环、告警阈值; or working from MasterGo、设计稿、UI还原、组件拆分、Smart UI、Dialog、Overlay、ActionSheet、弹窗、抽屉、底部面板.
 ---

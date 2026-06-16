@@ -1,5 +1,5 @@
 ---
-name: robot-vacuum-develop-skills
+name: miniapp/robot-vacuum
 description: "Tuya/涂鸦 sweep robot/扫地机 panel development with proprietary API docs not available from general knowledge. Trigger on RobotMap/RjsRobotMap component; sweep robot DP codes (switch_go, pause, mode, suction, status, command_trans); map features (room/zone/spot cleaning, forbidden areas, virtual walls); @ray-js/robot-map, @ray-js/robot-map-sdk, @ray-js/robot-protocol, @ray-js/robot-data-stream; sweeprobottemplate; protocol encoding/decoding (raster hex/binary or structured JSON/MQTT); robot vacuum map rendering, layers, or cleaning commands in Tuya context. Do NOT trigger for iRobot/Roborock SDK, Google/Mapbox maps, generic MQTT, or Tuya IPC/cameras."
 ---
 

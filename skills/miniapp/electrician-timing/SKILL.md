@@ -1,5 +1,5 @@
 ---
-name: electrician-timing-sdk-integration
+name: miniapp/electrician-timing
 description: 将 @ray-js/electrician-timing-sdk 接入业务代码位于 src/* 的 Ray 小程序 / 面板宿主工程。覆盖 app onLaunch 一次性 init、设备或群组切换时按需 changeConfig、页面级 ConflictPopup 与 useDefaultModal 联动，以及六类定时——云定时、循环、随机、点动（延时关 / 点动定时 / inching）、倒计时、天文（天文**不**属于本 SDK）。当用户提到「电工定时 SDK 接入」「Ray 面板小程序定时接入」「supportCloud / supportCycle / supportRandom / supportInching」「changeConfig 设备或群组切换」「conflictModallId」「electri.cycle / electri.random / electri.inching」「addCloudTimer」「createCountdown」时使用本 skill。
 ---
 

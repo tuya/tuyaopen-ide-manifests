@@ -1,5 +1,5 @@
 ---
-name: Wire ecosystem library into CMake
+name: ecosystem-wire-cmake
 description: Wire a downloaded PlatformIO-Registry library into the active TuyaOpen project's CMakeLists.txt and (where applicable) Kconfig / tos.py module list. The pinned version, source URL, and install path are already declared in `.tuyaopen/dependencies.lock.json` (and mirrored into the `[ecosystem]` section of `tuyaopen.project.ini`) — read those files first instead of guessing.
 when_to_use: Triggered automatically after the IDE downloads a third-party library from the Library → Ecosystem tab into `source/embedded/dependencies/<owner>/<name>/`. Use it when the user asks the agent to "wire", "integrate", or "register" a freshly-installed library into the build.
 
