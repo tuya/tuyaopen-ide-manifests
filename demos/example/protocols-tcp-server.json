@@ -1,0 +1,10 @@
+{
+  "id": "protocols-tcp-server",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/tcp_server",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/tcp_server/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/tcp_server/README_CN.md"
+    }
+  }
+}

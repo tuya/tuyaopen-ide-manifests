@@ -1,0 +1,10 @@
+{
+  "id": "peripherals-timer",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/timer",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/timer/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/timer/README_CN.md"
+    }
+  }
+}

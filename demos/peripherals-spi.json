@@ -1,9 +1,0 @@
-{
-  "id": "peripherals-spi",
-  "documentation": {
-    "readme": {
-      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/spi/README.md",
-      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/spi/README_CN.md"
-    }
-  }
-}

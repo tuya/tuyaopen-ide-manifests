@@ -2,42 +2,13 @@
   "schemaVersion": 1,
   "platformId": "t5ai",
   "id": "t5ai",
-  "name": "T5AI",
   "arch": "arm-cortex-m33",
   "flashInterface": "qspi",
-  "gpioDisplayPrefix": "P",
   "connectivity": {
-    "wifi": {
-      "enabled": true,
-      "enableMacro": "ENABLE_WIFI",
-      "standard": "802.11b/g/n/ax",
-      "bands": [
-        "2.4GHz"
-      ],
-      "security": [
-        "WPA",
-        "WPA2",
-        "WPA3-Personal"
-      ],
-      "modes": [
-        "STA",
-        "AP",
-        "Direct"
-      ]
-    },
-    "ble": {
-      "enabled": true,
-      "enableMacro": "ENABLE_BLUETOOTH",
-      "version": "5.4"
-    },
-    "ethernet": {
-      "enabled": false,
-      "enableMacro": "ENABLE_WIRED"
-    },
-    "cellular": {
-      "enabled": false,
-      "enableMacro": "ENABLE_CELLULAR"
-    }
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
   },
   "memory": {
     "sramBytes": 655360,
@@ -47,6 +18,29 @@
     "efuse": true
   },
   "peripherals": {
+    "wifi": {
+      "spec": {
+        "standard": "802.11b/g/n/ax",
+        "bands": [
+          "2.4GHz"
+        ],
+        "security": [
+          "WPA",
+          "WPA2",
+          "WPA3-Personal"
+        ],
+        "modes": [
+          "STA",
+          "AP",
+          "Direct"
+        ]
+      }
+    },
+    "ble": {
+      "spec": {
+        "version": "5.4"
+      }
+    },
     "gpio": {
       "enabled": true,
       "count": 56,
@@ -91,7 +85,6 @@
       }
     },
     "uart": {
-      "enabled": true,
       "count": 3,
       "spec": {
         "baudrate": {
@@ -122,7 +115,7 @@
             "role": "download",
             "irq": {
               "rx": true,
-              "tx": false
+              "tx": true
             },
             "pinGroups": [
               {
@@ -138,7 +131,7 @@
             "role": "log",
             "irq": {
               "rx": true,
-              "tx": false
+              "tx": true
             },
             "pinGroups": [
               {
@@ -152,7 +145,7 @@
             "role": "general",
             "irq": {
               "rx": true,
-              "tx": false
+              "tx": true
             },
             "pinGroups": [
               {
@@ -166,7 +159,8 @@
             ]
           }
         ]
-      }
+      },
+      "enabled": true
     },
     "i2c": {
       "enabled": true,
@@ -181,10 +175,6 @@
         ],
         "addrWidth": [
           "TUYA_IIC_ADDRESS_7BIT"
-        ],
-        "portType": [
-          "hw",
-          "sw"
         ],
         "ports": [
           {
@@ -229,7 +219,9 @@
           },
           {
             "id": 2,
-            "type": "sw",
+            "type": [
+              "sw"
+            ],
             "irq": false
           }
         ]
@@ -282,10 +274,10 @@
                 "miso": 17
               },
               {
-                "clk": 45,
-                "cs": 47,
-                "mosi": 44,
-                "miso": 46
+                "clk": 44,
+                "cs": 45,
+                "mosi": 46,
+                "miso": 47
               }
             ]
           },
@@ -300,10 +292,10 @@
             },
             "pinGroups": [
               {
-                "clk": 3,
-                "cs": 5,
-                "mosi": 2,
-                "miso": 4
+                "clk": 2,
+                "cs": 3,
+                "mosi": 4,
+                "miso": 5
               }
             ]
           },
@@ -375,26 +367,30 @@
           {
             "id": 0,
             "dma": true,
-            "pins": {
-              "clk": 22,
-              "cs": 23,
-              "d0": 24,
-              "d1": 25,
-              "d2": 26,
-              "d3": 27
-            }
+            "pinGroups": [
+              {
+                "clk": 22,
+                "cs": 23,
+                "d0": 24,
+                "d1": 25,
+                "d2": 26,
+                "d3": 27
+              }
+            ]
           },
           {
             "id": 1,
             "dma": true,
-            "pins": {
-              "clk": 2,
-              "cs": 3,
-              "d0": 4,
-              "d1": 5,
-              "d2": 6,
-              "d3": 7
-            }
+            "pinGroups": [
+              {
+                "clk": 2,
+                "cs": 3,
+                "d0": 4,
+                "d1": 5,
+                "d2": 6,
+                "d3": 7
+              }
+            ]
           }
         ]
       }
@@ -548,7 +544,6 @@
       }
     },
     "timer": {
-      "enabled": true,
       "count": 3,
       "spec": {
         "bits": 32,
@@ -557,11 +552,12 @@
           "TUYA_TIMER_MODE_PERIOD"
         ],
         "ids": [
-          3,
-          4,
-          5
+          0,
+          1,
+          2
         ]
-      }
+      },
+      "enabled": true
     },
     "wdt": {
       "enabled": true,
@@ -575,71 +571,48 @@
       "enabled": true,
       "count": 1,
       "spec": {
-        "partitionTypes": [
-          "TUYA_FLASH_TYPE_APP",
-          "TUYA_FLASH_TYPE_APP_BIN",
-          "TUYA_FLASH_TYPE_OTA",
-          "TUYA_FLASH_TYPE_USER0",
-          "TUYA_FLASH_TYPE_KV_DATA",
-          "TUYA_FLASH_TYPE_KV_KEY",
-          "TUYA_FLASH_TYPE_UF"
-        ],
         "partitionMap": [
           {
             "type": "TUYA_FLASH_TYPE_APP",
             "startAddr": "0x020000",
             "endAddr": "0x7C7000",
             "size": 8024064,
-            "blockSize": 4096,
-            "desc": "Application firmware (cpu0 + cpu1 + cpu2)"
-          },
-          {
-            "type": "TUYA_FLASH_TYPE_APP_BIN",
-            "startAddr": "0x020000",
-            "endAddr": "0x7C7000",
-            "size": 8024064,
-            "blockSize": 4096,
-            "desc": "Same physical region as APP; used for binary flashing"
+            "blockSize": 4096
           },
           {
             "type": "TUYA_FLASH_TYPE_OTA",
             "startAddr": "0x7C9000",
             "endAddr": "0x7CB000",
             "size": 8192,
-            "blockSize": 4096,
-            "desc": "OTA update metadata"
+            "blockSize": 4096
           },
           {
             "type": "TUYA_FLASH_TYPE_USER0",
             "startAddr": "0x7CE000",
             "endAddr": "0x7DD000",
             "size": 61440,
-            "blockSize": 4096,
-            "desc": "User resources (res)"
+            "blockSize": 4096
           },
           {
             "type": "TUYA_FLASH_TYPE_KV_DATA",
             "startAddr": "0x7DD000",
             "endAddr": "0x7ED000",
             "size": 65536,
-            "blockSize": 4096,
-            "desc": "Key-value data storage"
+            "blockSize": 4096
           },
           {
             "type": "TUYA_FLASH_TYPE_UF",
             "startAddr": "0x7ED000",
             "endAddr": "0x7FD000",
             "size": 65536,
-            "blockSize": 4096,
-            "desc": "User file system"
+            "blockSize": 4096
           },
           {
             "type": "TUYA_FLASH_TYPE_KV_KEY",
             "startAddr": "0x7FD000",
             "endAddr": "0x7FE000",
             "size": 4096,
-            "blockSize": 4096,
-            "desc": "Key-value encryption key"
+            "blockSize": 4096
           }
         ]
       }
@@ -666,6 +639,14 @@
             "TUYA_SPI0_MOSI",
             "TUYA_SPI0_CLK",
             "TUYA_SPI0_CS"
+          ],
+          "sdio": [
+            "TUYA_SDIO_CLK",
+            "TUYA_SDIO_CMD",
+            "TUYA_SDIO_DATA0",
+            "TUYA_SDIO_DATA1",
+            "TUYA_SDIO_DATA2",
+            "TUYA_SDIO_DATA3"
           ]
         }
       }
@@ -701,43 +682,45 @@
         "ports": [
           {
             "id": 0,
-            "pins": {
-              "dclk": 14,
-              "disp": 15,
-              "de": 16,
-              "hsync": 17,
-              "vsync": 18,
-              "r": [
-                50,
-                49,
-                48,
-                23,
-                22,
-                21,
-                20,
-                19
-              ],
-              "g": [
-                52,
-                51,
-                42,
-                41,
-                40,
-                26,
-                25,
-                24
-              ],
-              "b": [
-                55,
-                54,
-                53,
-                47,
-                46,
-                45,
-                44,
-                43
-              ]
-            }
+            "pinGroups": [
+              {
+                "dclk": 14,
+                "disp": 15,
+                "de": 16,
+                "hsync": 17,
+                "vsync": 18,
+                "r": [
+                  50,
+                  49,
+                  48,
+                  23,
+                  22,
+                  21,
+                  20,
+                  19
+                ],
+                "g": [
+                  52,
+                  51,
+                  42,
+                  41,
+                  40,
+                  26,
+                  25,
+                  24
+                ],
+                "b": [
+                  55,
+                  54,
+                  53,
+                  47,
+                  46,
+                  45,
+                  44,
+                  43
+                ]
+              }
+            ]
           }
         ]
       }
@@ -770,33 +753,35 @@
         "ports": [
           {
             "id": 0,
-            "pins": {
-              "rdx": 26,
-              "wdx": 25,
-              "rsx": 24,
-              "reset": 23,
-              "csx": 22,
-              "data": [
-                47,
-                46,
-                45,
-                44,
-                43,
-                42,
-                41,
-                40,
-                21,
-                20,
-                19,
-                18,
-                17,
-                16,
-                15,
-                14,
-                48,
-                49
-              ]
-            }
+            "pinGroups": [
+              {
+                "rdx": 26,
+                "wdx": 25,
+                "rsx": 24,
+                "reset": 23,
+                "csx": 22,
+                "data": [
+                  47,
+                  46,
+                  45,
+                  44,
+                  43,
+                  42,
+                  41,
+                  40,
+                  21,
+                  20,
+                  19,
+                  18,
+                  17,
+                  16,
+                  15,
+                  14,
+                  48,
+                  49
+                ]
+              }
+            ]
           }
         ]
       }
@@ -825,28 +810,29 @@
         "ports": [
           {
             "id": 0,
-            "pins": {
-              "mclk": 27,
-              "pclk": 29,
-              "hsync": 30,
-              "vsync": 31,
-              "data": [
-                32,
-                33,
-                34,
-                35,
-                36,
-                37,
-                38,
-                39
-              ]
-            }
+            "pinGroups": [
+              {
+                "mclk": 27,
+                "pclk": 29,
+                "hsync": 30,
+                "vsync": 31,
+                "data": [
+                  32,
+                  33,
+                  34,
+                  35,
+                  36,
+                  37,
+                  38,
+                  39
+                ]
+              }
+            ]
           }
         ]
       }
     },
     "kws": {
-      "enabled": true,
       "count": 1,
       "spec": {
         "wakeupWords": [
@@ -859,7 +845,8 @@
           "TKL_KWS_WAKEUP_XIAOAI_XIAOAI",
           "TKL_KWS_WAKEUP_XIAODU_XIAODU"
         ]
-      }
+      },
+      "enabled": true
     },
     "vad": {
       "enabled": true,
@@ -868,13 +855,13 @@
   },
   "power": {
     "vdd": {
-      "min": 3.0,
+      "min": 3,
       "typical": 3.3,
       "max": 3.6,
       "unit": "V"
     },
     "ioLevel": {
-      "min": 3.0,
+      "min": 3,
       "max": 3.3,
       "unit": "V"
     },
@@ -886,73 +873,6 @@
       "wifi": 260,
       "ble": 35,
       "unit": "mA"
-    }
-  },
-  "flashAndDebug": {
-    "flash": {
-      "interface": "UART",
-      "baudrate": {
-        "default": 921600,
-        "max": 2000000,
-        "unit": "bps"
-      },
-      "pins": {
-        "tx": 11,
-        "rx": 10
-      },
-      "physicalPins": {
-        "tx": 37,
-        "rx": 36
-      },
-      "autoReset": true,
-      "usbUart": {
-        "channels": 2,
-        "note": {
-          "en": "Onboard dual-channel USB-to-UART chip; Channel 1 for flashing, Channel 2 for debug log.",
-          "zh-CN": "板载双路 USB 转 UART 芯片；通道 1 用于烧录，通道 2 用于调试日志。"
-        }
-      },
-      "guide": {
-        "en": [
-          "Open the serial debug tool from the TuyaOpen IDE menu to flash manually, or instruct the coding agent (e.g. Claude Code, Cursor) to auto-flash.",
-          "The chip module uses UART protocol natively. The module itself has no USB-to-UART — use a dev board with onboard converter or an external USB-to-UART adapter.",
-          "Flashing auto-resets via the dev board's USB-UART chip (no manual reset needed).",
-          "Default baudrate 921600 bps (up to 2 Mbps)."
-        ],
-        "zh-CN": [
-          "通过 TuyaOpen IDE 菜单打开串口调试工具进行手动烧写，或直接告诉 Coding Agent（如 Claude Code、Cursor）实现自动烧写。",
-          "芯片模组本身使用 UART 协议，模组不带 USB 转 UART 芯片。可使用成品开发板上的板载转换芯片，或外接 USB 转 UART 适配器。",
-          "烧录时通过开发板 USB-UART 芯片自动复位模组（无需手动复位）。",
-          "默认波特率 921600 bps（最高支持 2 Mbps）。"
-        ]
-      }
-    },
-    "debug": {
-      "interface": "UART2",
-      "baudrate": {
-        "default": 460800,
-        "unit": "bps"
-      },
-      "pins": {
-        "tx": 0,
-        "rx": 1
-      },
-      "physicalPins": {
-        "tx": 15,
-        "rx": 12
-      },
-      "guide": {
-        "en": [
-          "Open the serial debug tool from the TuyaOpen IDE menu to view runtime logs.",
-          "The second channel of the USB-UART chip serves as debug log output (UART1, 460800 bps).",
-          "Log port: UART1 TX = GPIO0 (pin 15), RX = GPIO1 (pin 12)."
-        ],
-        "zh-CN": [
-          "通过 TuyaOpen IDE 菜单打开串口调试工具查看运行日志。",
-          "板载 USB 转 UART 芯片的第二通道作为调试日志输出（UART1，460800 bps）。",
-          "日志端口：UART1 TX = GPIO0（管脚 15），RX = GPIO1（管脚 12）。"
-        ]
-      }
     }
   },
   "pinout": [
@@ -971,7 +891,7 @@
       "gpio": null,
       "type": "P",
       "functions": [
-        "VCC_3.3V"
+        "VCC"
       ]
     },
     {
@@ -980,7 +900,7 @@
       "gpio": null,
       "type": "I",
       "functions": [
-        "RESET (active low, internal pull-up)"
+        "RESET"
       ]
     },
     {
@@ -1019,7 +939,7 @@
       "type": "I/O",
       "functions": [
         "GPIO22",
-        "CLK26M",
+        "CLK_OUT",
         "ADC5",
         "QSPI0_SCK",
         "RGB_R4",
@@ -1049,7 +969,7 @@
       "functions": [
         "GPIO24",
         "LPO_CLK",
-        "PWM4",
+        "PWMG0_PWM4",
         "ADC2",
         "QSPI0_IO0",
         "RGB_G7",
@@ -1064,6 +984,7 @@
       "type": "I/O",
       "functions": [
         "GPIO25",
+        "PWMG0_PWM5",
         "IRDA",
         "ADC1",
         "QSPI0_IO1",
@@ -1095,7 +1016,7 @@
         "I2S_MCLK",
         "ADC4",
         "TOUCH2",
-        "CLK_AUXS_CIS",
+        "CIS_AUXCLK",
         "SEG18"
       ]
     },
@@ -1156,9 +1077,10 @@
       "type": "I/O",
       "functions": [
         "GPIO9",
+        "PWMG0_PWM3",
         "I2S0_DOUT",
         "DMIC_DAT",
-        "32K_XI"
+        "XI"
       ]
     },
     {
@@ -1168,10 +1090,11 @@
       "type": "I/O",
       "functions": [
         "GPIO8",
+        "PWMG0_PWM2",
         "I2S0_DIN",
         "DMIC_CLK",
         "ADC10",
-        "32K_XO"
+        "XO"
       ]
     },
     {
@@ -1341,7 +1264,7 @@
       "functions": [
         "GPIO18",
         "SDIO_DATA2",
-        "PWM0",
+        "PWMG0_PWM0",
         "RGB_VSYNC",
         "I8080_D11",
         "SEG12"
@@ -1354,6 +1277,7 @@
       "type": "I/O",
       "functions": [
         "GPIO19",
+        "PWMG0_PWM1",
         "SDIO_DATA3",
         "RGB_R7",
         "I8080_D10",
@@ -1432,7 +1356,7 @@
         "GPIO10",
         "DL_UART_RX",
         "SDIO_DATA2",
-        "CLK_AUXS_CIS",
+        "CIS_AUXCLK",
         "UART0_RX"
       ],
       "note": "Firmware download RX"
@@ -1498,7 +1422,7 @@
       "functions": [
         "GPIO27",
         "CIS_MCLK",
-        "CLK_AUXS_CIS",
+        "CIS_AUXCLK",
         "ENET_PHY_INT",
         "QSPI0_IO3",
         "SEG17"
@@ -1593,6 +1517,7 @@
       "type": "I/O",
       "functions": [
         "GPIO33",
+        "PWMG1_PWM1",
         "CIS_PXD1",
         "ENET_RXD0",
         "TOUCH7",
@@ -1608,7 +1533,7 @@
       "functions": [
         "GPIO32",
         "CIS_PXD0",
-        "PWM_G1_0",
+        "PWMG1_PWM0",
         "ENET_MDIO",
         "TOUCH6",
         "SC_RSTN",
@@ -1635,7 +1560,7 @@
       "functions": [
         "GPIO34",
         "CIS_PXD2",
-        "PWM_G1_2",
+        "PWMG1_PWM2",
         "ENET_RXD1",
         "TOUCH8",
         "SPI0_CSN",
@@ -1649,6 +1574,7 @@
       "type": "I/O",
       "functions": [
         "GPIO35",
+        "PWMG1_PWM3",
         "CIS_PXD3",
         "ENET_RXDV",
         "TOUCH9",
@@ -1697,7 +1623,7 @@
       "functions": [
         "GPIO36",
         "CIS_PXD4",
-        "PWM_G1_4",
+        "PWMG1_PWM4",
         "ENET_TXD0",
         "TOUCH10",
         "SPI0_MISO",
@@ -1711,6 +1637,7 @@
       "type": "I/O",
       "functions": [
         "GPIO37",
+        "PWMG1_PWM5",
         "CIS_PXD5",
         "ENET_TXD1",
         "TOUCH11",
@@ -1754,7 +1681,7 @@
       "gpio": null,
       "type": "AO",
       "functions": [
-        "Audio left channel negative output"
+        "AUDIO_LN"
       ],
       "note": "Speaker output"
     },
@@ -1764,7 +1691,7 @@
       "gpio": null,
       "type": "AO",
       "functions": [
-        "Audio left channel positive output"
+        "AUDIO_LP"
       ],
       "note": "Speaker output"
     },
@@ -1820,7 +1747,7 @@
       "gpio": null,
       "type": "AI",
       "functions": [
-        "Microphone 1 positive input (MIC1_P)"
+        "MIC1_P"
       ],
       "note": "MIC input"
     },
@@ -1830,7 +1757,7 @@
       "gpio": null,
       "type": "AI",
       "functions": [
-        "Microphone 1 negative input (MIC1_N)"
+        "MIC1_N"
       ],
       "note": "MIC input"
     },
@@ -1840,7 +1767,7 @@
       "gpio": null,
       "type": "AI",
       "functions": [
-        "Microphone 2 negative input (MIC2_N)"
+        "MIC2_N"
       ],
       "note": "Speaker AEC reference"
     },
@@ -1850,7 +1777,7 @@
       "gpio": null,
       "type": "AI",
       "functions": [
-        "Microphone 2 positive input (MIC2_P)"
+        "MIC2_P"
       ],
       "note": "Speaker AEC reference"
     },
@@ -1860,7 +1787,7 @@
       "gpio": null,
       "type": "AO",
       "functions": [
-        "Microphone bias output (MICBIAS)"
+        "MICBIAS"
       ]
     }
   ],

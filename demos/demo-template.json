@@ -12,27 +12,10 @@
   "tags": [
     "peripheral"
   ],
-  "compatibilityType": "board-specific",
   "boards": [
     "tuya-t5ai-evb"
   ],
-  "source": {
-    "repo": "https://github.com/tuya/TuyaOpen",
-    "subpath": "apps/your_app_path",
-    "ref": "master"
-  },
-  "defaultConfig": {
-    "BOARD_CHOICE_T5AI": "y"
-  },
-  "configs": {
-    "TUYA_T5AI_EVB": {
-      "file": "config/TUYA_T5AI_EVB.config"
-    }
-  },
-  "documentation": {
-    "readme": {
-      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/your_app_path/README.md",
-      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/your_app_path/README_CN.md"
-    }
-  }
+  "compatibilityType": "board-specific",
+  "detailUrl": "demos/example/your-demo-id.json",
+  "publish": true
 }

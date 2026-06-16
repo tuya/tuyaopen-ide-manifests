@@ -173,6 +173,55 @@ class ManifestLoader {
     }
   }
 
+  async savePlatformsIndex(data) {
+    try {
+      const filePath = path.join(config.paths.platforms, 'index.json');
+      const jsonContent = JSON.stringify(data, null, 2) + '\n';
+      await fs.writeFile(filePath, jsonContent, 'utf-8');
+      this.cache.platforms = data;
+      return true;
+    } catch (error) {
+      console.error('Error saving platforms manifest:', error.message);
+      throw new Error(`Failed to save platforms manifest: ${error.message}`);
+    }
+  }
+
+  // Variant detail lives at platforms/<platformId>/<variantId>.json.
+  async loadPlatformVariantDetail(platformId, variantId) {
+    try {
+      const filePath = path.join(config.paths.platforms, platformId, `${variantId}.json`);
+      await fs.access(filePath);
+      return JSON.parse(await fs.readFile(filePath, 'utf-8'));
+    } catch {
+      return null;
+    }
+  }
+
+  async savePlatformVariantDetail(platformId, variantId, data) {
+    const dir = path.join(config.paths.platforms, platformId);
+    await fs.mkdir(dir, { recursive: true });
+    const filePath = path.join(dir, `${variantId}.json`);
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
+    return filePath;
+  }
+
+  async deletePlatformVariantDetail(platformId, variantId) {
+    try { await fs.unlink(path.join(config.paths.platforms, platformId, `${variantId}.json`)); } catch { /* ignore */ }
+  }
+
+  async deletePlatformDir(platformId) {
+    try { await fs.rm(path.join(config.paths.platforms, platformId), { recursive: true, force: true }); } catch { /* ignore */ }
+  }
+
+  async loadPlatformTemplate() {
+    try {
+      const filePath = path.join(config.paths.platforms, 'platform-template.json');
+      return JSON.parse(await fs.readFile(filePath, 'utf-8'));
+    } catch {
+      return null;
+    }
+  }
+
   // --- Demos ---
 
   async saveDemosIndex(data) {
@@ -188,30 +237,32 @@ class ManifestLoader {
     }
   }
 
-  async loadDemoDetail(demoId) {
-    try {
-      const filePath = path.join(config.paths.demos, `${demoId}.json`);
-      await fs.access(filePath);
-      const content = await fs.readFile(filePath, 'utf-8');
-      return JSON.parse(content);
-    } catch {
-      return null;
+  // Detail files live under demos/<type>/<id>.json (type = example | app).
+  async loadDemoDetail(demoId, type) {
+    const subs = type ? [type === 'app' ? 'app' : 'example'] : ['example', 'app'];
+    for (const sub of subs) {
+      try {
+        const filePath = path.join(config.paths.demos, sub, `${demoId}.json`);
+        await fs.access(filePath);
+        return JSON.parse(await fs.readFile(filePath, 'utf-8'));
+      } catch { /* try next */ }
     }
+    return null;
   }
 
-  async saveDemoDetail(demoId, data) {
-    const filePath = path.join(config.paths.demos, `${demoId}.json`);
-    const jsonContent = JSON.stringify(data, null, 2) + '\n';
-    await fs.writeFile(filePath, jsonContent, 'utf-8');
+  async saveDemoDetail(demoId, data, type) {
+    const sub = type === 'app' ? 'app' : 'example';
+    const dir = path.join(config.paths.demos, sub);
+    await fs.mkdir(dir, { recursive: true });
+    const filePath = path.join(dir, `${demoId}.json`);
+    await fs.writeFile(filePath, JSON.stringify(data, null, 2) + '\n', 'utf-8');
     return filePath;
   }
 
-  async deleteDemoDetail(demoId) {
-    try {
-      const filePath = path.join(config.paths.demos, `${demoId}.json`);
-      await fs.unlink(filePath);
-    } catch {
-      // File may not exist — ignore
+  async deleteDemoDetail(demoId, type) {
+    const subs = type ? [type === 'app' ? 'app' : 'example'] : ['example', 'app'];
+    for (const sub of subs) {
+      try { await fs.unlink(path.join(config.paths.demos, sub, `${demoId}.json`)); } catch { /* ignore */ }
     }
   }
 }

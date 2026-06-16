@@ -1,8 +1,0 @@
-{
-  "id": "peripherals-leds-pixel",
-  "configs": {
-    "TUYA_T5AI_PIXEL": {
-      "file": "config/TUYA_T5AI_PIXEL.config"
-    }
-  }
-}

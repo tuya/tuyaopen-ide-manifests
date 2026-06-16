@@ -1,0 +1,43 @@
+{
+  "id": "graphics-u8g2-tdl-disp",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/u8g2_tdl_disp",
+  "configs": [
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": "display-oled",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_0.96OLED.config",
+          "name": {
+            "en": "0.96-inch OLED",
+            "zh-CN": "0.96 寸 OLED 屏"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-eink-nfc",
+      "options": [
+        {
+          "file": "TUYA_T5AI_EINK_NFC.config",
+          "name": {
+            "en": "Tuya T5AI E-Ink NFC",
+            "zh-CN": "涂鸦 T5AI 墨水屏 NFC 板"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-pocket",
+      "options": [
+        {
+          "file": "TUYA_T5AI_POCKET.config",
+          "name": {
+            "en": "Tuya T5AI Pocket",
+            "zh-CN": "涂鸦 T5AI Pocket 板"
+          }
+        }
+      ]
+    }
+  ]
+}

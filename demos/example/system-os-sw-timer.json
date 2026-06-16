@@ -1,0 +1,10 @@
+{
+  "id": "system-os-sw-timer",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_sw_timer",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_sw_timer/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_sw_timer/README_CN.md"
+    }
+  }
+}

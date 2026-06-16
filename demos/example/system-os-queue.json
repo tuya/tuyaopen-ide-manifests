@@ -1,0 +1,10 @@
+{
+  "id": "system-os-queue",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_queue",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_queue/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_queue/README_CN.md"
+    }
+  }
+}

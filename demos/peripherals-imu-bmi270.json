@@ -1,6 +1,0 @@
-{
-  "id": "peripherals-imu-bmi270",
-  "defaultConfig": {
-    "ENABLE_IMU": "y"
-  }
-}

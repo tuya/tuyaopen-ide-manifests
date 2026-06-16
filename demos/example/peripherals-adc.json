@@ -1,0 +1,10 @@
+{
+  "id": "peripherals-adc",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/adc",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/adc/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/adc/README_CN.md"
+    }
+  }
+}

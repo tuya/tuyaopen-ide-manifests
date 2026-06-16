@@ -1,0 +1,18 @@
+{
+  "id": "tuya-t5-pixel-tuya-t5-pixel-simple-shapes",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_t5_pixel/tuya_t5_pixel_simple_shapes",
+  "configs": [
+    {
+      "board": "tuya-t5ai-pixel",
+      "options": [
+        {
+          "file": "TUYA_T5AI_PIXEL.config",
+          "name": {
+            "en": "Tuya T5AI Pixel",
+            "zh-CN": "涂鸦 T5AI Pixel 板"
+          }
+        }
+      ]
+    }
+  ]
+}

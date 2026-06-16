@@ -1,0 +1,10 @@
+{
+  "id": "wifi-sta",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/sta",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/sta/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/wifi/sta/README_CN.md"
+    }
+  }
+}

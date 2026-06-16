@@ -1,0 +1,30 @@
+{
+  "id": "multimedia-audio-player-tts",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/multimedia/audio_player/tts",
+  "configs": [
+    {
+      "board": "tuya-t5ai-board",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD.config",
+          "name": {
+            "en": "Tuya T5AI Board",
+            "zh-CN": "涂鸦 T5AI-Board 开发板"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-pocket",
+      "options": [
+        {
+          "file": "TUYA_T5AI_POCKET.config",
+          "name": {
+            "en": "Tuya T5AI Pocket",
+            "zh-CN": "涂鸦 T5AI Pocket 板"
+          }
+        }
+      ]
+    }
+  ]
+}

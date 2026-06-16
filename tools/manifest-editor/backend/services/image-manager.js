@@ -292,6 +292,100 @@ class ImageManager {
       throw new Error(`Failed to delete demo image: ${error.message}`);
     }
   }
+
+  // --- Platforms (images live at platforms/images/<id>/<file>) ---
+
+  async uploadPlatformImage(platformId, filePath, filename, imageType = 'platform') {
+    try {
+      const dir = path.join(config.paths.platformImages, platformId);
+      await fs.mkdir(dir, { recursive: true });
+      const targetPath = path.join(dir, filename);
+
+      const metadata = await sharp(filePath).metadata();
+      const minSide = Math.min(metadata.width, metadata.height);
+      if (minSide < config.imageMinDimension) {
+        throw new Error(
+          `Image must be at least ${config.imageMinDimension}px on shortest side (got ${minSide}px)`
+        );
+      }
+
+      const spec = config.imageSpecs[imageType] || config.imageSpecs.platform;
+      let quality = config.imageQuality;
+      let outputBuffer;
+      do {
+        outputBuffer = await sharp(filePath)
+          .resize(spec.width, spec.height, { fit: 'cover', position: 'centre' })
+          .jpeg({ quality })
+          .toBuffer();
+        quality -= 5;
+      } while (outputBuffer.length > config.imageMaxFileSize && quality > 30);
+
+      await fs.writeFile(targetPath, outputBuffer);
+      const outputMeta = await sharp(outputBuffer).metadata();
+      const relativePath = `images/${platformId}/${filename}`;
+
+      return {
+        success: true,
+        url: relativePath,
+        filename,
+        size: outputBuffer.length,
+        width: outputMeta.width,
+        height: outputMeta.height,
+      };
+    } catch (error) {
+      console.error('Error uploading platform image:', error.message);
+      throw new Error(`Failed to upload platform image: ${error.message}`);
+    }
+  }
+
+  async updatePlatformImage(platformItemId, imageUrl) {
+    try {
+      const platforms = await manifestLoader.loadPlatforms();
+      const item = platforms?.items?.find((p) => p.id === platformItemId);
+      if (!item) throw new Error(`Platform "${platformItemId}" not found`);
+      if (!item.image) item.image = {};
+      item.image.url = imageUrl;
+      await manifestLoader.savePlatformsIndex(platforms);
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating platform image:', error.message);
+      throw new Error(`Failed to update platform image: ${error.message}`);
+    }
+  }
+
+  async getPlatformImages(platformItemId) {
+    try {
+      const dir = path.join(config.paths.platformImages, platformItemId);
+      try { await fs.access(dir); } catch { return []; }
+      const files = await fs.readdir(dir);
+      const images = [];
+      for (const file of files) {
+        const stats = await fs.stat(path.join(dir, file));
+        images.push({ filename: file, url: `images/${platformItemId}/${file}`, size: stats.size });
+      }
+      return images;
+    } catch (error) {
+      console.error('Error getting platform images:', error.message);
+      throw new Error(`Failed to get platform images: ${error.message}`);
+    }
+  }
+
+  async deletePlatformImage(platformItemId, filename) {
+    try {
+      const imagePath = path.join(config.paths.platformImages, platformItemId, filename);
+      await fs.access(imagePath);
+      await fs.unlink(imagePath);
+      try {
+        const dir = path.join(config.paths.platformImages, platformItemId);
+        const files = await fs.readdir(dir);
+        if (files.length === 0) await fs.rmdir(dir);
+      } catch { /* ignore */ }
+      return { success: true, message: 'Platform image deleted' };
+    } catch (error) {
+      console.error('Error deleting platform image:', error.message);
+      throw new Error(`Failed to delete platform image: ${error.message}`);
+    }
+  }
 }
 
 export const imageManager = new ImageManager();

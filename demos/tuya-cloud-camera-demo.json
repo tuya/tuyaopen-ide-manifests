@@ -1,8 +1,0 @@
-{
-  "id": "tuya-cloud-camera-demo",
-  "configs": {
-    "Ubuntu": {
-      "file": "config/Ubuntu.config"
-    }
-  }
-}

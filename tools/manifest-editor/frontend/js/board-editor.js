@@ -481,16 +481,28 @@ export function renderBoardForm(board = null) {
   return formHtml;
 }
 
+// Unified fallback shown in the image slot when a board has no image of its own.
+const boardImagePlaceholder = () => `
+  <svg class="board-card-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+    <path d="M21 15l-5-5L5 21"></path>
+  </svg>
+  <span class="board-card-placeholder-text">${escapeHtml(i18n.t('boardNoImage') || 'No image')}</span>`;
+
 export function renderBoardCard(board) {
   const imageUrl = board.image?.url
     ? `/api/images/${board.image.url.replace('images/', '')}`
     : null;
   const isUnpublished = board.published === false;
+  const imageInner = imageUrl
+    ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(getLocalizedString(board.name) || board.id)}">`
+    : boardImagePlaceholder();
 
   return `
     <div class="board-card ${isUnpublished ? 'board-card--unpublished' : ''}" data-board-id="${escapeHtml(board.id)}">
       ${isUnpublished ? '<span class="board-card-unpublished-badge">Unpublished / 未发布</span>' : ''}
-      ${imageUrl ? `<div class="board-card-image"><img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(getLocalizedString(board.name) || board.id)}"></div>` : ''}
+      <div class="board-card-image${imageUrl ? '' : ' board-card-image--empty'}">${imageInner}</div>
       <div class="board-card-header">
         <div>
           <div class="board-card-title">${escapeHtml(getLocalizedString(board.name) || board.id)}</div>

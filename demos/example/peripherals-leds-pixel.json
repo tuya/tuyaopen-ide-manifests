@@ -1,0 +1,18 @@
+{
+  "id": "peripherals-leds-pixel",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/leds-pixel",
+  "configs": [
+    {
+      "board": "tuya-t5ai-pixel",
+      "options": [
+        {
+          "file": "TUYA_T5AI_PIXEL.config",
+          "name": {
+            "en": "Tuya T5AI Pixel",
+            "zh-CN": "涂鸦 T5AI Pixel 板"
+          }
+        }
+      ]
+    }
+  ]
+}

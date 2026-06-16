@@ -1,0 +1,10 @@
+{
+  "id": "system-os-semaphore",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_semaphore",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_semaphore/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_semaphore/README_CN.md"
+    }
+  }
+}

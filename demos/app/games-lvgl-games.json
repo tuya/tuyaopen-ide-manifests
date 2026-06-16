@@ -1,0 +1,50 @@
+{
+  "id": "games-lvgl-games",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/games/lvgl_games",
+  "configs": [
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": "lcd-eyes-a",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_EYES.config",
+          "name": {
+            "zh-CN": "双眼屏-同显",
+            "en": "Dual Sync Eyes"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": "group-mpxn93yq",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
+          "name": {
+            "en": "3.5\" LCD",
+            "zh-CN": "3.5寸 LCD 触摸屏"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-evb",
+      "options": [
+        {
+          "file": "TUYA_T5AI_EVB.config",
+          "name": {
+            "en": "Tuya T5AI EVB",
+            "zh-CN": "涂鸦 T5AI 白盒"
+          }
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/games/lvgl_games/README.md",
+      "zh-CN": null
+    }
+  }
+}

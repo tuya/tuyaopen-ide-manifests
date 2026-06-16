@@ -7,6 +7,7 @@ import { renderBoardCard, renderBoardForm, saveBoardForm, deleteBoardPrompt, set
 import { renderPeripheralEditor, isDirty as periIsDirty } from './peripheral-editor.js';
 import { renderExpansionPinsEditor } from './expansion-pins-editor.js';
 import { renderDemoCard, renderDemoForm, saveDemoForm, deleteDemoAction } from './demo-editor.js';
+import { renderPlatformCard, mountPlatformForm, savePlatformForm, deletePlatformPrompt } from './platform-editor.js';
 import i18n from './i18n.js';
 
 let currentTab = 'boards';
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Set up event listeners
     setupNavigation();
     setupBoardsTab();
+    setupPlatformsTab();
     setupDemosTab();
     setupGitHistoryTab();
 
@@ -77,6 +79,8 @@ function updateUILanguage() {
   const currentTab = document.querySelector('.nav-item.active')?.dataset.tab;
   if (currentTab === 'boards') {
     loadBoards();
+  } else if (currentTab === 'platforms') {
+    loadPlatforms();
   } else if (currentTab === 'demos') {
     loadDemos();
   } else if (currentTab === 'git-history') {
@@ -122,6 +126,8 @@ function switchTab(tab) {
     loadCommitHistory();
   } else if (tab === 'demos') {
     loadDemos();
+  } else if (tab === 'platforms') {
+    loadPlatforms();
   }
 }
 
@@ -409,15 +415,195 @@ async function openBoardForm(boardId = null) {
   }
 }
 
+// ========== Platforms Tab ==========
+function setupPlatformsTab() {
+  const addBtn = document.getElementById('addPlatformBtn');
+  if (addBtn) addBtn.addEventListener('click', () => openPlatformForm(null));
+}
+
+async function loadPlatforms() {
+  const list = document.getElementById('platformsList');
+  if (!list) return;
+  list.innerHTML = `<p class="loading-text">${i18n.t('loadingPlatforms') || 'Loading platforms...'}</p>`;
+  try {
+    const result = await apiClient.getPlatforms();
+    const platforms = result.platforms || [];
+    if (platforms.length === 0) {
+      list.innerHTML = `<p class="loading-text">${i18n.t('platformsEmpty') || 'No platforms yet.'}</p>`;
+      return;
+    }
+    list.innerHTML = platforms.map(renderPlatformCard).join('');
+    list.querySelectorAll('.platform-edit-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openPlatformForm(btn.dataset.platformId); });
+    });
+    list.querySelectorAll('.platform-delete-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const ok = await deletePlatformPrompt(btn.dataset.platformId);
+        if (ok) loadPlatforms();
+      });
+    });
+  } catch (error) {
+    list.innerHTML = `<p class="loading-text" style="color: var(--color-error);">Error: ${error.message}</p>`;
+  }
+}
+
+async function openPlatformForm(platformId = null) {
+  const modal = document.getElementById('platformModal');
+  const modalTitle = document.getElementById('platformModalTitle');
+  const container = document.getElementById('platformFormContainer');
+  const closeBtn = document.getElementById('closePlatformModalBtn');
+  if (!modal || !container) return;
+
+  let platform = null;
+  let detail = null;
+  if (platformId) {
+    try {
+      const result = await apiClient.getPlatform(platformId);
+      platform = result.platform;
+      detail = result.detail || {};
+      modalTitle.textContent = `${i18n.t('platformFormTitleEdit') || 'Edit Platform'}: ${platformId}`;
+    } catch (error) {
+      showError('Load Failed', error.message);
+      return;
+    }
+  } else {
+    modalTitle.textContent = i18n.t('platformFormTitle') || 'Add Platform';
+  }
+
+  mountPlatformForm(container, platform, detail, { isNew: !platformId });
+
+  const form = document.getElementById('platformForm');
+  const cancelBtn = document.getElementById('pfCancelBtn');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const ok = await savePlatformForm();
+      if (ok) { modal.classList.add('hidden'); loadPlatforms(); }
+    });
+  }
+  if (cancelBtn) cancelBtn.addEventListener('click', () => modal.classList.add('hidden'));
+  if (closeBtn) closeBtn.onclick = () => modal.classList.add('hidden');
+
+  // Inline image upload (only for existing platforms)
+  if (platformId) setupPlatformImageUpload(platformId, modal);
+
+  modal.classList.remove('hidden');
+}
+
+function setupPlatformImageUpload(platformId, modal) {
+  const section = modal.querySelector('#platformImageUploadSection');
+  if (!section) return;
+
+  const zone = section.querySelector('.image-upload-zone');
+  const fileInput = section.querySelector('#platformImageInput');
+  const sourceTabs = section.querySelectorAll('.image-source-tab');
+  const sourceFile = section.querySelector('#platformImageSourceFile');
+  const sourceUrl = section.querySelector('#platformImageSourceUrl');
+  const urlInput = section.querySelector('#platformImageUrl');
+  const confirmUrlBtn = section.querySelector('#platformConfirmUrlBtn');
+  const deleteBtn = section.querySelector('#platformDeleteImageBtn');
+
+  // Tab switching (file / url)
+  sourceTabs.forEach(tab => {
+    tab.addEventListener('click', (e) => {
+      e.preventDefault(); e.stopPropagation();
+      const source = tab.dataset.source;
+      sourceTabs.forEach(t => {
+        const on = t.dataset.source === source;
+        t.style.color = on ? 'var(--color-primary)' : 'var(--color-muted)';
+        t.style.fontWeight = on ? '600' : '500';
+        t.style.borderBottom = on ? '2px solid var(--color-primary)' : 'none';
+      });
+      if (sourceFile) sourceFile.style.display = source === 'file' ? 'block' : 'none';
+      if (sourceUrl) sourceUrl.style.display = source === 'url' ? 'block' : 'none';
+    });
+  });
+
+  // Drag & drop + click
+  if (zone) {
+    zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.style.borderColor = 'var(--color-primary)'; });
+    zone.addEventListener('dragleave', () => { zone.style.borderColor = 'var(--color-border)'; });
+    zone.addEventListener('drop', (e) => {
+      e.preventDefault(); zone.style.borderColor = 'var(--color-border)';
+      if (e.dataTransfer.files.length > 0) handlePlatformImageFile(e.dataTransfer.files[0], platformId);
+    });
+    zone.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); fileInput?.click(); });
+  }
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) handlePlatformImageFile(e.target.files[0], platformId);
+    });
+  }
+
+  // URL upload
+  if (confirmUrlBtn) {
+    confirmUrlBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const url = urlInput?.value?.trim();
+      if (!url) { showError('Missing URL', 'Please enter an image URL'); return; }
+      if (!url.startsWith('https://')) { showError('Invalid URL', 'URL must use HTTPS protocol'); return; }
+      confirmUrlBtn.disabled = true;
+      confirmUrlBtn.textContent = i18n.t('platformImageUploading');
+      try {
+        const result = await apiClient.uploadPlatformImage(platformId, url, null, true, true);
+        if (result.success) { showNotification('Platform image uploaded from URL'); urlInput.value = ''; loadPlatforms(); }
+      } catch (error) {
+        showError('Upload Failed', error.message);
+      } finally {
+        confirmUrlBtn.disabled = false;
+        confirmUrlBtn.textContent = i18n.t('platformImageUseUrl');
+      }
+    });
+  }
+
+  // Delete image
+  if (deleteBtn) {
+    deleteBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      if (!confirm(i18n.t('platformImageDeleteConfirm') || 'Delete this platform image?')) return;
+      try {
+        const images = await apiClient.getPlatformImages(platformId);
+        if (images.images?.length > 0) {
+          await apiClient.deletePlatformImage(platformId, images.images[0].filename);
+          showNotification('Platform image deleted');
+          section.querySelector('#platformCurrentImage')?.remove();
+          loadPlatforms();
+        }
+      } catch (error) {
+        showError('Delete Failed', error.message);
+      }
+    });
+  }
+}
+
+async function handlePlatformImageFile(file, platformId) {
+  if (!file.type.startsWith('image/')) { showError('Invalid File', 'Please select an image file (JPEG, PNG, WebP)'); return; }
+  if (file.size > 5242880) { showError('File Too Large', 'Maximum file size is 5MB'); return; }
+  try {
+    const result = await apiClient.uploadPlatformImage(platformId, file, `${platformId}.jpg`, true);
+    if (result.success) { showNotification('Platform image uploaded successfully'); loadPlatforms(); }
+  } catch (error) {
+    showError('Upload Failed', error.message);
+  }
+}
+
 // ========== Demos Tab ==========
 let demosCache = [];
 // Active demos type tab: 'example' or 'app'. Apps tab is first / default.
 let demosActiveType = 'app';
+// Facet filters (multi-select, OR within each dimension).
+let demosFilterTags = [];
+let demosFilterBoards = [];
+// boardId -> display name, for the board facet chips.
+let demosBoardNameMap = {};
 
 function setupDemosTab() {
   const addBtn = document.getElementById('addDemoBtn');
   const searchInput = document.getElementById('demoSearch');
   const tabs = document.getElementById('demosTabs');
+  const tagChips = document.getElementById('demoFilterTags');
+  const boardChips = document.getElementById('demoFilterBoards');
 
   if (addBtn) {
     addBtn.addEventListener('click', () => openDemoForm(null));
@@ -427,15 +613,108 @@ function setupDemosTab() {
     searchInput.addEventListener('input', debounce(() => filterDemos(), 200));
   }
 
+  // Facet dropdowns: button toggles its panel; option click toggles selection.
+  const tagsBtn = document.getElementById('demoFilterTagsBtn');
+  const boardsBtn = document.getElementById('demoFilterBoardsBtn');
+  if (tagsBtn) tagsBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFacetPanel('demoFilterTags'); });
+  if (boardsBtn) boardsBtn.addEventListener('click', (e) => { e.stopPropagation(); toggleFacetPanel('demoFilterBoards'); });
+
+  if (tagChips) {
+    tagChips.addEventListener('click', (e) => {
+      const opt = e.target.closest('.demos-filter-option');
+      if (!opt) return;
+      demosFilterTags = toggleInArray(demosFilterTags, opt.dataset.val);
+      populateDemoFacets();
+      filterDemos();
+    });
+  }
+  if (boardChips) {
+    boardChips.addEventListener('click', (e) => {
+      const opt = e.target.closest('.demos-filter-option');
+      if (!opt) return;
+      demosFilterBoards = toggleInArray(demosFilterBoards, opt.dataset.val);
+      populateDemoFacets();
+      filterDemos();
+    });
+  }
+
+  // Close any open facet panel when clicking outside a dropdown.
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.demos-filter-dd')) closeFacetPanels();
+  });
+
   if (tabs) {
     tabs.addEventListener('click', (e) => {
       const tab = e.target.closest('.demos-tab');
       if (!tab) return;
       demosActiveType = tab.dataset.demoType === 'app' ? 'app' : 'example';
       tabs.querySelectorAll('.demos-tab').forEach(t => t.classList.toggle('active', t === tab));
+      // Tag/board options depend on the active type's demos; rebuild + reset.
+      demosFilterTags = [];
+      demosFilterBoards = [];
+      populateDemoFacets();
       filterDemos();
     });
   }
+}
+
+function toggleInArray(arr, val) {
+  return arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val];
+}
+
+function closeFacetPanels() {
+  document.querySelectorAll('.demos-filter-panel').forEach(p => { p.hidden = true; });
+  document.querySelectorAll('.demos-filter-dd-btn').forEach(b => b.classList.remove('open'));
+}
+
+function toggleFacetPanel(panelId) {
+  const panel = document.getElementById(panelId);
+  if (!panel) return;
+  const wasHidden = panel.hidden;
+  closeFacetPanels();
+  if (wasHidden) {
+    panel.hidden = false;
+    panel.closest('.demos-filter-dd')?.querySelector('.demos-filter-dd-btn')?.classList.add('open');
+  }
+}
+
+// Rebuild the tag/board facet dropdowns from the demos in the active type tab.
+// Drops any active selection that's no longer present after the rebuild.
+function populateDemoFacets() {
+  const inType = demosCache.filter(d => (d.type === 'app' ? 'app' : 'example') === demosActiveType);
+  const tags = [...new Set(inType.flatMap(d => Array.isArray(d.tags) ? d.tags : []))].sort();
+  const boards = [...new Set(inType.flatMap(d => Array.isArray(d.boards) ? d.boards : []))].sort();
+
+  demosFilterTags = demosFilterTags.filter(t => tags.includes(t));
+  demosFilterBoards = demosFilterBoards.filter(b => boards.includes(b));
+
+  renderFacetPanel('demoFilterTags', 'demoFilterTagsRow', 'demoFilterTagsCount', tags, demosFilterTags, demoTagLabel);
+  renderFacetPanel('demoFilterBoards', 'demoFilterBoardsRow', 'demoFilterBoardsCount', boards, demosFilterBoards, (v) => demosBoardNameMap[v] || v);
+}
+
+// Localized label for a tag id, from the controlled vocabulary (DEMO_TAG_VOCAB).
+function demoTagLabel(id) {
+  const lang = i18n.getLanguage();
+  for (const list of [DEMO_TAG_VOCAB[demosActiveType], DEMO_TAG_VOCAB.example, DEMO_TAG_VOCAB.app]) {
+    const v = list && list.find(x => x.id === id);
+    if (v) return lang === 'zh-CN' ? v.zh : v.en;
+  }
+  return id;
+}
+
+function renderFacetPanel(panelId, ddId, countId, values, selected, labelOf) {
+  const dd = document.getElementById(ddId);
+  const panel = document.getElementById(panelId);
+  const count = document.getElementById(countId);
+  if (!panel || !dd) return;
+  // Hide the whole dropdown when this type tab has no values for the dimension.
+  dd.style.display = values.length ? '' : 'none';
+  if (count) count.textContent = selected.length ? `(${selected.length})` : '';
+  panel.innerHTML = values.map(v => {
+    const on = selected.includes(v);
+    return `<button type="button" class="demos-filter-option${on ? ' demos-filter-option--on' : ''}" data-val="${escapeHtml(v)}">` +
+      `<span class="demos-filter-check">${on ? '✓' : ''}</span>${escapeHtml(labelOf(v))}</button>`;
+  }).join('');
 }
 
 // Searchable multi-select for a demo's "Boards" field, sourced from the live
@@ -502,6 +781,210 @@ function setupDemoBoardsSelect(allBoards) {
   });
 }
 
+// Supported-board targets editor (demo Build Config):
+// each target = a board (+ optional accessory) and a list of named config files.
+// Accessory options come from the board's peripheralGroups + ungrouped accessory
+// peripherals (mounting === 'accessory' && no group); onboard peripherals excluded.
+// Accept the new array shape; convert the legacy map ({symbol:{file}}) to
+// provisional targets (board unset) so old data shows for manual re-assignment
+// instead of being silently dropped on save.
+function normalizeDemoConfigs(configs) {
+  if (Array.isArray(configs)) return configs;
+  if (configs && typeof configs === 'object') {
+    return Object.entries(configs).map(([key, val]) => ({
+      board: '',
+      options: [{ name: { en: key, 'zh-CN': '' }, file: (typeof val === 'object' ? val.file : val) || '' }],
+    }));
+  }
+  return [];
+}
+
+function setupDemoTargets(allBoards, existing) {
+  const root = document.getElementById('demoTargets');
+  const addBtn = document.getElementById('addTargetBtn');
+  if (!root) return;
+
+  const lang = i18n.getLanguage();
+  const loc = (n, fb) => (n && (n[lang] || n.en || n['zh-CN'])) || fb;
+  const accessoryCache = {};
+
+  async function fetchAccessories(boardId) {
+    if (accessoryCache[boardId]) return accessoryCache[boardId];
+    const list = [];
+    try {
+      const d = (await apiClient.getBoard(boardId)).board || {};
+      for (const [gid, g] of Object.entries(d.peripheralGroups || {})) {
+        list.push({ id: gid, label: loc(g.name, gid) });
+      }
+      for (const arr of Object.values(d.peripheralPatterns || {})) {
+        for (const p of (arr || [])) {
+          if (p.mounting === 'accessory' && !p.group) list.push({ id: p.id, label: loc(p.name, p.id) });
+        }
+      }
+    } catch (e) {
+      console.error('[demoTargets] board detail failed', boardId, e);
+    }
+    accessoryCache[boardId] = list;
+    return list;
+  }
+
+  const boardById = Object.fromEntries(allBoards.map(b => [b.id, b]));
+  const platforms = [...new Set(allBoards.map(b => b.platformId).filter(Boolean))].sort();
+
+  const platformOptions = (sel) => `<option value="">${i18n.t('demoTargetSelectPlatform')}</option>` +
+    platforms.map(p => `<option value="${escapeHtml(p)}"${p === sel ? ' selected' : ''}>${escapeHtml(p)}</option>`).join('');
+  const boardOptions = (platform, sel) => `<option value="">${i18n.t('demoTargetSelectBoard')}</option>` +
+    allBoards.filter(b => !platform || b.platformId === platform)
+      .map(b => `<option value="${escapeHtml(b.id)}"${b.id === sel ? ' selected' : ''}>${escapeHtml(loc(b.name, b.id))}</option>`).join('');
+  const accessoryOptions = (list, sel) => `<option value="">${i18n.t('demoTargetAccessoryNone')}</option>` +
+    list.map(a => `<option value="${escapeHtml(a.id)}"${a.id === sel ? ' selected' : ''}>${escapeHtml(a.label)}</option>`).join('');
+
+  const optionRow = (o) => `<div class="target-option">
+      <input type="text" class="form-input opt-name-en" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameEn'))}" value="${escapeHtml(o?.name?.en || '')}">
+      <input type="text" class="form-input opt-name-zh" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameZh'))}" value="${escapeHtml(o?.name?.['zh-CN'] || '')}">
+      <input type="text" class="form-input opt-file" placeholder="${escapeHtml(i18n.t('demoTargetOptionFile'))}" value="${escapeHtml(o?.file || '')}">
+      <button type="button" class="btn btn-sm btn-danger opt-remove">✕</button>
+    </div>`;
+
+  const targetRow = (t) => {
+    const opts = (t?.options && t.options.length) ? t.options : [{}];
+    const platform = t?.board ? (boardById[t.board]?.platformId || '') : '';
+    return `<div class="demo-target">
+      <div class="target-head">
+        <select class="form-input target-platform">${platformOptions(platform)}</select>
+        <select class="form-input target-board">${boardOptions(platform, t?.board || '')}</select>
+        <select class="form-input target-accessory" data-selected="${escapeHtml(t?.accessory || '')}"><option value="">${i18n.t('demoTargetAccessoryNone')}</option></select>
+        <button type="button" class="btn btn-sm btn-danger target-remove" title="${escapeHtml(i18n.t('demoTargetRemove'))}">✕</button>
+      </div>
+      <small style="color:var(--color-muted);display:block;margin:6px 0 4px;">${escapeHtml(i18n.t('demoTargetOptionsHint'))}</small>
+      <div class="target-options">${opts.map(optionRow).join('')}</div>
+      <button type="button" class="btn btn-sm btn-outline target-add-option">${i18n.t('demoTargetAddOption')}</button>
+    </div>`;
+  };
+
+  async function fillAccessory(row) {
+    const board = row.querySelector('.target-board').value;
+    const sel = row.querySelector('.target-accessory');
+    if (!board) { sel.innerHTML = `<option value="">${i18n.t('demoTargetAccessoryNone')}</option>`; return; }
+    sel.innerHTML = accessoryOptions(await fetchAccessories(board), sel.dataset.selected || '');
+  }
+
+  function addTarget(t, prepend) {
+    root.insertAdjacentHTML(prepend ? 'afterbegin' : 'beforeend', targetRow(t));
+    fillAccessory(prepend ? root.firstElementChild : root.lastElementChild);
+  }
+
+  root.innerHTML = '';
+  existing.forEach((t) => addTarget(t, false));
+
+  // New rows are added at the top (first row).
+  if (addBtn) addBtn.addEventListener('click', () => addTarget({}, true));
+
+  root.addEventListener('click', (e) => {
+    if (e.target.closest('.target-remove')) { e.target.closest('.demo-target').remove(); return; }
+    if (e.target.closest('.opt-remove')) { e.target.closest('.target-option').remove(); return; }
+    const addOpt = e.target.closest('.target-add-option');
+    if (addOpt) addOpt.parentElement.querySelector('.target-options').insertAdjacentHTML('beforeend', optionRow({}));
+  });
+  root.addEventListener('change', (e) => {
+    const row = e.target.closest('.demo-target');
+    if (!row) return;
+    if (e.target.classList.contains('target-platform')) {
+      // Refilter boards to the chosen platform; reset board + accessory.
+      row.querySelector('.target-board').innerHTML = boardOptions(e.target.value, '');
+      row.querySelector('.target-accessory').dataset.selected = '';
+      fillAccessory(row);
+    } else if (e.target.classList.contains('target-board')) {
+      row.querySelector('.target-accessory').dataset.selected = '';
+      fillAccessory(row);
+    }
+  });
+}
+
+// Controlled tag vocabulary for demos — two sets, picked by the demo `type`.
+const DEMO_TAG_VOCAB = {
+  example: [
+    { id: 'getting-started', en: 'Getting Started', zh: '入门' },
+    { id: 'peripheral', en: 'Peripheral', zh: '外设' },
+    { id: 'system', en: 'System', zh: '系统' },
+    { id: 'networking', en: 'Networking', zh: '网络' },
+    { id: 'wifi', en: 'Wi-Fi', zh: 'Wi-Fi' },
+    { id: 'ble', en: 'BLE', zh: '蓝牙' },
+    { id: 'multimedia', en: 'Multimedia', zh: '多媒体' },
+    { id: 'graphics', en: 'Graphics', zh: '图形显示' },
+    { id: 'tuya_cloud', en: 'Tuya Cloud', zh: '涂鸦云' },
+    { id: 'tinyml', en: 'TinyML', zh: '端侧 ML' },
+  ],
+  app: [
+    { id: 'ai', en: 'AI', zh: 'AI' },
+    { id: 'pixel-art', en: 'Pixel Art', zh: '像素屏' },
+    { id: 'robotics', en: 'Robotics', zh: '机器人' },
+    { id: 'pocket', en: 'Pocket', zh: '口袋机' },
+    { id: 'game', en: 'Game', zh: '游戏' },
+    { id: 'tuya_cloud', en: 'Tuya Cloud', zh: '涂鸦云' },
+    { id: 'micropython', en: 'MicroPython', zh: 'MicroPython' },
+  ],
+};
+
+// Tag picker for demos — mirrors the board form's chip-input + search dropdown
+// + available pool (same CSS classes/behavior). Sourced from the controlled
+// vocabulary by the current `type`; ids mirror into hidden #demoTags (CSV).
+function setupDemoTagsSelect() {
+  const chipsContainer = document.getElementById('demoSelectedTags');
+  const searchInput = document.getElementById('demoTagsSearchInput');
+  const dropdown = document.getElementById('demoTagsDropdown');
+  const pool = document.getElementById('demoTagsAvailablePool');
+  const hidden = document.getElementById('demoTags');
+  const typeSel = document.getElementById('demoCategory');
+  if (!chipsContainer || !searchInput || !pool || !hidden) return;
+
+  const lang = i18n.getLanguage();
+  const vocab = () => DEMO_TAG_VOCAB[typeSel && typeSel.value === 'app' ? 'app' : 'example'];
+  const labelOf = (id) => { const v = vocab().find(x => x.id === id); return v ? (lang === 'zh-CN' ? v.zh : v.en) : id; };
+  let selected = (hidden.value || '').split(',').map(s => s.trim()).filter(Boolean);
+
+  const sync = () => { selected = selected.filter(id => vocab().some(v => v.id === id)); hidden.value = selected.join(','); };
+  const renderChips = () => {
+    chipsContainer.innerHTML = selected.map(id =>
+      `<span class="tag-chip" data-tag-id="${escapeHtml(id)}">${escapeHtml(labelOf(id))}<button type="button" class="tag-chip-remove">&times;</button></span>`).join('');
+  };
+  const renderPool = () => {
+    const avail = vocab().filter(v => !selected.includes(v.id));
+    pool.innerHTML = avail.length
+      ? `<div class="tag-category-group">` + avail.map(v =>
+          `<span class="tag-pool-item" data-tag-id="${escapeHtml(v.id)}">${escapeHtml(labelOf(v.id))}</span>`).join('') + `</div>`
+      : '';
+  };
+  const refresh = () => { sync(); renderChips(); renderPool(); };
+  const addTag = (id) => { if (!selected.includes(id)) { selected.push(id); refresh(); } };
+  const removeTag = (id) => { selected = selected.filter(x => x !== id); refresh(); };
+
+  refresh();
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    if (!q) { dropdown.style.display = 'none'; return; }
+    const m = vocab().filter(v => !selected.includes(v.id) && (v.id.toLowerCase().includes(q) || labelOf(v.id).toLowerCase().includes(q)));
+    if (!m.length) { dropdown.style.display = 'none'; return; }
+    dropdown.innerHTML = m.map(v => `<div class="tags-dropdown-item" data-tag-id="${escapeHtml(v.id)}">${escapeHtml(labelOf(v.id))}</div>`).join('');
+    dropdown.style.display = 'block';
+  });
+  dropdown.addEventListener('click', (e) => {
+    const it = e.target.closest('.tags-dropdown-item');
+    if (!it) return;
+    addTag(it.dataset.tagId); searchInput.value = ''; dropdown.style.display = 'none';
+  });
+  searchInput.addEventListener('blur', () => setTimeout(() => { dropdown.style.display = 'none'; }, 200));
+  pool.addEventListener('click', (e) => { const c = e.target.closest('.tag-pool-item'); if (c) addTag(c.dataset.tagId); });
+  chipsContainer.addEventListener('click', (e) => {
+    const b = e.target.closest('.tag-chip-remove');
+    if (!b) return;
+    const c = b.closest('.tag-chip');
+    if (c) removeTag(c.dataset.tagId);
+  });
+  if (typeSel) typeSel.addEventListener('change', refresh);
+}
+
 async function loadDemos() {
   const demosList = document.getElementById('demosList');
   if (!demosList) return;
@@ -511,6 +994,15 @@ async function loadDemos() {
   try {
     const result = await apiClient.getDemos();
     demosCache = result.demos || result.items || [];
+    // Board id -> name map for the board facet chips (best-effort).
+    try {
+      const lang = i18n.getLanguage();
+      const boardsResult = await apiClient.getBoards();
+      const allBoards = boardsResult.boards || boardsResult.items || [];
+      demosBoardNameMap = Object.fromEntries(allBoards.map(b =>
+        [b.id, (b.name && (b.name[lang] || b.name.en || b.name['zh-CN'])) || b.id]));
+    } catch { demosBoardNameMap = {}; }
+    populateDemoFacets();
     filterDemos();
   } catch (error) {
     console.error('[loadDemos] error:', error);
@@ -519,20 +1011,30 @@ async function loadDemos() {
 }
 
 function filterDemos() {
-  const searchVal = (document.getElementById('demoSearch')?.value || '').toLowerCase();
+  const searchVal = (document.getElementById('demoSearch')?.value || '').toLowerCase().trim();
 
-  // Always scoped to the active type tab (example / app);
-  // fall back to legacy tags for un-migrated data.
-  let filtered = demosCache.filter(d =>
-    d.type ? d.type === demosActiveType : (demosActiveType === 'app' ? d.tags?.includes('app') : !d.tags?.includes('app')));
+  // Always scoped to the active type tab (example / app).
+  let filtered = demosCache.filter(d => (d.type === 'app' ? 'app' : 'example') === demosActiveType);
 
+  // Facet: tags (OR — demo must carry at least one selected tag).
+  if (demosFilterTags.length) {
+    filtered = filtered.filter(d => Array.isArray(d.tags) && demosFilterTags.some(t => d.tags.includes(t)));
+  }
+  // Facet: boards (OR — demo must support at least one selected board).
+  if (demosFilterBoards.length) {
+    filtered = filtered.filter(d => Array.isArray(d.boards) && demosFilterBoards.some(b => d.boards.includes(b)));
+  }
+
+  // Full-text: name (en+zh), summary (en+zh), id, tags, boards.
   if (searchVal) {
     filtered = filtered.filter(d => {
       const nameEn = (typeof d.name === 'object' ? d.name.en : d.name) || '';
       const nameZh = (typeof d.name === 'object' ? d.name['zh-CN'] : '') || '';
       const summaryEn = (typeof d.summary === 'object' ? d.summary.en : '') || '';
+      const summaryZh = (typeof d.summary === 'object' ? d.summary['zh-CN'] : '') || '';
       const tagsStr = (d.tags || []).join(' ');
-      const searchable = `${d.id} ${nameEn} ${nameZh} ${summaryEn} ${tagsStr} ${d.source?.subpath || ''}`.toLowerCase();
+      const boardsStr = (d.boards || []).join(' ');
+      const searchable = `${d.id} ${nameEn} ${nameZh} ${summaryEn} ${summaryZh} ${tagsStr} ${boardsStr}`.toLowerCase();
       return searchable.includes(searchVal);
     });
   }
@@ -549,7 +1051,9 @@ function renderDemosList(demos) {
     return;
   }
 
-  demosList.innerHTML = demos.map(d => renderDemoCard(d)).join('');
+  // Unpublished demos sort to the end (published first), matching the boards list.
+  const sorted = [...demos].sort((a, b) => (a.publish === false ? 1 : 0) - (b.publish === false ? 1 : 0));
+  demosList.innerHTML = sorted.map(d => renderDemoCard(d)).join('');
 
   // Attach event listeners
   demosList.querySelectorAll('.demo-edit-btn').forEach(btn => {
@@ -601,48 +1105,35 @@ async function openDemoForm(demoId = null) {
     el.placeholder = i18n.t(el.getAttribute('data-i18n-placeholder'));
   });
 
-  // Populate the boards multi-select from the live boards list
+  // Populate the supported-board targets editor (Board Config Mapping pane)
   try {
     const boardsResult = await apiClient.getBoards();
-    setupDemoBoardsSelect(boardsResult.boards || boardsResult.items || []);
+    const allBoards = boardsResult.boards || boardsResult.items || [];
+    setupDemoTargets(allBoards, normalizeDemoConfigs(demo?.configs));
   } catch (err) {
     console.error('[openDemoForm] boards load failed:', err);
   }
 
-  // Wire compatibility radio → boards field visibility
-  const radios = formContainer.querySelectorAll('input[name="compatibilityType"]');
-  const boardsGroup = document.getElementById('demoBoardsGroup');
-  radios.forEach(radio => {
-    radio.addEventListener('change', () => {
-      if (boardsGroup) {
-        boardsGroup.style.display = radio.value === 'universal' && radio.checked ? 'none' : '';
-      }
+  // Tags chip multi-select (controlled vocabulary, type-aware)
+  setupDemoTagsSelect();
+
+  // Tab switching (Basic Info / Board Config Mapping)
+  formContainer.querySelectorAll('.demo-form-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const pane = tab.dataset.pane;
+      formContainer.querySelectorAll('.demo-form-tab').forEach(t => t.classList.toggle('active', t === tab));
+      formContainer.querySelectorAll('.demo-pane').forEach(p => {
+        p.style.display = p.dataset.pane === pane ? '' : 'none';
+      });
     });
   });
 
-  // Wire configs map add/remove buttons
-  const addConfigRowBtn = document.getElementById('addConfigRowBtn');
-  const configsRowsContainer = document.getElementById('configsRows');
-
-  if (addConfigRowBtn && configsRowsContainer) {
-    addConfigRowBtn.addEventListener('click', () => {
-      const idx = configsRowsContainer.querySelectorAll('.configs-row').length;
-      const rowHtml = `
-        <div class="configs-row" data-row-idx="${idx}">
-          <input type="text" class="form-input configs-key" value="" placeholder="TUYA_T5AI_EVB">
-          <input type="text" class="form-input configs-value" value="" placeholder="config/TUYA_T5AI_EVB.config">
-          <button type="button" class="btn btn-sm btn-danger btn-remove configs-remove-btn">✕</button>
-        </div>
-      `;
-      configsRowsContainer.insertAdjacentHTML('beforeend', rowHtml);
-    });
-
-    // Delegate remove button clicks
-    configsRowsContainer.addEventListener('click', (e) => {
-      const removeBtn = e.target.closest('.configs-remove-btn');
-      if (removeBtn) {
-        removeBtn.closest('.configs-row').remove();
-      }
+  // "Universal" toggle → hide/show the board mapping section
+  const universalCb = document.getElementById('demoUniversal');
+  const configSection = document.getElementById('demoConfigSection');
+  if (universalCb && configSection) {
+    universalCb.addEventListener('change', () => {
+      configSection.style.display = universalCb.checked ? 'none' : '';
     });
   }
 
@@ -764,7 +1255,7 @@ function setupDemoImageUpload(demoId, modal) {
         return;
       }
       confirmUrlBtn.disabled = true;
-      confirmUrlBtn.textContent = 'Uploading...';
+      confirmUrlBtn.textContent = i18n.t('demoImageUploading');
       try {
         const result = await apiClient.uploadDemoImage(demoId, url, null, true, true);
         if (result.success) {
@@ -776,7 +1267,7 @@ function setupDemoImageUpload(demoId, modal) {
         showError('Upload Failed', error.message);
       } finally {
         confirmUrlBtn.disabled = false;
-        confirmUrlBtn.textContent = 'Use URL';
+        confirmUrlBtn.textContent = i18n.t('demoImageUseUrl');
       }
     });
   }

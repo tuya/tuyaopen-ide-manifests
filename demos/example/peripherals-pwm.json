@@ -1,0 +1,10 @@
+{
+  "id": "peripherals-pwm",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/pwm",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/pwm/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/pwm/README_CN.md"
+    }
+  }
+}

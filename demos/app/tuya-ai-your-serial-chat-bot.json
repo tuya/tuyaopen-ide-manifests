@@ -1,0 +1,36 @@
+{
+  "id": "tuya-ai-your-serial-chat-bot",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_serial_chat_bot",
+  "configs": [
+    {
+      "board": "tuya-t5ai-board",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD.config",
+          "name": {
+            "en": "Tuya T5AI Board",
+            "zh-CN": "涂鸦 T5AI-Board 开发板"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-core",
+      "options": [
+        {
+          "file": "TUYA_T5AI_CORE.config",
+          "name": {
+            "en": "Tuya T5AI-Core",
+            "zh-CN": "涂鸦 T5AI-Core 核心板"
+          }
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_serial_chat_bot/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_serial_chat_bot/README_zh.md"
+    }
+  }
+}

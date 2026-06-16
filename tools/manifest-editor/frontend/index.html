@@ -41,6 +41,9 @@
           <button class="nav-item active" data-tab="boards" data-i18n="boards">
             📦 Boards
           </button>
+          <button class="nav-item" data-tab="platforms" data-i18n="navPlatforms">
+            🔌 Platforms
+          </button>
           <button class="nav-item" data-tab="demos" data-i18n="navDemos">
             🎮 Demos
           </button>
@@ -103,6 +106,32 @@
           </div>
         </section>
 
+        <!-- Platforms Tab -->
+        <section id="platforms-tab" class="tab-content">
+          <div class="section-header">
+            <h2 data-i18n="platformsTitle">Chip Platforms</h2>
+            <button id="addPlatformBtn" class="btn btn-primary" data-i18n="platformAdd">+ Add Platform</button>
+          </div>
+
+          <!-- Platforms List -->
+          <div id="platformsList" class="boards-list">
+            <p class="loading-text" data-i18n="loadingPlatforms">Loading platforms...</p>
+          </div>
+
+          <!-- Platform Edit Modal -->
+          <div id="platformModal" class="modal hidden">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 id="platformModalTitle" data-i18n="platformFormTitle">Add Platform</h2>
+                <button class="close-btn" id="closePlatformModalBtn">&times;</button>
+              </div>
+              <div class="modal-body" id="platformFormContainer">
+                <!-- Platform form injected here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Demos Tab -->
         <section id="demos-tab" class="tab-content">
           <div class="section-header">
@@ -119,6 +148,22 @@
           <!-- Filters -->
           <div class="demos-filters">
             <input type="text" id="demoSearch" class="form-input" placeholder="Search demos..." data-i18n-placeholder="demoSearchPlaceholder">
+            <div class="demos-filter-dd" id="demoFilterTagsRow">
+              <button type="button" class="demos-filter-dd-btn" id="demoFilterTagsBtn">
+                <span data-i18n="demoFilterTagsLabel">Tags</span>
+                <span class="demos-filter-count" id="demoFilterTagsCount"></span>
+                <span class="demos-filter-caret">▾</span>
+              </button>
+              <div class="demos-filter-panel" id="demoFilterTags" hidden></div>
+            </div>
+            <div class="demos-filter-dd" id="demoFilterBoardsRow">
+              <button type="button" class="demos-filter-dd-btn" id="demoFilterBoardsBtn">
+                <span data-i18n="demoFilterBoardsLabel">Boards</span>
+                <span class="demos-filter-count" id="demoFilterBoardsCount"></span>
+                <span class="demos-filter-caret">▾</span>
+              </button>
+              <div class="demos-filter-panel" id="demoFilterBoards" hidden></div>
+            </div>
           </div>
 
           <!-- Demos List -->

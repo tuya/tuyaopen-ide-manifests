@@ -1,0 +1,10 @@
+{
+  "id": "peripherals-gpio",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/gpio",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/gpio/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/gpio/README_CN.md"
+    }
+  }
+}

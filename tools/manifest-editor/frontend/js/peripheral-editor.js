@@ -115,8 +115,9 @@ function getPlatformDefaultPins(type, iface) {
 
   if (type === 'display' && iface === 'QSPI' && pp.qspi?.spec?.ports) {
     const port = pp.qspi.spec.ports[0];
-    if (port?.pins) {
-      return { sck: port.pins.clk, cs: port.pins.cs, d0: port.pins.d0, d1: port.pins.d1, d2: port.pins.d2, d3: port.pins.d3 };
+    const pins = port?.pinGroups?.[0] || port?.pins; // pinGroups (new) or legacy pins
+    if (pins) {
+      return { sck: pins.clk, cs: pins.cs, d0: pins.d0, d1: pins.d1, d2: pins.d2, d3: pins.d3 };
     }
   }
 

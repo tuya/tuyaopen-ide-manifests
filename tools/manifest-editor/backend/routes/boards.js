@@ -35,11 +35,10 @@ router.get('/:id', asyncHandler(async (req, res) => {
   const merged = { ...board };
   if (detail) {
     if (detail.variantId) merged.variantId = detail.variantId;
-    // boardSymbol (formerly kconfigId) — read both for backward compatibility
-    const sym = detail.boardSymbol ?? detail.kconfigId;
-    if (sym) merged.boardSymbol = sym;
+    if (detail.boardSymbol) merged.boardSymbol = detail.boardSymbol;
     if (detail.links) merged.links = detail.links;
     if (detail.peripheralPatterns) merged.peripheralPatterns = detail.peripheralPatterns;
+    if (detail.peripheralGroups) merged.peripheralGroups = detail.peripheralGroups;
     if (detail.source) merged.source = detail.source;
 
     // Map links to editor field names
@@ -115,7 +114,7 @@ router.post('/', asyncHandler(async (req, res) => {
 
   // Board selection config is derived at project-creation time from
   // platformId + boardSymbol — no scaffold stored in the manifest.
-  const boardSymbol = req.body.boardSymbol ?? req.body.kconfigId ?? '';
+  const boardSymbol = req.body.boardSymbol ?? '';
 
   // Create initial detail file
   const initialDetail = {
@@ -165,12 +164,6 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   delete updates.id;
   delete updates.schemaVersion;
   delete updates.autoCommit;
-
-  // Accept legacy kconfigId as an alias for boardSymbol
-  if (updates.kconfigId !== undefined && updates.boardSymbol === undefined) {
-    updates.boardSymbol = updates.kconfigId;
-  }
-  delete updates.kconfigId;
 
   // Validate boardSymbol if provided
   if (updates.boardSymbol !== undefined) {

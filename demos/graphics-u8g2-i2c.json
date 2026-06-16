@@ -1,8 +1,0 @@
-{
-  "id": "graphics-u8g2-i2c",
-  "configs": {
-    "T5AI": {
-      "file": "config/T5AI.config"
-    }
-  }
-}

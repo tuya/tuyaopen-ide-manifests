@@ -1,0 +1,10 @@
+{
+  "id": "tuya-ai-your-otto-robot",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README_zh.md"
+    }
+  }
+}

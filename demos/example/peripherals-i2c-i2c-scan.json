@@ -1,0 +1,9 @@
+{
+  "id": "peripherals-i2c-i2c-scan",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/i2c/i2c_scan",
+  "documentation": {
+    "readme": {
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/i2c/i2c_scan/README_CN.md"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "id": "ble-ble-central",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_central",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_central/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_central/README_CN.md"
+    }
+  }
+}

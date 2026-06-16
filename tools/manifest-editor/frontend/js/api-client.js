@@ -161,6 +161,27 @@ class ApiClient {
     return this.request('GET', `/boards/platforms/${platformId}/peripherals`);
   }
 
+  // Platform endpoints
+  async getPlatforms() {
+    return this.request('GET', '/platforms');
+  }
+
+  async getPlatform(id) {
+    return this.request('GET', `/platforms/${id}`);
+  }
+
+  async createPlatform(data) {
+    return this.request('POST', '/platforms', data);
+  }
+
+  async updatePlatform(id, data) {
+    return this.request('PATCH', `/platforms/${id}`, data);
+  }
+
+  async deletePlatform(id, autoCommit = true) {
+    return this.request('DELETE', `/platforms/${id}`, { autoCommit });
+  }
+
   // Demo endpoints
   async getDemos() {
     return this.request('GET', '/demos');
@@ -226,6 +247,46 @@ class ApiClient {
 
   async deleteDemoImage(demoId, filename, autoCommit = true) {
     return this.request('DELETE', `/demo-images/${demoId}/${filename}`, { autoCommit });
+  }
+
+  // Platform image endpoints
+  async getPlatformImages(platformId) {
+    return this.request('GET', `/platform-images/${platformId}`);
+  }
+
+  async uploadPlatformImage(platformId, fileOrUrl, filename = null, autoCommit = true, isUrl = false) {
+    if (isUrl || (typeof fileOrUrl === 'string' && fileOrUrl.startsWith('https://'))) {
+      return this.request('POST', '/platform-images/upload', {
+        platformId,
+        imageUrl: fileOrUrl,
+        autoCommit,
+        autoUpdate: true,
+      });
+    }
+
+    const formData = new FormData();
+    formData.append('platformId', platformId);
+    formData.append('image', fileOrUrl, filename || 'image.jpg');
+    if (filename) formData.append('filename', filename);
+    formData.append('autoCommit', autoCommit);
+    formData.append('autoUpdate', 'true');
+
+    const url = `${this.baseUrl}/platform-images/upload`;
+    try {
+      const response = await fetch(url, { method: 'POST', body: formData });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error?.message || errorData.error || 'Upload failed');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Platform image upload error:', error);
+      throw error;
+    }
+  }
+
+  async deletePlatformImage(platformId, filename, autoCommit = true) {
+    return this.request('DELETE', `/platform-images/${platformId}/${filename}`, { autoCommit });
   }
 }
 

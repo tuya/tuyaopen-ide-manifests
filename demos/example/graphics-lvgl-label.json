@@ -1,0 +1,56 @@
+{
+  "id": "graphics-lvgl-label",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_label",
+  "configs": [
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": "display-oled",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_096_OLED.config",
+          "name": {
+            "en": "0.96-inch OLED",
+            "zh-CN": "0.96 寸 OLED 屏"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-board",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_29_E-INK.config",
+          "name": {
+            "en": "2.9\" E-Ink",
+            "zh-CN": "2.9 寸墨水屏"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": "group-mpxn93yq",
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
+          "name": {
+            "en": "3.5\" LCD",
+            "zh-CN": "3.5寸 LCD 触摸屏"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-pocket",
+      "options": [
+        {
+          "file": "TUYA_T5AI_POCKET.config",
+          "name": {
+            "en": "Tuya T5AI Pocket",
+            "zh-CN": "涂鸦 T5AI Pocket 板"
+          }
+        }
+      ]
+    }
+  ]
+}

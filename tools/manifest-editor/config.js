@@ -32,6 +32,7 @@ export const config = {
   imageSpecs: {
     board: { width: 500, height: 500, aspectRatio: 1, label: '500×500 (1:1)' },
     demo: { width: 960, height: 540, aspectRatio: 16 / 9, label: '960×540 (16:9)' },
+    platform: { width: 500, height: 500, aspectRatio: 1, label: '500×500 (1:1)' },
   },
 
   // CORS
@@ -44,6 +45,7 @@ export const config = {
     platforms: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'platforms'),
     images: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'boards-and-chips', 'images'),
     demoImages: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'demos', 'images'),
+    platformImages: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'platforms', 'images'),
     uploads: path.join(__dirname, 'uploads'), // Temporary upload directory
   },
 };

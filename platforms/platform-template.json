@@ -2,41 +2,13 @@
   "schemaVersion": 1,
   "platformId": "<platform-id>",
   "id": "<variant-id>",
-  "name": "<Variant Name>",
   "arch": "<xtensa-lx6 | xtensa-lx7 | risc-v | arm-cortex-m33>",
   "flashInterface": "<qspi | spi>",
   "connectivity": {
-    "wifi": {
-      "enabled": true,
-      "enableMacro": "ENABLE_WIFI",
-      "standard": "<802.11b/g/n | 802.11b/g/n/ax>",
-      "bands": [
-        "2.4GHz"
-      ],
-      "security": [
-        "WPA",
-        "WPA2",
-        "WPA3-Personal"
-      ],
-      "modes": [
-        "STA",
-        "AP",
-        "Direct"
-      ]
-    },
-    "ble": {
-      "enabled": true,
-      "enableMacro": "ENABLE_BLUETOOTH",
-      "version": "<5.0 | 5.2 | 5.4>"
-    },
-    "ethernet": {
-      "enabled": false,
-      "enableMacro": "ENABLE_WIRED"
-    },
-    "cellular": {
-      "enabled": false,
-      "enableMacro": "ENABLE_CELLULAR"
-    }
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
   },
   "memory": {
     "sramBytes": 0,
@@ -46,6 +18,35 @@
     "efuse": false
   },
   "peripherals": {
+    "wifi": {
+      "spec": {
+        "standard": "<802.11b/g/n | 802.11b/g/n/ax>",
+        "bands": [
+          "2.4GHz"
+        ],
+        "security": [
+          "WPA",
+          "WPA2",
+          "WPA3-Personal"
+        ],
+        "modes": [
+          "STA",
+          "AP",
+          "Direct"
+        ]
+      }
+    },
+    "ble": {
+      "spec": {
+        "version": "<5.0 | 5.2 | 5.4>"
+      }
+    },
+    "ethernet": {
+      "spec": {
+        "interface": "<RMII | MII>",
+        "mdio": true
+      }
+    },
     "gpio": {
       "enabled": true,
       "count": 0,
@@ -153,10 +154,6 @@
         "addrWidth": [
           "TUYA_IIC_ADDRESS_7BIT",
           "TUYA_IIC_ADDRESS_10BIT"
-        ],
-        "portType": [
-          "hw",
-          "sw"
         ],
         "ports": [
           {
@@ -268,14 +265,16 @@
           {
             "id": 0,
             "dma": false,
-            "pins": {
-              "clk": 0,
-              "cs": 0,
-              "d0": 0,
-              "d1": 0,
-              "d2": 0,
-              "d3": 0
-            }
+            "pinGroups": [
+              {
+                "clk": 0,
+                "cs": 0,
+                "d0": 0,
+                "d1": 0,
+                "d2": 0,
+                "d3": 0
+              }
+            ]
           }
         ]
       }
@@ -371,29 +370,13 @@
       "enabled": true,
       "count": 1,
       "spec": {
-        "partitionTypes": [
-          "TUYA_FLASH_TYPE_APP",
-          "TUYA_FLASH_TYPE_APP_BIN",
-          "TUYA_FLASH_TYPE_OTA",
-          "TUYA_FLASH_TYPE_USER0",
-          "TUYA_FLASH_TYPE_USER1",
-          "TUYA_FLASH_TYPE_KV_DATA",
-          "TUYA_FLASH_TYPE_KV_SWAP",
-          "TUYA_FLASH_TYPE_KV_KEY",
-          "TUYA_FLASH_TYPE_UF",
-          "TUYA_FLASH_TYPE_INFO",
-          "TUYA_FLASH_TYPE_KV_UF",
-          "TUYA_FLASH_TYPE_KV_PROTECT",
-          "TUYA_FLASH_TYPE_RCD"
-        ],
         "partitionMap": [
           {
             "type": "<value from partitionTypes>",
             "startAddr": "0x000000",
             "endAddr": "0x000000",
             "size": 0,
-            "blockSize": 4096,
-            "desc": "<description of stored data>"
+            "blockSize": 4096
           }
         ]
       }
@@ -499,43 +482,45 @@
         "ports": [
           {
             "id": 0,
-            "pins": {
-              "dclk": 0,
-              "disp": 0,
-              "de": 0,
-              "hsync": 0,
-              "vsync": 0,
-              "r": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              "g": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              "b": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ]
-            }
+            "pinGroups": [
+              {
+                "dclk": 0,
+                "disp": 0,
+                "de": 0,
+                "hsync": 0,
+                "vsync": 0,
+                "r": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "g": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "b": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
           }
         ]
       }
@@ -571,39 +556,41 @@
         "ports": [
           {
             "id": 0,
-            "pins": {
-              "rdx": 0,
-              "wdx": 0,
-              "rsx": 0,
-              "reset": 0,
-              "csx": 0,
-              "data": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ]
-            }
+            "pinGroups": [
+              {
+                "rdx": 0,
+                "wdx": 0,
+                "rsx": 0,
+                "reset": 0,
+                "csx": 0,
+                "data": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
           }
         ]
       }
@@ -632,25 +619,51 @@
         "ports": [
           {
             "id": 0,
-            "pins": {
-              "mclk": 0,
-              "pclk": 0,
-              "hsync": 0,
-              "vsync": 0,
-              "data": [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ]
-            }
+            "pinGroups": [
+              {
+                "mclk": 0,
+                "pclk": 0,
+                "hsync": 0,
+                "vsync": 0,
+                "data": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ]
+              }
+            ]
           }
         ]
       }
+    },
+    "slcd": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "segments": 0,
+        "commons": 0
+      }
+    },
+    "can": {
+      "enabled": false,
+      "count": 0
+    },
+    "lin": {
+      "enabled": false,
+      "count": 0
+    },
+    "swd": {
+      "enabled": true,
+      "count": 1
+    },
+    "iso7816": {
+      "enabled": false,
+      "count": 0
     },
     "kws": {
       "enabled": true,

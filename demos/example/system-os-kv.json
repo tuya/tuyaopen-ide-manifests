@@ -1,0 +1,10 @@
+{
+  "id": "system-os-kv",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_kv",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_kv/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/system/os_kv/README_CN.md"
+    }
+  }
+}

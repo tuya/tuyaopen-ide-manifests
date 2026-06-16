@@ -1,0 +1,24 @@
+{
+  "id": "tuya-ai-your-desk-emoji",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_desk_emoji",
+  "configs": [
+    {
+      "board": "t5ai-mini",
+      "options": [
+        {
+          "file": "T5AI_MINI.config",
+          "name": {
+            "en": "T5AI Mini",
+            "zh-CN": "T5AI Mini 开发板"
+          }
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_desk_emoji/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_desk_emoji/README_zh.md"
+    }
+  }
+}

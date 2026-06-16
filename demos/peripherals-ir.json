@@ -1,8 +1,0 @@
-{
-  "id": "peripherals-ir",
-  "configs": {
-    "T5AI": {
-      "file": "config/T5AI.config"
-    }
-  }
-}

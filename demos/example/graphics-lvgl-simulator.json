@@ -1,0 +1,9 @@
+{
+  "id": "graphics-lvgl-simulator",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_simulator",
+  "documentation": {
+    "readme": {
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_simulator/README_zh.md"
+    }
+  }
+}

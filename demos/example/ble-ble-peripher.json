@@ -1,0 +1,10 @@
+{
+  "id": "ble-ble-peripher",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_peripher",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_peripher/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/ble/ble_peripher/README_CN.md"
+    }
+  }
+}

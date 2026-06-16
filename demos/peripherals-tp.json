@@ -1,8 +1,0 @@
-{
-  "id": "peripherals-tp",
-  "configs": {
-    "TUYA_T5AI_DESKTOP_ROBOT": {
-      "file": "config/TUYA_T5AI_DESKTOP_ROBOT.config"
-    }
-  }
-}

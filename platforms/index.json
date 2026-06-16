@@ -5,21 +5,16 @@
   "items": [
     {
       "id": "t5ai",
-      "name": { "en": "Tuya T5AI", "zh-CN": "涂鸦 T5AI" },
+      "platformId": "t5ai",
+      "name": {
+        "en": "Tuya T5AI",
+        "zh-CN": "涂鸦 T5AI"
+      },
       "summary": {
-        "en": "Tuya T5AI platform — ARM Cortex-M33 with Wi-Fi 6 / BLE 5.4 for edge-AI applications.",
-        "zh-CN": "涂鸦 T5AI 平台 — ARM Cortex-M33，支持 Wi-Fi 6 / BLE 5.4，面向端侧 AI 应用。"
+        "en": "Tuya T5AI platform — dual-core ARM Cortex-M33 with on-chip KWS, voice activity detection, and lightweight AI inference, plus Wi-Fi 6 / BLE 5.4 connectivity. Rich peripheral interfaces for any IoT scenario, purpose-built for low-power edge-cloud multimodal LLM interaction across voice, video, audio, and GUI.",
+        "zh-CN": "涂鸦 T5AI 平台 — 双核 ARM Cortex-M33，片上集成语音唤醒（KWS）、语音检测与轻量 AI 推理，搭载 Wi-Fi 6 / BLE 5.4。丰富的硬件外设接口，满足各类 IoT 场景，专为低功耗端云多模态大模型交互打造——语音、视频、音频与 GUI 图形化界面交互。"
       },
-      "description": {
-        "en": "Dual-core ARM Cortex-M33 with on-chip KWS, voice activity detection, lightweight AI inference, and Wi-Fi 6 / BLE 5.4 connectivity. Rich peripheral interfaces to support any IoT scenario. Purpose-built for edge-cloud multimodal LLM interaction — voice, video, audio, and GUI — at ultra-low power.",
-        "zh-CN": "双核 ARM Cortex-M33，片上集成语音唤醒（KWS）、语音检测与轻量 AI 推理，搭载 Wi-Fi 6 / BLE 5.4。丰富的硬件外设接口，满足各类 IoT 场景的创意与外设接入需求。专为端云多模态大模型交互打造——语音、视频、音频与 GUI 图形化界面交互，低功耗硬件首选。"
-      },
-      "image": {
-        "url": "images/t5ai/t5ai-hero.png"
-      },
-      "variantRefs": [
-        { "id": "t5ai", "detailUrl": "platforms/t5ai/t5ai.json" }
-      ]
+      "detailUrl": "platforms/t5ai/t5ai.json"
     }
   ]
 }

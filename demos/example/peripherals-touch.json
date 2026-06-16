@@ -1,0 +1,10 @@
+{
+  "id": "peripherals-touch",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/touch",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/touch/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/touch/README_CN.md"
+    }
+  }
+}

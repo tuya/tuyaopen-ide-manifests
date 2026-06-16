@@ -1,0 +1,10 @@
+{
+  "id": "tuya-ai-your-robot-dog",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog/README_zh.md"
+    }
+  }
+}

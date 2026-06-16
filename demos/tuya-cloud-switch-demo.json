@@ -1,9 +1,0 @@
-{
-  "id": "tuya-cloud-switch-demo",
-  "documentation": {
-    "readme": {
-      "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/switch_demo/README.md",
-      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/switch_demo/README_CN.md"
-    }
-  }
-}

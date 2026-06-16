@@ -1,0 +1,10 @@
+{
+  "id": "peripherals-uart",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/uart",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/uart/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/uart/README_CN.md"
+    }
+  }
+}

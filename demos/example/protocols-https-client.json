@@ -1,0 +1,10 @@
+{
+  "id": "protocols-https-client",
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/https_client",
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/https_client/README.md",
+      "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/protocols/https_client/README_CN.md"
+    }
+  }
+}

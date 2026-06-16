@@ -8,9 +8,11 @@ import { errorHandler } from './backend/middleware/error-handler.js';
 // Routes
 import statusRouter from './backend/routes/status.js';
 import boardsRouter from './backend/routes/boards.js';
+import platformsRouter from './backend/routes/platforms.js';
 import demosRouter from './backend/routes/demos.js';
 import imagesRouter from './backend/routes/images.js';
 import demoImagesRouter from './backend/routes/demo-images.js';
+import platformImagesRouter from './backend/routes/platform-images.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -28,9 +30,11 @@ app.get('/health', (req, res) => {
 // API Routes
 app.use('/api/status', statusRouter);
 app.use('/api/boards', boardsRouter);
+app.use('/api/platforms', platformsRouter);
 app.use('/api/demos', demosRouter);
 app.use('/api/images', imagesRouter);
 app.use('/api/demo-images', demoImagesRouter);
+app.use('/api/platform-images', platformImagesRouter);
 
 // Serve frontend
 app.get('/', (req, res) => {
