@@ -1321,8 +1321,8 @@
       "id": "tuya-ai-your-otto-robot",
       "type": "app",
       "name": {
-        "en": "DIY Otto Robot Guide",
-        "zh-CN": "DIY Otto Robot 指南"
+        "en": "DIY Otto Robot",
+        "zh-CN": "DIY Otto Robot"
       },
       "summary": {
         "en": "Otto Robot is an open-source humanoid robot platform that supports multiple functional extensions.",
