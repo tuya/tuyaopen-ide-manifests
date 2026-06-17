@@ -14,6 +14,63 @@
     "efuse": false
   },
   "peripherals": {
+    "flash": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "partitionMap": [
+          {
+            "type": "TUYA_FLASH_TYPE_APP",
+            "startAddr": "0x00A000",
+            "endAddr": "0x1EA000",
+            "size": 1966080,
+            "blockSize": 4096
+          },
+          {
+            "type": "TUYA_FLASH_TYPE_OTA",
+            "startAddr": "0x1EA000",
+            "endAddr": "0x3CA000",
+            "size": 1966080,
+            "blockSize": 4096
+          },
+          {
+            "type": "TUYA_FLASH_TYPE_UF",
+            "startAddr": "0x3CA000",
+            "endAddr": "0x3DA000",
+            "size": 65536,
+            "blockSize": 4096
+          },
+          {
+            "type": "TUYA_FLASH_TYPE_KV_DATA",
+            "startAddr": "0x3DA000",
+            "endAddr": "0x3EA000",
+            "size": 65536,
+            "blockSize": 4096
+          },
+          {
+            "type": "TUYA_FLASH_TYPE_KV_KEY",
+            "startAddr": "0x3EA000",
+            "endAddr": "0x3EB000",
+            "size": 4096,
+            "blockSize": 4096
+          },
+          {
+            "type": "TUYA_FLASH_TYPE_KV_SWAP",
+            "startAddr": "0x3EB000",
+            "endAddr": "0x3EF000",
+            "size": 16384,
+            "blockSize": 4096
+          },
+          {
+            "type": "TUYA_FLASH_TYPE_USER0",
+            "startAddr": "0x3EF000",
+            "endAddr": "0x3FF000",
+            "size": 65536,
+            "blockSize": 4096
+          }
+        ]
+      }
+    },
     "gpio": {
       "enabled": true,
       "count": 29,
