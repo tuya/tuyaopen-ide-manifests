@@ -9,7 +9,7 @@ const router = express.Router();
 // identity, classification and tags stay in the index. `configs` is an array
 // of board targets: { board, accessory?, options:[{name?,file}] }.
 // Returns null when there is nothing to store (caller deletes the file).
-function buildDemoDetail(id, { source, configs, documentation }) {
+function buildDemoDetail(id, { source, configs, documentation, drivers }) {
   const detail = { id };
 
   if (typeof source === 'string' && source.trim()) detail.source = source.trim();
@@ -36,6 +36,18 @@ function buildDemoDetail(id, { source, configs, documentation }) {
   const readme = documentation?.readme;
   const readmeHasValue = readme && Object.values(readme).some((v) => v != null && v !== '');
   if (readmeHasValue) detail.documentation = { readme };
+
+  // Hardware driver dependencies: [{ driver, level }], level required|optional.
+  // `driver` ids mirror the peripherals tag vocabulary so a board's tags can be
+  // matched against a demo's required drivers. Deduped by driver, order kept.
+  if (Array.isArray(drivers)) {
+    const seen = new Set();
+    const cleaned = drivers
+      .filter((d) => d && typeof d.driver === 'string' && d.driver.trim())
+      .map((d) => ({ driver: d.driver.trim(), level: d.level === 'required' ? 'required' : 'optional' }))
+      .filter((d) => (seen.has(d.driver) ? false : seen.add(d.driver)));
+    if (cleaned.length) detail.drivers = cleaned;
+  }
 
   return Object.keys(detail).length > 1 ? detail : null;
 }
@@ -68,7 +80,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/demos - Create new demo
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, type, name, summary, tags, boards, compatibilityType, source, configs, documentation, publish } = req.body;
+  const { id, type, name, summary, tags, boards, compatibilityType, source, configs, documentation, drivers, publish } = req.body;
 
   if (!id || !name?.en || !source || typeof source !== 'string') {
     return res.status(400).json({
@@ -116,7 +128,7 @@ router.post('/', asyncHandler(async (req, res) => {
   await manifestLoader.saveDemosIndex(demos);
 
   // Detail holds source path + build config + docs (identity/tags in the index).
-  const detailEntry = buildDemoDetail(id, { source, configs, documentation });
+  const detailEntry = buildDemoDetail(id, { source, configs, documentation, drivers });
   if (detailEntry) await manifestLoader.saveDemoDetail(id, detailEntry, indexEntry.type);
 
   if (req.body.autoCommit !== false) {
@@ -167,6 +179,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     source: updates.source !== undefined ? updates.source : existing.source,
     configs: updates.configs !== undefined ? updates.configs : existing.configs,
     documentation: updates.documentation !== undefined ? updates.documentation : existing.documentation,
+    drivers: updates.drivers !== undefined ? updates.drivers : existing.drivers,
   });
   // A type change moves the detail file between demos/example|app/; drop the stale one.
   if (item.type !== oldType) await manifestLoader.deleteDemoDetail(req.params.id, oldType);

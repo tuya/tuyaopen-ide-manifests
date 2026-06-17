@@ -72,6 +72,7 @@ export function renderDemoForm(demo = null) {
       <div class="demo-form-tabs">
         <button type="button" class="demo-form-tab active" data-pane="basic" data-i18n="demoTabBasic">Basic Info</button>
         <button type="button" class="demo-form-tab" data-pane="config" data-i18n="demoTabConfig">Board Config Mapping</button>
+        <button type="button" class="demo-form-tab" data-pane="deps" data-i18n="demoTabDeps">Dependencies</button>
       </div>
 
       <!-- ============ Pane: Basic Info ============ -->
@@ -232,6 +233,18 @@ export function renderDemoForm(demo = null) {
         </div>
       </div>
 
+      <!-- ============ Pane: Dependencies ============ -->
+      <div class="demo-pane" data-pane="deps" style="display:none">
+        <!-- Hardware drivers — what this demo needs, by dependency strength.
+             Required = won't run without it; Optional = enhances but not needed.
+             Vocabulary mirrors the board "peripherals" tags so they can be matched. -->
+        <div class="form-group">
+          <label class="form-label" data-i18n="demoDrivers">Hardware drivers</label>
+          <small style="color: var(--color-muted); display:block; margin:2px 0 8px;" data-i18n="demoDriversHint">Hardware this demo uses. Required = won't run without it; Optional = enhances but works without.</small>
+          <div id="demoDriversContainer" class="demo-drivers"></div>
+        </div>
+      </div>
+
       <div class="form-actions">
         <button type="button" class="btn btn-outline" id="demoCancelBtn" data-i18n="cancelBtn">Cancel</button>
         <button type="submit" class="btn btn-primary" data-i18n="demoSave">${isEdit ? 'Save Changes' : 'Create Demo'}</button>
@@ -301,6 +314,14 @@ export async function saveDemoForm(form, demoId = null) {
   // boards[] is derived from the target boards (distinct), [] when universal.
   const boards = isUniversal ? [] : [...new Set(configs.map(t => t.board))];
 
+  // Hardware drivers: [{ driver, level }] read from the driver rows in the DOM.
+  const drivers = [];
+  document.querySelectorAll('#demoDriversContainer .demo-driver-row').forEach(row => {
+    const driver = row.dataset.driver;
+    if (!driver) return;
+    drivers.push({ driver, level: row.dataset.level === 'required' ? 'required' : 'optional' });
+  });
+
   const data = {
     id,
     type,
@@ -318,6 +339,7 @@ export async function saveDemoForm(form, demoId = null) {
     compatibilityType: compatType,
     source: document.getElementById('demoSource').value.trim(),
     configs: configs.length > 0 ? configs : undefined,
+    drivers: drivers.length > 0 ? drivers : [],
     documentation: {
       readme: {
         en: document.getElementById('demoReadmeEn').value.trim() || null,

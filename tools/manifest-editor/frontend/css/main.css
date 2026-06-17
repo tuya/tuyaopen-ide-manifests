@@ -1827,6 +1827,68 @@ body {
 .target-option .opt-name-zh { flex: 1; }
 .target-option .opt-file { flex: 1.6; }
 
+/* Demo hardware-driver dependency picker */
+.demo-drivers {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-sm) var(--spacing-md);
+}
+.demo-drivers-empty {
+  color: var(--color-muted);
+  font-size: 13px;
+  padding: 4px 0 8px;
+}
+.demo-driver-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border);
+}
+.demo-driver-row:first-child { padding-top: 0; }
+.demo-driver-name {
+  flex: 1;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+.demo-driver-levels {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.demo-driver-level {
+  background: none;
+  border: none;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  color: var(--color-muted);
+}
+.demo-driver-level + .demo-driver-level { border-left: 1px solid var(--color-border); }
+.demo-driver-level.active {
+  background: var(--color-primary);
+  color: #fff;
+}
+.demo-driver-remove {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--color-muted);
+  padding: 0 4px;
+}
+.demo-driver-remove:hover { color: var(--color-error); }
+.demo-driver-add {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
+.demo-driver-add .demo-driver-select { flex: 1; }
+
 /* Demos type tabs: Examples / Apps */
 .demos-tabs {
   display: flex;

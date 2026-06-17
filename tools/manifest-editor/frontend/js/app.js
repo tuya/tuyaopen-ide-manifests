@@ -1043,6 +1043,78 @@ function setupDemoTagsSelect() {
   if (typeSel) typeSel.addEventListener('change', refresh);
 }
 
+// Hardware-driver dependency picker for demos. Vocabulary is the "peripherals"
+// tag category (audio/display/led/button/…) so a demo's required drivers can be
+// matched against a board's peripheral tags. Each selected driver carries a
+// level — required (strong: won't run without it) or optional (weak: enhances).
+// State lives in the row's data-driver/data-level; saveDemoForm reads the DOM.
+function setupDemoDrivers(vocab, existing) {
+  const container = document.getElementById('demoDriversContainer');
+  if (!container) return;
+  const lang = i18n.getLanguage();
+  const labelOf = (id) => {
+    const v = vocab.find(x => x.id === id);
+    return v ? ((lang === 'zh-CN' ? (v['zh-CN'] || v.en) : v.en) || id) : id;
+  };
+  let rows = (existing || [])
+    .filter(d => d && d.driver)
+    .map(d => ({ driver: d.driver, level: d.level === 'required' ? 'required' : 'optional' }));
+
+  const render = () => {
+    const used = new Set(rows.map(r => r.driver));
+    const avail = vocab.filter(v => !used.has(v.id));
+    const reqL = i18n.t('demoDriverRequired') || 'Required';
+    const optL = i18n.t('demoDriverOptional') || 'Optional';
+    let html = '';
+    if (rows.length) {
+      html += rows.map(r => `
+        <div class="demo-driver-row" data-driver="${escapeHtml(r.driver)}" data-level="${r.level}">
+          <span class="demo-driver-name">${escapeHtml(labelOf(r.driver))}</span>
+          <div class="demo-driver-levels">
+            <button type="button" class="demo-driver-level${r.level === 'required' ? ' active' : ''}" data-set="required">${escapeHtml(reqL)}</button>
+            <button type="button" class="demo-driver-level${r.level === 'optional' ? ' active' : ''}" data-set="optional">${escapeHtml(optL)}</button>
+          </div>
+          <button type="button" class="demo-driver-remove" title="${escapeHtml(i18n.t('demoDelete') || 'Remove')}">&times;</button>
+        </div>`).join('');
+    } else {
+      html += `<div class="demo-drivers-empty">${escapeHtml(i18n.t('demoDriversEmpty') || 'No hardware drivers declared.')}</div>`;
+    }
+    html += `<div class="demo-driver-add">
+      <select class="demo-driver-select form-select"${avail.length ? '' : ' disabled'}>
+        <option value="">${escapeHtml(i18n.t('demoDriverAddSelect') || '-- add a driver --')}</option>
+        ${avail.map(v => `<option value="${escapeHtml(v.id)}">${escapeHtml(labelOf(v.id))}</option>`).join('')}
+      </select>
+      <button type="button" class="btn btn-sm btn-primary demo-driver-add-btn"${avail.length ? '' : ' disabled'}>+ ${escapeHtml(i18n.t('demoDriverAddBtn') || 'Add')}</button>
+    </div>`;
+    container.innerHTML = html;
+  };
+
+  render();
+
+  container.addEventListener('click', (e) => {
+    const addBtn = e.target.closest('.demo-driver-add-btn');
+    if (addBtn) {
+      const sel = container.querySelector('.demo-driver-select');
+      const id = sel && sel.value;
+      if (id && !rows.some(r => r.driver === id)) { rows.push({ driver: id, level: 'required' }); render(); }
+      return;
+    }
+    const lvl = e.target.closest('.demo-driver-level');
+    if (lvl) {
+      const row = lvl.closest('.demo-driver-row');
+      const r = rows.find(x => x.driver === row.dataset.driver);
+      if (r) { r.level = lvl.dataset.set === 'required' ? 'required' : 'optional'; render(); }
+      return;
+    }
+    const rm = e.target.closest('.demo-driver-remove');
+    if (rm) {
+      const row = rm.closest('.demo-driver-row');
+      rows = rows.filter(x => x.driver !== row.dataset.driver);
+      render();
+    }
+  });
+}
+
 async function loadDemos() {
   const demosList = document.getElementById('demosList');
   if (!demosList) return;
@@ -1174,6 +1246,17 @@ async function openDemoForm(demoId = null) {
 
   // Tags chip multi-select (controlled vocabulary, type-aware)
   setupDemoTagsSelect();
+
+  // Hardware-driver dependencies — vocabulary from the "peripherals" tag category.
+  try {
+    const tagsResult = await apiClient.getTags();
+    const peri = (tagsResult.categories || []).find(c => c.id === 'peripherals');
+    const vocab = (peri?.tags || []).map(t => ({ id: t.id, en: t.en, 'zh-CN': t['zh-CN'] }));
+    setupDemoDrivers(vocab, demo?.drivers);
+  } catch (err) {
+    console.error('[openDemoForm] driver vocab load failed:', err);
+    setupDemoDrivers([], demo?.drivers);
+  }
 
   // Tab switching (Basic Info / Board Config Mapping)
   formContainer.querySelectorAll('.demo-form-tab').forEach(tab => {
