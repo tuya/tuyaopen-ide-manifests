@@ -1281,8 +1281,8 @@
         "ai"
       ],
       "boards": [
-        "tuya-t5ai-board",
         "tuya-t5ai-core",
+        "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "waveshare-t5ai-touch-amoled-175"
       ],

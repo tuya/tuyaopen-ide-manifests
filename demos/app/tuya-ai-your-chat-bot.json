@@ -3,8 +3,55 @@
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_chat_bot",
   "configs": [
     {
+      "board": "tuya-t5ai-core",
+      "options": [
+        {
+          "file": "TUYA_T5AI_CORE.config",
+          "name": {
+            "en": "Tuya T5AI-Core",
+            "zh-CN": "涂鸦 T5AI-Core 核心板"
+          }
+        }
+      ]
+    },
+    {
       "board": "tuya-t5ai-board",
-      "accessory": "group-mpxn93yq",
+      "accessory": [
+        "group-mpxn93yq",
+        "camera",
+        "printer"
+      ],
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_LCD_3.5_CAM_PRINTER.config",
+          "name": {
+            "en": "3.5\" LCD + Camera + Printer",
+            "zh-CN": "3.5寸 LCD + 摄像头 + 打印机"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": [
+        "group-mpxn93yq",
+        "camera"
+      ],
+      "options": [
+        {
+          "file": "TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config",
+          "name": {
+            "en": "3.5\" LCD + Camera",
+            "zh-CN": "3.5寸 LCD 触摸屏 + 摄像头"
+          }
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-board",
+      "accessory": [
+        "group-mpxn93yq"
+      ],
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
@@ -14,36 +61,10 @@
           }
         },
         {
-          "file": "TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config",
-          "name": {
-            "en": "3.5\" LCD + Camera",
-            "zh-CN": "3.5寸 LCD + 摄像头"
-          }
-        },
-        {
-          "file": "TUYA_T5AI_BOARD_LCD_3.5_CAM_PRINTER.config",
-          "name": {
-            "en": "3.5\" LCD + Camera + Printer",
-            "zh-CN": "3.5寸 LCD + 摄像头 + 打印机"
-          }
-        },
-        {
           "file": "TUYA_T5AI_BOARD_LCD_3.5_v101.config",
           "name": {
             "en": "3.5\" LCD (V101)",
             "zh-CN": "3.5寸 LCD（V101）"
-          }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-core",
-      "options": [
-        {
-          "file": "TUYA_T5AI_CORE.config",
-          "name": {
-            "en": "Tuya T5AI-Core",
-            "zh-CN": "涂鸦 T5AI-Core 核心板"
           }
         }
       ]
