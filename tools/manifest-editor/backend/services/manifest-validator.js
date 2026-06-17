@@ -34,6 +34,7 @@ const BOARD_SCHEMA = {
       ],
     },
     platformId: { type: 'string' },
+    variantId: { type: 'string' },
     manufacturer: {
       oneOf: [
         { type: 'string' },

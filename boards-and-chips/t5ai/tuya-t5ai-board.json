@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "tuya-t5ai-board",
-  "name": {
-    "en": "Tuya T5AI Board",
-    "zh-CN": "涂鸦 T5AI-Board 开发板"
-  },
-  "summary": {
-    "en": "Tuya T5AI flagship evaluation board with audio codec, LED, and configurable display/camera modules.",
-    "zh-CN": "涂鸦 T5AI 旗舰评估板，搭载音频编解码器、LED，支持可配置显示屏与摄像头模块。"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "display": [
       {
@@ -646,13 +631,6 @@
     },
     "3dModel": "https://tuyaopen.ai/zh/assets/files/T5-BOARD_V102-3D-d57b0b82d3ff21c5e7a7867b89d8b5fa.zip"
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "audio",
-    "configurable"
-  ],
   "boardSymbol": "TUYA_T5AI_BOARD",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_BOARD"

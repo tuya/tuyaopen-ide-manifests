@@ -15,6 +15,19 @@
         "zh-CN": "涂鸦 T5AI 平台 — 双核 ARM Cortex-M33，片上集成语音唤醒（KWS）、语音检测与轻量 AI 推理，搭载 Wi-Fi 6 / BLE 5.4。丰富的硬件外设接口，满足各类 IoT 场景，专为低功耗端云多模态大模型交互打造——语音、视频、音频与 GUI 图形化界面交互。"
       },
       "detailUrl": "platforms/t5ai/t5ai.json"
+    },
+    {
+      "id": "gd32vw553",
+      "platformId": "gd32",
+      "name": {
+        "en": "GigaDevice GD32VW553",
+        "zh-CN": "兆易创新 GD32VW553"
+      },
+      "summary": {
+        "en": "GigaDevice GD32VW553 — RISC-V wireless MCU @160MHz with Wi-Fi 6 (2.4GHz) and Bluetooth LE 5.2, 320KB SRAM and up to 4MB on-chip flash.",
+        "zh-CN": "兆易创新 GD32VW553 — RISC-V 无线 MCU，主频 160MHz，集成 Wi-Fi 6（2.4GHz）与蓝牙 BLE 5.2，320KB SRAM，片上 Flash 最高 4MB。"
+      },
+      "detailUrl": "platforms/gd32/gd32vw553.json"
     }
   ]
 }

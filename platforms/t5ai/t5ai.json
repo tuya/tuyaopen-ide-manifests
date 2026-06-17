@@ -1,7 +1,5 @@
 {
   "schemaVersion": 1,
-  "platformId": "t5ai",
-  "id": "t5ai",
   "arch": "arm-cortex-m33",
   "flashInterface": "qspi",
   "connectivity": {

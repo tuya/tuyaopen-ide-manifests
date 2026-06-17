@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "tuya-t5ai-eink-nfc",
-  "name": {
-    "en": "Tuya T5AI E-Ink NFC",
-    "zh-CN": "涂鸦 T5AI 墨水屏 NFC 板"
-  },
-  "summary": {
-    "en": "T5AI board with UC8276 E-Ink display, NFC, FT6336 capacitive touch panel, audio AEC, 6-button layout, battery management, and SD card.",
-    "zh-CN": "搭载 UC8276 电子墨水屏、NFC、FT6336 电容触控、音频 AEC、6 按键、电池管理与 SD 卡的 T5AI 板。"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "audio": [
       {
@@ -310,16 +295,6 @@
     "datasheet": null,
     "productPage": null
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "display",
-    "nfc",
-    "touch",
-    "battery",
-    "production-form"
-  ],
   "boardSymbol": "TUYA_T5AI_EINK_NFC",
   "expansionPins": []
 }

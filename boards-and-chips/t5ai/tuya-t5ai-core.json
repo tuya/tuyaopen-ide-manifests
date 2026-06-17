@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "tuya-t5ai-core",
-  "name": {
-    "en": "Tuya T5AI-Core",
-    "zh-CN": "涂鸦 T5AI-Core 核心板"
-  },
-  "summary": {
-    "en": "Tuya T5AI-Core Development Kit is a highly integrated voice core development board based on the T5-E1 module. The T5-E1 module, independently developed by Tuya Smart, incorporates embedded Wi-Fi and Bluetooth capabilities, making it suitable for a variety of smart hardware scenarios. This board features an onboard microphone and speaker, supporting local voice recognition and audio playback to meet the requirements of voice interaction applications.\n\nThe board is equipped with a 44-pin header, making it easy for you to quickly develop and prototype AIoT projects. An onboard lithium battery power management circuit supports low-power design, suitable for developing mobile and portable smart devices.\n\nThis board provides extensive hardware interfaces and comprehensive voice functionality, so it stands out as an ideal choice for you to develop AIoT voice interaction applications.",
-    "zh-CN": "涂鸦 T5AI-Core 开发套件是一款基于 T5-E1 模组的高集成度语音核心开发板。T5-E1 模组由涂鸦智能自主研发，集成了嵌入式 Wi-Fi 与蓝牙功能，适用于多种智能硬件场景。T5AI-Core 开发板板载 1 个麦克风和 1 个扬声器，支持本地语音识别与音频播放，满足语音交互应用需求。\n\n开发板配备 44 Pin 排针，便于开发者进行快速的 AIoT 项目开发与原型验证。板载锂电池电源管理电路，支持低功耗设计，适合移动和便携式智能设备的开发。\n\n本开发板提供了丰富的硬件接口和完善的语音功能，是 AIoT 语音交互应用开发的理想选择。"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "audio": [
       {
@@ -106,16 +91,6 @@
       "zh-CN": "https://item.taobao.com/item.htm?id=978338733205&skuId=6099573727303&spm=a1z10.5-c-s.w4002-24402091062.12.27525cb0xGDZuY"
     }
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "audio",
-    "compact",
-    "starter-kit",
-    "development",
-    "battery"
-  ],
   "boardSymbol": "TUYA_T5AI_CORE",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_CORE"

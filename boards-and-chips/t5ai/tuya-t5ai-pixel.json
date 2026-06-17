@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "tuya-t5ai-pixel",
-  "name": {
-    "en": "Tuya T5AI Pixel",
-    "zh-CN": "涂鸦 T5AI Pixel 板"
-  },
-  "summary": {
-    "en": "T5AI evaluation board with audio AEC, 8× WS2812B pixel LED matrix, BMI270 6-axis IMU, and 3 user buttons",
-    "zh-CN": "搭载音频 AEC、8 颗 WS2812B 像素灯珠矩阵、BMI270 六轴 IMU 和 3 颗用户按键的 T5AI 评估板"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "audio": [
       {
@@ -213,15 +198,6 @@
     },
     "productPage": null
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "audio",
-    "led-pixel",
-    "imu",
-    "production-form"
-  ],
   "boardSymbol": "TUYA_T5AI_PIXEL",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_PIXEL"

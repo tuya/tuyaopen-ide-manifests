@@ -1,7 +1,5 @@
 {
   "schemaVersion": 1,
-  "platformId": "<platform-id>",
-  "id": "<variant-id>",
   "arch": "<xtensa-lx6 | xtensa-lx7 | risc-v | arm-cortex-m33>",
   "flashInterface": "<qspi | spi>",
   "connectivity": {

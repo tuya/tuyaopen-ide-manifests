@@ -180,9 +180,14 @@ const SPI_MODE_LABELS = {
 //              shown when the predicate holds (toggling a boolean gate re-renders).
 // Labels keyed "parent.key" (e.g. "irq.pins") disambiguate a key reused at
 // different depths once flattened.
-const P = (title, { labels, enums, enumLabels, enumSets, itemEnums, groupedPicks, combos, segments, indexedPins, computed, rowComputed, countFrom, flatten, hide, unitKB, provisional, note, visibleWhen, def } = {}) => ({
+const P = (title, { labels, enums, enumLabels, enumSets, itemEnums, groupedPicks, combos, segments, indexedPins, computed, rowComputed, countFrom, flatten, hide, unitKB, provisional, note, visibleWhen, def, templates } = {}) => ({
   title,
   labels: { ...L, ...(labels || {}) },
+  // Fixed shape for a newly-added object-array item, keyed by array name
+  // (ports / channels / pinGroups). Adding always uses this template so the
+  // structure is determined by the peripheral type, never cloned from existing
+  // entries. Pin values are null placeholders for the user to fill.
+  templates: templates || {},
   hide: hide || [],
   unitKB: unitKB || [],
   provisional: !!provisional, // not yet selectable in the add-peripheral dialog
@@ -254,6 +259,7 @@ export default {
     enumSets: { databits: U.uartDatabits, stopbits: U.uartStopbits, parity: U.uartParity, flowctrl: U.uartFlow },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: { ports: { id: 0, role: '', irq: { rx: false, tx: false }, pinGroups: [{ tx: null, rx: null, cts: null, rts: null }] } },
     def: { enabled: false, count: 0, spec: { baudrate: { min: 0, max: 0 }, databits: [], stopbits: [], parity: [], flowctrl: [], ports: [] } },
   }),
   i2c: P({ en: 'I2C', 'zh-CN': 'I2C' }, {
@@ -267,6 +273,7 @@ export default {
     enumSets: { role: U.i2cRole, speed: U.i2cSpeed, addrWidth: U.i2cAddr, type: U.portType },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: { ports: { id: 0, type: [], irq: false, pinGroups: [{ scl: null, sda: null }] } },
     def: { enabled: false, count: 0, spec: { role: [], speed: [], addrWidth: [], ports: [] } },
   }),
   spi: P({ en: 'SPI', 'zh-CN': 'SPI' }, {
@@ -289,6 +296,7 @@ export default {
     enumSets: { role: U.spiRole, mode: U.spiMode, csType: U.spiCsType, databits: U.spiDatabits, bitorder: U.spiBitorder },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: { ports: { id: 0, backend: 'spi', irq: false, dma: false, pinGroups: [{ clk: null, cs: null, mosi: null, miso: null }] } },
     def: { enabled: false, count: 0, spec: { role: [], mode: [], csType: [], databits: [], bitorder: [], ports: [] } },
   }),
   qspi: P({ en: 'QSPI', 'zh-CN': 'QSPI' }, {
@@ -297,6 +305,7 @@ export default {
     enumSets: { wireMode: U.qspiWire, role: U.qspiRole, type: U.qspiType, mode: U.spiMode },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: { ports: { id: 0, dma: false, pinGroups: [{ clk: null, cs: null, d0: null, d1: null, d2: null, d3: null }] } },
     def: { enabled: false, count: 0, spec: { wireMode: [], role: [], type: [], mode: [], freq: { min: 0, max: 0 }, ports: [] } },
   }),
   can: FLAG({ en: 'CAN', 'zh-CN': 'CAN' }, { provisional: true }),
@@ -309,6 +318,7 @@ export default {
     enumSets: { mode: U.adcMode },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: { ports: { id: 0, channels: [{ id: 0, pin: null }] }, channels: { id: 0, pin: null } },
     def: { enabled: false, count: 0, spec: { bits: 12, mode: [], ports: [] } },
   }),
   pwm: P({ en: 'PWM', 'zh-CN': 'PWM' }, {
@@ -316,6 +326,7 @@ export default {
     enumSets: { polarity: U.pwmPol, countMode: U.pwmCnt },
     computed: { count: lenCount('channels') },
     countFrom: 'channels',
+    templates: { channels: { id: 0, pin: null, irq: false } },
     def: { enabled: false, count: 0, spec: { polarity: [], countMode: [], duty: { min: 0, max: 0 }, freq: { min: 0, max: 0 }, capture: { supported: false }, channels: [] } },
   }),
   timer: P({ en: 'Timer', 'zh-CN': '定时器' }, {
@@ -333,6 +344,10 @@ export default {
     enumSets: { pixelFmt: U.pixelFmt, outDataClkEdge: U.rgbEdge },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: {
+      ports: { id: 0, pinGroups: [{ dclk: null, disp: null, de: null, hsync: null, vsync: null, r: [null, null, null, null, null, null, null, null], g: [null, null, null, null, null, null, null, null], b: [null, null, null, null, null, null, null, null] }] },
+      pinGroups: { dclk: null, disp: null, de: null, hsync: null, vsync: null, r: [null, null, null, null, null, null, null, null], g: [null, null, null, null, null, null, null, null], b: [null, null, null, null, null, null, null, null] },
+    },
     def: { enabled: false, count: 0, spec: { pixelFmt: [], outDataClkEdge: [], dclkFreq: { min: 0, max: 0 }, ports: [] } },
   }),
   i8080: P({ en: 'MCU8080 LCD', 'zh-CN': 'MCU8080 屏' }, {
@@ -344,6 +359,10 @@ export default {
     enumSets: { pixelFmt: U.pixelFmt },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: {
+      ports: { id: 0, pinGroups: [{ rdx: null, wdx: null, rsx: null, reset: null, csx: null, data: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null] }] },
+      pinGroups: { rdx: null, wdx: null, rsx: null, reset: null, csx: null, data: [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null] },
+    },
     def: { enabled: false, count: 0, spec: { pixelFmt: [], pixelFmtDataBits: {}, clkFreq: { min: 0, max: 0 }, ports: [] } },
   }),
   dvp: P({ en: 'DVP Camera', 'zh-CN': 'DVP 摄像头' }, {
@@ -364,6 +383,10 @@ export default {
     enumSets: { syncMode: U.dvpSync, outputMode: U.dvpOut },
     computed: { count: lenCount('ports') },
     countFrom: 'ports',
+    templates: {
+      ports: { id: 0, pinGroups: [{ mclk: null, pclk: null, hsync: null, vsync: null, data: [null, null, null, null, null, null, null, null] }] },
+      pinGroups: { mclk: null, pclk: null, hsync: null, vsync: null, data: [null, null, null, null, null, null, null, null] },
+    },
     def: { enabled: false, count: 0, spec: { syncMode: [], outputMode: [], mclkFreq: { min: 0, max: 0 }, ports: [] } },
   }),
   dma2d: P({ en: '2D DMA', 'zh-CN': '2D DMA' }, {

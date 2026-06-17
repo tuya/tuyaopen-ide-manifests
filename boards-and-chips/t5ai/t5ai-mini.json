@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "t5ai-mini",
-  "name": {
-    "en": "T5AI Mini",
-    "zh-CN": "T5AI Mini 开发板"
-  },
-  "summary": {
-    "en": "Minimal T5AI board with audio AEC and optional SPI display expansion module",
-    "zh-CN": "搭载音频 AEC 的 T5AI Mini 开发板，支持可选 SPI 显示扩展模块"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "audio": [
       {
@@ -150,13 +135,6 @@
     "productPage": null,
     "3dModel": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/src/otto_ninja/3D_Models"
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "audio",
-    "compact"
-  ],
   "boardSymbol": "T5AI_MINI",
   "expansionPins": []
 }

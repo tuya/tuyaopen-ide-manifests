@@ -43,11 +43,13 @@ export async function renderPeripheralEditor(containerId, boardId) {
     peripheralGroups = {};
   }
 
-  // Load board to get platformId, then load platform peripherals for GPIO defaults
+  // Load board, then load that chip's peripherals for GPIO defaults. Peripherals
+  // are per-chip, so resolve by the board's variantId (chip id); fall back to
+  // platformId for older data.
   try {
     const boardResp = await apiClient.getBoard(boardId);
     const board = boardResp.board || boardResp;
-    currentPlatformId = board.platformId || null;
+    currentPlatformId = board.variantId || board.platformId || null;
     if (currentPlatformId) {
       const platResp = await apiClient.getPlatformPeripherals(currentPlatformId);
       platformPeripherals = platResp.peripherals || {};

@@ -162,6 +162,20 @@ class ManifestLoader {
     return filePath;
   }
 
+  // Move a board's detail file into the directory of newPlatformId (the SDK
+  // platform group), used when a board's platformId changes. Locates the current
+  // file wherever it sits; no-op if already in place or missing.
+  async moveBoardDetail(boardId, newPlatformId) {
+    const src = await this.findBoardDetailPath(boardId);
+    if (!src) return null;
+    const destDir = path.join(config.paths.boards, newPlatformId);
+    await fs.mkdir(destDir, { recursive: true });
+    const dest = path.join(destDir, `${boardId}.json`);
+    if (path.resolve(src) === path.resolve(dest)) return dest;
+    await fs.rename(src, dest);
+    return dest;
+  }
+
   async loadPlatformDetail(platformId) {
     try {
       const filePath = path.join(config.paths.platforms, platformId, `${platformId}.json`);

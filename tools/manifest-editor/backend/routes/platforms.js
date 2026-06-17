@@ -81,7 +81,10 @@ router.post('/', asyncHandler(async (req, res) => {
   await manifestLoader.savePlatformsIndex(platforms);
 
   const template = (await manifestLoader.loadPlatformTemplate()) || { schemaVersion: 1 };
-  const newDetail = { ...template, ...(detail || {}), schemaVersion: 1, platformId: pid, id };
+  // id / platformId live in the index only — the detail is the hardware spec.
+  const newDetail = { ...template, ...(detail || {}), schemaVersion: 1 };
+  delete newDetail.id;
+  delete newDetail.platformId;
   await manifestLoader.savePlatformVariantDetail(pid, id, newDetail);
 
   if (req.body.autoCommit !== false) {
@@ -112,7 +115,9 @@ router.patch('/:id', asyncHandler(async (req, res) => {
 
   // Detail file.
   if (req.body.detail) {
-    const detail = { ...req.body.detail, schemaVersion: 1, platformId: newPid, id: item.id };
+    const detail = { ...req.body.detail, schemaVersion: 1 };
+    delete detail.id;
+    delete detail.platformId;
     await manifestLoader.savePlatformVariantDetail(newPid, item.id, detail);
     // If platformId changed, the detail moved dirs — remove the stale file.
     if (newPid !== oldPid) {
@@ -134,10 +139,26 @@ router.delete('/:id', asyncHandler(async (req, res) => {
     return res.status(404).json({ success: false, error: `Platform "${req.params.id}" not found` });
   }
   const item = platforms.items[idx];
-  const pid = item.platformId || item.id;
+
+  // Refuse deletion while boards still target this chip — removing it would
+  // orphan them. A board references this chip via variantId === item.id (current
+  // model); legacy boards stored the chip id in platformId.
+  const boards = await manifestLoader.loadBoards();
+  const referencing = (boards?.items || []).filter((b) =>
+    b.variantId === item.id || b.platformId === item.id,
+  );
+  if (referencing.length) {
+    const names = referencing.map((b) => (b.name && (b.name['zh-CN'] || b.name.en)) || b.id);
+    return res.status(409).json({
+      success: false,
+      error: `无法删除芯片平台 "${req.params.id}"：仍被 ${referencing.length} 个开发板引用（${names.join('、')}）。请先删除或改挂这些开发板，再删除该芯片平台。`,
+      referencedBy: referencing.map((b) => ({ id: b.id, name: b.name })),
+    });
+  }
+
   const removed = platforms.items.splice(idx, 1);
   await manifestLoader.savePlatformsIndex(platforms);
-  await manifestLoader.deletePlatformVariantDetail(pid, item.id);
+  await manifestLoader.deletePlatformVariantDetail(item.platformId || item.id, item.id);
 
   if (req.body?.autoCommit !== false) {
     await gitSync.autoCommit(`chore(platforms): remove ${req.params.id}`);

@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "tuya-t5ai-pocket",
-  "name": {
-    "en": "Tuya T5AI Pocket",
-    "zh-CN": "涂鸦 T5AI Pocket 板"
-  },
-  "summary": {
-    "en": "Compact T5AI handheld board with audio AEC, ST7305 SPI display, GC2145 camera, BMI270 IMU, AXP2101 PMIC, joystick, and cellular",
-    "zh-CN": "搭载音频 AEC、ST7305 SPI 屏、GC2145 摄像头、BMI270 IMU、AXP2101 电源管理、摇杆与蜂窝模块的 T5AI 掌机板"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "audio": [
       {
@@ -391,18 +376,6 @@
     },
     "productPage": null
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "audio",
-    "display",
-    "camera",
-    "imu",
-    "pmic",
-    "cellular",
-    "production-form"
-  ],
   "boardSymbol": "TUYA_T5AI_POCKET",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/TUYA_T5AI_POCKET"

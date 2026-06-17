@@ -6,6 +6,19 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
+// Resolve a board's platform reference (its `platformId` field — which holds a
+// platform *variant id*, e.g. "gd32vw553") to that platform's detail. The detail
+// lives at platforms/<platformId>/<id>.json, so a plain
+// loadPlatformDetail(ref) (which assumes id===platformId) fails whenever a
+// variant id differs from its platformId. Look the ref up in the index instead.
+async function resolvePlatformDetailByRef(ref) {
+  const platforms = await manifestLoader.loadPlatforms();
+  const items = platforms?.items || [];
+  const item = items.find((p) => p.id === ref) || items.find((p) => (p.platformId || p.id) === ref);
+  if (!item) return null;
+  return manifestLoader.loadPlatformVariantDetail(item.platformId || item.id, item.id);
+}
+
 // GET /api/boards - Get all boards
 router.get('/', asyncHandler(async (req, res) => {
   const boards = await manifestLoader.loadBoards();
@@ -30,11 +43,10 @@ router.get('/:id', asyncHandler(async (req, res) => {
     });
   }
 
-  // Merge detail fields (boardSymbol, variantId, demos, peripheralPatterns, links)
+  // Merge detail fields (boardSymbol, demos, peripheralPatterns, links)
   const detail = await manifestLoader.loadBoardDetail(req.params.id);
   const merged = { ...board };
   if (detail) {
-    if (detail.variantId) merged.variantId = detail.variantId;
     if (detail.boardSymbol) merged.boardSymbol = detail.boardSymbol;
     if (detail.links) merged.links = detail.links;
     if (detail.peripheralPatterns) merged.peripheralPatterns = detail.peripheralPatterns;
@@ -69,21 +81,24 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/boards - Create new board
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, name, platformId, manufacturer, summary, tags, published } = req.body;
+  const { id, name, platformId, variantId, manufacturer, summary, tags, published } = req.body;
 
-  // Validate required fields
-  if (!id || !name || !platformId) {
+  // Validate required fields. platformId = SDK platform group (e.g. "gd32");
+  // variantId = the specific chip (e.g. "gd32vw553"), matching a platform item's id.
+  if (!id || !name || !platformId || !variantId) {
     return res.status(400).json({
       success: false,
-      error: 'Missing required fields: id, name, platformId',
+      error: 'Missing required fields: id, name, platformId, variantId',
     });
   }
 
-  // Create new board object
+  // Create new board object. Detail files are grouped by SDK platform
+  // (boards-and-chips/<platformId>/<id>.json), mirroring platforms/<platformId>/.
   const newBoard = {
     id,
     name,
     platformId,
+    variantId,
     manufacturer: manufacturer || { en: 'Unknown' },
     summary: summary || {},
     tags: tags || [],
@@ -116,18 +131,12 @@ router.post('/', asyncHandler(async (req, res) => {
   // platformId + boardSymbol — no scaffold stored in the manifest.
   const boardSymbol = req.body.boardSymbol ?? '';
 
-  // Create initial detail file
+  // Create initial detail file — board-specific data only. Display/listing
+  // fields (id, name, summary, manufacturer, platformId, tags) live in the index.
   const initialDetail = {
     schemaVersion: 1,
-    id,
-    name,
-    summary: summary || {},
-    manufacturer: manufacturer || { en: 'Unknown' },
-    platformId,
-    variantId: platformId,
     peripheralPatterns: {},
     links: { schematic: null, datasheet: null, productPage: null },
-    tags: tags || [],
     boardSymbol: boardSymbol,
   };
   await manifestLoader.saveBoardDetail(id, initialDetail);
@@ -159,6 +168,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   // Update board fields
   const board = boards.items[boardIndex];
   const updates = { ...req.body };
+  const oldPlatformId = board.platformId;
 
   // Don't allow changing ID
   delete updates.id;
@@ -176,18 +186,25 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   }
 
   // Fields that go to the index
-  const indexFields = ['name', 'platformId', 'manufacturer', 'summary', 'tags', 'image', 'published'];
+  const indexFields = ['name', 'platformId', 'variantId', 'manufacturer', 'summary', 'tags', 'image', 'published'];
   for (const key of indexFields) {
     if (updates[key] !== undefined) {
       board[key] = updates[key];
     }
   }
 
+  // If the SDK platform group changed, the detail file moves to the new group's
+  // directory — relocate it and update detailUrl so they stay consistent.
+  if (board.platformId !== oldPlatformId) {
+    board.detailUrl = `boards-and-chips/${board.platformId}/${board.id}.json`;
+    await manifestLoader.moveBoardDetail(board.id, board.platformId);
+  }
+
   // Save index
   await manifestLoader.saveBoardsIndex(boards);
 
-  // Fields that go to the detail file: boardSymbol, variantId, demos, peripheralPatterns, links, source
-  const detailFields = ['boardSymbol', 'variantId', 'links', 'source'];
+  // Fields that go to the detail file: boardSymbol, demos, peripheralPatterns, links, source
+  const detailFields = ['boardSymbol', 'links', 'source'];
   // Map editor link fields back to nested links object (merge with existing)
   const editorLinkFields = ['schematicLink', 'guideDocs', 'purchaseLink', 'threeDModelLink'];
   const hasEditorLinks = editorLinkFields.some(k => updates[k] !== undefined);
@@ -216,15 +233,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   if (hasDetailUpdates) {
     let detail = await manifestLoader.loadBoardDetail(req.params.id);
     if (!detail) {
-      detail = {
-        schemaVersion: 1,
-        id: req.params.id,
-        name: board.name,
-        summary: board.summary || {},
-        manufacturer: board.manufacturer || {},
-        platformId: board.platformId,
-        variantId: board.variantId || board.platformId,
-      };
+      detail = { schemaVersion: 1 };
     }
     for (const key of detailFields) {
       if (updates[key] !== undefined) {
@@ -326,26 +335,17 @@ router.patch('/:id/expansion-pins', asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, error: 'Missing gpios array' });
   }
 
-  let detail = await manifestLoader.loadBoardDetail(req.params.id);
-  if (!detail) {
-    const boards = await manifestLoader.loadBoards();
-    const item = boards?.items?.find(b => b.id === req.params.id);
-    if (!item) {
-      return res.status(404).json({ success: false, error: `Board "${req.params.id}" not found` });
-    }
-    detail = {
-      schemaVersion: 1,
-      id: req.params.id,
-      name: item.name,
-      summary: item.summary || {},
-      manufacturer: item.manufacturer || {},
-      platformId: item.platformId,
-      variantId: item.variantId || item.platformId,
-    };
+  const boards = await manifestLoader.loadBoards();
+  const item = boards?.items?.find(b => b.id === req.params.id);
+  if (!item) {
+    return res.status(404).json({ success: false, error: `Board "${req.params.id}" not found` });
   }
+  let detail = await manifestLoader.loadBoardDetail(req.params.id);
+  if (!detail) detail = { schemaVersion: 1 };
 
-  // Load platform pinout for function resolution
-  const platformDetail = await manifestLoader.loadPlatformDetail(detail.platformId);
+  // Load platform pinout for function resolution. variantId is the specific chip
+  // (matches a platform item's id); fall back to platformId for older data.
+  const platformDetail = await resolvePlatformDetailByRef(item.variantId || item.platformId);
   const pinout = platformDetail?.pinout || [];
 
   // Resolve functions for each GPIO
@@ -369,7 +369,7 @@ router.patch('/:id/expansion-pins', asyncHandler(async (req, res) => {
 
 // GET /api/platforms/:platformId/pinout - Get platform pinout for GPIO selection
 router.get('/platforms/:platformId/pinout', asyncHandler(async (req, res) => {
-  const platformDetail = await manifestLoader.loadPlatformDetail(req.params.platformId);
+  const platformDetail = await resolvePlatformDetailByRef(req.params.platformId);
   if (!platformDetail) {
     return res.status(404).json({ success: false, error: `Platform "${req.params.platformId}" not found` });
   }
@@ -379,7 +379,7 @@ router.get('/platforms/:platformId/pinout', asyncHandler(async (req, res) => {
 
 // GET /api/platforms/:platformId/peripherals - Get platform peripheral hardware specs (default GPIO mappings)
 router.get('/platforms/:platformId/peripherals', asyncHandler(async (req, res) => {
-  const platformDetail = await manifestLoader.loadPlatformDetail(req.params.platformId);
+  const platformDetail = await resolvePlatformDetailByRef(req.params.platformId);
   if (!platformDetail) {
     return res.status(404).json({ success: false, error: `Platform "${req.params.platformId}" not found` });
   }
@@ -396,19 +396,10 @@ router.patch('/:id/peripherals', asyncHandler(async (req, res) => {
   let detail = await manifestLoader.loadBoardDetail(req.params.id);
   if (!detail) {
     const boards = await manifestLoader.loadBoards();
-    const item = boards?.items?.find(b => b.id === req.params.id);
-    if (!item) {
+    if (!boards?.items?.some(b => b.id === req.params.id)) {
       return res.status(404).json({ success: false, error: `Board "${req.params.id}" not found` });
     }
-    detail = {
-      schemaVersion: 1,
-      id: req.params.id,
-      name: item.name,
-      summary: item.summary || {},
-      manufacturer: item.manufacturer || {},
-      platformId: item.platformId,
-      variantId: item.variantId || item.platformId,
-    };
+    detail = { schemaVersion: 1 };
   }
 
   detail.peripheralPatterns = peripheralPatterns;

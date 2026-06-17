@@ -63,13 +63,16 @@ function renderList() {
     html += `<table class="exp-pins-table">
       <thead><tr>
         <th>GPIO</th>
+        <th>${isZh ? '引脚名' : 'Name'}</th>
         <th>${isZh ? '复用功能' : 'Functions'}</th>
         <th></th>
       </tr></thead><tbody>`;
     for (const pin of expansionPins) {
       const funcs = (pin.functions || []).join(' / ');
+      const name = platformPinout.find(p => p.gpio === pin.gpio)?.name || '';
       html += `<tr class="exp-pins-row" data-gpio="${pin.gpio}">
         <td class="exp-pins-gpio">${pin.gpio}</td>
+        <td class="exp-pins-name">${name ? `<span class="exp-pins-name-badge">${esc(name)}</span>` : ''}</td>
         <td class="exp-pins-funcs">${esc(funcs)}</td>
         <td><button class="btn btn-sm btn-danger exp-pins-remove" data-gpio="${pin.gpio}">×</button></td>
       </tr>`;

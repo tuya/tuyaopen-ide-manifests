@@ -55,21 +55,86 @@ function naturalCompare(a, b) {
   return ax.length - bx.length;
 }
 
+// Generic starter suggestions for a pinout row's "functions" combobox, so a
+// brand-new platform isn't blank. Free-text still applies — these are only
+// hints and are merged with whatever the platform already uses. Categorized by
+// the combobox via COMBO_PREFIXES.
+const PINOUT_FUNC_SUGGEST = [
+  // power / system
+  'GND', 'VCC', 'VDD', 'RESET', 'BOOT', 'MICBIAS', 'IRDA',
+  // gpio
+  ...Array.from({ length: 56 }, (_, i) => `GPIO${i}`),
+  // uart (+ dedicated download uart)
+  ...['0', '1', '2'].flatMap(n => [`UART${n}_TX`, `UART${n}_RX`, `UART${n}_CTS`, `UART${n}_RTS`, `UART${n}_CK`]),
+  'DL_UART_TX', 'DL_UART_RX',
+  // i2c
+  ...['0', '1', '2'].flatMap(n => [`I2C${n}_SCL`, `I2C${n}_SDA`, `I2C${n}_SMBA`]),
+  // spi / qspi
+  ...['0', '1'].flatMap(n => [`SPI${n}_SCK`, `SPI${n}_CSN`, `SPI${n}_MOSI`, `SPI${n}_MISO`]),
+  ...['0', '1'].flatMap(n => [`QSPI${n}_SCK`, `QSPI${n}_CS`, `QSPI${n}_IO0`, `QSPI${n}_IO1`, `QSPI${n}_IO2`, `QSPI${n}_IO3`]),
+  // sdio
+  'SDIO_CLK', 'SDIO_CMD', 'SDIO_DATA0', 'SDIO_DATA1', 'SDIO_DATA2', 'SDIO_DATA3',
+  // pwm (+ grouped pwm)
+  ...Array.from({ length: 8 }, (_, i) => `PWM${i}`),
+  ...['0', '1'].flatMap(g => Array.from({ length: 6 }, (_, i) => `PWMG${g}_PWM${i}`)),
+  // adc
+  ...Array.from({ length: 16 }, (_, i) => `ADC${i}`),
+  // timer
+  ...Array.from({ length: 17 }, (_, t) => t).flatMap(t => [0, 1, 2, 3].map(c => `TIMER${t}_CH${c}`)),
+  // rtc / wakeup
+  'RTC_OUT', 'RTC_REFIN', 'RTC_TS', 'RTC_TAMP',
+  'WKUP0', 'WKUP1', 'WKUP2', 'WKUP3',
+  // debug (jtag / swd)
+  'JTMS', 'JTCK', 'JTDI', 'JTDO', 'NJTRST', 'SWCLK', 'SWDIO',
+  // clock / oscillator
+  'CLK_OUT', 'LPO_CLK', 'XI', 'XO',
+  // i2s / audio
+  ...['0', '1', '2'].flatMap(n => [`I2S${n}_SCK`, `I2S${n}_SYNC`, `I2S${n}_DIN`, `I2S${n}_DOUT`]),
+  'I2S_MCLK', 'DMIC_CLK', 'DMIC_DAT',
+  'MIC1_P', 'MIC1_N', 'MIC2_P', 'MIC2_N', 'AUDIO_LP', 'AUDIO_LN',
+  // rgb lcd
+  ...['R', 'G', 'B'].flatMap(ch => Array.from({ length: 8 }, (_, i) => `RGB_${ch}${i}`)),
+  'RGB_DCLK', 'RGB_DE', 'RGB_DISP', 'RGB_HSYNC', 'RGB_VSYNC',
+  // i8080 lcd
+  ...Array.from({ length: 18 }, (_, i) => `I8080_D${i}`),
+  'I8080_CSX', 'I8080_RDX', 'I8080_RSX', 'I8080_WRX', 'I8080_RESET',
+  // camera (cis / dvp)
+  'CIS_MCLK', 'CIS_AUXCLK', 'CIS_PCLK', 'CIS_HSYNC', 'CIS_VSYNC',
+  ...Array.from({ length: 8 }, (_, i) => `CIS_PXD${i}`),
+  // segment lcd
+  ...Array.from({ length: 32 }, (_, i) => `SEG${i}`),
+  ...Array.from({ length: 8 }, (_, i) => `COM${i}`),
+  // touch
+  ...Array.from({ length: 16 }, (_, i) => `TOUCH${i}`),
+  // ethernet
+  'ENET_MDC', 'ENET_MDIO', 'ENET_REF_CLK', 'ENET_PHY_INT',
+  'ENET_RXD0', 'ENET_RXD1', 'ENET_RXDV', 'ENET_TXD0', 'ENET_TXD1', 'ENET_TXEN',
+  // can / lin
+  'CAN_TX', 'CAN_RX', 'CAN_STBY', 'LIN_TXD', 'LIN_RXD', 'LIN_SLEEP',
+  // smart card (iso7816)
+  'SC_CLK', 'SC_IO', 'SC_RSTN', 'SC_VCC',
+  // usb
+  'USB_D+', 'USB_D-',
+];
+
 // Leading peripheral prefixes used to categorize pin function names in the
 // combobox. Order: longer/more-specific first so e.g. QSPI/I2S aren't shadowed.
 const COMBO_PREFIXES = [
   'GPIO', 'UART', 'QSPI', 'SPI', 'I2S', 'I2C', 'I8080', 'PWM', 'ADC', 'DAC',
+  'TIMER', 'RTC', 'WKUP',
   'RGB', 'DVP', 'CIS', 'SEG', 'COM', 'TOUCH', 'SDIO', 'CAN', 'LIN', 'ENET',
-  'USB', 'SWCLK', 'SWDIO', 'SC_',
+  'USB', 'SWCLK', 'SWDIO', 'JT', 'NJTRST', 'SC_',
   'MIC', 'AUDIO', 'DMIC',
-  'CLK_OUT', 'LPO', 'XI', 'XO',
+  'CLK_OUT', 'CK_OUT', 'XTAL', 'OSC', 'LPO', 'XI', 'XO',
 ];
 // Prefixes that share a named category (i18n key) instead of standing alone.
 const COMBO_GROUPS = {
-  CLK_OUT: 'pfComboClock', LPO: 'pfComboClock', XI: 'pfComboClock', XO: 'pfComboClock',
+  CLK_OUT: 'pfComboClock', CK_OUT: 'pfComboClock', XTAL: 'pfComboClock', OSC: 'pfComboClock',
+  LPO: 'pfComboClock', XI: 'pfComboClock', XO: 'pfComboClock',
   MIC: 'pfComboAudio', AUDIO: 'pfComboAudio', DMIC: 'pfComboAudio',
   SEG: 'pfComboSlcd', COM: 'pfComboSlcd',
   SWCLK: 'pfComboSwd', SWDIO: 'pfComboSwd',
+  JT: 'pfComboJtag', NJTRST: 'pfComboJtag',
   SC_: 'pfComboIso7816',
 };
 
@@ -104,7 +169,7 @@ function resolvePeripheralSchema() {
       title: pick(def.title), labels, hide: def.hide || [], unitKB: def.unitKB || [], enums: def.enums || {}, enumLabels, enumSets: def.enumSets || {}, itemEnums: def.itemEnums || {}, groupedPicks: def.groupedPicks || {},
       combos: def.combos || {}, segments: def.segments || [], indexedPins: def.indexedPins || [],
       computed: def.computed || {}, rowComputed: def.rowComputed || {}, countFrom: def.countFrom || null,
-      flatten: def.flatten || [], visibleWhen: def.visibleWhen || {}, provisional: !!def.provisional,
+      flatten: def.flatten || [], visibleWhen: def.visibleWhen || {}, provisional: !!def.provisional, templates: def.templates || {},
       note: def.note ? { title: pick(def.note.title), items: (def.note.items || []).map(n => ({ term: pick(n.term), desc: pick(n.desc) })) } : null,
     };
   }
@@ -137,7 +202,7 @@ function kindOf(v) {
 }
 
 class StructEditor {
-  constructor(data, { omitKeys, labels, lockStructure, enums, datalistKeys, pinout, categories, schema, flattenKeys, inlineObjects } = {}) {
+  constructor(data, { omitKeys, labels, lockStructure, enums, datalistKeys, datalistSuggest, pinout, categories, schema, flattenKeys, inlineObjects, itemTemplate } = {}) {
     this.data = data ?? {};
     this.omitKeys = omitKeys || null;
     this.labels = labels || null; // map: raw key -> friendly localized label
@@ -158,12 +223,17 @@ class StructEditor {
     // Array keys whose string items render as a combobox (free text + <datalist>
     // suggestions gathered from all values already used under that key).
     this.datalistKeys = datalistKeys || null;
+    // Default suggestions merged into the datalist combobox (e.g. generic pin
+    // function names) so a fresh platform isn't blank.
+    this.datalistSuggest = datalistSuggest || null;
     this.dlId = datalistKeys ? `sfdl${++_dlSeq}` : null;
     // When set (the peripherals editor), recognized pin fields render as a GPIO
     // picker sourced from this pinout array, filtered by function name.
     this.pinout = pinout || null;
     // Optional [{id,label,keys[]}] to group root-level keys into category sections.
     this.categories = categories || null;
+    // Shape for a new item added to the (empty) root array — e.g. a pinout row.
+    this.itemTemplate = itemTemplate || null;
     this.rootEl = null;
   }
 
@@ -481,6 +551,7 @@ class StructEditor {
   // Distinct string values used under any datalistKeys array, for suggestions.
   _datalistOptions() {
     const out = new Set();
+    if (this.datalistSuggest) this.datalistSuggest.forEach(x => { if (typeof x === 'string' && x.trim()) out.add(x.trim()); });
     const walk = (v) => {
       if (Array.isArray(v)) { v.forEach(walk); return; }
       if (v && typeof v === 'object') {
@@ -634,9 +705,13 @@ class StructEditor {
     const target = this._getByPath(path);
     if (action === 'add' && Array.isArray(target)) {
       const tmpl = this._objArrayTemplate(path);
-      // New items are blanked but keep pin-structure shape (pinGroups, r/g/b),
-      // so e.g. a new port arrives with a ready-to-fill pin group.
-      const item = target.length ? this._blankClone(target[0], [...path, 0]) : (tmpl || '');
+      // A fixed per-type template (ports / channels / pinGroups) ALWAYS wins, so
+      // an added item's structure is determined by the peripheral type, never
+      // cloned from an existing entry. An empty root array (e.g. a fresh pinout)
+      // uses the editor's itemTemplate. Cloning is only a fallback for arrays
+      // with no known template.
+      const rootTmpl = (path.length === 0 && this.itemTemplate) ? JSON.parse(JSON.stringify(this.itemTemplate)) : null;
+      const item = tmpl || rootTmpl || (target.length ? this._blankClone(target[0], [...path, 0]) : '');
       // Object items with a numeric id (ports/channels): assign the smallest
       // unused id so a new one doesn't collide with an existing one.
       if (item && typeof item === 'object' && !Array.isArray(item) && typeof item.id === 'number') {
@@ -1121,14 +1196,24 @@ class StructEditor {
   // Template object for adding to a known object-array (e.g. a pin group →
   // {scl:null, sda:null}); null if the array's item shape is unknown.
   _objArrayTemplate(path) {
-    if (path[path.length - 1] === 'pinGroups') {
+    const key = path[path.length - 1];
+    const type = path[0];
+    const tpl = this.schema && this.schema[type] && this.schema[type].templates && this.schema[type].templates[key];
+    if (key === 'pinGroups') {
       const cfg = this._pinCfg(path); // backend-aware pin fields
       if (cfg && cfg.fields) {
         const o = {};
         for (const f of Object.keys(cfg.fields)) o[f] = null;
         return o;
       }
+      // Peripherals whose pin groups aren't simple flat fields (RGB/8080/DVP
+      // indexed buses) carry an explicit pinGroups template in the schema.
+      if (tpl) return JSON.parse(JSON.stringify(tpl));
+      return null;
     }
+    // ports / channels: fixed per-type template (determines the structure of a
+    // newly-added entry — never cloned from existing ones).
+    if (tpl) return JSON.parse(JSON.stringify(tpl));
     return null;
   }
 
@@ -1274,7 +1359,10 @@ function closePeriModal() { if (_periModal) _periModal.classList.add('hidden'); 
 function openPeriAdd() {
   ensurePeriModal();
   const present = new Set(Object.keys(_peri.peripherals));
-  const avail = Object.keys(_peri.schema).filter(t => !present.has(t));
+  const prov = (t) => !!(_peri.schema[t] && _peri.schema[t].provisional);
+  // Not-yet-supported (provisional) types sort to the end of the list.
+  const avail = Object.keys(_peri.schema).filter(t => !present.has(t))
+    .sort((a, b) => (prov(a) ? 1 : 0) - (prov(b) ? 1 : 0));
   _periModal.querySelector('#pfPeriModalTitle').textContent = i18n.t('pfPeriAdd') || 'Add peripheral';
   _periModal.querySelector('#pfPeriModalFooter').style.display = 'none';
   const body = _periModal.querySelector('#pfPeriModalBody');
@@ -1366,6 +1454,68 @@ function i18nPair(idBase, labelKey, en, zh, { textarea } = {}) {
       <div class="form-col-half">${mk(`${idBase}En`, valEn, 'EN')}</div>
       <div class="form-col-half">${mk(`${idBase}Zh`, valZh, '中文')}</div>
     </div>`;
+}
+
+// Minimal "create platform" form: only the essential identity fields. On
+// success the backend seeds the rest from the template; the caller then opens
+// the full editor (onCreated(newId)). Cancel calls onCreated(null).
+export function mountNewPlatformForm(container, { onCreated } = {}) {
+  const ro = '^[a-z0-9][a-z0-9\\-]*$';
+  container.innerHTML = `
+    <form id="platformCreateForm" class="board-form" style="max-width:none;width:100%;padding:20px">
+      <div class="form-group form-row-2col">
+        <div class="form-col-half">
+          <label class="form-label required">${escapeHtml(i18n.t('platformId'))}</label>
+          <input type="text" id="npId" class="form-input" pattern="${ro}" placeholder="esp32c3">
+          <small style="color:var(--color-muted)">${escapeHtml(i18n.t('platformIdHint'))}</small>
+        </div>
+        <div class="form-col-half">
+          <label class="form-label required">${escapeHtml(i18n.t('platformGroupId'))}</label>
+          <input type="text" id="npPlatformId" class="form-input" pattern="${ro}" placeholder="esp32">
+          <small style="color:var(--color-muted)">${escapeHtml(i18n.t('platformGroupIdHint'))}</small>
+        </div>
+      </div>
+      ${i18nPair('npName', 'platformName', '', '')}
+      ${i18nPair('npSummary', 'platformSummary', '', '', { textarea: true })}
+      <div class="form-group form-row-2col">
+        <div class="form-col-half">
+          <label class="form-label">${escapeHtml(i18n.t('platformArchLabel'))}</label>
+          <select id="npArch" class="form-select">${selectOptions(ARCH_OPTIONS, '')}</select>
+        </div>
+        <div class="form-col-half">
+          <label class="form-label">${escapeHtml(i18n.t('platformFlashBusLabel'))}</label>
+          <select id="npFlash" class="form-select">${selectOptions(FLASH_INTERFACE_OPTIONS, '')}</select>
+        </div>
+      </div>
+      <div class="form-actions" style="display:flex;gap:12px;justify-content:flex-end;margin-top:24px;padding-top:20px;border-top:1px solid var(--color-border)">
+        <button type="button" id="npCancel" class="btn btn-outline">${escapeHtml(i18n.t('cancelBtn'))}</button>
+        <button type="submit" class="btn btn-primary">${escapeHtml(i18n.t('platformCreateBtn'))}</button>
+      </div>
+    </form>`;
+
+  const q = (id) => document.getElementById(id)?.value?.trim() || '';
+  const pair = (base) => { const en = q(`${base}En`); const zh = q(`${base}Zh`); const o = {}; if (en) o.en = en; if (zh) o['zh-CN'] = zh; return o; };
+
+  container.querySelector('#platformCreateForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = q('npId');
+    const name = pair('npName');
+    if (!id) { showError('Validation Error', i18n.t('platformIdRequired') || 'Platform id is required'); return; }
+    if (!name.en && !name['zh-CN']) { showError('Validation Error', i18n.t('platformNameRequired') || 'Platform name is required'); return; }
+    // Start with no peripherals (add them as needed) — overrides the template's
+    // full set so the add-peripheral dialog isn't empty on a fresh platform.
+    const detail = { peripherals: {} };
+    if (q('npArch')) detail.arch = q('npArch');
+    if (q('npFlash')) detail.flashInterface = q('npFlash');
+    try {
+      await apiClient.createPlatform({ id, platformId: q('npPlatformId') || id, name, summary: pair('npSummary'), detail, autoCommit: true });
+      showNotification(`Platform "${id}" created`);
+      if (onCreated) onCreated(id);
+    } catch (error) {
+      showError('Create Failed', error.message);
+    }
+  });
+  container.querySelector('#npCancel').addEventListener('click', () => { if (onCreated) onCreated(null); });
 }
 
 export function mountPlatformForm(container, platform, detail, { isNew } = {}) {
@@ -1578,8 +1728,11 @@ export function mountPlatformForm(container, platform, detail, { isNew } = {}) {
     mountEl: container.querySelector('#pfPeriStruct'),
   };
   renderPeriCards();
-  new StructEditor(editor.data.pinout, { labels: pinoutLabels(), lockStructure: true, enums: { type: PIN_TYPE_OPTIONS }, datalistKeys: ['functions'] })
-    .mount(container.querySelector('#pfPinoutStruct'));
+  new StructEditor(editor.data.pinout, {
+    labels: pinoutLabels(), lockStructure: true, enums: { type: PIN_TYPE_OPTIONS },
+    datalistKeys: ['functions'], datalistSuggest: PINOUT_FUNC_SUGGEST,
+    itemTemplate: { pin: null, name: '', gpio: null, type: '', functions: [] },
+  }).mount(container.querySelector('#pfPinoutStruct'));
 
   _state = { isNew, editor };
 
@@ -1695,6 +1848,28 @@ export async function savePlatformForm() {
 }
 
 export async function deletePlatformPrompt(id) {
+  // Guard: a chip platform that is still referenced by boards cannot be deleted
+  // (it would orphan them). Check up front so the user gets the reason before the
+  // destructive confirm prompt — the backend enforces the same rule as a backstop.
+  try {
+    const boardsRes = await apiClient.getBoards();
+    // `id` is the chip (platform item id). A board targets it via variantId
+    // (current model); legacy boards stored the chip id in platformId.
+    const refs = (boardsRes?.boards || []).filter(
+      (b) => b.variantId === id || b.platformId === id,
+    );
+    if (refs.length) {
+      const names = refs.map((b) => (b.name && (b.name['zh-CN'] || b.name.en)) || b.id);
+      showError(
+        '无法删除芯片平台',
+        `芯片平台 "${id}" 仍被 ${refs.length} 个开发板引用（${names.join('、')}），不能删除。\n\n请先删除或将这些开发板改挂到其它芯片平台，再删除该芯片平台。`,
+      );
+      return false;
+    }
+  } catch (_) {
+    // Pre-check failed (e.g. offline) — proceed; the backend guard still blocks it.
+  }
+
   if (!confirm(`⚠️ Delete platform "${id}"?\n\nThis removes its index entry and detail file. CANNOT be undone!`)) return false;
   const typed = prompt(`🔴 Type the platform id to confirm deletion:\n\n"${id}"`, '');
   if (typed !== id) {

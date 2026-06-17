@@ -7,11 +7,12 @@ import { renderBoardCard, renderBoardForm, saveBoardForm, deleteBoardPrompt, set
 import { renderPeripheralEditor, isDirty as periIsDirty } from './peripheral-editor.js';
 import { renderExpansionPinsEditor } from './expansion-pins-editor.js';
 import { renderDemoCard, renderDemoForm, saveDemoForm, deleteDemoAction } from './demo-editor.js';
-import { renderPlatformCard, mountPlatformForm, savePlatformForm, deletePlatformPrompt } from './platform-editor.js';
+import { renderPlatformCard, mountPlatformForm, mountNewPlatformForm, savePlatformForm, deletePlatformPrompt } from './platform-editor.js';
 import i18n from './i18n.js';
 
 let currentTab = 'boards';
 let platforms = [];
+let activeBoardPlatform = null;  // selected platform tab on the boards page
 let formDirty = false;  // Track unsaved changes
 
 // Initialize application
@@ -198,44 +199,75 @@ function setupBoardsTab() {
   });
 }
 
+function attachBoardCardListeners() {
+  document.querySelectorAll('.edit-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openBoardForm(btn.dataset.boardId);
+    });
+  });
+  document.querySelectorAll('.delete-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      deleteBoardPrompt(btn.dataset.boardId).then((success) => { if (success) loadBoards(); });
+    });
+  });
+}
+
 async function loadBoards() {
   const boardsList = document.getElementById('boardsList');
   if (!boardsList) return;
 
+  boardsList.className = 'boards-list loading';
   boardsList.innerHTML = '<p class="loading-text">Loading boards...</p>';
-  boardsList.classList.add('loading');
 
   try {
-    const result = await apiClient.getBoards();
-    const boards = result.boards || [];
+    // Boards + platforms together: boards are grouped into one tab per chip
+    // platform (t5ai / gd32 / …), scaling as more platforms are added.
+    const [boardsRes, platsRes] = await Promise.all([
+      apiClient.getBoards(),
+      apiClient.getPlatforms().catch(() => ({ platforms: [] })),
+    ]);
+    const boards = boardsRes.boards || [];
+    const plats = platsRes.platforms || [];
 
     if (boards.length === 0) {
+      boardsList.className = 'boards-list';
       boardsList.innerHTML = '<p class="loading-text">No boards yet. Click "Add New Board" to create one.</p>';
-    } else {
-      boardsList.innerHTML = boards.map((board) => renderBoardCard(board)).join('');
-
-      // Attach event listeners
-      document.querySelectorAll('.edit-btn').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const boardId = btn.dataset.boardId;
-          openBoardForm(boardId);
-        });
-      });
-
-      document.querySelectorAll('.delete-btn').forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const boardId = btn.dataset.boardId;
-          deleteBoardPrompt(boardId).then((success) => {
-            if (success) loadBoards();
-          });
-        });
-      });
+      return;
     }
 
-    boardsList.classList.remove('loading');
+    // A board's `platformId` is its SDK platform group (e.g. "gd32"); tabs are
+    // one per group, with all the group's chips' boards inside.
+    const byGroup = new Map();
+    for (const b of boards) {
+      const group = b.platformId || '—';
+      if (!byGroup.has(group)) byGroup.set(group, []);
+      byGroup.get(group).push(b);
+    }
+    // Tab order: SDK groups in platform-list order, then any leftovers.
+    const ordered = [];
+    for (const p of plats) { const g = p.platformId || p.id; if (byGroup.has(g) && !ordered.includes(g)) ordered.push(g); }
+    for (const g of byGroup.keys()) if (!ordered.includes(g)) ordered.push(g);
+
+    if (!activeBoardPlatform || !byGroup.has(activeBoardPlatform)) activeBoardPlatform = ordered[0];
+
+    const render = () => {
+      const tabs = ordered.map((g) => {
+        const n = byGroup.get(g).length;
+        const act = g === activeBoardPlatform ? ' active' : '';
+        return `<button type="button" class="board-plat-tab${act}" data-plat="${escapeHtml(g)}">${escapeHtml(g)}<span class="board-plat-tab-count">${n}</span></button>`;
+      }).join('');
+      const cards = byGroup.get(activeBoardPlatform).map(renderBoardCard).join('');
+      boardsList.className = 'boards-tabbed';
+      boardsList.innerHTML = `<div class="board-plat-tabs">${tabs}</div><div class="boards-grid">${cards}</div>`;
+      boardsList.querySelectorAll('.board-plat-tab').forEach((t) =>
+        t.addEventListener('click', () => { activeBoardPlatform = t.dataset.plat; render(); }));
+      attachBoardCardListeners();
+    };
+    render();
   } catch (error) {
+    boardsList.className = 'boards-list';
     boardsList.innerHTML = `<p class="loading-text" style="color: var(--color-error);">Error: ${error.message}</p>`;
   }
 }
@@ -265,31 +297,37 @@ async function openBoardForm(boardId = null) {
     modalTitle.textContent = i18n.t('boardFormCreateTitle');
   }
 
-  // Load platforms if not already loaded
-  if (platforms.length === 0) {
-    try {
-      const result = await apiClient.getStatus();
-      // In a real app, we'd load platforms from /api/platforms
-      // For now, we'll use hardcoded defaults
-      platforms = ['t5ai', 'esp32-s3', 'esp32', 'bk7231n'];
-    } catch (error) {
-      console.error('Error loading platforms:', error);
-    }
+  // Load the actual chip platforms for the dropdown (one entry per existing
+  // platform, e.g. t5ai / gd32) — not a hardcoded list. Reloaded on each open so
+  // newly-created platforms show up.
+  try {
+    const result = await apiClient.getPlatforms();
+    // Each entry is a chip variant: id = chip (-> board.variantId),
+    // platformId = SDK group (-> board.platformId).
+    platforms = (result.platforms || []).map((p) => ({ id: p.id, platformId: p.platformId || p.id, name: p.name }));
+  } catch (error) {
+    console.error('Error loading platforms:', error);
+    platforms = [];
   }
 
   formContainer.innerHTML = renderBoardForm(board);
 
-  // Populate platforms dropdown
+  // Dropdown lists chips; each option's value is the chip id (board.variantId),
+  // and data-group carries its SDK platform group (board.platformId).
   const platformSelect = document.getElementById('platformId');
   if (platformSelect) {
     platforms.forEach((plat) => {
-      if (!platformSelect.querySelector(`option[value="${plat}"]`)) {
+      if (!platformSelect.querySelector(`option[value="${plat.id}"]`)) {
         const option = document.createElement('option');
-        option.value = plat;
-        option.textContent = plat;
+        option.value = plat.id;
+        option.dataset.group = plat.platformId;
+        const nm = plat.name && (plat.name['zh-CN'] || plat.name.en);
+        option.textContent = nm ? `${nm} (${plat.id})` : plat.id;
         platformSelect.appendChild(option);
       }
     });
+    // Pre-select the board's chip (variantId) when editing.
+    if (board && board.variantId) platformSelect.value = board.variantId;
   }
 
   // Set up form handlers and validation
@@ -401,7 +439,8 @@ async function openBoardForm(boardId = null) {
           expPinsPane.style.display = target === 'expansion-pins' ? '' : 'none';
           expPinsPane.classList.toggle('active', target === 'expansion-pins');
           if (target === 'expansion-pins') {
-            renderExpansionPinsEditor('expansionPinsContainer', boardId, board.platformId);
+            // Pinout is per-chip: pass the chip id (variantId), not the SDK group.
+            renderExpansionPinsEditor('expansionPinsContainer', boardId, board.variantId || board.platformId);
           }
         });
       });
@@ -418,7 +457,26 @@ async function openBoardForm(boardId = null) {
 // ========== Platforms Tab ==========
 function setupPlatformsTab() {
   const addBtn = document.getElementById('addPlatformBtn');
-  if (addBtn) addBtn.addEventListener('click', () => openPlatformForm(null));
+  if (addBtn) addBtn.addEventListener('click', openNewPlatform);
+}
+
+// Step 1 of adding a platform: a small dialog for just the essential fields.
+// On create, jump straight into the full editor for the new platform.
+function openNewPlatform() {
+  const modal = document.getElementById('platformModal');
+  const modalTitle = document.getElementById('platformModalTitle');
+  const container = document.getElementById('platformFormContainer');
+  const closeBtn = document.getElementById('closePlatformModalBtn');
+  if (!modal || !container) return;
+  modalTitle.textContent = i18n.t('platformFormTitle') || 'Add Platform';
+  mountNewPlatformForm(container, {
+    onCreated: (id) => {
+      if (id) { loadPlatforms(); openPlatformForm(id); } // created → open full editor
+      else { modal.classList.add('hidden'); }            // cancelled
+    },
+  });
+  if (closeBtn) closeBtn.onclick = () => modal.classList.add('hidden');
+  modal.classList.remove('hidden');
 }
 
 async function loadPlatforms() {

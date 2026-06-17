@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "waveshare-t5ai-touch-amoled-175",
-  "name": {
-    "en": "Waveshare T5AI Touch AMOLED 1.75\"",
-    "zh-CN": "微雪 T5AI 1.75 寸触摸 AMOLED"
-  },
-  "summary": {
-    "en": "Waveshare 1.75-inch 466×466 Touch AMOLED board based on T5-E1 module with CO5300 display driver, CST9217 capacitive touch, QMI8658 6-axis IMU, PCF85063 RTC, audio AEC with speaker output, battery management, Micro SD slot, and LVGL support.",
-    "zh-CN": "基于 T5-E1 模组的微雪 1.75 寸 466×466 触摸 AMOLED 开发板，搭载 CO5300 显示驱动、CST9217 电容触控、QMI8658 六轴 IMU、PCF85063 实时时钟、音频 AEC 及扬声器输出、电池管理、Micro SD 卡槽，支持 LVGL。"
-  },
-  "manufacturer": {
-    "en": "Waveshare",
-    "zh-CN": "微雪电子"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "audio": [
       {
@@ -288,19 +273,6 @@
       "zh-CN": "https://www.waveshare.net/shop/T5-E1-Touch-AMOLED-1.75.htm"
     }
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "ai",
-    "audio",
-    "display",
-    "touch",
-    "led",
-    "imu",
-    "battery",
-    "sd-card",
-    "production-form"
-  ],
   "boardSymbol": "WAVESHARE_T5AI_TOUCH_AMOLED_1_75",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/WAVESHARE_T5AI_TOUCH_AMOLED_1_75"

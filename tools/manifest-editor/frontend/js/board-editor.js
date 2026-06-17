@@ -118,7 +118,6 @@ export function renderBoardForm(board = null) {
         <label class="form-label required" for="platformId">${i18n.t('boardPlatform')}</label>
         <select id="platformId" name="platformId" class="form-select" required>
           <option value="">${i18n.t('boardPlatformSelect')}</option>
-          ${board ? `<option value="${escapeHtml(board.platformId)}" selected>${escapeHtml(board.platformId)}</option>` : ''}
         </select>
         <small style="color: var(--color-muted);">${i18n.t('boardPlatformHint')}</small>
         <div class="form-error" id="platformError"></div>
@@ -527,7 +526,11 @@ export async function saveBoardForm(formElement) {
   const boardId = document.getElementById('boardId')?.value;
   const nameEn = document.getElementById('boardName')?.value;
   const nameZh = document.getElementById('boardNameZh')?.value;
-  const platformId = document.getElementById('platformId')?.value;
+  // The dropdown selects a chip: its value is the chip id (variantId), and
+  // data-group is the SDK platform group (platformId).
+  const platformSelect = document.getElementById('platformId');
+  const variantId = platformSelect?.value;
+  const platformId = platformSelect?.selectedOptions?.[0]?.dataset?.group || variantId;
   const manufacturer = document.getElementById('manufacturer')?.value;
   const summaryEn = document.getElementById('boardSummary')?.value;
   const summaryZh = document.getElementById('boardSummaryZh')?.value;
@@ -539,7 +542,7 @@ export async function saveBoardForm(formElement) {
   const threeDModelLink = document.getElementById('threeDModelLink')?.value;
 
   // Validate required fields
-  if (!boardId || !nameEn || !platformId) {
+  if (!boardId || !nameEn || !variantId) {
     showError('Validation Error', 'Please fill in all required fields');
     return false;
   }
@@ -577,6 +580,7 @@ export async function saveBoardForm(formElement) {
     id: boardId,
     name: { en: nameEn },
     platformId,
+    variantId,
     manufacturer: manufacturer || { en: 'Unknown' },
     summary: { en: summaryEn },
     tags,

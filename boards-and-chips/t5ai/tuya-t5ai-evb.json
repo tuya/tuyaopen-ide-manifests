@@ -1,20 +1,5 @@
 {
   "schemaVersion": 1,
-  "id": "tuya-t5ai-evb",
-  "name": {
-    "en": "Tuya T5AI EVB",
-    "zh-CN": "涂鸦 T5AI 工程验证板"
-  },
-  "summary": {
-    "en": "T5AI engineering validation board with audio AEC, ST7789 SPI display, and 2 user buttons",
-    "zh-CN": "搭载音频 AEC、ST7789 SPI 显示屏和 2 颗用户按键的 T5AI 工程验证板"
-  },
-  "manufacturer": {
-    "en": "Tuya",
-    "zh-CN": "涂鸦智能"
-  },
-  "platformId": "t5ai",
-  "variantId": "t5ai",
   "peripheralPatterns": {
     "led": [
       {
@@ -47,13 +32,6 @@
     "datasheet": null,
     "productPage": null
   },
-  "tags": [
-    "wifi",
-    "ble",
-    "edge-ai",
-    "audio",
-    "display"
-  ],
   "boardSymbol": "TUYA_T5AI_EVB",
   "expansionPins": [],
   "peripheralGroups": {}
