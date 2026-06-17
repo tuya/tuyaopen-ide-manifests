@@ -28,5 +28,6 @@ tools/*/.cache/
 *.d.ts
 *.d.ts.map
 
-# skill-script runtime caches
+# skill-script runtime caches (fetch_doc.py, search_help.py, ...)
 skills/**/scripts/.doc_manifest_cache.json
+skills/**/scripts/.doc_schema_cache/
