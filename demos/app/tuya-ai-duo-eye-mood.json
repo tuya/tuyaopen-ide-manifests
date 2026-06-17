@@ -28,5 +28,23 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    },
+    {
+      "driver": "audio",
+      "level": "required"
+    },
+    {
+      "driver": "button",
+      "level": "required"
+    },
+    {
+      "driver": "led",
+      "level": "optional"
+    }
   ]
 }

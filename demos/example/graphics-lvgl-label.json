@@ -52,5 +52,11 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    }
   ]
 }

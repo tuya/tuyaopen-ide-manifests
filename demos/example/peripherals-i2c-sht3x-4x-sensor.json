@@ -5,5 +5,11 @@
     "readme": {
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/i2c/sht3x_4x_sensor/README_CN.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "sensor",
+      "level": "required"
+    }
+  ]
 }

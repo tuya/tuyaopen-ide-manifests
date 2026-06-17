@@ -14,5 +14,43 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    },
+    {
+      "driver": "audio",
+      "level": "required"
+    },
+    {
+      "driver": "button",
+      "level": "required"
+    },
+    {
+      "driver": "pmic",
+      "level": "required"
+    },
+    {
+      "driver": "camera",
+      "level": "optional"
+    },
+    {
+      "driver": "led",
+      "level": "optional"
+    },
+    {
+      "driver": "imu",
+      "level": "optional"
+    },
+    {
+      "driver": "sensor",
+      "level": "optional"
+    },
+    {
+      "driver": "sd-card",
+      "level": "optional"
+    }
   ]
 }

@@ -1,4 +1,10 @@
 {
   "id": "e-paper-4-26inch-e-paper",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/e-Paper/4.26inch_e-Paper"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/e-Paper/4.26inch_e-Paper",
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    }
+  ]
 }

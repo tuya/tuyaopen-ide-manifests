@@ -1,4 +1,10 @@
 {
   "id": "graphics-u8g2-i2c",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/u8g2_i2c"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/u8g2_i2c",
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    }
+  ]
 }

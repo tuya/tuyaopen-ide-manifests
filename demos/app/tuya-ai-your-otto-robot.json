@@ -6,5 +6,19 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README_zh.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "audio",
+      "level": "required"
+    },
+    {
+      "driver": "display",
+      "level": "required"
+    },
+    {
+      "driver": "button",
+      "level": "optional"
+    }
+  ]
 }

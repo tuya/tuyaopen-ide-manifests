@@ -26,5 +26,11 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "sd-card",
+      "level": "required"
+    }
   ]
 }

@@ -6,5 +6,23 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/mimiclaw/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/apps/mimiclaw/README_zh.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "led",
+      "level": "optional"
+    },
+    {
+      "driver": "button",
+      "level": "optional"
+    },
+    {
+      "driver": "audio",
+      "level": "optional"
+    },
+    {
+      "driver": "sd-card",
+      "level": "optional"
+    }
+  ]
 }

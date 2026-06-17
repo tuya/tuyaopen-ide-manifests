@@ -27,5 +27,15 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "camera",
+      "level": "required"
+    },
+    {
+      "driver": "sd-card",
+      "level": "required"
+    }
   ]
 }

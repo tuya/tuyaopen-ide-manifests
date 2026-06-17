@@ -1,4 +1,10 @@
 {
   "id": "peripherals-imu-bmi270",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/imu/bmi270"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/imu/bmi270",
+  "drivers": [
+    {
+      "driver": "imu",
+      "level": "required"
+    }
+  ]
 }

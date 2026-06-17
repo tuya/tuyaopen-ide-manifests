@@ -1,4 +1,10 @@
 {
   "id": "graphics-u8g2-spi",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/u8g2_spi"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/u8g2_spi",
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    }
+  ]
 }

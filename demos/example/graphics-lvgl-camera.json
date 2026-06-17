@@ -20,5 +20,19 @@
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_camera/README.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    },
+    {
+      "driver": "camera",
+      "level": "required"
+    },
+    {
+      "driver": "button",
+      "level": "required"
+    }
+  ]
 }

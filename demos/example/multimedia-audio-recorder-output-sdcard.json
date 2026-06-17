@@ -26,5 +26,19 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "audio",
+      "level": "required"
+    },
+    {
+      "driver": "sd-card",
+      "level": "required"
+    },
+    {
+      "driver": "button",
+      "level": "optional"
+    }
   ]
 }

@@ -6,5 +6,11 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/touch/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/touch/README_CN.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "touch",
+      "level": "required"
+    }
+  ]
 }

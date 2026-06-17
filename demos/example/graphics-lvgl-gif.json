@@ -83,5 +83,15 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_gif/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/graphics/lvgl_gif/README_zh.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    },
+    {
+      "driver": "touch",
+      "level": "optional"
+    }
+  ]
 }

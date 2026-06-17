@@ -14,5 +14,19 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "led-pixel",
+      "level": "required"
+    },
+    {
+      "driver": "audio",
+      "level": "optional"
+    },
+    {
+      "driver": "button",
+      "level": "optional"
+    }
   ]
 }

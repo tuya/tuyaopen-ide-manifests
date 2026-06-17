@@ -26,5 +26,11 @@
         }
       ]
     }
+  ],
+  "drivers": [
+    {
+      "driver": "audio",
+      "level": "required"
+    }
   ]
 }

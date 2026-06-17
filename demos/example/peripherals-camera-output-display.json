@@ -32,5 +32,15 @@
     "readme": {
       "zh-CN": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/camera/output_display/README_CN.md"
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "camera",
+      "level": "required"
+    },
+    {
+      "driver": "display",
+      "level": "required"
+    }
+  ]
 }

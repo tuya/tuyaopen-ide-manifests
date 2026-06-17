@@ -1,4 +1,10 @@
 {
   "id": "peripherals-tp",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/tp"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/examples/peripherals/tp",
+  "drivers": [
+    {
+      "driver": "touch",
+      "level": "required"
+    }
+  ]
 }

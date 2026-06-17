@@ -46,5 +46,19 @@
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/games/lvgl_games/README.md",
       "zh-CN": null
     }
-  }
+  },
+  "drivers": [
+    {
+      "driver": "display",
+      "level": "required"
+    },
+    {
+      "driver": "touch",
+      "level": "required"
+    },
+    {
+      "driver": "button",
+      "level": "optional"
+    }
+  ]
 }

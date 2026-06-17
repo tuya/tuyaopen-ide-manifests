@@ -1,4 +1,14 @@
 {
   "id": "tuya-cloud-camera-demo",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/camera_demo"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/camera_demo",
+  "drivers": [
+    {
+      "driver": "camera",
+      "level": "required"
+    },
+    {
+      "driver": "audio",
+      "level": "optional"
+    }
+  ]
 }
