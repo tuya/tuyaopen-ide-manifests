@@ -27,3 +27,6 @@ tools/*/.cache/
 *.css.map
 *.d.ts
 *.d.ts.map
+
+# skill-script runtime caches
+skills/**/scripts/.doc_manifest_cache.json
