@@ -1819,8 +1819,11 @@ body {
 }
 .target-head { display: flex; gap: 8px; align-items: center; }
 .target-head .target-platform,
-.target-head .target-board,
-.target-head .target-accessory { flex: 1; }
+.target-head .target-board { flex: 1; }
+.target-accessory-wrap { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; }
+.acc-label { font-size: 12px; color: var(--color-muted, #888); white-space: nowrap; padding-top: 2px; }
+.target-accessory { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+.acc-check { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; cursor: pointer; }
 .target-options { margin-bottom: 6px; }
 .target-option { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
 .target-option .opt-name-en,

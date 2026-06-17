@@ -894,8 +894,14 @@ function setupDemoTargets(allBoards, existing) {
   const boardOptions = (platform, sel) => `<option value="">${i18n.t('demoTargetSelectBoard')}</option>` +
     allBoards.filter(b => !platform || b.platformId === platform)
       .map(b => `<option value="${escapeHtml(b.id)}"${b.id === sel ? ' selected' : ''}>${escapeHtml(loc(b.name, b.id))}</option>`).join('');
-  const accessoryOptions = (list, sel) => `<option value="">${i18n.t('demoTargetAccessoryNone')}</option>` +
-    list.map(a => `<option value="${escapeHtml(a.id)}"${a.id === sel ? ' selected' : ''}>${escapeHtml(a.label)}</option>`).join('');
+  // Accessories are multi-select: a config may attach several add-ons (e.g.
+  // LCD + sensor). Rendered as checkboxes; values are board peripheral/group ids.
+  const accessoryChecks = (list, selected) => {
+    if (!list.length) return `<small style="color:var(--color-muted)">${i18n.t('demoTargetAccessoryEmpty')}</small>`;
+    return list.map(a =>
+      `<label class="acc-check"><input type="checkbox" class="acc-cb" value="${escapeHtml(a.id)}"${selected.includes(a.id) ? ' checked' : ''}> ${escapeHtml(a.label)}</label>`
+    ).join('');
+  };
 
   const optionRow = (o) => `<div class="target-option">
       <input type="text" class="form-input opt-name-en" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameEn'))}" value="${escapeHtml(o?.name?.en || '')}">
@@ -907,12 +913,17 @@ function setupDemoTargets(allBoards, existing) {
   const targetRow = (t) => {
     const opts = (t?.options && t.options.length) ? t.options : [{}];
     const platform = t?.board ? (boardById[t.board]?.platformId || '') : '';
+    // accessory accepts a legacy single string or an array.
+    const accSel = Array.isArray(t?.accessory) ? t.accessory : (t?.accessory ? [t.accessory] : []);
     return `<div class="demo-target">
       <div class="target-head">
         <select class="form-input target-platform">${platformOptions(platform)}</select>
         <select class="form-input target-board">${boardOptions(platform, t?.board || '')}</select>
-        <select class="form-input target-accessory" data-selected="${escapeHtml(t?.accessory || '')}"><option value="">${i18n.t('demoTargetAccessoryNone')}</option></select>
         <button type="button" class="btn btn-sm btn-danger target-remove" title="${escapeHtml(i18n.t('demoTargetRemove'))}">✕</button>
+      </div>
+      <div class="target-accessory-wrap">
+        <span class="acc-label">${escapeHtml(i18n.t('demoTargetAccessories'))}</span>
+        <div class="target-accessory" data-selected="${escapeHtml(accSel.join(','))}"></div>
       </div>
       <small style="color:var(--color-muted);display:block;margin:6px 0 4px;">${escapeHtml(i18n.t('demoTargetOptionsHint'))}</small>
       <div class="target-options">${opts.map(optionRow).join('')}</div>
@@ -922,9 +933,10 @@ function setupDemoTargets(allBoards, existing) {
 
   async function fillAccessory(row) {
     const board = row.querySelector('.target-board').value;
-    const sel = row.querySelector('.target-accessory');
-    if (!board) { sel.innerHTML = `<option value="">${i18n.t('demoTargetAccessoryNone')}</option>`; return; }
-    sel.innerHTML = accessoryOptions(await fetchAccessories(board), sel.dataset.selected || '');
+    const cont = row.querySelector('.target-accessory');
+    if (!board) { cont.innerHTML = `<small style="color:var(--color-muted)">${i18n.t('demoTargetAccessoryNoBoard')}</small>`; return; }
+    const sel = (cont.dataset.selected || '').split(',').filter(Boolean);
+    cont.innerHTML = accessoryChecks(await fetchAccessories(board), sel);
   }
 
   function addTarget(t, prepend) {

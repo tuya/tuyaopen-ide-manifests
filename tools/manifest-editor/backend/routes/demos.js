@@ -19,7 +19,11 @@ function buildDemoDetail(id, { source, configs, documentation, drivers }) {
       .filter((t) => t && t.board)
       .map((t) => {
         const out = { board: t.board };
-        if (t.accessory) out.accessory = t.accessory;
+        // accessory: multi-select board peripheral/group ids (legacy single
+        // string accepted). Stored as a deduped array; dropped when empty.
+        const accRaw = Array.isArray(t.accessory) ? t.accessory : (t.accessory ? [t.accessory] : []);
+        const acc = [...new Set(accRaw.filter((a) => typeof a === 'string' && a.trim()).map((a) => a.trim()))];
+        if (acc.length) out.accessory = acc;
         const opts = (t.options || [])
           .filter((o) => o && o.file)
           .map((o) => {
