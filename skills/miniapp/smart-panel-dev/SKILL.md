@@ -165,8 +165,9 @@ PID、面板名、绑定状态。两个文件的关键字段如下：
 
 1. **架构** —— 项目的物理结构 / 各文件职责 / 数据流（`project.tuya.json` /
    `app.config.ts` / `src/devices/schema.ts` / `src/ty-shim.ts` / `src/pages/`）
-2. **编码铁律** —— DP 走 `useProps` / `useActions`，`useState` 仅限本地 UI 状态；
-   UI 走 `@ray-js/smart-ui`；样式用 `.module.less`；系统 API 走 `ty.*`
+2. **编码铁律** —— DP 走 panel-sdk hooks（**不要**用 `useState` 管 DP 值，
+   `useState` 仅限本地 UI 状态）；UI 优先 `@ray-js/smart-ui`，品类专属 UI
+   按对应品类 skill；样式用 `.module.less`；系统 API 走 `ty.*`
 3. **上传审核** —— Tuya 小程序开发者平台的审核验收标准 + 上传前自检清单
 
 详细规范见下文「三段必读 reference」。
@@ -217,11 +218,23 @@ cat package.json | grep -E '@ray-js/(ray|panel-sdk|cli)'
 ### ② [references/conventions.md](references/conventions.md) —— 开发铁律
 
 读这个搞懂：
-- ❗ DP I/O **必须**用 `useProps` / `useActions`，**不要**用 `useState`
-  管 DP 值（`useState` 可以用于本地 UI 状态：input draft / OTA 进度 / 错误提示）
+- ❗ DP I/O **必须**走 panel-sdk hooks，**不要**用 `useState` 管 DP 值
+  （`useState` 仅限本地 UI 状态：input draft / OTA 进度 / 错误提示）。
+  Hook 选型按 DP 类型分档——**细节按品类 skill 走**，本 skill 只给总则：
+  - **Basic DP**（bool / value / enum / string）：
+    - 读 → `useProps(p => p.code)`
+    - 写 → **优先** `publishDpOutTime(code, value)`（自带 Loading + 超时 + 失败 toast）；
+      连续手势（PTZ、滑条）才退回 `useActions().code.set(v)`
+  - **Complex DP**（JSON 结构化，例如 `colour_data` / `control_data` /
+    `scene_data` / `music_data` / `ipc_mobile_path` ...）：
+    - 必须在 `protocols/index.ts` 注册 Transformer
+    - 读 → `useStructuredProps`，写 → `useStructuredActions`
+    - **禁止**用 `useProps` 读 Complex DP（拿到的是原始 JSON 字符串，不是解析后的对象）
 - ❗ 网络请求**必须**用 `@tuya-miniapp/cloud-api`，**不要**用 `fetch` /
   `XMLHttpRequest` / `axios`
-- ❗ UI **优先**用 `@ray-js/smart-ui`，不要从头造组件
+- ❗ UI **优先**用 `@ray-js/smart-ui`；品类专属 UI（`@ray-js/lamp-*`、
+  `@ray-js/ipc-player-integration`、`@ray-js/robot-map` 等）按对应品类 skill
+  的 import 约定（多数是 default export，命名导入会构建失败）
 - ❗ 样式**必须**用 `.module.less`（CSS Modules），**不要**写全局 CSS
 - ❗ 文案**禁止**硬编码中文（含 `ty.showToast` title），走 i18n key
 - ❗ `src/devices/schema.ts` 是真值源（由 IDE 从云同步生成，不要手改）
@@ -260,7 +273,7 @@ node .agents/skills/miniapp/smart-panel-dev/scripts/validate.mjs
  ✓ 1 page(s) declared in app.config
  ✓ all declared pages have matching source files
  ✓ src/devices/schema present (DP type source)
- ✓ lampSchemaMap exported from schema (required by createDpKit)
+ ✓ <category>SchemaMap exported from schema (required by createDpKit)
  ✓ src/devices/index.ts uses createDpKit pattern
  ✓ no forbidden APIs in src/ (ty-shim.ts exempted)
  ✗ project.tuya.json.appid is empty — must be set before upload
@@ -277,6 +290,9 @@ node .agents/skills/miniapp/smart-panel-dev/scripts/validate.mjs
   不影响开发调试，**上传前**必须在 Tuya 平台获取并填写。
 - 模板 `i18n: false` + 硬编码英文文案是**开发起点**，不是上线状态。上传前
   必须补充 `src/i18n/en.json` + `zh.json`，将所有文案改为 `t('key')` 调用。
+- `<category>SchemaMap` 检查项里的 `<category>` 因品类而异——灯具是
+  `lampSchemaMap`、插座是 `switchSchemaMap`、摄像头模板可能是 `ipcSchemaMap`
+  等。脚本按 `src/devices/schema.ts` 实际导出的命名校验，不强行要求是 `lamp`。
 
 ## 官方文档（写代码前查，不要凭记忆）
 
@@ -336,15 +352,23 @@ skill 直接进品类 skill；也不能跳过 §2 conventions 直接写代码。
                                             + scripts/validate.mjs (必跑)
 ```
 
-## 你必须立即拒绝的 6 类 AI 输出
+## 你必须立即拒绝的 8 类 AI 输出
 
-1. **用 `useState(dpValue)` 管理 DP 状态** —— 让它改成 `useProps`
-   （`useState` 用于 input draft / OTA 进度 / 错误提示是合法的）
-2. **用 `fetch('https://...')` 调后端** —— 让它改成 `@tuya-miniapp/cloud-api`
-3. **`<View style={{color: '#fff'}}>` 内联样式或全局 `index.less`** ——
+1. **用 `useState(dpValue)` 管理 DP 状态** —— 让它走 panel-sdk hook
+   （Basic DP 用 `useProps` 读、`publishDpOutTime` 写；Complex DP 用
+   `useStructuredProps` / `useStructuredActions`。`useState` 用于
+   input draft / OTA 进度 / 错误提示是合法的）
+2. **用 `useProps` 读 Complex DP**（例如 `colour_data` / `scene_data` /
+   `ipc_mobile_path`）—— 必须改成 `useStructuredProps` + 在
+   `protocols/index.ts` 注册 Transformer。具体编解码格式翻对应品类 skill
+3. **用 `fetch('https://...')` 调后端** —— 让它改成 `@tuya-miniapp/cloud-api`
+4. **`<View style={{color: '#fff'}}>` 内联样式或全局 `index.less`** ——
    让它改成 `index.module.less`
-4. **代码里出现中文字符串**（JSX 字面值 / `ty.showToast` title 等）—— 让它走 i18n
-5. **用 `wx.*` / `tt.*` 调系统 API** —— 让它改成 `ty.*` 和 `@ray-js/ray`
-6. **声称「可以上线了」但没跑过 `validate.mjs`** —— 强制跑一次
+5. **代码里出现中文字符串**（JSX 字面值 / `ty.showToast` title 等）—— 让它走 i18n
+6. **用 `wx.*` / `tt.*` 调系统 API** —— 让它改成 `ty.*` 和 `@ray-js/ray`
+7. **品类专属 UI 用命名导入**（例如 `import { LampBrightSlider } from '@ray-js/lamp-bright-slider'`）
+   —— 多数 `@ray-js/lamp-*` / `@ray-js/ipc-*` / `@ray-js/robot-*` 是 default export，
+   命名导入会构建失败。改成 `import LampBrightSlider from '...'`，**具体以品类 skill 的 reference 为准**
+8. **声称「可以上线了」但没跑过 `validate.mjs`** —— 强制跑一次
 
 每一类拒绝都附上对应 reference 的章节链接，让用户能快速学习正确做法。

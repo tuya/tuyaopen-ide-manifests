@@ -27,8 +27,9 @@ import * as path from 'node:path';
 //  Constants
 // ─────────────────────────────────────────────────────────────────────────
 
-const MAIN_BUNDLE_MAX = 4 * 1024 * 1024;      // 4 MiB
+const MAIN_BUNDLE_MAX = 5 * 1024 * 1024;      // 5 MB (compressed upload limit)
 const CDN_FILE_MAX    = 500 * 1024;           // single CDN asset warn threshold
+const CDN_PROJECT_WARN = 10 * 1024 * 1024;   // per-project CDN warn threshold (account total limit is 100 MB across all panels)
 const REQUIRED_DEPS   = ['BaseKit', 'MiniKit', 'DeviceKit'];
 const ALLOWED_PROJECT_TYPES = ['panel-app'];
 const ALLOWED_DEV_MODES = ['ray'];
@@ -432,9 +433,9 @@ async function checkBundleSize(root, report) {
   }
   await walk(distRoot);
   if (totalSize > MAIN_BUNDLE_MAX) {
-    report.error(`dist/ is ${(totalSize / 1024 / 1024).toFixed(2)} MiB > ${MAIN_BUNDLE_MAX / 1024 / 1024} MiB limit`);
+    report.error(`dist/ is ${(totalSize / 1024 / 1024).toFixed(2)} MB > ${MAIN_BUNDLE_MAX / 1024 / 1024} MB limit (compressed upload limit)`);
   } else {
-    report.pass(`dist/ bundle size: ${(totalSize / 1024 / 1024).toFixed(2)} MiB / ${MAIN_BUNDLE_MAX / 1024 / 1024} MiB limit`);
+    report.pass(`dist/ bundle size: ${(totalSize / 1024 / 1024).toFixed(2)} MB / ${MAIN_BUNDLE_MAX / 1024 / 1024} MB limit (compressed)`);
   }
 }
 
@@ -445,6 +446,7 @@ async function checkCdnAssets(root, report) {
     return;
   }
   const large = [];
+  let totalCdnSize = 0;
   async function walk(dir) {
     let entries;
     try { entries = await readdir(dir, { withFileTypes: true }); }
@@ -455,12 +457,14 @@ async function checkCdnAssets(root, report) {
       else if (e.isFile()) {
         try {
           const s = (await stat(full)).size;
+          totalCdnSize += s;
           if (s > CDN_FILE_MAX) large.push({ path: path.relative(root, full), size: s });
         } catch {}
       }
     }
   }
   await walk(cdnDir);
+  // Per-file size advisory
   if (large.length > 0) {
     report.warn(`${large.length} cdn asset(s) > ${CDN_FILE_MAX / 1024}KB — consider compression`);
     for (const f of large.slice(0, 3)) {
@@ -468,6 +472,12 @@ async function checkCdnAssets(root, report) {
     }
   } else {
     report.pass('no oversized CDN assets');
+  }
+  // Project CDN total advisory (account-level limit is 100 MB across all panel miniapps)
+  if (totalCdnSize > CDN_PROJECT_WARN) {
+    report.warn(`cdn/ total for this project: ${(totalCdnSize / 1024 / 1024).toFixed(1)} MB — note: account-level CDN limit is 100 MB across ALL panel miniapps`);
+  } else {
+    report.pass(`cdn/ total: ${(totalCdnSize / 1024 / 1024).toFixed(1)} MB (account limit: 100 MB across all panels)`);
   }
 }
 

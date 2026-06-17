@@ -5,7 +5,7 @@
 
 ## 规则总览（违反任何一条都阻塞提交）
 
-1. [DP I/O 必须走 `useProps` / `useActions`，禁止用 `useState` 管 DP](#rule-1)
+1. [DP I/O 必须走 panel-sdk hooks（Basic / Complex 两档），禁止用 `useState` 管 DP](#rule-1)
 2. [网络请求必须走 `@tuya-miniapp/cloud-api`，禁止用 `fetch` / `axios`](#rule-2)
 3. [UI 必须优先用 `@ray-js/smart-ui`，禁止从头造常见组件](#rule-3)
 4. [样式必须用 `.module.less`，禁止全局污染](#rule-4)
@@ -18,13 +18,33 @@
 
 ---
 
-## Rule 1: DP I/O 必须走 `useProps` / `useActions` {#rule-1}
+## Rule 1: DP I/O 必须走 panel-sdk hooks（Basic / Complex 两档） {#rule-1}
 
 **为什么**：DP 状态由 `SmartDeviceModel` 拥有，它接收 MQTT 推送并广播
 变化。用 `useState` 副本管理 DP 值会导致：
 - 设备真实状态变化时 UI 不更新（订阅断了）
 - 你以为「设了」但实际没下发到设备
 - 同一 DP 多处显示时数据不一致
+
+### 选 hook 的分档表
+
+DP 分两类——**先翻 `src/devices/schema.ts` 看 `type`**，再按下表选 hook。
+品类专属的细节（什么字段是 raw、JSON 内部结构等）以**对应品类 skill** 为准。
+
+| DP 类型 | schema `type` | 读 | 写（首选） | 写（特殊） | 备注 |
+|---|---|---|---|---|---|
+| **Basic** | `bool` / `value` / `enum` / `string` | `useProps(p => p.code)` | `publishDpOutTime(code, value)` | `useActions().code.set(v)` 用于连续手势（PTZ / 滑条） | `publishDpOutTime` 自带 Loading + 超时 + 失败 toast |
+| **Complex** | `raw` / `string`（实际是 JSON）| `useStructuredProps` | `useStructuredActions` | — | **必须**在 `protocols/index.ts` 注册 Transformer；典型场景：`colour_data` / `control_data` / `scene_data` / `music_data` / `ipc_mobile_path` 等 |
+
+**`publishDpOutTime` 优先**：除非是滑条 / PTZ 这种需要每几百毫秒持续下
+发的场景（用 `useActions().code.set()` 配 `setInterval`），Basic DP 一律
+首选 `publishDpOutTime` —— 它把 Loading + 超时（默认 10s）+ 失败 toast
+都封装好了，`useActions().code.set()` 没这些。
+
+**`useStructuredProps` 是 Complex DP 的唯一正确读法**：用 `useProps`
+拿到的是**未解析的 JSON 字符串**，你得到的不是对象，编解码也没接通
+Transformer。这是面板代码里出现 `JSON.parse(p.colour_data as string)`
+这种代码的根因——遇到这种代码，立刻改成 `useStructuredProps`。
 
 **允许用 `useState` 的场景**（纯本地 UI 状态，不涉及 DP）：
 - 输入框的 draft 值（发送前临时状态）
@@ -49,24 +69,83 @@ function PowerSwitch() {
 }
 ```
 
-### ✅ 正确（DP 状态用 useProps / useActions）
+### ✅ 正确——Basic DP（首选 publishDpOutTime）
 
 ```tsx
-import { useProps, useActions } from '@ray-js/panel-sdk';
+import { useProps } from '@ray-js/panel-sdk';
+import { publishDpOutTime } from '@ray-js/panel-sdk';
 
 function PowerSwitch() {
   const isOn = useProps(p => p.switch as boolean);   // 响应式读
-  const actions = useActions();
 
   return <Switch
     checked={isOn}
-    onChange={(e) => actions.switch.set(!!e?.detail?.value)}
+    onChange={(e) => publishDpOutTime('switch', !!e?.detail?.value)}
   />;
 }
 ```
 
-**进阶**：结构化 DP（raw / json）用 `useStructuredProps` /
-`useStructuredActions`。
+### ✅ 正确——Basic DP 连续手势（用 useActions）
+
+```tsx
+import { useActions } from '@ray-js/panel-sdk';
+
+function PtzUpButton() {
+  const actions = useActions();
+  const intervalRef = useRef<number | null>(null);
+
+  const onTouchStart = () => {
+    actions.ptz_control.set('up');
+    intervalRef.current = setInterval(() => actions.ptz_control.set('up'), 1000);
+  };
+  const onTouchEnd = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    actions.ptz_stop.set(true);
+  };
+
+  return <Button onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>↑</Button>;
+}
+```
+
+### ✅ 正确——Complex DP（useStructuredProps / useStructuredActions）
+
+```tsx
+import { useStructuredProps, useStructuredActions } from '@ray-js/panel-sdk';
+
+function ColorPicker() {
+  // colour_data 在 protocols/index.ts 已注册 Transformer，
+  // 拿到的是解析后的对象（{ h, s, v }），不再是 hex 字符串
+  const colour = useStructuredProps(p => p.colour_data);
+  const sa = useStructuredActions();
+
+  return <Picker
+    value={colour}
+    onChange={(c) => sa.colour_data.set(c)}
+  />;
+}
+```
+
+### ❌ 错误——用 useProps 读 Complex DP
+
+```tsx
+// 错！拿到的是字符串，不是对象，且没走 Transformer
+const raw = useProps(p => p.colour_data as string);
+const parsed = JSON.parse(raw);   // ← 出现这种代码就是信号
+```
+
+### ✅ 正确（本地 UI 状态用 useState）
+
+```tsx
+function StringDpRow({ dp }) {
+  const value = useProps(p => p[dp.code] as string);  // DP 值 — 走 useProps
+  const [draft, setDraft] = useState('');             // 输入 draft — useState OK
+  const [error, setError] = useState('');             // 错误提示 — useState OK
+
+  return (
+    <Input value={draft} onInput={e => setDraft(e.detail?.value ?? '')} />
+  );
+}
+```
 
 ### ✅ 正确（本地 UI 状态用 useState）
 
@@ -362,12 +441,14 @@ export default App;
 
 | AI 写的 | 你应该立刻看出问题 | 修复 |
 |---|---|---|
-| `const [dpVal, setDpVal] = useState(...)` 用于 DP | 违 Rule 1 | 换 `useProps` |
+| `const [dpVal, setDpVal] = useState(...)` 用于 DP | 违 Rule 1 | Basic DP 用 `useProps` 读 + `publishDpOutTime` 写；Complex DP 用 `useStructuredProps` / `useStructuredActions` |
+| `const raw = useProps(p => p.colour_data); JSON.parse(raw)` | 违 Rule 1（Complex DP 用错 hook）| 改 `useStructuredProps` + 在 `protocols/index.ts` 注册 Transformer |
+| `actions.code.set(v)` 用于单次手动操作 | Rule 1 提醒 | 改 `publishDpOutTime(code, v)`，自带 Loading + 超时 + 失败 toast |
 | `fetch('https://api.tuya.com/...')` | 违 Rule 2 | 换 cloud-api |
 | `<View style={{...}}>` 用了 30 行 inline 样式 | 违 Rule 3+4 | 抽到 `.module.less` + 用 smart-ui |
 | 直接修改 `src/devices/schema.ts` 添 DP | 违 Rule 6 | 去 Tuya 平台改 → 同步 |
 | `<Text>请选择模式</Text>` 或 `ty.showToast({ title: '错误' })` | 违 Rule 5 | 走 i18n |
-| `setInterval(() => publishDp(...))` 轮询 DP | 违 Rule 1+8 | 订阅 `useProps` |
+| `setInterval(() => publishDp(...))` 轮询 DP | 违 Rule 1+8 | 订阅 `useProps`（响应式自动收到推送） |
 | `export default function App()` | 违 Rule 9 | 改成 class |
 | `wx.request(...)` / `tt.request(...)` | 违 Rule 10 | 改 `ty.*` + cloud-api |
 

@@ -68,11 +68,12 @@ apiRequestByAtop     ← 必须为 0 命中
 
 | 项 | 限额 | 检测 |
 |---|---|---|
-| 主包 `dist/tuya/` 大小 | ≤ 4 MiB | ✓ |
-| 总包（含分包） | ≤ 20 MiB | ✓ |
+| 小程序源码包（压缩后）`dist/` | ≤ 5 MB | ✓ |
+| CDN 资源总量（账号下所有面板小程序共享） | ≤ 100 MB | ⚠ 人工（脚本只警告当前项目占用） |
 
 资源（图片 / 字体 / 视频）必须放 `cdn/` 目录，构建时上传 CDN，**不打进
-主包**。
+源码包**。100 MB CDN 配额由账号下**所有面板小程序共享**，开发多个面板时需
+统筹规划；`validate.mjs` 仅统计当前项目 CDN 目录大小作为参考。
 
 ### A7. i18n 双语支持
 
@@ -168,8 +169,9 @@ node .agents/skills/miniapp/smart-panel-dev/scripts/validate.mjs
 
 ```bash
 ray build --target tuya       # 生产构建
-du -sh dist/tuya              # 主包大小
-find cdn -size +500k          # 找超过 500KB 的资源
+du -sh dist/                  # 源码包大小（压缩后需 ≤ 5 MB）
+du -sh cdn/                   # 当前项目 CDN 占用（账号总限额 100 MB）
+find cdn -size +500k          # 找超过 500KB 的单个资源
 ```
 
 ### 步骤 5：上传
@@ -182,7 +184,7 @@ find cdn -size +500k          # 找超过 500KB 的资源
 
 | # | 原因 | 触发 | 防御 |
 |---|---|---|---|
-| 1 | 主包超 4 MiB | 把 PNG / 字体打进 src/ | 移到 `cdn/` |
+| 1 | 源码包（压缩后）超 5 MB | 把 PNG / 字体打进 src/ | 移到 `cdn/` |
 | 2 | 硬编码中文 | `<Text>开关</Text>` / `ty.showToast({ title: '错误' })` | 走 i18n |
 | 3 | 用了 `fetch` | 直接调 OpenAPI | 改 cloud-api |
 | 4 | 隐私权限未说明 | 用 `ty.getLocation` 没填使用说明 | 后台填说明 |
