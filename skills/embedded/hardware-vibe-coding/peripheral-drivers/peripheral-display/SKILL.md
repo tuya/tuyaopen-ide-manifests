@@ -17,9 +17,15 @@ tags: [display, lcd, graphics, framebuffer]
 
 ## Driver Registration (TDD)
 
-For **board-adapted displays**, `board_register_hardware()` handles this automatically.
+Decide by **adaptation, not by whether the SDK has the driver**:
 
-For **custom displays**, register the driver manually.
+- **Board-adapted display** (listed in `board-context.md`) → `board_register_hardware()`
+  registers it; write no TDD code.
+- **Externally-attached display** (the user wired it themselves — NOT in
+  `board-context.md`) → register it yourself in **`usr_board`** (see
+  `usr-board/SKILL.md`), reusing the SDK's per-IC driver below.
+  `board_register_hardware()` does **not** wire a display it never adapted.
+
 The TDD header depends on the Driver IC (the device `model` in `.tuyaopen/ide/board.json`):
 
 | Interface | Driver IC examples | Header |
@@ -57,9 +63,10 @@ static OPERATE_RET __usr_register_display(void)
 }
 ```
 
-### New Display IC (not in SDK)
+### New display IC with no SDK driver (still in `usr_board`)
 
-All interface types support two approaches:
+When the IC has **no SDK driver**, all interface types support two approaches
+(both still done inside `usr_board/`):
 - **Override**: new IC is similar to an existing driver — call `set_init_seq()` to replace the default init sequence, then use the IC-specific `register()` as usual
 - **Generic driver**: use the base interface driver with a fully custom config and init sequence
 

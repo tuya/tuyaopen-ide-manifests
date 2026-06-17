@@ -27,9 +27,14 @@ tags: [hardware, peripheral, vibe-coding, routing]
 
 TDD (driver registration) → TDL (device management) → App (business logic).
 
-**Do not write TDD code** for device peripherals — `board_register_hardware()`
-already does this. (On-chip peripherals and usr_board customs are the exception —
-see Rules.)
+`board_register_hardware()` registers **only the device peripherals the board
+already adapted** — the ones listed in `board-context.md`. For those, do not
+write TDD code. Any peripheral the user **attaches themselves** (not in
+`board-context.md`) you must register yourself in **`usr_board`**, **even when
+the SDK already ships its TDD driver** — you just call that existing driver with
+your pins. Writing a brand-new TDD driver (IC with no SDK driver) is only a
+sub-case of `usr_board`, never the trigger for it. On-chip peripherals are the
+other exception (call `tal_*`/`tkl_*` directly). See Rules.
 
 ## Read these files first (your hardware context)
 
@@ -75,10 +80,23 @@ This skill is the authority. Read these yourself before doing anything:
   console (`PR_*` — often a USB-serial the PC already sees; **no** peripheral, nothing
   recorded) OR a dedicated user UART (`tal_uart` on its own instance + pins —
   `onchip:uart<N>`). Do NOT assume `PR_*`; ask which before writing code.
-- **Device vs on-chip.** Device peripherals (catalog) → auto-registered by
-  `board_register_hardware()`; never write `CONFIG_ENABLE_*`. On-chip
-  (uart/gpio/pwm/i2c/spi/adc) → call `tal_*`/`tkl_*` directly; **no** `CONFIG_ENABLE_*`,
-  **no** `board_register_hardware()`.
+- **Where a device peripheral registers — decide by ADAPTATION, not by "does
+  the SDK have a driver".** A catalogued device peripheral **in
+  `board-context.md`** is board-adapted → `board_register_hardware()` registers
+  it; write no TDD code and no `CONFIG_ENABLE_*`. A device peripheral the user
+  **attaches externally** (NOT in `board-context.md`) → you register it yourself
+  in **`usr_board`**, reusing the SDK's existing TDD driver (e.g. an extra GPIO
+  button → call `tdd_gpio_button_register` from `usr_register_hardware()`). The
+  SDK shipping the driver does **not** mean `board_register_hardware()` wires
+  *your* hardware — it only wires what the board adapted. **Rule of thumb: any
+  peripheral you wire on yourself goes through `usr_board`.**
+- **Device vs on-chip.** A part with a TDD/TDL driver (button, led, display,
+  audio, touch, …) is a **device** — even on a plain GPIO pin — so it follows
+  the device path above (board-adapted → `board_register_hardware()`; external →
+  `usr_board`), **not** the raw on-chip path. Only truly raw on-chip use (pin
+  level toggle, edge IRQ, raw uart/i2c/spi/pwm/adc) calls `tal_*`/`tkl_*`
+  directly with **no** registration and **no** `CONFIG_ENABLE_*`. (A GPIO button
+  is a device, not raw on-chip GPIO.)
 - Never write platform-level macros (`CONFIG_ENABLE_SPI` / `_I2C` / `_GPIO`).
 
 ---

@@ -17,9 +17,15 @@ tags: [camera, dvp, yuv, jpeg, h264, vision]
 
 ## Driver Registration (TDD)
 
-For **board-adapted cameras**, `board_register_hardware()` handles this automatically.
+Decide by **adaptation, not by whether the SDK has the driver**:
 
-For **custom cameras**, register the driver manually.
+- **Board-adapted camera** (listed in `board-context.md`) → `board_register_hardware()`
+  registers it; write no TDD code.
+- **Externally-attached camera** (the user wired it themselves — NOT in
+  `board-context.md`) → register it yourself in **`usr_board`** (see
+  `usr-board/SKILL.md`), reusing the SDK's per-IC register function below.
+  `board_register_hardware()` does **not** wire a camera it never adapted.
+
 Use the per-IC registration function (the driver IC is the device `model` in `.tuyaopen/ide/board.json`):
 
 | Driver IC | Header | Register function |
@@ -47,10 +53,12 @@ static OPERATE_RET __usr_register_camera(void)
 }
 ```
 
-### New DVP Camera IC (not in SDK)
+### New DVP camera IC with no SDK driver (still in `usr_board`)
 
-If the sensor is not in the SDK, create `tdd_camera_<sensor>.h/.c` and implement
-the `TDD_DVP_SR_INTFS_T` callbacks:
+The register functions above cover SDK-supported sensors. Only when the sensor
+has **no SDK driver** do you also create `tdd_camera_<sensor>.h/.c` inside
+`usr_board/` and implement the `TDD_DVP_SR_INTFS_T` callbacks — an addition to
+the `usr_board` flow, not an alternative to it:
 
 ```c
 /* tdd_camera_my_sensor.h */

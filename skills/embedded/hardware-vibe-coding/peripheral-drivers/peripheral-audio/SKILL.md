@@ -20,8 +20,14 @@ One TDL audio device covers **both** the microphone (capture) and the speaker
 
 ## Driver Registration (TDD)
 
-For **board-adapted audio**, `board_register_hardware()` handles this automatically.
-The app only uses the TDL API below — never register the codec yourself.
+Decide by **adaptation, not by whether the SDK has the driver**:
+
+- **Board-adapted audio** (in `board-context.md`) → `board_register_hardware()`
+  registers the codec; the app only uses the TDL API below — don't register it yourself.
+- **Externally-attached codec** (the user wired their own — NOT in
+  `board-context.md`) → register it yourself in **`usr_board`** (see
+  `usr-board/SKILL.md`), reusing the SDK's codec driver.
+  `board_register_hardware()` only wires codecs the board adapted.
 
 ---
 

@@ -17,9 +17,17 @@ tags: [button, gpio, input, event]
 
 ## Driver Registration (TDD)
 
-For **board-adapted buttons**, `board_register_hardware()` handles this automatically.
+Decide by **adaptation, not by whether the SDK has the driver** — `tdd_gpio_button`
+ships in the SDK either way:
 
-For **custom buttons**, register the driver manually:
+- **Board-adapted button** (listed in `board-context.md`) → `board_register_hardware()`
+  registers it automatically; write no TDD code.
+- **Externally-attached button** (the user wired their own button — NOT in
+  `board-context.md`, e.g. "extra button on GPIO7") → register it yourself in
+  **`usr_board`** (see `usr-board/SKILL.md`). You still reuse the existing
+  `tdd_gpio_button_register` — `board_register_hardware()` does **not** wire a
+  button it never adapted. Put the `__usr_register_button()` below into
+  `usr_board.c` and call it from `usr_register_hardware()`:
 
 ```c
 #include "tdd_button_gpio.h"
@@ -36,12 +44,17 @@ static OPERATE_RET __usr_register_button(void)
 }
 ```
 
-GPIO number and active level come from the button device's `pins` in `.tuyaopen/ide/board.json` (looked up by its `ID:`).
+Pin and active level: for a **board-adapted** button, read its `pins` from
+`.tuyaopen/ide/board.json` (by `ID:`); for an **externally-attached** button,
+use the GPIO/level the user gave (must be a `gpio` from `board.json.expansionPins`).
 
-### New Button IC (not in SDK)
+### New button IC with no SDK driver (still in `usr_board`)
 
-If the button requires a custom TDD driver (e.g. capacitive touch key, I2C keypad),
-create `tdd_button_<ic>.h/.c` and implement `tdl_button_register()` with the required callbacks.
+Reusing `tdd_gpio_button_register` covers ordinary GPIO buttons. Only when the
+button needs a TDD driver the SDK does **not** have (e.g. capacitive touch key,
+I2C keypad) do you also write `tdd_button_<ic>.h/.c` inside `usr_board/` and
+implement `tdl_button_register()` with the callbacks. This is an addition to the
+`usr_board` flow, not an alternative to it.
 
 ---
 

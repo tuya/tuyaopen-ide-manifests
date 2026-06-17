@@ -28,9 +28,15 @@ works on either driver.
 
 ## Driver Registration (TDD)
 
-For **board-adapted printers**, `board_register_hardware()` handles this
-automatically (the board registers DP48A via `tdd_printer_dp48_register(PRINTER_NAME, …)`).
-The app only uses the TDL API below.
+Decide by **adaptation, not by whether the SDK has the driver**:
+
+- **Board-adapted printer** (in `board-context.md`) → `board_register_hardware()`
+  registers it (e.g. DP48A via `tdd_printer_dp48_register(PRINTER_NAME, …)`); the
+  app only uses the TDL API below.
+- **Externally-attached printer** (the user wired their own — NOT in
+  `board-context.md`) → register it yourself in **`usr_board`** (see
+  `usr-board/SKILL.md`), reusing the SDK's printer driver.
+  `board_register_hardware()` only wires printers the board adapted.
 
 ---
 

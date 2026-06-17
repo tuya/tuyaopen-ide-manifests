@@ -24,15 +24,22 @@ returns the current touch points (multi-touch capable).
 
 ## Driver Registration (TDD)
 
-For **board-adapted touch panels**, `board_register_hardware()` handles this
-automatically (e.g. the board registers GT1151 via `tdd_tp_i2c_gt1151_register(DISPLAY_NAME, …)`).
-The app only uses the TDL API below.
+Decide by **adaptation, not by whether the SDK has the driver**:
 
-### New Touch IC (not in SDK)
+- **Board-adapted touch panel** (in `board-context.md`) → `board_register_hardware()`
+  registers it (e.g. GT1151 via `tdd_tp_i2c_gt1151_register(DISPLAY_NAME, …)`); the
+  app only uses the TDL API below.
+- **Externally-attached touch panel** (the user wired their own — NOT in
+  `board-context.md`) → register it yourself in **`usr_board`** (see
+  `usr-board/SKILL.md`), reusing the SDK's `tdd_tp_i2c_<ic>_register()` (GT911,
+  GT1151, FT6336, CST816x, CST92xx) against `DISPLAY_NAME`.
+  `board_register_hardware()` does **not** wire a panel it never adapted.
 
-Common controllers already have TDD drivers: GT911, GT1151, FT6336, CST816x,
-CST92xx (`tdd_tp_i2c_<ic>_register()`). For an unsupported IC, create a custom
-TDD driver via `usr_board` and register it against `DISPLAY_NAME`.
+### New touch IC with no SDK driver (still in `usr_board`)
+
+For a controller none of the above cover, create a custom TDD driver inside
+`usr_board/` and register it against `DISPLAY_NAME` — an addition to the
+`usr_board` flow, not an alternative.
 
 ---
 
