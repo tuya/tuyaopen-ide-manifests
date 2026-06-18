@@ -60,7 +60,10 @@ export function renderDemoForm(demo = null) {
   const typeVal = d.type === 'app' ? 'app' : 'example';
   const tags = (d.tags || []).filter(t => t !== 'app' && t !== 'example').join(', ');
   const boards = (d.boards || []).join(', ');
-  const isUniversal = d.compatibilityType === 'universal';
+  // Compatibility scope: 'universal' (any board) | 'platform' (any board of the
+  // listed platform variants) | 'board-specific' (the listed boards + configs).
+  const scope = d.compatibilityType === 'platform' || d.compatibilityType === 'board-specific'
+    ? d.compatibilityType : 'universal';
   const isPublished = d.publish !== false;
   const source = typeof d.source === 'string' ? d.source : '';
   const readmeEn = d.documentation?.readme?.en || '';
@@ -214,20 +217,31 @@ export function renderDemoForm(demo = null) {
 
       <!-- ============ Pane: Board Config Mapping ============ -->
       <div class="demo-pane" data-pane="config" style="display:none">
-        <!-- Universal toggle (replaces the "compatibility" wording) -->
-        <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
-          <input type="checkbox" id="demoUniversal" ${isUniversal ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-          <label for="demoUniversal" style="margin: 0; cursor: pointer; font-weight: 500;" data-i18n="demoUniversalToggle">Universal — runs on any board</label>
-          <small style="color: var(--color-muted); margin-left: auto;" data-i18n="demoUniversalHint">When checked, no board mapping is needed.</small>
+        <!-- Compatibility scope: universal / platform / board-specific -->
+        <div class="form-group" style="padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
+          <label class="form-label" style="margin:0 0 6px;" data-i18n="demoScopeLabel">Compatibility scope</label>
+          <div style="display:flex; gap:18px; flex-wrap:wrap;">
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:500;"><input type="radio" name="demoScope" value="universal" ${scope === 'universal' ? 'checked' : ''}> <span data-i18n="demoScopeUniversal">Universal — any board</span></label>
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:500;"><input type="radio" name="demoScope" value="platform" ${scope === 'platform' ? 'checked' : ''}> <span data-i18n="demoScopePlatform">Platform — any board of…</span></label>
+            <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:500;"><input type="radio" name="demoScope" value="board-specific" ${scope === 'board-specific' ? 'checked' : ''}> <span data-i18n="demoScopeBoard">Board-specific</span></label>
+          </div>
         </div>
 
-        <div id="demoConfigSection" style="${isUniversal ? 'display:none' : ''}">
+        <div id="demoPlatformsSection" style="${scope === 'platform' ? '' : 'display:none'}">
+          <div class="form-group">
+            <label class="form-label" data-i18n="demoPlatformsLabel">Supported platforms</label>
+            <small style="color: var(--color-muted); display:block; margin:6px 0 8px;" data-i18n="demoPlatformsHint">Any board of these platforms can run this demo.</small>
+            <div id="demoPlatforms" class="demo-platforms-checks"></div>
+          </div>
+        </div>
+
+        <div id="demoConfigSection" style="${scope === 'board-specific' ? '' : 'display:none'}">
           <div class="form-group">
             <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
               <label class="form-label" style="margin:0;" data-i18n="demoTargets">Supported boards &amp; configs</label>
               <button type="button" class="btn btn-primary btn-sm" id="addTargetBtn" data-i18n="demoTargetAddBtn">+ Add board</button>
             </div>
-            <small style="color: var(--color-muted); display:block; margin:6px 0 8px;" data-i18n="demoTargetsHint">Each row: a board (+ optional accessory) and its config file(s).</small>
+            <small style="color: var(--color-muted); display:block; margin:6px 0 8px;" data-i18n="demoTargetsHint">Each row: a board and its config file(s) + the peripherals each uses.</small>
             <div id="demoTargets"></div>
           </div>
         </div>
@@ -277,8 +291,7 @@ export async function saveDemoForm(form, demoId = null) {
     }
   }
 
-  const isUniversal = !!document.getElementById('demoUniversal')?.checked;
-  const compatType = isUniversal ? 'universal' : 'board-specific';
+  const compatType = document.querySelector('input[name="demoScope"]:checked')?.value || 'universal';
   const type = document.getElementById('demoCategory')?.value === 'app' ? 'app' : 'example';
   const tagsRaw = document.getElementById('demoTags').value.trim();
 
@@ -286,10 +299,12 @@ export async function saveDemoForm(form, demoId = null) {
   const tags = (tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [])
     .filter(t => t !== 'app' && t !== 'example');
 
-  // Collect supported-board targets: { board, accessory?, options:[{name?,file}] }
-  // (ignored when universal — universal demos have no board mapping)
+  // Collect config targets keyed by board (board-specific) or platform.
+  //   board-specific → { board, options:[{name?,file,peripherals?}] }
+  //   platform       → { platform, options:[{file}] } for each checked platform
+  //                    that carries a config file (the demo's defconfig base).
   const configs = [];
-  if (!isUniversal) {
+  if (compatType === 'board-specific') {
     document.querySelectorAll('#demoTargets .demo-target').forEach(row => {
       const board = row.querySelector('.target-board')?.value || '';
       if (!board) return;
@@ -310,10 +325,22 @@ export async function saveDemoForm(form, demoId = null) {
       if (options.length) target.options = options;
       configs.push(target);
     });
+  } else if (compatType === 'platform') {
+    document.querySelectorAll('#demoPlatforms .demo-plat-row').forEach(row => {
+      const cb = row.querySelector('.demo-plat-cb');
+      if (!cb || !cb.checked) return;
+      const file = row.querySelector('.demo-plat-config')?.value?.trim();
+      if (!file) return;  // a platform without a config file just contributes to platforms[]
+      configs.push({ platform: cb.value, options: [{ file }] });
+    });
   }
 
-  // boards[] is derived from the target boards (distinct), [] when universal.
-  const boards = isUniversal ? [] : [...new Set(configs.map(t => t.board))];
+  // boards[] derived from target boards (board-specific only).
+  const boards = compatType === 'board-specific' ? [...new Set(configs.map(t => t.board))] : [];
+  // platforms[] (platform variant ids) — only for platform scope.
+  const platforms = compatType === 'platform'
+    ? [...document.querySelectorAll('#demoPlatforms .demo-plat-cb:checked')].map(cb => cb.value)
+    : [];
 
   // Hardware drivers: [{ driver, level }] read from the driver rows in the DOM.
   const drivers = [];
@@ -337,6 +364,7 @@ export async function saveDemoForm(form, demoId = null) {
     },
     tags,
     boards,
+    platforms: platforms.length > 0 ? platforms : undefined,
     compatibilityType: compatType,
     source: document.getElementById('demoSource').value.trim(),
     configs: configs.length > 0 ? configs : undefined,

@@ -1278,9 +1278,46 @@ async function openDemoForm(demoId = null) {
   try {
     const boardsResult = await apiClient.getBoards();
     const allBoards = boardsResult.boards || boardsResult.items || [];
-    setupDemoTargets(allBoards, normalizeDemoConfigs(demo?.configs));
+    // Only board-keyed configs seed the board-targets repeater; platform-keyed
+    // configs are seeded into the platform section's per-platform config inputs.
+    setupDemoTargets(allBoards, normalizeDemoConfigs(demo?.configs).filter(c => c.board));
   } catch (err) {
     console.error('[openDemoForm] boards load failed:', err);
+  }
+
+  // Populate the platform multi-select (platform scope) — variants the demo supports.
+  try {
+    const platResult = await apiClient.getPlatforms();
+    const plats = platResult.platforms || platResult.items || [];
+    const plang = i18n.getLanguage();
+    const ploc = (n, fb) => (n && (n[plang] || n.en || n['zh-CN'])) || fb;
+    const sel = Array.isArray(demo?.platforms) ? demo.platforms : [];
+    // Pre-fill each platform's config file from existing platform-scoped
+    // `configs` entries ({ platform, options:[{file}] }). A platform demo's
+    // .config is a defconfig carrying the demo's feature kconfig — the IDE uses
+    // it as the build base and repoints the board choice at the chosen board.
+    const platConfigFile = {};
+    (demo?.configs || []).forEach(c => {
+      if (c.platform && Array.isArray(c.options) && c.options[0] && c.options[0].file) {
+        platConfigFile[c.platform] = c.options[0].file;
+      }
+    });
+    const cont = document.getElementById('demoPlatforms');
+    if (cont) {
+      cont.innerHTML = plats.length
+        ? plats.map(p => `<div class="demo-plat-row" data-platform="${escapeHtml(p.id)}">
+            <label class="demo-plat"><input type="checkbox" class="demo-plat-cb" value="${escapeHtml(p.id)}"${sel.includes(p.id) ? ' checked' : ''}> ${escapeHtml(ploc(p.name, p.id))}</label>
+            <input type="text" class="demo-plat-config" data-i18n-placeholder="demoPlatformConfigPlaceholder" placeholder="config file (optional)" value="${escapeHtml(platConfigFile[p.id] || '')}">
+          </div>`).join('')
+        : `<small style="color:var(--color-muted)">${i18n.t('demoPlatformsEmpty')}</small>`;
+      // These rows are injected after the form's initial data-i18n pass, so
+      // apply placeholder translations to them here.
+      cont.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = i18n.t(el.getAttribute('data-i18n-placeholder'));
+      });
+    }
+  } catch (err) {
+    console.error('[openDemoForm] platforms load failed:', err);
   }
 
   // Tags chip multi-select (controlled vocabulary, type-aware)
@@ -1308,14 +1345,16 @@ async function openDemoForm(demoId = null) {
     });
   });
 
-  // "Universal" toggle → hide/show the board mapping section
-  const universalCb = document.getElementById('demoUniversal');
+  // Compatibility scope radios → show the matching section (platform / board).
+  const platSection = document.getElementById('demoPlatformsSection');
   const configSection = document.getElementById('demoConfigSection');
-  if (universalCb && configSection) {
-    universalCb.addEventListener('change', () => {
-      configSection.style.display = universalCb.checked ? 'none' : '';
+  formContainer.querySelectorAll('input[name="demoScope"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const scope = formContainer.querySelector('input[name="demoScope"]:checked')?.value || 'universal';
+      if (platSection) platSection.style.display = scope === 'platform' ? '' : 'none';
+      if (configSection) configSection.style.display = scope === 'board-specific' ? '' : 'none';
     });
-  }
+  });
 
   // Wire form submission
   const form = document.getElementById('demoForm');

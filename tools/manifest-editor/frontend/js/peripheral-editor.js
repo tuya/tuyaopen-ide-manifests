@@ -1265,12 +1265,18 @@ function bindFormEvents(form, template) {
       if (blGroupHeader) blGroupHeader.style.display = hideBlPin ? 'none' : '';
       const blPwmCfg = form.querySelector('#periBlPwmConfigSection');
       if (blPwmCfg) blPwmCfg.style.display = blMode === 'PWM' ? '' : 'none';
+      // Leaving PWM mode releases the GPIO lock the PWM-channel binding applies.
+      if (blMode !== 'PWM') {
+        const blPinInput = form.querySelector('[data-role="bl"] .peri-pin-gpio');
+        if (blPinInput) blPinInput.readOnly = false;
+      }
     };
     blModeSelect.addEventListener('change', updateBlVisibility);
     updateBlVisibility();
-    // Lock bl pin if PWM channel already set on load
+    // Lock bl pin only in PWM mode with a channel selected; in GPIO/other modes
+    // the channel select still defaults to "0" but must not lock the GPIO input.
     const initPwmSel = form.querySelector('#periBlPwmSelect');
-    if (initPwmSel?.value !== '' && initPwmSel?.value !== undefined) {
+    if (blModeSelect.value === 'PWM' && initPwmSel?.value !== '' && initPwmSel?.value !== undefined) {
       const blPinInput = form.querySelector('[data-role="bl"] .peri-pin-gpio');
       if (blPinInput) blPinInput.readOnly = true;
     }

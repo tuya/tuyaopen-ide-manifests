@@ -16,9 +16,11 @@ function buildDemoDetail(id, { source, configs, documentation, drivers }) {
 
   if (Array.isArray(configs) && configs.length) {
     const cleaned = configs
-      .filter((t) => t && t.board)
+      // A config target is keyed by either a board (board-specific) or a
+      // platform variant (platform demos); keep whichever is present.
+      .filter((t) => t && (t.board || t.platform))
       .map((t) => {
-        const out = { board: t.board };
+        const out = t.board ? { board: t.board } : { platform: t.platform };
         const opts = (t.options || [])
           .filter((o) => o && o.file)
           .map((o) => {
@@ -86,7 +88,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/demos - Create new demo
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, type, name, summary, tags, boards, compatibilityType, source, configs, documentation, drivers, publish } = req.body;
+  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, configs, documentation, drivers, publish } = req.body;
 
   if (!id || !name?.en || !source || typeof source !== 'string') {
     return res.status(400).json({
@@ -125,6 +127,7 @@ router.post('/', asyncHandler(async (req, res) => {
     summary: summary || { en: '', 'zh-CN': '' },
     ...(cleanTags.length ? { tags: cleanTags } : {}),
     boards: boards || [],
+    ...(Array.isArray(platforms) && platforms.length ? { platforms } : {}),
     compatibilityType: compatibilityType || 'universal',
     detailUrl: `demos/${demoType}/${id}.json`,
     publish: publish !== false,
@@ -165,10 +168,14 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   // Update index entry (identity / classification / tags + detailUrl)
   const item = demos.items[idx];
   const oldType = item.type === 'app' ? 'app' : 'example';
-  const indexFields = ['type', 'name', 'summary', 'boards', 'compatibilityType', 'publish'];
+  const indexFields = ['type', 'name', 'summary', 'boards', 'platforms', 'compatibilityType', 'publish'];
   for (const key of indexFields) {
     if (updates[key] !== undefined) item[key] = updates[key];
   }
+  // Drop the scope field that no longer applies after a scope change.
+  const ct = updates.compatibilityType !== undefined ? updates.compatibilityType : item.compatibilityType;
+  if (ct !== 'platform') delete item.platforms;
+  if (ct !== 'board-specific') item.boards = [];
   if (updates.type !== undefined) item.type = updates.type === 'app' ? 'app' : 'example';
   if (updates.tags !== undefined) {
     const cleanTags = Array.isArray(updates.tags) ? updates.tags.filter((t) => t && t !== 'app' && t !== 'example') : [];
