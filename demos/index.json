@@ -1257,7 +1257,8 @@
         "zh-CN": "AI 语音聊天机器人，在双 OLED 屏上显示情绪动画眼睛表情。"
       },
       "tags": [
-        "ai"
+        "ai",
+        "tuya_cloud"
       ],
       "boards": [
         "tuya-t5ai-board"
@@ -1278,7 +1279,8 @@
         "zh-CN": "基于涂鸦 AI 的大模型语音聊天机器人，支持语音识别与屏幕实时显示对话。"
       },
       "tags": [
-        "ai"
+        "ai",
+        "tuya_cloud"
       ],
       "boards": [
         "tuya-t5ai-core",
@@ -1305,7 +1307,9 @@
         "zh-CN": "集手势识别、舵机控制、表情显示和天气时钟的 AI 桌面伴侣。"
       },
       "tags": [
-        "ai"
+        "ai",
+        "tuya_cloud",
+        "robotics"
       ],
       "boards": [
         "t5ai-mini"
@@ -1330,7 +1334,8 @@
       },
       "tags": [
         "ai",
-        "robotics"
+        "robotics",
+        "tuya_cloud"
       ],
       "boards": [],
       "compatibilityType": "board-specific",
@@ -1353,7 +1358,8 @@
       },
       "tags": [
         "ai",
-        "robotics"
+        "robotics",
+        "tuya_cloud"
       ],
       "boards": [],
       "compatibilityType": "board-specific",
@@ -1375,7 +1381,8 @@
         "zh-CN": "将 UART 文本转发至云端 AI 并通过串口返回回复。"
       },
       "tags": [
-        "ai"
+        "ai",
+        "tuya_cloud"
       ],
       "boards": [
         "tuya-t5ai-board",
@@ -1586,7 +1593,8 @@
         "zh-CN": "在 32x32 LED 矩阵上循环显示天气图标、温度和时间。"
       },
       "tags": [
-        "pixel-art"
+        "pixel-art",
+        "tuya_cloud"
       ],
       "boards": [
         "tuya-t5ai-pixel"
@@ -1611,7 +1619,8 @@
       },
       "tags": [
         "ai",
-        "pocket"
+        "pocket",
+        "tuya_cloud"
       ],
       "boards": [
         "tuya-t5ai-pocket"

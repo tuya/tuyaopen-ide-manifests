@@ -10,62 +10,69 @@
           "name": {
             "en": "Tuya T5AI-Core",
             "zh-CN": "涂鸦 T5AI-Core 核心板"
-          }
+          },
+          "peripherals": [
+            "audio",
+            "led",
+            "button"
+          ]
         }
       ]
     },
     {
       "board": "tuya-t5ai-board",
-      "accessory": [
-        "group-mpxn93yq",
-        "camera",
-        "printer"
-      ],
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5_CAM_PRINTER.config",
           "name": {
             "en": "3.5\" LCD + Camera + Printer",
             "zh-CN": "3.5寸 LCD + 摄像头 + 打印机"
-          }
+          },
+          "peripherals": [
+            "button",
+            "audio",
+            "led",
+            "group-mpxn93yq",
+            "camera",
+            "printer"
+          ]
         }
       ]
     },
     {
       "board": "tuya-t5ai-board",
-      "accessory": [
-        "group-mpxn93yq",
-        "camera"
-      ],
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config",
           "name": {
             "en": "3.5\" LCD + Camera",
             "zh-CN": "3.5寸 LCD 触摸屏 + 摄像头"
-          }
+          },
+          "peripherals": [
+            "button",
+            "audio",
+            "led",
+            "group-mpxn93yq",
+            "camera"
+          ]
         }
       ]
     },
     {
       "board": "tuya-t5ai-board",
-      "accessory": [
-        "group-mpxn93yq"
-      ],
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
           "name": {
             "en": "3.5\" LCD",
             "zh-CN": "3.5寸 LCD 触摸屏"
-          }
-        },
-        {
-          "file": "TUYA_T5AI_BOARD_LCD_3.5_v101.config",
-          "name": {
-            "en": "3.5\" LCD (V101)",
-            "zh-CN": "3.5寸 LCD（V101）"
-          }
+          },
+          "peripherals": [
+            "button",
+            "audio",
+            "led",
+            "group-mpxn93yq"
+          ]
         }
       ]
     },
@@ -77,7 +84,10 @@
           "name": {
             "en": "Tuya T5AI EVB",
             "zh-CN": "涂鸦 T5AI 白盒"
-          }
+          },
+          "peripherals": [
+            "led"
+          ]
         }
       ]
     },
@@ -89,7 +99,15 @@
           "name": {
             "en": "Waveshare T5AI Touch AMOLED 1.75\"",
             "zh-CN": "微雪 T5AI 1.75 寸触摸 AMOLED"
-          }
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "touchpad",
+            "led",
+            "button",
+            "power"
+          ]
         }
       ]
     }
