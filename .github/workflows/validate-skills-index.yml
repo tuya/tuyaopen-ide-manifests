@@ -1,4 +1,4 @@
-name: Validate skills/index.json
+name: Skills Index Check
 
 on:
   pull_request:
