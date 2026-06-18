@@ -328,7 +328,10 @@
         "robot"
       ],
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-dog.json",
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/tuya-t5ai-dog/tuya-t5ai-dog.jpg"
+      }
     }
   ]
 }
