@@ -1,6 +1,57 @@
 {
   "id": "tuya-ai-your-otto-robot",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot",
+  "configs": [
+    {
+      "board": "t5ai-otto",
+      "options": [
+        {
+          "file": "T5AI_OTTO_LCD_ST7789.config",
+          "name": {
+            "en": "ST7789 LCD",
+            "zh-CN": "ST7789 LCD 屏"
+          },
+          "peripherals": [
+            "audio",
+            "display"
+          ]
+        },
+        {
+          "file": "T5AI_OTTO_LCD_ST7735S.config",
+          "name": {
+            "en": "ST7735S LCD",
+            "zh-CN": "ST7735S LCD 屏"
+          },
+          "peripherals": [
+            "audio",
+            "display-1"
+          ]
+        },
+        {
+          "file": "T5AI_OTTO_LCD_GC9D01.config",
+          "name": {
+            "en": "GC9D01 LCD",
+            "zh-CN": "GC9D01 LCD 屏"
+          },
+          "peripherals": [
+            "audio",
+            "display-2"
+          ]
+        },
+        {
+          "file": "T5_OTTO_LCD_ST7789_V1.config",
+          "name": {
+            "en": "ST7789 LCD (V1)",
+            "zh-CN": "ST7789 LCD 屏（V1）"
+          },
+          "peripherals": [
+            "audio",
+            "display"
+          ]
+        }
+      ]
+    }
+  ],
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot/README.md",

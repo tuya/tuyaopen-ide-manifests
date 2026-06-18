@@ -1,6 +1,21 @@
 {
   "id": "tuya-ai-your-robot-dog",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog",
+  "configs": [
+    {
+      "board": "tuya-t5ai-dog",
+      "options": [
+        {
+          "file": "TUYA_T5AI_ROBOT_DOG.config",
+          "name": {
+            "en": "Tuya T5AI Robot Dog",
+            "zh-CN": "涂鸦 T5AI 机器狗"
+          },
+          "peripherals": ["audio", "button", "display", "led"]
+        }
+      ]
+    }
+  ],
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog/README.md",

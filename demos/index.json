@@ -345,15 +345,16 @@
       "tags": [
         "micropython"
       ],
-      "boards": [
-        "tuya-t5ai-core"
-      ],
-      "compatibilityType": "board-specific",
+      "boards": [],
+      "compatibilityType": "platform",
       "detailUrl": "demos/app/micropython-mpy-minimal.json",
       "image": {
         "url": "images/micropython-mpy-minimal/micropython-mpy-minimal.jpg"
       },
-      "publish": true
+      "publish": true,
+      "platforms": [
+        "t5ai"
+      ]
     },
     {
       "id": "mimiclaw",
@@ -370,12 +371,15 @@
         "ai"
       ],
       "boards": [],
-      "compatibilityType": "board-specific",
+      "compatibilityType": "platform",
       "detailUrl": "demos/app/mimiclaw.json",
       "image": {
         "url": "images/mimiclaw/mimiclaw.jpg"
       },
-      "publish": true
+      "publish": true,
+      "platforms": [
+        "t5ai"
+      ]
     },
     {
       "id": "multimedia-audio-kws",
@@ -773,9 +777,12 @@
         "peripheral"
       ],
       "boards": [],
-      "compatibilityType": "board-specific",
+      "compatibilityType": "platform",
       "detailUrl": "demos/example/peripherals-ir.json",
-      "publish": true
+      "publish": true,
+      "platforms": [
+        "t5ai"
+      ]
     },
     {
       "id": "peripherals-joystick",
@@ -937,9 +944,12 @@
         "peripheral"
       ],
       "boards": [],
-      "compatibilityType": "universal",
+      "compatibilityType": "platform",
       "detailUrl": "demos/example/peripherals-touch.json",
-      "publish": true
+      "publish": true,
+      "platforms": [
+        "t5ai"
+      ]
     },
     {
       "id": "peripherals-tp",
@@ -1241,9 +1251,12 @@
         "tinyml"
       ],
       "boards": [],
-      "compatibilityType": "universal",
+      "compatibilityType": "platform",
       "detailUrl": "demos/example/tflite-tflite-helloworld.json",
-      "publish": true
+      "publish": true,
+      "platforms": [
+        "t5ai"
+      ]
     },
     {
       "id": "tuya-ai-duo-eye-mood",
@@ -1265,7 +1278,10 @@
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-duo-eye-mood.json",
-      "publish": false
+      "publish": true,
+      "image": {
+        "url": "images/tuya-ai-duo-eye-mood/tuya-ai-duo-eye-mood.jpg"
+      }
     },
     {
       "id": "tuya-ai-your-chat-bot",
@@ -1337,7 +1353,9 @@
         "robotics",
         "tuya_cloud"
       ],
-      "boards": [],
+      "boards": [
+        "t5ai-otto"
+      ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-otto-robot.json",
       "image": {
@@ -1361,7 +1379,12 @@
         "robotics",
         "tuya_cloud"
       ],
-      "boards": [],
+      "boards": [
+        "tuya-t5ai-dog"
+      ],
+      "platforms": [
+        "t5ai"
+      ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-robot-dog.json",
       "image": {

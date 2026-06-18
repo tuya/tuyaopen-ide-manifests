@@ -4,37 +4,31 @@
   "configs": [
     {
       "board": "tuya-t5ai-board",
+      "accessory": [
+        "lcd-eyes-a"
+      ],
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_EYES.config",
           "name": {
             "en": "Dual Sync Eyes",
             "zh-CN": "双眼屏-同显"
-          },
-          "peripherals": [
-            "button",
-            "audio",
-            "led",
-            "lcd-eyes-a"
-          ]
+          }
         }
       ]
     },
     {
       "board": "tuya-t5ai-board",
+      "accessory": [
+        "lcd-eyes-b"
+      ],
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_EYES_TWO_LCD.config",
           "name": {
             "en": "Dual Async Eyes",
             "zh-CN": "双眼屏-异显"
-          },
-          "peripherals": [
-            "button",
-            "audio",
-            "led",
-            "lcd-eyes-b"
-          ]
+          }
         }
       ]
     }
@@ -56,5 +50,8 @@
       "driver": "led",
       "level": "optional"
     }
-  ]
+  ],
+  "image": {
+    "url": "images/tuya-ai-duo-eye-mood/tuya-ai-duo-eye-mood.jpg"
+  }
 }
