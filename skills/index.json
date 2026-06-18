@@ -462,7 +462,7 @@
       },
       "tags": ["miniapp", "panel", "ray", "orchestrator", "entry-point", "architecture", "audit"],
       "defaultEnabled": true,
-      "installPayload": "smart-panel-dev",
+      "installPayload": "miniapp/smart-panel-dev",
       "related": [
         "miniapp-ray-common",
         "miniapp-smart-ui",
@@ -496,7 +496,7 @@
       },
       "tags": ["miniapp", "ray", "panel"],
       "defaultEnabled": true,
-      "installPayload": "miniapp-ray-common",
+      "installPayload": "miniapp/ray-common",
       "source": { "localPath": "skills/miniapp/ray-common" }
     },
     {
@@ -522,7 +522,7 @@
         "components"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-smart-ui",
+      "installPayload": "miniapp/smart-ui",
       "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/smart-ui" }
     },
@@ -550,7 +550,7 @@
         "lighting"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-lamp-panel",
+      "installPayload": "miniapp/lamp-panel",
       "related": ["miniapp-ray-common", "miniapp-smart-ui"],
       "source": { "localPath": "skills/miniapp/lamp-panel" }
     },
@@ -578,7 +578,7 @@
         "electrician"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-socket-panel",
+      "installPayload": "miniapp/socket-panel",
       "related": ["miniapp-ray-common", "miniapp-electrician-timing", "miniapp-energy-stats"],
       "source": { "localPath": "skills/miniapp/socket-panel" }
     },
@@ -606,7 +606,7 @@
         "map"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-robot-vacuum",
+      "installPayload": "miniapp/robot-vacuum",
       "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/robot-vacuum" }
     },
@@ -634,7 +634,7 @@
         "camera"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-ipc-panel",
+      "installPayload": "miniapp/ipc-panel",
       "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/ipc-panel" }
     },
@@ -661,7 +661,7 @@
         "visualization"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-charts-library",
+      "installPayload": "miniapp/charts-library",
       "related": ["miniapp-ray-common", "miniapp-energy-stats"],
       "source": { "localPath": "skills/miniapp/charts-library" }
     },
@@ -688,7 +688,7 @@
         "timing"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-electrician-timing",
+      "installPayload": "miniapp/electrician-timing",
       "related": ["miniapp-socket-panel"],
       "source": { "localPath": "skills/miniapp/electrician-timing" }
     },
@@ -715,7 +715,7 @@
         "statistics"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-energy-stats",
+      "installPayload": "miniapp/energy-stats",
       "related": ["miniapp-charts-library", "miniapp-socket-panel"],
       "source": { "localPath": "skills/miniapp/energy-stats" }
     },
@@ -742,7 +742,7 @@
         "planning"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-requirement-guide",
+      "installPayload": "miniapp/requirement-guide",
       "source": { "localPath": "skills/miniapp/requirement-guide" }
     },
     {
@@ -768,7 +768,7 @@
         "ux"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp-performance-ux-guard",
+      "installPayload": "miniapp/performance-ux-guard",
       "related": ["miniapp-ray-common"],
       "source": { "localPath": "skills/miniapp/performance-ux-guard" }
     }

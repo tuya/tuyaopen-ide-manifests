@@ -1,5 +1,6 @@
 ---
 name: miniapp-socket-panel
+id: miniapp-socket-panel
 description: 用于开发涂鸦电工插座/排插/智能开关面板小程序（socket/outlet/power strip panel）。涵盖：多路开关渲染（switch_1~6）、倒计时（countdown_1~6）、用电量统计（add_ele/cur_power/cur_voltage/cur_current）、功能页跳转（定时/电费）、设备日志、DP 换算规则。Use when user needs to build or modify a Tuya electrician panel miniapp.
 ---
 
