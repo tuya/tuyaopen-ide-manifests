@@ -307,7 +307,7 @@
     {
       "id": "tuya-t5ai-dog",
       "name": {
-        "en": "Tuya T5AI Robot Dog",
+        "en": "涂鸦 T5AI 机器狗",
         "zh-CN": "涂鸦 T5AI 机器狗"
       },
       "platformId": "t5ai",
@@ -319,13 +319,13 @@
       },
       "tags": [
         "wifi",
-        "ble",
         "ai",
         "audio",
         "display",
         "button",
         "led",
-        "robot"
+        "robot",
+        "ble"
       ],
       "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-dog.json",
       "published": true,
