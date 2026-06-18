@@ -293,8 +293,6 @@ export async function saveDemoForm(form, demoId = null) {
     document.querySelectorAll('#demoTargets .demo-target').forEach(row => {
       const board = row.querySelector('.target-board')?.value || '';
       if (!board) return;
-      // Accessories are multi-select checkboxes (board peripheral/group ids).
-      const accessory = [...row.querySelectorAll('.acc-cb:checked')].map(cb => cb.value);
       const options = [];
       row.querySelectorAll('.target-option').forEach(o => {
         const file = o.querySelector('.opt-file')?.value?.trim();
@@ -303,10 +301,12 @@ export async function saveDemoForm(form, demoId = null) {
         const zh = o.querySelector('.opt-name-zh')?.value?.trim();
         const opt = { file };
         if (en || zh) opt.name = { en: en || '', 'zh-CN': zh || '' };
+        // Peripherals this option uses (board peripheral/group ids, checkboxes).
+        const peripherals = [...o.querySelectorAll('.opt-peri-cb:checked')].map(cb => cb.value);
+        if (peripherals.length) opt.peripherals = peripherals;
         options.push(opt);
       });
       const target = { board };
-      if (accessory.length) target.accessory = accessory;
       if (options.length) target.options = options;
       configs.push(target);
     });

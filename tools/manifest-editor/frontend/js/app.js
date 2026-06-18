@@ -864,25 +864,37 @@ function setupDemoTargets(allBoards, existing) {
 
   const lang = i18n.getLanguage();
   const loc = (n, fb) => (n && (n[lang] || n.en || n['zh-CN'])) || fb;
-  const accessoryCache = {};
+  const periphCache = {};
 
-  async function fetchAccessories(boardId) {
-    if (accessoryCache[boardId]) return accessoryCache[boardId];
-    const list = [];
+  // All pickable peripherals for a board: its peripheral GROUPS (bundled
+  // accessories) + every UNGROUPED peripheral — onboard parts (button/led/audio)
+  // AND standalone accessories (camera/oled/…). The author checks the ones the
+  // demo actually USES; onboard is NOT auto-included. Group members are
+  // represented by their group, mirroring the IDE hardware view's collapse.
+  async function fetchBoardPeripherals(boardId) {
+    if (periphCache[boardId]) return periphCache[boardId];
+    // Ordered: onboard (soldered) parts first, then accessories (groups +
+    // accessory-mounted parts). Grouped members are represented by their group.
+    const onboard = [];
+    const accessories = [];
     try {
       const d = (await apiClient.getBoard(boardId)).board || {};
       for (const [gid, g] of Object.entries(d.peripheralGroups || {})) {
-        list.push({ id: gid, label: loc(g.name, gid) });
+        accessories.push({ id: gid, label: loc(g.name, gid), group: true });
       }
       for (const arr of Object.values(d.peripheralPatterns || {})) {
         for (const p of (arr || [])) {
-          if (p.mounting === 'accessory' && !p.group) list.push({ id: p.id, label: loc(p.name, p.id) });
+          if (!p.id || p.group) continue;
+          const item = { id: p.id, label: loc(p.name, p.id), group: false };
+          if (p.mounting === 'accessory') accessories.push(item);
+          else onboard.push(item);
         }
       }
     } catch (e) {
-      console.error('[demoTargets] board detail failed', boardId, e);
+      console.error('[demoTargets] board peripherals failed', boardId, e);
     }
-    accessoryCache[boardId] = list;
+    const list = [...onboard, ...accessories];
+    periphCache[boardId] = list;
     return list;
   }
 
@@ -894,36 +906,36 @@ function setupDemoTargets(allBoards, existing) {
   const boardOptions = (platform, sel) => `<option value="">${i18n.t('demoTargetSelectBoard')}</option>` +
     allBoards.filter(b => !platform || b.platformId === platform)
       .map(b => `<option value="${escapeHtml(b.id)}"${b.id === sel ? ' selected' : ''}>${escapeHtml(loc(b.name, b.id))}</option>`).join('');
-  // Accessories are multi-select: a config may attach several add-ons (e.g.
-  // LCD + sensor). Rendered as checkboxes; values are board peripheral/group ids.
-  const accessoryChecks = (list, selected) => {
-    if (!list.length) return `<small style="color:var(--color-muted)">${i18n.t('demoTargetAccessoryEmpty')}</small>`;
-    return list.map(a =>
-      `<label class="acc-check"><input type="checkbox" class="acc-cb" value="${escapeHtml(a.id)}"${selected.includes(a.id) ? ' checked' : ''}> ${escapeHtml(a.label)}</label>`
+  // Per-option peripheral picker: the author checks which peripherals THIS
+  // config uses (board peripheral / group ids). Group ids stand for the bundle.
+  const peripheralChecks = (list, selected) => {
+    if (!list.length) return `<small style="color:var(--color-muted)">${i18n.t('demoTargetOptionPeripheralsEmpty')}</small>`;
+    return list.map(p =>
+      `<label class="opt-peri"><input type="checkbox" class="opt-peri-cb" value="${escapeHtml(p.id)}"${selected.includes(p.id) ? ' checked' : ''}> ${escapeHtml(p.label)}${p.group ? ' <span class="opt-peri-grp">⛓</span>' : ''}</label>`
     ).join('');
   };
 
   const optionRow = (o) => `<div class="target-option">
-      <input type="text" class="form-input opt-name-en" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameEn'))}" value="${escapeHtml(o?.name?.en || '')}">
-      <input type="text" class="form-input opt-name-zh" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameZh'))}" value="${escapeHtml(o?.name?.['zh-CN'] || '')}">
-      <input type="text" class="form-input opt-file" placeholder="${escapeHtml(i18n.t('demoTargetOptionFile'))}" value="${escapeHtml(o?.file || '')}">
-      <button type="button" class="btn btn-sm btn-danger opt-remove">✕</button>
+      <div class="target-option-head">
+        <input type="text" class="form-input opt-name-en" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameEn'))}" value="${escapeHtml(o?.name?.en || '')}">
+        <input type="text" class="form-input opt-name-zh" placeholder="${escapeHtml(i18n.t('demoTargetOptionNameZh'))}" value="${escapeHtml(o?.name?.['zh-CN'] || '')}">
+        <input type="text" class="form-input opt-file" placeholder="${escapeHtml(i18n.t('demoTargetOptionFile'))}" value="${escapeHtml(o?.file || '')}">
+        <button type="button" class="btn btn-sm btn-danger opt-remove">✕</button>
+      </div>
+      <div class="opt-peripherals-wrap">
+        <span class="opt-peri-label">${escapeHtml(i18n.t('demoTargetOptionPeripherals'))}</span>
+        <div class="opt-peripherals" data-selected="${escapeHtml((o?.peripherals || []).join(','))}"></div>
+      </div>
     </div>`;
 
   const targetRow = (t) => {
     const opts = (t?.options && t.options.length) ? t.options : [{}];
     const platform = t?.board ? (boardById[t.board]?.platformId || '') : '';
-    // accessory accepts a legacy single string or an array.
-    const accSel = Array.isArray(t?.accessory) ? t.accessory : (t?.accessory ? [t.accessory] : []);
     return `<div class="demo-target">
       <div class="target-head">
         <select class="form-input target-platform">${platformOptions(platform)}</select>
         <select class="form-input target-board">${boardOptions(platform, t?.board || '')}</select>
         <button type="button" class="btn btn-sm btn-danger target-remove" title="${escapeHtml(i18n.t('demoTargetRemove'))}">✕</button>
-      </div>
-      <div class="target-accessory-wrap">
-        <span class="acc-label">${escapeHtml(i18n.t('demoTargetAccessories'))}</span>
-        <div class="target-accessory" data-selected="${escapeHtml(accSel.join(','))}"></div>
       </div>
       <small style="color:var(--color-muted);display:block;margin:6px 0 4px;">${escapeHtml(i18n.t('demoTargetOptionsHint'))}</small>
       <div class="target-options">${opts.map(optionRow).join('')}</div>
@@ -931,17 +943,26 @@ function setupDemoTargets(allBoards, existing) {
     </div>`;
   };
 
-  async function fillAccessory(row) {
+  // Fill per-option peripheral checkboxes from the target's board. `only`
+  // (optional) restricts to one .opt-peripherals container (when adding an
+  // option) so the other options' live selections are preserved.
+  async function fillPeripherals(row, only) {
     const board = row.querySelector('.target-board').value;
-    const cont = row.querySelector('.target-accessory');
-    if (!board) { cont.innerHTML = `<small style="color:var(--color-muted)">${i18n.t('demoTargetAccessoryNoBoard')}</small>`; return; }
-    const sel = (cont.dataset.selected || '').split(',').filter(Boolean);
-    cont.innerHTML = accessoryChecks(await fetchAccessories(board), sel);
+    const containers = only ? [only] : [...row.querySelectorAll('.opt-peripherals')];
+    if (!board) {
+      containers.forEach(c => { c.innerHTML = `<small style="color:var(--color-muted)">${i18n.t('demoTargetOptionPeripheralsNoBoard')}</small>`; });
+      return;
+    }
+    const choices = await fetchBoardPeripherals(board);
+    containers.forEach(c => {
+      const sel = (c.dataset.selected || '').split(',').filter(Boolean);
+      c.innerHTML = peripheralChecks(choices, sel);
+    });
   }
 
   function addTarget(t, prepend) {
     root.insertAdjacentHTML(prepend ? 'afterbegin' : 'beforeend', targetRow(t));
-    fillAccessory(prepend ? root.firstElementChild : root.lastElementChild);
+    fillPeripherals(prepend ? root.firstElementChild : root.lastElementChild);
   }
 
   root.innerHTML = '';
@@ -954,19 +975,25 @@ function setupDemoTargets(allBoards, existing) {
     if (e.target.closest('.target-remove')) { e.target.closest('.demo-target').remove(); return; }
     if (e.target.closest('.opt-remove')) { e.target.closest('.target-option').remove(); return; }
     const addOpt = e.target.closest('.target-add-option');
-    if (addOpt) addOpt.parentElement.querySelector('.target-options').insertAdjacentHTML('beforeend', optionRow({}));
+    if (addOpt) {
+      const opts = addOpt.parentElement.querySelector('.target-options');
+      opts.insertAdjacentHTML('beforeend', optionRow({}));
+      // Fill only the new option's peripheral list — keep others' live state.
+      fillPeripherals(addOpt.closest('.demo-target'), opts.lastElementChild.querySelector('.opt-peripherals'));
+    }
   });
   root.addEventListener('change', (e) => {
     const row = e.target.closest('.demo-target');
     if (!row) return;
     if (e.target.classList.contains('target-platform')) {
-      // Refilter boards to the chosen platform; reset board + accessory.
+      // Refilter boards to the chosen platform; reset board + peripherals.
       row.querySelector('.target-board').innerHTML = boardOptions(e.target.value, '');
-      row.querySelector('.target-accessory').dataset.selected = '';
-      fillAccessory(row);
+      row.querySelectorAll('.opt-peripherals').forEach(c => { c.dataset.selected = ''; });
+      fillPeripherals(row);
     } else if (e.target.classList.contains('target-board')) {
-      row.querySelector('.target-accessory').dataset.selected = '';
-      fillAccessory(row);
+      // Board changed → its peripheral ids differ; reset + refill.
+      row.querySelectorAll('.opt-peripherals').forEach(c => { c.dataset.selected = ''; });
+      fillPeripherals(row);
     }
   });
 }

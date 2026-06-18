@@ -19,16 +19,18 @@ function buildDemoDetail(id, { source, configs, documentation, drivers }) {
       .filter((t) => t && t.board)
       .map((t) => {
         const out = { board: t.board };
-        // accessory: multi-select board peripheral/group ids (legacy single
-        // string accepted). Stored as a deduped array; dropped when empty.
-        const accRaw = Array.isArray(t.accessory) ? t.accessory : (t.accessory ? [t.accessory] : []);
-        const acc = [...new Set(accRaw.filter((a) => typeof a === 'string' && a.trim()).map((a) => a.trim()))];
-        if (acc.length) out.accessory = acc;
         const opts = (t.options || [])
           .filter((o) => o && o.file)
           .map((o) => {
             const r = { file: o.file };
             if (o.name && (o.name.en || o.name['zh-CN'])) r.name = o.name;
+            // Board peripheral / group ids this option uses (deduped, drop empty).
+            if (Array.isArray(o.peripherals)) {
+              const peris = [...new Set(
+                o.peripherals.filter((p) => typeof p === 'string' && p.trim()).map((p) => p.trim()),
+              )];
+              if (peris.length) r.peripherals = peris;
+            }
             return r;
           });
         if (opts.length) out.options = opts;
