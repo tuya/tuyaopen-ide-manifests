@@ -174,7 +174,7 @@
     {
       "id": "t5ai-mini",
       "name": {
-        "en": "T5AI Mini",
+        "en": "T5AI Mini 开发板",
         "zh-CN": "T5AI Mini 开发板"
       },
       "manufacturer": "Tuya",
@@ -188,7 +188,7 @@
         "url": "images/t5ai-mini/t5ai-mini.jpg"
       },
       "detailUrl": "boards-and-chips/t5ai/t5ai-mini.json",
-      "published": true,
+      "published": false,
       "tags": [
         "wifi",
         "ble",
@@ -276,6 +276,58 @@
         "url": "images/lckfb-gd32vw553/lckfb-gd32vw553.jpg"
       },
       "detailUrl": "boards-and-chips/gd32/lckfb-gd32vw553.json",
+      "published": true
+    },
+    {
+      "id": "t5ai-otto",
+      "name": {
+        "en": "T5AI Otto 机器人",
+        "zh-CN": "T5AI Otto 机器人"
+      },
+      "platformId": "t5ai",
+      "variantId": "t5ai",
+      "manufacturer": "Tuya",
+      "summary": {
+        "en": "T5AI Otto robot board based on the Tuya T5 (T5AI). Onboard audio codec with AEC plus an optional SPI LCD expansion module (ST7789 / ST7735S / GC9D01) for the Otto robot reference design.",
+        "zh-CN": "基于涂鸦 T5（T5AI）的 Otto 机器人开发板。板载带 AEC 的音频编解码器，并支持可选 SPI LCD 扩展模块（ST7789 / ST7735S / GC9D01），用于 Otto 机器人参考设计。"
+      },
+      "tags": [
+        "wifi",
+        "ai",
+        "audio",
+        "display",
+        "robot"
+      ],
+      "detailUrl": "boards-and-chips/t5ai/t5ai-otto.json",
+      "published": true,
+      "image": {
+        "url": "images/t5ai-otto/t5ai-otto.jpg"
+      }
+    },
+    {
+      "id": "tuya-t5ai-dog",
+      "name": {
+        "en": "Tuya T5AI Robot Dog",
+        "zh-CN": "涂鸦 T5AI 机器狗"
+      },
+      "platformId": "t5ai",
+      "variantId": "t5ai",
+      "manufacturer": "Tuya",
+      "summary": {
+        "en": "Tuya T5AI robot dog board based on the Tuya T5 (T5AI). Onboard audio codec, user button, indicator LED and a built-in 172x320 SPI LCD for the robot dog reference design.",
+        "zh-CN": "基于涂鸦 T5（T5AI）的机器狗开发板。板载音频编解码器、用户按键、指示灯，以及内置 172x320 SPI LCD，用于机器狗参考设计。"
+      },
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "audio",
+        "display",
+        "button",
+        "led",
+        "robot"
+      ],
+      "detailUrl": "boards-and-chips/t5ai/tuya-t5ai-dog.json",
       "published": true
     }
   ]
