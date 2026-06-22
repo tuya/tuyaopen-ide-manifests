@@ -1,6 +1,11 @@
 {
   "id": "tuya-t5-pocket-tuya-t5-pocket-ai",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_t5_pocket/tuya_t5_pocket_ai",
+  "cloud": {
+    "pid": {
+      "via": "kconfig"
+    }
+  },
   "configs": [
     {
       "board": "tuya-t5ai-pocket",

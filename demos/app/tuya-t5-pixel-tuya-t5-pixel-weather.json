@@ -1,6 +1,13 @@
 {
   "id": "tuya-t5-pixel-tuya-t5-pixel-weather",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_t5_pixel/tuya_t5_pixel_weather",
+  "cloud": {
+    "pid": {
+      "via": "macro",
+      "macro": "TUYA_PRODUCT_ID",
+      "file": "include/tuya_config.h"
+    }
+  },
   "configs": [
     {
       "board": "tuya-t5ai-pixel",

@@ -1,6 +1,11 @@
 {
   "id": "tuya-ai-your-desk-emoji",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_desk_emoji",
+  "cloud": {
+    "pid": {
+      "via": "kconfig"
+    }
+  },
   "configs": [
     {
       "board": "t5ai-mini",

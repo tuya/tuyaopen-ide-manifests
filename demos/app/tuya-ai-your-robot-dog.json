@@ -1,5 +1,10 @@
 {
   "id": "tuya-ai-your-robot-dog",
+  "cloud": {
+    "pid": {
+      "via": "kconfig"
+    }
+  },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog",
   "configs": [
     {

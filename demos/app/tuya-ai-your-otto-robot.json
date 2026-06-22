@@ -1,6 +1,11 @@
 {
   "id": "tuya-ai-your-otto-robot",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot",
+  "cloud": {
+    "pid": {
+      "via": "kconfig"
+    }
+  },
   "configs": [
     {
       "board": "t5ai-otto",

@@ -1,4 +1,11 @@
 {
   "id": "tuya-cloud-weather-get-demo",
-  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/weather_get_demo"
+  "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/weather_get_demo",
+  "cloud": {
+    "pid": {
+      "via": "macro",
+      "macro": "TUYA_PRODUCT_ID",
+      "file": "include/tuya_config.h"
+    }
+  }
 }
