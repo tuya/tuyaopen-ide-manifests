@@ -1,5 +1,10 @@
 {
   "id": "tuya-ai-duo-eye-mood",
+  "cloud": {
+    "pid": {
+      "via": "kconfig"
+    }
+  },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/duo_eye_mood",
   "configs": [
     {

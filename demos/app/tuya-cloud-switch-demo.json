@@ -1,5 +1,11 @@
 {
   "id": "tuya-cloud-switch-demo",
+  "cloud": {
+    "oemUrl": "https://pbt.tuya.com/s?p=b38aaa08d42d0d90ce4cdda28af92cf7&u=6232683ef12714848fae37955806cb9e&t=1",
+    "pid": {
+      "via": "macro"
+    }
+  },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/switch_demo",
   "documentation": {
     "readme": {

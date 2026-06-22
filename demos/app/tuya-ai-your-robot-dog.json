@@ -1,5 +1,10 @@
 {
   "id": "tuya-ai-your-robot-dog",
+  "cloud": {
+    "pid": {
+      "via": "kconfig"
+    }
+  },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_robot_dog",
   "configs": [
     {
@@ -11,7 +16,12 @@
             "en": "Tuya T5AI Robot Dog",
             "zh-CN": "涂鸦 T5AI 机器狗"
           },
-          "peripherals": ["audio", "button", "display", "led"]
+          "peripherals": [
+            "audio",
+            "button",
+            "display",
+            "led"
+          ]
         }
       ]
     }
