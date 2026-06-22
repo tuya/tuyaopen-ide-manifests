@@ -66,6 +66,14 @@ export function renderDemoForm(demo = null) {
     ? d.compatibilityType : 'universal';
   const isPublished = d.publish !== false;
   const source = typeof d.source === 'string' ? d.source : '';
+  // Cloud demo: needs a PID. `true` = auto-detect; object = method (`via`) + overrides.
+  const cloudEnabled = !!d.cloud;
+  const cloudPid = (d.cloud && typeof d.cloud === 'object' && d.cloud.pid) ? d.cloud.pid : {};
+  const cloudVia = cloudPid.via === 'kconfig' || cloudPid.via === 'macro' ? cloudPid.via : 'auto';
+  const cloudKKey = cloudPid.kconfigKey || '';
+  const cloudMacro = cloudPid.macro || '';
+  const cloudFile = cloudPid.file || '';
+  const cloudOemUrl = (d.cloud && typeof d.cloud === 'object' && d.cloud.oemUrl) ? d.cloud.oemUrl : '';
   const readmeEn = d.documentation?.readme?.en || '';
   const readmeZh = d.documentation?.readme?.['zh-CN'] || '';
   const currentImageUrl = d.image?.url || '';
@@ -257,6 +265,50 @@ export function renderDemoForm(demo = null) {
           <small style="color: var(--color-muted); display:block; margin:2px 0 8px;" data-i18n="demoDriversHint">Hardware this demo uses. Required = won't run without it; Optional = enhances but works without.</small>
           <div id="demoDriversContainer" class="demo-drivers"></div>
         </div>
+
+        <!-- Cloud dependency — this demo connects to Tuya Cloud and needs a PID.
+             When enabled, the IDE lets the developer bind their own PID at create
+             time and rewrites it in the scaffolded source (Kconfig key if present,
+             else the C macro). Override fields are only for demos that deviate
+             from the convention (CONFIG_TUYA_PRODUCT_ID / TUYA_PRODUCT_ID). -->
+        <div class="form-group">
+          <label class="form-label" style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="demoCloud" ${cloudEnabled ? 'checked' : ''} style="width:auto;">
+            <span data-i18n="demoCloud">Inject PID</span>
+          </label>
+          <small style="color: var(--color-muted); display:block; margin:2px 0 8px;" data-i18n="demoCloudHint">When on, the create-from-demo flow asks the developer for their own Product ID and injects it into the project instead of the demo's PID.</small>
+          <div id="demoCloudOverrides" style="${cloudEnabled ? '' : 'display:none;'} padding-left:24px;">
+            <!-- Step 1: pick the injection method. -->
+            <div class="form-group">
+              <label class="form-label" for="demoCloudVia" data-i18n="demoCloudVia">Injection method</label>
+              <select id="demoCloudVia" class="form-input">
+                <option value="auto" ${cloudVia === 'auto' ? 'selected' : ''} data-i18n="demoCloudViaAuto">Auto-detect (recommended)</option>
+                <option value="kconfig" ${cloudVia === 'kconfig' ? 'selected' : ''} data-i18n="demoCloudViaKconfig">Kconfig (app_default.config)</option>
+                <option value="macro" ${cloudVia === 'macro' ? 'selected' : ''} data-i18n="demoCloudViaMacro">Macro (header / source)</option>
+              </select>
+            </div>
+            <!-- Step 2: fill the data for the chosen method (auto needs none). -->
+            <div class="form-group demo-cloud-field" data-via="kconfig" style="${cloudVia === 'kconfig' ? '' : 'display:none;'}">
+              <label class="form-label" for="demoCloudKKey" data-i18n="demoCloudKKey">Kconfig key</label>
+              <input type="text" id="demoCloudKKey" class="form-input" value="${escapeHtml(cloudKKey)}" placeholder="CONFIG_TUYA_PRODUCT_ID">
+              <small style="color: var(--color-muted);" data-i18n="demoCloudOptionalHint">Optional — leave empty to use the convention.</small>
+            </div>
+            <div class="form-group demo-cloud-field" data-via="macro" style="${cloudVia === 'macro' ? '' : 'display:none;'}">
+              <label class="form-label" for="demoCloudMacro" data-i18n="demoCloudMacro">Macro name</label>
+              <input type="text" id="demoCloudMacro" class="form-input" value="${escapeHtml(cloudMacro)}" placeholder="TUYA_PRODUCT_ID">
+              <label class="form-label" for="demoCloudFile" style="margin-top:8px;" data-i18n="demoCloudFile">Macro file</label>
+              <input type="text" id="demoCloudFile" class="form-input" value="${escapeHtml(cloudFile)}" placeholder="src/tuya_config.h">
+              <small style="color: var(--color-muted);" data-i18n="demoCloudOptionalHint">Optional — leave empty to use the convention.</small>
+            </div>
+            <!-- OEM link — independent of method; opened by the IDE's
+                 "Create product on platform" button. -->
+            <div class="form-group">
+              <label class="form-label" for="demoCloudOemUrl" data-i18n="demoCloudOem">OEM / create-product link</label>
+              <input type="url" id="demoCloudOemUrl" class="form-input" value="${escapeHtml(cloudOemUrl)}" placeholder="https://platform.tuya.com/pmg">
+              <small style="color: var(--color-muted);" data-i18n="demoCloudOemHint">Optional — where the developer creates their product. Leave empty for the IDE default.</small>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="form-actions">
@@ -350,6 +402,32 @@ export async function saveDemoForm(form, demoId = null) {
     drivers.push({ driver, level: row.dataset.level === 'required' ? 'required' : 'optional' });
   });
 
+  // Cloud dependency: when enabled, send `true` for auto-detect, or an object
+  // carrying the chosen method (`via`) + only that method's overrides. Disabled →
+  // false (backend drops the field).
+  let cloud = false;
+  if (document.getElementById('demoCloud')?.checked) {
+    const via = document.getElementById('demoCloudVia')?.value || 'auto';
+    const oemUrl = document.getElementById('demoCloudOemUrl')?.value.trim();
+    const obj = {};
+    if (via === 'kconfig') {
+      const pid = { via };
+      const kk = document.getElementById('demoCloudKKey')?.value.trim();
+      if (kk) pid.kconfigKey = kk;
+      obj.pid = pid;
+    } else if (via === 'macro') {
+      const pid = { via };
+      const mc = document.getElementById('demoCloudMacro')?.value.trim();
+      const fl = document.getElementById('demoCloudFile')?.value.trim();
+      if (mc) pid.macro = mc;
+      if (fl) pid.file = fl;
+      obj.pid = pid;
+    }
+    if (oemUrl) obj.oemUrl = oemUrl;
+    // Bare `true` when nothing beyond enabling (auto method, no OEM link).
+    cloud = Object.keys(obj).length ? obj : true;
+  }
+
   const data = {
     id,
     type,
@@ -367,6 +445,7 @@ export async function saveDemoForm(form, demoId = null) {
     platforms: platforms.length > 0 ? platforms : undefined,
     compatibilityType: compatType,
     source: document.getElementById('demoSource').value.trim(),
+    cloud,
     configs: configs.length > 0 ? configs : undefined,
     drivers: drivers.length > 0 ? drivers : [],
     documentation: {

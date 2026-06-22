@@ -9,10 +9,17 @@ const router = express.Router();
 // identity, classification and tags stay in the index. `configs` is an array
 // of board targets: { board, accessory?, options:[{name?,file}] }.
 // Returns null when there is nothing to store (caller deletes the file).
-function buildDemoDetail(id, { source, configs, documentation, drivers }) {
+function buildDemoDetail(id, { source, cloud, configs, documentation, drivers }) {
   const detail = { id };
 
   if (typeof source === 'string' && source.trim()) detail.source = source.trim();
+
+  // Cloud demo flag: `true` when it just needs a PID, or an object with optional
+  // PID-location overrides ({ pid: { kconfigKey?, macro?, file? } }) when the demo
+  // deviates from the convention (CONFIG_TUYA_PRODUCT_ID / TUYA_PRODUCT_ID). Empty
+  // overrides collapse back to the bare `true` form.
+  const cloudVal = normalizeCloud(cloud);
+  if (cloudVal !== undefined) detail.cloud = cloudVal;
 
   if (Array.isArray(configs) && configs.length) {
     const cleaned = configs
@@ -60,6 +67,28 @@ function buildDemoDetail(id, { source, configs, documentation, drivers }) {
   return Object.keys(detail).length > 1 ? detail : null;
 }
 
+// Normalize a `cloud` value into what we store: undefined (not a cloud demo),
+// `true` (cloud, auto-detected PID location), or { pid: {...} } when the author
+// picked a method (`via`) or set any override. `via:'auto'` with no overrides
+// collapses back to bare `true`. Accepts boolean or object; trims empties.
+function normalizeCloud(cloud) {
+  if (!cloud) return undefined;
+  if (cloud === true) return true;
+  if (typeof cloud === 'object') {
+    const result = {};
+    if (typeof cloud.oemUrl === 'string' && cloud.oemUrl.trim()) result.oemUrl = cloud.oemUrl.trim();
+    const pid = cloud.pid && typeof cloud.pid === 'object' ? cloud.pid : {};
+    const out = {};
+    if (pid.via === 'kconfig' || pid.via === 'macro') out.via = pid.via;
+    for (const k of ['kconfigKey', 'macro', 'file']) {
+      if (typeof pid[k] === 'string' && pid[k].trim()) out[k] = pid[k].trim();
+    }
+    if (Object.keys(out).length) result.pid = out;
+    return Object.keys(result).length ? result : true;
+  }
+  return true;
+}
+
 // GET /api/demos - List all demos
 router.get('/', asyncHandler(async (req, res) => {
   const demos = await manifestLoader.loadDemos();
@@ -88,7 +117,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/demos - Create new demo
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, configs, documentation, drivers, publish } = req.body;
+  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, cloud, configs, documentation, drivers, publish } = req.body;
 
   if (!id || !name?.en || !source || typeof source !== 'string') {
     return res.status(400).json({
@@ -137,7 +166,7 @@ router.post('/', asyncHandler(async (req, res) => {
   await manifestLoader.saveDemosIndex(demos);
 
   // Detail holds source path + build config + docs (identity/tags in the index).
-  const detailEntry = buildDemoDetail(id, { source, configs, documentation, drivers });
+  const detailEntry = buildDemoDetail(id, { source, cloud, configs, documentation, drivers });
   if (detailEntry) await manifestLoader.saveDemoDetail(id, detailEntry, indexEntry.type);
 
   if (req.body.autoCommit !== false) {
@@ -190,6 +219,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   const existing = (await manifestLoader.loadDemoDetail(req.params.id, oldType)) || {};
   const detail = buildDemoDetail(req.params.id, {
     source: updates.source !== undefined ? updates.source : existing.source,
+    cloud: updates.cloud !== undefined ? updates.cloud : existing.cloud,
     configs: updates.configs !== undefined ? updates.configs : existing.configs,
     documentation: updates.documentation !== undefined ? updates.documentation : existing.documentation,
     drivers: updates.drivers !== undefined ? updates.drivers : existing.drivers,

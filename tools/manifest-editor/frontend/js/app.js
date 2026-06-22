@@ -1356,6 +1356,23 @@ async function openDemoForm(demoId = null) {
     });
   });
 
+  // Cloud checkbox → reveal the method + data fields (Dependencies pane).
+  const cloudCb = document.getElementById('demoCloud');
+  const cloudOverrides = document.getElementById('demoCloudOverrides');
+  const cloudVia = document.getElementById('demoCloudVia');
+  const syncCloudViaFields = () => {
+    const via = cloudVia?.value || 'auto';
+    formContainer.querySelectorAll('.demo-cloud-field').forEach(f => {
+      f.style.display = f.dataset.via === via ? '' : 'none';
+    });
+  };
+  if (cloudCb && cloudOverrides) {
+    cloudCb.addEventListener('change', () => {
+      cloudOverrides.style.display = cloudCb.checked ? '' : 'none';
+    });
+  }
+  if (cloudVia) cloudVia.addEventListener('change', syncCloudViaFields);
+
   // Wire form submission
   const form = document.getElementById('demoForm');
   const cancelBtn = document.getElementById('demoCancelBtn');
