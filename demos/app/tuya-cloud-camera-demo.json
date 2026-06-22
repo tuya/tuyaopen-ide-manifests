@@ -1,10 +1,5 @@
 {
   "id": "tuya-cloud-camera-demo",
-  "cloud": {
-    "pid": {
-      "via": "macro"
-    }
-  },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya_cloud/camera_demo",
   "drivers": [
     {

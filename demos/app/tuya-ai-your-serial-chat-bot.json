@@ -1,10 +1,5 @@
 {
   "id": "tuya-ai-your-serial-chat-bot",
-  "cloud": {
-    "pid": {
-      "via": "kconfig"
-    }
-  },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_serial_chat_bot",
   "configs": [
     {
