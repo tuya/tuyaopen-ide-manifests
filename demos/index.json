@@ -2166,7 +2166,12 @@
         "en": "Standalone TuyaOpen-based AI agent: lean C core, plugin-driven channels and tools, runs from MCU to desktop Linux. Bundles its own ai_components.",
         "zh-CN": "基于 TuyaOpen 的独立 AI Agent 框架，纯 C 核心 + 插件式渠道与工具，从 MCU 到桌面 Linux 均可运行。自带 ai_components 套件。"
       },
-      "tags": ["app", "ai", "agent", "tuya-iot"],
+      "tags": [
+        "app",
+        "ai",
+        "agent",
+        "tuya-iot"
+      ],
       "boards": [
         "tuya-t5ai-core",
         "tuya-t5ai-board-lcd-3-5-camera",
@@ -2182,7 +2187,10 @@
         "kind": "external-repo"
       },
       "publish": true,
-      "image": { "url": "images/tuya-duckyclaw/banner.jpg" }
+      "image": {
+        "url": "images/tuya-duckyclaw/banner.jpg"
+      },
+      "detailUrl": "demos/tuya-duckyclaw.json"
     }
   ]
 }
