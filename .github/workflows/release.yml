@@ -5,7 +5,8 @@ on:
     types: [published]
 
 permissions:
-  contents: write   # upload assets + commit back release.json
+  contents: write       # upload assets + commit back release.json
+  pull-requests: write  # open PR to update release.json on main
 
 jobs:
   package:
