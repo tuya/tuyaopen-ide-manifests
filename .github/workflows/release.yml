@@ -116,14 +116,24 @@ jobs:
           cp /tmp/release.json release.json
           git add release.json
           if git diff --cached --quiet; then
-            echo "→ release.json unchanged, skip commit"
+            echo "→ release.json unchanged, skip PR"
           else
+            BRANCH="release/update-release-json-$VERSION"
+            git checkout -b "$BRANCH"
             git commit -m "chore(release): update release.json to $VERSION [skip ci]"
-            git push origin main
-            echo "✓ release.json committed to main"
+            git push origin "$BRANCH"
+            gh pr create \
+              --title "chore(release): update release.json to $VERSION" \
+              --body "Automated release.json update triggered by tag $TAG." \
+              --base main \
+              --head "$BRANCH"
+            gh pr merge "$BRANCH" --squash --delete-branch
+            echo "✓ PR merged"
+            git fetch origin main
           fi
           # Move the tag to the new main HEAD so the tag's release.json is current
-          git tag -f "$TAG" HEAD
+          NEW_HEAD=$(git rev-parse origin/main)
+          git tag -f "$TAG" "$NEW_HEAD"
           git push origin "refs/tags/$TAG" --force
           echo "✓ tag $TAG moved to main HEAD (release.json now current)"
 
