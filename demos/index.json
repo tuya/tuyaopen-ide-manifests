@@ -2164,7 +2164,7 @@
       },
       "summary": {
         "en": "Standalone TuyaOpen-based AI agent: lean C core, plugin-driven channels and tools, runs from MCU to desktop Linux. Bundles its own ai_components.",
-        "zh-CN": "基于 TuyaOpen 的独立 AI Agent 框架，纯 C 核心 + 插件式渠道与工具，从 MCU 到桌面 Linux 均可运行。自带 ai_components 套件。"
+        "zh-CN": "基于 TuyaOpen 的独立 AI Agent 框架，纯 C 核心 + 插件式渠道与工具，从 MCU 到桌面 Linux 均可运行。"
       },
       "tags": [
         "app",
@@ -2184,7 +2184,8 @@
       "source": {
         "repo": "https://github.com/tuya/DuckyClaw",
         "ref": "master",
-        "kind": "external-repo"
+        "kind": "external-repo",
+        "repoCN": "https://gitee.com/tuya-open/DuckyClaw"
       },
       "publish": true,
       "image": {
