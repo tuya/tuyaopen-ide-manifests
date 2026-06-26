@@ -47,6 +47,9 @@
           <button class="nav-item" data-tab="demos" data-i18n="navDemos">
             🎮 Demos
           </button>
+          <button class="nav-item" data-tab="skills" data-i18n="navSkills">
+            🧩 Skills
+          </button>
           <button class="nav-item" data-tab="git-history" data-i18n="gitHistory">
             📜 Git History
           </button>
@@ -180,6 +183,44 @@
               </div>
               <div class="modal-body" id="demoFormContainer">
                 <!-- Demo form injected here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Skills Tab -->
+        <section id="skills-tab" class="tab-content">
+          <div class="section-header">
+            <h2 data-i18n="skillsTitle">Skills</h2>
+          </div>
+
+          <!-- Surface tabs -->
+          <div class="demos-tabs" id="skillsTabs">
+            <button class="demos-tab skills-tab active" data-surface="all" data-i18n="skillFilterAll">All</button>
+            <button class="demos-tab skills-tab" data-surface="embedded" data-i18n="skillFilterEmbedded">Embedded</button>
+            <button class="demos-tab skills-tab" data-surface="cloud" data-i18n="skillFilterCloud">Cloud</button>
+            <button class="demos-tab skills-tab" data-surface="miniapp" data-i18n="skillFilterMiniapp">MiniApp</button>
+          </div>
+
+          <!-- Filters -->
+          <div class="demos-filters">
+            <input type="text" id="skillSearch" class="form-input" placeholder="Search skills..." data-i18n-placeholder="skillSearchPlaceholder">
+          </div>
+
+          <!-- Skills List -->
+          <div id="skillsList" class="demos-list">
+            <p class="loading-text" data-i18n="loadingSkills">Loading skills...</p>
+          </div>
+
+          <!-- Skill Edit Modal -->
+          <div id="skillModal" class="modal hidden">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 id="skillModalTitle" data-i18n="skillFormTitleEdit">Edit Skill</h2>
+                <button class="close-btn" id="closeSkillModalBtn">&times;</button>
+              </div>
+              <div class="modal-body" id="skillFormContainer">
+                <!-- Skill form injected here -->
               </div>
             </div>
           </div>

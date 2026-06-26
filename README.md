@@ -65,6 +65,15 @@ the schema never relies on "implicit inheritance".
   fabricates it. Often identical (e.g. Espressif for an ESP32 DevKit),
   but split for ODM / OEM cases. Always fill both — never rely on
   "missing means same as brand".
+- **SDK applicability** (`sdks`) — optional array marking which SDK(s) an
+  entry applies to, on `boardsAndChips` / `demos` / `skills` items.
+  Values: `"tuyaopen"`, `"tuyaos"`; an entry may list one or both
+  (`["tuyaopen", "tuyaos"]`). **Omitted ⇒ `["tuyaopen"]`** — every
+  pre-existing entry is TuyaOpen-only, so existing data needs no
+  back-fill; only TuyaOS-capable entries set the field explicitly.
+  Forward-compatible: an IDE predating the field ignores it (shows
+  everything); an SDK-aware IDE filters the catalogue by the active SDK.
+  `platforms` items do **not** carry this field.
 
 ## How the IDE consumes this repo
 

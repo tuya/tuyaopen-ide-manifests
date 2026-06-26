@@ -14,6 +14,7 @@
     "zh-CN": "<制造商中文名>"
   },
   "platformId": "<platform-id: t5ai | ...>",
+  "sdks": ["<which SDK(s) this board applies to: tuyaopen | tuyaos; omit the field entirely = tuyaopen only>"],
   "image": {
     "url": "<path or URL to board image, e.g. /images/board-id-500x500.jpg>",
     "alt": {

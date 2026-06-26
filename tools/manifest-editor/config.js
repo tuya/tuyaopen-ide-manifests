@@ -43,6 +43,7 @@ export const config = {
     boards: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'boards-and-chips'),
     demos: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'demos'),
     platforms: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'platforms'),
+    skills: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'skills'),
     images: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'boards-and-chips', 'images'),
     demoImages: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'demos', 'images'),
     platformImages: path.resolve(__dirname, process.env.GIT_REPO_PATH || '../..', 'platforms', 'images'),

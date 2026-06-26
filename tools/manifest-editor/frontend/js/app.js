@@ -7,6 +7,7 @@ import { renderBoardCard, renderBoardForm, saveBoardForm, deleteBoardPrompt, set
 import { renderPeripheralEditor, isDirty as periIsDirty } from './peripheral-editor.js';
 import { renderExpansionPinsEditor } from './expansion-pins-editor.js';
 import { renderDemoCard, renderDemoForm, saveDemoForm, deleteDemoAction } from './demo-editor.js';
+import { renderSkillCard, renderSkillForm, saveSkillForm } from './skill-editor.js';
 import { renderPlatformCard, mountPlatformForm, mountNewPlatformForm, savePlatformForm, deletePlatformPrompt } from './platform-editor.js';
 import i18n from './i18n.js';
 
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     setupBoardsTab();
     setupPlatformsTab();
     setupDemosTab();
+    setupSkillsTab();
     setupGitHistoryTab();
 
     // Load initial data
@@ -84,6 +86,8 @@ function updateUILanguage() {
     loadPlatforms();
   } else if (currentTab === 'demos') {
     loadDemos();
+  } else if (currentTab === 'skills') {
+    loadSkills();
   } else if (currentTab === 'git-history') {
     loadCommitHistory();
   }
@@ -127,6 +131,8 @@ function switchTab(tab) {
     loadCommitHistory();
   } else if (tab === 'demos') {
     loadDemos();
+  } else if (tab === 'skills') {
+    loadSkills();
   } else if (tab === 'platforms') {
     loadPlatforms();
   }
@@ -1589,6 +1595,116 @@ function refreshDemoImagePreview(demoId, imageUrl) {
       });
     }
   }
+}
+
+// ========== Skills Tab ==========
+let skillsCache = [];
+let skillsActiveSurface = 'all';
+
+function setupSkillsTab() {
+  const search = document.getElementById('skillSearch');
+  if (search) search.addEventListener('input', debounce(() => renderSkillsList(), 200));
+  const tabs = document.getElementById('skillsTabs');
+  if (tabs) {
+    tabs.addEventListener('click', (e) => {
+      const tab = e.target.closest('.skills-tab');
+      if (!tab) return;
+      skillsActiveSurface = tab.dataset.surface || 'all';
+      tabs.querySelectorAll('.skills-tab').forEach((t) => t.classList.toggle('active', t === tab));
+      renderSkillsList();
+    });
+  }
+}
+
+async function loadSkills() {
+  const list = document.getElementById('skillsList');
+  if (!list) return;
+  list.innerHTML = `<p class="loading-text">${i18n.t('loadingSkills') || 'Loading skills...'}</p>`;
+  try {
+    const result = await apiClient.getSkills();
+    skillsCache = result.skills || result.items || [];
+    renderSkillsList();
+  } catch (error) {
+    list.innerHTML = `<p class="loading-text" style="color: var(--color-error);">Error: ${error.message}</p>`;
+  }
+}
+
+function renderSkillsList() {
+  const list = document.getElementById('skillsList');
+  if (!list) return;
+
+  const q = (document.getElementById('skillSearch')?.value || '').toLowerCase().trim();
+  let items = [...skillsCache];
+
+  if (skillsActiveSurface !== 'all') {
+    items = items.filter((s) => (s.surface || '') === skillsActiveSurface);
+  }
+  if (q) {
+    items = items.filter((s) => {
+      const nameEn = (typeof s.name === 'object' ? s.name.en : s.name) || '';
+      const nameZh = (typeof s.name === 'object' ? s.name['zh-CN'] : '') || '';
+      const sumEn = (typeof s.summary === 'object' ? s.summary.en : '') || '';
+      const tags = (s.tags || []).join(' ');
+      return `${s.id} ${nameEn} ${nameZh} ${sumEn} ${tags}`.toLowerCase().includes(q);
+    });
+  }
+
+  if (items.length === 0) {
+    list.innerHTML = `<p class="loading-text">${i18n.t('skillsEmpty') || 'No skills found.'}</p>`;
+    return;
+  }
+
+  // Sort by surface, then numeric order, then id — stable, predictable list.
+  items.sort((a, b) =>
+    (a.surface || '').localeCompare(b.surface || '') ||
+    (a.order ?? 1e9) - (b.order ?? 1e9) ||
+    a.id.localeCompare(b.id));
+
+  list.innerHTML = items.map(renderSkillCard).join('');
+  list.querySelectorAll('.skill-edit-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      openSkillForm(btn.dataset.skillId);
+    });
+  });
+}
+
+async function openSkillForm(skillId) {
+  const modal = document.getElementById('skillModal');
+  const modalTitle = document.getElementById('skillModalTitle');
+  const formContainer = document.getElementById('skillFormContainer');
+  const closeBtn = document.getElementById('closeSkillModalBtn');
+  if (!modal || !formContainer) return;
+
+  let skill = null;
+  try {
+    const result = await apiClient.getSkill(skillId);
+    skill = result.skill;
+    modalTitle.textContent = `${i18n.t('skillFormTitleEdit') || 'Edit Skill'}: ${skillId}`;
+  } catch (error) {
+    showError('Load Failed', error.message);
+    return;
+  }
+
+  formContainer.innerHTML = renderSkillForm(skill);
+  // Translate the freshly-injected form into the active language.
+  formContainer.querySelectorAll('[data-i18n]').forEach((el) => {
+    el.textContent = i18n.t(el.getAttribute('data-i18n'));
+  });
+
+  const form = document.getElementById('skillForm');
+  const cancelBtn = document.getElementById('skillCancelBtn');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const ok = await saveSkillForm(skillId);
+      if (ok) { modal.classList.add('hidden'); loadSkills(); }
+    });
+  }
+  if (cancelBtn) cancelBtn.addEventListener('click', () => modal.classList.add('hidden'));
+  if (closeBtn) closeBtn.onclick = () => modal.classList.add('hidden');
+
+  modal.classList.remove('hidden');
 }
 
 // ========== Git History Tab ==========

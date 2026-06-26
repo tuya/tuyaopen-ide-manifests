@@ -203,6 +203,19 @@ class ApiClient {
     return this.request('DELETE', `/demos/${id}`);
   }
 
+  // Skill endpoints
+  async getSkills() {
+    return this.request('GET', '/skills');
+  }
+
+  async getSkill(id) {
+    return this.request('GET', `/skills/${id}`);
+  }
+
+  async updateSkill(id, data) {
+    return this.request('PATCH', `/skills/${id}`, data);
+  }
+
   // Demo image endpoints
   async getDemoImages(demoId) {
     return this.request('GET', `/demo-images/${demoId}`);

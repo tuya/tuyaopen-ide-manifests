@@ -8,12 +8,14 @@ class ManifestLoader {
       boards: null,
       demos: null,
       platforms: null,
+      skills: null,
       tags: null,
     };
     this.lastLoaded = {
       boards: null,
       demos: null,
       platforms: null,
+      skills: null,
       tags: null,
     };
   }
@@ -73,6 +75,36 @@ class ManifestLoader {
     } catch (error) {
       console.error('Error loading platforms manifest:', error.message);
       throw new Error(`Failed to load platforms manifest: ${error.message}`);
+    }
+  }
+
+  // Skills index lives at skills/index.json. Item-only metadata (the SKILL.md
+  // payloads live elsewhere under skills/<surface>/<id>/ and are not edited here).
+  async loadSkills() {
+    try {
+      const filePath = path.join(config.paths.skills, 'index.json');
+      await fs.access(filePath);
+      const content = await fs.readFile(filePath, 'utf-8');
+      const data = JSON.parse(content);
+      this.cache.skills = data;
+      this.lastLoaded.skills = new Date();
+      return data;
+    } catch (error) {
+      console.error('Error loading skills manifest:', error.message);
+      throw new Error(`Failed to load skills manifest: ${error.message}`);
+    }
+  }
+
+  async saveSkillsIndex(data) {
+    try {
+      const filePath = path.join(config.paths.skills, 'index.json');
+      const jsonContent = JSON.stringify(data, null, 2) + '\n';
+      await fs.writeFile(filePath, jsonContent, 'utf-8');
+      this.cache.skills = data;
+      return true;
+    } catch (error) {
+      console.error('Error saving skills manifest:', error.message);
+      throw new Error(`Failed to save skills manifest: ${error.message}`);
     }
   }
 

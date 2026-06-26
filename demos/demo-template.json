@@ -16,6 +16,7 @@
     "tuya-t5ai-evb"
   ],
   "compatibilityType": "board-specific",
+  "sdks": ["tuyaopen"],
   "detailUrl": "demos/example/your-demo-id.json",
   "publish": true
 }

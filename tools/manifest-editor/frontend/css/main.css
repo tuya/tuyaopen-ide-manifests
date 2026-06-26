@@ -512,10 +512,11 @@ body {
   width: 90%;
 }
 
-/* Board, demo & platform edit modals - wider layout */
+/* Board, demo, platform & skill edit modals - wider layout */
 #boardModal .modal-content,
 #demoModal .modal-content,
-#platformModal .modal-content {
+#platformModal .modal-content,
+#skillModal .modal-content {
   max-width: 80vw;
   width: 80vw;
   max-height: 95vh;
@@ -2552,3 +2553,22 @@ select.sf-leaf { height: 30px; }
 }
 .sf-combo-opt:hover { background: var(--color-hover); }
 .sf-combo-empty { padding: 8px 12px; color: var(--color-muted); font-size: 0.85rem; }
+
+/* ===== Skills tab ===== */
+.skill-surface-badge {
+  align-self: flex-start; font-size: 0.7rem; font-weight: 600; padding: 2px 8px;
+  border-radius: 10px; background: var(--color-hover); color: var(--color-muted);
+  text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+.skill-card-tags, .skill-card-sdks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.skill-tag {
+  font-size: 0.72rem; padding: 2px 8px; border-radius: 10px;
+  background: var(--color-hover); color: var(--color-fg);
+}
+.skill-sdk {
+  font-size: 0.72rem; padding: 2px 8px; border-radius: 10px;
+  border: 1px solid var(--color-primary); color: var(--color-primary);
+}
+.skill-sdks-checks { display: flex; gap: 18px; flex-wrap: wrap; }
+.skill-sdk-check { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 500; }
+.skill-sdk-check input { width: auto; }

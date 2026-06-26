@@ -22,6 +22,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SURFACES = {"embedded", "cloud", "miniapp"}
+# SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default).
+SDKS = {"tuyaopen", "tuyaos"}
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
 LANGS = ("en", "zh-CN")
 URL_RE = re.compile(r"^https?://[^\s]+$")
@@ -105,6 +107,13 @@ def check_item(item, index: int, seen_ids: set) -> None:
         err(f"{label}: 'defaultEnabled' must be a boolean")
     if not is_str(item.get("installPayload")):
         err(f"{label}: 'installPayload' missing or not a non-empty string")
+
+    # Optional SDK applicability flag. Omitted ⇒ ["tuyaopen"]; when present
+    # it must be a non-empty array of known SDK ids.
+    sdks = item.get("sdks")
+    if sdks is not None:
+        if not isinstance(sdks, list) or not sdks or not all(s in SDKS for s in sdks):
+            err(f"{label}: 'sdks' when present must be a non-empty array of {sorted(SDKS)}, got {sdks!r}")
 
     check_source(label, item)
 
