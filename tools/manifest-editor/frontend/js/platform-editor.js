@@ -55,13 +55,16 @@ function naturalCompare(a, b) {
   return ax.length - bx.length;
 }
 
-// Generic starter suggestions for a pinout row's "functions" combobox, so a
-// brand-new platform isn't blank. Free-text still applies — these are only
-// hints and are merged with whatever the platform already uses. Categorized by
+// Controlled vocabulary for a pinout row's "functions" combobox. The combobox is
+// SELECTION-ONLY (no free text), so this list — merged with the tokens the
+// platform already uses — IS the set of pickable functions. To allow a brand-new
+// token, add it here (keeps function naming managed/consistent). Categorized by
 // the combobox via COMBO_PREFIXES.
 const PINOUT_FUNC_SUGGEST = [
-  // power / system
-  'GND', 'VCC', 'VDD', 'RESET', 'BOOT', 'MICBIAS', 'IRDA',
+  // power / system (VCC/VDD are the umbrella tokens for all supply rails;
+  // specific rail names like VCCRXFE/VBAT/VDDDIG map onto VCC/VDD)
+  'GND', 'VCC', 'VDD', 'RESET', 'BOOT', 'BOOT0', 'BOOT1', 'CEN', 'ANT', 'RXEN', 'TXEN', 'PU', 'IFRP_OUT', 'MICBIAS', 'IRDA',
+  'EXT_32K', 'BT_LED', 'LED_0', 'JTRST',
   // gpio
   ...Array.from({ length: 56 }, (_, i) => `GPIO${i}`),
   // uart (+ dedicated download uart)
@@ -73,7 +76,9 @@ const PINOUT_FUNC_SUGGEST = [
   ...['0', '1'].flatMap(n => [`SPI${n}_SCK`, `SPI${n}_CSN`, `SPI${n}_MOSI`, `SPI${n}_MISO`]),
   ...['0', '1'].flatMap(n => [`QSPI${n}_SCK`, `QSPI${n}_CS`, `QSPI${n}_IO0`, `QSPI${n}_IO1`, `QSPI${n}_IO2`, `QSPI${n}_IO3`]),
   // sdio
-  'SDIO_CLK', 'SDIO_CMD', 'SDIO_DATA0', 'SDIO_DATA1', 'SDIO_DATA2', 'SDIO_DATA3',
+  'SDIO_CLK', 'SDIO_CMD', 'SDIO_DATA0', 'SDIO_DATA1', 'SDIO_DATA2', 'SDIO_DATA3', 'SDIO_INT',
+  // embedded serial-flash controller (SPIC) — e.g. RTL8720CF
+  'SPIC_SCK', 'SPIC_CS', 'SPIC_IO0', 'SPIC_IO1', 'SPIC_IO2', 'SPIC_IO3',
   // pwm (+ grouped pwm)
   ...Array.from({ length: 8 }, (_, i) => `PWM${i}`),
   ...['0', '1'].flatMap(g => Array.from({ length: 6 }, (_, i) => `PWMG${g}_PWM${i}`)),
@@ -81,17 +86,21 @@ const PINOUT_FUNC_SUGGEST = [
   ...Array.from({ length: 16 }, (_, i) => `ADC${i}`),
   // timer
   ...Array.from({ length: 17 }, (_, t) => t).flatMap(t => [0, 1, 2, 3].map(c => `TIMER${t}_CH${c}`)),
+  // advanced-timer extras (complementary outputs / break-in / external trigger)
+  'TIMER0_CH0_ON', 'TIMER0_CH1_ON', 'TIMER0_CH2_ON', 'TIMER0_BRKIN', 'TIMER0_ETI',
+  'TIMER1_ETI', 'TIMER2_ETI',
+  'TIMER15_CH0_ON', 'TIMER15_BRKIN', 'TIMER16_CH0_ON', 'TIMER16_BRKIN',
   // rtc / wakeup
-  'RTC_OUT', 'RTC_REFIN', 'RTC_TS', 'RTC_TAMP',
+  'RTC_OUT', 'RTC_REFIN', 'RTC_TS', 'RTC_TAMP', 'RTC_TAMP0', 'RTC_TAMP1',
   'WKUP0', 'WKUP1', 'WKUP2', 'WKUP3',
   // debug (jtag / swd)
   'JTMS', 'JTCK', 'JTDI', 'JTDO', 'NJTRST', 'SWCLK', 'SWDIO',
   // clock / oscillator
-  'CLK_OUT', 'LPO_CLK', 'XI', 'XO',
+  'CLK_OUT', 'CLK_OUT0', 'CLK_OUT1', 'OSC32IN', 'OSC32OUT', 'XTAL1', 'XTAL2', 'LPO_CLK', 'XI', 'XO',
   // i2s / audio
   ...['0', '1', '2'].flatMap(n => [`I2S${n}_SCK`, `I2S${n}_SYNC`, `I2S${n}_DIN`, `I2S${n}_DOUT`]),
   'I2S_MCLK', 'DMIC_CLK', 'DMIC_DAT',
-  'MIC1_P', 'MIC1_N', 'MIC2_P', 'MIC2_N', 'AUDIO_LP', 'AUDIO_LN',
+  'MIC1_P', 'MIC1_N', 'MIC2_P', 'MIC2_N', 'AUDIO_LP', 'AUDIO_LN', 'VCOM', 'LINE',
   // rgb lcd
   ...['R', 'G', 'B'].flatMap(ch => Array.from({ length: 8 }, (_, i) => `RGB_${ch}${i}`)),
   'RGB_DCLK', 'RGB_DE', 'RGB_DISP', 'RGB_HSYNC', 'RGB_VSYNC',
@@ -120,18 +129,21 @@ const PINOUT_FUNC_SUGGEST = [
 // Leading peripheral prefixes used to categorize pin function names in the
 // combobox. Order: longer/more-specific first so e.g. QSPI/I2S aren't shadowed.
 const COMBO_PREFIXES = [
-  'GPIO', 'UART', 'QSPI', 'SPI', 'I2S', 'I2C', 'I8080', 'PWM', 'ADC', 'DAC',
+  // Full-token prefixes that must beat shorter ones (e.g. LINE before LIN).
+  'VCOM', 'LINE',
+  'GPIO', 'UART', 'QSPI', 'SPIC', 'SPI', 'I2S', 'I2C', 'I8080', 'PWM', 'ADC', 'DAC',
   'TIMER', 'RTC', 'WKUP',
   'RGB', 'DVP', 'CIS', 'SEG', 'COM', 'TOUCH', 'SDIO', 'CAN', 'LIN', 'ENET',
   'USB', 'SWCLK', 'SWDIO', 'JT', 'NJTRST', 'SC_',
   'MIC', 'AUDIO', 'DMIC',
-  'CLK_OUT', 'CK_OUT', 'XTAL', 'OSC', 'LPO', 'XI', 'XO',
+  'CLK_OUT', 'XTAL', 'OSC', 'LPO', 'XI', 'XO',
 ];
 // Prefixes that share a named category (i18n key) instead of standing alone.
 const COMBO_GROUPS = {
-  CLK_OUT: 'pfComboClock', CK_OUT: 'pfComboClock', XTAL: 'pfComboClock', OSC: 'pfComboClock',
+  CLK_OUT: 'pfComboClock', XTAL: 'pfComboClock', OSC: 'pfComboClock',
   LPO: 'pfComboClock', XI: 'pfComboClock', XO: 'pfComboClock',
   MIC: 'pfComboAudio', AUDIO: 'pfComboAudio', DMIC: 'pfComboAudio',
+  VCOM: 'pfComboAudio', LINE: 'pfComboAudio',
   SEG: 'pfComboSlcd', COM: 'pfComboSlcd',
   SWCLK: 'pfComboSwd', SWDIO: 'pfComboSwd',
   JT: 'pfComboJtag', NJTRST: 'pfComboJtag',
@@ -478,7 +490,16 @@ class StructEditor {
     const cur = (value === null || value === undefined) ? '' : String(value);
     const opt = (e) => `<option value="${e.gpio}"${String(e.gpio) === cur ? ' selected' : ''}>${escapeHtml(`${e.gpio} · ${e.name || ('GPIO' + e.gpio)}`)}</option>`;
     // Pins whose functions advertise this token are surfaced first ("recommended").
-    const matched = all.filter(e => Array.isArray(e.functions) && e.functions.includes(token));
+    // PWM is matched loosely: a PWM channel's `id` is a flat index, but the pinout
+    // names PWM pins per-datasheet (PWMGx_PWMn) or via timer channels (TIMERx_CHy),
+    // so any PWM-/timer-capable pin is a valid recommendation, not just `PWM{id}`.
+    const isPwm = typeof token === 'string' && token.startsWith('PWM');
+    const advertises = (e) => Array.isArray(e.functions) && (
+      e.functions.includes(token) ||
+      (isPwm && e.functions.some(f =>
+        f.startsWith('PWM') || /^TIMER\d+_CH\d+/.test(f)))
+    );
+    const matched = all.filter(advertises);
     const matchedSet = new Set(matched);
     const others = all.filter(e => !matchedSet.has(e));
     let opts = `<option value="">—</option>`;
@@ -613,7 +634,7 @@ class StructEditor {
     const pop = combo.querySelector('.sf-combo-pop');
     if (!pop) return;
     // Fixed-suggestion combo (schema `combos`): always list every option, so the
-    // dropdown isn't filtered down by the current value (free typing still works).
+    // dropdown isn't filtered down by the current value (selection-only — pick to commit).
     if (combo.dataset.suggest) {
       const opts = JSON.parse(combo.dataset.suggest);
       pop.innerHTML = `<div class="sf-combo-flat">${opts.map(o => this._optBtn(String(o))).join('')}</div>`;
@@ -640,6 +661,13 @@ class StructEditor {
   _comboClose(combo) {
     const pop = combo && combo.querySelector('.sf-combo-pop');
     if (pop) pop.hidden = true;
+    // Selection-only string combos: discard any unpicked typed text by restoring
+    // the input to its committed model value (typing only ever filters the list).
+    const input = combo && combo.querySelector('.sf-leaf');
+    if (input && input.dataset.kind !== 'number' && input.dataset.path) {
+      const v = this._getByPath(JSON.parse(input.dataset.path));
+      input.value = (v == null ? '' : String(v));
+    }
   }
 
   _getByPath(path) { let cur = this.data; for (const seg of path) cur = cur?.[seg]; return cur; }
@@ -670,6 +698,12 @@ class StructEditor {
     }
     const el = e.target.closest('.sf-leaf');
     if (!el || !this.rootEl.contains(el)) return;
+    // String comboboxes (pinout `functions`, pin-mux remappable functions) are
+    // SELECTION-ONLY: typing only filters the dropdown; a value is committed
+    // solely by picking an option (see the mousedown pick handler). This blocks
+    // arbitrary free-text function tokens that would be impossible to manage.
+    // Numeric combos keep free entry.
+    if (el.dataset.kind !== 'number' && el.closest('.sf-combo')) return;
     const path = JSON.parse(el.dataset.path);
     const kind = el.dataset.kind;
     let val;
