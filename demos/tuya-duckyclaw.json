@@ -1,0 +1,43 @@
+{
+  "id": "tuya-duckyclaw",
+  "name": {
+    "en": "DuckyClaw — Edge AI Agent",
+    "zh-CN": "DuckyClaw 边缘 AI 智能体"
+  },
+  "summary": {
+    "en": "Standalone TuyaOpen-based AI agent: lean C core, plugin-driven channels and tools, runs from MCU to desktop Linux. Bundles its own ai_components.",
+    "zh-CN": "基于 TuyaOpen 的独立 AI Agent 框架，纯 C 核心 + 插件式渠道与工具，从 MCU 到桌面 Linux 均可运行。"
+  },
+  "tags": ["app", "ai", "agent", "tuya-iot"],
+  "compatibilityType": "board-specific",
+  "boards": [
+    "tuya-t5ai-core",
+    "tuya-t5ai-board-lcd-3-5-camera",
+    "esp32s3-bread-compact-wifi",
+    "raspberrypi",
+    "dshanpi-a1",
+    "waveshare-t5ai-touch-amoled-1-75"
+  ],
+  "source": {
+    "repo": "https://github.com/tuya/DuckyClaw",
+    "repoCN": "https://gitee.com/tuya-open/DuckyClaw",
+    "ref": "master",
+    "kind": "external-repo"
+  },
+  "configs": [
+    { "board": "tuya-t5ai-core",                    "options": [{ "file": "config/TUYA_T5AI_CORE.config" }] },
+    { "board": "tuya-t5ai-board-lcd-3-5-camera",    "options": [{ "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config" }] },
+    { "board": "esp32s3-bread-compact-wifi",         "options": [{ "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config" }] },
+    { "board": "raspberrypi",                        "options": [{ "file": "config/RaspberryPi.config" }] },
+    { "board": "dshanpi-a1",                         "options": [{ "file": "config/DshanPi_A1.config" }] },
+    { "board": "waveshare-t5ai-touch-amoled-1-75",  "options": [{ "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config" }] }
+  ],
+  "documentation": {
+    "readme": {
+      "en":    "https://github.com/tuya/DuckyClaw/blob/master/README.md",
+      "zh-CN": "https://github.com/tuya/DuckyClaw/blob/master/README.md"
+    }
+  },
+  "image": { "url": "images/tuya-duckyclaw/banner.jpg" },
+  "publish": true
+}
