@@ -372,21 +372,6 @@
         ]
       }
     },
-    "dac": {
-      "enabled": true,
-      "count": 1,
-      "spec": {
-        "bits": 10,
-        "mode": [
-          "TUYA_DAC_SINGLE"
-        ],
-        "ports": [
-          {
-            "id": 0
-          }
-        ]
-      }
-    },
     "timer": {
       "enabled": true,
       "count": 2,
