@@ -635,10 +635,6 @@
           }
         ]
       }
-    },
-    "wakeup": {
-      "enabled": true,
-      "count": 1
     }
   },
   "power": {
