@@ -22,6 +22,10 @@ tools/*/out/
 tools/*/build/
 tools/*/.cache/
 
+# Python bytecode caches (e.g. scripts/validate-skills-index.py)
+__pycache__/
+*.pyc
+
 # JS / TS build artifacts — source maps, declaration files
 *.js.map
 *.css.map
