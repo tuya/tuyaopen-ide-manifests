@@ -14,6 +14,9 @@
         "en": "Tuya T5AI platform — dual-core ARM Cortex-M33 with on-chip KWS, voice activity detection, and lightweight AI inference, plus Wi-Fi 6 / BLE 5.4 connectivity. Rich peripheral interfaces for any IoT scenario, purpose-built for low-power edge-cloud multimodal LLM interaction across voice, video, audio, and GUI.",
         "zh-CN": "涂鸦 T5AI 平台 — 双核 ARM Cortex-M33，片上集成语音唤醒（KWS）、语音检测与轻量 AI 推理，搭载 Wi-Fi 6 / BLE 5.4。丰富的硬件外设接口，满足各类 IoT 场景，专为低功耗端云多模态大模型交互打造——语音、视频、音频与 GUI 图形化界面交互。"
       },
+      "image": {
+        "url": "images/t5ai/t5ai-hero.png"
+      },
       "detailUrl": "platforms/t5ai/t5ai.json"
     },
     {
@@ -28,6 +31,134 @@
         "zh-CN": "兆易创新 GD32VW553 — RISC-V 无线 MCU，主频 160MHz，集成 Wi-Fi 6（2.4GHz）与蓝牙 BLE 5.2，320KB SRAM，片上 Flash 最高 4MB。"
       },
       "detailUrl": "platforms/gd32/gd32vw553.json"
+    },
+    {
+      "id": "t2",
+      "platformId": "t2",
+      "name": {
+        "en": "Tuya T2",
+        "zh-CN": "涂鸦 T2"
+      },
+      "summary": {
+        "en": "Tuya T2 platform — ARM968E-S with Wi-Fi 802.11b/g/n and BLE 4.2 for cost-effective IoT.",
+        "zh-CN": "涂鸦 T2 平台 — ARM968E-S，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2，面向高性价比 IoT 应用。"
+      },
+      "image": {
+        "url": "images/t2/t2-hero.png"
+      },
+      "detailUrl": "platforms/t2/t2.json"
+    },
+    {
+      "id": "bk7231n",
+      "platformId": "bk7231n",
+      "name": {
+        "en": "Beken BK7231N",
+        "zh-CN": "博通集成 BK7231N"
+      },
+      "summary": {
+        "en": "BK7231N platform — ARM968E-S with Wi-Fi 802.11b/g/n and BLE 4.2 (same silicon as Tuya T2).",
+        "zh-CN": "BK7231N 平台 — ARM968E-S，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2（与涂鸦 T2 同款芯片）。"
+      },
+      "image": {
+        "url": "images/bk7231n/bk7231n-hero.png"
+      },
+      "detailUrl": "platforms/bk7231n/bk7231n.json"
+    },
+    {
+      "id": "t1",
+      "platformId": "t1",
+      "name": {
+        "en": "Tuya T1",
+        "zh-CN": "涂鸦 T1"
+      },
+      "summary": {
+        "en": "Tuya T1 platform — ARM Cortex-M4 with Wi-Fi 802.11b/g/n and BLE 4.2 for general-purpose IoT.",
+        "zh-CN": "涂鸦 T1 平台 — ARM Cortex-M4，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2，面向通用 IoT 应用。"
+      },
+      "image": {
+        "url": "images/t1/t1-hero.png"
+      },
+      "detailUrl": "platforms/t1/t1.json"
+    },
+    {
+      "id": "t2ai",
+      "platformId": "t2ai",
+      "name": {
+        "en": "Tuya T2AI",
+        "zh-CN": "涂鸦 T2AI"
+      },
+      "summary": {
+        "en": "Tuya T2AI platform — ARM968E-S with Wi-Fi 802.11b/g/n, BLE 4.2, and 4 MB flash for display/media AIoT.",
+        "zh-CN": "涂鸦 T2AI 平台 — ARM968E-S，支持 Wi-Fi 802.11b/g/n、BLE 4.2，搭载 4 MB Flash，面向显示/多媒体 AIoT 应用。"
+      },
+      "image": {
+        "url": "images/t2ai/t2ai-hero.png"
+      },
+      "detailUrl": "platforms/t2ai/t2ai.json"
+    },
+    {
+      "id": "t3ai",
+      "platformId": "t3ai",
+      "name": {
+        "en": "Tuya T3AI",
+        "zh-CN": "涂鸦 T3AI"
+      },
+      "summary": {
+        "en": "Tuya T3AI platform — ARM Cortex-M33 with Wi-Fi 6, BLE 5.4, QSPI display, and audio for edge-AI.",
+        "zh-CN": "涂鸦 T3AI 平台 — ARM Cortex-M33，支持 Wi-Fi 6 / BLE 5.4，集成 QSPI 显示与音频接口，面向端侧 AI 应用。"
+      },
+      "image": {
+        "url": "images/t3ai/t3ai-hero.png"
+      },
+      "detailUrl": "platforms/t3ai/t3ai.json"
+    },
+    {
+      "id": "t3",
+      "platformId": "t3",
+      "name": {
+        "en": "Tuya T3",
+        "zh-CN": "涂鸦 T3"
+      },
+      "summary": {
+        "en": "Tuya T3 platform — ARM Cortex-M33 with Wi-Fi 6, BLE 4.2, and SPI Ethernet (CH390) for connected devices.",
+        "zh-CN": "涂鸦 T3 平台 — ARM Cortex-M33，支持 Wi-Fi 6 / BLE 4.2，并通过 SPI 外接以太网（CH390），面向有线/无线联网设备。"
+      },
+      "image": {
+        "url": "images/t3/t3-hero.png"
+      },
+      "detailUrl": "platforms/t3/t3.json"
+    },
+    {
+      "id": "rtl8720cf",
+      "platformId": "rtl8720cf",
+      "name": {
+        "en": "Realtek RTL8720CF",
+        "zh-CN": "瑞昱 RTL8720CF"
+      },
+      "summary": {
+        "en": "Realtek RTL8720CF platform — ARM Cortex-M33 with Wi-Fi 802.11b/g/n (WPA3) and BLE 5.0.",
+        "zh-CN": "瑞昱 RTL8720CF 平台 — ARM Cortex-M33，支持 Wi-Fi 802.11b/g/n（WPA3）与 BLE 5.0。"
+      },
+      "image": {
+        "url": "images/rtl8720cf/rtl8720cf-hero.png"
+      },
+      "detailUrl": "platforms/rtl8720cf/rtl8720cf.json"
+    },
+    {
+      "id": "rtl8720cf-vu2",
+      "platformId": "rtl8720cf-vu2",
+      "name": {
+        "en": "Realtek RTL8720CF-VU2",
+        "zh-CN": "瑞昱 RTL8720CF-VU2"
+      },
+      "summary": {
+        "en": "Realtek RTL8720CF-VU2 platform — ARM Cortex-M33 with Wi-Fi 802.11b/g/n (WPA3), BLE 5.0, and 4 MB flash.",
+        "zh-CN": "瑞昱 RTL8720CF-VU2 平台 — ARM Cortex-M33，支持 Wi-Fi 802.11b/g/n（WPA3）与 BLE 5.0，搭载 4 MB Flash。"
+      },
+      "image": {
+        "url": "images/rtl8720cf-vu2/rtl8720cf-vu2-hero.png"
+      },
+      "detailUrl": "platforms/rtl8720cf-vu2/rtl8720cf-vu2.json"
     }
   ]
 }
