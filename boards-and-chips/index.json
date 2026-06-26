@@ -26,12 +26,16 @@
         "ble",
         "ai",
         "module"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
       "id": "tuya-t5ai-board",
       "name": {
-        "en": "Tuya T5AI Board",
+        "en": "涂鸦 T5AI-Board 开发板",
         "zh-CN": "涂鸦 T5AI-Board 开发板"
       },
       "manufacturer": "Tuya",
@@ -52,12 +56,16 @@
         "ai",
         "audio",
         "configurable"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
       "id": "tuya-t5ai-core",
       "name": {
-        "en": "Tuya T5AI-Core",
+        "en": "涂鸦 T5AI-Core 核心板",
         "zh-CN": "涂鸦 T5AI-Core 核心板"
       },
       "manufacturer": "Tuya",
@@ -81,6 +89,10 @@
         "starter-kit",
         "development",
         "battery"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -109,6 +121,9 @@
         "led-pixel",
         "imu",
         "production-form"
+      ],
+      "sdks": [
+        "tuyaopen"
       ]
     },
     {
@@ -140,6 +155,9 @@
         "pmic",
         "cellular",
         "production-form"
+      ],
+      "sdks": [
+        "tuyaopen"
       ]
     },
     {
@@ -169,6 +187,9 @@
         "touch",
         "battery",
         "production-form"
+      ],
+      "sdks": [
+        "tuyaopen"
       ]
     },
     {
@@ -195,6 +216,9 @@
         "ai",
         "audio",
         "compact"
+      ],
+      "sdks": [
+        "tuyaopen"
       ]
     },
     {
@@ -227,12 +251,15 @@
         "battery",
         "sd-card",
         "production-form"
+      ],
+      "sdks": [
+        "tuyaopen"
       ]
     },
     {
       "id": "tuya-t5ai-evb",
       "name": {
-        "en": "Tuya T5AI EVB",
+        "en": "涂鸦 T5AI 白盒",
         "zh-CN": "涂鸦 T5AI 白盒"
       },
       "manufacturer": "Tuya",
@@ -251,6 +278,10 @@
         "ai",
         "audio",
         "display"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -276,7 +307,10 @@
         "url": "images/lckfb-gd32vw553/lckfb-gd32vw553.jpg"
       },
       "detailUrl": "boards-and-chips/gd32/lckfb-gd32vw553.json",
-      "published": true
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "t5ai-otto",
@@ -302,7 +336,10 @@
       "published": true,
       "image": {
         "url": "images/t5ai-otto/t5ai-otto.jpg"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuya-t5ai-dog",
@@ -331,7 +368,11 @@
       "published": true,
       "image": {
         "url": "images/tuya-t5ai-dog/tuya-t5ai-dog.jpg"
-      }
+      },
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
     }
   ]
 }

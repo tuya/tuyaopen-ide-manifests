@@ -79,7 +79,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/project-config"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "ecosystem-wire-cmake",
@@ -113,7 +116,10 @@
       ],
       "source": {
         "localPath": "skills/embedded/ecosystem-wire-cmake"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuya-iot-platform",
@@ -147,7 +153,10 @@
       ],
       "source": {
         "localPath": "skills/cloud/tuya-iot-platform"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "smart-product-dev",
@@ -186,7 +195,10 @@
       ],
       "source": {
         "localPath": "skills/embedded/smart-product-dev"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "hardware-vibe-coding",
@@ -223,7 +235,10 @@
       ],
       "source": {
         "localPath": "skills/embedded/hardware-vibe-coding"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tyutool-cli",
@@ -257,7 +272,10 @@
       ],
       "source": {
         "localPath": "skills/embedded/tyutool_cli"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuyaopen-debug-helper",
@@ -290,7 +308,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/debug-helper"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuyaopen-add-board",
@@ -322,7 +343,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/add-board"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuyaopen-code-check",
@@ -353,7 +377,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/code-check"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuyaopen-dev-loop",
@@ -385,7 +412,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/dev-loop"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuyaopen-device-auth",
@@ -417,7 +447,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/device-auth"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "tuyaopen-env-setup",
@@ -448,7 +481,10 @@
       "source": {
         "devSkills": true,
         "subpath": "skills/tuyaopen/env-setup"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "smart-panel-dev",
@@ -492,7 +528,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/smart-panel-dev"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-ray-common",
@@ -519,7 +558,10 @@
       "installPayload": "miniapp/ray-common",
       "source": {
         "localPath": "skills/miniapp/ray-common"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-smart-ui",
@@ -550,7 +592,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/smart-ui"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-lamp-panel",
@@ -583,7 +628,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/lamp-panel"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-socket-panel",
@@ -617,7 +665,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/socket-panel"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-robot-vacuum",
@@ -649,7 +700,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/robot-vacuum"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-ipc-panel",
@@ -681,7 +735,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/ipc-panel"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-charts-library",
@@ -713,7 +770,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/charts-library"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-electrician-timing",
@@ -744,7 +804,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/electrician-timing"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-energy-stats",
@@ -776,7 +839,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/energy-stats"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-requirement-guide",
@@ -804,7 +870,10 @@
       "installPayload": "miniapp/requirement-guide",
       "source": {
         "localPath": "skills/miniapp/requirement-guide"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "miniapp-performance-ux-guard",
@@ -835,7 +904,10 @@
       ],
       "source": {
         "localPath": "skills/miniapp/performance-ux-guard"
-      }
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
     }
   ]
 }
