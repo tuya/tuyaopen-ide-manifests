@@ -3,31 +3,10 @@
   "arch": "arm968e-s",
   "flashInterface": "spi",
   "connectivity": {
-    "wifi": {
-      "enabled": true,
-      "standard": "802.11b/g/n",
-      "bands": [
-        "2.4GHz"
-      ],
-      "security": [
-        "WPA",
-        "WPA2"
-      ],
-      "modes": [
-        "STA",
-        "AP"
-      ]
-    },
-    "ble": {
-      "enabled": true,
-      "version": "4.2"
-    },
-    "ethernet": {
-      "enabled": false
-    },
-    "cellular": {
-      "enabled": false
-    }
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
   },
   "memory": {
     "sramBytes": 262144,
@@ -463,10 +442,6 @@
       "enabled": true,
       "count": 1
     },
-    "hci": {
-      "enabled": true,
-      "count": 1
-    },
     "wakeup": {
       "enabled": true,
       "count": 1
@@ -474,13 +449,13 @@
   },
   "power": {
     "vdd": {
-      "min": 2.0,
+      "min": 2,
       "typical": 3.3,
       "max": 3.6,
       "unit": "V"
     },
     "ioLevel": {
-      "min": 2.0,
+      "min": 2,
       "max": 3.3,
       "unit": "V"
     },
