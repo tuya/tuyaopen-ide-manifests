@@ -600,17 +600,6 @@
         ]
       }
     },
-    "pm": {
-      "enabled": true,
-      "count": 1,
-      "spec": {
-        "modes": [
-          "TUYA_PM_MODE_SLEEP",
-          "TUYA_PM_MODE_DEEP_SLEEP",
-          "TUYA_PM_MODE_STANDBY"
-        ]
-      }
-    },
     "display": {
       "enabled": true,
       "count": 1
