@@ -600,10 +600,6 @@
         ]
       }
     },
-    "media": {
-      "enabled": true,
-      "count": 1
-    },
     "pinmux": {
       "enabled": true,
       "count": 1
