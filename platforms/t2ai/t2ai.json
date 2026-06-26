@@ -422,10 +422,6 @@
         ]
       }
     },
-    "display": {
-      "enabled": true,
-      "count": 1
-    },
     "media": {
       "enabled": true,
       "count": 1
