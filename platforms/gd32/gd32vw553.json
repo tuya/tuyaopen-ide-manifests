@@ -480,8 +480,8 @@
       "type": "I/O",
       "functions": [
         "GPIO26",
-        "USART0_CK",
-        "RTC_TAMP_0",
+        "UART0_CK",
+        "RTC_TAMP0",
         "RTC_OUT",
         "RTC_TS"
       ]
@@ -547,7 +547,7 @@
       "gpio": null,
       "type": "AI/AO",
       "functions": [
-        "RF"
+        "ANT"
       ]
     },
     {
@@ -787,7 +787,7 @@
       "functions": [
         "GPIO21",
         "UART1_RTS",
-        "CK_OUT1",
+        "CLK_OUT1",
         "TIMER1_CH2",
         "TIMER0_CH1_ON",
         "TIMER15_BRKIN"
@@ -844,11 +844,11 @@
       "functions": [
         "GPIO8",
         "UART0_RX",
-        "USART0_CK",
+        "UART0_CK",
         "UART1_RX",
         "I2C0_SDA",
         "I2C1_SDA",
-        "CK_OUT0",
+        "CLK_OUT0",
         "TIMER0_CH0",
         "TIMER0_CH2_ON",
         "TIMER15_CH0",
@@ -904,7 +904,7 @@
       "type": "I/O",
       "functions": [
         "GPIO12",
-        "USART0_CK",
+        "UART0_CK",
         "SPI0_CSN",
         "QSPI0_IO1",
         "TIMER0_CH3",
