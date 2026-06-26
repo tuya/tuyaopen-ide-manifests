@@ -3,35 +3,10 @@
   "arch": "arm-cortex-m33",
   "flashInterface": "qspi",
   "connectivity": {
-    "wifi": {
-      "enabled": true,
-      "standard": "802.11b/g/n/ax",
-      "bands": [
-        "2.4GHz"
-      ],
-      "security": [
-        "WPA",
-        "WPA2",
-        "WPA3-Personal"
-      ],
-      "modes": [
-        "STA",
-        "AP",
-        "Direct"
-      ]
-    },
-    "ble": {
-      "enabled": true,
-      "stack": "vendor",
-      "stackNote": "使用原厂提供的蓝牙协议栈",
-      "version": "5.4"
-    },
-    "ethernet": {
-      "enabled": false
-    },
-    "cellular": {
-      "enabled": false
-    }
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
   },
   "memory": {
     "sramBytes": 655360,
@@ -548,50 +523,6 @@
         ]
       }
     },
-    "i2s": {
-      "enabled": true,
-      "count": 1,
-      "spec": {
-        "role": [
-          "TUYA_I2S_MODE_MASTER",
-          "TUYA_I2S_MODE_SLAVE"
-        ],
-        "mode": [
-          "TUYA_I2S_MODE_PHILIPS",
-          "TUYA_I2S_MODE_MSB",
-          "TUYA_I2S_MODE_PCM"
-        ],
-        "bitsPerSample": [
-          "TUYA_I2S_BITS_16BIT",
-          "TUYA_I2S_BITS_24BIT",
-          "TUYA_I2S_BITS_32BIT"
-        ],
-        "sampleRate": [
-          "TUYA_I2S_SAMPLE_RATE_8000",
-          "TUYA_I2S_SAMPLE_RATE_11025",
-          "TUYA_I2S_SAMPLE_RATE_16000",
-          "TUYA_I2S_SAMPLE_RATE_22050",
-          "TUYA_I2S_SAMPLE_RATE_32000",
-          "TUYA_I2S_SAMPLE_RATE_44100",
-          "TUYA_I2S_SAMPLE_RATE_48000"
-        ],
-        "ports": [
-          {
-            "id": 0,
-            "dma": true,
-            "pinGroups": [
-              {
-                "mclk": 28,
-                "sck": 6,
-                "ws": 7,
-                "dout": 9,
-                "din": 8
-              }
-            ]
-          }
-        ]
-      }
-    },
     "timer": {
       "enabled": true,
       "count": 3,
@@ -731,13 +662,13 @@
   },
   "power": {
     "vdd": {
-      "min": 3.0,
+      "min": 3,
       "typical": 3.3,
       "max": 3.6,
       "unit": "V"
     },
     "ioLevel": {
-      "min": 3.0,
+      "min": 3,
       "max": 3.3,
       "unit": "V"
     },
