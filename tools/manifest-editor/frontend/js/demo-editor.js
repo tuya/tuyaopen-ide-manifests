@@ -77,6 +77,7 @@ export function renderDemoForm(demo = null) {
   const readmeEn = d.documentation?.readme?.en || '';
   const readmeZh = d.documentation?.readme?.['zh-CN'] || '';
   const currentImageUrl = d.image?.url || '';
+  const sdks = Array.isArray(d.sdks) ? d.sdks : [];
 
   return `
     <form id="demoForm" class="demo-form" style="max-width: none; width: 100%; padding: 24px;">
@@ -109,13 +110,6 @@ export function renderDemoForm(demo = null) {
         </div>
       </div>
 
-      <!-- Published Toggle -->
-      <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
-        <input type="checkbox" id="demoPublish" ${isPublished ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-        <label for="demoPublish" style="margin: 0; cursor: pointer; font-weight: 500;" data-i18n="demoPublish">Publish</label>
-        <small style="color: var(--color-muted); margin-left: auto;" data-i18n="demoPublishHint">Visible in IDE when checked</small>
-      </div>
-
       <!-- EN/ZH Pair: Name -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
@@ -126,6 +120,20 @@ export function renderDemoForm(demo = null) {
           <label class="form-label" for="demoNameZh" data-i18n="demoNameZh">Name (zh-CN)</label>
           <input type="text" id="demoNameZh" class="form-input" value="${escapeHtml(nameZh)}">
         </div>
+      </div>
+
+      <!-- Published Toggle (kept directly above the SDK selector) -->
+      <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
+        <input type="checkbox" id="demoPublish" ${isPublished ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+        <label for="demoPublish" style="margin: 0; cursor: pointer; font-weight: 500;" data-i18n="demoPublish">Publish</label>
+        <small style="color: var(--color-muted); margin-left: auto;" data-i18n="demoPublishHint">Visible in IDE when checked</small>
+      </div>
+
+      <!-- SDK applicability (under the name) -->
+      <div class="form-group">
+        <label class="form-label" data-i18n="skillSdks">Applies to SDK(s)</label>
+        <div class="skill-sdks-checks">${['tuyaopen', 'tuyaos'].map((v) => `<label class="skill-sdk-check"><input type="checkbox" class="demo-sdk-cb" value="${v}" ${sdks.includes(v) ? 'checked' : ''}> ${v}</label>`).join('')}</div>
+        <small style="color: var(--color-muted);" data-i18n="skillSdksHint">Leave both unchecked = TuyaOpen only (default).</small>
       </div>
 
       <!-- EN/ZH Pair: Summary -->
@@ -428,9 +436,12 @@ export async function saveDemoForm(form, demoId = null) {
     cloud = Object.keys(obj).length ? obj : true;
   }
 
+  const sdks = [...document.querySelectorAll('.demo-sdk-cb:checked')].map((cb) => cb.value);
+
   const data = {
     id,
     type,
+    sdks,
     publish: document.getElementById('demoPublish').checked,
     name: {
       en: document.getElementById('demoNameEn').value.trim(),

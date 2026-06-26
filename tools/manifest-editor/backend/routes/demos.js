@@ -5,6 +5,15 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
+// SDK applicability — optional array; omitted ⇒ ['tuyaopen'] (default). Returns a
+// deduped subset of known SDK ids, or undefined when empty/absent (drop field).
+const SDKS = ['tuyaopen', 'tuyaos'];
+function normalizeSdks(v) {
+  if (!Array.isArray(v)) return undefined;
+  const arr = [...new Set(v.filter((s) => SDKS.includes(s)))];
+  return arr.length ? arr : undefined;
+}
+
 // Build the demo detail object. Holds the source path + build config + docs;
 // identity, classification and tags stay in the index. `configs` is an array
 // of board targets: { board, accessory?, options:[{name?,file}] }.
@@ -117,7 +126,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/demos - Create new demo
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, cloud, configs, documentation, drivers, publish } = req.body;
+  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, cloud, configs, documentation, drivers, publish, sdks } = req.body;
 
   if (!id || !name?.en || !source || typeof source !== 'string') {
     return res.status(400).json({
@@ -158,6 +167,7 @@ router.post('/', asyncHandler(async (req, res) => {
     boards: boards || [],
     ...(Array.isArray(platforms) && platforms.length ? { platforms } : {}),
     compatibilityType: compatibilityType || 'universal',
+    ...(normalizeSdks(sdks) ? { sdks: normalizeSdks(sdks) } : {}),
     detailUrl: `demos/${demoType}/${id}.json`,
     publish: publish !== false,
   };
@@ -200,6 +210,12 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   const indexFields = ['type', 'name', 'summary', 'boards', 'platforms', 'compatibilityType', 'publish'];
   for (const key of indexFields) {
     if (updates[key] !== undefined) item[key] = updates[key];
+  }
+  // SDK applicability — empty/invalid clears it (defaults back to tuyaopen).
+  if (updates.sdks !== undefined) {
+    const arr = normalizeSdks(updates.sdks);
+    if (arr) item.sdks = arr;
+    else delete item.sdks;
   }
   // Drop the scope field that no longer applies after a scope change.
   const ct = updates.compatibilityType !== undefined ? updates.compatibilityType : item.compatibilityType;

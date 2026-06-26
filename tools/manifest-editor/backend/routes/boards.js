@@ -6,6 +6,15 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
+// SDK applicability — optional array; omitted ⇒ ['tuyaopen'] (default). Returns
+// a deduped subset of known SDK ids, or undefined when empty/absent (drop field).
+const SDKS = ['tuyaopen', 'tuyaos'];
+function normalizeSdks(v) {
+  if (!Array.isArray(v)) return undefined;
+  const arr = [...new Set(v.filter((s) => SDKS.includes(s)))];
+  return arr.length ? arr : undefined;
+}
+
 // Resolve a board's platform reference (its `platformId` field — which holds a
 // platform *variant id*, e.g. "gd32vw553") to that platform's detail. The detail
 // lives at platforms/<platformId>/<id>.json, so a plain
@@ -107,6 +116,9 @@ router.post('/', asyncHandler(async (req, res) => {
     published: published !== undefined ? published : true,
   };
 
+  const sdks = normalizeSdks(req.body.sdks);
+  if (sdks) newBoard.sdks = sdks;
+
   // Validate ID uniqueness
   const boards = await manifestLoader.loadBoards();
   const idValidation = validator.validateBoardId(id, boards);
@@ -191,6 +203,13 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     if (updates[key] !== undefined) {
       board[key] = updates[key];
     }
+  }
+
+  // SDK applicability — empty/invalid clears it (defaults back to tuyaopen).
+  if (updates.sdks !== undefined) {
+    const arr = normalizeSdks(updates.sdks);
+    if (arr) board.sdks = arr;
+    else delete board.sdks;
   }
 
   // If the SDK platform group changed, the detail file moves to the new group's

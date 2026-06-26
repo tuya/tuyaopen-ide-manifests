@@ -2555,10 +2555,17 @@ select.sf-leaf { height: 30px; }
 .sf-combo-empty { padding: 8px 12px; color: var(--color-muted); font-size: 0.85rem; }
 
 /* ===== Skills tab ===== */
+.skill-card-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .skill-surface-badge {
   align-self: flex-start; font-size: 0.7rem; font-weight: 600; padding: 2px 8px;
   border-radius: 10px; background: var(--color-hover); color: var(--color-muted);
   text-transform: uppercase; letter-spacing: 0.03em; white-space: nowrap;
+}
+/* Neutral "not installed by default" chip — NOT a publish/disabled state. */
+.skill-default-off {
+  font-size: 0.66rem; font-weight: 500; padding: 1px 7px; border-radius: 10px;
+  background: transparent; color: var(--color-muted);
+  border: 1px dashed var(--color-border); white-space: nowrap;
 }
 .skill-card-tags, .skill-card-sdks { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .skill-tag {

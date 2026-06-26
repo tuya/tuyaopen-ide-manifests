@@ -78,13 +78,6 @@ export function renderBoardForm(board = null) {
         <div class="form-error" id="idError"></div>
       </div>
 
-      <!-- Published Toggle -->
-      <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
-        <input type="checkbox" id="boardPublished" name="published" ${board?.published !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-        <label for="boardPublished" style="margin: 0; cursor: pointer; font-weight: 500;">${i18n.t('boardPublished')}</label>
-        <small style="color: var(--color-muted); margin-left: auto;">${i18n.t('boardPublishedHint')}</small>
-      </div>
-
       <!-- EN/ZH Pair: Board Name -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
@@ -112,6 +105,19 @@ export function renderBoardForm(board = null) {
           >
           <small style="color: var(--color-muted);">${i18n.t('boardNameZhHint')}</small>
         </div>
+      </div>
+
+      <!-- Published Toggle (kept directly above the SDK selector) -->
+      <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
+        <input type="checkbox" id="boardPublished" name="published" ${board?.published !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+        <label for="boardPublished" style="margin: 0; cursor: pointer; font-weight: 500;">${i18n.t('boardPublished')}</label>
+        <small style="color: var(--color-muted); margin-left: auto;">${i18n.t('boardPublishedHint')}</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">${i18n.t('skillSdks')}</label>
+        <div class="skill-sdks-checks">${['tuyaopen', 'tuyaos'].map((v) => `<label class="skill-sdk-check"><input type="checkbox" class="board-sdk-cb" value="${v}" ${(board?.sdks || []).includes(v) ? 'checked' : ''}> ${v}</label>`).join('')}</div>
+        <small style="color: var(--color-muted);">${i18n.t('skillSdksHint')}</small>
       </div>
 
       <div class="form-group">
@@ -576,6 +582,9 @@ export async function saveBoardForm(formElement) {
   // Collect board symbol (SDK board directory name)
   const boardSymbol = document.getElementById('boardSymbol')?.value?.trim();
 
+  // SDK applicability — empty = TuyaOpen only (backend drops the field).
+  const sdks = [...document.querySelectorAll('.board-sdk-cb:checked')].map((cb) => cb.value);
+
   const boardData = {
     id: boardId,
     name: { en: nameEn },
@@ -584,6 +593,7 @@ export async function saveBoardForm(formElement) {
     manufacturer: manufacturer || { en: 'Unknown' },
     summary: { en: summaryEn },
     tags,
+    sdks,
     published: document.getElementById('boardPublished')?.checked ?? true,
     autoCommit: true,
   };

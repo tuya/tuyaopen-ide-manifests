@@ -30,17 +30,21 @@ export function renderSkillCard(skill) {
   const surface = skill.surface || '—';
   const tags = Array.isArray(skill.tags) ? skill.tags : [];
   const sdks = Array.isArray(skill.sdks) ? skill.sdks : [];
+  // defaultEnabled is install-by-default state, NOT publish state — show it as a
+  // neutral chip, never grey the card out (that reads as "unpublished").
   const off = skill.defaultEnabled === false;
 
   return `
-    <div class="demo-card${off ? ' demo-card--unpublished' : ''}" data-skill-id="${escapeHtml(skill.id)}">
-      ${off ? '<span class="demo-card-unpublished-badge">Default off / 默认关闭</span>' : ''}
+    <div class="demo-card" data-skill-id="${escapeHtml(skill.id)}">
       <div class="demo-card-header">
         <div>
           <div class="demo-card-title">${escapeHtml(name)}</div>
           <div class="demo-card-id">${escapeHtml(skill.id)}</div>
         </div>
-        <span class="skill-surface-badge">${escapeHtml(surface)}</span>
+        <div class="skill-card-badges">
+          <span class="skill-surface-badge">${escapeHtml(surface)}</span>
+          ${off ? `<span class="skill-default-off">${escapeHtml(i18n.t('skillDefaultOff') || 'Not default')}</span>` : ''}
+        </div>
       </div>
       ${summary ? `<p class="demo-card-summary">${escapeHtml(summary)}</p>` : ''}
       ${tags.length ? `<div class="skill-card-tags">${tags.map((t) => `<span class="skill-tag">${escapeHtml(t)}</span>`).join('')}</div>` : ''}
@@ -94,16 +98,10 @@ export function renderSkillForm(skill) {
         </div>
       </div>
 
-      <!-- Default enabled + order -->
-      <div class="form-group form-row-2col">
-        <div class="form-col-half" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
-          <input type="checkbox" id="skillEnabled" ${enabled ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
-          <label for="skillEnabled" style="margin: 0; cursor: pointer; font-weight: 500;" data-i18n="skillDefaultEnabled">Enabled by default</label>
-        </div>
-        <div class="form-col-half">
-          <label class="form-label" for="skillOrder" data-i18n="skillOrder">Display order</label>
-          <input type="number" id="skillOrder" class="form-input" value="${escapeHtml(String(order))}" step="1">
-        </div>
+      <!-- Display order -->
+      <div class="form-group">
+        <label class="form-label" for="skillOrder" data-i18n="skillOrder">Display order</label>
+        <input type="number" id="skillOrder" class="form-input" value="${escapeHtml(String(order))}" step="1">
       </div>
 
       <!-- Name -->
@@ -116,6 +114,13 @@ export function renderSkillForm(skill) {
           <label class="form-label" for="skillNameZh" data-i18n="skillNameZh">Name (zh-CN)</label>
           <input type="text" id="skillNameZh" class="form-input" value="${escapeHtml(nameZh)}">
         </div>
+      </div>
+
+      <!-- Default enabled — own row, directly above the SDK selector -->
+      <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
+        <input type="checkbox" id="skillEnabled" ${enabled ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+        <label for="skillEnabled" style="margin: 0; cursor: pointer; font-weight: 500;" data-i18n="skillDefaultEnabled">Enabled by default</label>
+        <small style="color: var(--color-muted); margin-left: auto;" data-i18n="skillDefaultEnabledHint">Installed into a project by default (the IDE still asks before installing).</small>
       </div>
 
       <!-- SDK applicability (kept directly under the name) -->
