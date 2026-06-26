@@ -441,10 +441,6 @@
     "rtc": {
       "enabled": true,
       "count": 1
-    },
-    "wakeup": {
-      "enabled": true,
-      "count": 1
     }
   },
   "power": {
