@@ -576,7 +576,7 @@
         "GPIO21",
         "I2C0_SDA",
         "SWDIO",
-        "ADC6"
+        "ADC0_CH6"
       ]
     },
     {
@@ -588,8 +588,8 @@
         "GPIO22",
         "CLK_OUT",
         "PWM2",
-        "ADC5",
-        "QSPI0_SCK"
+        "QSPI0_SCK",
+        "ADC0_CH5"
       ]
     },
     {
@@ -600,8 +600,8 @@
       "functions": [
         "GPIO23",
         "PWM3",
-        "ADC3",
-        "QSPI0_CS"
+        "QSPI0_CS",
+        "ADC0_CH3"
       ]
     },
     {
@@ -613,8 +613,8 @@
         "GPIO24",
         "LPO_CLK",
         "PWM4",
-        "ADC2",
-        "QSPI0_IO0"
+        "QSPI0_IO0",
+        "ADC0_CH2"
       ]
     },
     {
@@ -626,8 +626,8 @@
         "GPIO25",
         "IRDA",
         "PWM5",
-        "ADC1",
-        "QSPI0_IO1"
+        "QSPI0_IO1",
+        "ADC0_CH1"
       ]
     },
     {
@@ -663,8 +663,8 @@
         "I2C1_SDA",
         "SWDIO",
         "SC_CLK",
-        "ADC13",
-        "LIN_RXD"
+        "LIN_RXD",
+        "ADC0_CH13"
       ]
     },
     {
@@ -678,8 +678,8 @@
         "I2C1_SCL",
         "SWCLK",
         "SC_IO",
-        "ADC12",
-        "LIN_TXD"
+        "LIN_TXD",
+        "ADC0_CH12"
       ]
     },
     {

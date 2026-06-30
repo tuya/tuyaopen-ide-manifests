@@ -608,9 +608,9 @@
         "TIMER1_CH0",
         "TIMER1_ETI",
         "TIMER0_ETI",
-        "ADC0",
         "WKUP0",
-        "RTC_TAMP1"
+        "RTC_TAMP1",
+        "ADC0_CH0"
       ]
     },
     {
@@ -624,7 +624,7 @@
         "UART1_RTS",
         "SPI0_MISO",
         "TIMER1_CH1",
-        "ADC1"
+        "ADC0_CH1"
       ]
     },
     {
@@ -640,7 +640,7 @@
         "SPI0_SCK",
         "TIMER1_CH2",
         "TIMER0_CH0",
-        "ADC2"
+        "ADC0_CH2"
       ]
     },
     {
@@ -657,7 +657,7 @@
         "TIMER1_CH3",
         "TIMER0_CH0_ON",
         "RTC_OUT",
-        "ADC3"
+        "ADC0_CH3"
       ]
     },
     {
@@ -672,7 +672,7 @@
         "SPI0_CSN",
         "QSPI0_SCK",
         "TIMER0_CH1",
-        "ADC4"
+        "ADC0_CH4"
       ]
     },
     {
@@ -688,7 +688,7 @@
         "QSPI0_CS",
         "TIMER2_ETI",
         "TIMER0_CH1_ON",
-        "ADC5"
+        "ADC0_CH5"
       ]
     },
     {
@@ -706,7 +706,7 @@
         "TIMER2_CH0",
         "TIMER0_CH1",
         "TIMER1_CH1",
-        "ADC6"
+        "ADC0_CH6"
       ]
     },
     {
@@ -725,8 +725,8 @@
         "TIMER0_CH0_ON",
         "TIMER0_CH1_ON",
         "TIMER1_CH2",
-        "ADC7",
-        "WKUP2"
+        "WKUP2",
+        "ADC0_CH7"
       ]
     },
     {
@@ -745,7 +745,7 @@
         "TIMER0_BRKIN",
         "TIMER2_ETI",
         "TIMER16_CH0",
-        "ADC8"
+        "ADC0_CH8"
       ]
     },
     {

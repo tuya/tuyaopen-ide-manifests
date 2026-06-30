@@ -530,7 +530,7 @@
       "functions": [
         "GPIO12",
         "UART0_RTS",
-        "ADC6"
+        "ADC0_CH6"
       ]
     },
     {
@@ -541,7 +541,7 @@
       "functions": [
         "GPIO13",
         "UART0_CTS",
-        "ADC7"
+        "ADC0_CH7"
       ]
     },
     {
@@ -781,9 +781,9 @@
       "type": "I/O",
       "functions": [
         "GPIO23",
-        "ADC3",
         "JTDO",
-        "QSPI0_IO0"
+        "QSPI0_IO0",
+        "ADC0_CH3"
       ]
     },
     {
@@ -857,7 +857,7 @@
       "functions": [
         "GPIO5",
         "I2S0_DOUT",
-        "ADC2"
+        "ADC0_CH2"
       ]
     },
     {
@@ -868,8 +868,8 @@
       "functions": [
         "GPIO3",
         "I2S0_SYNC",
-        "ADC5",
-        "UART2_RX"
+        "UART2_RX",
+        "ADC0_CH5"
       ]
     },
     {
@@ -880,7 +880,7 @@
       "functions": [
         "GPIO4",
         "I2S0_DIN",
-        "ADC1"
+        "ADC0_CH1"
       ]
     },
     {
@@ -891,8 +891,8 @@
       "functions": [
         "GPIO2",
         "I2S0_SCK",
-        "ADC4",
-        "UART2_TX"
+        "UART2_TX",
+        "ADC0_CH4"
       ]
     },
     {

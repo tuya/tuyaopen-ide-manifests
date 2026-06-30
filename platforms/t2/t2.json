@@ -524,8 +524,8 @@
       "type": "I/O",
       "functions": [
         "GPIO28",
-        "ADC4",
-        "RXEN"
+        "RXEN",
+        "ADC0_CH4"
       ]
     },
     {
@@ -578,9 +578,9 @@
       "type": "I/O",
       "functions": [
         "GPIO26",
-        "ADC1",
         "PWM5",
-        "IRDA"
+        "IRDA",
+        "ADC0_CH1"
       ]
     },
     {
@@ -590,9 +590,9 @@
       "type": "I/O",
       "functions": [
         "GPIO24",
-        "ADC2",
         "PWM4",
-        "LPO_CLK"
+        "LPO_CLK",
+        "ADC0_CH2"
       ]
     },
     {
@@ -602,8 +602,8 @@
       "type": "I/O",
       "functions": [
         "GPIO23",
-        "ADC3",
-        "JTDO"
+        "JTDO",
+        "ADC0_CH3"
       ]
     },
     {
@@ -613,9 +613,9 @@
       "type": "I/O",
       "functions": [
         "GPIO22",
-        "ADC5",
         "CLK_OUT",
-        "JTDI"
+        "JTDI",
+        "ADC0_CH5"
       ]
     },
     {
@@ -625,9 +625,9 @@
       "type": "I/O",
       "functions": [
         "GPIO21",
-        "ADC6",
         "I2C0_SDA",
-        "JTMS"
+        "JTMS",
+        "ADC0_CH6"
       ]
     },
     {

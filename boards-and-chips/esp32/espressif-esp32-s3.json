@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": "https://www.espressif.com/en/products/socs/esp32-s3",
+    "productPage": null
+  },
+  "boardSymbol": "ESP32_S3"
+}

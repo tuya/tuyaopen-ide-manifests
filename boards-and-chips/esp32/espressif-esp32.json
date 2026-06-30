@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "peripheralPatterns": {
+    "display": [
+      {
+        "id": "lcd-st7789",
+        "model": "ST7789",
+        "name": {
+          "en": "Onboard LCD",
+          "zh-CN": "板载显示屏"
+        },
+        "interface": "SPI",
+        "width": 320,
+        "height": 240,
+        "pixelFormat": "RGB565",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "SPI": [
+            {
+              "role": "sck",
+              "gpio": 18
+            },
+            {
+              "role": "mosi",
+              "gpio": 23
+            },
+            {
+              "role": "dc",
+              "gpio": 25
+            },
+            {
+              "role": "cs",
+              "gpio": 2
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
+    ],
+    "audio": [
+      {
+        "id": "audio-es8388",
+        "model": "ES8388",
+        "name": {
+          "en": "Audio Codec",
+          "zh-CN": "音频编解码器"
+        },
+        "interface": "I2S",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "I2S": [
+            {
+              "role": "mclk",
+              "gpio": 3
+            },
+            {
+              "role": "bck",
+              "gpio": 46
+            },
+            {
+              "role": "ws",
+              "gpio": 9
+            },
+            {
+              "role": "dout",
+              "gpio": 10
+            },
+            {
+              "role": "din",
+              "gpio": 14
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "ES8388 codec controlled over I2C (SCL=42, SDA=41); speaker enable driven by the XL9555 IO expander.",
+          "zh-CN": "ES8388 编解码器通过 I2C 控制（SCL=42，SDA=41）；扬声器使能由 XL9555 IO 扩展器驱动。"
+        }
+      }
+    ]
+  },
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://www.espressif.com/en/products/socs/esp32"
+    },
+    "productPage": null
+  },
+  "boardSymbol": "ESP32_MODULE"
+}

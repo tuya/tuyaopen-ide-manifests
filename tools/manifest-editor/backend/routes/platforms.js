@@ -10,7 +10,7 @@ const router = express.Router();
 // files live at platforms/<platformId>/<id>.json.
 // platformId is immutable after creation (changing it would move the detail
 // file and break grouping / board references), so it is NOT patchable here.
-const INDEX_FIELDS = ['name', 'summary', 'image', 'detailUrl'];
+const INDEX_FIELDS = ['name', 'summary', 'image', 'detailUrl', 'sdks', 'published'];
 
 function detailUrlFor(platformId, id) {
   return `platforms/${platformId}/${id}.json`;
@@ -51,7 +51,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/platforms - create item + detail file
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, platformId, name, summary, image, detail } = req.body;
+  const { id, platformId, name, summary, image, detail, sdks, published } = req.body;
   if (!id || !name) {
     return res.status(400).json({ success: false, error: 'Missing required fields: id, name' });
   }
@@ -76,6 +76,8 @@ router.post('/', asyncHandler(async (req, res) => {
     summary: summary || {},
     ...(image ? { image } : {}),
     detailUrl: detailUrlFor(pid, id),
+    ...(Array.isArray(sdks) ? { sdks } : {}),
+    ...(published !== undefined ? { published } : {}),
   };
   platforms.items.push(newItem);
   await manifestLoader.savePlatformsIndex(platforms);

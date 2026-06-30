@@ -2,6 +2,7 @@
   "id": "tuya-ai-your-otto-robot",
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/your_otto_robot",
   "cloud": {
+    "oemUrl": "https://pbt.tuya.com/s?p=280b53b9eea9f43230684c87bfe0c9cc&u=99568d758045529dd5f74755aae54c49&t=2",
     "pid": {
       "via": "kconfig"
     }

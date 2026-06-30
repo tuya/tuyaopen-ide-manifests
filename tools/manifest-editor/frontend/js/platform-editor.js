@@ -82,8 +82,8 @@ const PINOUT_FUNC_SUGGEST = [
   // pwm (+ grouped pwm)
   ...Array.from({ length: 8 }, (_, i) => `PWM${i}`),
   ...['0', '1'].flatMap(g => Array.from({ length: 6 }, (_, i) => `PWMG${g}_PWM${i}`)),
-  // adc
-  ...Array.from({ length: 16 }, (_, i) => `ADC${i}`),
+  // adc — unit+channel qualified (ADC{unit}_CH{channel}); units 0-2, channels 0-19
+  ...[0, 1, 2].flatMap(u => Array.from({ length: 20 }, (_, c) => `ADC${u}_CH${c}`)),
   // timer
   ...Array.from({ length: 17 }, (_, t) => t).flatMap(t => [0, 1, 2, 3].map(c => `TIMER${t}_CH${c}`)),
   // advanced-timer extras (complementary outputs / break-in / external trigger)
@@ -159,7 +159,10 @@ const PERI_PIN = {
   spi:  { prefix: 'SPI',  fields: { clk: 'SCK', cs: 'CSN', mosi: 'MOSI', miso: 'MISO' } },
   qspi: { prefix: 'QSPI', fields: { clk: 'SCK', cs: 'CS', d0: 'IO0', d1: 'IO1', d2: 'IO2', d3: 'IO3' } },
   pwm:  { prefix: 'PWM',  pinField: 'pin' },
-  adc:  { prefix: 'ADC',  pinField: 'pin' },
+  // ADC tokens are unit+channel qualified (e.g. "ADC1_CH0") so multi-unit chips
+  // (ESP32 has ADC1 + ADC2 with overlapping channel numbers) stay unambiguous.
+  // The token is built from the enclosing port id (the ADC unit) + channel id.
+  adc:  { prefix: 'ADC',  pinField: 'pin', unitChannel: true },
 };
 
 // Resolve the bilingual peripheral catalog to the active language: pick the
@@ -427,6 +430,19 @@ class StructEditor {
     return id;
   }
 
+  // Every `id` along the path, in order (e.g. [portId, channelId] for an ADC
+  // channel pin). Used for unit+channel tokens where both the enclosing unit
+  // (port) and the leaf (channel) id matter.
+  _instanceIdChain(path) {
+    let cur = this.data; const ids = [];
+    for (const seg of path) {
+      if (cur == null) break;
+      cur = cur[seg];
+      if (cur && typeof cur === 'object' && !Array.isArray(cur) && typeof cur.id === 'number') ids.push(cur.id);
+    }
+    return ids;
+  }
+
   // Nearest enclosing port's `backend` along the path (e.g. an SPI port may run
   // as "qspi"), or null.
   _backendAt(path) {
@@ -477,6 +493,16 @@ class StructEditor {
     if (cfg.pinField && field === cfg.pinField) suffix = '';
     else if (cfg.fields && field in cfg.fields) suffix = '_' + cfg.fields[field];
     else return null;
+    // Unit+channel peripherals (ADC): token is `${prefix}${unit}_CH${channel}`,
+    // built from the two enclosing ids (port = unit, channel = leaf). Falls back
+    // to unit 0 when the path has no port level.
+    if (cfg.unitChannel) {
+      const ids = this._instanceIdChain(path);
+      if (!ids.length) return null;
+      const channel = ids[ids.length - 1];
+      const unit = ids.length >= 2 ? ids[ids.length - 2] : 0;
+      return `${cfg.prefix}${unit}_CH${channel}`;
+    }
     const id = this._instanceId(path);
     if (id == null) return null;
     return `${cfg.prefix}${id}${suffix}`;
@@ -1306,8 +1332,10 @@ export function renderPlatformCard(item) {
   // Show the platform group only when it differs from the item id (multi-variant).
   const groupBadge = (item.platformId && item.platformId !== item.id)
     ? `<span class="board-card-platform">${escapeHtml(item.platformId)}</span>` : '';
+  const isUnpublished = item.published === false;
   return `
-    <div class="board-card" data-platform-id="${escapeHtml(item.id)}">
+    <div class="board-card ${isUnpublished ? 'board-card--unpublished' : ''}" data-platform-id="${escapeHtml(item.id)}">
+      ${isUnpublished ? '<span class="board-card-unpublished-badge">Unpublished / 未发布</span>' : ''}
       <div class="board-card-image${imageUrl ? '' : ' board-card-image--empty'}">${imageInner}</div>
       <div class="board-card-header">
         <div>
@@ -1593,6 +1621,19 @@ export function mountPlatformForm(container, platform, detail, { isNew } = {}) {
       </div>
       ${i18nPair('pfName', 'platformName', name.en, name['zh-CN'])}
       ${i18nPair('pfSummary', 'platformSummary', summary.en, summary['zh-CN'], { textarea: true })}
+
+      <!-- Published Toggle (kept directly above the SDK selector, mirrors boards) -->
+      <div class="form-group" style="display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--color-hover); border-radius: 6px;">
+        <input type="checkbox" id="pfPublished" name="published" ${platform?.published !== false ? 'checked' : ''} style="width: 18px; height: 18px; cursor: pointer;">
+        <label for="pfPublished" style="margin: 0; cursor: pointer; font-weight: 500;">${escapeHtml(i18n.t('boardPublished'))}</label>
+        <small style="color: var(--color-muted); margin-left: auto;">${escapeHtml(i18n.t('boardPublishedHint'))}</small>
+      </div>
+      <div class="form-group">
+        <label class="form-label">${escapeHtml(i18n.t('skillSdks'))}</label>
+        <div class="skill-sdks-checks">${['tuyaopen', 'tuyaos'].map((v) => `<label class="skill-sdk-check"><input type="checkbox" class="platform-sdk-cb" value="${v}" ${(platform?.sdks || []).includes(v) ? 'checked' : ''}> ${v}</label>`).join('')}</div>
+        <small style="color: var(--color-muted);">${escapeHtml(i18n.t('skillSdksHint'))}</small>
+      </div>
+
       <div class="form-group form-row-2col">
         <div class="form-col-half">
           <label class="form-label" for="pfArch">${escapeHtml(i18n.t('platformArchLabel'))}</label>
@@ -1791,10 +1832,13 @@ export function collectPlatformForm() {
     const o = {}; if (en) o.en = en; if (zh) o['zh-CN'] = zh; return o;
   };
   // image is managed by the upload UI (writes index.image directly), not here.
+  const sdks = [...document.querySelectorAll('.platform-sdk-cb:checked')].map((cb) => cb.value);
   const index = {
     platformId: q('pfPlatformId') || q('pfId'),
     name: pair('pfName'),
     summary: pair('pfSummary'),
+    sdks,
+    published: document.getElementById('pfPublished')?.checked ?? true,
   };
 
   // platformSymbol / arch / flashInterface are edited in the Platform Info tab;
@@ -1866,6 +1910,8 @@ export async function savePlatformForm() {
         name: data.index.name,
         summary: data.index.summary,
         image: data.index.image,
+        sdks: data.index.sdks,
+        published: data.index.published,
         detail: data.detail,
         autoCommit: true,
       });

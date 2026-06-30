@@ -17,7 +17,12 @@
       "image": {
         "url": "images/t5ai/t5ai-hero.png"
       },
-      "detailUrl": "platforms/t5ai/t5ai.json"
+      "detailUrl": "platforms/t5ai/t5ai.json",
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "gd32vw553",
@@ -30,7 +35,11 @@
         "en": "GigaDevice GD32VW553 — RISC-V wireless MCU @160MHz with Wi-Fi 6 (2.4GHz) and Bluetooth LE 5.2, 320KB SRAM and up to 4MB on-chip flash.",
         "zh-CN": "兆易创新 GD32VW553 — RISC-V 无线 MCU，主频 160MHz，集成 Wi-Fi 6（2.4GHz）与蓝牙 BLE 5.2，320KB SRAM，片上 Flash 最高 4MB。"
       },
-      "detailUrl": "platforms/gd32/gd32vw553.json"
+      "detailUrl": "platforms/gd32/gd32vw553.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
     },
     {
       "id": "t2",
@@ -46,7 +55,12 @@
       "image": {
         "url": "images/t2/t2-hero.png"
       },
-      "detailUrl": "platforms/t2/t2.json"
+      "detailUrl": "platforms/t2/t2.json",
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "bk7231n",
@@ -62,7 +76,11 @@
       "image": {
         "url": "images/bk7231n/bk7231n-hero.png"
       },
-      "detailUrl": "platforms/bk7231n/bk7231n.json"
+      "detailUrl": "platforms/bk7231n/bk7231n.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
     },
     {
       "id": "t1",
@@ -78,7 +96,11 @@
       "image": {
         "url": "images/t1/t1-hero.png"
       },
-      "detailUrl": "platforms/t1/t1.json"
+      "detailUrl": "platforms/t1/t1.json",
+      "sdks": [
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "t2ai",
@@ -94,7 +116,11 @@
       "image": {
         "url": "images/t2ai/t2ai-hero.png"
       },
-      "detailUrl": "platforms/t2ai/t2ai.json"
+      "detailUrl": "platforms/t2ai/t2ai.json",
+      "sdks": [
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "t3ai",
@@ -110,7 +136,11 @@
       "image": {
         "url": "images/t3ai/t3ai-hero.png"
       },
-      "detailUrl": "platforms/t3ai/t3ai.json"
+      "detailUrl": "platforms/t3ai/t3ai.json",
+      "sdks": [
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "t3",
@@ -126,7 +156,12 @@
       "image": {
         "url": "images/t3/t3-hero.png"
       },
-      "detailUrl": "platforms/t3/t3.json"
+      "detailUrl": "platforms/t3/t3.json",
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "rtl8720cf",
@@ -142,7 +177,11 @@
       "image": {
         "url": "images/rtl8720cf/rtl8720cf-hero.png"
       },
-      "detailUrl": "platforms/rtl8720cf/rtl8720cf.json"
+      "detailUrl": "platforms/rtl8720cf/rtl8720cf.json",
+      "sdks": [
+        "tuyaos"
+      ],
+      "published": true
     },
     {
       "id": "rtl8720cf-vu2",
@@ -158,7 +197,96 @@
       "image": {
         "url": "images/rtl8720cf-vu2/rtl8720cf-vu2-hero.png"
       },
-      "detailUrl": "platforms/rtl8720cf-vu2/rtl8720cf-vu2.json"
+      "detailUrl": "platforms/rtl8720cf-vu2/rtl8720cf-vu2.json",
+      "sdks": [
+        "tuyaos"
+      ],
+      "published": true
+    },
+    {
+      "id": "esp32",
+      "platformId": "esp32",
+      "name": {
+        "en": "Espressif ESP32",
+        "zh-CN": "乐鑫 ESP32"
+      },
+      "summary": {
+        "en": "Espressif ESP32 platform — dual-core Xtensa LX6 @240MHz with Wi-Fi 802.11b/g/n and Bluetooth 4.2 / BLE. 520KB SRAM, rich peripherals (capacitive touch, DAC, Ethernet MAC) for general-purpose IoT.",
+        "zh-CN": "乐鑫 ESP32 平台 — 双核 Xtensa LX6，主频 240MHz，支持 Wi-Fi 802.11b/g/n 与蓝牙 4.2 / BLE。520KB SRAM，外设丰富（电容触摸、DAC、以太网 MAC），面向通用 IoT 应用。"
+      },
+      "detailUrl": "platforms/esp32/esp32.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": false
+    },
+    {
+      "id": "esp32c3",
+      "platformId": "esp32",
+      "name": {
+        "en": "Espressif ESP32-C3",
+        "zh-CN": "乐鑫 ESP32-C3"
+      },
+      "summary": {
+        "en": "Espressif ESP32-C3 platform — single-core 32-bit RISC-V @160MHz with Wi-Fi 802.11b/g/n and Bluetooth LE 5.0. 400KB SRAM, 22 GPIOs, a cost-effective and secure choice for connected devices.",
+        "zh-CN": "乐鑫 ESP32-C3 平台 — 单核 32 位 RISC-V，主频 160MHz，支持 Wi-Fi 802.11b/g/n 与蓝牙 BLE 5.0。400KB SRAM，22 个 GPIO，面向高性价比、高安全的联网设备。"
+      },
+      "detailUrl": "platforms/esp32/esp32c3.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": false
+    },
+    {
+      "id": "esp32c6",
+      "platformId": "esp32",
+      "name": {
+        "en": "Espressif ESP32-C6",
+        "zh-CN": "乐鑫 ESP32-C6"
+      },
+      "summary": {
+        "en": "Espressif ESP32-C6 platform — 32-bit RISC-V @160MHz with Wi-Fi 6 (802.11ax, 2.4GHz), Bluetooth LE 5.3, and IEEE 802.15.4 (Zigbee / Thread). 512KB SRAM for multi-protocol smart-home edge devices.",
+        "zh-CN": "乐鑫 ESP32-C6 平台 — 32 位 RISC-V，主频 160MHz，支持 Wi-Fi 6（802.11ax，2.4GHz）、蓝牙 BLE 5.3 及 IEEE 802.15.4（Zigbee / Thread）。512KB SRAM，面向多协议智能家居边缘设备。"
+      },
+      "detailUrl": "platforms/esp32/esp32c6.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": false
+    },
+    {
+      "id": "esp32s3",
+      "platformId": "esp32",
+      "name": {
+        "en": "Espressif ESP32-S3",
+        "zh-CN": "乐鑫 ESP32-S3"
+      },
+      "summary": {
+        "en": "Espressif ESP32-S3 platform — dual-core Xtensa LX7 @240MHz with Wi-Fi 802.11b/g/n, Bluetooth LE 5.0, USB-OTG, and vector instructions for on-device AI/ML. 512KB SRAM with octal PSRAM support for audio and display AIoT.",
+        "zh-CN": "乐鑫 ESP32-S3 平台 — 双核 Xtensa LX7，主频 240MHz，支持 Wi-Fi 802.11b/g/n、蓝牙 BLE 5.0、USB-OTG，并内置面向端侧 AI/ML 的向量指令。512KB SRAM 并支持 Octal PSRAM，面向音频与显示类 AIoT 应用。"
+      },
+      "detailUrl": "platforms/esp32/esp32s3.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": false
+    },
+    {
+      "id": "esp32p4",
+      "platformId": "esp32",
+      "name": {
+        "en": "Espressif ESP32-P4",
+        "zh-CN": "乐鑫 ESP32-P4"
+      },
+      "summary": {
+        "en": "Espressif ESP32-P4 platform — dual-core RISC-V @400MHz with a RISC-V LP core, large internal SRAM and PSRAM support, MIPI-CSI/DSI, and rich peripherals for HMI and edge-AI. No on-chip radio — wireless is provided by a companion ESP32-C6 (Wi-Fi 6 / BLE).",
+        "zh-CN": "乐鑫 ESP32-P4 平台 — 双核 RISC-V，主频 400MHz，另含 RISC-V 低功耗核，内置大容量 SRAM 并支持 PSRAM，集成 MIPI-CSI/DSI 与丰富外设，面向人机交互（HMI）与端侧 AI。芯片本身无射频，无线能力由配套 ESP32-C6（Wi-Fi 6 / BLE）提供。"
+      },
+      "detailUrl": "platforms/esp32/esp32p4.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": false
     }
   ]
 }

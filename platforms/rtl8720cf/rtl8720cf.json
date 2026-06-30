@@ -3,34 +3,10 @@
   "arch": "arm-cortex-m33",
   "flashInterface": "spi",
   "connectivity": {
-    "wifi": {
-      "enabled": true,
-      "standard": "802.11b/g/n",
-      "bands": [
-        "2.4GHz"
-      ],
-      "security": [
-        "WPA",
-        "WPA2",
-        "WPA3"
-      ],
-      "modes": [
-        "STA",
-        "AP"
-      ]
-    },
-    "ble": {
-      "enabled": true,
-      "stack": "tuya",
-      "stackNote": "使用涂鸦蓝牙协议栈 (tal_bluetooth)，通过 HCI 接口对接原厂控制器",
-      "version": "5.0"
-    },
-    "ethernet": {
-      "enabled": false
-    },
-    "cellular": {
-      "enabled": false
-    }
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
   },
   "memory": {
     "sramBytes": 512000,

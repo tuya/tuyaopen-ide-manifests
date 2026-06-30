@@ -924,10 +924,10 @@
         "GPIO21",
         "I2C0_SDA",
         "SWDIO",
-        "ADC6",
         "RGB_R5",
         "I8080_D8",
-        "SEG9"
+        "SEG9",
+        "ADC0_CH6"
       ]
     },
     {
@@ -938,11 +938,11 @@
       "functions": [
         "GPIO22",
         "CLK_OUT",
-        "ADC5",
         "QSPI0_SCK",
         "RGB_R4",
         "I8080_CSX",
-        "SEG8"
+        "SEG8",
+        "ADC0_CH5"
       ]
     },
     {
@@ -952,11 +952,11 @@
       "type": "I/O",
       "functions": [
         "GPIO23",
-        "ADC3",
         "QSPI0_CS",
         "RGB_R3",
         "I8080_RESET",
-        "SEG7"
+        "SEG7",
+        "ADC0_CH3"
       ]
     },
     {
@@ -968,11 +968,11 @@
         "GPIO24",
         "LPO_CLK",
         "PWMG0_PWM4",
-        "ADC2",
         "QSPI0_IO0",
         "RGB_G7",
         "I8080_RSX",
-        "SEG6"
+        "SEG6",
+        "ADC0_CH2"
       ]
     },
     {
@@ -984,11 +984,11 @@
         "GPIO25",
         "PWMG0_PWM5",
         "IRDA",
-        "ADC1",
         "QSPI0_IO1",
         "RGB_G6",
         "I8080_WRX",
-        "SEG5"
+        "SEG5",
+        "ADC0_CH1"
       ]
     },
     {
@@ -1012,10 +1012,10 @@
       "functions": [
         "GPIO28",
         "I2S_MCLK",
-        "ADC4",
         "TOUCH2",
         "CIS_AUXCLK",
-        "SEG18"
+        "SEG18",
+        "ADC0_CH4"
       ]
     },
     {
@@ -1029,8 +1029,8 @@
         "I2C1_SDA",
         "SWDIO",
         "SC_CLK",
-        "ADC13",
-        "LIN_RXD"
+        "LIN_RXD",
+        "ADC0_CH13"
       ],
       "note": "Debug log RX (UART1)"
     },
@@ -1063,8 +1063,8 @@
         "I2C1_SCL",
         "SWCLK",
         "SC_IO",
-        "ADC12",
-        "LIN_TXD"
+        "LIN_TXD",
+        "ADC0_CH12"
       ],
       "note": "Debug log TX (UART1)"
     },
@@ -1091,8 +1091,8 @@
         "PWMG0_PWM2",
         "I2S0_DIN",
         "DMIC_CLK",
-        "ADC10",
-        "XO"
+        "XO",
+        "ADC0_CH10"
       ]
     },
     {
@@ -1181,7 +1181,7 @@
         "GPIO12",
         "UART0_RTS",
         "TOUCH0",
-        "ADC14"
+        "ADC0_CH14"
       ]
     },
     {
@@ -1193,7 +1193,7 @@
         "GPIO13",
         "UART0_CTS",
         "TOUCH1",
-        "ADC15"
+        "ADC0_CH15"
       ]
     },
     {
