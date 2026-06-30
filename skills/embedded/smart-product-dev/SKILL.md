@@ -73,6 +73,7 @@ Read ALL files fresh on every entry including re-entry. Never carry state from p
 | `.tuyaopen/platform/product-<pid>.json` | full snapshot (apply unwrap), `fetchError` |
 | `.tuyaopen/ide/platform.json` | `peripherals`, `connectivity`, `pinout`, `flashAndDebug` |
 | `.tuyaopen/ide/board.json` | `peripheralPatterns` |
+| `.tuyaopen/ide/demo.json` | `cloud.pid.*` — PID firmware location (IDE-owned; do **not** hand-edit firmware PID, see Step 6). Absent → not created from a demo |
 | `.tuyaopen/architecture.json` | `surfaces.embedded.peripherals` |
 | `source/embedded/src/tuya_app_main.c` | `#include` lines (text grep only) |
 | `source/embedded/src/` listing | all `.c` filenames present |
@@ -176,13 +177,19 @@ Delegate to `tuya-iot-platform` → `ops/manage-dp.md`. Dry-run → developer ap
 
 ### Step 6 — Bind PID
 
-Edit `tuyaopen.project.ini` → `[product] pid = <pid>`.
+Edit `tuyaopen.project.ini` → `[product] pid = <pid>`. This is the only file you write for binding.
 
-Tell developer: "Please press **Sync** in TuyaOpen IDE → Project Details. Let me know when done."
+**Do NOT hand-edit the firmware PID** (the Kconfig `CONFIG_TUYA_PRODUCT_ID` in `source/embedded/app_default.config` / `config/*.config`, or a `TUYA_PRODUCT_ID` macro). The IDE owns the firmware rewrite: it reads the demo's PID-location spec from `.tuyaopen/ide/demo.json` (`cloud.pid.via` / `kconfigKey` / `macro` / `file`) and writes the PID to the exact location that demo declares — which is often NOT the default symbol. Editing it yourself will likely target the wrong key/macro/file and bind the wrong PID.
+
+**Binding is a two-step handshake and is NOT complete after you write the ini.** You write `[product] pid`; the IDE writes the firmware. Until the developer clicks **Update (更新)**, the firmware still holds the *previous* PID (or the demo's placeholder) — the new PID is NOT in the build yet. You MUST NOT end a bind turn without the Update call-to-action below; it is the required final message of every bind, even when you also did other work (DP creation, snapshots, cleanup).
+
+Required closing message: "I've set the PID `<pid>` in `tuyaopen.project.ini`. ⚠️ The firmware still has the old PID — to land the new one, open **TuyaOpen IDE → Project Details** and click the **Update (更新)** button. Tell me when done." (On the Cloud IoT info row the same action is labelled **Refresh (刷新)**.)
 
 When developer says done: re-run full state detection from Context Reading. **Trust the file, not the claim.** If still `has-pid`, tell developer and wait again.
 
-**Rollback:** If writing ini fails after product was created: "Product created, PID `<pid>`. Please add manually: `[product] pid = <pid>` in `tuyaopen.project.ini`."
+**Do NOT invent IDE buttons or pages.** The only button the developer ever clicks for product data is **Update (更新)** (a.k.a. **Refresh (刷新)** on the Cloud IoT row). There is **no "Sync" button** for product or panel data. The panel snapshot (`panel-<pid>.json`) is auto-managed by the IDE — it syncs on its own when Project Details opens and on bind; never ask the developer to "Sync" it.
+
+**Rollback:** If writing ini fails after product was created: "Product created, PID `<pid>`. Please add manually: `[product] pid = <pid>` in `tuyaopen.project.ini`, then click **Update (更新)** in Project Details."
 
 ---
 
@@ -192,16 +199,16 @@ When developer says done: re-run full state detection from Context Reading. **Tr
 
 | Condition | Action |
 |-----------|--------|
-| `product-<pid>.json` missing | "Please press Sync in TuyaOpen IDE → Project Details." Re-run state detection after developer confirms. Trust the file. |
-| `fetchError` in snapshot | Show error text. Ask developer to check credentials/network, Sync again. |
-| `selectedDps` count === 0, `ai.expectedDps` exists | Run DP creation (bare Step 5). Ask Sync. Re-run state detection. |
-| `selectedDps` count === 0, no `ai.expectedDps` | Ask developer what DPs are needed. Write to `project.json ai.expectedDps` (merge/update, preserve other fields). Run DP creation. Ask Sync. |
+| `product-<pid>.json` missing | "Please click **Update (更新)** in TuyaOpen IDE → Project Details (or **Refresh (刷新)** on the Cloud IoT row)." Re-run state detection after developer confirms. Trust the file. |
+| `fetchError` in snapshot | Show error text. Ask developer to check credentials/network, then click **Update (更新)** again. |
+| `selectedDps` count === 0, `ai.expectedDps` exists | Run DP creation (bare Step 5). Ask developer to click **Update (更新)**. Re-run state detection. |
+| `selectedDps` count === 0, no `ai.expectedDps` | Ask developer what DPs are needed. Write to `project.json ai.expectedDps` (merge/update, preserve other fields). Run DP creation. Ask developer to click **Update (更新)**. |
 
 **DP completeness** (when selectedDps ≥ 1 and `ai.expectedDps` exists):
 - Codes in `ai.expectedDps` but not in `selectedDps` → add via `tuya-iot-platform` → ops/manage-dp.md (dry-run → approve → confirm)
 - Codes in `selectedDps` but not in `ai.expectedDps` → ask developer if intentional. If yes: add to `ai.expectedDps` (merge/update `project.json`)
 
-After any fix: ask Sync, re-run state detection.
+After any fix: ask developer to click **Update (更新)** in Project Details, re-run state detection.
 
 ---
 
@@ -362,7 +369,7 @@ Delegate to `tuyaopen/dev-loop`.
 - Read `ai.intent` / `ai.expectedDps` before re-asking requirements
 - Show available peripheral options before asking developer to choose pins
 - Re-read all context files on every entry
-- Trust snapshot files — not developer's oral Sync confirmation
+- Trust snapshot files — not the developer's oral "done" confirmation
 - Apply dpSchema unwrap before any DP access
 
 **Never:**
@@ -382,7 +389,7 @@ Delegate to `tuyaopen/dev-loop`.
 |---------|---------|
 | Product created, write ini fails | Report PID. Ask developer to add `[product] pid = <pid>` manually. |
 | DP creation partially fails | Report which failed. Re-enter `has-pid` on next run — `ai.expectedDps` comparison catches the gap. |
-| Sync not done | Re-run state detection after each "done" claim. Trust the file. |
+| Update (更新) not clicked | Re-run state detection after each "done" claim. Trust the file. |
 | Kconfig / `tos.py check` fails | Fix before generating code. |
 | Build fails | Stay in `in-progress`. Debug via `dev-loop`. |
 | Wi-Fi-only board | Run Steps 1–3, ask developer to create product manually, continue from Step 6. |
