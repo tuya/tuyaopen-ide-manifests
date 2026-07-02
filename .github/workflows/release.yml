@@ -69,6 +69,7 @@ jobs:
           size    = int(os.environ["SIZE"])
           repo_gh = "tuya/tuyaopen-ide-manifests"
           repo_ge = "tuya-open/tuyaopen-ide-manifests"
+          cdn_tuyacn = "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/tuyaopen-ide-manifests"
           manifest = {
             "schemaVersion": 1,
             "version": version,
@@ -77,6 +78,7 @@ jobs:
             "package": {
               "github": f"https://github.com/{repo_gh}/releases/download/{tag}/manifests.tar.gz",
               "gitee":  f"https://gitee.com/{repo_ge}/releases/download/{tag}/manifests.tar.gz",
+              "tuyacn": f"{cdn_tuyacn}/manifests-{version}.tar.gz",
               "sha256": sha256,
               "size":   size,
             },

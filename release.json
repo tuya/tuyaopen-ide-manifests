@@ -6,6 +6,7 @@
   "package": {
     "github": "https://github.com/tuya/tuyaopen-ide-manifests/releases/download/v0.1.0/manifests.tar.gz",
     "gitee": "https://gitee.com/tuya-open/tuyaopen-ide-manifests/releases/download/v0.1.0/manifests.tar.gz",
+    "tuyacn": "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/tuyaopen-ide-manifests/manifests-0.1.0.tar.gz",
     "sha256": "827b7bd5ada43b4e6e93be24119fdc38b859bb1b077d8c417d7c06e5366f8509",
     "size": 2684719
   },
