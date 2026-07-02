@@ -312,14 +312,36 @@
       {
         "id": "dvp-camera-connector",
         "name": {
-          "en": "DVP Camera Connector (P2)",
-          "zh-CN": "DVP 摄像头接插件 (P2)"
+          "en": "DVP Camera Connector",
+          "zh-CN": "DVP 摄像头接插件"
         },
         "interface": "DVP",
         "mounting": "connector",
         "pinLocked": true,
         "pins": {
           "DVP": [
+            {
+              "role": "rst",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 5
+            },
+            {
+              "role": "pwdn",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 4
+            },
+            {
+              "role": "pclk",
+              "gpio": 45
+            },
+            {
+              "role": "vsync",
+              "gpio": 47
+            },
+            {
+              "role": "hsync",
+              "gpio": 48
+            },
             {
               "role": "d0",
               "gpio": 4
@@ -353,34 +375,12 @@
               "gpio": 18
             },
             {
-              "role": "pclk",
-              "gpio": 45
-            },
-            {
-              "role": "vsync",
-              "gpio": 47
-            },
-            {
-              "role": "hsync",
-              "gpio": 48
-            },
-            {
               "role": "i2c_scl",
-              "gpio": 38
+              "gpio": null
             },
             {
               "role": "i2c_sda",
-              "gpio": 39
-            },
-            {
-              "role": "pwdn",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 4
-            },
-            {
-              "role": "rst",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 5
+              "gpio": null
             }
           ]
         },
