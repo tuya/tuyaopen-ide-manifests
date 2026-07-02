@@ -3,7 +3,7 @@
 
 Checks (all local / deterministic, no network):
   - JSON parses and required top-level keys exist with correct types
-  - devSkillsRelease has required fields; github/gitee are well-formed URLs
+  - devSkillsRelease has required fields; github/gitee/tuyacn are well-formed URLs
   - Each item has required fields with correct types
   - Bilingual fields (name/summary/whenToUse) carry both 'en' and 'zh-CN'
   - 'id' is unique; 'surface' is one of the known surfaces
@@ -65,10 +65,10 @@ def check_dev_skills_release(dsr) -> None:
     if not isinstance(dsr, dict):
         err("devSkillsRelease: must be an object")
         return
-    for key in ("version", "github", "gitee", "sha256", "size"):
+    for key in ("version", "github", "gitee", "tuyacn", "sha256", "size"):
         if key not in dsr:
             err(f"devSkillsRelease: missing required key '{key}'")
-    for url_key in ("github", "gitee"):
+    for url_key in ("github", "gitee", "tuyacn"):
         url = dsr.get(url_key)
         if url is not None and not (isinstance(url, str) and URL_RE.match(url)):
             err(f"devSkillsRelease.{url_key}: not a well-formed URL: {url!r}")

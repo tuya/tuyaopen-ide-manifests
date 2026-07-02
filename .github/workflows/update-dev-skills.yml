@@ -23,13 +23,19 @@ jobs:
           SIZE:       ${{ github.event.client_payload.size }}
           GITHUB_URL: ${{ github.event.client_payload.github_url }}
           GITEE_URL:  ${{ github.event.client_payload.gitee_url }}
+          TUYACN_URL: ${{ github.event.client_payload.tuyacn_url }}
         run: |
+          # Fallback for dispatches from older dev-skills releases without tuyacn_url
+          if [ -z "$TUYACN_URL" ]; then
+            TUYACN_URL="https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/TuyaOpen-dev-skills/TuyaOpen-dev-skills-$VERSION.tar.gz"
+          fi
           jq --arg version    "$VERSION" \
              --arg github_url "$GITHUB_URL" \
              --arg gitee_url  "$GITEE_URL" \
+             --arg tuyacn_url "$TUYACN_URL" \
              --arg sha256     "$SHA256" \
              --argjson size   "$SIZE" \
-             '.devSkillsRelease = {version: $version, github: $github_url, gitee: $gitee_url, sha256: $sha256, size: $size}' \
+             '.devSkillsRelease = {version: $version, github: $github_url, gitee: $gitee_url, tuyacn: $tuyacn_url, sha256: $sha256, size: $size}' \
              skills/index.json > /tmp/index.json && mv /tmp/index.json skills/index.json
           echo "→ devSkillsRelease updated to $VERSION"
 
