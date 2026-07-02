@@ -589,14 +589,11 @@
     {
       "id": "waveshare-esp32s3-touch-amoled-1-8",
       "name": {
-        "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\"",
+        "en": "微雪 ESP32-S3 Touch AMOLED 1.8 寸",
         "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
       },
-      "manufacturer": {
-        "en": "Waveshare",
-        "zh-CN": "微雪"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "微雪",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\" board — 368x448 SH8601 QSPI AMOLED with FT5x06 capacitive touch, ES8311 audio codec, AXP2101 PMIC, and a TCA9554 I/O expander.",
