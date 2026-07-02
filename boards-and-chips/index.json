@@ -676,14 +676,11 @@
     {
       "id": "xingzhi-esp32s3-cube-0-96-oled-wifi",
       "name": {
-        "en": "Xingzhi ESP32-S3 Cube 0.96\" OLED (Wi-Fi)",
+        "en": "虾哥 ESP32-S3 立方体 0.96 寸 OLED (Wi-Fi)",
         "zh-CN": "虾哥 ESP32-S3 立方体 0.96 寸 OLED (Wi-Fi)"
       },
-      "manufacturer": {
-        "en": "Xingzhi",
-        "zh-CN": "虾哥"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "虾哥",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "Xingzhi ESP32-S3 Cube with a 0.96\" SSD1306 OLED (128x64, I2C) and codec-less I2S audio. A compact Wi-Fi AI voice-assistant reference.",
