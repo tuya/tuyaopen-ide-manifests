@@ -703,14 +703,11 @@
     {
       "id": "esp32s3-bread-compact-wifi",
       "name": {
-        "en": "ESP32-S3 Breadboard Compact (Wi-Fi)",
+        "en": "ESP32-S3 面包板紧凑型 (Wi-Fi)",
         "zh-CN": "ESP32-S3 面包板紧凑型 (Wi-Fi)"
       },
-      "manufacturer": {
-        "en": "Espressif",
-        "zh-CN": "乐鑫"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "乐鑫",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "Compact breadboard ESP32-S3 reference with a 0.96\" SSD1306 OLED (128x32, I2C) and codec-less I2S audio — a minimal DIY Wi-Fi build.",
