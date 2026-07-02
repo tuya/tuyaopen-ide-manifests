@@ -153,6 +153,14 @@ class ApiClient {
     return this.request('PATCH', `/boards/${boardId}/expansion-pins`, { gpios });
   }
 
+  async getExpansionConnectors(boardId) {
+    return this.request('GET', `/boards/${boardId}/expansion-connectors`);
+  }
+
+  async updateExpansionConnectors(boardId, expansionConnectors) {
+    return this.request('PATCH', `/boards/${boardId}/expansion-connectors`, { expansionConnectors });
+  }
+
   async getPlatformPinout(platformId) {
     return this.request('GET', `/boards/platforms/${platformId}/pinout`);
   }
