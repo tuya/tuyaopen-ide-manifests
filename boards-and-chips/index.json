@@ -724,7 +724,7 @@
         "compact"
       ],
       "detailUrl": "boards-and-chips/esp32/esp32s3-bread-compact-wifi.json",
-      "published": true,
+      "published": false,
       "sdks": [
         "tuyaopen"
       ]
