@@ -451,14 +451,11 @@
     {
       "id": "espressif-esp32-s3",
       "name": {
-        "en": "Espressif ESP32-S3 (Generic)",
+        "en": "乐鑫 ESP32-S3 通用开发板",
         "zh-CN": "乐鑫 ESP32-S3 通用开发板"
       },
-      "manufacturer": {
-        "en": "Espressif",
-        "zh-CN": "乐鑫"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "乐鑫",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "Generic ESP32-S3 development board target — dual-core Xtensa LX7 with Wi-Fi, BLE 5.0, USB-OTG, PSRAM, and AI vector instructions. For audio and display AIoT.",
