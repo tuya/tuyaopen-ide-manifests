@@ -532,14 +532,11 @@
     {
       "id": "atk-dnesp32s3-box",
       "name": {
-        "en": "ATK-DNESP32S3-BOX",
+        "en": "正点原子 DNESP32S3-BOX",
         "zh-CN": "正点原子 DNESP32S3-BOX"
       },
-      "manufacturer": {
-        "en": "ALIENTEK",
-        "zh-CN": "正点原子"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "正点原子",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "ALIENTEK DNESP32S3-BOX based on ESP32-S3 — boxed AI voice-interaction kit with ES8311 codec, ST7789 8080-interface LCD, and XL9555 I/O expander.",
