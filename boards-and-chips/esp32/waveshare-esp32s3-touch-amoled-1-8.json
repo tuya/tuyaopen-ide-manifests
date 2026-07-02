@@ -245,7 +245,9 @@
   "links": {
     "schematic": null,
     "datasheet": null,
-    "productPage": "https://www.waveshare.com/wiki/ESP32-S3-Touch-AMOLED-1.8"
+    "productPage": {
+      "en": "https://www.waveshare.com/wiki/ESP32-S3-Touch-AMOLED-1.8"
+    }
   },
   "boardSymbol": "WAVESHARE_ESP32_S3_TOUCH_AMOLED_1_8",
   "source": {
