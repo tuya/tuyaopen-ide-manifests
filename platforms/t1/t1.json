@@ -312,90 +312,99 @@
       "name": "ANT",
       "gpio": null,
       "type": "RF",
-      "functions": [
+      "functions": [],
+      "note": "2.4 GHz RF signal port",
+      "caps": [
         "ANT"
-      ],
-      "note": "2.4 GHz RF signal port"
+      ]
     },
     {
       "pin": 2,
       "name": "VCCPA",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "RF PA power supply",
+      "caps": [
         "VCC"
-      ],
-      "note": "RF PA power supply"
+      ]
     },
     {
       "pin": 3,
       "name": "VCCTX",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "RF transmitter power supply",
+      "caps": [
         "VCC"
-      ],
-      "note": "RF transmitter power supply"
+      ]
     },
     {
       "pin": 4,
       "name": "XI",
       "gpio": null,
       "type": "AI",
-      "functions": [
+      "functions": [],
+      "note": "26 MHz crystal input",
+      "caps": [
         "XI"
-      ],
-      "note": "26 MHz crystal input"
+      ]
     },
     {
       "pin": 5,
       "name": "XO",
       "gpio": null,
       "type": "AO",
-      "functions": [
+      "functions": [],
+      "note": "26 MHz crystal output",
+      "caps": [
         "XO"
-      ],
-      "note": "26 MHz crystal output"
+      ]
     },
     {
       "pin": 6,
       "name": "VCCPLL",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "RF PLL power supply",
+      "caps": [
         "VCC"
-      ],
-      "note": "RF PLL power supply"
+      ]
     },
     {
       "pin": 7,
       "name": "VDDAON",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Always-ON digital LDO output",
+      "caps": [
         "VDD"
-      ],
-      "note": "Always-ON digital LDO output"
+      ]
     },
     {
       "pin": 8,
       "name": "VBAT",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Chip power supply",
+      "caps": [
         "VCC"
-      ],
-      "note": "Chip power supply"
+      ]
     },
     {
       "pin": 9,
       "name": "CEN",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Chip enable, active high",
+      "caps": [
         "CEN"
-      ],
-      "note": "Chip enable, active high"
+      ]
     },
     {
       "pin": 10,
@@ -403,13 +412,15 @@
       "gpio": 24,
       "type": "I/O",
       "functions": [
-        "GPIO24",
-        "CLK_OUT",
+        "GPIO",
         "PWM4",
-        "ANT",
         "ADC0_CH2"
       ],
-      "note": "CLK_OUT = 32 kHz clock output; ANT = BLE antenna selection (LSB)"
+      "note": "CLK_OUT = 32 kHz clock output; ANT = BLE antenna selection (LSB)",
+      "caps": [
+        "CLK_OUT",
+        "ANT"
+      ]
     },
     {
       "pin": 11,
@@ -417,13 +428,15 @@
       "gpio": 6,
       "type": "I/O",
       "functions": [
-        "GPIO6",
+        "GPIO",
+        "PWM0"
+      ],
+      "note": "CLK_OUT = 13 MHz (X26M /1/2/4/8); PWM0 differential with PWM1; ANT = BLE antenna selection 0. I2C0/SPI0 are software-emulated (no dedicated bus pins in datasheet).",
+      "caps": [
         "CLK_OUT",
-        "PWM0",
         "JTCK",
         "ANT"
-      ],
-      "note": "CLK_OUT = 13 MHz (X26M /1/2/4/8); PWM0 differential with PWM1; ANT = BLE antenna selection 0. I2C0/SPI0 are software-emulated (no dedicated bus pins in datasheet)."
+      ]
     },
     {
       "pin": 12,
@@ -431,12 +444,14 @@
       "gpio": 7,
       "type": "I/O",
       "functions": [
-        "GPIO7",
-        "PWM1",
+        "GPIO",
+        "PWM1"
+      ],
+      "note": "PWM1 differential with PWM0; ANT = BLE antenna selection 1. I2C0/SPI0 are software-emulated.",
+      "caps": [
         "JTMS",
         "ANT"
-      ],
-      "note": "PWM1 differential with PWM0; ANT = BLE antenna selection 1. I2C0/SPI0 are software-emulated."
+      ]
     },
     {
       "pin": 13,
@@ -444,13 +459,15 @@
       "gpio": 8,
       "type": "I/O",
       "functions": [
-        "GPIO8",
-        "PWM2",
+        "GPIO",
+        "PWM2"
+      ],
+      "note": "PWM2 differential with PWM3; ANT = BLE antenna selection 2; CLK_OUT = 26 MHz clock output. I2C1/SPI0 are software-emulated.",
+      "caps": [
         "JTDI",
         "ANT",
         "CLK_OUT"
-      ],
-      "note": "PWM2 differential with PWM3; ANT = BLE antenna selection 2; CLK_OUT = 26 MHz clock output. I2C1/SPI0 are software-emulated."
+      ]
     },
     {
       "pin": 14,
@@ -458,12 +475,14 @@
       "gpio": 9,
       "type": "I/O",
       "functions": [
-        "GPIO9",
-        "PWM3",
+        "GPIO",
+        "PWM3"
+      ],
+      "note": "PWM3 differential with PWM2; ANT = BLE antenna selection 3. I2C1/SPI0 are software-emulated.",
+      "caps": [
         "JTDO",
         "ANT"
-      ],
-      "note": "PWM3 differential with PWM2; ANT = BLE antenna selection 3. I2C1/SPI0 are software-emulated."
+      ]
     },
     {
       "pin": 15,
@@ -471,11 +490,12 @@
       "gpio": 10,
       "type": "I/O",
       "functions": [
-        "GPIO10",
+        "GPIO",
         "UART0_RX",
         "ADC0_CH6"
       ],
-      "note": "Firmware download RX (datasheet UART1)"
+      "note": "Firmware download RX (datasheet UART1)",
+      "caps": []
     },
     {
       "pin": 16,
@@ -483,10 +503,11 @@
       "gpio": 11,
       "type": "I/O",
       "functions": [
-        "GPIO11",
+        "GPIO",
         "UART0_TX"
       ],
-      "note": "Firmware download TX (datasheet UART1)"
+      "note": "Firmware download TX (datasheet UART1)",
+      "caps": []
     },
     {
       "pin": 17,
@@ -494,11 +515,12 @@
       "gpio": 1,
       "type": "I/O",
       "functions": [
-        "GPIO1",
+        "GPIO",
         "UART1_RX",
         "ADC0_CH5"
       ],
-      "note": "RXEN = external LNA RX-enable control (datasheet UART2)"
+      "note": "RXEN = external LNA RX-enable control (datasheet UART2)",
+      "caps": []
     },
     {
       "pin": 18,
@@ -506,40 +528,44 @@
       "gpio": 0,
       "type": "I/O",
       "functions": [
-        "GPIO0",
+        "GPIO",
         "UART1_TX"
       ],
-      "note": "TXEN = external PA TX-enable control (datasheet UART2)"
+      "note": "TXEN = external PA TX-enable control (datasheet UART2)",
+      "caps": []
     },
     {
       "pin": 19,
       "name": "VCCIF",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "IF power supply",
+      "caps": [
         "VCC"
-      ],
-      "note": "IF power supply"
+      ]
     },
     {
       "pin": 20,
       "name": "VCCRXFE",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "RF receiver power supply",
+      "caps": [
         "VCC"
-      ],
-      "note": "RF receiver power supply"
+      ]
     },
     {
       "pin": 0,
       "name": "GND_SLUG",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Exposed die pad / ground slug",
+      "caps": [
         "GND"
-      ],
-      "note": "Exposed die pad / ground slug"
+      ]
     }
   ],
   "platformSymbol": "T1"

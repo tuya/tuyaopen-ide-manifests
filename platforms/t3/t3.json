@@ -490,7 +490,8 @@
       "name": "VCCIF",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -499,7 +500,8 @@
       "name": "VCCPLL_BT",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -508,7 +510,8 @@
       "name": "VCCRXFE",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -517,7 +520,8 @@
       "name": "ANT",
       "gpio": null,
       "type": "RF",
-      "functions": [
+      "functions": [],
+      "caps": [
         "ANT"
       ]
     },
@@ -526,7 +530,8 @@
       "name": "VCCPA",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -535,7 +540,8 @@
       "name": "VCCPAD",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -544,7 +550,8 @@
       "name": "XO",
       "gpio": null,
       "type": "O",
-      "functions": [
+      "functions": [],
+      "caps": [
         "XO"
       ]
     },
@@ -553,7 +560,8 @@
       "name": "XI",
       "gpio": null,
       "type": "I",
-      "functions": [
+      "functions": [],
+      "caps": [
         "XI"
       ]
     },
@@ -562,7 +570,8 @@
       "name": "VCCPLL",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -572,8 +581,9 @@
       "gpio": 48,
       "type": "I/O",
       "functions": [
-        "GPIO48"
-      ]
+        "GPIO"
+      ],
+      "caps": []
     },
     {
       "pin": 11,
@@ -581,10 +591,12 @@
       "gpio": 24,
       "type": "I/O",
       "functions": [
-        "GPIO24",
-        "LPO_CLK",
+        "GPIO",
         "PWM4",
         "ADC0_CH2"
+      ],
+      "caps": [
+        "LPO_CLK"
       ]
     },
     {
@@ -593,11 +605,12 @@
       "gpio": 25,
       "type": "I/O",
       "functions": [
-        "GPIO25",
-        "IRDA",
+        "GPIO",
         "PWM5",
-        "ADC0_CH1"
-      ]
+        "ADC0_CH1",
+        "IRDA"
+      ],
+      "caps": []
     },
     {
       "pin": 13,
@@ -605,12 +618,13 @@
       "gpio": 28,
       "type": "I/O",
       "functions": [
-        "GPIO28",
+        "GPIO",
+        "ADC0_CH4",
         "I2S_MCLK",
         "TOUCH2",
-        "CIS_AUXCLK",
-        "ADC0_CH4"
-      ]
+        "CIS_AUXCLK"
+      ],
+      "caps": []
     },
     {
       "pin": 14,
@@ -618,10 +632,11 @@
       "gpio": 32,
       "type": "I/O",
       "functions": [
-        "GPIO32",
+        "GPIO",
         "PWMG1_PWM0",
         "TOUCH6"
-      ]
+      ],
+      "caps": []
     },
     {
       "pin": 15,
@@ -629,11 +644,12 @@
       "gpio": 34,
       "type": "I/O",
       "functions": [
-        "GPIO34",
+        "GPIO",
         "PWMG1_PWM2",
-        "TOUCH8",
-        "SPI0_CSN"
-      ]
+        "SPI0_CSN",
+        "TOUCH8"
+      ],
+      "caps": []
     },
     {
       "pin": 16,
@@ -641,11 +657,12 @@
       "gpio": 36,
       "type": "I/O",
       "functions": [
-        "GPIO36",
+        "GPIO",
         "PWMG1_PWM4",
-        "TOUCH10",
-        "SPI0_MISO"
-      ]
+        "SPI0_MISO",
+        "TOUCH10"
+      ],
+      "caps": []
     },
     {
       "pin": 17,
@@ -653,12 +670,14 @@
       "gpio": 1,
       "type": "I/O",
       "functions": [
-        "GPIO1",
+        "GPIO",
         "UART1_RX",
         "I2C0_SDA",
-        "SWDIO",
-        "LIN_RXD",
-        "ADC0_CH13"
+        "ADC0_CH13",
+        "LIN_RXD"
+      ],
+      "caps": [
+        "SWDIO"
       ]
     },
     {
@@ -667,12 +686,14 @@
       "gpio": 0,
       "type": "I/O",
       "functions": [
-        "GPIO0",
+        "GPIO",
         "UART1_TX",
         "I2C0_SCL",
-        "SWCLK",
-        "LIN_TXD",
-        "ADC0_CH12"
+        "ADC0_CH12",
+        "LIN_TXD"
+      ],
+      "caps": [
+        "SWCLK"
       ]
     },
     {
@@ -681,12 +702,13 @@
       "gpio": 11,
       "type": "I/O",
       "functions": [
-        "GPIO11",
-        "DL_UART_TX",
+        "GPIO",
         "UART0_TX",
+        "DL_UART_TX",
         "SDIO_DATA3"
       ],
-      "note": "Firmware download TX"
+      "note": "Firmware download TX",
+      "caps": []
     },
     {
       "pin": 20,
@@ -694,13 +716,14 @@
       "gpio": 10,
       "type": "I/O",
       "functions": [
-        "GPIO10",
-        "DL_UART_RX",
+        "GPIO",
         "UART0_RX",
+        "DL_UART_RX",
         "SDIO_DATA2",
         "CIS_AUXCLK"
       ],
-      "note": "Firmware download RX"
+      "note": "Firmware download RX",
+      "caps": []
     },
     {
       "pin": 21,
@@ -708,11 +731,12 @@
       "gpio": 12,
       "type": "I/O",
       "functions": [
-        "GPIO12",
+        "GPIO",
         "UART0_RTS",
-        "TOUCH0",
-        "ADC0_CH14"
-      ]
+        "ADC0_CH14",
+        "TOUCH0"
+      ],
+      "caps": []
     },
     {
       "pin": 22,
@@ -720,18 +744,20 @@
       "gpio": 13,
       "type": "I/O",
       "functions": [
-        "GPIO13",
+        "GPIO",
         "UART0_CTS",
-        "TOUCH1",
-        "ADC0_CH15"
-      ]
+        "ADC0_CH15",
+        "TOUCH1"
+      ],
+      "caps": []
     },
     {
       "pin": 23,
       "name": "VDDDIG",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -740,7 +766,8 @@
       "name": "VDDD",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -749,14 +776,16 @@
       "name": "SWD",
       "gpio": null,
       "type": "P",
-      "functions": []
+      "functions": [],
+      "caps": []
     },
     {
       "pin": 26,
       "name": "CEN",
       "gpio": null,
       "type": "I",
-      "functions": [
+      "functions": [],
+      "caps": [
         "CEN"
       ]
     },
@@ -765,7 +794,8 @@
       "name": "VIO",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -774,7 +804,8 @@
       "name": "VDDA",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -783,14 +814,16 @@
       "name": "SWA",
       "gpio": null,
       "type": "P",
-      "functions": []
+      "functions": [],
+      "caps": []
     },
     {
       "pin": 30,
       "name": "GND_DCDC",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "GND"
       ]
     },
@@ -799,7 +832,8 @@
       "name": "VBAT",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -808,7 +842,8 @@
       "name": "VDDRAM",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "caps": [
         "VCC"
       ]
     },
@@ -818,11 +853,12 @@
       "gpio": 14,
       "type": "I/O",
       "functions": [
-        "GPIO14",
-        "SDIO_CLK",
+        "GPIO",
         "SPI0_SCK",
-        "I2C0_SCL"
-      ]
+        "I2C0_SCL",
+        "SDIO_CLK"
+      ],
+      "caps": []
     },
     {
       "pin": 34,
@@ -830,11 +866,12 @@
       "gpio": 15,
       "type": "I/O",
       "functions": [
-        "GPIO15",
-        "SDIO_CMD",
+        "GPIO",
         "SPI0_CSN",
-        "I2C0_SDA"
-      ]
+        "I2C0_SDA",
+        "SDIO_CMD"
+      ],
+      "caps": []
     },
     {
       "pin": 35,
@@ -842,10 +879,11 @@
       "gpio": 16,
       "type": "I/O",
       "functions": [
-        "GPIO16",
-        "SDIO_DATA0",
-        "SPI0_MOSI"
-      ]
+        "GPIO",
+        "SPI0_MOSI",
+        "SDIO_DATA0"
+      ],
+      "caps": []
     },
     {
       "pin": 36,
@@ -853,10 +891,11 @@
       "gpio": 17,
       "type": "I/O",
       "functions": [
-        "GPIO17",
-        "SDIO_DATA1",
-        "SPI0_MISO"
-      ]
+        "GPIO",
+        "SPI0_MISO",
+        "SDIO_DATA1"
+      ],
+      "caps": []
     },
     {
       "pin": 37,
@@ -864,10 +903,11 @@
       "gpio": 18,
       "type": "I/O",
       "functions": [
-        "GPIO18",
-        "SDIO_DATA2",
-        "PWMG0_PWM0"
-      ]
+        "GPIO",
+        "PWMG0_PWM0",
+        "SDIO_DATA2"
+      ],
+      "caps": []
     },
     {
       "pin": 38,
@@ -875,10 +915,11 @@
       "gpio": 19,
       "type": "I/O",
       "functions": [
-        "GPIO19",
-        "SDIO_DATA3",
-        "PWMG0_PWM1"
-      ]
+        "GPIO",
+        "PWMG0_PWM1",
+        "SDIO_DATA3"
+      ],
+      "caps": []
     },
     {
       "pin": 39,
@@ -886,10 +927,11 @@
       "gpio": 41,
       "type": "I/O",
       "functions": [
-        "GPIO41",
+        "GPIO",
         "UART2_TX",
         "LIN_TXD"
-      ]
+      ],
+      "caps": []
     },
     {
       "pin": 40,
@@ -897,20 +939,22 @@
       "gpio": 40,
       "type": "I/O",
       "functions": [
-        "GPIO40",
+        "GPIO",
         "UART2_RX",
         "LIN_RXD"
-      ]
+      ],
+      "caps": []
     },
     {
       "pin": null,
       "name": "GND_SLUG",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Die pad / exposed thermal ground",
+      "caps": [
         "GND"
-      ],
-      "note": "Die pad / exposed thermal ground"
+      ]
     }
   ],
   "platformSymbol": "T3"
