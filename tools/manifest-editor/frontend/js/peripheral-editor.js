@@ -598,7 +598,6 @@ function buildFormHtml(type, item, index, template) {
         <select class="peri-input" name="mounting" id="periMountingSelect">
           <option value="onboard" ${(!item?.mounting || item.mounting === 'onboard') ? 'selected' : ''}>${esc(t('periMountingOnboard'))}</option>
           <option value="accessory" ${item?.mounting === 'accessory' ? 'selected' : ''}>${esc(t('periMountingAccessory'))}</option>
-          <option value="connector" ${item?.mounting === 'connector' ? 'selected' : ''}>${esc(t('periMountingConnector'))}</option>
         </select>
       </div>
       <div class="peri-field-row">

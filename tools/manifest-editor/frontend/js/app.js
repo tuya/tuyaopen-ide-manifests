@@ -6,10 +6,11 @@ import imageUploader from './image-uploader.js';
 import { renderBoardCard, renderBoardForm, saveBoardForm, deleteBoardPrompt, setupFormValidation, initGlobalTags, setSelectedTags } from './board-editor.js';
 import { renderPeripheralEditor, isDirty as periIsDirty } from './peripheral-editor.js';
 import { renderExpansionPinsEditor } from './expansion-pins-editor.js';
+import { renderExpansionConnectorsEditor } from './expansion-connectors-editor.js';
 import { renderDemoCard, renderDemoForm, saveDemoForm, deleteDemoAction } from './demo-editor.js';
 import { renderSkillCard, renderSkillForm, saveSkillForm } from './skill-editor.js';
 import { renderPlatformCard, mountPlatformForm, mountNewPlatformForm, savePlatformForm, deletePlatformPrompt } from './platform-editor.js';
-import i18n from './i18n.js';
+import i18n, { t } from './i18n.js';
 
 let currentTab = 'boards';
 let platforms = [];
@@ -462,8 +463,19 @@ async function openBoardForm(boardId = null) {
           expPinsPane.style.display = target === 'expansion-pins' ? '' : 'none';
           expPinsPane.classList.toggle('active', target === 'expansion-pins');
           if (target === 'expansion-pins') {
+            // "Expansion" tab holds both bare pins and typed connectors (接插件).
+            expPinsPane.innerHTML = `
+              <div class="exp-section">
+                <h3 class="exp-section-title">${escapeHtml(t('expansionConnectorsSection'))}</h3>
+                <div id="expConnSub"></div>
+              </div>
+              <div class="exp-section" style="margin-top:20px;">
+                <h3 class="exp-section-title">${escapeHtml(t('expansionPinsSection'))}</h3>
+                <div id="expPinsSub"></div>
+              </div>`;
             // Pinout is per-chip: pass the chip id (variantId), not the SDK group.
-            renderExpansionPinsEditor('expansionPinsContainer', boardId, board.variantId || board.platformId);
+            renderExpansionPinsEditor('expPinsSub', boardId, board.variantId || board.platformId);
+            renderExpansionConnectorsEditor('expConnSub', boardId);
           }
         });
       });
