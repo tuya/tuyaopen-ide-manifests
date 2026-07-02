@@ -559,14 +559,11 @@
     {
       "id": "atk-dnesp32s3-box2-wifi",
       "name": {
-        "en": "ATK-DNESP32S3-BOX2 (Wi-Fi)",
+        "en": "正点原子 DNESP32S3-BOX2 (Wi-Fi)",
         "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
       },
-      "manufacturer": {
-        "en": "ALIENTEK",
-        "zh-CN": "正点原子"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "正点原子",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi) based on ESP32-S3 — ES8389 audio codec, ST7789 8080-interface LCD with backlight, and a multi-function XL9555 I/O expander.",
