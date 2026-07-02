@@ -39,101 +39,6 @@
             {
               "role": "dc",
               "gpio": 40
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "Reset is unused (rst=-1); backlight is driven via the XL9555 IO expander, not a direct GPIO.",
-          "zh-CN": "复位脚未使用（rst=-1）；背光由 XL9555 IO 扩展芯片控制，非直连 GPIO。"
-        }
-      },
-      {
-        "id": "rgb-lcd-connector",
-        "name": {
-          "en": "RGB LCD Connector (J1)",
-          "zh-CN": "RGB LCD 接插件 (J1)"
-        },
-        "interface": "RGB",
-        "mounting": "connector",
-        "pinLocked": true,
-        "pixelFormat": "RGB565",
-        "timing": {
-          "syncMode": "DE"
-        },
-        "pins": {
-          "RGB": [
-            {
-              "role": "de",
-              "gpio": 4
-            },
-            {
-              "role": "pclk",
-              "gpio": 5
-            },
-            {
-              "role": "r3",
-              "gpio": 45
-            },
-            {
-              "role": "r4",
-              "gpio": 48
-            },
-            {
-              "role": "r5",
-              "gpio": 47
-            },
-            {
-              "role": "r6",
-              "gpio": 21
-            },
-            {
-              "role": "r7",
-              "gpio": 14
-            },
-            {
-              "role": "g2",
-              "gpio": 10
-            },
-            {
-              "role": "g3",
-              "gpio": 9
-            },
-            {
-              "role": "g4",
-              "gpio": 46
-            },
-            {
-              "role": "g5",
-              "gpio": 3
-            },
-            {
-              "role": "g6",
-              "gpio": 8
-            },
-            {
-              "role": "g7",
-              "gpio": 18
-            },
-            {
-              "role": "b3",
-              "gpio": 17
-            },
-            {
-              "role": "b4",
-              "gpio": 16
-            },
-            {
-              "role": "b5",
-              "gpio": 15
-            },
-            {
-              "role": "b6",
-              "gpio": 7
-            },
-            {
-              "role": "b7",
-              "gpio": 6
             },
             {
               "role": "bl",
@@ -144,15 +49,19 @@
               "role": "rst",
               "expanderId": "io-expander-xl9555",
               "expanderPin": 10
+            },
+            {
+              "role": "power",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 11
             }
           ]
         },
         "kconfig": null,
         "note": {
-          "en": "16-bit RGB565 connector (J1) — no panel fitted; attach any compatible RGB panel. Data/DE/PCLK are on fixed MCU GPIOs; backlight and reset are driven via the XL9555 expander (bl=#8, rst=SLCD_RST #10). RGB data pins are shared with the DVP camera header and the on-board I2S audio — only one function can use them at a time.",
-          "zh-CN": "16 位 RGB565 接插件 (J1) —— 未接屏，可接任意兼容 RGB 屏。数据/DE/PCLK 走固定 MCU GPIO；背光和复位经 XL9555 扩展器驱动（bl=#8，rst=SLCD_RST #10）。RGB 数据脚与 DVP 摄像头排针、板载 I2S 音频共用，同一时刻只能用其一。"
-        },
-        "group": "rgb-lcd-panel"
+          "en": "SPI LCD header (U2). Data on fixed MCU GPIOs (sck=IO12, mosi=IO11, cs=IO21, dc=IO40); backlight/reset/power are driven via the XL9555 expander (bl=#8, rst=SLCD_RST #10, power=SLCD_PWR #11). The ESP SPI-LCD driver is configured rst_io=-1 because reset is toggled through the expander, not a direct GPIO. ST7789 is the shipped/default panel; the header accepts any compatible SPI panel on these pins.",
+          "zh-CN": "SPI LCD 排针（U2）。数据走固定 MCU GPIO（sck=IO12, mosi=IO11, cs=IO21, dc=IO40）；背光/复位/电源经 XL9555 扩展器驱动（bl=#8, rst=SLCD_RST #10, power=SLCD_PWR #11）。ESP SPI-LCD 驱动配置 rst_io=-1，因为复位是经扩展器拉的、非直连 GPIO。ST7789 是随板/默认屏，该排针可换插任意兼容 SPI 屏，用这组脚。"
+        }
       }
     ],
     "audio": [
@@ -306,128 +215,6 @@
             "dir": "in"
           }
         ]
-      }
-    ],
-    "camera": [
-      {
-        "id": "dvp-camera-connector",
-        "name": {
-          "en": "DVP Camera Connector",
-          "zh-CN": "DVP 摄像头接插件"
-        },
-        "interface": "DVP",
-        "mounting": "connector",
-        "pinLocked": true,
-        "pins": {
-          "DVP": [
-            {
-              "role": "rst",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 5
-            },
-            {
-              "role": "pwdn",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 4
-            },
-            {
-              "role": "pclk",
-              "gpio": 45
-            },
-            {
-              "role": "vsync",
-              "gpio": 47
-            },
-            {
-              "role": "hsync",
-              "gpio": 48
-            },
-            {
-              "role": "d0",
-              "gpio": 4
-            },
-            {
-              "role": "d1",
-              "gpio": 5
-            },
-            {
-              "role": "d2",
-              "gpio": 6
-            },
-            {
-              "role": "d3",
-              "gpio": 7
-            },
-            {
-              "role": "d4",
-              "gpio": 15
-            },
-            {
-              "role": "d5",
-              "gpio": 16
-            },
-            {
-              "role": "d6",
-              "gpio": 17
-            },
-            {
-              "role": "d7",
-              "gpio": 18
-            },
-            {
-              "role": "i2c_scl",
-              "gpio": null
-            },
-            {
-              "role": "i2c_sda",
-              "gpio": null
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "OV2640-class DVP camera header (P2) — no camera fitted; attach any compatible DVP module. No XCLK/MCLK is broken out on the header. SCCB (i2c_scl=IO38 / i2c_sda=IO39) is shared with the capacitive-touch I2C; data pins are shared with the RGB LCD header. PWDN/RESET via XL9555 (#4/#5).",
-          "zh-CN": "OV2640 类 DVP 摄像头排针 (P2) —— 未接摄像头，可接任意兼容 DVP 模块。排针未引出 XCLK/MCLK。SCCB（i2c_scl=IO38 / i2c_sda=IO39）与电容触摸 I2C 共用；数据脚与 RGB LCD 排针共用。PWDN/复位经 XL9555（#4/#5）。"
-        }
-      }
-    ],
-    "touchpad": [
-      {
-        "id": "ctp-connector",
-        "name": {
-          "en": "Capacitive Touch (on RGB LCD connector)",
-          "zh-CN": "电容触摸（RGB 屏接插件上）"
-        },
-        "interface": "I2C",
-        "mounting": "connector",
-        "pinLocked": true,
-        "pins": {
-          "I2C": [
-            {
-              "role": "scl",
-              "gpio": 38
-            },
-            {
-              "role": "sda",
-              "gpio": 39
-            },
-            {
-              "role": "int",
-              "gpio": 40
-            },
-            {
-              "role": "rst",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 9
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "Capacitive touch controller on the RGB LCD connector (J1). I2C shared with the DVP camera SCCB (scl=IO38 / sda=IO39); INT=IO40 (shared with LCD_DC); reset via XL9555 #9. Present only when a touch-capable RGB panel is attached.",
-          "zh-CN": "RGB LCD 接插件 (J1) 上的电容触摸控制器。I2C 与 DVP 摄像头 SCCB 共用（scl=IO38 / sda=IO39）；INT=IO40（与 LCD_DC 共用）；复位经 XL9555 #9。仅在接入带触摸的 RGB 屏时存在。"
-        },
-        "group": "rgb-lcd-panel"
       }
     ]
   },
@@ -749,16 +536,270 @@
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/ESP32/DNESP32S3"
   },
-  "peripheralGroups": {
-    "rgb-lcd-panel": {
+  "peripheralGroups": {},
+  "expansionConnectors": [
+    {
+      "id": "u2-spi-lcd",
       "name": {
-        "en": "RGB LCD Panel (on J1)",
-        "zh-CN": "RGB LCD 触摸屏接插件"
+        "en": "SPI LCD Connector (U2)",
+        "zh-CN": "SPI LCD 接插件 (U2)"
       },
+      "provides": [
+        {
+          "deviceClass": "display",
+          "interface": "SPI",
+          "pins": {
+            "SPI": [
+              {
+                "role": "sck",
+                "gpio": 12
+              },
+              {
+                "role": "mosi",
+                "gpio": 11
+              },
+              {
+                "role": "cs",
+                "gpio": 21
+              },
+              {
+                "role": "dc",
+                "gpio": 40
+              },
+              {
+                "role": "bl",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 8
+              },
+              {
+                "role": "rst",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 10
+              },
+              {
+                "role": "power",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 11
+              }
+            ]
+          }
+        }
+      ],
       "note": {
-        "en": "A combined RGB-LCD + capacitive-touch panel plugged into connector J1: the RGB display and its touch controller share the one connector. Attach a single compatible touch-RGB panel.",
-        "zh-CN": "插在 J1 接插件上的 RGB LCD + 电容触摸一体屏：RGB 显示与触摸控制器共用同一接插件。接一块兼容的带触摸 RGB 屏即可。"
+        "en": "On-board SPI LCD header (U2, \"SPI LCD WIRELESS\"). Fixed SPI pinout; backlight/reset/power via XL9555. Attach any compatible SPI panel (the board ships an ST7789 on it — see the ST7789 accessory).",
+        "zh-CN": "板载 SPI LCD 排针（U2，“SPI LCD WIRELESS”）。SPI 针脚固定;背光/复位/电源经 XL9555。可接任意兼容 SPI 屏(出厂配了一块 ST7789,见 ST7789 配件)。"
+      }
+    },
+    {
+      "id": "j1-lcd-panel",
+      "name": {
+        "en": "RGB LCD Panel Connector (J1)",
+        "zh-CN": "RGB 屏接插件 (J1)"
+      },
+      "provides": [
+        {
+          "deviceClass": "display",
+          "interface": "RGB",
+          "pins": {
+            "RGB": [
+              {
+                "role": "de",
+                "gpio": 4
+              },
+              {
+                "role": "pclk",
+                "gpio": 5
+              },
+              {
+                "role": "r3",
+                "gpio": 45
+              },
+              {
+                "role": "r4",
+                "gpio": 48
+              },
+              {
+                "role": "r5",
+                "gpio": 47
+              },
+              {
+                "role": "r6",
+                "gpio": 21
+              },
+              {
+                "role": "r7",
+                "gpio": 14
+              },
+              {
+                "role": "g2",
+                "gpio": 10
+              },
+              {
+                "role": "g3",
+                "gpio": 9
+              },
+              {
+                "role": "g4",
+                "gpio": 46
+              },
+              {
+                "role": "g5",
+                "gpio": 3
+              },
+              {
+                "role": "g6",
+                "gpio": 8
+              },
+              {
+                "role": "g7",
+                "gpio": 18
+              },
+              {
+                "role": "b3",
+                "gpio": 17
+              },
+              {
+                "role": "b4",
+                "gpio": 16
+              },
+              {
+                "role": "b5",
+                "gpio": 15
+              },
+              {
+                "role": "b6",
+                "gpio": 7
+              },
+              {
+                "role": "b7",
+                "gpio": 6
+              },
+              {
+                "role": "bl",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 8
+              },
+              {
+                "role": "rst",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 10
+              }
+            ]
+          }
+        },
+        {
+          "deviceClass": "touchpad",
+          "interface": "I2C",
+          "pins": {
+            "I2C": [
+              {
+                "role": "scl",
+                "gpio": 38
+              },
+              {
+                "role": "sda",
+                "gpio": 39
+              },
+              {
+                "role": "int",
+                "gpio": 40
+              },
+              {
+                "role": "rst",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 9
+              }
+            ]
+          }
+        }
+      ],
+      "note": {
+        "en": "One 40-pin connector carrying both the RGB display and its capacitive touch (data/DE/PCLK on fixed MCU GPIOs; backlight/reset via XL9555). RGB data pins are shared with the DVP camera header and the on-board I2S audio. Attach one compatible RGB-touch panel; generate its driver for these exact pins.",
+        "zh-CN": "同一个 40 脚接插件,同时引出 RGB 显示与电容触摸(数据/DE/PCLK 走固定 MCU GPIO;背光/复位经 XL9555)。RGB 数据脚与 DVP 摄像头排针、板载 I2S 音频共用。接一块兼容的带触摸 RGB 屏,按这组固定脚生成驱动。"
+      }
+    },
+    {
+      "id": "p2-dvp-camera",
+      "name": {
+        "en": "DVP Camera Connector (P2)",
+        "zh-CN": "DVP 摄像头接插件 (P2)"
+      },
+      "provides": [
+        {
+          "deviceClass": "camera",
+          "interface": "DVP",
+          "pins": {
+            "DVP": [
+              {
+                "role": "d0",
+                "gpio": 4
+              },
+              {
+                "role": "d1",
+                "gpio": 5
+              },
+              {
+                "role": "d2",
+                "gpio": 6
+              },
+              {
+                "role": "d3",
+                "gpio": 7
+              },
+              {
+                "role": "d4",
+                "gpio": 15
+              },
+              {
+                "role": "d5",
+                "gpio": 16
+              },
+              {
+                "role": "d6",
+                "gpio": 17
+              },
+              {
+                "role": "d7",
+                "gpio": 18
+              },
+              {
+                "role": "pclk",
+                "gpio": 45
+              },
+              {
+                "role": "vsync",
+                "gpio": 47
+              },
+              {
+                "role": "hsync",
+                "gpio": 48
+              },
+              {
+                "role": "i2c_scl",
+                "gpio": 38
+              },
+              {
+                "role": "i2c_sda",
+                "gpio": 39
+              },
+              {
+                "role": "pwdn",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 4
+              },
+              {
+                "role": "rst",
+                "expanderId": "io-expander-xl9555",
+                "expanderPin": 5
+              }
+            ]
+          }
+        }
+      ],
+      "note": {
+        "en": "OV2640-class DVP camera header; no XCLK broken out. SCCB (i2c_scl=IO38/i2c_sda=IO39) shared with the touch I2C; data pins shared with the RGB LCD header. PWDN/RESET via XL9555 (#4/#5).",
+        "zh-CN": "OV2640 类 DVP 摄像头排针;未引出 XCLK。SCCB(i2c_scl=IO38/i2c_sda=IO39)与触摸 I2C 共用;数据脚与 RGB LCD 排针共用。PWDN/复位经 XL9555(#4/#5)。"
       }
     }
-  }
+  ]
 }
