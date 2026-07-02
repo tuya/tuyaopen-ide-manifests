@@ -405,7 +405,7 @@
         "zh-CN": "乐鑫 ESP32-C3 通用开发板"
       },
       "manufacturer": "乐鑫",
-      "platformId": "esp32",
+      "platformId": "esp32c3",
       "variantId": "esp32c3",
       "summary": {
         "en": "Generic ESP32-C3 development board target — single-core RISC-V with Wi-Fi and BLE 5.0. A cost-effective starting point for connected devices.",
@@ -429,7 +429,7 @@
         "zh-CN": "乐鑫 ESP32-C6 通用开发板"
       },
       "manufacturer": "乐鑫",
-      "platformId": "esp32",
+      "platformId": "esp32c6",
       "variantId": "esp32c6",
       "summary": {
         "en": "Generic ESP32-C6 development board target — RISC-V with Wi-Fi 6, BLE 5.3, and 802.15.4 (Zigbee/Thread). For multi-protocol smart-home devices.",
@@ -508,14 +508,11 @@
     {
       "id": "atk-dnesp32s3",
       "name": {
-        "en": "ATK-DNESP32S3",
+        "en": "正点原子 DNESP32S3 开发板",
         "zh-CN": "正点原子 DNESP32S3 开发板"
       },
-      "manufacturer": {
-        "en": "ALIENTEK",
-        "zh-CN": "正点原子"
-      },
-      "platformId": "esp32s3",
+      "manufacturer": "正点原子",
+      "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
         "en": "ALIENTEK DNESP32S3 development board based on ESP32-S3 — onboard ES8388 audio codec, ST7789 SPI LCD, and an XL9555 I/O expander, with 16MB flash and PSRAM.",
@@ -526,7 +523,8 @@
         "ble",
         "audio",
         "display",
-        "development"
+        "development",
+        "starter-kit"
       ],
       "detailUrl": "boards-and-chips/esp32/atk-dnesp32s3.json",
       "published": true,

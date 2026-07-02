@@ -60,70 +60,61 @@ function naturalCompare(a, b) {
 // platform already uses — IS the set of pickable functions. To allow a brand-new
 // token, add it here (keeps function naming managed/consistent). Categorized by
 // the combobox via COMBO_PREFIXES.
+// Per the 2026-06-30 functions/caps split, `functions` is a SELECTION-ONLY controlled
+// vocabulary of peripheral-BUS SIGNAL tokens (things you route a peripheral onto);
+// pure pin ATTRIBUTES (RTC/LP domain, strapping, XTAL/clock, power rails, JTAG/SWD,
+// dedicated flash bus, analog audio) live in the free-text `caps[]` instead and are
+// intentionally NOT in this list.
 const PINOUT_FUNC_SUGGEST = [
-  // power / system (VCC/VDD are the umbrella tokens for all supply rails;
-  // specific rail names like VCCRXFE/VBAT/VDDDIG map onto VCC/VDD)
-  'GND', 'VCC', 'VDD', 'RESET', 'BOOT', 'BOOT0', 'BOOT1', 'CEN', 'ANT', 'RXEN', 'TXEN', 'PU', 'IFRP_OUT', 'MICBIAS', 'IRDA',
-  'EXT_32K', 'BT_LED', 'LED_0', 'JTRST',
-  // gpio
+  // gpio — bare `GPIO` = matrix-routable candidate marker; GPIO{n} = pin identity
+  'GPIO',
   ...Array.from({ length: 56 }, (_, i) => `GPIO${i}`),
   // uart (+ dedicated download uart)
-  ...['0', '1', '2'].flatMap(n => [`UART${n}_TX`, `UART${n}_RX`, `UART${n}_CTS`, `UART${n}_RTS`, `UART${n}_CK`]),
+  ...['0', '1', '2', '3', '4'].flatMap(n => [`UART${n}_TX`, `UART${n}_RX`, `UART${n}_CTS`, `UART${n}_RTS`]),
   'DL_UART_TX', 'DL_UART_RX',
   // i2c
-  ...['0', '1', '2'].flatMap(n => [`I2C${n}_SCL`, `I2C${n}_SDA`, `I2C${n}_SMBA`]),
+  ...['0', '1', '2'].flatMap(n => [`I2C${n}_SCL`, `I2C${n}_SDA`]),
   // spi / qspi
-  ...['0', '1'].flatMap(n => [`SPI${n}_SCK`, `SPI${n}_CSN`, `SPI${n}_MOSI`, `SPI${n}_MISO`]),
+  ...['0', '1', '2', '3'].flatMap(n => [`SPI${n}_SCK`, `SPI${n}_CSN`, `SPI${n}_MOSI`, `SPI${n}_MISO`]),
   ...['0', '1'].flatMap(n => [`QSPI${n}_SCK`, `QSPI${n}_CS`, `QSPI${n}_IO0`, `QSPI${n}_IO1`, `QSPI${n}_IO2`, `QSPI${n}_IO3`]),
-  // sdio
-  'SDIO_CLK', 'SDIO_CMD', 'SDIO_DATA0', 'SDIO_DATA1', 'SDIO_DATA2', 'SDIO_DATA3', 'SDIO_INT',
-  // embedded serial-flash controller (SPIC) — e.g. RTL8720CF
-  'SPIC_SCK', 'SPIC_CS', 'SPIC_IO0', 'SPIC_IO1', 'SPIC_IO2', 'SPIC_IO3',
   // pwm (+ grouped pwm)
-  ...Array.from({ length: 8 }, (_, i) => `PWM${i}`),
+  ...Array.from({ length: 16 }, (_, i) => `PWM${i}`),
   ...['0', '1'].flatMap(g => Array.from({ length: 6 }, (_, i) => `PWMG${g}_PWM${i}`)),
   // adc — unit+channel qualified (ADC{unit}_CH{channel}); units 0-2, channels 0-19
   ...[0, 1, 2].flatMap(u => Array.from({ length: 20 }, (_, c) => `ADC${u}_CH${c}`)),
-  // timer
-  ...Array.from({ length: 17 }, (_, t) => t).flatMap(t => [0, 1, 2, 3].map(c => `TIMER${t}_CH${c}`)),
-  // advanced-timer extras (complementary outputs / break-in / external trigger)
-  'TIMER0_CH0_ON', 'TIMER0_CH1_ON', 'TIMER0_CH2_ON', 'TIMER0_BRKIN', 'TIMER0_ETI',
-  'TIMER1_ETI', 'TIMER2_ETI',
-  'TIMER15_CH0_ON', 'TIMER15_BRKIN', 'TIMER16_CH0_ON', 'TIMER16_BRKIN',
-  // rtc / wakeup
-  'RTC_OUT', 'RTC_REFIN', 'RTC_TS', 'RTC_TAMP', 'RTC_TAMP0', 'RTC_TAMP1',
-  'WKUP0', 'WKUP1', 'WKUP2', 'WKUP3',
-  // debug (jtag / swd)
-  'JTMS', 'JTCK', 'JTDI', 'JTDO', 'NJTRST', 'SWCLK', 'SWDIO',
-  // clock / oscillator
-  'CLK_OUT', 'CLK_OUT0', 'CLK_OUT1', 'OSC32IN', 'OSC32OUT', 'XTAL1', 'XTAL2', 'LPO_CLK', 'XI', 'XO',
-  // i2s / audio
-  ...['0', '1', '2'].flatMap(n => [`I2S${n}_SCK`, `I2S${n}_SYNC`, `I2S${n}_DIN`, `I2S${n}_DOUT`]),
+  // dac
+  ...Array.from({ length: 8 }, (_, i) => `DAC${i}`), 'DAC_1', 'DAC_2',
+  // i2s / digital mic (audio bus)
+  ...['', '0', '1', '2'].flatMap(n => [`I2S${n}_SCK`, `I2S${n}_WS`, `I2S${n}_SYNC`, `I2S${n}_DIN`, `I2S${n}_DOUT`, `I2S${n}_MCLK`]),
   'I2S_MCLK', 'DMIC_CLK', 'DMIC_DAT',
-  'MIC1_P', 'MIC1_N', 'MIC2_P', 'MIC2_N', 'AUDIO_LP', 'AUDIO_LN', 'VCOM', 'LINE',
   // rgb lcd
   ...['R', 'G', 'B'].flatMap(ch => Array.from({ length: 8 }, (_, i) => `RGB_${ch}${i}`)),
   'RGB_DCLK', 'RGB_DE', 'RGB_DISP', 'RGB_HSYNC', 'RGB_VSYNC',
-  // i8080 lcd
+  // i8080 (mcu8080) lcd
   ...Array.from({ length: 18 }, (_, i) => `I8080_D${i}`),
   'I8080_CSX', 'I8080_RDX', 'I8080_RSX', 'I8080_WRX', 'I8080_RESET',
   // camera (cis / dvp)
   'CIS_MCLK', 'CIS_AUXCLK', 'CIS_PCLK', 'CIS_HSYNC', 'CIS_VSYNC',
   ...Array.from({ length: 8 }, (_, i) => `CIS_PXD${i}`),
-  // segment lcd
+  // sdio (up to 8-bit bus)
+  'SDIO_CLK', 'SDIO_CMD', 'SDIO_INT',
+  ...Array.from({ length: 8 }, (_, i) => `SDIO_DATA${i}`),
+  // segment lcd (slcd)
   ...Array.from({ length: 32 }, (_, i) => `SEG${i}`),
   ...Array.from({ length: 8 }, (_, i) => `COM${i}`),
-  // touch
-  ...Array.from({ length: 16 }, (_, i) => `TOUCH${i}`),
-  // ethernet
-  'ENET_MDC', 'ENET_MDIO', 'ENET_REF_CLK', 'ENET_PHY_INT',
-  'ENET_RXD0', 'ENET_RXD1', 'ENET_RXDV', 'ENET_TXD0', 'ENET_TXD1', 'ENET_TXEN',
+  // ethernet (rmii/mii)
+  'ENET_MDC', 'ENET_MDIO', 'ENET_REF_CLK', 'ENET_PHY_INT', 'ENET_RX_CLK', 'ENET_TX_CLK',
+  'ENET_RXDV', 'ENET_TXEN', 'ENET_RX_ER', 'ENET_TX_ER', 'ENET_CRS', 'ENET_COL',
+  ...Array.from({ length: 4 }, (_, i) => `ENET_RXD${i}`),
+  ...Array.from({ length: 4 }, (_, i) => `ENET_TXD${i}`),
   // can / lin
   'CAN_TX', 'CAN_RX', 'CAN_STBY', 'LIN_TXD', 'LIN_RXD', 'LIN_SLEEP',
-  // smart card (iso7816)
-  'SC_CLK', 'SC_IO', 'SC_RSTN', 'SC_VCC',
+  // smart card (iso7816) / irda
+  'SC_CLK', 'SC_IO', 'SC_RSTN', 'SC_VCC', 'IRDA',
   // usb
   'USB_D+', 'USB_D-',
+  // touch
+  ...Array.from({ length: 16 }, (_, i) => `TOUCH${i}`),
 ];
 
 // Leading peripheral prefixes used to categorize pin function names in the
@@ -163,6 +154,16 @@ const PERI_PIN = {
   // (ESP32 has ADC1 + ADC2 with overlapping channel numbers) stay unambiguous.
   // The token is built from the enclosing port id (the ADC unit) + channel id.
   adc:  { prefix: 'ADC',  pinField: 'pin', unitChannel: true },
+  // Audio bus — unit = port id (I2S0_SCK, …). Field names vary by datasheet
+  // (bclk↔SCK, ws↔WS/SYNC); a mismatch just degrades to an unfiltered picker.
+  i2s:  { prefix: 'I2S',  fields: { bclk: 'SCK', sck: 'SCK', ws: 'WS', sync: 'SYNC', din: 'DIN', dout: 'DOUT', mclk: 'MCLK' } },
+  // Single-instance display/camera/sdio buses: noUnit → token has no port index
+  // (RGB_R0, I8080_D0, CIS_PXD0, SDIO_DATA0). `arrayFields` maps a pinGroups array
+  // (e.g. r/g/b, data) to its token base so element i → e.g. RGB_R{i}.
+  rgb:   { prefix: 'RGB',   noUnit: true, fields: { dclk: 'DCLK', de: 'DE', disp: 'DISP', hsync: 'HSYNC', vsync: 'VSYNC' }, arrayFields: { r: 'R', g: 'G', b: 'B' } },
+  i8080: { prefix: 'I8080', noUnit: true, fields: { wr: 'WRX', wdx: 'WRX', rd: 'RDX', rdx: 'RDX', cs: 'CSX', csx: 'CSX', dc: 'RSX', rsx: 'RSX', reset: 'RESET', rst: 'RESET' }, arrayFields: { data: 'D' } },
+  dvp:   { prefix: 'CIS',   noUnit: true, fields: { mclk: 'MCLK', pclk: 'PCLK', hsync: 'HSYNC', vsync: 'VSYNC' }, arrayFields: { data: 'PXD' } },
+  sdio:  { prefix: 'SDIO',  noUnit: true, fields: { clk: 'CLK', cmd: 'CMD' }, arrayFields: { data: 'DATA' } },
 };
 
 // Resolve the bilingual peripheral catalog to the active language: pick the
@@ -195,7 +196,7 @@ function resolvePeripheralSchema() {
 function pinoutLabels() {
   return {
     pin: i18n.t('pfpoPin'), name: i18n.t('pfpoName'), gpio: i18n.t('pfpoGpio'),
-    type: i18n.t('pfpoType'), functions: i18n.t('pfpoFunctions'), note: i18n.t('pfpoNote'),
+    type: i18n.t('pfpoType'), functions: i18n.t('pfpoFunctions'), caps: i18n.t('pfpoCaps'), note: i18n.t('pfpoNote'),
   };
 }
 
@@ -455,6 +456,31 @@ class StructEditor {
     return backend;
   }
 
+  // Nearest enclosing port's `routable` flag along the path (GPIO-matrix chips set
+  // it on a peripheral port whose pins aren't locked to specific GPIOs). Default
+  // false = fixed pinmux (current behavior).
+  _routableAt(path) {
+    let cur = this.data, r = false;
+    for (const seg of path) {
+      if (cur == null) break;
+      cur = cur[seg];
+      if (cur && typeof cur === 'object' && !Array.isArray(cur) && typeof cur.routable === 'boolean') r = cur.routable;
+    }
+    return r;
+  }
+
+  // Nearest enclosing port's `candidates` (GPIO numbers a routable port may use),
+  // or null when unconstrained (= any GPIO-capable pin).
+  _candidatesAt(path) {
+    let cur = this.data, c = null;
+    for (const seg of path) {
+      if (cur == null) break;
+      cur = cur[seg];
+      if (cur && typeof cur === 'object' && !Array.isArray(cur) && Array.isArray(cur.candidates)) c = cur.candidates;
+    }
+    return c;
+  }
+
   // True when the leaf sits inside a pin mapping (pinGroups/pins subtree), so a
   // numeric value there is a GPIO and should use a picker even without a token.
   _isPinContext(path) {
@@ -490,9 +516,16 @@ class StructEditor {
     if (!cfg) return null;
     const field = path[path.length - 1];
     let suffix;
-    if (cfg.pinField && field === cfg.pinField) suffix = '';
+    // Array pin field (e.g. RGB r/g/b[], I8080/DVP data[]): path ends in
+    // [.., arrayName, index] → suffix `_${base}${index}` (e.g. "_R0", "_D3").
+    if (typeof field === 'number' && cfg.arrayFields && path.length >= 2 && cfg.arrayFields[path[path.length - 2]] != null) {
+      suffix = '_' + cfg.arrayFields[path[path.length - 2]] + field;
+    }
+    else if (cfg.pinField && field === cfg.pinField) suffix = '';
     else if (cfg.fields && field in cfg.fields) suffix = '_' + cfg.fields[field];
     else return null;
+    // Single-instance buses (rgb/i8080/dvp/sdio): no port index in the token.
+    if (cfg.noUnit) return `${cfg.prefix}${suffix}`;
     // Unit+channel peripherals (ADC): token is `${prefix}${unit}_CH${channel}`,
     // built from the two enclosing ids (port = unit, channel = leaf). Falls back
     // to unit 0 when the path has no port level.
@@ -515,7 +548,25 @@ class StructEditor {
     const all = this.pinout.filter(e => e && typeof e.gpio === 'number');
     const cur = (value === null || value === undefined) ? '' : String(value);
     const opt = (e) => `<option value="${e.gpio}"${String(e.gpio) === cur ? ' selected' : ''}>${escapeHtml(`${e.gpio} · ${e.name || ('GPIO' + e.gpio)}`)}</option>`;
-    // Pins whose functions advertise this token are surfaced first ("recommended").
+    // Routable port (GPIO-matrix): the peripheral isn't locked to a pin, so don't
+    // token-match. The stored value IS the port's default (from pinGroups); surface
+    // it as "default (recommended)", then the candidate pool — the port's
+    // `candidates` if declared, else every GPIO-capable pin — as selectable.
+    if (this._routableAt(path)) {
+      const cand = this._candidatesAt(path);
+      const pool = Array.isArray(cand) && cand.length
+        ? all.filter(e => cand.includes(e.gpio))
+        : all.filter(e => Array.isArray(e.functions) && e.functions.includes('GPIO'));
+      const poolF = pool.length ? pool : all;
+      const curEnt = poolF.find(e => String(e.gpio) === cur);
+      const rest = poolF.filter(e => e !== curEnt);
+      let opts = `<option value="">—</option>`;
+      if (cur !== '' && !curEnt) opts += `<option value="${escapeHtml(cur)}" selected>${escapeHtml(cur)}</option>`;
+      if (curEnt) opts += `<optgroup label="${escapeHtml(i18n.t('pfPinDefault'))}">${opt(curEnt)}</optgroup>`;
+      opts += `<optgroup label="${escapeHtml(i18n.t('pfPinRoutable'))}">${rest.map(opt).join('')}</optgroup>`;
+      return `<select class="form-input sf-leaf sf-pinsel" data-path="${dp}" data-kind="number" title="${escapeHtml(i18n.t('pfPinRoutable'))}">${opts}</select>`;
+    }
+    // Fixed port: pins whose functions advertise this token are surfaced first ("recommended").
     // PWM is matched loosely: a PWM channel's `id` is a flat index, but the pinout
     // names PWM pins per-datasheet (PWMGx_PWMn) or via timer channels (TIMERx_CHy),
     // so any PWM-/timer-capable pin is a valid recommendation, not just `PWM{id}`.
@@ -1806,7 +1857,7 @@ export function mountPlatformForm(container, platform, detail, { isNew } = {}) {
   new StructEditor(editor.data.pinout, {
     labels: pinoutLabels(), lockStructure: true, enums: { type: PIN_TYPE_OPTIONS },
     datalistKeys: ['functions'], datalistSuggest: PINOUT_FUNC_SUGGEST,
-    itemTemplate: { pin: null, name: '', gpio: null, type: '', functions: [] },
+    itemTemplate: { pin: null, name: '', gpio: null, type: '', functions: [], caps: [] },
   }).mount(container.querySelector('#pfPinoutStruct'));
 
   _state = { isNew, editor };

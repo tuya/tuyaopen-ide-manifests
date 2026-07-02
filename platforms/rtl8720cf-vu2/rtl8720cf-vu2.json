@@ -349,13 +349,15 @@
       "gpio": 20,
       "type": "I/O",
       "functions": [
-        "GPIO20",
-        "SDIO_DATA1",
-        "SPIC_IO1",
+        "GPIO",
         "UART2_RTS",
         "SPI0_MISO",
         "I2C0_SDA",
-        "PWM0"
+        "PWM0",
+        "SDIO_DATA1"
+      ],
+      "caps": [
+        "SPIC_IO1"
       ]
     },
     {
@@ -363,10 +365,11 @@
       "name": "VD33_SDIO",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "I/O power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "I/O power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 3,
@@ -374,121 +377,134 @@
       "gpio": 23,
       "type": "I/O",
       "functions": [
-        "GPIO23",
-        "LED_0",
+        "GPIO",
         "PWM7"
       ],
-      "note": "Power-on trap SPS_LDO_SEL (shared with GPIOA_23)"
+      "note": "Power-on trap SPS_LDO_SEL (shared with GPIOA_23)",
+      "caps": [
+        "LED_0"
+      ]
     },
     {
       "pin": 4,
       "name": "VA33_XTAL",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "Analog power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 5,
       "name": "XO",
       "gpio": null,
       "type": "O",
-      "functions": [
+      "functions": [],
+      "note": "40MHz crystal clock output",
+      "caps": [
         "XO"
-      ],
-      "note": "40MHz crystal clock output"
+      ]
     },
     {
       "pin": 6,
       "name": "XI",
       "gpio": null,
       "type": "I",
-      "functions": [
+      "functions": [],
+      "note": "40MHz crystal clock input",
+      "caps": [
         "XI"
-      ],
-      "note": "40MHz crystal clock input"
+      ]
     },
     {
       "pin": 7,
       "name": "VA33_SYN",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "Analog power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 8,
       "name": "VA11_SYN",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 1.1V±5%",
+      "caps": [
         "VDD"
-      ],
-      "note": "Analog power source, 1.1V±5%"
+      ]
     },
     {
       "pin": 9,
       "name": "VA33_RF",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "Analog power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 10,
       "name": "VA33_PA",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "Analog power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 11,
       "name": "RFIO",
       "gpio": null,
       "type": "I/O",
-      "functions": [
+      "functions": [],
+      "note": "WL RF signal",
+      "caps": [
         "ANT"
-      ],
-      "note": "WL RF signal"
+      ]
     },
     {
       "pin": 12,
       "name": "VA11_RF",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 1.1V±5%",
+      "caps": [
         "VDD"
-      ],
-      "note": "Analog power source, 1.1V±5%"
+      ]
     },
     {
       "pin": 13,
       "name": "VA33_TR",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Analog power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "Analog power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 14,
       "name": "CHIP_EN",
       "gpio": null,
       "type": "I",
-      "functions": [
+      "functions": [],
+      "note": "Enable chip. 1: enable; 0: shutdown",
+      "caps": [
         "CEN"
-      ],
-      "note": "Enable chip. 1: enable; 0: shutdown"
+      ]
     },
     {
       "pin": 15,
@@ -496,13 +512,15 @@
       "gpio": 0,
       "type": "I/O",
       "functions": [
-        "GPIO0",
-        "JTCK",
+        "GPIO",
         "UART1_RX",
-        "EXT_32K",
         "PWM0"
       ],
-      "note": "Power-on trap TEST_MODE_SEL (shared with GPIOA_0)"
+      "note": "Power-on trap TEST_MODE_SEL (shared with GPIOA_0)",
+      "caps": [
+        "JTCK",
+        "EXT_32K"
+      ]
     },
     {
       "pin": 16,
@@ -510,22 +528,25 @@
       "gpio": 1,
       "type": "I/O",
       "functions": [
-        "GPIO1",
-        "JTMS",
+        "GPIO",
         "UART1_TX",
         "PWM1"
       ],
-      "note": "Power-on trap Autoload_Fail (shared with GPIOA_1)"
+      "note": "Power-on trap Autoload_Fail (shared with GPIOA_1)",
+      "caps": [
+        "JTMS"
+      ]
     },
     {
       "pin": 17,
       "name": "VD11_CORE",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Core power source, 1.1V±5%",
+      "caps": [
         "VDD"
-      ],
-      "note": "Core power source, 1.1V±5%"
+      ]
     },
     {
       "pin": 18,
@@ -533,12 +554,14 @@
       "gpio": 2,
       "type": "I/O",
       "functions": [
-        "GPIO2",
-        "JTDO",
+        "GPIO",
         "UART1_RX",
         "SPI0_CSN",
         "I2C0_SCL",
         "PWM2"
+      ],
+      "caps": [
+        "JTDO"
       ]
     },
     {
@@ -547,12 +570,14 @@
       "gpio": 3,
       "type": "I/O",
       "functions": [
-        "GPIO3",
-        "JTDI",
+        "GPIO",
         "UART1_TX",
         "SPI0_SCK",
         "I2C0_SDA",
         "PWM3"
+      ],
+      "caps": [
+        "JTDI"
       ]
     },
     {
@@ -561,11 +586,13 @@
       "gpio": 4,
       "type": "I/O",
       "functions": [
-        "GPIO4",
-        "JTRST",
+        "GPIO",
         "UART1_CTS",
         "SPI0_MOSI",
         "PWM4"
+      ],
+      "caps": [
+        "JTRST"
       ]
     },
     {
@@ -574,9 +601,11 @@
       "gpio": 7,
       "type": "I/O",
       "functions": [
-        "GPIO7",
-        "SPIC_CS",
+        "GPIO",
         "SPI0_CSN"
+      ],
+      "caps": [
+        "SPIC_CS"
       ]
     },
     {
@@ -585,9 +614,11 @@
       "gpio": 8,
       "type": "I/O",
       "functions": [
-        "GPIO8",
-        "SPIC_SCK",
+        "GPIO",
         "SPI0_SCK"
+      ],
+      "caps": [
+        "SPIC_SCK"
       ]
     },
     {
@@ -596,10 +627,12 @@
       "gpio": 9,
       "type": "I/O",
       "functions": [
-        "GPIO9",
-        "SPIC_IO2",
+        "GPIO",
         "UART0_RTS",
         "SPI0_MOSI"
+      ],
+      "caps": [
+        "SPIC_IO2"
       ]
     },
     {
@@ -608,10 +641,12 @@
       "gpio": 10,
       "type": "I/O",
       "functions": [
-        "GPIO10",
-        "SPIC_IO1",
+        "GPIO",
         "UART0_CTS",
         "SPI0_MISO"
+      ],
+      "caps": [
+        "SPIC_IO1"
       ]
     },
     {
@@ -620,11 +655,13 @@
       "gpio": 11,
       "type": "I/O",
       "functions": [
-        "GPIO11",
-        "SPIC_IO0",
+        "GPIO",
         "UART0_TX",
         "I2C0_SCL",
         "PWM0"
+      ],
+      "caps": [
+        "SPIC_IO0"
       ]
     },
     {
@@ -633,11 +670,13 @@
       "gpio": 12,
       "type": "I/O",
       "functions": [
-        "GPIO12",
-        "SPIC_IO3",
+        "GPIO",
         "UART0_RX",
         "I2C0_SDA",
         "PWM1"
+      ],
+      "caps": [
+        "SPIC_IO3"
       ]
     },
     {
@@ -645,60 +684,66 @@
       "name": "VD33_FLASH",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "I/O power source, 3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "I/O power source, 3.3V±10%"
+      ]
     },
     {
       "pin": 28,
       "name": "VD1833_LPC",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "3.3V±10%",
+      "caps": [
         "VCC"
-      ],
-      "note": "3.3V±10%"
+      ]
     },
     {
       "pin": 29,
       "name": "VD11_CORE",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Core power source, 1.1V±5%",
+      "caps": [
         "VDD"
-      ],
-      "note": "Core power source, 1.1V±5%"
+      ]
     },
     {
       "pin": 30,
       "name": "VBAT_IN",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "5V±10% or 3.3V±10% input",
+      "caps": [
         "VCC"
-      ],
-      "note": "5V±10% or 3.3V±10% input"
+      ]
     },
     {
       "pin": 31,
       "name": "VD33_OUT",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "3.3V LDO output / 3.3V±10% input",
+      "caps": [
         "VCC"
-      ],
-      "note": "3.3V LDO output / 3.3V±10% input"
+      ]
     },
     {
       "pin": 32,
       "name": "VD11_CORE",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "1.1V output from SWR/LDO; core power 1.1V±5%",
+      "caps": [
         "VDD"
-      ],
-      "note": "1.1V output from SWR/LDO; core power 1.1V±5%"
+      ]
     },
     {
       "pin": 33,
@@ -706,10 +751,11 @@
       "gpio": 13,
       "type": "I/O",
       "functions": [
-        "GPIO13",
+        "GPIO",
         "UART0_RX",
         "PWM7"
-      ]
+      ],
+      "caps": []
     },
     {
       "pin": 34,
@@ -717,21 +763,23 @@
       "gpio": 14,
       "type": "I/O",
       "functions": [
-        "GPIO14",
-        "SDIO_INT",
+        "GPIO",
         "UART0_TX",
-        "PWM2"
-      ]
+        "PWM2",
+        "SDIO_INT"
+      ],
+      "caps": []
     },
     {
       "pin": 35,
       "name": "VD11_CORE",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Core power source, 1.1V±5%",
+      "caps": [
         "VDD"
-      ],
-      "note": "Core power source, 1.1V±5%"
+      ]
     },
     {
       "pin": 36,
@@ -739,13 +787,15 @@
       "gpio": 15,
       "type": "I/O",
       "functions": [
-        "GPIO15",
-        "SDIO_DATA2",
-        "SPIC_CS",
+        "GPIO",
         "UART2_RX",
         "SPI0_CSN",
         "I2C0_SCL",
-        "PWM3"
+        "PWM3",
+        "SDIO_DATA2"
+      ],
+      "caps": [
+        "SPIC_CS"
       ]
     },
     {
@@ -754,13 +804,15 @@
       "gpio": 16,
       "type": "I/O",
       "functions": [
-        "GPIO16",
-        "SDIO_DATA3",
-        "SPIC_SCK",
+        "GPIO",
         "UART2_TX",
         "SPI0_SCK",
         "I2C0_SDA",
-        "PWM4"
+        "PWM4",
+        "SDIO_DATA3"
+      ],
+      "caps": [
+        "SPIC_SCK"
       ]
     },
     {
@@ -769,10 +821,12 @@
       "gpio": 17,
       "type": "I/O",
       "functions": [
-        "GPIO17",
-        "SDIO_CMD",
-        "SPIC_IO2",
-        "PWM5"
+        "GPIO",
+        "PWM5",
+        "SDIO_CMD"
+      ],
+      "caps": [
+        "SPIC_IO2"
       ]
     },
     {
@@ -781,10 +835,12 @@
       "gpio": 18,
       "type": "I/O",
       "functions": [
-        "GPIO18",
-        "SDIO_CLK",
-        "SPIC_IO3",
-        "PWM6"
+        "GPIO",
+        "PWM6",
+        "SDIO_CLK"
+      ],
+      "caps": [
+        "SPIC_IO3"
       ]
     },
     {
@@ -793,13 +849,15 @@
       "gpio": 19,
       "type": "I/O",
       "functions": [
-        "GPIO19",
-        "SDIO_DATA0",
-        "SPIC_IO0",
+        "GPIO",
         "UART2_CTS",
         "SPI0_MOSI",
         "I2C0_SCL",
-        "PWM7"
+        "PWM7",
+        "SDIO_DATA0"
+      ],
+      "caps": [
+        "SPIC_IO0"
       ]
     },
     {
@@ -807,10 +865,11 @@
       "name": "GND",
       "gpio": null,
       "type": "P",
-      "functions": [
+      "functions": [],
+      "note": "Exposed pad ground",
+      "caps": [
         "GND"
-      ],
-      "note": "Exposed pad ground"
+      ]
     }
   ],
   "platformSymbol": "RTL8720CF_VU2"

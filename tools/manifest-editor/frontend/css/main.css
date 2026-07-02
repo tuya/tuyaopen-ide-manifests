@@ -1449,6 +1449,17 @@ body {
   background: #fef3c7;
   color: #92400e;
 }
+.peri-card-mounting--connector {
+  background: rgba(59, 130, 246, 0.12);
+  color: #1e40af;
+}
+.peri-pin-src-cell {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.peri-pin-src-cell .peri-pin-src { width: auto; flex: 0 0 auto; }
+.peri-pin-exp-fields { display: inline-flex; gap: 4px; align-items: center; }
 .peri-card-locked, .peri-card-unlocked {
   font-size: 12px;
   margin-left: 4px;
