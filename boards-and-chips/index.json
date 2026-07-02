@@ -698,7 +698,7 @@
         "compact"
       ],
       "detailUrl": "boards-and-chips/esp32/xingzhi-esp32s3-cube-0-96-oled-wifi.json",
-      "published": true,
+      "published": false,
       "sdks": [
         "tuyaopen"
       ]
