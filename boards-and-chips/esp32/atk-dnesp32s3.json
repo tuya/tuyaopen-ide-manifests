@@ -753,7 +753,7 @@
     "rgb-lcd-panel": {
       "name": {
         "en": "RGB LCD Panel (on J1)",
-        "zh-CN": "RGB LCD 触摸屏接插件（J1）"
+        "zh-CN": "RGB LCD 触摸屏接插件"
       },
       "note": {
         "en": "A combined RGB-LCD + capacitive-touch panel plugged into connector J1: the RGB display and its touch controller share the one connector. Attach a single compatible touch-RGB panel.",
