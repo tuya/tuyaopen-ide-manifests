@@ -269,7 +269,7 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": false
+      "published": true
     },
     {
       "id": "linux",
