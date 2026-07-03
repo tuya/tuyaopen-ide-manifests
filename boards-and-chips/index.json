@@ -527,7 +527,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/atk-dnesp32s3/atk-dnesp32s3.jpg"
+      }
     },
     {
       "id": "atk-dnesp32s3-box",
