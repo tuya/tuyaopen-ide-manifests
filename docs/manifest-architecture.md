@@ -147,7 +147,7 @@ sequenceDiagram
 ```
 
 > ⚠️ **修改 `app_default.config` 后必须 `tos.py clean`**
-> `app_default.config` 提供项目级 Kconfig 默认值，这些默认值会在首次构建时被固化进构建输出（`.config` / 构建缓存）。直接 `tos.py build` 不会重新读取被修改的默认值，因此**任何对 `app_default.config` 的修改完成后，都需要先执行 `tos.py clean`，再重新 `tos.py build`**，改动才会生效。
+> 与 `tos.py config choice` / `config menu`（会自动触发 clean）不同，**手动编辑** `app_default.config` 不会触发 clean。此时陈旧的 `.build/cache/using.config` 会被复用，直接 `tos.py build` 会静默忽略你的改动。因此**任何对 `app_default.config` 的手动修改完成后，都需要先执行 `tos.py clean`，再重新 `tos.py build`**，改动才会生效。
 
 ---
 
@@ -261,7 +261,7 @@ flowchart TD
     USE_DEFAULT --> BUILD
 
     BUILD --> EDIT{修改了<br/>app_default.config?}
-    EDIT -->|是| CLEAN[tos.py clean<br/>清除固化的默认值]
+    EDIT -->|是| CLEAN[tos.py clean<br/>清除陈旧 .build/cache/using.config]
     EDIT -->|否| DONE[完成]
     CLEAN --> BUILD
 ```
