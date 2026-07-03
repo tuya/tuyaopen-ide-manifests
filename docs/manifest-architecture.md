@@ -140,7 +140,14 @@ sequenceDiagram
     IDE->>User: 项目就绪，可编译
     User->>SDK: tos.py build
     SDK->>SDK: 加载 platform (T5AI)<br/>加载 board config<br/>编译 demo 源码
+
+    Note over User,SDK: 若之后修改了 app_default.config，<br/>必须先 tos.py clean 再 tos.py build
+    User->>SDK: (修改 app_default.config 后) tos.py clean
+    User->>SDK: tos.py build
 ```
+
+> ⚠️ **修改 `app_default.config` 后必须 `tos.py clean`**
+> `app_default.config` 提供项目级 Kconfig 默认值，这些默认值会在首次构建时被固化进构建输出（`.config` / 构建缓存）。直接 `tos.py build` 不会重新读取被修改的默认值，因此**任何对 `app_default.config` 的修改完成后，都需要先执行 `tos.py clean`，再重新 `tos.py build`**，改动才会生效。
 
 ---
 
@@ -224,7 +231,7 @@ TuyaOpenSDK/
 | **外设启用** | `peripheralPatterns.*.optional` | `CONFIG_ENABLE_DISPLAY=y` | Kconfig 条件编译 |
 | **兼容性** | `demo.compatibilityType` | 有无 `config/` 目录 | universal=跨平台, board-specific=需选板 |
 | **板级配置** | `demo.boardConfigs[]` | `config/*.config` 文件名 | 每个 .config 文件对应一个支持的板 |
-| **默认配置** | `demo.defaultConfig` | `app_default.config` 内容 | 项目级通用配置 |
+| **默认配置** | `demo.defaultConfig` | `app_default.config` 内容 | 项目级通用配置；**修改后须 `tos.py clean` 再构建** |
 | **来源** | `demo.source.subpath` | 实际代码路径 | apps/ 或 examples/ 下的子目录 |
 
 ---
@@ -252,6 +259,11 @@ flowchart TD
     
     USE_BOARD_CFG --> BUILD[tos.py build]
     USE_DEFAULT --> BUILD
+
+    BUILD --> EDIT{修改了<br/>app_default.config?}
+    EDIT -->|是| CLEAN[tos.py clean<br/>清除固化的默认值]
+    EDIT -->|否| DONE[完成]
+    CLEAN --> BUILD
 ```
 
 ---
