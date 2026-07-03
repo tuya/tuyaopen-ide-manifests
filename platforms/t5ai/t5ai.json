@@ -879,8 +879,7 @@
       "name": "GND",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GND"
       ]
     },
@@ -889,8 +888,7 @@
       "name": "3V3",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VCC"
       ]
     },
@@ -899,8 +897,7 @@
       "name": "RST",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "RESET"
       ]
     },
@@ -910,14 +907,12 @@
       "gpio": 20,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO20",
         "I2C0_SCL",
+        "SWCLK",
         "RGB_R6",
         "I8080_D9",
         "SEG10"
-      ],
-      "caps": [
-        "SWCLK"
       ]
     },
     {
@@ -926,15 +921,13 @@
       "gpio": 21,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO21",
         "I2C0_SDA",
-        "ADC0_CH6",
+        "SWDIO",
         "RGB_R5",
         "I8080_D8",
-        "SEG9"
-      ],
-      "caps": [
-        "SWDIO"
+        "SEG9",
+        "ADC0_CH6"
       ]
     },
     {
@@ -943,15 +936,13 @@
       "gpio": 22,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO22",
+        "CLK_OUT",
         "QSPI0_SCK",
-        "ADC0_CH5",
         "RGB_R4",
         "I8080_CSX",
-        "SEG8"
-      ],
-      "caps": [
-        "CLK_OUT"
+        "SEG8",
+        "ADC0_CH5"
       ]
     },
     {
@@ -960,14 +951,13 @@
       "gpio": 23,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO23",
         "QSPI0_CS",
-        "ADC0_CH3",
         "RGB_R3",
         "I8080_RESET",
-        "SEG7"
-      ],
-      "caps": []
+        "SEG7",
+        "ADC0_CH3"
+      ]
     },
     {
       "pin": 8,
@@ -975,16 +965,14 @@
       "gpio": 24,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO24",
+        "LPO_CLK",
         "PWMG0_PWM4",
         "QSPI0_IO0",
-        "ADC0_CH2",
         "RGB_G7",
         "I8080_RSX",
-        "SEG6"
-      ],
-      "caps": [
-        "LPO_CLK"
+        "SEG6",
+        "ADC0_CH2"
       ]
     },
     {
@@ -993,16 +981,15 @@
       "gpio": 25,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO25",
         "PWMG0_PWM5",
-        "QSPI0_IO1",
-        "ADC0_CH1",
         "IRDA",
+        "QSPI0_IO1",
         "RGB_G6",
         "I8080_WRX",
-        "SEG5"
-      ],
-      "caps": []
+        "SEG5",
+        "ADC0_CH1"
+      ]
     },
     {
       "pin": 10,
@@ -1010,13 +997,12 @@
       "gpio": 26,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO26",
         "QSPI0_IO2",
         "RGB_G5",
         "I8080_RDX",
         "SEG4"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 11,
@@ -1024,14 +1010,13 @@
       "gpio": 28,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC0_CH4",
+        "GPIO28",
         "I2S_MCLK",
         "TOUCH2",
         "CIS_AUXCLK",
-        "SEG18"
-      ],
-      "caps": []
+        "SEG18",
+        "ADC0_CH4"
+      ]
     },
     {
       "pin": 12,
@@ -1039,17 +1024,15 @@
       "gpio": 1,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO1",
         "UART1_RX",
         "I2C1_SDA",
-        "ADC0_CH13",
+        "SWDIO",
         "SC_CLK",
-        "LIN_RXD"
+        "LIN_RXD",
+        "ADC0_CH13"
       ],
-      "note": "Debug log RX (UART1)",
-      "caps": [
-        "SWDIO"
-      ]
+      "note": "Debug log RX (UART1)"
     },
     {
       "pin": 13,
@@ -1058,8 +1041,7 @@
       "type": "I/O",
       "functions": [
         "USB_D-"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 14,
@@ -1068,8 +1050,7 @@
       "type": "I/O",
       "functions": [
         "USB_D+"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 15,
@@ -1077,17 +1058,15 @@
       "gpio": 0,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO0",
         "UART1_TX",
         "I2C1_SCL",
-        "ADC0_CH12",
+        "SWCLK",
         "SC_IO",
-        "LIN_TXD"
+        "LIN_TXD",
+        "ADC0_CH12"
       ],
-      "note": "Debug log TX (UART1)",
-      "caps": [
-        "SWCLK"
-      ]
+      "note": "Debug log TX (UART1)"
     },
     {
       "pin": 16,
@@ -1095,12 +1074,10 @@
       "gpio": 9,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO9",
         "PWMG0_PWM3",
         "I2S0_DOUT",
-        "DMIC_DAT"
-      ],
-      "caps": [
+        "DMIC_DAT",
         "XI"
       ]
     },
@@ -1110,14 +1087,12 @@
       "gpio": 8,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO8",
         "PWMG0_PWM2",
-        "ADC0_CH10",
         "I2S0_DIN",
-        "DMIC_CLK"
-      ],
-      "caps": [
-        "XO"
+        "DMIC_CLK",
+        "XO",
+        "ADC0_CH10"
       ]
     },
     {
@@ -1126,11 +1101,10 @@
       "gpio": 7,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "QSPI1_IO3",
-        "I2S0_SYNC"
-      ],
-      "caps": []
+        "GPIO7",
+        "I2S0_SYNC",
+        "QSPI1_IO3"
+      ]
     },
     {
       "pin": 19,
@@ -1138,11 +1112,10 @@
       "gpio": 6,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "QSPI1_IO2",
-        "I2S0_SCK"
-      ],
-      "caps": []
+        "GPIO6",
+        "I2S0_SCK",
+        "QSPI1_IO2"
+      ]
     },
     {
       "pin": 20,
@@ -1150,14 +1123,13 @@
       "gpio": 5,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO5",
         "SPI1_MISO",
-        "QSPI1_IO1",
         "SDIO_DATA1",
         "COM7",
+        "QSPI1_IO1",
         "SEG31"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 21,
@@ -1165,14 +1137,13 @@
       "gpio": 4,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO4",
         "SPI1_MOSI",
-        "QSPI1_IO0",
         "SDIO_DATA0",
         "COM6",
+        "QSPI1_IO0",
         "SEG30"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 22,
@@ -1180,13 +1151,12 @@
       "gpio": 3,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO3",
         "SPI1_CSN",
-        "QSPI1_CS",
         "SDIO_CMD",
-        "SC_VCC"
-      ],
-      "caps": []
+        "SC_VCC",
+        "QSPI1_CS"
+      ]
     },
     {
       "pin": 23,
@@ -1194,14 +1164,13 @@
       "gpio": 2,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO2",
         "SPI1_SCK",
-        "QSPI1_SCK",
         "SDIO_CLK",
         "SC_RSTN",
-        "LIN_SLEEP"
-      ],
-      "caps": []
+        "LIN_SLEEP",
+        "QSPI1_SCK"
+      ]
     },
     {
       "pin": 24,
@@ -1209,12 +1178,11 @@
       "gpio": 12,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO12",
         "UART0_RTS",
-        "ADC0_CH14",
-        "TOUCH0"
-      ],
-      "caps": []
+        "TOUCH0",
+        "ADC0_CH14"
+      ]
     },
     {
       "pin": 25,
@@ -1222,12 +1190,11 @@
       "gpio": 13,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO13",
         "UART0_CTS",
-        "ADC0_CH15",
-        "TOUCH1"
-      ],
-      "caps": []
+        "TOUCH1",
+        "ADC0_CH15"
+      ]
     },
     {
       "pin": 26,
@@ -1235,15 +1202,14 @@
       "gpio": 15,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO15",
+        "SDIO_CMD",
         "SPI0_CSN",
         "I2C1_SDA",
-        "SDIO_CMD",
         "RGB_DISP",
         "I8080_D14",
         "SEG15"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 27,
@@ -1251,15 +1217,14 @@
       "gpio": 14,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO14",
+        "SDIO_CLK",
         "SPI0_SCK",
         "I2C1_SCL",
-        "SDIO_CLK",
         "RGB_DCLK",
         "I8080_D15",
         "SEG16"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 28,
@@ -1267,14 +1232,13 @@
       "gpio": 16,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI0_MOSI",
+        "GPIO16",
         "SDIO_DATA0",
+        "SPI0_MOSI",
         "RGB_DE",
         "I8080_D13",
         "SEG14"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 29,
@@ -1282,14 +1246,13 @@
       "gpio": 17,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI0_MISO",
+        "GPIO17",
         "SDIO_DATA1",
+        "SPI0_MISO",
         "RGB_HSYNC",
         "I8080_D12",
         "SEG13"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 30,
@@ -1297,14 +1260,13 @@
       "gpio": 18,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "PWMG0_PWM0",
+        "GPIO18",
         "SDIO_DATA2",
+        "PWMG0_PWM0",
         "RGB_VSYNC",
         "I8080_D11",
         "SEG12"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 31,
@@ -1312,14 +1274,13 @@
       "gpio": 19,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO19",
         "PWMG0_PWM1",
         "SDIO_DATA3",
         "RGB_R7",
         "I8080_D10",
         "SEG11"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 32,
@@ -1327,7 +1288,7 @@
       "gpio": 47,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO47",
         "SPI0_MISO",
         "ENET_MDC",
         "TOUCH15",
@@ -1335,8 +1296,7 @@
         "I8080_D0",
         "COM0",
         "I2S2_DOUT"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 33,
@@ -1344,17 +1304,16 @@
       "gpio": 46,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI0_MOSI",
+        "GPIO46",
         "CAN_STBY",
+        "SPI0_MOSI",
         "ENET_PHY_INT",
         "TOUCH14",
         "RGB_B4",
         "I8080_D1",
         "COM1",
         "I2S2_DIN"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 34,
@@ -1362,15 +1321,14 @@
       "gpio": 45,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI0_CSN",
+        "GPIO45",
         "CAN_RX",
+        "SPI0_CSN",
         "RGB_B5",
         "I8080_D2",
         "COM2",
         "I2S2_SYNC"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 35,
@@ -1378,15 +1336,14 @@
       "gpio": 44,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI0_SCK",
+        "GPIO44",
         "CAN_TX",
+        "SPI0_SCK",
         "RGB_B6",
         "I8080_D3",
         "COM3",
         "I2S2_SCK"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 36,
@@ -1394,14 +1351,13 @@
       "gpio": 10,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_RX",
+        "GPIO10",
         "DL_UART_RX",
         "SDIO_DATA2",
-        "CIS_AUXCLK"
+        "CIS_AUXCLK",
+        "UART0_RX"
       ],
-      "note": "Firmware download RX",
-      "caps": []
+      "note": "Firmware download RX"
     },
     {
       "pin": 37,
@@ -1409,13 +1365,12 @@
       "gpio": 11,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_TX",
+        "GPIO11",
         "DL_UART_TX",
+        "UART0_TX",
         "SDIO_DATA3"
       ],
-      "note": "Firmware download TX",
-      "caps": []
+      "note": "Firmware download TX"
     },
     {
       "pin": 38,
@@ -1423,15 +1378,14 @@
       "gpio": 43,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO43",
         "I2C1_SDA",
         "I2S1_DOUT",
         "SC_VCC",
         "RGB_B7",
         "I8080_D4",
         "SEG0"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 39,
@@ -1439,7 +1393,7 @@
       "gpio": 42,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO42",
         "I2C1_SCL",
         "I2S1_DIN",
         "LIN_SLEEP",
@@ -1447,16 +1401,14 @@
         "RGB_G2",
         "I8080_D5",
         "SEG1"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 40,
       "name": "GND",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GND"
       ]
     },
@@ -1466,14 +1418,13 @@
       "gpio": 27,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "QSPI0_IO3",
+        "GPIO27",
         "CIS_MCLK",
         "CIS_AUXCLK",
         "ENET_PHY_INT",
+        "QSPI0_IO3",
         "SEG17"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 42,
@@ -1481,13 +1432,12 @@
       "gpio": 29,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO29",
         "CIS_PCLK",
         "ENET_MDC",
         "TOUCH3",
         "SEG19"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 43,
@@ -1495,11 +1445,10 @@
       "gpio": 50,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO50",
         "ENET_RXD1",
         "RGB_R0"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 44,
@@ -1507,12 +1456,11 @@
       "gpio": 49,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO49",
         "ENET_RXD0",
         "RGB_R1",
         "I8080_D17"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 45,
@@ -1520,7 +1468,7 @@
       "gpio": 41,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO41",
         "UART2_TX",
         "I2S1_SYNC",
         "LIN_TXD",
@@ -1528,8 +1476,7 @@
         "RGB_G3",
         "I8080_D6",
         "SEG2"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 46,
@@ -1537,15 +1484,14 @@
       "gpio": 31,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART2_TX",
+        "GPIO31",
         "CIS_VSYNC",
+        "UART2_TX",
         "LIN_TXD",
         "TOUCH5",
         "SC_IO",
         "SEG21"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 47,
@@ -1553,15 +1499,14 @@
       "gpio": 30,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART2_RX",
+        "GPIO30",
         "CIS_HSYNC",
+        "UART2_RX",
         "LIN_RXD",
         "TOUCH4",
         "SC_CLK",
         "SEG20"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 48,
@@ -1569,15 +1514,14 @@
       "gpio": 33,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO33",
         "PWMG1_PWM1",
-        "SPI0_SCK",
         "CIS_PXD1",
         "ENET_RXD0",
         "TOUCH7",
+        "SPI0_SCK",
         "SEG23"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 49,
@@ -1585,15 +1529,14 @@
       "gpio": 32,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "PWMG1_PWM0",
+        "GPIO32",
         "CIS_PXD0",
+        "PWMG1_PWM0",
         "ENET_MDIO",
         "TOUCH6",
         "SC_RSTN",
         "SEG22"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 50,
@@ -1601,12 +1544,11 @@
       "gpio": 48,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO48",
         "ENET_MDIO",
         "RGB_R2",
         "I8080_D16"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 51,
@@ -1614,15 +1556,14 @@
       "gpio": 34,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "PWMG1_PWM2",
-        "SPI0_CSN",
+        "GPIO34",
         "CIS_PXD2",
+        "PWMG1_PWM2",
         "ENET_RXD1",
         "TOUCH8",
+        "SPI0_CSN",
         "SEG24"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 52,
@@ -1630,15 +1571,14 @@
       "gpio": 35,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO35",
         "PWMG1_PWM3",
-        "SPI0_MOSI",
         "CIS_PXD3",
         "ENET_RXDV",
         "TOUCH9",
+        "SPI0_MOSI",
         "SEG25"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 53,
@@ -1646,11 +1586,10 @@
       "gpio": 53,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO53",
         "ENET_TXD1",
         "RGB_B2"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 54,
@@ -1658,11 +1597,10 @@
       "gpio": 54,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO54",
         "ENET_TXEN",
         "RGB_B1"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 55,
@@ -1670,11 +1608,10 @@
       "gpio": 55,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO55",
         "ENET_REF_CLK",
         "RGB_B0"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 56,
@@ -1682,15 +1619,14 @@
       "gpio": 36,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "PWMG1_PWM4",
-        "SPI0_MISO",
+        "GPIO36",
         "CIS_PXD4",
+        "PWMG1_PWM4",
         "ENET_TXD0",
         "TOUCH10",
+        "SPI0_MISO",
         "SEG26"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 57,
@@ -1698,14 +1634,13 @@
       "gpio": 37,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO37",
         "PWMG1_PWM5",
         "CIS_PXD5",
         "ENET_TXD1",
         "TOUCH11",
         "SEG27"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 58,
@@ -1713,11 +1648,10 @@
       "gpio": 52,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO52",
         "ENET_TXD0",
         "RGB_G0"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 59,
@@ -1725,19 +1659,17 @@
       "gpio": 51,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO51",
         "ENET_RXDV",
         "RGB_G1"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 60,
       "name": "GND",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GND"
       ]
     },
@@ -1746,22 +1678,20 @@
       "name": "LN",
       "gpio": null,
       "type": "AO",
-      "functions": [],
-      "note": "Speaker output",
-      "caps": [
+      "functions": [
         "AUDIO_LN"
-      ]
+      ],
+      "note": "Speaker output"
     },
     {
       "pin": 62,
       "name": "LP",
       "gpio": null,
       "type": "AO",
-      "functions": [],
-      "note": "Speaker output",
-      "caps": [
+      "functions": [
         "AUDIO_LP"
-      ]
+      ],
+      "note": "Speaker output"
     },
     {
       "pin": 63,
@@ -1769,15 +1699,14 @@
       "gpio": 38,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "I2C1_SCL",
+        "GPIO38",
         "CIS_PXD6",
+        "I2C1_SCL",
         "ENET_TXEN",
         "TOUCH12",
         "COM4",
         "SEG28"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 64,
@@ -1785,15 +1714,14 @@
       "gpio": 39,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "I2C1_SDA",
+        "GPIO39",
         "CIS_PXD7",
+        "I2C1_SDA",
         "ENET_REF_CLK",
         "TOUCH13",
         "COM5",
         "SEG29"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 65,
@@ -1801,7 +1729,7 @@
       "gpio": 40,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO40",
         "UART2_RX",
         "I2S1_SCK",
         "LIN_RXD",
@@ -1809,60 +1737,54 @@
         "RGB_G4",
         "I8080_D7",
         "SEG3"
-      ],
-      "caps": []
+      ]
     },
     {
       "pin": 66,
       "name": "MP1",
       "gpio": null,
       "type": "AI",
-      "functions": [],
-      "note": "MIC input",
-      "caps": [
+      "functions": [
         "MIC1_P"
-      ]
+      ],
+      "note": "MIC input"
     },
     {
       "pin": 67,
       "name": "MN1",
       "gpio": null,
       "type": "AI",
-      "functions": [],
-      "note": "MIC input",
-      "caps": [
+      "functions": [
         "MIC1_N"
-      ]
+      ],
+      "note": "MIC input"
     },
     {
       "pin": 68,
       "name": "MN2",
       "gpio": null,
       "type": "AI",
-      "functions": [],
-      "note": "Speaker AEC reference",
-      "caps": [
+      "functions": [
         "MIC2_N"
-      ]
+      ],
+      "note": "Speaker AEC reference"
     },
     {
       "pin": 69,
       "name": "MP2",
       "gpio": null,
       "type": "AI",
-      "functions": [],
-      "note": "Speaker AEC reference",
-      "caps": [
+      "functions": [
         "MIC2_P"
-      ]
+      ],
+      "note": "Speaker AEC reference"
     },
     {
       "pin": 70,
       "name": "MBS",
       "gpio": null,
       "type": "AO",
-      "functions": [],
-      "caps": [
+      "functions": [
         "MICBIAS"
       ]
     }

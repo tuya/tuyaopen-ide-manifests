@@ -386,38 +386,6 @@ router.patch('/:id/expansion-pins', asyncHandler(async (req, res) => {
   res.json({ success: true, expansionPins, message: `Expansion pins updated for "${req.params.id}"` });
 }));
 
-// GET /api/boards/:id/expansion-connectors - Get expansion connectors (接插件) for a board
-router.get('/:id/expansion-connectors', asyncHandler(async (req, res) => {
-  const detail = await manifestLoader.loadBoardDetail(req.params.id);
-  res.json({ success: true, expansionConnectors: detail?.expansionConnectors || [] });
-}));
-
-// PATCH /api/boards/:id/expansion-connectors - Replace the expansion connectors list
-router.patch('/:id/expansion-connectors', asyncHandler(async (req, res) => {
-  const { expansionConnectors } = req.body;
-  if (!Array.isArray(expansionConnectors)) {
-    return res.status(400).json({ success: false, error: 'Missing expansionConnectors array' });
-  }
-  const boards = await manifestLoader.loadBoards();
-  if (!boards?.items?.some(b => b.id === req.params.id)) {
-    return res.status(404).json({ success: false, error: `Board "${req.params.id}" not found` });
-  }
-  let detail = await manifestLoader.loadBoardDetail(req.params.id);
-  if (!detail) detail = { schemaVersion: 1 };
-
-  if (expansionConnectors.length > 0) {
-    detail.expansionConnectors = expansionConnectors;
-  } else {
-    delete detail.expansionConnectors;
-  }
-  await manifestLoader.saveBoardDetail(req.params.id, detail);
-
-  if (req.body.autoCommit !== false) {
-    await gitSync.autoCommit(`feat(boards): update ${req.params.id} expansion connectors`);
-  }
-  res.json({ success: true, expansionConnectors, message: `Expansion connectors updated for "${req.params.id}"` });
-}));
-
 // GET /api/platforms/:platformId/pinout - Get platform pinout for GPIO selection
 router.get('/platforms/:platformId/pinout', asyncHandler(async (req, res) => {
   const platformDetail = await resolvePlatformDetailByRef(req.params.platformId);

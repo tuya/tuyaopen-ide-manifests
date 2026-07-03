@@ -1449,38 +1449,6 @@ body {
   background: #fef3c7;
   color: #92400e;
 }
-.peri-card-mounting--connector {
-  background: rgba(59, 130, 246, 0.12);
-  color: #1e40af;
-}
-.peri-pin-src-cell {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-.peri-pin-src-cell .peri-pin-src { width: auto; flex: 0 0 auto; }
-.peri-pin-exp-fields { display: inline-flex; gap: 4px; align-items: center; }
-
-/* Expansion connectors (接插件) */
-.exp-section-title { font-size: 13px; font-weight: 600; margin: 0 0 8px; color: var(--color-text); }
-.conn-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.conn-count { font-size: 12px; color: var(--color-muted); }
-.conn-empty { font-size: 12px; color: var(--color-muted); padding: 8px 0; }
-.conn-card { border: 1px solid var(--color-border); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
-.conn-card-head { display: flex; align-items: center; gap: 8px; }
-.conn-card-name { font-weight: 600; }
-.conn-card-id { font-size: 11px; color: var(--color-muted); }
-.conn-card-actions { margin-left: auto; display: flex; gap: 4px; }
-.conn-card-provs { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px; }
-.conn-prov { font-size: 12px; background: var(--color-sidebar); border-radius: 4px; padding: 2px 8px; }
-.conn-prov-class { font-weight: 600; color: #1e40af; }
-.conn-provs-section { margin: 16px 0; padding-top: 12px; border-top: 1px solid var(--color-border); }
-.conn-section-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-.conn-section-label { font-weight: 600; font-size: 13px; }
-.conn-section-hint { font-size: 11px; color: var(--color-muted); }
-.conn-prov-block { border: 1px solid var(--color-border); border-radius: 6px; padding: 8px; margin-bottom: 8px; }
-.conn-prov-head { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; }
-.conn-prov-head .conn-prov-remove { margin-left: auto; }
 .peri-card-locked, .peri-card-unlocked {
   font-size: 12px;
   margin-left: 4px;

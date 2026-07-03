@@ -273,8 +273,11 @@ function renderList() {
   }
 
   const ungrouped = items.filter(i => !i.item.group);
-  const mountRank = (m) => (m === 'accessory' ? 2 : m === 'connector' ? 1 : 0);
-  ungrouped.sort((a, b) => mountRank(a.item.mounting) - mountRank(b.item.mounting));
+  ungrouped.sort((a, b) => {
+    const aOnboard = a.item.mounting !== 'accessory' ? 0 : 1;
+    const bOnboard = b.item.mounting !== 'accessory' ? 0 : 1;
+    return aOnboard - bOnboard;
+  });
   const grouped = {};
   for (const entry of items) {
     if (!entry.item.group) continue;
@@ -317,13 +320,8 @@ function renderCard(type, item, index) {
   const model = item.decoder || item.model || '';
   const resStr = (item.width && item.height) ? `${item.width}×${item.height}` : (item.resolution || '');
   const pfStr = item.pixelFormat || '';
-  const mountingLabel = item.mounting === 'accessory' ? t('periMountingAccessory')
-    : item.mounting === 'connector' ? t('periMountingConnector')
-    : t('periMountingOnboard');
-  const mountingClass = item.mounting === 'accessory' ? 'accessory'
-    : item.mounting === 'connector' ? 'connector'
-    : 'onboard';
-  const mountingTag = `<span class="peri-card-mounting peri-card-mounting--${mountingClass}">${esc(mountingLabel)}</span>`;
+  const mountingLabel = item.mounting === 'accessory' ? t('periMountingAccessory') : t('periMountingOnboard');
+  const mountingTag = `<span class="peri-card-mounting peri-card-mounting--${item.mounting === 'accessory' ? 'accessory' : 'onboard'}">${esc(mountingLabel)}</span>`;
   const key = `${type}:${index}`;
 
   return `<div class="peri-card" data-key="${esc(key)}">
@@ -595,8 +593,8 @@ function buildFormHtml(type, item, index, template) {
       </div>
       <div class="peri-field-row">
         <label>${esc(t('periMounting'))}</label>
-        <select class="peri-input" name="mounting" id="periMountingSelect">
-          <option value="onboard" ${(!item?.mounting || item.mounting === 'onboard') ? 'selected' : ''}>${esc(t('periMountingOnboard'))}</option>
+        <select class="peri-input" name="mounting">
+          <option value="onboard" ${item?.mounting !== 'accessory' ? 'selected' : ''}>${esc(t('periMountingOnboard'))}</option>
           <option value="accessory" ${item?.mounting === 'accessory' ? 'selected' : ''}>${esc(t('periMountingAccessory'))}</option>
         </select>
       </div>
@@ -611,7 +609,7 @@ function buildFormHtml(type, item, index, template) {
     const suggestions = template?.modelSuggestionsByInterface?.[iface] ?? template?.modelSuggestions;
     const listId = suggestions ? `periModelList-${type}` : '';
     const hideForIface = template?.hideModelForInterface || [];
-    const modelHidden = hideForIface.includes(iface) || item?.mounting === 'connector';
+    const modelHidden = hideForIface.includes(iface);
     const modelLabel = template?.modelLabel ? localLabel(template.modelLabel) : t('periModel');
     html += `<div class="peri-field-row" id="periModelRow" style="${modelHidden ? 'display:none;' : ''}">
         <label>${esc(modelLabel)}</label>`;
@@ -778,20 +776,16 @@ function buildFormHtml(type, item, index, template) {
       </div>
       <label>${esc(t('periPinMapping'))}</label>
       <table class="peri-pin-table">
-        <thead><tr><th>Role</th><th>GPIO / ${esc(t('periPinSrcExpander'))}</th><th>Active</th></tr></thead>
+        <thead><tr><th>Role</th><th>GPIO</th><th>Active</th></tr></thead>
         <tbody id="periPinTbody">`;
 
   html += buildPinRows(type, iface, template, existingPins, template?.audioDecoder ? (item?.decoder || 'NONE') : null, item?.pixelFormat);
 
   html += `</tbody></table>`;
-  html += `<datalist id="periExpanderIdList">${getBoardExpanderIds().map(id => `<option value="${esc(id)}">`).join('')}</datalist>`;
   if (!template) {
     html += `<button type="button" class="btn btn-sm btn-outline peri-pin-add-btn">+ Pin</button>`;
   }
   html += `</div>`;
-
-  // IO-expander provided pins (only when the template declares expanderPins.provides)
-  html += buildExpanderPinsSectionHtml(template, item);
 
   // Bottom fields
   html += `
@@ -845,8 +839,7 @@ function buildPinRows(type, iface, template, existingPins, decoderVal, pixelForm
           const existing = existingForIface.find(p => p.role === role);
           const gpio = existing ? existing.gpio : (defaults[role] !== undefined ? defaults[role] : '');
           const activeLevel = existing?.activeLevel || '';
-          const exp = existing && existing.expanderPin !== undefined ? { id: existing.expanderId, pin: existing.expanderPin } : undefined;
-          html += renderTemplatedPinRow(role, gpio, activeLevel, iface, !!group.readonly, exp);
+          html += renderTemplatedPinRow(role, gpio, activeLevel, iface, !!group.readonly);
         }
       }
     } else {
@@ -856,8 +849,7 @@ function buildPinRows(type, iface, template, existingPins, decoderVal, pixelForm
         const existing = existingForIface.find(p => p.role === role);
         const gpio = existing ? existing.gpio : (defaults[role] !== undefined ? defaults[role] : '');
         const activeLevel = existing?.activeLevel || '';
-        const exp = existing && existing.expanderPin !== undefined ? { id: existing.expanderId, pin: existing.expanderPin } : undefined;
-        html += renderTemplatedPinRow(role, gpio, activeLevel, iface, false, exp);
+        html += renderTemplatedPinRow(role, gpio, activeLevel, iface);
       }
     }
 
@@ -871,8 +863,7 @@ function buildPinRows(type, iface, template, existingPins, decoderVal, pixelForm
         const existing = existingDecoderPins.find(p => p.role === role);
         const gpio = existing ? existing.gpio : (decoderDefaults[role] !== undefined ? decoderDefaults[role] : '');
         const activeLevel = existing?.activeLevel || '';
-        const exp = existing && existing.expanderPin !== undefined ? { id: existing.expanderId, pin: existing.expanderPin } : undefined;
-        html += renderTemplatedPinRow(role, gpio, activeLevel, dpIface, false, exp);
+        html += renderTemplatedPinRow(role, gpio, activeLevel, dpIface);
       }
     }
   } else if (!template) {
@@ -895,22 +886,8 @@ function buildPinRows(type, iface, template, existingPins, decoderVal, pixelForm
   return html;
 }
 
-/** IO-expander instance ids on the current board (for the pin-source datalist). */
-function getBoardExpanderIds() {
-  const ids = [];
-  for (const [cat, arr] of Object.entries(peripheralData || {})) {
-    if (!Array.isArray(arr)) continue;
-    for (const it of arr) {
-      if ((cat === 'io-expander' || Array.isArray(it.expanderPins)) && it.id) { ids.push(it.id); }
-    }
-  }
-  return [...new Set(ids)];
-}
-
-// A templated pin can be driven by an MCU GPIO or by an IO-expander pin
-// (fixed pinout, low-speed control lines like rst/bl/power). `exp` = {id, pin}.
-function renderTemplatedPinRow(role, gpio, activeLevel, iface, readonly, exp) {
-  const gpioVal = gpio !== '' && gpio !== undefined && gpio !== null ? gpio : '';
+function renderTemplatedPinRow(role, gpio, activeLevel, iface, readonly) {
+  const gpioVal = gpio !== '' && gpio !== undefined ? gpio : '';
   if (readonly) {
     return `<tr class="peri-pin-row" data-role="${esc(role)}" data-iface="${esc(iface || '')}">
     <td><code class="peri-pin-role-label">${esc(role)}</code></td>
@@ -918,22 +895,9 @@ function renderTemplatedPinRow(role, gpio, activeLevel, iface, readonly, exp) {
     <td>—</td>
   </tr>`;
   }
-  const isExp = !!exp && exp.pin !== undefined && exp.pin !== null;
-  const expId = isExp ? esc(exp.id ?? '') : '';
-  const expPin = isExp && exp.pin !== undefined ? exp.pin : '';
   return `<tr class="peri-pin-row" data-role="${esc(role)}" data-iface="${esc(iface || '')}">
     <td><code class="peri-pin-role-label">${esc(role)}</code></td>
-    <td class="peri-pin-src-cell">
-      <select class="peri-pin-src">
-        <option value="mcu" ${!isExp ? 'selected' : ''}>MCU</option>
-        <option value="exp" ${isExp ? 'selected' : ''}>${esc(t('periPinSrcExpander'))}</option>
-      </select>
-      <input type="number" class="peri-pin-gpio" value="${gpioVal}" placeholder="—" min="0" max="55" style="${isExp ? 'display:none;' : ''}">
-      <span class="peri-pin-exp-fields" style="${isExp ? '' : 'display:none;'}">
-        <input type="text" class="peri-pin-exp-id" value="${expId}" placeholder="${esc(t('periPinExpId'))}" list="periExpanderIdList" style="width:130px;">
-        <input type="number" class="peri-pin-exp-pin" value="${expPin}" placeholder="#" min="0" style="width:52px;">
-      </span>
-    </td>
+    <td><input type="number" class="peri-pin-gpio" value="${gpioVal}" placeholder="—" min="0" max="55"></td>
     <td><select class="peri-pin-active">
       <option value="" ${!activeLevel ? 'selected' : ''}>—</option>
       <option value="high" ${activeLevel === 'high' ? 'selected' : ''}>High</option>
@@ -962,76 +926,6 @@ function renderCustomPinRow(iface, role, gpio, activeLevel) {
     </select></td>
     <td><button type="button" class="peri-pin-remove-btn" title="Remove">×</button></td>
   </tr>`;
-}
-
-// ─── IO-expander provided-pins table (driven by template.expanderPins) ───
-
-function expanderFieldLabel(field) {
-  const map = { pin: t('periExpPin'), role: t('periExpRole'), dir: t('periExpDir') };
-  return map[field] || field;
-}
-
-// Chip-intrinsic pin count comes from the template (by model), NOT the board.
-// The board's expanderPins list only the OCCUPIED pins; the rest are free.
-function expanderPinCount(cfg, model) {
-  const byModel = cfg?.modelPinCount || {};
-  return (model && byModel[model]) || cfg?.defaultPinCount || 0;
-}
-
-function expanderSummaryText(total, occupied) {
-  const free = Math.max(0, total - occupied);
-  return i18n.getLanguage() === 'zh-CN'
-    ? `共 ${total} 脚 · 已占用 ${occupied} · 空闲 ${free}`
-    : `${total} pins total · ${occupied} occupied · ${free} free`;
-}
-
-function refreshExpanderSummary(form, template) {
-  const cfg = template?.expanderPins;
-  const summaryEl = form.querySelector('#periExpanderSummary');
-  if (!cfg?.provides || !summaryEl) return;
-  const model = form.querySelector('#periModelSelect')?.value || form.querySelector('[name="model"]')?.value || '';
-  const occupied = form.querySelectorAll('.peri-expander-row').length;
-  summaryEl.textContent = expanderSummaryText(expanderPinCount(cfg, model), occupied);
-}
-
-function renderExpanderPinRow(entryFields, dirOptions, entry) {
-  entry = entry || {};
-  let cells = '';
-  for (const f of entryFields) {
-    if (f === 'dir') {
-      const cur = entry.dir || (dirOptions[0] || '');
-      const opts = dirOptions.map(d => `<option value="${esc(d)}" ${cur === d ? 'selected' : ''}>${esc(d)}</option>`).join('');
-      cells += `<td><select class="peri-input peri-exp-field" data-exp-field="dir">${opts}</select></td>`;
-    } else if (f === 'pin') {
-      const v = entry.pin ?? '';
-      cells += `<td><input type="number" class="peri-input peri-exp-field" data-exp-field="pin" value="${esc(String(v))}" min="0" style="width:72px;"></td>`;
-    } else {
-      const v = entry[f] ?? '';
-      cells += `<td><input type="text" class="peri-input peri-exp-field" data-exp-field="${esc(f)}" value="${esc(String(v))}"></td>`;
-    }
-  }
-  cells += `<td><button type="button" class="peri-pin-remove-btn" title="Remove">×</button></td>`;
-  return `<tr class="peri-expander-row">${cells}</tr>`;
-}
-
-function buildExpanderPinsSectionHtml(template, item) {
-  const cfg = template?.expanderPins;
-  if (!cfg?.provides) return '';
-  const entryFields = (Array.isArray(cfg.entryFields) && cfg.entryFields.length) ? cfg.entryFields : ['pin', 'role', 'dir'];
-  const dirOptions = (Array.isArray(cfg.dirOptions) && cfg.dirOptions.length) ? cfg.dirOptions : ['out', 'in', 'io'];
-  const entries = Array.isArray(item?.expanderPins) ? item.expanderPins : [];
-  const total = expanderPinCount(cfg, item?.model);
-  const head = entryFields.map(f => `<th>${esc(expanderFieldLabel(f))}</th>`).join('') + '<th></th>';
-  const rows = entries.map(e => renderExpanderPinRow(entryFields, dirOptions, e)).join('');
-  return `<div class="peri-pin-section" id="periExpanderSection" data-exp-fields="${esc(entryFields.join(','))}" data-exp-dirs="${esc(dirOptions.join(','))}">
-      <label>${esc(t('periExpanderPins'))}</label>
-      <div class="peri-exp-summary" id="periExpanderSummary" style="color:var(--color-muted);font-size:12px;margin:2px 0 8px;">${esc(expanderSummaryText(total, entries.length))}</div>
-      <table class="peri-pin-table">
-        <thead><tr>${head}</tr></thead>
-        <tbody id="periExpanderTbody">${rows}</tbody>
-      </table>
-      <button type="button" class="btn btn-sm btn-outline peri-expander-add-btn">+ ${esc(t('periExpanderAdd'))}</button>
-    </div>`;
 }
 
 // ─── Event binding ───
@@ -1064,21 +958,6 @@ function bindListEvents(root) {
 }
 
 function bindFormEvents(form, template) {
-  // Per-row pin source toggle: MCU GPIO input vs IO-expander (id + pin) fields.
-  const pinTbody = form.querySelector('#periPinTbody');
-  if (pinTbody) {
-    pinTbody.addEventListener('change', (e) => {
-      const sel = e.target.closest('.peri-pin-src');
-      if (!sel) { return; }
-      const row = sel.closest('.peri-pin-row');
-      const isExp = sel.value === 'exp';
-      const gpioEl = row.querySelector('.peri-pin-gpio');
-      const expEl = row.querySelector('.peri-pin-exp-fields');
-      if (gpioEl) { gpioEl.style.display = isExp ? 'none' : ''; }
-      if (expEl) { expEl.style.display = isExp ? '' : 'none'; }
-    });
-  }
-
   // Helper: show/hide hsync/vsync rows based on RGB sync mode
   const applySyncModeVisibility = (syncMode) => {
     const hideHV = syncMode === 'DE';
@@ -1170,30 +1049,16 @@ function bindFormEvents(form, template) {
   };
 
   // Interface change → re-render pin rows + toggle model/decoder visibility
-  // A connector (接插件) has no fitted device → hide the driver-model field.
-  const mountingSelect = form.querySelector('#periMountingSelect');
-  if (mountingSelect) {
-    mountingSelect.addEventListener('change', () => {
-      const modelRow = form.querySelector('#periModelRow');
-      if (!modelRow) { return; }
-      const ifaceVal = form.querySelector('[name="interface"]')?.value || '';
-      const hideByIface = template?.hideModelForInterface?.includes(ifaceVal);
-      modelRow.style.display = (hideByIface || mountingSelect.value === 'connector') ? 'none' : '';
-    });
-  }
-
   const ifaceSelect = form.querySelector('#periIfaceSelect');
   if (ifaceSelect && template) {
     ifaceSelect.addEventListener('change', () => {
       const newIface = ifaceSelect.value;
       const type = form.querySelector('[name="type"]').value;
       const tbody = form.querySelector('#periPinTbody');
-      // Toggle model field visibility (respect connector mounting too)
+      // Toggle model field visibility
       const modelRow = form.querySelector('#periModelRow');
-      if (modelRow) {
-        const hideByIface = template.hideModelForInterface?.includes(newIface);
-        const isConnector = form.querySelector('#periMountingSelect')?.value === 'connector';
-        modelRow.style.display = (hideByIface || isConnector) ? 'none' : '';
+      if (modelRow && template.hideModelForInterface) {
+        modelRow.style.display = template.hideModelForInterface.includes(newIface) ? 'none' : '';
       }
       // Refresh model select options when interface-specific suggestions exist
       if (template.modelSuggestionsByInterface) {
@@ -1334,28 +1199,6 @@ function bindFormEvents(form, template) {
     tbody.insertAdjacentHTML('beforeend', renderKconfigRow('', ''));
     bindPinRemoveButtons(form);
   });
-
-  // IO-expander: add provided-pin row
-  form.querySelector('.peri-expander-add-btn')?.addEventListener('click', () => {
-    const section = form.querySelector('#periExpanderSection');
-    const tbody = form.querySelector('#periExpanderTbody');
-    if (!section || !tbody) return;
-    const fields = (section.dataset.expFields || 'pin,role,dir').split(',').filter(Boolean);
-    const dirs = (section.dataset.expDirs || 'out,in,io').split(',').filter(Boolean);
-    tbody.insertAdjacentHTML('beforeend', renderExpanderPinRow(fields, dirs, {}));
-    bindPinRemoveButtons(form);
-    refreshExpanderSummary(form, template);
-  });
-
-  // IO-expander: keep the total/occupied/free summary in sync with model + row changes
-  const expSection = form.querySelector('#periExpanderSection');
-  if (expSection && template?.expanderPins?.provides) {
-    form.querySelector('#periModelSelect')?.addEventListener('change', () => refreshExpanderSummary(form, template));
-    // A row's delete button removes it synchronously; this bubbles here afterward.
-    expSection.addEventListener('click', (e) => {
-      if (e.target.classList?.contains('peri-pin-remove-btn')) refreshExpanderSummary(form, template);
-    });
-  }
 
   bindPinRemoveButtons(form);
   bindPortSelectEvents(form, template);
@@ -1513,9 +1356,7 @@ function saveFromForm(form, origType, formIndex) {
   if (portEl?.value !== '' && portEl?.value !== undefined) item.port = parseInt(portEl.value);
 
   const hideModelIfaces = template?.hideModelForInterface || [];
-  // A connector (接插件) has no fitted device, so no driver model.
-  const model = (!hideModelIfaces.includes(iface) && mounting !== 'connector')
-    ? form.querySelector('[name="model"]')?.value.trim() : null;
+  const model = !hideModelIfaces.includes(iface) ? form.querySelector('[name="model"]')?.value.trim() : null;
   if (model) item.model = model;
 
   const audioDecoder = (template?.audioDecoder && iface !== 'INTERNAL')
@@ -1581,31 +1422,11 @@ function saveFromForm(form, origType, formIndex) {
   if (template) {
     // Template mode: rows are grouped by data-iface attribute (falls back to selected interface)
     const pinRows = form.querySelectorAll('.peri-pin-row');
-    const expIncomplete = [];
-    for (const tr of pinRows) {
+    pinRows.forEach(tr => {
       const role = tr.dataset.role;
       const rowIface = tr.dataset.iface || iface;
-      const activeLevel = tr.querySelector('.peri-pin-active')?.value || '';
-      const src = tr.querySelector('.peri-pin-src')?.value || 'mcu';
-
-      if (src === 'exp') {
-        // IO-expander-driven pin: needs both expander id and pin index (no MCU GPIO).
-        const expId = tr.querySelector('.peri-pin-exp-id')?.value.trim();
-        const expPinVal = tr.querySelector('.peri-pin-exp-pin')?.value.trim();
-        if (!role) { continue; }
-        if (!expId || expPinVal === '' || expPinVal === undefined) {
-          if (expId || (expPinVal !== '' && expPinVal !== undefined)) { expIncomplete.push(role); }
-          continue;  // both empty → treat as unset row, skip silently
-        }
-        if (!/^\d+$/.test(expPinVal)) { expIncomplete.push(role); continue; }
-        if (!pins[rowIface]) pins[rowIface] = [];
-        const pinEntry = { role, expanderId: expId, expanderPin: parseInt(expPinVal) };
-        if (activeLevel) pinEntry.activeLevel = activeLevel;
-        pins[rowIface].push(pinEntry);
-        continue;
-      }
-
       const gpioVal = tr.querySelector('.peri-pin-gpio')?.value.trim();
+      const activeLevel = tr.querySelector('.peri-pin-active')?.value || '';
       if (role && gpioVal !== '' && gpioVal !== undefined) {
         if (!pins[rowIface]) pins[rowIface] = [];
         const gpio = /^\d+$/.test(gpioVal) ? parseInt(gpioVal) : gpioVal;
@@ -1613,11 +1434,7 @@ function saveFromForm(form, origType, formIndex) {
         if (activeLevel) pinEntry.activeLevel = activeLevel;
         pins[rowIface].push(pinEntry);
       }
-    }
-    if (expIncomplete.length > 0) {
-      alert(t('periPinExpIncomplete').replace('%s', expIncomplete.join(', ')));
-      return;
-    }
+    });
     // DVP camera: write null gpio for pins disabled by config
     if (type === 'camera' && iface === 'DVP') {
       const dvpPins = pins[iface] || (pins[iface] = []);
@@ -1671,22 +1488,6 @@ function saveFromForm(form, origType, formIndex) {
     });
   }
   if (Object.keys(pins).length > 0) item.pins = pins;
-
-  // Collect IO-expander provided pins (template.expanderPins.provides)
-  if (form.querySelector('#periExpanderSection')) {
-    const expEntries = [];
-    form.querySelectorAll('.peri-expander-row').forEach(tr => {
-      const entry = {};
-      tr.querySelectorAll('[data-exp-field]').forEach(el => {
-        const key = el.dataset.expField;
-        const val = el.value.trim();
-        if (val === '') return;
-        entry[key] = (key === 'pin' && /^\d+$/.test(val)) ? parseInt(val) : val;
-      });
-      if (entry.pin !== undefined || entry.role) expEntries.push(entry);
-    });
-    if (expEntries.length > 0) item.expanderPins = expEntries;
-  }
 
   // Collect kconfig from key-value rows
   const kconfig = {};

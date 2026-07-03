@@ -117,7 +117,6 @@
         "ports": [
           {
             "id": 0,
-            "routable": true,
             "role": "log",
             "irq": {
               "rx": true,
@@ -132,7 +131,6 @@
           },
           {
             "id": 1,
-            "routable": true,
             "role": "general",
             "irq": {
               "rx": true,
@@ -147,7 +145,6 @@
           },
           {
             "id": 2,
-            "routable": true,
             "role": "general",
             "irq": {
               "rx": true,
@@ -183,7 +180,6 @@
         "ports": [
           {
             "id": 0,
-            "routable": true,
             "type": [
               "hw",
               "sw"
@@ -198,7 +194,6 @@
           },
           {
             "id": 1,
-            "routable": true,
             "type": [
               "hw",
               "sw"
@@ -246,7 +241,6 @@
         "ports": [
           {
             "id": 0,
-            "routable": true,
             "backend": "spi",
             "irq": true,
             "dma": true,
@@ -265,7 +259,6 @@
           },
           {
             "id": 1,
-            "routable": true,
             "backend": "spi",
             "irq": true,
             "dma": true,
@@ -289,7 +282,6 @@
       "enabled": true,
       "count": 8,
       "spec": {
-        "routable": true,
         "polarity": [
           "TUYA_PWM_NEGATIVE",
           "TUYA_PWM_POSITIVE"
@@ -365,7 +357,6 @@
         "ports": [
           {
             "id": 1,
-            "routable": false,
             "channels": [
               {
                 "id": 0,
@@ -411,7 +402,6 @@
           },
           {
             "id": 2,
-            "routable": false,
             "channels": [
               {
                 "id": 0,
@@ -458,6 +448,52 @@
         ]
       }
     },
+    "i2s": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "role": [
+          "TUYA_I2S_ROLE_MASTER",
+          "TUYA_I2S_ROLE_SLAVE"
+        ],
+        "mode": [
+          "TUYA_I2S_MODE_STD",
+          "TUYA_I2S_MODE_PCM",
+          "TUYA_I2S_MODE_TDM"
+        ],
+        "bits": [
+          "TUYA_I2S_DATA_BIT_16",
+          "TUYA_I2S_DATA_BIT_24",
+          "TUYA_I2S_DATA_BIT_32"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "pinGroups": [
+              {
+                "mclk": 16,
+                "bclk": 9,
+                "ws": 45,
+                "dout": 8,
+                "din": 10
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "pinGroups": [
+              {
+                "mclk": 35,
+                "bclk": 36,
+                "ws": 37,
+                "dout": 38,
+                "din": 39
+              }
+            ]
+          }
+        ]
+      }
+    },
     "timer": {
       "count": 4,
       "spec": {
@@ -482,6 +518,138 @@
     "rtc": {
       "enabled": true,
       "count": 1
+    },
+    "touch": {
+      "enabled": true,
+      "count": 14,
+      "spec": {
+        "channels": [
+          {
+            "id": 1,
+            "pin": 1
+          },
+          {
+            "id": 2,
+            "pin": 2
+          },
+          {
+            "id": 3,
+            "pin": 3
+          },
+          {
+            "id": 4,
+            "pin": 4
+          },
+          {
+            "id": 5,
+            "pin": 5
+          },
+          {
+            "id": 6,
+            "pin": 6
+          },
+          {
+            "id": 7,
+            "pin": 7
+          },
+          {
+            "id": 8,
+            "pin": 8
+          },
+          {
+            "id": 9,
+            "pin": 9
+          },
+          {
+            "id": 10,
+            "pin": 10
+          },
+          {
+            "id": 11,
+            "pin": 11
+          },
+          {
+            "id": 12,
+            "pin": 12
+          },
+          {
+            "id": 13,
+            "pin": 13
+          },
+          {
+            "id": 14,
+            "pin": 14
+          }
+        ]
+      }
+    },
+    "twai": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "baudrate": {
+          "min": 25000,
+          "max": 1000000
+        },
+        "ports": [
+          {
+            "id": 0,
+            "pinGroups": [
+              {
+                "tx": 20,
+                "rx": 21
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sdmmc": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "busWidth": [
+          1,
+          4
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "pinGroups": [
+              {
+                "clk": 14,
+                "cmd": 15,
+                "d0": 2,
+                "d1": 4,
+                "d2": 12,
+                "d3": 13
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "usb": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "type": [
+          "TUYA_USB_OTG",
+          "TUYA_USB_SERIAL_JTAG"
+        ],
+        "speed": "full-speed",
+        "ports": [
+          {
+            "id": 0,
+            "pinGroups": [
+              {
+                "dm": 19,
+                "dp": 20
+              }
+            ]
+          }
+        ]
+      }
     },
     "flash": {
       "enabled": true,
@@ -577,7 +745,6 @@
         "ports": [
           {
             "id": 0,
-            "routable": true,
             "pinGroups": [
               {
                 "dclk": 21,
@@ -642,7 +809,6 @@
         "ports": [
           {
             "id": 0,
-            "routable": true,
             "pinGroups": [
               {
                 "rdx": 48,
@@ -695,7 +861,6 @@
         "ports": [
           {
             "id": 0,
-            "routable": true,
             "pinGroups": [
               {
                 "mclk": 15,
@@ -715,40 +880,6 @@
               }
             ]
           }
-        ]
-      }
-    },
-    "can": {
-      "enabled": true,
-      "count": 1,
-      "spec": {
-        "baudrate": {
-          "min": 25000,
-          "max": 1000000
-        },
-        "ports": [
-          {
-            "id": 0,
-            "pinGroups": [
-              {
-                "tx": 20,
-                "rx": 21
-              }
-            ]
-          }
-        ]
-      }
-    },
-    "vad": {
-      "enabled": true,
-      "count": 1
-    },
-    "kws": {
-      "enabled": true,
-      "count": 1,
-      "spec": {
-        "wakeupWords": [
-          "TKL_KWS_WAKEUP_NIHAO_XIAOZHI"
         ]
       }
     }
@@ -781,8 +912,7 @@
       "name": "LNA_IN",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "LNA_IN"
       ],
       "note": "RF antenna input (LNA)"
@@ -792,8 +922,7 @@
       "name": "VDD3P3",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD3P3"
       ],
       "note": "Analog power supply (3.0-3.6 V)"
@@ -803,8 +932,7 @@
       "name": "VDD3P3",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD3P3"
       ],
       "note": "Analog power supply (3.0-3.6 V)"
@@ -814,8 +942,7 @@
       "name": "CHIP_PU",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "CHIP_PU"
       ],
       "note": "Chip enable/reset (active high); powered by VDD3P3_RTC"
@@ -826,9 +953,7 @@
       "gpio": 0,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO0",
         "RTC_GPIO0",
         "BOOT"
       ],
@@ -840,11 +965,10 @@
       "gpio": 1,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH0",
-        "TOUCH1"
-      ],
-      "caps": []
+        "GPIO1",
+        "TOUCH1",
+        "ADC1_CH0"
+      ]
     },
     {
       "pin": 7,
@@ -852,11 +976,10 @@
       "gpio": 2,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH1",
-        "TOUCH2"
-      ],
-      "caps": []
+        "GPIO2",
+        "TOUCH2",
+        "ADC1_CH1"
+      ]
     },
     {
       "pin": 8,
@@ -864,12 +987,10 @@
       "gpio": 3,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH2",
-        "TOUCH3"
-      ],
-      "caps": [
-        "RTC_GPIO3"
+        "GPIO3",
+        "RTC_GPIO3",
+        "TOUCH3",
+        "ADC1_CH2"
       ],
       "note": "Strapping pin: JTAG signal source select; default floating"
     },
@@ -879,11 +1000,10 @@
       "gpio": 4,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH3",
-        "TOUCH4"
-      ],
-      "caps": []
+        "GPIO4",
+        "TOUCH4",
+        "ADC1_CH3"
+      ]
     },
     {
       "pin": 10,
@@ -891,11 +1011,10 @@
       "gpio": 5,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH4",
-        "TOUCH5"
-      ],
-      "caps": []
+        "GPIO5",
+        "TOUCH5",
+        "ADC1_CH4"
+      ]
     },
     {
       "pin": 11,
@@ -903,11 +1022,10 @@
       "gpio": 6,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH5",
-        "TOUCH6"
-      ],
-      "caps": []
+        "GPIO6",
+        "TOUCH6",
+        "ADC1_CH5"
+      ]
     },
     {
       "pin": 12,
@@ -915,11 +1033,10 @@
       "gpio": 7,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH6",
-        "TOUCH7"
-      ],
-      "caps": []
+        "GPIO7",
+        "TOUCH7",
+        "ADC1_CH6"
+      ]
     },
     {
       "pin": 13,
@@ -927,11 +1044,10 @@
       "gpio": 8,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH7",
-        "TOUCH8"
-      ],
-      "caps": []
+        "GPIO8",
+        "TOUCH8",
+        "ADC1_CH7"
+      ]
     },
     {
       "pin": 14,
@@ -939,11 +1055,10 @@
       "gpio": 9,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH8",
-        "TOUCH9"
-      ],
-      "caps": []
+        "GPIO9",
+        "TOUCH9",
+        "ADC1_CH8"
+      ]
     },
     {
       "pin": 15,
@@ -951,12 +1066,10 @@
       "gpio": 10,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH9",
+        "GPIO10",
         "TOUCH10",
-        "SPI2_CSN"
-      ],
-      "caps": []
+        "ADC1_CH9"
+      ]
     },
     {
       "pin": 16,
@@ -964,12 +1077,10 @@
       "gpio": 11,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH0",
+        "GPIO11",
         "TOUCH11",
-        "SPI2_MOSI"
-      ],
-      "caps": []
+        "ADC2_CH0"
+      ]
     },
     {
       "pin": 17,
@@ -977,12 +1088,10 @@
       "gpio": 12,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH1",
+        "GPIO12",
         "TOUCH12",
-        "SPI2_SCK"
-      ],
-      "caps": []
+        "ADC2_CH1"
+      ]
     },
     {
       "pin": 18,
@@ -990,12 +1099,10 @@
       "gpio": 13,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH2",
+        "GPIO13",
         "TOUCH13",
-        "SPI2_MISO"
-      ],
-      "caps": []
+        "ADC2_CH2"
+      ]
     },
     {
       "pin": 19,
@@ -1003,19 +1110,17 @@
       "gpio": 14,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH3",
-        "TOUCH14"
-      ],
-      "caps": []
+        "GPIO14",
+        "TOUCH14",
+        "ADC2_CH3"
+      ]
     },
     {
       "pin": 20,
       "name": "VDD3P3_RTC",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD3P3_RTC"
       ],
       "note": "RTC and low-power domain power supply"
@@ -1026,12 +1131,10 @@
       "gpio": 15,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH4"
-      ],
-      "caps": [
+        "GPIO15",
         "XTAL_32K_P",
-        "RTC_GPIO15"
+        "RTC_GPIO15",
+        "ADC2_CH4"
       ],
       "note": "32 kHz crystal input (XTAL_32K_P)"
     },
@@ -1041,12 +1144,10 @@
       "gpio": 16,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH5"
-      ],
-      "caps": [
+        "GPIO16",
         "XTAL_32K_N",
-        "RTC_GPIO16"
+        "RTC_GPIO16",
+        "ADC2_CH5"
       ],
       "note": "32 kHz crystal output (XTAL_32K_N)"
     },
@@ -1056,11 +1157,9 @@
       "gpio": 17,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH6",
-        "UART1_TX"
-      ],
-      "caps": []
+        "GPIO17",
+        "ADC2_CH6"
+      ]
     },
     {
       "pin": 24,
@@ -1068,11 +1167,9 @@
       "gpio": 18,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH7",
-        "UART1_RX"
-      ],
-      "caps": []
+        "GPIO18",
+        "ADC2_CH7"
+      ]
     },
     {
       "pin": 25,
@@ -1080,11 +1177,10 @@
       "gpio": 19,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH8",
-        "USB_D-"
+        "GPIO19",
+        "USB_D-",
+        "ADC2_CH8"
       ],
-      "caps": [],
       "note": "USB D- (also USB-Serial-JTAG)"
     },
     {
@@ -1093,11 +1189,10 @@
       "gpio": 20,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH9",
-        "USB_D+"
+        "GPIO20",
+        "USB_D+",
+        "ADC2_CH9"
       ],
-      "caps": [],
       "note": "USB D+ (also USB-Serial-JTAG)"
     },
     {
@@ -1106,17 +1201,16 @@
       "gpio": 21,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": []
+        "GPIO21"
+      ]
     },
     {
       "pin": 28,
       "name": "GPIO26",
       "gpio": 26,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO26",
         "SPICS1"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); in-package PSRAM chip-select (CS1). Reserved when in-package flash/PSRAM present"
@@ -1126,8 +1220,7 @@
       "name": "VDD_SPI",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD_SPI"
       ],
       "note": "In-package flash/PSRAM power supply (3.3 V or 1.8 V; output from internal rail)"
@@ -1137,8 +1230,8 @@
       "name": "GPIO27",
       "gpio": 27,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO27",
         "SPIHD"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); reserved when in-package flash/PSRAM present"
@@ -1148,8 +1241,8 @@
       "name": "GPIO28",
       "gpio": 28,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO28",
         "SPIWP"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); reserved when in-package flash/PSRAM present"
@@ -1159,8 +1252,8 @@
       "name": "GPIO29",
       "gpio": 29,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO29",
         "SPICS0"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); in-package flash chip-select (CS0). Reserved when in-package flash/PSRAM present"
@@ -1170,8 +1263,8 @@
       "name": "GPIO30",
       "gpio": 30,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO30",
         "SPICLK"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); reserved when in-package flash/PSRAM present"
@@ -1181,8 +1274,8 @@
       "name": "GPIO31",
       "gpio": 31,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO31",
         "SPIQ"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); reserved when in-package flash/PSRAM present"
@@ -1192,8 +1285,8 @@
       "name": "GPIO32",
       "gpio": 32,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
+        "GPIO32",
         "SPID"
       ],
       "note": "SPI0/1 flash/PSRAM bus (VDD_SPI); reserved when in-package flash/PSRAM present"
@@ -1204,9 +1297,7 @@
       "gpio": 47,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO47",
         "SPICLK_P_DIFF",
         "SUBSPICLK_P_DIFF"
       ],
@@ -1218,9 +1309,7 @@
       "gpio": 48,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO48",
         "SPICLK_N_DIFF",
         "SUBSPICLK_N_DIFF"
       ],
@@ -1232,9 +1321,7 @@
       "gpio": 33,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO33",
         "SPIIO4"
       ],
       "note": "Octal (OPI) flash/PSRAM data line; used only on octal-package variants, else general GPIO"
@@ -1245,10 +1332,7 @@
       "gpio": 34,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI2_CSN"
-      ],
-      "caps": [
+        "GPIO34",
         "SPIIO5"
       ],
       "note": "Octal (OPI) flash/PSRAM data line; used only on octal-package variants, else general GPIO"
@@ -1259,10 +1343,7 @@
       "gpio": 35,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI2_MOSI"
-      ],
-      "caps": [
+        "GPIO35",
         "SPIIO6"
       ],
       "note": "Octal (OPI) flash/PSRAM data line; used only on octal-package variants, else general GPIO"
@@ -1273,10 +1354,7 @@
       "gpio": 36,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI2_SCK"
-      ],
-      "caps": [
+        "GPIO36",
         "SPIIO7"
       ],
       "note": "Octal (OPI) flash/PSRAM data line; used only on octal-package variants, else general GPIO"
@@ -1287,10 +1365,7 @@
       "gpio": 37,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI2_MISO"
-      ],
-      "caps": [
+        "GPIO37",
         "SPIDQS"
       ],
       "note": "Octal (OPI) flash/PSRAM data strobe (DQS/DM); used only on octal-package variants, else general GPIO"
@@ -1301,9 +1376,8 @@
       "gpio": 38,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": []
+        "GPIO38"
+      ]
     },
     {
       "pin": 44,
@@ -1311,9 +1385,7 @@
       "gpio": 39,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO39",
         "MTCK",
         "JTAG"
       ]
@@ -1324,9 +1396,7 @@
       "gpio": 40,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO40",
         "MTDO",
         "JTAG"
       ]
@@ -1336,8 +1406,7 @@
       "name": "VDD3P3_CPU",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD3P3_CPU"
       ],
       "note": "CPU and digital I/O power supply"
@@ -1348,9 +1417,7 @@
       "gpio": 41,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO41",
         "MTDI",
         "JTAG"
       ]
@@ -1361,9 +1428,7 @@
       "gpio": 42,
       "type": "I/O",
       "functions": [
-        "GPIO"
-      ],
-      "caps": [
+        "GPIO42",
         "MTMS",
         "JTAG"
       ]
@@ -1374,10 +1439,9 @@
       "gpio": 43,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_TX"
+        "GPIO43",
+        "U0TXD"
       ],
-      "caps": [],
       "note": "Default UART0 TX (log)"
     },
     {
@@ -1386,10 +1450,9 @@
       "gpio": 44,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_RX"
+        "GPIO44",
+        "U0RXD"
       ],
-      "caps": [],
       "note": "Default UART0 RX (log)"
     },
     {
@@ -1398,9 +1461,8 @@
       "gpio": 45,
       "type": "I/O",
       "functions": [
-        "GPIO"
+        "GPIO45"
       ],
-      "caps": [],
       "note": "Strapping pin: VDD_SPI voltage; default weak pull-down (0)"
     },
     {
@@ -1409,9 +1471,8 @@
       "gpio": 46,
       "type": "I/O",
       "functions": [
-        "GPIO"
+        "GPIO46"
       ],
-      "caps": [],
       "note": "Strapping pin: chip boot mode (with GPIO0) and ROM message printing; default weak pull-down (0)"
     },
     {
@@ -1419,8 +1480,7 @@
       "name": "XTAL_N",
       "gpio": null,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "XTAL_N"
       ],
       "note": "40 MHz crystal output (negative)"
@@ -1430,8 +1490,7 @@
       "name": "XTAL_P",
       "gpio": null,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "XTAL_P"
       ],
       "note": "40 MHz crystal input (positive)"
@@ -1441,8 +1500,7 @@
       "name": "VDDA",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDDA"
       ],
       "note": "Analog power supply (3.0-3.6 V)"
@@ -1452,8 +1510,7 @@
       "name": "VDDA",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDDA"
       ],
       "note": "Analog power supply (3.0-3.6 V)"
@@ -1463,8 +1520,7 @@
       "name": "GND",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GND"
       ],
       "note": "Center exposed thermal/ground pad"

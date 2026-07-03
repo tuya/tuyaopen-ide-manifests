@@ -384,66 +384,66 @@
     {
       "gpio": 2,
       "functions": [
-        "GPIO",
+        "GPIO2",
         "SPI1_SCK",
-        "QSPI1_SCK",
         "SDIO_CLK",
         "SC_RSTN",
-        "LIN_SLEEP"
+        "LIN_SLEEP",
+        "QSPI1_SCK"
       ]
     },
     {
       "gpio": 3,
       "functions": [
-        "GPIO",
+        "GPIO3",
         "SPI1_CSN",
-        "QSPI1_CS",
         "SDIO_CMD",
-        "SC_VCC"
+        "SC_VCC",
+        "QSPI1_CS"
       ]
     },
     {
       "gpio": 4,
       "functions": [
-        "GPIO",
+        "GPIO4",
         "SPI1_MOSI",
-        "QSPI1_IO0",
         "SDIO_DATA0",
         "COM6",
+        "QSPI1_IO0",
         "SEG30"
       ]
     },
     {
       "gpio": 5,
       "functions": [
-        "GPIO",
+        "GPIO5",
         "SPI1_MISO",
-        "QSPI1_IO1",
         "SDIO_DATA1",
         "COM7",
+        "QSPI1_IO1",
         "SEG31"
       ]
     },
     {
       "gpio": 6,
       "functions": [
-        "GPIO",
-        "QSPI1_IO2",
-        "I2S0_SCK"
+        "GPIO6",
+        "I2S0_SCK",
+        "QSPI1_IO2"
       ]
     },
     {
       "gpio": 7,
       "functions": [
-        "GPIO",
-        "QSPI1_IO3",
-        "I2S0_SYNC"
+        "GPIO7",
+        "I2S0_SYNC",
+        "QSPI1_IO3"
       ]
     },
     {
       "gpio": 40,
       "functions": [
-        "GPIO",
+        "GPIO40",
         "UART2_RX",
         "I2S1_SCK",
         "LIN_RXD",
@@ -456,7 +456,7 @@
     {
       "gpio": 41,
       "functions": [
-        "GPIO",
+        "GPIO41",
         "UART2_TX",
         "I2S1_SYNC",
         "LIN_TXD",

@@ -74,39 +74,6 @@ the schema never relies on "implicit inheritance".
   Forward-compatible: an IDE predating the field ignores it (shows
   everything); an SDK-aware IDE filters the catalogue by the active SDK.
   `platforms` items do **not** carry this field.
-- **Platform pinout `functions` vs `caps`** — in a platform detail file each
-  `pinout[]` entry splits its labels into two arrays: `functions[]` is a
-  **controlled, selection-only** vocabulary of editor-selectable *routing*
-  tokens (`GPIO` + `UART{n}_TX` / `I2C{n}_SCL` / `SPI{n}_MOSI` / `QSPI…` /
-  `PWM{n}` / `ADC{u}_CH{c}` — exactly what the manifest-editor's pin-picker
-  matches); `caps[]` is **free datasheet text** for display-only capabilities
-  (`RTC_GPIOn`/`LP_GPIOn`, `TOUCHn`, `DACn`, flash/USB/strapping, `JTAG`,
-  `RGB`/`i8080`/`SEG`, `ENET_*`, power rails, …). A pin's own `GPIO{n}`
-  identity lives in `name`/`gpio`, not in `functions`.
-- **Platform peripheral port `routable`** — each `peripherals.<p>.spec.ports[]`
-  (PWM on `spec`) carries `routable` (default `false` = fixed pinmux, pins
-  locked). GPIO-matrix chips (ESP32) set `routable: true` on digital ports so
-  their `pinGroups` become *defaults* and any `GPIO`-capable pin is selectable;
-  an optional `candidates: [gpio,…]` constrains the routable set (e.g. LP-domain
-  ports). ADC/analog ports stay `routable: false`.
-  See `docs/superpowers/specs/2026-06-30-pinout-functions-caps-split-matrix-design.md`
-  in the IDE repo for the full design.
-- **`published` gates downstream** — a platform item and a board item each carry
-  `published` (default `true` when absent). A board's **effective** publish state
-  is `board.published !== false` **AND** its chip platform's `published !== false`:
-  if the platform (the variant a board targets via `platformId`) is unpublished,
-  every board on it is effectively unpublished too — even boards flagged
-  `published: true`. Consumers treat effectively-unpublished boards as not-yet-released
-  (the editor sorts them to the end of their tab, published first; the IDE should hide
-  them from the board picker). Rationale: you can't ship a board whose SoC platform
-  isn't released yet. (Same idea applies to demos gated by their platform.)
-- **Board list grouping (multi-variant platforms)** — the editor groups boards into
-  one tab per SDK **platform group**. A board's `platformId` may be the group itself
-  (single-chip platforms: `t5ai`, `gd32`) OR a specific chip **variant** (multi-chip
-  platforms: `esp32s3`, `esp32c6`, …). To place every chip of one SDK platform in a
-  single tab, resolve a board's `platformId` to its group via the platforms list
-  (`platform.id → platform.platformId`). Keep `board.platformId = the variant` (so the
-  IDE resolves the correct per-chip detail) and `board.variantId = the same variant`.
 
 ## How the IDE consumes this repo
 

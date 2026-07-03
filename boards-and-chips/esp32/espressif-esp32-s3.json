@@ -3,9 +3,7 @@
   "peripheralPatterns": {},
   "links": {
     "schematic": null,
-    "datasheet": {
-      "en": "https://www.espressif.com/en/products/socs/esp32-s3"
-    },
+    "datasheet": "https://www.espressif.com/en/products/socs/esp32-s3",
     "productPage": null
   },
   "boardSymbol": "ESP32_S3"

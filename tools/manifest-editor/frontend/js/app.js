@@ -6,11 +6,10 @@ import imageUploader from './image-uploader.js';
 import { renderBoardCard, renderBoardForm, saveBoardForm, deleteBoardPrompt, setupFormValidation, initGlobalTags, setSelectedTags } from './board-editor.js';
 import { renderPeripheralEditor, isDirty as periIsDirty } from './peripheral-editor.js';
 import { renderExpansionPinsEditor } from './expansion-pins-editor.js';
-import { renderExpansionConnectorsEditor } from './expansion-connectors-editor.js';
 import { renderDemoCard, renderDemoForm, saveDemoForm, deleteDemoAction } from './demo-editor.js';
 import { renderSkillCard, renderSkillForm, saveSkillForm } from './skill-editor.js';
 import { renderPlatformCard, mountPlatformForm, mountNewPlatformForm, savePlatformForm, deletePlatformPrompt } from './platform-editor.js';
-import i18n, { t } from './i18n.js';
+import i18n from './i18n.js';
 
 let currentTab = 'boards';
 let platforms = [];
@@ -244,27 +243,11 @@ async function loadBoards() {
       return;
     }
 
-    // Group boards by their SDK platform GROUP, one tab per group. A board's
-    // `platformId` may be the group itself (single-chip platforms, e.g. "t5ai",
-    // "gd32") OR a specific chip variant (multi-chip platforms, e.g. "esp32s3");
-    // resolve variants to their group via the platforms list so every chip of one
-    // SDK platform (e.g. all ESP32 variants) shares a single tab.
-    const id2group = new Map();
-    const id2published = new Map();
-    for (const p of plats) { id2group.set(p.id, p.platformId || p.id); id2published.set(p.id, p.published); }
-    // Publish rank within a tab (ascending = shown first). Publish state gates on BOTH
-    // the board and its chip platform (variant, = board.platformId): a board whose
-    // platform is unpublished isn't really published either. Graded so a board's OWN
-    // `published:false` (a deliberate hide) always sinks below a board that is only
-    // platform-gated — otherwise, in a tab where every board is unpublished (e.g. the
-    // whole ESP32 catalogue while its platforms are unpublished), a stable sort would
-    // leave the board-flagged ones stuck at the front. rank: 0 fully published, 1
-    // platform-unpublished only, 2 board-unpublished, 3 both. Stable within a rank.
-    const pubRank = (b) => (b.published === false ? 2 : 0) + (id2published.get(b.platformId) === false ? 1 : 0);
-    const sortedBoards = [...boards].sort((a, b) => pubRank(a) - pubRank(b));
+    // A board's `platformId` is its SDK platform group (e.g. "gd32"); tabs are
+    // one per group, with all the group's chips' boards inside.
     const byGroup = new Map();
-    for (const b of sortedBoards) {
-      const group = id2group.get(b.platformId) || b.platformId || '—';
+    for (const b of boards) {
+      const group = b.platformId || '—';
       if (!byGroup.has(group)) byGroup.set(group, []);
       byGroup.get(group).push(b);
     }
@@ -281,8 +264,7 @@ async function loadBoards() {
         const act = g === activeBoardPlatform ? ' active' : '';
         return `<button type="button" class="board-plat-tab${act}" data-plat="${escapeHtml(g)}">${escapeHtml(g)}<span class="board-plat-tab-count">${n}</span></button>`;
       }).join('');
-      const cards = byGroup.get(activeBoardPlatform)
-        .map((b) => renderBoardCard(b, id2published.get(b.platformId) === false)).join('');
+      const cards = byGroup.get(activeBoardPlatform).map(renderBoardCard).join('');
       boardsList.className = 'boards-tabbed';
       boardsList.innerHTML = `<div class="board-plat-tabs">${tabs}</div><div class="boards-grid">${cards}</div>`;
       boardsList.querySelectorAll('.board-plat-tab').forEach((t) =>
@@ -463,19 +445,8 @@ async function openBoardForm(boardId = null) {
           expPinsPane.style.display = target === 'expansion-pins' ? '' : 'none';
           expPinsPane.classList.toggle('active', target === 'expansion-pins');
           if (target === 'expansion-pins') {
-            // "Expansion" tab holds both bare pins and typed connectors (接插件).
-            expPinsPane.innerHTML = `
-              <div class="exp-section">
-                <h3 class="exp-section-title">${escapeHtml(t('expansionConnectorsSection'))}</h3>
-                <div id="expConnSub"></div>
-              </div>
-              <div class="exp-section" style="margin-top:20px;">
-                <h3 class="exp-section-title">${escapeHtml(t('expansionPinsSection'))}</h3>
-                <div id="expPinsSub"></div>
-              </div>`;
             // Pinout is per-chip: pass the chip id (variantId), not the SDK group.
-            renderExpansionPinsEditor('expPinsSub', boardId, board.variantId || board.platformId);
-            renderExpansionConnectorsEditor('expConnSub', boardId);
+            renderExpansionPinsEditor('expansionPinsContainer', boardId, board.variantId || board.platformId);
           }
         });
       });

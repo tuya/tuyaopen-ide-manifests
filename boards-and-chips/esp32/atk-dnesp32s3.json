@@ -8,20 +8,13 @@
           "en": "ST7789 LCD",
           "zh-CN": "ST7789 显示屏"
         },
-        "interface": "SPI",
-        "mounting": "accessory",
-        "pinLocked": false,
-        "port": 0,
         "model": "ST7789",
+        "interface": "SPI",
         "width": 320,
         "height": 240,
         "pixelFormat": "RGB565",
-        "backlight": "CUSTOM",
-        "blPwmChannel": 0,
-        "timing": {
-          "syncMode": "VH",
-          "clkEdge": "rising"
-        },
+        "mounting": "onboard",
+        "pinLocked": true,
         "pins": {
           "SPI": [
             {
@@ -33,34 +26,19 @@
               "gpio": 11
             },
             {
-              "role": "cs",
-              "gpio": 21
-            },
-            {
               "role": "dc",
               "gpio": 40
             },
             {
-              "role": "bl",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 8
-            },
-            {
-              "role": "rst",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 10
-            },
-            {
-              "role": "power",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 11
+              "role": "cs",
+              "gpio": 21
             }
           ]
         },
         "kconfig": null,
         "note": {
-          "en": "SPI LCD header (U2). Data on fixed MCU GPIOs (sck=IO12, mosi=IO11, cs=IO21, dc=IO40); backlight/reset/power are driven via the XL9555 expander (bl=#8, rst=SLCD_RST #10, power=SLCD_PWR #11). The ESP SPI-LCD driver is configured rst_io=-1 because reset is toggled through the expander, not a direct GPIO. ST7789 is the shipped/default panel; the header accepts any compatible SPI panel on these pins.",
-          "zh-CN": "SPI LCD 排针（U2）。数据走固定 MCU GPIO（sck=IO12, mosi=IO11, cs=IO21, dc=IO40）；背光/复位/电源经 XL9555 扩展器驱动（bl=#8, rst=SLCD_RST #10, power=SLCD_PWR #11）。ESP SPI-LCD 驱动配置 rst_io=-1，因为复位是经扩展器拉的、非直连 GPIO。ST7789 是随板/默认屏，该排针可换插任意兼容 SPI 屏，用这组脚。"
+          "en": "Reset is unused (rst=-1); backlight is driven via the XL9555 IO expander, not a direct GPIO.",
+          "zh-CN": "复位脚未使用（rst=-1）；背光由 XL9555 IO 扩展芯片控制，非直连 GPIO。"
         }
       }
     ],
@@ -71,6 +49,7 @@
           "en": "ES8388 Audio Codec",
           "zh-CN": "ES8388 音频编解码器"
         },
+        "model": "ES8388",
         "interface": "I2S",
         "mounting": "onboard",
         "pinLocked": true,
@@ -85,16 +64,26 @@
               "gpio": 9
             },
             {
-              "role": "din",
-              "gpio": 14
-            },
-            {
               "role": "dout",
               "gpio": 10
             },
             {
+              "role": "din",
+              "gpio": 14
+            },
+            {
               "role": "mclk",
               "gpio": 3
+            }
+          ],
+          "I2C": [
+            {
+              "role": "scl",
+              "gpio": 42
+            },
+            {
+              "role": "sda",
+              "gpio": 41
             }
           ]
         },
@@ -105,7 +94,7 @@
         }
       }
     ],
-    "io-expander": [
+    "pmic": [
       {
         "id": "io-expander-xl9555",
         "name": {
@@ -132,674 +121,17 @@
         "note": {
           "en": "16-bit I2C IO expander at address 0x20; drives LCD backlight, speaker enable, touch/camera reset and on-board keys.",
           "zh-CN": "16 位 I2C IO 扩展芯片，地址 0x20；用于驱动 LCD 背光、喇叭使能、触摸/摄像头复位及板载按键。"
-        },
-        "expanderPins": [
-          {
-            "pin": 0,
-            "role": "ap_int",
-            "dir": "in"
-          },
-          {
-            "pin": 1,
-            "role": "qma_int",
-            "dir": "in"
-          },
-          {
-            "pin": 2,
-            "role": "spk_en",
-            "dir": "out"
-          },
-          {
-            "pin": 3,
-            "role": "beep",
-            "dir": "out"
-          },
-          {
-            "pin": 4,
-            "role": "cam_pwdn",
-            "dir": "out"
-          },
-          {
-            "pin": 5,
-            "role": "cam_rst",
-            "dir": "out"
-          },
-          {
-            "pin": 6,
-            "role": "led",
-            "dir": "out"
-          },
-          {
-            "pin": 7,
-            "role": "gbc_key",
-            "dir": "out"
-          },
-          {
-            "pin": 8,
-            "role": "lcd_bl",
-            "dir": "out"
-          },
-          {
-            "pin": 9,
-            "role": "ctp_rst",
-            "dir": "out"
-          },
-          {
-            "pin": 10,
-            "role": "slcd_rst",
-            "dir": "out"
-          },
-          {
-            "pin": 11,
-            "role": "slcd_pwr",
-            "dir": "out"
-          },
-          {
-            "pin": 12,
-            "role": "key3",
-            "dir": "in"
-          },
-          {
-            "pin": 13,
-            "role": "key2",
-            "dir": "in"
-          },
-          {
-            "pin": 14,
-            "role": "key1",
-            "dir": "in"
-          },
-          {
-            "pin": 15,
-            "role": "key0",
-            "dir": "in"
-          }
-        ]
+        }
       }
     ]
   },
   "links": {
     "schematic": null,
-    "datasheet": {
-      "en": "http://www.openedv.com/docs/boards/esp32/ATK-DNESP32S3.html",
-      "zh-CN": "http://www.openedv.com/docs/boards/esp32/ATK-DNESP32S3.html"
-    },
-    "productPage": {
-      "en": "https://www.alientek.com/Product_Details_12/28.html",
-      "zh-CN": "https://detail.tmall.com/item.htm?id=768499342659"
-    }
+    "datasheet": null,
+    "productPage": "https://www.alientek.com"
   },
-  "expansionPins": [
-    {
-      "gpio": 0,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "RTC_GPIO0",
-        "BOOT"
-      ]
-    },
-    {
-      "gpio": 1,
-      "functions": [
-        "GPIO",
-        "ADC1_CH0",
-        "TOUCH1"
-      ]
-    },
-    {
-      "gpio": 2,
-      "functions": [
-        "GPIO",
-        "ADC1_CH1",
-        "TOUCH2"
-      ]
-    },
-    {
-      "gpio": 3,
-      "functions": [
-        "GPIO",
-        "ADC1_CH2",
-        "TOUCH3"
-      ],
-      "caps": [
-        "RTC_GPIO3"
-      ]
-    },
-    {
-      "gpio": 4,
-      "functions": [
-        "GPIO",
-        "ADC1_CH3",
-        "TOUCH4"
-      ]
-    },
-    {
-      "gpio": 5,
-      "functions": [
-        "GPIO",
-        "ADC1_CH4",
-        "TOUCH5"
-      ]
-    },
-    {
-      "gpio": 6,
-      "functions": [
-        "GPIO",
-        "ADC1_CH5",
-        "TOUCH6"
-      ]
-    },
-    {
-      "gpio": 7,
-      "functions": [
-        "GPIO",
-        "ADC1_CH6",
-        "TOUCH7"
-      ]
-    },
-    {
-      "gpio": 8,
-      "functions": [
-        "GPIO",
-        "ADC1_CH7",
-        "TOUCH8"
-      ]
-    },
-    {
-      "gpio": 9,
-      "functions": [
-        "GPIO",
-        "ADC1_CH8",
-        "TOUCH9"
-      ]
-    },
-    {
-      "gpio": 10,
-      "functions": [
-        "GPIO",
-        "ADC1_CH9",
-        "TOUCH10",
-        "SPI2_CSN"
-      ]
-    },
-    {
-      "gpio": 11,
-      "functions": [
-        "GPIO",
-        "ADC2_CH0",
-        "TOUCH11",
-        "SPI2_MOSI"
-      ]
-    },
-    {
-      "gpio": 12,
-      "functions": [
-        "GPIO",
-        "ADC2_CH1",
-        "TOUCH12",
-        "SPI2_SCK"
-      ]
-    },
-    {
-      "gpio": 13,
-      "functions": [
-        "GPIO",
-        "ADC2_CH2",
-        "TOUCH13",
-        "SPI2_MISO"
-      ]
-    },
-    {
-      "gpio": 14,
-      "functions": [
-        "GPIO",
-        "ADC2_CH3",
-        "TOUCH14"
-      ]
-    },
-    {
-      "gpio": 15,
-      "functions": [
-        "GPIO",
-        "ADC2_CH4"
-      ],
-      "caps": [
-        "XTAL_32K_P",
-        "RTC_GPIO15"
-      ]
-    },
-    {
-      "gpio": 16,
-      "functions": [
-        "GPIO",
-        "ADC2_CH5"
-      ],
-      "caps": [
-        "XTAL_32K_N",
-        "RTC_GPIO16"
-      ]
-    },
-    {
-      "gpio": 17,
-      "functions": [
-        "GPIO",
-        "ADC2_CH6",
-        "UART1_TX"
-      ]
-    },
-    {
-      "gpio": 18,
-      "functions": [
-        "GPIO",
-        "ADC2_CH7",
-        "UART1_RX"
-      ]
-    },
-    {
-      "gpio": 19,
-      "functions": [
-        "GPIO",
-        "ADC2_CH8",
-        "USB_D-"
-      ]
-    },
-    {
-      "gpio": 20,
-      "functions": [
-        "GPIO",
-        "ADC2_CH9",
-        "USB_D+"
-      ]
-    },
-    {
-      "gpio": 21,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
-      "gpio": 36,
-      "functions": [
-        "GPIO",
-        "SPI2_SCK"
-      ],
-      "caps": [
-        "SPIIO7"
-      ]
-    },
-    {
-      "gpio": 37,
-      "functions": [
-        "GPIO",
-        "SPI2_MISO"
-      ],
-      "caps": [
-        "SPIDQS"
-      ]
-    },
-    {
-      "gpio": 38,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
-      "gpio": 39,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "MTCK",
-        "JTAG"
-      ]
-    },
-    {
-      "gpio": 40,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "MTDO",
-        "JTAG"
-      ]
-    },
-    {
-      "gpio": 41,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "MTDI",
-        "JTAG"
-      ]
-    },
-    {
-      "gpio": 42,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "MTMS",
-        "JTAG"
-      ]
-    },
-    {
-      "gpio": 43,
-      "functions": [
-        "GPIO",
-        "UART0_TX"
-      ]
-    },
-    {
-      "gpio": 44,
-      "functions": [
-        "GPIO",
-        "UART0_RX"
-      ]
-    },
-    {
-      "gpio": 45,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
-      "gpio": 46,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
-      "gpio": 47,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "SPICLK_P_DIFF",
-        "SUBSPICLK_P_DIFF"
-      ]
-    },
-    {
-      "gpio": 48,
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [
-        "SPICLK_N_DIFF",
-        "SUBSPICLK_N_DIFF"
-      ]
-    }
-  ],
   "boardSymbol": "DNESP32S3",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/ESP32/DNESP32S3"
-  },
-  "peripheralGroups": {},
-  "expansionConnectors": [
-    {
-      "id": "u2-spi-lcd",
-      "name": {
-        "en": "SPI LCD Connector (U2)",
-        "zh-CN": "SPI LCD 接插件 (U2)"
-      },
-      "provides": [
-        {
-          "deviceClass": "display",
-          "interface": "SPI",
-          "pins": {
-            "SPI": [
-              {
-                "role": "sck",
-                "gpio": 12
-              },
-              {
-                "role": "mosi",
-                "gpio": 11
-              },
-              {
-                "role": "cs",
-                "gpio": 21
-              },
-              {
-                "role": "dc",
-                "gpio": 40
-              },
-              {
-                "role": "bl",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 8
-              },
-              {
-                "role": "rst",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 10
-              },
-              {
-                "role": "power",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 11
-              }
-            ]
-          }
-        }
-      ],
-      "note": {
-        "en": "On-board SPI LCD header (U2, \"SPI LCD WIRELESS\"). Fixed SPI pinout; backlight/reset/power via XL9555. Attach any compatible SPI panel (the board ships an ST7789 on it — see the ST7789 accessory).",
-        "zh-CN": "板载 SPI LCD 排针（U2，“SPI LCD WIRELESS”）。SPI 针脚固定;背光/复位/电源经 XL9555。可接任意兼容 SPI 屏(出厂配了一块 ST7789,见 ST7789 配件)。"
-      }
-    },
-    {
-      "id": "j1-lcd-panel",
-      "name": {
-        "en": "RGB LCD Panel Connector (J1)",
-        "zh-CN": "RGB 屏接插件 (J1)"
-      },
-      "provides": [
-        {
-          "deviceClass": "display",
-          "interface": "RGB",
-          "pins": {
-            "RGB": [
-              {
-                "role": "de",
-                "gpio": 4
-              },
-              {
-                "role": "pclk",
-                "gpio": 5
-              },
-              {
-                "role": "r3",
-                "gpio": 45
-              },
-              {
-                "role": "r4",
-                "gpio": 48
-              },
-              {
-                "role": "r5",
-                "gpio": 47
-              },
-              {
-                "role": "r6",
-                "gpio": 21
-              },
-              {
-                "role": "r7",
-                "gpio": 14
-              },
-              {
-                "role": "g2",
-                "gpio": 10
-              },
-              {
-                "role": "g3",
-                "gpio": 9
-              },
-              {
-                "role": "g4",
-                "gpio": 46
-              },
-              {
-                "role": "g5",
-                "gpio": 3
-              },
-              {
-                "role": "g6",
-                "gpio": 8
-              },
-              {
-                "role": "g7",
-                "gpio": 18
-              },
-              {
-                "role": "b3",
-                "gpio": 17
-              },
-              {
-                "role": "b4",
-                "gpio": 16
-              },
-              {
-                "role": "b5",
-                "gpio": 15
-              },
-              {
-                "role": "b6",
-                "gpio": 7
-              },
-              {
-                "role": "b7",
-                "gpio": 6
-              },
-              {
-                "role": "bl",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 8
-              },
-              {
-                "role": "rst",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 10
-              }
-            ]
-          }
-        },
-        {
-          "deviceClass": "touchpad",
-          "interface": "I2C",
-          "pins": {
-            "I2C": [
-              {
-                "role": "scl",
-                "gpio": 38
-              },
-              {
-                "role": "sda",
-                "gpio": 39
-              },
-              {
-                "role": "int",
-                "gpio": 40
-              },
-              {
-                "role": "rst",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 9
-              }
-            ]
-          }
-        }
-      ],
-      "note": {
-        "en": "One 40-pin connector carrying both the RGB display and its capacitive touch (data/DE/PCLK on fixed MCU GPIOs; backlight/reset via XL9555). RGB data pins are shared with the DVP camera header and the on-board I2S audio. Attach one compatible RGB-touch panel; generate its driver for these exact pins.",
-        "zh-CN": "同一个 40 脚接插件,同时引出 RGB 显示与电容触摸(数据/DE/PCLK 走固定 MCU GPIO;背光/复位经 XL9555)。RGB 数据脚与 DVP 摄像头排针、板载 I2S 音频共用。接一块兼容的带触摸 RGB 屏,按这组固定脚生成驱动。"
-      }
-    },
-    {
-      "id": "p2-dvp-camera",
-      "name": {
-        "en": "DVP Camera Connector (P2)",
-        "zh-CN": "DVP 摄像头接插件 (P2)"
-      },
-      "provides": [
-        {
-          "deviceClass": "camera",
-          "interface": "DVP",
-          "pins": {
-            "DVP": [
-              {
-                "role": "d0",
-                "gpio": 4
-              },
-              {
-                "role": "d1",
-                "gpio": 5
-              },
-              {
-                "role": "d2",
-                "gpio": 6
-              },
-              {
-                "role": "d3",
-                "gpio": 7
-              },
-              {
-                "role": "d4",
-                "gpio": 15
-              },
-              {
-                "role": "d5",
-                "gpio": 16
-              },
-              {
-                "role": "d6",
-                "gpio": 17
-              },
-              {
-                "role": "d7",
-                "gpio": 18
-              },
-              {
-                "role": "pclk",
-                "gpio": 45
-              },
-              {
-                "role": "vsync",
-                "gpio": 47
-              },
-              {
-                "role": "hsync",
-                "gpio": 48
-              },
-              {
-                "role": "i2c_scl",
-                "gpio": 38
-              },
-              {
-                "role": "i2c_sda",
-                "gpio": 39
-              },
-              {
-                "role": "pwdn",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 4
-              },
-              {
-                "role": "rst",
-                "expanderId": "io-expander-xl9555",
-                "expanderPin": 5
-              }
-            ]
-          }
-        }
-      ],
-      "note": {
-        "en": "OV2640-class DVP camera header; no XCLK broken out. SCCB (i2c_scl=IO38/i2c_sda=IO39) shared with the touch I2C; data pins shared with the RGB LCD header. PWDN/RESET via XL9555 (#4/#5).",
-        "zh-CN": "OV2640 类 DVP 摄像头排针;未引出 XCLK。SCCB(i2c_scl=IO38/i2c_sda=IO39)与触摸 I2C 共用;数据脚与 RGB LCD 排针共用。PWDN/复位经 XL9555(#4/#5)。"
-      }
-    }
-  ]
+  }
 }

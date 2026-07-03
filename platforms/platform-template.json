@@ -119,8 +119,6 @@
           {
             "id": 0,
             "role": "general",
-            "routable": false,
-            "candidates": "<omit for fixed pinmux; for a GPIO-matrix routable port set routable:true and optionally candidates:[gpio,...] to constrain the routable set (omit candidates = any pin whose functions include \"GPIO\")>",
             "irq": {
               "rx": false,
               "tx": false
@@ -687,24 +685,5 @@
       "count": 1
     }
   },
-  "pinout": [
-    {
-      "pin": 1,
-      "name": "<pad name, e.g. GPIO4 / P0 / GND>",
-      "gpio": 4,
-      "type": "<I/O | I | O | P | NC | AI | AO>",
-      "functions": [
-        "<SELECTION-ONLY controlled vocab: routing tokens ONLY — 'GPIO' (matrix-routable general IO marker) + fixed peripheral tokens the editor pin-picker matches, e.g. UART1_TX, I2C1_SCL, SPI0_MOSI, PWM3, ADC0_CH1. Do NOT put the pin's own GPIOn self-name here (identity lives in name/gpio). Reserved/system pins (flash bus, dedicated USB, power/XTAL) use []>",
-        "GPIO",
-        "ADC0_CH1"
-      ],
-      "caps": [
-        "<FREE TEXT, no vocab — datasheet display-only capability labels: RTC_GPIOn / LP_GPIOn, TOUCHn, DACn, flash signal names, USB_D±, strapping role, XTAL, JTAG, CLK_OUT, RGB/i8080/SEG, ENET_*, CAN_*, power rails, etc.>",
-        "RTC_GPIO4",
-        "TOUCH0"
-      ],
-      "note": "<non-obvious pin note, or omit>"
-    }
-  ],
   "platformSymbol": "<PLATFORM_KCONFIG_VALUE>"
 }

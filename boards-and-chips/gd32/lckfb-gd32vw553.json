@@ -67,16 +67,14 @@
     {
       "gpio": 0,
       "functions": [
-        "GPIO",
+        "GPIO0",
         "UART0_TX",
         "UART1_CTS",
         "SPI0_MOSI",
-        "ADC0_CH0"
-      ],
-      "caps": [
         "TIMER1_CH0",
         "TIMER1_ETI",
         "TIMER0_ETI",
+        "ADC0",
         "WKUP0",
         "RTC_TAMP1"
       ]
@@ -84,124 +82,108 @@
     {
       "gpio": 1,
       "functions": [
-        "GPIO",
+        "GPIO1",
         "UART0_RX",
         "UART1_RTS",
         "SPI0_MISO",
-        "ADC0_CH1"
-      ],
-      "caps": [
-        "TIMER1_CH1"
+        "TIMER1_CH1",
+        "ADC1"
       ]
     },
     {
       "gpio": 2,
       "functions": [
-        "GPIO",
+        "GPIO2",
         "UART0_CTS",
         "UART1_TX",
         "I2C0_SCL",
         "SPI0_SCK",
-        "ADC0_CH2"
-      ],
-      "caps": [
         "TIMER1_CH2",
-        "TIMER0_CH0"
+        "TIMER0_CH0",
+        "ADC2"
       ]
     },
     {
       "gpio": 3,
       "functions": [
-        "GPIO",
+        "GPIO3",
         "UART0_RTS",
         "UART1_RX",
         "I2C0_SDA",
         "SPI0_CSN",
-        "ADC0_CH3"
-      ],
-      "caps": [
         "TIMER1_CH3",
         "TIMER0_CH0_ON",
-        "RTC_OUT"
+        "RTC_OUT",
+        "ADC3"
       ]
     },
     {
       "gpio": 4,
       "functions": [
-        "GPIO",
+        "GPIO4",
         "UART1_TX",
         "SPI0_MOSI",
         "SPI0_CSN",
         "QSPI0_SCK",
-        "ADC0_CH4"
-      ],
-      "caps": [
-        "TIMER0_CH1"
+        "TIMER0_CH1",
+        "ADC4"
       ]
     },
     {
       "gpio": 5,
       "functions": [
-        "GPIO",
+        "GPIO5",
         "UART1_RX",
         "SPI0_MISO",
         "SPI0_SCK",
         "QSPI0_CS",
-        "ADC0_CH5"
-      ],
-      "caps": [
         "TIMER2_ETI",
-        "TIMER0_CH1_ON"
+        "TIMER0_CH1_ON",
+        "ADC5"
       ]
     },
     {
       "gpio": 6,
       "functions": [
-        "GPIO",
+        "GPIO6",
         "UART2_TX",
         "I2C1_SCL",
         "SPI0_MISO",
         "SPI0_SCK",
         "QSPI0_IO0",
-        "ADC0_CH6"
-      ],
-      "caps": [
         "TIMER2_CH0",
         "TIMER0_CH1",
-        "TIMER1_CH1"
+        "TIMER1_CH1",
+        "ADC6"
       ]
     },
     {
       "gpio": 7,
       "functions": [
-        "GPIO",
+        "GPIO7",
         "UART2_RX",
         "I2C1_SDA",
         "SPI0_CSN",
         "SPI0_MOSI",
         "QSPI0_IO1",
-        "ADC0_CH7"
-      ],
-      "caps": [
         "TIMER2_CH1",
         "TIMER0_CH0_ON",
         "TIMER0_CH1_ON",
         "TIMER1_CH2",
+        "ADC7",
         "WKUP2"
       ]
     },
     {
       "gpio": 8,
       "functions": [
-        "GPIO",
+        "GPIO8",
         "UART0_RX",
+        "USART0_CK",
         "UART1_RX",
         "I2C0_SDA",
         "I2C1_SDA",
-        "UART0_CK"
-      ],
-      "caps": [
-        "CLK_OUT0",
+        "CK_OUT0",
         "TIMER0_CH0",
         "TIMER0_CH2_ON",
         "TIMER15_CH0",
@@ -211,12 +193,10 @@
     {
       "gpio": 9,
       "functions": [
-        "GPIO",
+        "GPIO9",
         "UART0_TX",
         "SPI0_MOSI",
-        "QSPI0_SCK"
-      ],
-      "caps": [
+        "QSPI0_SCK",
         "TIMER0_CH1",
         "TIMER15_CH0_ON"
       ]
@@ -224,12 +204,10 @@
     {
       "gpio": 10,
       "functions": [
-        "GPIO",
+        "GPIO10",
         "UART0_RX",
         "SPI0_MISO",
-        "QSPI0_CS"
-      ],
-      "caps": [
+        "QSPI0_CS",
         "TIMER0_CH2",
         "TIMER16_CH0"
       ]
@@ -237,11 +215,9 @@
     {
       "gpio": 11,
       "functions": [
-        "GPIO",
+        "GPIO11",
         "SPI0_SCK",
-        "QSPI0_IO0"
-      ],
-      "caps": [
+        "QSPI0_IO0",
         "TIMER0_CH3",
         "TIMER1_CH3",
         "TIMER16_BRKIN"
@@ -250,12 +226,10 @@
     {
       "gpio": 12,
       "functions": [
-        "GPIO",
+        "GPIO12",
+        "USART0_CK",
         "SPI0_CSN",
         "QSPI0_IO1",
-        "UART0_CK"
-      ],
-      "caps": [
         "TIMER0_CH3",
         "TIMER0_ETI",
         "TIMER1_CH2",
@@ -266,14 +240,12 @@
     {
       "gpio": 15,
       "functions": [
-        "GPIO",
+        "GPIO15",
+        "JTDI",
         "I2C0_SCL",
         "I2C1_SCL",
         "UART0_RX",
-        "UART1_RX"
-      ],
-      "caps": [
-        "JTDI",
+        "UART1_RX",
         "TIMER1_CH0",
         "TIMER1_ETI",
         "WKUP1"
@@ -282,30 +254,26 @@
     {
       "gpio": 16,
       "functions": [
-        "GPIO",
+        "GPIO16",
         "UART1_TX",
         "UART2_CTS",
         "I2C0_SCL",
-        "ADC0_CH8"
-      ],
-      "caps": [
         "TIMER0_CH0",
         "TIMER0_CH1_ON",
         "TIMER0_CH2",
         "TIMER0_BRKIN",
         "TIMER2_ETI",
-        "TIMER16_CH0"
+        "TIMER16_CH0",
+        "ADC8"
       ]
     },
     {
       "gpio": 17,
       "functions": [
-        "GPIO",
+        "GPIO17",
         "UART1_RX",
         "UART2_RTS",
-        "I2C0_SDA"
-      ],
-      "caps": [
+        "I2C0_SDA",
         "TIMER0_CH0_ON",
         "TIMER0_CH2_ON",
         "TIMER2_CH2",
@@ -316,10 +284,8 @@
     {
       "gpio": 18,
       "functions": [
-        "GPIO",
-        "UART1_CTS"
-      ],
-      "caps": [
+        "GPIO18",
+        "UART1_CTS",
         "TIMER1_CH3",
         "TIMER2_CH3",
         "TIMER0_ETI",
@@ -329,13 +295,11 @@
     {
       "gpio": 19,
       "functions": [
-        "GPIO",
+        "GPIO19",
+        "JTDO",
         "UART0_RX",
         "UART1_TX",
-        "QSPI0_IO2"
-      ],
-      "caps": [
-        "JTDO",
+        "QSPI0_IO2",
         "TIMER1_CH1",
         "TIMER15_BRKIN"
       ]
@@ -343,13 +307,11 @@
     {
       "gpio": 20,
       "functions": [
-        "GPIO",
+        "GPIO20",
+        "NJTRST",
         "UART0_TX",
         "UART1_RX",
-        "QSPI0_IO3"
-      ],
-      "caps": [
-        "NJTRST",
+        "QSPI0_IO3",
         "TIMER1_CH0",
         "TIMER1_ETI"
       ]
@@ -357,11 +319,9 @@
     {
       "gpio": 21,
       "functions": [
-        "GPIO",
-        "UART1_RTS"
-      ],
-      "caps": [
-        "CLK_OUT1",
+        "GPIO21",
+        "UART1_RTS",
+        "CK_OUT1",
         "TIMER1_CH2",
         "TIMER0_CH1_ON",
         "TIMER15_BRKIN"
@@ -370,10 +330,8 @@
     {
       "gpio": 22,
       "functions": [
-        "GPIO",
-        "I2C1_SCL"
-      ],
-      "caps": [
+        "GPIO22",
+        "I2C1_SCL",
         "TIMER0_CH3",
         "TIMER0_BRKIN",
         "TIMER1_CH2"
@@ -382,10 +340,8 @@
     {
       "gpio": 23,
       "functions": [
-        "GPIO",
-        "I2C1_SDA"
-      ],
-      "caps": [
+        "GPIO23",
+        "I2C1_SDA",
         "TIMER0_CH0_ON",
         "TIMER1_CH3",
         "TIMER15_CH0"
@@ -394,13 +350,11 @@
     {
       "gpio": 24,
       "functions": [
-        "GPIO",
+        "GPIO24",
         "UART0_TX",
         "UART1_TX",
         "I2C0_SCL",
-        "I2C1_SCL"
-      ],
-      "caps": [
+        "I2C1_SCL",
         "TIMER2_CH0",
         "TIMER0_CH2_ON",
         "RTC_REFIN",
@@ -410,11 +364,9 @@
     {
       "gpio": 26,
       "functions": [
-        "GPIO",
-        "UART0_CK"
-      ],
-      "caps": [
-        "RTC_TAMP0",
+        "GPIO26",
+        "USART0_CK",
+        "RTC_TAMP_0",
         "RTC_OUT",
         "RTC_TS"
       ]

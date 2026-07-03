@@ -142,7 +142,6 @@
           {
             "id": 0,
             "role": "log",
-            "routable": true,
             "irq": {
               "rx": true,
               "tx": true
@@ -152,36 +151,11 @@
                 "tx": 1,
                 "rx": 3
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           },
           {
             "id": 1,
             "role": "general",
-            "routable": true,
             "irq": {
               "rx": true,
               "tx": true
@@ -191,36 +165,11 @@
                 "tx": 10,
                 "rx": 9
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           },
           {
             "id": 2,
             "role": "general",
-            "routable": true,
             "irq": {
               "rx": true,
               "tx": true
@@ -230,30 +179,6 @@
                 "tx": 17,
                 "rx": 16
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           }
         ]
@@ -282,37 +207,12 @@
               "hw",
               "sw"
             ],
-            "routable": true,
             "irq": false,
             "pinGroups": [
               {
                 "scl": 22,
                 "sda": 21
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           },
           {
@@ -321,37 +221,12 @@
               "hw",
               "sw"
             ],
-            "routable": true,
             "irq": false,
             "pinGroups": [
               {
                 "scl": 25,
                 "sda": 26
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           }
         ]
@@ -390,7 +265,6 @@
           {
             "id": 0,
             "backend": "spi",
-            "routable": true,
             "irq": true,
             "dma": true,
             "freq": {
@@ -404,36 +278,11 @@
                 "mosi": 23,
                 "miso": 19
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           },
           {
             "id": 1,
             "backend": "spi",
-            "routable": true,
             "irq": true,
             "dma": true,
             "freq": {
@@ -447,30 +296,6 @@
                 "mosi": 13,
                 "miso": 12
               }
-            ],
-            "candidates": [
-              0,
-              1,
-              2,
-              3,
-              4,
-              5,
-              12,
-              13,
-              14,
-              15,
-              16,
-              17,
-              18,
-              19,
-              21,
-              22,
-              23,
-              25,
-              26,
-              27,
-              32,
-              33
             ]
           }
         ]
@@ -480,7 +305,6 @@
       "enabled": true,
       "count": 16,
       "spec": {
-        "routable": true,
         "polarity": [
           "TUYA_PWM_NEGATIVE",
           "TUYA_PWM_POSITIVE"
@@ -580,30 +404,6 @@
             "pin": 26,
             "irq": false
           }
-        ],
-        "candidates": [
-          0,
-          1,
-          2,
-          3,
-          4,
-          5,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19,
-          21,
-          22,
-          23,
-          25,
-          26,
-          27,
-          32,
-          33
         ]
       }
     },
@@ -619,7 +419,6 @@
         "ports": [
           {
             "id": 1,
-            "routable": false,
             "channels": [
               {
                 "id": 0,
@@ -657,7 +456,6 @@
           },
           {
             "id": 2,
-            "routable": false,
             "channels": [
               {
                 "id": 0,
@@ -704,6 +502,69 @@
         ]
       }
     },
+    "dac": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "bits": 8,
+        "ports": [
+          {
+            "id": 0,
+            "pin": 25
+          },
+          {
+            "id": 1,
+            "pin": 26
+          }
+        ]
+      }
+    },
+    "i2s": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "role": [
+          "TUYA_I2S_ROLE_MASTER",
+          "TUYA_I2S_ROLE_SLAVE"
+        ],
+        "mode": [
+          "TUYA_I2S_MODE_PHILIPS",
+          "TUYA_I2S_MODE_MSB",
+          "TUYA_I2S_MODE_PCM"
+        ],
+        "bitsPerSample": [
+          8,
+          16,
+          24,
+          32
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "pinGroups": [
+              {
+                "mclk": 0,
+                "bclk": 26,
+                "ws": 25,
+                "dout": 22,
+                "din": 23
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "pinGroups": [
+              {
+                "bclk": 5,
+                "ws": 18,
+                "dout": 19,
+                "din": 21
+              }
+            ]
+          }
+        ]
+      }
+    },
     "timer": {
       "enabled": true,
       "count": 4,
@@ -729,6 +590,54 @@
       "enabled": true,
       "count": 1
     },
+    "touch": {
+      "enabled": true,
+      "count": 10,
+      "spec": {
+        "ports": [
+          {
+            "id": 0,
+            "pin": 4
+          },
+          {
+            "id": 1,
+            "pin": 0
+          },
+          {
+            "id": 2,
+            "pin": 2
+          },
+          {
+            "id": 3,
+            "pin": 15
+          },
+          {
+            "id": 4,
+            "pin": 13
+          },
+          {
+            "id": 5,
+            "pin": 12
+          },
+          {
+            "id": 6,
+            "pin": 14
+          },
+          {
+            "id": 7,
+            "pin": 27
+          },
+          {
+            "id": 8,
+            "pin": 33
+          },
+          {
+            "id": 9,
+            "pin": 32
+          }
+        ]
+      }
+    },
     "can": {
       "enabled": true,
       "count": 1,
@@ -745,6 +654,32 @@
               {
                 "tx": 5,
                 "rx": 4
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "sdmmc": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "busWidth": [
+          1,
+          4,
+          8
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "pinGroups": [
+              {
+                "clk": 14,
+                "cmd": 15,
+                "d0": 2,
+                "d1": 4,
+                "d2": 12,
+                "d3": 13
               }
             ]
           }
@@ -793,10 +728,6 @@
           }
         ]
       }
-    },
-    "vad": {
-      "enabled": true,
-      "count": 1
     }
   },
   "power": {
@@ -827,8 +758,7 @@
       "name": "VDDA",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -837,8 +767,7 @@
       "name": "LNA_IN",
       "gpio": null,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "ANT"
       ]
     },
@@ -847,8 +776,7 @@
       "name": "VDD3P3",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -857,8 +785,7 @@
       "name": "VDD3P3",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -868,11 +795,9 @@
       "gpio": 36,
       "type": "I",
       "functions": [
-        "GPIO",
+        "GPIO36",
+        "RTC_GPIO0",
         "ADC1_CH0"
-      ],
-      "caps": [
-        "RTC_GPIO0"
       ],
       "note": "Input-only"
     },
@@ -882,11 +807,9 @@
       "gpio": 37,
       "type": "I",
       "functions": [
-        "GPIO",
+        "GPIO37",
+        "RTC_GPIO1",
         "ADC1_CH1"
-      ],
-      "caps": [
-        "RTC_GPIO1"
       ],
       "note": "Input-only"
     },
@@ -896,11 +819,9 @@
       "gpio": 38,
       "type": "I",
       "functions": [
-        "GPIO",
+        "GPIO38",
+        "RTC_GPIO2",
         "ADC1_CH2"
-      ],
-      "caps": [
-        "RTC_GPIO2"
       ],
       "note": "Input-only"
     },
@@ -910,11 +831,9 @@
       "gpio": 39,
       "type": "I",
       "functions": [
-        "GPIO",
+        "GPIO39",
+        "RTC_GPIO3",
         "ADC1_CH3"
-      ],
-      "caps": [
-        "RTC_GPIO3"
       ],
       "note": "Input-only"
     },
@@ -923,8 +842,7 @@
       "name": "CHIP_PU",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "EN",
         "RESET"
       ]
@@ -935,11 +853,9 @@
       "gpio": 34,
       "type": "I",
       "functions": [
-        "GPIO",
+        "GPIO34",
+        "RTC_GPIO4",
         "ADC1_CH6"
-      ],
-      "caps": [
-        "RTC_GPIO4"
       ],
       "note": "Input-only"
     },
@@ -949,11 +865,9 @@
       "gpio": 35,
       "type": "I",
       "functions": [
-        "GPIO",
+        "GPIO35",
+        "RTC_GPIO5",
         "ADC1_CH7"
-      ],
-      "caps": [
-        "RTC_GPIO5"
       ],
       "note": "Input-only"
     },
@@ -963,13 +877,11 @@
       "gpio": 32,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH4",
-        "TOUCH9"
-      ],
-      "caps": [
+        "GPIO32",
         "RTC_GPIO9",
-        "XTAL_32K_P"
+        "TOUCH9",
+        "XTAL_32K_P",
+        "ADC1_CH4"
       ]
     },
     {
@@ -978,13 +890,11 @@
       "gpio": 33,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC1_CH5",
-        "TOUCH8"
-      ],
-      "caps": [
+        "GPIO33",
         "RTC_GPIO8",
-        "XTAL_32K_N"
+        "TOUCH8",
+        "XTAL_32K_N",
+        "ADC1_CH5"
       ]
     },
     {
@@ -993,13 +903,11 @@
       "gpio": 25,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH8",
+        "GPIO25",
+        "RTC_GPIO6",
         "DAC_1",
-        "ENET_RXD0"
-      ],
-      "caps": [
-        "RTC_GPIO6"
+        "EMAC_RXD0",
+        "ADC2_CH8"
       ]
     },
     {
@@ -1008,13 +916,11 @@
       "gpio": 26,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH9",
+        "GPIO26",
+        "RTC_GPIO7",
         "DAC_2",
-        "ENET_RXD1"
-      ],
-      "caps": [
-        "RTC_GPIO7"
+        "EMAC_RXD1",
+        "ADC2_CH9"
       ]
     },
     {
@@ -1023,13 +929,11 @@
       "gpio": 27,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH7",
+        "GPIO27",
+        "RTC_GPIO17",
         "TOUCH7",
-        "ENET_RXDV"
-      ],
-      "caps": [
-        "RTC_GPIO17"
+        "EMAC_RX_DV",
+        "ADC2_CH7"
       ]
     },
     {
@@ -1038,17 +942,15 @@
       "gpio": 14,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH6",
-        "TOUCH6",
-        "ENET_TXD2",
-        "SPI2_SCK",
-        "SDIO_CLK"
-      ],
-      "caps": [
+        "GPIO14",
         "RTC_GPIO16",
+        "TOUCH6",
+        "EMAC_TXD2",
+        "HSPICLK",
+        "HS2_CLK",
         "SD_CLK",
-        "MTMS"
+        "MTMS",
+        "ADC2_CH6"
       ]
     },
     {
@@ -1057,17 +959,15 @@
       "gpio": 12,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH5",
-        "TOUCH5",
-        "ENET_TXD3",
-        "SPI2_MISO",
-        "SDIO_DATA2"
-      ],
-      "caps": [
+        "GPIO12",
         "RTC_GPIO15",
+        "TOUCH5",
+        "EMAC_TXD3",
+        "HSPIQ",
+        "HS2_DATA2",
         "SD_DATA2",
-        "MTDI"
+        "MTDI",
+        "ADC2_CH5"
       ],
       "note": "Strapping pin (VDD_SDIO voltage select; default pull-down = 3.3 V)"
     },
@@ -1076,8 +976,7 @@
       "name": "VDD3P3_RTC",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -1087,17 +986,15 @@
       "gpio": 13,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH4",
-        "TOUCH4",
-        "ENET_RX_ER",
-        "SPI2_MOSI",
-        "SDIO_DATA3"
-      ],
-      "caps": [
+        "GPIO13",
         "RTC_GPIO14",
+        "TOUCH4",
+        "EMAC_RX_ER",
+        "HSPID",
+        "HS2_DATA3",
         "SD_DATA3",
-        "MTCK"
+        "MTCK",
+        "ADC2_CH4"
       ]
     },
     {
@@ -1106,17 +1003,15 @@
       "gpio": 15,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH3",
-        "TOUCH3",
-        "ENET_RXD3",
-        "SPI2_CSN",
-        "SDIO_CMD"
-      ],
-      "caps": [
+        "GPIO15",
         "RTC_GPIO13",
+        "TOUCH3",
+        "EMAC_RXD3",
+        "HSPICS0",
+        "HS2_CMD",
         "SD_CMD",
-        "MTDO"
+        "MTDO",
+        "ADC2_CH3"
       ],
       "note": "Strapping pin (U0TXD print control; default pull-up)"
     },
@@ -1126,15 +1021,13 @@
       "gpio": 2,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH2",
-        "TOUCH2",
-        "SDIO_DATA0"
-      ],
-      "caps": [
+        "GPIO2",
         "RTC_GPIO12",
+        "TOUCH2",
         "HSPIWP",
-        "SD_DATA0"
+        "HS2_DATA0",
+        "SD_DATA0",
+        "ADC2_CH2"
       ],
       "note": "Strapping pin (boot mode; default pull-down)"
     },
@@ -1144,14 +1037,12 @@
       "gpio": 0,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH1",
-        "TOUCH1",
-        "ENET_TX_CLK"
-      ],
-      "caps": [
+        "GPIO0",
         "RTC_GPIO11",
-        "CLK_OUT1"
+        "TOUCH1",
+        "EMAC_TX_CLK",
+        "CLK_OUT1",
+        "ADC2_CH1"
       ],
       "note": "Strapping pin (boot mode; default pull-up)"
     },
@@ -1161,16 +1052,14 @@
       "gpio": 4,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ADC2_CH0",
-        "TOUCH0",
-        "ENET_TX_ER",
-        "SDIO_DATA1"
-      ],
-      "caps": [
+        "GPIO4",
         "RTC_GPIO10",
+        "TOUCH0",
+        "EMAC_TX_ER",
         "HSPIHD",
-        "SD_DATA1"
+        "HS2_DATA1",
+        "SD_DATA1",
+        "ADC2_CH0"
       ]
     },
     {
@@ -1179,12 +1068,10 @@
       "gpio": 16,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART2_RX",
-        "ENET_REF_CLK"
-      ],
-      "caps": [
-        "HS1_DATA4"
+        "GPIO16",
+        "HS1_DATA4",
+        "U2RXD",
+        "EMAC_CLK_OUT"
       ]
     },
     {
@@ -1192,8 +1079,7 @@
       "name": "VDD_SDIO",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -1203,12 +1089,10 @@
       "gpio": 17,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART2_TX",
-        "ENET_REF_CLK"
-      ],
-      "caps": [
-        "HS1_DATA5"
+        "GPIO17",
+        "HS1_DATA5",
+        "U2TXD",
+        "EMAC_CLK_OUT_180"
       ]
     },
     {
@@ -1216,8 +1100,7 @@
       "name": "SD_DATA_2",
       "gpio": 9,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GPIO9",
         "HS1_DATA2",
         "U1RXD",
@@ -1231,8 +1114,7 @@
       "name": "SD_DATA_3",
       "gpio": 10,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GPIO10",
         "HS1_DATA3",
         "U1TXD",
@@ -1246,8 +1128,7 @@
       "name": "SD_CMD",
       "gpio": 11,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GPIO11",
         "HS1_CMD",
         "U1RTS",
@@ -1261,8 +1142,7 @@
       "name": "SD_CLK",
       "gpio": 6,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GPIO6",
         "HS1_CLK",
         "U1CTS",
@@ -1276,8 +1156,7 @@
       "name": "SD_DATA_0",
       "gpio": 7,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GPIO7",
         "HS1_DATA0",
         "U2RTS",
@@ -1291,8 +1170,7 @@
       "name": "SD_DATA_1",
       "gpio": 8,
       "type": "I/O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GPIO8",
         "HS1_DATA1",
         "U2CTS",
@@ -1307,12 +1185,10 @@
       "gpio": 5,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI3_CSN",
-        "ENET_RX_CLK"
-      ],
-      "caps": [
-        "HS1_DATA6"
+        "GPIO5",
+        "HS1_DATA6",
+        "VSPICS0",
+        "EMAC_RX_CLK"
       ],
       "note": "Strapping pin (SDIO slave timing; default pull-up)"
     },
@@ -1322,11 +1198,9 @@
       "gpio": 18,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI3_SCK"
-      ],
-      "caps": [
-        "HS1_DATA7"
+        "GPIO18",
+        "HS1_DATA7",
+        "VSPICLK"
       ]
     },
     {
@@ -1335,11 +1209,9 @@
       "gpio": 23,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "SPI3_MOSI"
-      ],
-      "caps": [
-        "HS1_STROBE"
+        "GPIO23",
+        "HS1_STROBE",
+        "VSPID"
       ]
     },
     {
@@ -1347,8 +1219,7 @@
       "name": "VDD3P3_CPU",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -1358,12 +1229,11 @@
       "gpio": 19,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_CTS",
-        "SPI3_MISO",
-        "ENET_TXD0"
-      ],
-      "caps": []
+        "GPIO19",
+        "U0CTS",
+        "VSPIQ",
+        "EMAC_TXD0"
+      ]
     },
     {
       "pin": 39,
@@ -1371,12 +1241,10 @@
       "gpio": 22,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_RTS",
-        "ENET_TXD1"
-      ],
-      "caps": [
-        "VSPIWP"
+        "GPIO22",
+        "U0RTS",
+        "VSPIWP",
+        "EMAC_TXD1"
       ]
     },
     {
@@ -1385,10 +1253,8 @@
       "gpio": 3,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_RX"
-      ],
-      "caps": [
+        "GPIO3",
+        "U0RXD",
         "CLK_OUT2"
       ],
       "note": "Default UART0 RX (console/download)"
@@ -1399,12 +1265,10 @@
       "gpio": 1,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "UART0_TX",
-        "ENET_RXD2"
-      ],
-      "caps": [
-        "CLK_OUT3"
+        "GPIO1",
+        "U0TXD",
+        "CLK_OUT3",
+        "EMAC_RXD2"
       ],
       "note": "Default UART0 TX (console/download)"
     },
@@ -1414,11 +1278,9 @@
       "gpio": 21,
       "type": "I/O",
       "functions": [
-        "GPIO",
-        "ENET_TXEN"
-      ],
-      "caps": [
-        "VSPIHD"
+        "GPIO21",
+        "VSPIHD",
+        "EMAC_TX_EN"
       ]
     },
     {
@@ -1426,8 +1288,7 @@
       "name": "VDDA",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -1436,8 +1297,7 @@
       "name": "XTAL_N",
       "gpio": null,
       "type": "O",
-      "functions": [],
-      "caps": [
+      "functions": [
         "XTAL_N"
       ]
     },
@@ -1446,8 +1306,7 @@
       "name": "XTAL_P",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "XTAL_P"
       ]
     },
@@ -1456,8 +1315,7 @@
       "name": "VDDA",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "VDD"
       ]
     },
@@ -1466,8 +1324,7 @@
       "name": "CAP2",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "CAP2"
       ]
     },
@@ -1476,8 +1333,7 @@
       "name": "CAP1",
       "gpio": null,
       "type": "I",
-      "functions": [],
-      "caps": [
+      "functions": [
         "CAP1"
       ]
     },
@@ -1486,8 +1342,7 @@
       "name": "GND",
       "gpio": null,
       "type": "P",
-      "functions": [],
-      "caps": [
+      "functions": [
         "GND"
       ],
       "note": "Center thermal/ground pad (QFN-48)"

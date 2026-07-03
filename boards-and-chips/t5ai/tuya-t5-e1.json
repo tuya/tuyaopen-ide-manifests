@@ -33,159 +33,149 @@
     {
       "gpio": 0,
       "functions": [
-        "GPIO",
+        "GPIO0",
         "UART1_TX",
         "I2C1_SCL",
-        "ADC0_CH12",
+        "SWCLK",
         "SC_IO",
+        "ADC12",
         "LIN_TXD"
-      ],
-      "caps": [
-        "SWCLK"
       ]
     },
     {
       "gpio": 1,
       "functions": [
-        "GPIO",
+        "GPIO1",
         "UART1_RX",
         "I2C1_SDA",
-        "ADC0_CH13",
+        "SWDIO",
         "SC_CLK",
+        "ADC13",
         "LIN_RXD"
-      ],
-      "caps": [
-        "SWDIO"
       ]
     },
     {
       "gpio": 2,
       "functions": [
-        "GPIO",
+        "GPIO2",
         "SPI1_SCK",
-        "QSPI1_SCK",
         "SDIO_CLK",
         "SC_RSTN",
-        "LIN_SLEEP"
+        "LIN_SLEEP",
+        "QSPI1_SCK"
       ]
     },
     {
       "gpio": 3,
       "functions": [
-        "GPIO",
+        "GPIO3",
         "SPI1_CSN",
-        "QSPI1_CS",
         "SDIO_CMD",
-        "SC_VCC"
+        "SC_VCC",
+        "QSPI1_CS"
       ]
     },
     {
       "gpio": 4,
       "functions": [
-        "GPIO",
+        "GPIO4",
         "SPI1_MOSI",
-        "QSPI1_IO0",
         "SDIO_DATA0",
         "COM6",
+        "QSPI1_IO0",
         "SEG30"
       ]
     },
     {
       "gpio": 5,
       "functions": [
-        "GPIO",
+        "GPIO5",
         "SPI1_MISO",
-        "QSPI1_IO1",
         "SDIO_DATA1",
         "COM7",
+        "QSPI1_IO1",
         "SEG31"
       ]
     },
     {
       "gpio": 6,
       "functions": [
-        "GPIO",
-        "QSPI1_IO2",
-        "I2S0_SCK"
+        "GPIO6",
+        "I2S0_SCK",
+        "QSPI1_IO2"
       ]
     },
     {
       "gpio": 7,
       "functions": [
-        "GPIO",
-        "QSPI1_IO3",
-        "I2S0_SYNC"
+        "GPIO7",
+        "I2S0_SYNC",
+        "QSPI1_IO3"
       ]
     },
     {
       "gpio": 8,
       "functions": [
-        "GPIO",
-        "PWMG0_PWM2",
-        "ADC0_CH10",
+        "GPIO8",
         "I2S0_DIN",
-        "DMIC_CLK"
-      ],
-      "caps": [
-        "XO"
+        "DMIC_CLK",
+        "ADC10",
+        "32K_XO"
       ]
     },
     {
       "gpio": 9,
       "functions": [
-        "GPIO",
-        "PWMG0_PWM3",
+        "GPIO9",
         "I2S0_DOUT",
-        "DMIC_DAT"
-      ],
-      "caps": [
-        "XI"
+        "DMIC_DAT",
+        "32K_XI"
       ]
     },
     {
       "gpio": 10,
       "functions": [
-        "GPIO",
-        "UART0_RX",
+        "GPIO10",
         "DL_UART_RX",
         "SDIO_DATA2",
-        "CIS_AUXCLK"
+        "CLK_AUXS_CIS",
+        "UART0_RX"
       ]
     },
     {
       "gpio": 11,
       "functions": [
-        "GPIO",
-        "UART0_TX",
+        "GPIO11",
         "DL_UART_TX",
+        "UART0_TX",
         "SDIO_DATA3"
       ]
     },
     {
       "gpio": 12,
       "functions": [
-        "GPIO",
+        "GPIO12",
         "UART0_RTS",
-        "ADC0_CH14",
-        "TOUCH0"
+        "TOUCH0",
+        "ADC14"
       ]
     },
     {
       "gpio": 13,
       "functions": [
-        "GPIO",
+        "GPIO13",
         "UART0_CTS",
-        "ADC0_CH15",
-        "TOUCH1"
+        "TOUCH1",
+        "ADC15"
       ]
     },
     {
       "gpio": 14,
       "functions": [
-        "GPIO",
+        "GPIO14",
+        "SDIO_CLK",
         "SPI0_SCK",
         "I2C1_SCL",
-        "SDIO_CLK",
         "RGB_DCLK",
         "I8080_D15",
         "SEG16"
@@ -194,10 +184,10 @@
     {
       "gpio": 15,
       "functions": [
-        "GPIO",
+        "GPIO15",
+        "SDIO_CMD",
         "SPI0_CSN",
         "I2C1_SDA",
-        "SDIO_CMD",
         "RGB_DISP",
         "I8080_D14",
         "SEG15"
@@ -206,9 +196,9 @@
     {
       "gpio": 16,
       "functions": [
-        "GPIO",
-        "SPI0_MOSI",
+        "GPIO16",
         "SDIO_DATA0",
+        "SPI0_MOSI",
         "RGB_DE",
         "I8080_D13",
         "SEG14"
@@ -217,9 +207,9 @@
     {
       "gpio": 17,
       "functions": [
-        "GPIO",
-        "SPI0_MISO",
+        "GPIO17",
         "SDIO_DATA1",
+        "SPI0_MISO",
         "RGB_HSYNC",
         "I8080_D12",
         "SEG13"
@@ -228,9 +218,9 @@
     {
       "gpio": 18,
       "functions": [
-        "GPIO",
-        "PWMG0_PWM0",
+        "GPIO18",
         "SDIO_DATA2",
+        "PWM0",
         "RGB_VSYNC",
         "I8080_D11",
         "SEG12"
@@ -239,8 +229,7 @@
     {
       "gpio": 19,
       "functions": [
-        "GPIO",
-        "PWMG0_PWM1",
+        "GPIO19",
         "SDIO_DATA3",
         "RGB_R7",
         "I8080_D10",
@@ -250,50 +239,44 @@
     {
       "gpio": 20,
       "functions": [
-        "GPIO",
+        "GPIO20",
         "I2C0_SCL",
+        "SWCLK",
         "RGB_R6",
         "I8080_D9",
         "SEG10"
-      ],
-      "caps": [
-        "SWCLK"
       ]
     },
     {
       "gpio": 21,
       "functions": [
-        "GPIO",
+        "GPIO21",
         "I2C0_SDA",
-        "ADC0_CH6",
+        "SWDIO",
+        "ADC6",
         "RGB_R5",
         "I8080_D8",
         "SEG9"
-      ],
-      "caps": [
-        "SWDIO"
       ]
     },
     {
       "gpio": 22,
       "functions": [
-        "GPIO",
+        "GPIO22",
+        "CLK26M",
+        "ADC5",
         "QSPI0_SCK",
-        "ADC0_CH5",
         "RGB_R4",
         "I8080_CSX",
         "SEG8"
-      ],
-      "caps": [
-        "CLK_OUT"
       ]
     },
     {
       "gpio": 23,
       "functions": [
-        "GPIO",
+        "GPIO23",
+        "ADC3",
         "QSPI0_CS",
-        "ADC0_CH3",
         "RGB_R3",
         "I8080_RESET",
         "SEG7"
@@ -302,26 +285,23 @@
     {
       "gpio": 24,
       "functions": [
-        "GPIO",
-        "PWMG0_PWM4",
+        "GPIO24",
+        "LPO_CLK",
+        "PWM4",
+        "ADC2",
         "QSPI0_IO0",
-        "ADC0_CH2",
         "RGB_G7",
         "I8080_RSX",
         "SEG6"
-      ],
-      "caps": [
-        "LPO_CLK"
       ]
     },
     {
       "gpio": 25,
       "functions": [
-        "GPIO",
-        "PWMG0_PWM5",
-        "QSPI0_IO1",
-        "ADC0_CH1",
+        "GPIO25",
         "IRDA",
+        "ADC1",
+        "QSPI0_IO1",
         "RGB_G6",
         "I8080_WRX",
         "SEG5"
@@ -330,7 +310,7 @@
     {
       "gpio": 26,
       "functions": [
-        "GPIO",
+        "GPIO26",
         "QSPI0_IO2",
         "RGB_G5",
         "I8080_RDX",
@@ -340,29 +320,29 @@
     {
       "gpio": 27,
       "functions": [
-        "GPIO",
-        "QSPI0_IO3",
+        "GPIO27",
         "CIS_MCLK",
-        "CIS_AUXCLK",
+        "CLK_AUXS_CIS",
         "ENET_PHY_INT",
+        "QSPI0_IO3",
         "SEG17"
       ]
     },
     {
       "gpio": 28,
       "functions": [
-        "GPIO",
-        "ADC0_CH4",
+        "GPIO28",
         "I2S_MCLK",
+        "ADC4",
         "TOUCH2",
-        "CIS_AUXCLK",
+        "CLK_AUXS_CIS",
         "SEG18"
       ]
     },
     {
       "gpio": 29,
       "functions": [
-        "GPIO",
+        "GPIO29",
         "CIS_PCLK",
         "ENET_MDC",
         "TOUCH3",
@@ -372,9 +352,9 @@
     {
       "gpio": 30,
       "functions": [
-        "GPIO",
-        "UART2_RX",
+        "GPIO30",
         "CIS_HSYNC",
+        "UART2_RX",
         "LIN_RXD",
         "TOUCH4",
         "SC_CLK",
@@ -384,9 +364,9 @@
     {
       "gpio": 31,
       "functions": [
-        "GPIO",
-        "UART2_TX",
+        "GPIO31",
         "CIS_VSYNC",
+        "UART2_TX",
         "LIN_TXD",
         "TOUCH5",
         "SC_IO",
@@ -396,9 +376,9 @@
     {
       "gpio": 32,
       "functions": [
-        "GPIO",
-        "PWMG1_PWM0",
+        "GPIO32",
         "CIS_PXD0",
+        "PWM_G1_0",
         "ENET_MDIO",
         "TOUCH6",
         "SC_RSTN",
@@ -408,56 +388,53 @@
     {
       "gpio": 33,
       "functions": [
-        "GPIO",
-        "PWMG1_PWM1",
-        "SPI0_SCK",
+        "GPIO33",
         "CIS_PXD1",
         "ENET_RXD0",
         "TOUCH7",
+        "SPI0_SCK",
         "SEG23"
       ]
     },
     {
       "gpio": 34,
       "functions": [
-        "GPIO",
-        "PWMG1_PWM2",
-        "SPI0_CSN",
+        "GPIO34",
         "CIS_PXD2",
+        "PWM_G1_2",
         "ENET_RXD1",
         "TOUCH8",
+        "SPI0_CSN",
         "SEG24"
       ]
     },
     {
       "gpio": 35,
       "functions": [
-        "GPIO",
-        "PWMG1_PWM3",
-        "SPI0_MOSI",
+        "GPIO35",
         "CIS_PXD3",
         "ENET_RXDV",
         "TOUCH9",
+        "SPI0_MOSI",
         "SEG25"
       ]
     },
     {
       "gpio": 36,
       "functions": [
-        "GPIO",
-        "PWMG1_PWM4",
-        "SPI0_MISO",
+        "GPIO36",
         "CIS_PXD4",
+        "PWM_G1_4",
         "ENET_TXD0",
         "TOUCH10",
+        "SPI0_MISO",
         "SEG26"
       ]
     },
     {
       "gpio": 37,
       "functions": [
-        "GPIO",
-        "PWMG1_PWM5",
+        "GPIO37",
         "CIS_PXD5",
         "ENET_TXD1",
         "TOUCH11",
@@ -467,9 +444,9 @@
     {
       "gpio": 38,
       "functions": [
-        "GPIO",
-        "I2C1_SCL",
+        "GPIO38",
         "CIS_PXD6",
+        "I2C1_SCL",
         "ENET_TXEN",
         "TOUCH12",
         "COM4",
@@ -479,9 +456,9 @@
     {
       "gpio": 39,
       "functions": [
-        "GPIO",
-        "I2C1_SDA",
+        "GPIO39",
         "CIS_PXD7",
+        "I2C1_SDA",
         "ENET_REF_CLK",
         "TOUCH13",
         "COM5",
@@ -491,7 +468,7 @@
     {
       "gpio": 40,
       "functions": [
-        "GPIO",
+        "GPIO40",
         "UART2_RX",
         "I2S1_SCK",
         "LIN_RXD",
@@ -504,7 +481,7 @@
     {
       "gpio": 41,
       "functions": [
-        "GPIO",
+        "GPIO41",
         "UART2_TX",
         "I2S1_SYNC",
         "LIN_TXD",
@@ -517,7 +494,7 @@
     {
       "gpio": 42,
       "functions": [
-        "GPIO",
+        "GPIO42",
         "I2C1_SCL",
         "I2S1_DIN",
         "LIN_SLEEP",
@@ -530,7 +507,7 @@
     {
       "gpio": 43,
       "functions": [
-        "GPIO",
+        "GPIO43",
         "I2C1_SDA",
         "I2S1_DOUT",
         "SC_VCC",
@@ -542,9 +519,9 @@
     {
       "gpio": 44,
       "functions": [
-        "GPIO",
-        "SPI0_SCK",
+        "GPIO44",
         "CAN_TX",
+        "SPI0_SCK",
         "RGB_B6",
         "I8080_D3",
         "COM3",
@@ -554,9 +531,9 @@
     {
       "gpio": 45,
       "functions": [
-        "GPIO",
-        "SPI0_CSN",
+        "GPIO45",
         "CAN_RX",
+        "SPI0_CSN",
         "RGB_B5",
         "I8080_D2",
         "COM2",
@@ -566,9 +543,9 @@
     {
       "gpio": 46,
       "functions": [
-        "GPIO",
-        "SPI0_MOSI",
+        "GPIO46",
         "CAN_STBY",
+        "SPI0_MOSI",
         "ENET_PHY_INT",
         "TOUCH14",
         "RGB_B4",
@@ -580,7 +557,7 @@
     {
       "gpio": 47,
       "functions": [
-        "GPIO",
+        "GPIO47",
         "SPI0_MISO",
         "ENET_MDC",
         "TOUCH15",
@@ -593,7 +570,7 @@
     {
       "gpio": 48,
       "functions": [
-        "GPIO",
+        "GPIO48",
         "ENET_MDIO",
         "RGB_R2",
         "I8080_D16"
@@ -602,7 +579,7 @@
     {
       "gpio": 49,
       "functions": [
-        "GPIO",
+        "GPIO49",
         "ENET_RXD0",
         "RGB_R1",
         "I8080_D17"
@@ -611,7 +588,7 @@
     {
       "gpio": 50,
       "functions": [
-        "GPIO",
+        "GPIO50",
         "ENET_RXD1",
         "RGB_R0"
       ]
@@ -619,7 +596,7 @@
     {
       "gpio": 51,
       "functions": [
-        "GPIO",
+        "GPIO51",
         "ENET_RXDV",
         "RGB_G1"
       ]
@@ -627,7 +604,7 @@
     {
       "gpio": 52,
       "functions": [
-        "GPIO",
+        "GPIO52",
         "ENET_TXD0",
         "RGB_G0"
       ]
@@ -635,7 +612,7 @@
     {
       "gpio": 53,
       "functions": [
-        "GPIO",
+        "GPIO53",
         "ENET_TXD1",
         "RGB_B2"
       ]
@@ -643,7 +620,7 @@
     {
       "gpio": 54,
       "functions": [
-        "GPIO",
+        "GPIO54",
         "ENET_TXEN",
         "RGB_B1"
       ]
@@ -651,7 +628,7 @@
     {
       "gpio": 55,
       "functions": [
-        "GPIO",
+        "GPIO55",
         "ENET_REF_CLK",
         "RGB_B0"
       ]

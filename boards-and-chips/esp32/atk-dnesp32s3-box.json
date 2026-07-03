@@ -156,9 +156,7 @@
   "links": {
     "schematic": null,
     "datasheet": null,
-    "productPage": {
-      "en": "https://www.alientek.com"
-    }
+    "productPage": "https://www.alientek.com"
   },
   "boardSymbol": "DNESP32S3_BOX",
   "source": {

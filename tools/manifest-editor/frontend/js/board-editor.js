@@ -31,14 +31,11 @@ export async function initGlobalTags() {
   }
 }
 
-// Accept http OR https. These links (datasheet / schematic / product page / 3D model /
-// image) are opened in the OS browser, not loaded in a CSP webview, so http is fine —
-// and many vendor datasheet / wiki / purchase pages are http-only.
-function validateWebUrl(url) {
+function validateHttpsUrl(url) {
   if (!url) return true;
   try {
     const u = new URL(url);
-    return u.protocol === 'https:' || u.protocol === 'http:';
+    return u.protocol === 'https:';
   } catch {
     return false;
   }
@@ -498,25 +495,18 @@ const boardImagePlaceholder = () => `
   </svg>
   <span class="board-card-placeholder-text">${escapeHtml(i18n.t('boardNoImage') || 'No image')}</span>`;
 
-export function renderBoardCard(board, platformUnpublished = false) {
+export function renderBoardCard(board) {
   const imageUrl = board.image?.url
     ? `/api/images/${board.image.url.replace('images/', '')}`
     : null;
-  // Grey the card out (effectively unpublished) when the board's own `published` is
-  // false OR its chip platform is unpublished — you can't ship a board whose SoC
-  // platform isn't released yet. The badge names the reason so it's not ambiguous.
-  const boardUnpublished = board.published === false;
-  const isUnpublished = boardUnpublished || platformUnpublished;
-  const badge = boardUnpublished
-    ? 'Unpublished / 未发布'
-    : (platformUnpublished ? 'Platform unpublished / 平台未发布' : '');
+  const isUnpublished = board.published === false;
   const imageInner = imageUrl
     ? `<img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(getLocalizedString(board.name) || board.id)}">`
     : boardImagePlaceholder();
 
   return `
     <div class="board-card ${isUnpublished ? 'board-card--unpublished' : ''}" data-board-id="${escapeHtml(board.id)}">
-      ${isUnpublished ? `<span class="board-card-unpublished-badge">${badge}</span>` : ''}
+      ${isUnpublished ? '<span class="board-card-unpublished-badge">Unpublished / 未发布</span>' : ''}
       <div class="board-card-image${imageUrl ? '' : ' board-card-image--empty'}">${imageInner}</div>
       <div class="board-card-header">
         <div>
@@ -575,8 +565,8 @@ export async function saveBoardForm(formElement) {
   };
 
   for (const [fieldName, { url }] of Object.entries(urlFields)) {
-    if (url && !validateWebUrl(url)) {
-      showError('Invalid URL', `${fieldName} must be a valid URL (http:// or https://)`);
+    if (url && !validateHttpsUrl(url)) {
+      showError('Invalid URL', `${fieldName} must be a valid HTTPS URL`);
       return false;
     }
   }
@@ -676,17 +666,17 @@ function isValidTagFormat(tag) {
 }
 
 export function setupFormValidation() {
-  // Real-time URL validation (http/https accepted)
+  // Real-time HTTPS URL validation
   document.querySelectorAll('.url-input').forEach(input => {
     input.addEventListener('input', (e) => {
       const url = e.target.value.trim();
       const urlType = e.target.dataset.urlType;
       const errorEl = document.getElementById(urlType + 'Error');
 
-      if (url && !validateWebUrl(url)) {
+      if (url && !validateHttpsUrl(url)) {
         e.target.classList.add('invalid');
         if (errorEl) {
-          errorEl.textContent = '❌ Must be a valid URL (http:// or https://)';
+          errorEl.textContent = '❌ Must be a valid HTTPS URL (https://...)';
           errorEl.classList.add('url-error');
         }
       } else {
@@ -700,11 +690,11 @@ export function setupFormValidation() {
 
     // Initial check
     const url = input.value.trim();
-    if (url && !validateWebUrl(url)) {
+    if (url && !validateHttpsUrl(url)) {
       input.classList.add('invalid');
       const errorEl = document.getElementById(input.dataset.urlType + 'Error');
       if (errorEl) {
-        errorEl.textContent = '❌ Must be a valid URL (http:// or https://)';
+        errorEl.textContent = '❌ Must be a valid HTTPS URL (https://...)';
         errorEl.classList.add('url-error');
       }
     }
