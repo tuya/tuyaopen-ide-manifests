@@ -308,6 +308,27 @@
         },
         "kconfig": null,
         "note": null
+      },
+      {
+        "id": "led-1",
+        "name": {
+          "en": "RED LED",
+          "zh-CN": "红色 LED"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "led",
+              "expanderId": "io-expander",
+              "expanderPin": 8
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
       }
     ]
   },
