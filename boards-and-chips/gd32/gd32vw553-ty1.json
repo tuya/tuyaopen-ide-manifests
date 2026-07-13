@@ -28,17 +28,6 @@
       ]
     },
     {
-      "gpio": 3,
-      "functions": [
-        "GPIO",
-        "UART0_RTS",
-        "UART1_RX",
-        "I2C0_SDA",
-        "SPI0_CSN",
-        "ADC0_CH3"
-      ]
-    },
-    {
       "gpio": 4,
       "functions": [
         "GPIO",
