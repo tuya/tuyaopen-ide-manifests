@@ -18,6 +18,16 @@
   },
   "expansionPins": [
     {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART0_TX",
+        "UART1_CTS",
+        "SPI0_MOSI",
+        "ADC0_CH0"
+      ]
+    },
+    {
       "gpio": 1,
       "functions": [
         "GPIO",
