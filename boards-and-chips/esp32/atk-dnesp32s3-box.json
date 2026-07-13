@@ -181,8 +181,8 @@
       {
         "id": "button",
         "name": {
-          "en": "key0",
-          "zh-CN": "key0"
+          "en": "key1",
+          "zh-CN": "key1"
         },
         "interface": "GPIO",
         "mounting": "onboard",
