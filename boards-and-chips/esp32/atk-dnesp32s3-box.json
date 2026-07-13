@@ -136,8 +136,8 @@
           "GPIO": [
             {
               "role": "btn",
-              "expanderId": "EX_IO_KEY_0",
-              "expanderPin": 4
+              "expanderId": "io-expander",
+              "expanderPin": 5
             }
           ]
         },
