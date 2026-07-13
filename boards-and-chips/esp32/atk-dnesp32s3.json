@@ -608,6 +608,7 @@
         "interface": "SPI",
         "mounting": "accessory",
         "pinLocked": false,
+        "port": 1,
         "pins": {
           "SPI": [
             {
