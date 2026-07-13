@@ -177,6 +177,12 @@
         "ADC2_CH9",
         "USB_D+"
       ]
+    },
+    {
+      "gpio": 21,
+      "functions": [
+        "GPIO"
+      ]
     }
   ]
 }
