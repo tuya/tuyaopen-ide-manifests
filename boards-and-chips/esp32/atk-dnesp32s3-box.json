@@ -304,5 +304,15 @@
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/ESP32/DNESP32S3_BOX"
   },
-  "peripheralGroups": {}
+  "peripheralGroups": {},
+  "expansionPins": [
+    {
+      "gpio": 2,
+      "functions": [
+        "GPIO",
+        "ADC1_CH1",
+        "TOUCH2"
+      ]
+    }
+  ]
 }
