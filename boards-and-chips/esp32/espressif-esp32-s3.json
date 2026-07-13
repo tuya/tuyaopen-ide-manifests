@@ -238,6 +238,13 @@
         "GPIO",
         "SPI2_SCK"
       ]
+    },
+    {
+      "gpio": 37,
+      "functions": [
+        "GPIO",
+        "SPI2_MISO"
+      ]
     }
   ]
 }
