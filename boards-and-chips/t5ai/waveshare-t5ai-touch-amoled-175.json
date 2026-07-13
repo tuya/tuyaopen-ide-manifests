@@ -301,6 +301,17 @@
         "I8080_D14",
         "SEG15"
       ]
+    },
+    {
+      "gpio": 16,
+      "functions": [
+        "GPIO",
+        "SPI0_MOSI",
+        "SDIO_DATA0",
+        "RGB_DE",
+        "I8080_D13",
+        "SEG14"
+      ]
     }
   ]
 }
