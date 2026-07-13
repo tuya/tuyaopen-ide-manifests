@@ -202,8 +202,8 @@
       {
         "id": "button-1",
         "name": {
-          "en": "Key1",
-          "zh-CN": "Key1"
+          "en": "Key2",
+          "zh-CN": "Key2"
         },
         "interface": "GPIO",
         "mounting": "onboard",
