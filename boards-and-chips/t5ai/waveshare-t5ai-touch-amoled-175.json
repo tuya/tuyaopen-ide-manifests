@@ -218,7 +218,7 @@
           "zh-CN": "SD 卡"
         },
         "interface": "SDIO",
-        "mounting": "onboard",
+        "mounting": "accessory",
         "pinLocked": true,
         "pins": {
           "SDIO": [
