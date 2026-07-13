@@ -87,6 +87,15 @@
         "ADC1_CH8",
         "TOUCH9"
       ]
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "ADC2_CH0",
+        "TOUCH11",
+        "SPI2_MOSI"
+      ]
     }
   ]
 }
