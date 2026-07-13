@@ -105,6 +105,15 @@
         "TOUCH11",
         "SPI2_MOSI"
       ]
+    },
+    {
+      "gpio": 12,
+      "functions": [
+        "GPIO",
+        "ADC2_CH1",
+        "TOUCH12",
+        "SPI2_SCK"
+      ]
     }
   ]
 }
