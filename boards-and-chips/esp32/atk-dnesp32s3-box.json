@@ -122,36 +122,6 @@
         }
       }
     ],
-    "pmic": [
-      {
-        "id": "io-expander-xl9555",
-        "name": {
-          "en": "XL9555 IO Expander",
-          "zh-CN": "XL9555 IO 扩展芯片"
-        },
-        "model": "XL9555",
-        "interface": "I2C",
-        "mounting": "onboard",
-        "pinLocked": true,
-        "pins": {
-          "I2C": [
-            {
-              "role": "scl",
-              "gpio": 45
-            },
-            {
-              "role": "sda",
-              "gpio": 48
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "16-bit I2C IO expander at address 0x20; drives LCD backlight, speaker control, touch reset, LED and on-board keys.",
-          "zh-CN": "16 位 I2C IO 扩展芯片，地址 0x20；用于驱动 LCD 背光、喇叭控制、触摸复位、LED 及板载按键。"
-        }
-      }
-    ],
     "button": [
       {
         "id": "button",
