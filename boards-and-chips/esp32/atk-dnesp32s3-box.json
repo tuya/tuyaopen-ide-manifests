@@ -143,6 +143,27 @@
         },
         "kconfig": null,
         "note": null
+      },
+      {
+        "id": "button-1",
+        "name": {
+          "en": "Key1",
+          "zh-CN": "Key1"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "expanderId": "io-expander",
+              "expanderPin": 3
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
       }
     ],
     "io-expander": [
