@@ -287,6 +287,28 @@
         "kconfig": null,
         "note": null
       }
+    ],
+    "led": [
+      {
+        "id": "led",
+        "name": {
+          "en": "BLUE LED",
+          "zh-CN": "蓝色 LED"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "led",
+              "gpio": 4
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {
