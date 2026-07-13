@@ -153,6 +153,14 @@
         "ADC2_CH6",
         "UART1_TX"
       ]
+    },
+    {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "ADC2_CH7",
+        "UART1_RX"
+      ]
     }
   ]
 }
