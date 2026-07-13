@@ -4,11 +4,11 @@
   "links": {
     "schematic": null,
     "datasheet": {
-      "en": "",
-      "zh-CN": ""
+      "en": "https://download.gigadevice.com/Datasheet/GD32VW553-TY1%20datasheet%20Rev0.5.pdf",
+      "zh-CN": "https://download.gigadevice.com/Datasheet/GD32VW553-TY1%20datasheet%20Rev0.5.pdf"
     },
     "productPage": {
-      "en": "",
+      "en": "https://pages-g.m.taobao.com/wow/z/app/detail-next/item/index?id=1061464623455",
       "zh-CN": "https://pages-g.m.taobao.com/wow/z/app/detail-next/item/index?id=1061464623455"
     }
   },
