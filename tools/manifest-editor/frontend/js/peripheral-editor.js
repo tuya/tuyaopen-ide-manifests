@@ -780,7 +780,6 @@ function buildFormHtml(type, item, index, template) {
   html += buildPinRows(type, iface, template, existingPins, template?.audioDecoder ? (item?.decoder || 'NONE') : null, item?.pixelFormat);
 
   html += `</tbody></table>`;
-  html += `<datalist id="periExpanderIdList">${getBoardExpanderIds().map(id => `<option value="${esc(id)}">`).join('')}</datalist>`;
   if (!template) {
     html += `<button type="button" class="btn btn-sm btn-outline peri-pin-add-btn">+ Pin</button>`;
   }
@@ -915,8 +914,15 @@ function renderTemplatedPinRow(role, gpio, activeLevel, iface, readonly, exp) {
   </tr>`;
   }
   const isExp = !!exp && exp.pin !== undefined && exp.pin !== null;
-  const expId = isExp ? esc(exp.id ?? '') : '';
+  const expId = isExp ? (exp.id ?? '') : '';
   const expPin = isExp && exp.pin !== undefined ? exp.pin : '';
+  // Expander id is a constrained <select> over the board's io-expander instance
+  // ids (not free text), so a pin can never reference a non-existent expander.
+  const expIds = getBoardExpanderIds();
+  const expIdOpts = [`<option value="">—</option>`]
+    .concat(expIds.map(id => `<option value="${esc(id)}" ${id === expId ? 'selected' : ''}>${esc(id)}</option>`))
+    .concat((expId && !expIds.includes(expId)) ? [`<option value="${esc(expId)}" selected>${esc(expId)}</option>`] : [])
+    .join('');
   return `<tr class="peri-pin-row" data-role="${esc(role)}" data-iface="${esc(iface || '')}">
     <td><code class="peri-pin-role-label">${esc(role)}</code></td>
     <td class="peri-pin-src-cell">
@@ -926,7 +932,7 @@ function renderTemplatedPinRow(role, gpio, activeLevel, iface, readonly, exp) {
       </select>
       <input type="number" class="peri-pin-gpio" value="${gpioVal}" placeholder="—" min="0" max="55" style="${isExp ? 'display:none;' : ''}">
       <span class="peri-pin-exp-fields" style="${isExp ? '' : 'display:none;'}">
-        <input type="text" class="peri-pin-exp-id" value="${expId}" placeholder="${esc(t('periPinExpId'))}" list="periExpanderIdList" style="width:130px;">
+        <select class="peri-pin-exp-id" style="width:130px;">${expIdOpts}</select>
         <input type="number" class="peri-pin-exp-pin" value="${expPin}" placeholder="#" min="0" style="width:52px;">
       </span>
     </td>
