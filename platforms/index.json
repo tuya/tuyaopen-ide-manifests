@@ -235,7 +235,7 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": false
+      "published": true
     },
     {
       "id": "esp32c6",
