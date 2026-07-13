@@ -231,6 +231,13 @@
         "GPIO",
         "SPI2_MOSI"
       ]
+    },
+    {
+      "gpio": 36,
+      "functions": [
+        "GPIO",
+        "SPI2_SCK"
+      ]
     }
   ]
 }
