@@ -63,6 +63,14 @@
         "ADC1_CH5",
         "TOUCH6"
       ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "ADC1_CH6",
+        "TOUCH7"
+      ]
     }
   ]
 }
