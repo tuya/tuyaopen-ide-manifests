@@ -5,8 +5,8 @@
       {
         "id": "lcd-st7789",
         "name": {
-          "en": "ST7789 LCD",
-          "zh-CN": "ST7789 显示屏"
+          "en": "SPI LCD（ATK-MD0240）",
+          "zh-CN": "SPI 屏 (ATK-MD0240)"
         },
         "interface": "SPI",
         "mounting": "accessory",
@@ -25,6 +25,21 @@
         "pins": {
           "SPI": [
             {
+              "role": "rst",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 10
+            },
+            {
+              "role": "power",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 11
+            },
+            {
+              "role": "bl",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 8
+            },
+            {
               "role": "sck",
               "gpio": 12
             },
@@ -39,21 +54,6 @@
             {
               "role": "dc",
               "gpio": 40
-            },
-            {
-              "role": "bl",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 8
-            },
-            {
-              "role": "rst",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 10
-            },
-            {
-              "role": "power",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 11
             }
           ]
         },
