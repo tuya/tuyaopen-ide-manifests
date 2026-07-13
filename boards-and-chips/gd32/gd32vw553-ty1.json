@@ -38,16 +38,6 @@
       ]
     },
     {
-      "gpio": 24,
-      "functions": [
-        "GPIO",
-        "UART0_TX",
-        "UART1_TX",
-        "I2C0_SCL",
-        "I2C1_SCL"
-      ]
-    },
-    {
       "gpio": 25,
       "functions": [
         "GPIO",
