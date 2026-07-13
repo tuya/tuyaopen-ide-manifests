@@ -209,6 +209,52 @@
         "pinLocked": true,
         "id": "power"
       }
+    ],
+    "sd-card": [
+      {
+        "id": "sd-card",
+        "name": {
+          "en": "SD-Card",
+          "zh-CN": "SD 卡"
+        },
+        "interface": "SDIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "SDIO": [
+            {
+              "role": "clk",
+              "gpio": 2
+            },
+            {
+              "role": "cmd",
+              "gpio": 3
+            },
+            {
+              "role": "d0",
+              "gpio": 4
+            },
+            {
+              "role": "d1",
+              "gpio": 5
+            },
+            {
+              "role": "d2",
+              "gpio": 10
+            },
+            {
+              "role": "d3",
+              "gpio": 11
+            },
+            {
+              "role": "cd",
+              "gpio": 8
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {
