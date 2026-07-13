@@ -279,18 +279,6 @@
   },
   "expansionPins": [
     {
-      "gpio": 32,
-      "functions": [
-        "GPIO",
-        "PWMG1_PWM0",
-        "CIS_PXD0",
-        "ENET_MDIO",
-        "TOUCH6",
-        "SC_RSTN",
-        "SEG22"
-      ]
-    },
-    {
       "gpio": 33,
       "functions": [
         "GPIO",
