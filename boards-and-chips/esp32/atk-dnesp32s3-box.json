@@ -81,10 +81,10 @@
           "en": "ES8311 Audio Codec",
           "zh-CN": "ES8311 音频编解码器"
         },
-        "model": "ES8311",
         "interface": "I2S",
         "mounting": "onboard",
         "pinLocked": true,
+        "decoder": "ES8311",
         "pins": {
           "I2S": [
             {
@@ -96,12 +96,17 @@
               "gpio": 13
             },
             {
+              "role": "din",
+              "gpio": 47
+            },
+            {
               "role": "dout",
               "gpio": 14
             },
             {
-              "role": "din",
-              "gpio": 47
+              "role": "spk_en",
+              "expanderId": "io-expander",
+              "expanderPin": 5
             }
           ],
           "I2C": [
