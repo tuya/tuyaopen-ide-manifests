@@ -245,6 +245,12 @@
         "GPIO",
         "SPI2_MISO"
       ]
+    },
+    {
+      "gpio": 38,
+      "functions": [
+        "GPIO"
+      ]
     }
   ]
 }
