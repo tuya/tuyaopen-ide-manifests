@@ -151,6 +151,29 @@
           "zh-CN": "16 位 I2C IO 扩展芯片，地址 0x20；用于驱动 LCD 背光、喇叭控制、触摸复位、LED 及板载按键。"
         }
       }
+    ],
+    "button": [
+      {
+        "id": "button",
+        "name": {
+          "en": "key",
+          "zh-CN": "按键1"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "expanderId": "EX_IO_KEY_0",
+              "expanderPin": 4
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {
@@ -163,5 +186,6 @@
   "boardSymbol": "DNESP32S3_BOX",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/ESP32/DNESP32S3_BOX"
-  }
+  },
+  "peripheralGroups": {}
 }
