@@ -138,6 +138,13 @@
         "GPIO",
         "ADC2_CH4"
       ]
+    },
+    {
+      "gpio": 16,
+      "functions": [
+        "GPIO",
+        "ADC2_CH5"
+      ]
     }
   ]
 }
