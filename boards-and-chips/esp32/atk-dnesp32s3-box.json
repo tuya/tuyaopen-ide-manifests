@@ -252,6 +252,41 @@
         "kconfig": null,
         "note": null
       }
+    ],
+    "sd-card": [
+      {
+        "id": "sd-card",
+        "name": {
+          "en": "SD-Card",
+          "zh-CN": "SD 卡"
+        },
+        "interface": "SPI",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "port": 0,
+        "pins": {
+          "SPI": [
+            {
+              "role": "sck",
+              "gpio": 7
+            },
+            {
+              "role": "mosi",
+              "gpio": 16
+            },
+            {
+              "role": "miso",
+              "gpio": 15
+            },
+            {
+              "role": "cs",
+              "gpio": 10
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {
