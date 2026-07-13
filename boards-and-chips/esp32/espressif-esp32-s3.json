@@ -145,6 +145,14 @@
         "GPIO",
         "ADC2_CH5"
       ]
+    },
+    {
+      "gpio": 17,
+      "functions": [
+        "GPIO",
+        "ADC2_CH6",
+        "UART1_TX"
+      ]
     }
   ]
 }
