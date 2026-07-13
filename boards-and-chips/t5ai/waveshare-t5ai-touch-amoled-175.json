@@ -312,6 +312,17 @@
         "I8080_D13",
         "SEG14"
       ]
+    },
+    {
+      "gpio": 17,
+      "functions": [
+        "GPIO",
+        "SPI0_MISO",
+        "SDIO_DATA1",
+        "RGB_HSYNC",
+        "I8080_D12",
+        "SEG13"
+      ]
     }
   ]
 }
