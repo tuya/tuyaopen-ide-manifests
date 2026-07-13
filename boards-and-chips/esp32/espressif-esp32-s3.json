@@ -224,6 +224,13 @@
         "GPIO",
         "SPI2_CSN"
       ]
+    },
+    {
+      "gpio": 35,
+      "functions": [
+        "GPIO",
+        "SPI2_MOSI"
+      ]
     }
   ]
 }
