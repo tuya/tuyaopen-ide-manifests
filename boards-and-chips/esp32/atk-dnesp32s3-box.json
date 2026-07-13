@@ -337,6 +337,14 @@
         "ADC1_CH4",
         "TOUCH5"
       ]
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "ADC1_CH5",
+        "TOUCH6"
+      ]
     }
   ]
 }
