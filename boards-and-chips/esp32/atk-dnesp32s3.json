@@ -768,12 +768,6 @@
       ]
     },
     {
-      "gpio": 21,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
       "gpio": 36,
       "functions": [
         "GPIO",
