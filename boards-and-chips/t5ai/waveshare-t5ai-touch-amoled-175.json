@@ -279,18 +279,6 @@
   },
   "expansionPins": [
     {
-      "gpio": 14,
-      "functions": [
-        "GPIO",
-        "SPI0_SCK",
-        "I2C1_SCL",
-        "SDIO_CLK",
-        "RGB_DCLK",
-        "I8080_D15",
-        "SEG16"
-      ]
-    },
-    {
       "gpio": 15,
       "functions": [
         "GPIO",
