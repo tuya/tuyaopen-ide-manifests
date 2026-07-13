@@ -161,6 +161,14 @@
         "ADC2_CH7",
         "UART1_RX"
       ]
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "ADC2_CH8",
+        "USB_D-"
+      ]
     }
   ]
 }
