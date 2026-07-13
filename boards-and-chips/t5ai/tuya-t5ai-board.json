@@ -620,18 +620,6 @@
     ],
     "sd-card": [
       {
-        "id": "sd-card",
-        "name": {
-          "en": "SDCARD",
-          "zh-CN": "SD卡"
-        },
-        "interface": "SDIO",
-        "mounting": "onboard",
-        "pinLocked": true,
-        "kconfig": null,
-        "note": null
-      },
-      {
         "id": "sd-card-1",
         "name": {
           "en": "SD-Card",
