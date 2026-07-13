@@ -78,8 +78,8 @@
       {
         "id": "audio-es8311",
         "name": {
-          "en": "ES8311 Audio Codec",
-          "zh-CN": "ES8311 音频编解码器"
+          "en": "Audio",
+          "zh-CN": "音频"
         },
         "interface": "I2S",
         "mounting": "onboard",
