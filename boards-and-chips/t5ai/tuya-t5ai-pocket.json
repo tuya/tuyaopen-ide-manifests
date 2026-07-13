@@ -366,6 +366,48 @@
           "zh-CN": "低有效。"
         }
       }
+    ],
+    "sd-card": [
+      {
+        "id": "sd-card",
+        "name": {
+          "en": "SD-Card",
+          "zh-CN": "SD 卡"
+        },
+        "interface": "SDIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "SDIO": [
+            {
+              "role": "clk",
+              "gpio": 14
+            },
+            {
+              "role": "cmd",
+              "gpio": 15
+            },
+            {
+              "role": "d0",
+              "gpio": 16
+            },
+            {
+              "role": "d1",
+              "gpio": 17
+            },
+            {
+              "role": "d2",
+              "gpio": 18
+            },
+            {
+              "role": "d3",
+              "gpio": 19
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {

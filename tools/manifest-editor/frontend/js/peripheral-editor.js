@@ -273,7 +273,7 @@ function renderList() {
   }
 
   const ungrouped = items.filter(i => !i.item.group);
-  const mountRank = (m) => (m === 'accessory' ? 2 : m === 'connector' ? 1 : 0);
+  const mountRank = (m) => (m === 'accessory' ? 2 : 0);
   ungrouped.sort((a, b) => mountRank(a.item.mounting) - mountRank(b.item.mounting));
   const grouped = {};
   for (const entry of items) {
@@ -317,12 +317,8 @@ function renderCard(type, item, index) {
   const model = item.decoder || item.model || '';
   const resStr = (item.width && item.height) ? `${item.width}×${item.height}` : (item.resolution || '');
   const pfStr = item.pixelFormat || '';
-  const mountingLabel = item.mounting === 'accessory' ? t('periMountingAccessory')
-    : item.mounting === 'connector' ? t('periMountingConnector')
-    : t('periMountingOnboard');
-  const mountingClass = item.mounting === 'accessory' ? 'accessory'
-    : item.mounting === 'connector' ? 'connector'
-    : 'onboard';
+  const mountingLabel = item.mounting === 'accessory' ? t('periMountingAccessory') : t('periMountingOnboard');
+  const mountingClass = item.mounting === 'accessory' ? 'accessory' : 'onboard';
   const mountingTag = `<span class="peri-card-mounting peri-card-mounting--${mountingClass}">${esc(mountingLabel)}</span>`;
   const key = `${type}:${index}`;
 
@@ -611,7 +607,7 @@ function buildFormHtml(type, item, index, template) {
     const suggestions = template?.modelSuggestionsByInterface?.[iface] ?? template?.modelSuggestions;
     const listId = suggestions ? `periModelList-${type}` : '';
     const hideForIface = template?.hideModelForInterface || [];
-    const modelHidden = hideForIface.includes(iface) || item?.mounting === 'connector';
+    const modelHidden = hideForIface.includes(iface);
     const modelLabel = template?.modelLabel ? localLabel(template.modelLabel) : t('periModel');
     html += `<div class="peri-field-row" id="periModelRow" style="${modelHidden ? 'display:none;' : ''}">
         <label>${esc(modelLabel)}</label>`;
@@ -1170,30 +1166,17 @@ function bindFormEvents(form, template) {
   };
 
   // Interface change → re-render pin rows + toggle model/decoder visibility
-  // A connector (接插件) has no fitted device → hide the driver-model field.
-  const mountingSelect = form.querySelector('#periMountingSelect');
-  if (mountingSelect) {
-    mountingSelect.addEventListener('change', () => {
-      const modelRow = form.querySelector('#periModelRow');
-      if (!modelRow) { return; }
-      const ifaceVal = form.querySelector('[name="interface"]')?.value || '';
-      const hideByIface = template?.hideModelForInterface?.includes(ifaceVal);
-      modelRow.style.display = (hideByIface || mountingSelect.value === 'connector') ? 'none' : '';
-    });
-  }
-
   const ifaceSelect = form.querySelector('#periIfaceSelect');
   if (ifaceSelect && template) {
     ifaceSelect.addEventListener('change', () => {
       const newIface = ifaceSelect.value;
       const type = form.querySelector('[name="type"]').value;
       const tbody = form.querySelector('#periPinTbody');
-      // Toggle model field visibility (respect connector mounting too)
+      // Toggle model field visibility (hidden for interfaces that carry no driver model)
       const modelRow = form.querySelector('#periModelRow');
       if (modelRow) {
         const hideByIface = template.hideModelForInterface?.includes(newIface);
-        const isConnector = form.querySelector('#periMountingSelect')?.value === 'connector';
-        modelRow.style.display = (hideByIface || isConnector) ? 'none' : '';
+        modelRow.style.display = hideByIface ? 'none' : '';
       }
       // Refresh model select options when interface-specific suggestions exist
       if (template.modelSuggestionsByInterface) {
@@ -1513,8 +1496,7 @@ function saveFromForm(form, origType, formIndex) {
   if (portEl?.value !== '' && portEl?.value !== undefined) item.port = parseInt(portEl.value);
 
   const hideModelIfaces = template?.hideModelForInterface || [];
-  // A connector (接插件) has no fitted device, so no driver model.
-  const model = (!hideModelIfaces.includes(iface) && mounting !== 'connector')
+  const model = !hideModelIfaces.includes(iface)
     ? form.querySelector('[name="model"]')?.value.trim() : null;
   if (model) item.model = model;
 
