@@ -131,6 +131,13 @@
         "ADC2_CH3",
         "TOUCH14"
       ]
+    },
+    {
+      "gpio": 15,
+      "functions": [
+        "GPIO",
+        "ADC2_CH4"
+      ]
     }
   ]
 }
