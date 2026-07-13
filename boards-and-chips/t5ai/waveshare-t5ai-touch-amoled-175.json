@@ -279,18 +279,6 @@
   },
   "expansionPins": [
     {
-      "gpio": 38,
-      "functions": [
-        "GPIO",
-        "I2C1_SCL",
-        "CIS_PXD6",
-        "ENET_TXEN",
-        "TOUCH12",
-        "COM4",
-        "SEG28"
-      ]
-    },
-    {
       "gpio": 40,
       "functions": [
         "GPIO",
