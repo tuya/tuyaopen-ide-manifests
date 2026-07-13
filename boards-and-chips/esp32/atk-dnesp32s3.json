@@ -801,12 +801,6 @@
       ]
     },
     {
-      "gpio": 40,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
       "gpio": 41,
       "functions": [
         "GPIO"
