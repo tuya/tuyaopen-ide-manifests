@@ -121,56 +121,6 @@
         "id": "touchpad"
       }
     ],
-    "sd_card": [
-      {
-        "model": null,
-        "name": {
-          "en": "Micro SD Card",
-          "zh-CN": "Micro SD 卡"
-        },
-        "interface": "SDIO",
-        "pins": {
-          "SDIO": [
-            {
-              "role": "clk",
-              "gpio": 2
-            },
-            {
-              "role": "cmd",
-              "gpio": 3
-            },
-            {
-              "role": "d0",
-              "gpio": 4
-            },
-            {
-              "role": "d1",
-              "gpio": 5
-            },
-            {
-              "role": "d2",
-              "gpio": 10
-            },
-            {
-              "role": "d3",
-              "gpio": 11
-            },
-            {
-              "role": "cd",
-              "gpio": 8
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "4-bit SDIO. Card detect on GPIO 8.",
-          "zh-CN": "4 位 SDIO。卡检测引脚 GPIO 8。"
-        },
-        "mounting": "onboard",
-        "pinLocked": true,
-        "id": "sd-card"
-      }
-    ],
     "led": [
       {
         "model": null,
@@ -337,5 +287,6 @@
         "I2S2_DOUT"
       ]
     }
-  ]
+  ],
+  "peripheralGroups": {}
 }
