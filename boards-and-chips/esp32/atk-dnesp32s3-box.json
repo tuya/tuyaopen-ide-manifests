@@ -144,6 +144,38 @@
         "kconfig": null,
         "note": null
       }
+    ],
+    "io-expander": [
+      {
+        "id": "io-expander",
+        "name": {
+          "en": "IO EXPANDER",
+          "zh-CN": "IO 扩展"
+        },
+        "interface": "I2C",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "port": 0,
+        "model": "XL9555",
+        "pins": {
+          "I2C": [
+            {
+              "role": "scl",
+              "gpio": 45
+            },
+            {
+              "role": "sda",
+              "gpio": 48
+            },
+            {
+              "role": "int",
+              "gpio": 3
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {
