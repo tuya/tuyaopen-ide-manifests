@@ -72,8 +72,7 @@
         "interface": "RGB",
         "mounting": "accessory",
         "pinLocked": false,
-        "port": 0,
-        "model": "ATK-MD0430R-800480",
+        "model": "ILI9488",
         "width": 800,
         "height": 480,
         "pixelFormat": "RGB565",
@@ -92,6 +91,16 @@
         },
         "pins": {
           "RGB": [
+            {
+              "role": "rst",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 10
+            },
+            {
+              "role": "bl",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 8
+            },
             {
               "role": "pclk",
               "gpio": 5
@@ -165,14 +174,12 @@
               "gpio": 6
             },
             {
-              "role": "bl",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 8
+              "role": "hsync",
+              "gpio": null
             },
             {
-              "role": "rst",
-              "expanderId": "io-expander-xl9555",
-              "expanderPin": 10
+              "role": "vsync",
+              "gpio": null
             }
           ]
         },
