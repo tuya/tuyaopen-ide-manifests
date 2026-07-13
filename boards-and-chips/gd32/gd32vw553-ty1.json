@@ -61,6 +61,17 @@
       ]
     },
     {
+      "gpio": 5,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "SPI0_MISO",
+        "SPI0_SCK",
+        "QSPI0_CS",
+        "ADC0_CH5"
+      ]
+    },
+    {
       "gpio": 16,
       "functions": [
         "GPIO",
