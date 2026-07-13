@@ -714,15 +714,6 @@
       ]
     },
     {
-      "gpio": 13,
-      "functions": [
-        "GPIO",
-        "ADC2_CH2",
-        "TOUCH13",
-        "SPI2_MISO"
-      ]
-    },
-    {
       "gpio": 14,
       "functions": [
         "GPIO",
