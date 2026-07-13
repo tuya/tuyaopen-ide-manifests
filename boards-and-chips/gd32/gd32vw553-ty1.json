@@ -28,18 +28,6 @@
       ]
     },
     {
-      "gpio": 7,
-      "functions": [
-        "GPIO",
-        "UART2_RX",
-        "I2C1_SDA",
-        "SPI0_CSN",
-        "SPI0_MOSI",
-        "QSPI0_IO1",
-        "ADC0_CH7"
-      ]
-    },
-    {
       "gpio": 8,
       "functions": [
         "GPIO",
