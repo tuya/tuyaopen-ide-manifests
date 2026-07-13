@@ -217,6 +217,13 @@
       "functions": [
         "GPIO"
       ]
+    },
+    {
+      "gpio": 34,
+      "functions": [
+        "GPIO",
+        "SPI2_CSN"
+      ]
     }
   ]
 }
