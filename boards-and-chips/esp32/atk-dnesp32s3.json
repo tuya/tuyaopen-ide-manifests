@@ -654,18 +654,6 @@
       "gpio": 0,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "RTC_GPIO0",
-        "BOOT"
-      ]
-    },
-    {
-      "gpio": 1,
-      "functions": [
-        "GPIO",
-        "ADC1_CH0",
-        "TOUCH1"
       ]
     },
     {
@@ -682,9 +670,6 @@
         "GPIO",
         "ADC1_CH2",
         "TOUCH3"
-      ],
-      "caps": [
-        "RTC_GPIO3"
       ]
     },
     {
@@ -784,10 +769,6 @@
       "functions": [
         "GPIO",
         "ADC2_CH4"
-      ],
-      "caps": [
-        "XTAL_32K_P",
-        "RTC_GPIO15"
       ]
     },
     {
@@ -795,10 +776,6 @@
       "functions": [
         "GPIO",
         "ADC2_CH5"
-      ],
-      "caps": [
-        "XTAL_32K_N",
-        "RTC_GPIO16"
       ]
     },
     {
@@ -844,9 +821,6 @@
       "functions": [
         "GPIO",
         "SPI2_SCK"
-      ],
-      "caps": [
-        "SPIIO7"
       ]
     },
     {
@@ -854,9 +828,6 @@
       "functions": [
         "GPIO",
         "SPI2_MISO"
-      ],
-      "caps": [
-        "SPIDQS"
       ]
     },
     {
@@ -869,40 +840,24 @@
       "gpio": 39,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "MTCK",
-        "JTAG"
       ]
     },
     {
       "gpio": 40,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "MTDO",
-        "JTAG"
       ]
     },
     {
       "gpio": 41,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "MTDI",
-        "JTAG"
       ]
     },
     {
       "gpio": 42,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "MTMS",
-        "JTAG"
       ]
     },
     {
@@ -935,20 +890,12 @@
       "gpio": 47,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "SPICLK_P_DIFF",
-        "SUBSPICLK_P_DIFF"
       ]
     },
     {
       "gpio": 48,
       "functions": [
         "GPIO"
-      ],
-      "caps": [
-        "SPICLK_N_DIFF",
-        "SUBSPICLK_N_DIFF"
       ]
     }
   ],
