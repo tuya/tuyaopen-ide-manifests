@@ -562,11 +562,11 @@
           "en": "Capacitive Touch",
           "zh-CN": "电容触摸"
         },
-        "model": "GT911",
         "interface": "I2C",
         "mounting": "accessory",
         "pinLocked": false,
         "port": 1,
+        "model": "GT911",
         "xMax": 800,
         "yMax": 480,
         "mirrorX": false,
@@ -594,10 +594,7 @@
           ]
         },
         "kconfig": null,
-        "note": {
-          "en": "Capacitive touch on the ATK-MD0430R RGB panel, driven as GT911 (SDK notes GT9147/GT1151 at I2C address 0x14). Touch I2C on IO38/IO39 (I2C1, shared with the DVP camera SCCB), INT=IO40; RESET via XL9555 #9. Address-select: INT held high during RST rising edge latches address 0x14. See __board_register_display() (RGB branch).",
-          "zh-CN": "ATK-MD0430R RGB 屏的电容触摸，按 GT911 驱动（SDK 注释 GT9147/GT1151，I2C 地址 0x14）。触摸 I2C 在 IO38/IO39（I2C1，与 DVP 摄像头 SCCB 共用），INT=IO40；复位经 XL9555 #9。地址选择：RST 上升沿期间 INT 保持高电平锁定地址 0x14。见 __board_register_display()（RGB 分支）。"
-        },
+        "note": null,
         "group": "group-mrinoyyp"
       }
     ]
