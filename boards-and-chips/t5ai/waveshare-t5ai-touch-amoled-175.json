@@ -323,6 +323,19 @@
         "I8080_D12",
         "SEG13"
       ]
+    },
+    {
+      "gpio": 47,
+      "functions": [
+        "GPIO",
+        "SPI0_MISO",
+        "ENET_MDC",
+        "TOUCH15",
+        "RGB_B3",
+        "I8080_D0",
+        "COM0",
+        "I2S2_DOUT"
+      ]
     }
   ]
 }
