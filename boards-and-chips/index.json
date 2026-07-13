@@ -554,7 +554,7 @@
         "development"
       ],
       "detailUrl": "boards-and-chips/esp32/atk-dnesp32s3-box.json",
-      "published": false,
+      "published": true,
       "sdks": [
         "tuyaopen"
       ]
