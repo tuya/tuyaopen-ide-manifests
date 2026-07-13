@@ -313,6 +313,34 @@
       ]
     },
     {
+      "id": "gd32vw553-ty1",
+      "name": {
+        "en": "GD32VW553-TY1 Wi-Fi 6 + BLE Module",
+        "zh-CN": "GD32VW553-TY1 Wi-Fi 6 + BLE 模组"
+      },
+      "platformId": "gd32",
+      "variantId": "gd32vw553",
+      "manufacturer": "兆易创新",
+      "summary": {
+        "en": "GigaDevice GD32VW553-TY1 2.4GHz Wi-Fi 6 (802.11b/g/n/ax) + BLE module on the GD32VW553 (RISC-V @160MHz, 4MB flash, onboard PCB antenna, 15 GPIO pins). Default UART2 on PA6/PA7 for download & log, UART1 on PB15/PA8 for AT commands; PC8=BOOT0, PB1=BOOT1. Maps to SDK board GD32_MC_FOC_VWS_VW553.",
+        "zh-CN": "兆易创新 GD32VW553-TY1 2.4GHz Wi-Fi 6 (802.11b/g/n/ax) + BLE 模组，基于 GD32VW553（RISC-V 主频 160MHz，4MB Flash，板载 PCB 天线，引出 15 个 GPIO）。默认 PA6/PA7 = UART2（下载/日志），PB15/PA8 = UART1（AT 指令）；PC8=BOOT0，PB1=BOOT1。对应 SDK board GD32_MC_FOC_VWS_VW553。"
+      },
+      "tags": [
+        "wifi6",
+        "ble",
+        "module",
+        "iot"
+      ],
+      "image": {
+        "url": "images/gd32vw553-ty1/gd32vw553-ty1.jpg"
+      },
+      "detailUrl": "boards-and-chips/gd32/gd32vw553-ty1.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
       "id": "t5ai-otto",
       "name": {
         "en": "T5AI Otto 机器人",
