@@ -214,7 +214,8 @@
             {
               "role": "btn",
               "expanderId": "io-expander",
-              "expanderPin": 3
+              "expanderPin": 3,
+              "activeLevel": "low"
             }
           ]
         },
