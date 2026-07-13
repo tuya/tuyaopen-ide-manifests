@@ -178,9 +178,13 @@
   },
   "links": {
     "schematic": null,
-    "datasheet": null,
+    "datasheet": {
+      "en": "http://www.openedv.com/docs/boards/esp32/ATK-DNESP32S3BVXX.html",
+      "zh-CN": "http://www.openedv.com/docs/boards/esp32/ATK-DNESP32S3BVXX.html"
+    },
     "productPage": {
-      "en": "https://www.alientek.com"
+      "en": "https://detail.tmall.com/item.htm?id=850275706131",
+      "zh-CN": "https://detail.tmall.com/item.htm?id=850275706131"
     }
   },
   "boardSymbol": "DNESP32S3_BOX",
