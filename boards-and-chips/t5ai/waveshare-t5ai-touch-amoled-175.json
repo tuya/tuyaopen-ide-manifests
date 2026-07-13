@@ -277,19 +277,5 @@
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/T5AI/WAVESHARE_T5AI_TOUCH_AMOLED_1_75"
   },
-  "expansionPins": [
-    {
-      "gpio": 47,
-      "functions": [
-        "GPIO",
-        "SPI0_MISO",
-        "ENET_MDC",
-        "TOUCH15",
-        "RGB_B3",
-        "I8080_D0",
-        "COM0",
-        "I2S2_DOUT"
-      ]
-    }
-  ]
+  "expansionPins": []
 }
