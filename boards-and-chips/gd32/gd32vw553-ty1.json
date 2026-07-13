@@ -82,6 +82,18 @@
       ]
     },
     {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "UART2_TX",
+        "I2C1_SCL",
+        "SPI0_MISO",
+        "SPI0_SCK",
+        "QSPI0_IO0",
+        "ADC0_CH6"
+      ]
+    },
+    {
       "gpio": 7,
       "functions": [
         "GPIO",
