@@ -183,13 +183,8 @@
             }
           ]
         },
-        "kconfig": {
-          "DNESP32S3_LCD_MD0430R_RGB": 1
-        },
-        "note": {
-          "en": "ATK-MD0430R-800480 4.3\" RGB parallel LCD (DE mode, no init sequence) — the RGB option of the board's LCD choice, mutually exclusive with the SPI ST7789 (DNESP32S3_LCD_MD0430R_RGB vs DNESP32S3_LCD_MD0240_SPI). 800x480 RGB565 @ 18 MHz pixel clock; 16-bit RGB data on fixed MCU GPIOs (R3–R7 / G2–G7 / B3–B7), DE=IO4, PCLK=IO5; HSYNC/VSYNC unused in DE mode. Backlight via XL9555 #8, reset via #10. RGB data pins are shared with the DVP camera header and on-board I2S audio. See __board_register_display() (MD0430R branch).",
-          "zh-CN": "ATK-MD0430R-800480 4.3 寸 RGB 并口屏（DE 模式，无需初始化序列）——板子 LCD choice 的 RGB 选项，与 SPI ST7789 二选一（DNESP32S3_LCD_MD0430R_RGB 与 DNESP32S3_LCD_MD0240_SPI）。800x480 RGB565，像素时钟 18MHz；16 位 RGB 数据走固定 MCU GPIO（R3–R7 / G2–G7 / B3–B7），DE=IO4，PCLK=IO5；DE 模式下 HSYNC/VSYNC 不用。背光经 XL9555 #8，复位经 #10。RGB 数据脚与 DVP 摄像头排针、板载 I2S 音频共用。见 __board_register_display()（MD0430R 分支）。"
-        },
+        "kconfig": null,
+        "note": null,
         "group": "group-mrinoyyp"
       }
     ],
