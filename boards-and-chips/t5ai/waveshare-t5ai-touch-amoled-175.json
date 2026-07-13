@@ -279,20 +279,6 @@
   },
   "expansionPins": [
     {
-      "gpio": 46,
-      "functions": [
-        "GPIO",
-        "SPI0_MOSI",
-        "CAN_STBY",
-        "ENET_PHY_INT",
-        "TOUCH14",
-        "RGB_B4",
-        "I8080_D1",
-        "COM1",
-        "I2S2_DIN"
-      ]
-    },
-    {
       "gpio": 47,
       "functions": [
         "GPIO",
