@@ -279,19 +279,6 @@
   },
   "expansionPins": [
     {
-      "gpio": 41,
-      "functions": [
-        "GPIO",
-        "UART2_TX",
-        "I2S1_SYNC",
-        "LIN_TXD",
-        "SC_IO",
-        "RGB_G3",
-        "I8080_D6",
-        "SEG2"
-      ]
-    },
-    {
       "gpio": 44,
       "functions": [
         "GPIO",
