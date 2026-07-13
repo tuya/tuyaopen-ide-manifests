@@ -8,5 +8,13 @@
     },
     "productPage": null
   },
-  "boardSymbol": "ESP32_S3"
+  "boardSymbol": "ESP32_S3",
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO"
+      ]
+    }
+  ]
 }
