@@ -807,12 +807,6 @@
       ]
     },
     {
-      "gpio": 46,
-      "functions": [
-        "GPIO"
-      ]
-    },
-    {
       "gpio": 47,
       "functions": [
         "GPIO"
