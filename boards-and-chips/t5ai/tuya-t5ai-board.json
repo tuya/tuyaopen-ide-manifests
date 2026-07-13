@@ -627,7 +627,7 @@
         },
         "interface": "SDIO",
         "mounting": "accessory",
-        "pinLocked": true,
+        "pinLocked": false,
         "pins": {
           "SDIO": [
             {
