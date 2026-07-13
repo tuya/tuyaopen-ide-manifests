@@ -28,6 +28,9 @@ Decide by **adaptation, not by whether the SDK has the driver**:
   `board-context.md`) → register it yourself in **`usr_board`** (see
   `usr-board/SKILL.md`), reusing the SDK's codec driver.
   `board_register_hardware()` only wires codecs the board adapted.
+  - **On ESP32** an external codec uses the `esp_codec_dev` / esp-idf I2S SDK, NOT reachable
+    from `usr_board/` — put the driver in an `esp_components/<name>/` component instead. See
+    `usr-board/SKILL.md` → *ESP32: esp-idf-backed custom drivers*.
 
 ---
 

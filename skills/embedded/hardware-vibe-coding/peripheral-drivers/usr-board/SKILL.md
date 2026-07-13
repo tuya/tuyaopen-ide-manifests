@@ -278,3 +278,93 @@ For implementation details of the TDD driver (callbacks, config structs, registe
 function), refer to the matching peripheral skill:
 - Display: `peripheral-display/SKILL.md` → *New Display IC*
 - Camera: `peripheral-camera/SKILL.md` → *New DVP Camera IC*
+
+> **ESP32 exception:** the `source/embedded/usr_board/` location above only works for
+> drivers that use the tkl/tdd abstraction (plain GPIO / I2C / PWM / ADC, e.g.
+> `tdd_led_gpio_register`, `tdd_gpio_button_register`). A custom driver that needs the
+> **ESP-IDF** SDK (a display panel via `esp_lcd`, an audio codec via `esp_codec_dev`, a
+> camera, a touch controller, raw esp-idf SPI/QSPI) canNOT live in `usr_board/` on ESP32
+> — see the next section.
+
+---
+
+## ESP32: esp-idf-backed custom drivers → `esp_components/`, NOT `usr_board/`
+
+Check the platform first: read `.tuyaopen/ide/platform.json`. This section applies **only
+when the target is an ESP32 family chip** (`esp32` / `esp32s3` / `esp32c3` / `esp32c6` /
+`esp32p4`). On other platforms use the normal `usr_board/` path above.
+
+**Why.** On ESP32 the TuyaOpen build is two-stage: `usr_board/`, the app, and the SDK core
+are compiled into a "prebuilt library" stage that sees **only** the tkl/tal/tdl abstraction
+headers — it **cannot `#include` or link any ESP-IDF API** (`esp_lcd_*`, `esp_codec_dev`,
+`driver/*`, esp-idf SPI/QSPI, camera, touch). Such a driver put in `usr_board/` fails to
+compile. ESP-IDF is only reachable from an esp-idf **component**.
+
+**Decision rule (ESP32):**
+- Driver uses only tkl/tdd generic drivers (GPIO/I2C/PWM/ADC LED, button, …) → keep the
+  normal `usr_board/` path above; it works on ESP32 too.
+- Driver needs an ESP-IDF API → make it a drop-in esp-idf **component** under
+  `source/embedded/esp_components/<name>/`.
+
+### Layout
+
+```
+source/embedded/esp_components/<name>/
+  <name>.c            ← the driver; may #include esp_lcd_*, esp_codec_dev, driver/*,
+                        AND TuyaOpen headers (tkl/tal/tdl, e.g. tkl_gpio.h, tal_api.h)
+  <name>.h            ← declares your register entry, e.g. int <name>_register(void);
+  CMakeLists.txt
+```
+
+### `CMakeLists.txt` (both lines are required)
+
+```cmake
+idf_component_register(
+    SRCS "<name>.c"
+    INCLUDE_DIRS "."
+    REQUIRES tuyaos_adapter esp_lcd driver)   # tuyaos_adapter ⇒ TuyaOpen headers;
+                                               # add each ESP-IDF component your driver #includes
+# Force this leaf component onto the final link line AND keep its symbols. Nothing in the
+# IDF graph REQUIREs it and the app that calls it is a prebuilt lib outside the graph, so
+# without this its archive is dropped → "undefined reference".
+idf_component_set_property(${COMPONENT_NAME} WHOLE_ARCHIVE ON)
+```
+
+- `REQUIRES tuyaos_adapter` makes ALL TuyaOpen public headers resolvable (tkl/tal/tdl,
+  including the umbrella `tal_api.h`). Add every ESP-IDF component your driver includes
+  (`esp_lcd`, `driver`, `esp_codec_dev`, `esp_lcd_touch_*`, …).
+- `WHOLE_ARCHIVE ON` is **mandatory** here (see keep-alive below).
+
+### Register + call it (keep-alive — mandatory)
+
+`WHOLE_ARCHIVE` puts the archive on the link line, but ESP32 builds with
+`-ffunction-sections -Wl,--gc-sections`, so an **un-referenced** symbol is still stripped.
+So you MUST also **call** the driver's register function from the app:
+
+1. In `usr_board.c`, add `extern int <name>_register(void);` and call it from
+   `usr_register_hardware()`. (An `extern` decl needs no include-path wiring; the symbol is
+   resolved at the final link from the component's archive.)
+2. `usr_register_hardware()` is already called from `user_main()` (see Step 5).
+
+Matrix (verified): `WHOLE_ARCHIVE` + called → linked ✓; `WHOLE_ARCHIVE` + never called →
+gc-stripped ✗; no `WHOLE_ARCHIVE` + called → `undefined reference` ✗. You need **both**.
+
+### No SDK / env / Kconfig edits
+
+The TuyaOpen CLI auto-discovers `<app>/esp_components/*` for ESP32 builds (each subdir
+becomes one esp-idf component). Do **not** touch `platform/ESP32/**`, `main`, Kconfig, or
+any config key. Just create the folder.
+
+### Driver body
+
+Write the driver against the **ESP-IDF API** (e.g. `esp_lcd_new_panel_io_spi()` +
+`esp_lcd_new_panel_*()` for a display, `esp_codec_dev_*` for audio). For reference
+implementations of the same peripheral class on ESP32, look at the board drivers under the
+SDK's `boards/ESP32/common/{lcd,audio,tp,camera}/` — mirror their ESP-IDF usage. If the SDK
+already ships a driver there for your exact IC and the **board** registers it, it is
+board-adapted (in `board-context.md`) and you need no custom component at all.
+
+### Record it
+
+Same as Step 6 above — add the device to `used-peripherals.json` and
+`custom-peripherals.json` so it shows in the Hardware View and reserves its pins.

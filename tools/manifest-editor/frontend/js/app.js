@@ -525,7 +525,11 @@ async function loadPlatforms() {
       list.innerHTML = `<p class="loading-text">${i18n.t('platformsEmpty') || 'No platforms yet.'}</p>`;
       return;
     }
-    list.innerHTML = platforms.map(renderPlatformCard).join('');
+    // Unpublished platforms sort to the end (published first), matching the boards
+    // and demos lists. Stable within each group.
+    const sortedPlatforms = [...platforms].sort((a, b) =>
+      (a.published === false ? 1 : 0) - (b.published === false ? 1 : 0));
+    list.innerHTML = sortedPlatforms.map(renderPlatformCard).join('');
     list.querySelectorAll('.platform-edit-btn').forEach(btn => {
       btn.addEventListener('click', (e) => { e.stopPropagation(); openPlatformForm(btn.dataset.platformId); });
     });

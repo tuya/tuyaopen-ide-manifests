@@ -62,6 +62,127 @@
           "en": "SPI LCD header (U2). Data on fixed MCU GPIOs (sck=IO12, mosi=IO11, cs=IO21, dc=IO40); backlight/reset/power are driven via the XL9555 expander (bl=#8, rst=SLCD_RST #10, power=SLCD_PWR #11). The ESP SPI-LCD driver is configured rst_io=-1 because reset is toggled through the expander, not a direct GPIO. ST7789 is the shipped/default panel; the header accepts any compatible SPI panel on these pins.",
           "zh-CN": "SPI LCD 排针（U2）。数据走固定 MCU GPIO（sck=IO12, mosi=IO11, cs=IO21, dc=IO40）；背光/复位/电源经 XL9555 扩展器驱动（bl=#8, rst=SLCD_RST #10, power=SLCD_PWR #11）。ESP SPI-LCD 驱动配置 rst_io=-1，因为复位是经扩展器拉的、非直连 GPIO。ST7789 是随板/默认屏，该排针可换插任意兼容 SPI 屏，用这组脚。"
         }
+      },
+      {
+        "id": "lcd-md0430r-rgb",
+        "name": {
+          "en": "RGB LCD (ATK-MD0430R)",
+          "zh-CN": "RGB 屏 (ATK-MD0430R)"
+        },
+        "interface": "RGB",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 0,
+        "model": "ATK-MD0430R-800480",
+        "width": 800,
+        "height": 480,
+        "pixelFormat": "RGB565",
+        "backlight": "CUSTOM",
+        "blPwmChannel": 0,
+        "timing": {
+          "syncMode": "DE",
+          "clk": 18000000,
+          "clkEdge": "rising",
+          "hbp": 88,
+          "hfp": 40,
+          "vbp": 32,
+          "vfp": 13,
+          "hsw": 48,
+          "vsw": 3
+        },
+        "pins": {
+          "RGB": [
+            {
+              "role": "pclk",
+              "gpio": 5
+            },
+            {
+              "role": "de",
+              "gpio": 4
+            },
+            {
+              "role": "r3",
+              "gpio": 45
+            },
+            {
+              "role": "r4",
+              "gpio": 48
+            },
+            {
+              "role": "r5",
+              "gpio": 47
+            },
+            {
+              "role": "r6",
+              "gpio": 21
+            },
+            {
+              "role": "r7",
+              "gpio": 14
+            },
+            {
+              "role": "g2",
+              "gpio": 10
+            },
+            {
+              "role": "g3",
+              "gpio": 9
+            },
+            {
+              "role": "g4",
+              "gpio": 46
+            },
+            {
+              "role": "g5",
+              "gpio": 3
+            },
+            {
+              "role": "g6",
+              "gpio": 8
+            },
+            {
+              "role": "g7",
+              "gpio": 18
+            },
+            {
+              "role": "b3",
+              "gpio": 17
+            },
+            {
+              "role": "b4",
+              "gpio": 16
+            },
+            {
+              "role": "b5",
+              "gpio": 15
+            },
+            {
+              "role": "b6",
+              "gpio": 7
+            },
+            {
+              "role": "b7",
+              "gpio": 6
+            },
+            {
+              "role": "bl",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 8
+            },
+            {
+              "role": "rst",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 10
+            }
+          ]
+        },
+        "kconfig": {
+          "DNESP32S3_LCD_MD0430R_RGB": 1
+        },
+        "note": {
+          "en": "ATK-MD0430R-800480 4.3\" RGB parallel LCD (DE mode, no init sequence) — the RGB option of the board's LCD choice, mutually exclusive with the SPI ST7789 (DNESP32S3_LCD_MD0430R_RGB vs DNESP32S3_LCD_MD0240_SPI). 800x480 RGB565 @ 18 MHz pixel clock; 16-bit RGB data on fixed MCU GPIOs (R3–R7 / G2–G7 / B3–B7), DE=IO4, PCLK=IO5; HSYNC/VSYNC unused in DE mode. Backlight via XL9555 #8, reset via #10. RGB data pins are shared with the DVP camera header and on-board I2S audio. See __board_register_display() (MD0430R branch).",
+          "zh-CN": "ATK-MD0430R-800480 4.3 寸 RGB 并口屏（DE 模式，无需初始化序列）——板子 LCD choice 的 RGB 选项，与 SPI ST7789 二选一（DNESP32S3_LCD_MD0430R_RGB 与 DNESP32S3_LCD_MD0240_SPI）。800x480 RGB565，像素时钟 18MHz；16 位 RGB 数据走固定 MCU GPIO（R3–R7 / G2–G7 / B3–B7），DE=IO4，PCLK=IO5；DE 模式下 HSYNC/VSYNC 不用。背光经 XL9555 #8，复位经 #10。RGB 数据脚与 DVP 摄像头排针、板载 I2S 音频共用。见 __board_register_display()（MD0430R 分支）。"
+        }
       }
     ],
     "audio": [
@@ -215,6 +336,265 @@
             "dir": "in"
           }
         ]
+      }
+    ],
+    "led": [
+      {
+        "id": "led",
+        "name": {
+          "en": "LED",
+          "zh-CN": "LED"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "led",
+              "gpio": 1,
+              "activeLevel": "low"
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Onboard red indicator LED on GPIO1, active-low (VCC3.3 → R4 → LED → IO1; driving IO1 low lights it). Registered as LED_NAME by __board_register_led().",
+          "zh-CN": "板载红色指示灯，接 GPIO1，低电平有效（VCC3.3 → R4 → LED → IO1；拉低 IO1 点亮）。由 __board_register_led() 注册为 LED_NAME。"
+        }
+      }
+    ],
+    "button": [
+      {
+        "id": "button-key0",
+        "name": {
+          "en": "KEY0",
+          "zh-CN": "KEY0"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 15,
+              "activeLevel": "low"
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "User key KEY0 on XL9555 pin15, active-low (pull-up). The four user keys KEY0–KEY3 all sit on the XL9555 expander (pin15/14/13/12) and are registered via tdd_button_esp_io_expander_register() as BUTTON_NAME..BUTTON_NAME_4 in __board_register_button().",
+          "zh-CN": "用户按键 KEY0，在 XL9555 pin15，低电平有效（带上拉）。四个用户按键 KEY0–KEY3 均在 XL9555 扩展芯片上（pin15/14/13/12），由 __board_register_button() 通过 tdd_button_esp_io_expander_register() 注册为 BUTTON_NAME..BUTTON_NAME_4。"
+        }
+      },
+      {
+        "id": "button-key1",
+        "name": {
+          "en": "KEY1",
+          "zh-CN": "KEY1"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 14,
+              "activeLevel": "low"
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "User key KEY1 on XL9555 pin14, active-low (pull-up).",
+          "zh-CN": "用户按键 KEY1，在 XL9555 pin14，低电平有效（带上拉）。"
+        }
+      },
+      {
+        "id": "button-key2",
+        "name": {
+          "en": "KEY2",
+          "zh-CN": "KEY2"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 13,
+              "activeLevel": "low"
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "User key KEY2 on XL9555 pin13, active-low (pull-up).",
+          "zh-CN": "用户按键 KEY2，在 XL9555 pin13，低电平有效（带上拉）。"
+        }
+      },
+      {
+        "id": "button-key3",
+        "name": {
+          "en": "KEY3",
+          "zh-CN": "KEY3"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 12,
+              "activeLevel": "low"
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "User key KEY3 on XL9555 pin12, active-low (pull-up).",
+          "zh-CN": "用户按键 KEY3，在 XL9555 pin12，低电平有效（带上拉）。"
+        }
+      }
+    ],
+    "camera": [
+      {
+        "id": "camera",
+        "name": {
+          "en": "DVP Camera",
+          "zh-CN": "DVP 摄像头"
+        },
+        "model": "OV2640",
+        "interface": "DVP",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "pins": {
+          "DVP": [
+            {
+              "role": "d0",
+              "gpio": 4
+            },
+            {
+              "role": "d1",
+              "gpio": 5
+            },
+            {
+              "role": "d2",
+              "gpio": 6
+            },
+            {
+              "role": "d3",
+              "gpio": 7
+            },
+            {
+              "role": "d4",
+              "gpio": 15
+            },
+            {
+              "role": "d5",
+              "gpio": 16
+            },
+            {
+              "role": "d6",
+              "gpio": 17
+            },
+            {
+              "role": "d7",
+              "gpio": 18
+            },
+            {
+              "role": "pclk",
+              "gpio": 45
+            },
+            {
+              "role": "vsync",
+              "gpio": 47
+            },
+            {
+              "role": "hsync",
+              "gpio": 48
+            },
+            {
+              "role": "i2c_scl",
+              "gpio": 38
+            },
+            {
+              "role": "i2c_sda",
+              "gpio": 39
+            },
+            {
+              "role": "pwdn",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 4
+            },
+            {
+              "role": "rst",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 5
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_DNESP32S3_CAMERA": 1
+        },
+        "note": {
+          "en": "OV2640-class DVP camera on the P2 expansion header (enable via ENABLE_DNESP32S3_CAMERA). D0–D7 = IO4–IO7 / IO15–IO18, PCLK=IO45, VSYNC=IO47, HREF=IO48; SCCB on IO38/IO39 (I2C1, shared with the RGB-LCD touch). No XCLK pin — the OV2640 module carries its own 24 MHz crystal (xclk=-1). PWDN/RESET driven via XL9555 (#4/#5). See __board_register_camera().",
+          "zh-CN": "OV2640 类 DVP 摄像头，接 P2 扩展排针（通过 ENABLE_DNESP32S3_CAMERA 使能）。D0–D7 = IO4–IO7 / IO15–IO18，PCLK=IO45，VSYNC=IO47，HREF=IO48；SCCB 在 IO38/IO39（I2C1，与 RGB 屏触摸共用）。无 XCLK 引脚——OV2640 模块自带 24MHz 晶振（xclk=-1）。PWDN/复位经 XL9555（#4/#5）。见 __board_register_camera()。"
+        }
+      }
+    ],
+    "touchpad": [
+      {
+        "id": "touchpad",
+        "name": {
+          "en": "Capacitive Touch",
+          "zh-CN": "电容触摸"
+        },
+        "model": "GT911",
+        "interface": "I2C",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "port": 1,
+        "xMax": 800,
+        "yMax": 480,
+        "mirrorX": false,
+        "mirrorY": false,
+        "swapXY": false,
+        "pins": {
+          "I2C": [
+            {
+              "role": "scl",
+              "gpio": 38
+            },
+            {
+              "role": "sda",
+              "gpio": 39
+            },
+            {
+              "role": "int",
+              "gpio": 40
+            },
+            {
+              "role": "rst",
+              "expanderId": "io-expander-xl9555",
+              "expanderPin": 9
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Capacitive touch on the ATK-MD0430R RGB panel, driven as GT911 (SDK notes GT9147/GT1151 at I2C address 0x14). Touch I2C on IO38/IO39 (I2C1, shared with the DVP camera SCCB), INT=IO40; RESET via XL9555 #9. Address-select: INT held high during RST rising edge latches address 0x14. See __board_register_display() (RGB branch).",
+          "zh-CN": "ATK-MD0430R RGB 屏的电容触摸，按 GT911 驱动（SDK 注释 GT9147/GT1151，I2C 地址 0x14）。触摸 I2C 在 IO38/IO39（I2C1，与 DVP 摄像头 SCCB 共用），INT=IO40；复位经 XL9555 #9。地址选择：RST 上升沿期间 INT 保持高电平锁定地址 0x14。见 __board_register_display()（RGB 分支）。"
+        }
       }
     ]
   },

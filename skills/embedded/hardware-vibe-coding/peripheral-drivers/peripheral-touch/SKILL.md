@@ -34,6 +34,9 @@ Decide by **adaptation, not by whether the SDK has the driver**:
   `usr-board/SKILL.md`), reusing the SDK's `tdd_tp_i2c_<ic>_register()` (GT911,
   GT1151, FT6336, CST816x, CST92xx) against `DISPLAY_NAME`.
   `board_register_hardware()` does **not** wire a panel it never adapted.
+  - **On ESP32** a touch controller uses the `esp_lcd_touch_*` SDK, NOT reachable from
+    `usr_board/` — put the driver in an `esp_components/<name>/` component instead. See
+    `usr-board/SKILL.md` → *ESP32: esp-idf-backed custom drivers*.
 
 ### New touch IC with no SDK driver (still in `usr_board`)
 

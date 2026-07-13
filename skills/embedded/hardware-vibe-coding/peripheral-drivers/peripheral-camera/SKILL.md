@@ -25,6 +25,9 @@ Decide by **adaptation, not by whether the SDK has the driver**:
   `board-context.md`) → register it yourself in **`usr_board`** (see
   `usr-board/SKILL.md`), reusing the SDK's per-IC register function below.
   `board_register_hardware()` does **not** wire a camera it never adapted.
+  - **On ESP32** a camera uses the esp-idf camera/DVP SDK, NOT reachable from `usr_board/` —
+    put the driver in an `esp_components/<name>/` component instead. See
+    `usr-board/SKILL.md` → *ESP32: esp-idf-backed custom drivers*.
 
 Use the per-IC registration function (the driver IC is the device `model` in `.tuyaopen/ide/board.json`):
 
