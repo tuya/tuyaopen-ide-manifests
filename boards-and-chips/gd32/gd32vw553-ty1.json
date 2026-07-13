@@ -28,17 +28,6 @@
       ]
     },
     {
-      "gpio": 4,
-      "functions": [
-        "GPIO",
-        "UART1_TX",
-        "SPI0_MOSI",
-        "SPI0_CSN",
-        "QSPI0_SCK",
-        "ADC0_CH4"
-      ]
-    },
-    {
       "gpio": 5,
       "functions": [
         "GPIO",
