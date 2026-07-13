@@ -279,18 +279,6 @@
   },
   "expansionPins": [
     {
-      "gpio": 15,
-      "functions": [
-        "GPIO",
-        "SPI0_CSN",
-        "I2C1_SDA",
-        "SDIO_CMD",
-        "RGB_DISP",
-        "I8080_D14",
-        "SEG15"
-      ]
-    },
-    {
       "gpio": 16,
       "functions": [
         "GPIO",
