@@ -302,7 +302,8 @@
           "GPIO": [
             {
               "role": "led",
-              "gpio": 4
+              "gpio": 4,
+              "activeLevel": "low"
             }
           ]
         },
