@@ -211,6 +211,12 @@
     {
       "gpio": 32,
       "functions": []
+    },
+    {
+      "gpio": 33,
+      "functions": [
+        "GPIO"
+      ]
     }
   ]
 }
