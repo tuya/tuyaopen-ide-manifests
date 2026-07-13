@@ -187,6 +187,10 @@
     {
       "gpio": 26,
       "functions": []
+    },
+    {
+      "gpio": 27,
+      "functions": []
     }
   ]
 }
