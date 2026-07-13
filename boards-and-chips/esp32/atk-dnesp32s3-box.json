@@ -5,18 +5,36 @@
       {
         "id": "lcd-st7789",
         "name": {
-          "en": "ST7789 LCD",
-          "zh-CN": "ST7789 显示屏"
+          "en": "LCD",
+          "zh-CN": "显示屏"
         },
-        "model": "ST7789",
         "interface": "MCU8080",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "model": "ST7789",
         "width": 320,
         "height": 240,
         "pixelFormat": "RGB565",
-        "mounting": "onboard",
-        "pinLocked": true,
+        "backlight": "GPIO",
+        "blPwmChannel": 0,
+        "timing": {
+          "dataBits": "8"
+        },
         "pins": {
           "MCU8080": [
+            {
+              "role": "bl",
+              "expanderId": "io-expander",
+              "expanderPin": 7
+            },
+            {
+              "role": "wr",
+              "gpio": 42
+            },
+            {
+              "role": "rd",
+              "gpio": 41
+            },
             {
               "role": "cs",
               "gpio": 1
@@ -24,14 +42,6 @@
             {
               "role": "dc",
               "gpio": 2
-            },
-            {
-              "role": "rd",
-              "gpio": 41
-            },
-            {
-              "role": "wr",
-              "gpio": 42
             },
             {
               "role": "d0",
@@ -64,6 +74,46 @@
             {
               "role": "d7",
               "gpio": 46
+            },
+            {
+              "role": "d8",
+              "gpio": null
+            },
+            {
+              "role": "d9",
+              "gpio": null
+            },
+            {
+              "role": "d10",
+              "gpio": null
+            },
+            {
+              "role": "d11",
+              "gpio": null
+            },
+            {
+              "role": "d12",
+              "gpio": null
+            },
+            {
+              "role": "d13",
+              "gpio": null
+            },
+            {
+              "role": "d14",
+              "gpio": null
+            },
+            {
+              "role": "d15",
+              "gpio": null
+            },
+            {
+              "role": "d16",
+              "gpio": null
+            },
+            {
+              "role": "d17",
+              "gpio": null
             }
           ]
         },
