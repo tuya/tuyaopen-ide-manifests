@@ -1976,6 +1976,7 @@
     },
     {
       "id": "tuya-duckyclaw",
+      "type": "app",
       "name": {
         "en": "TuyaOpenClaw — Edge AI Agent",
         "zh-CN": "TuyaOpenClaw 边缘 AI 智能体"
@@ -1985,7 +1986,6 @@
         "zh-CN": "基于 TuyaOpen C SDK 构建的硬件导向 AI Agent。在边缘设备（Tuya T5AI、ESP32、Raspberry Pi、Linux）上运行 Claw 风格 Agent 循环，通过 IM 通道（Telegram、Discord、飞书、微信、QQ 机器人）通信，并在设备端执行 MCP 风格工具调用。"
       },
       "tags": [
-        "app",
         "ai",
         "agent",
         "tuya-iot"

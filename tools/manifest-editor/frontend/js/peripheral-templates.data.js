@@ -1239,5 +1239,34 @@ export default {
         }
       ]
     }
+  },
+  "sd-card": {
+    "label": {
+      "en": "SD Card",
+      "zh-CN": "SD 卡"
+    },
+    "interfaces": [
+      "SDIO",
+      "SPI"
+    ],
+    "pins": {
+      "SDIO": [
+        "clk",
+        "cmd",
+        "d0",
+        "d1",
+        "d2",
+        "d3",
+        "cd"
+      ],
+      "SPI": [
+        "sck",
+        "mosi",
+        "miso",
+        "cs",
+        "cd"
+      ]
+    },
+    "fields": []
   }
 };

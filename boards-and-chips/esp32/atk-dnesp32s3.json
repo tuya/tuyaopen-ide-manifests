@@ -597,6 +597,45 @@
         "note": null,
         "group": "group-mrinoyyp"
       }
+    ],
+    "sd-card": [
+      {
+        "id": "sd-card",
+        "name": {
+          "en": "Micro SD Card",
+          "zh-CN": "Micro SD 卡"
+        },
+        "interface": "SPI",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "pins": {
+          "SPI": [
+            {
+              "role": "sck",
+              "gpio": 12
+            },
+            {
+              "role": "mosi",
+              "gpio": 11
+            },
+            {
+              "role": "miso",
+              "gpio": 13
+            },
+            {
+              "role": "cs",
+              "gpio": 2
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_DNESP32S3_SDCARD": 1
+        },
+        "note": {
+          "en": "Micro SD card on the SPI1 header (enable via ENABLE_DNESP32S3_SDCARD). SPI mode: sck=IO12, mosi=IO11, miso=IO13, cs=IO2 (TUYA_SPI1). __board_register_sd() only configures pinmux; the SD/file-system stack is driven by the SDK SPI + FS components. No card-detect pin is wired.",
+          "zh-CN": "Micro SD 卡，接 SPI1 排针（通过 ENABLE_DNESP32S3_SDCARD 使能）。SPI 模式：sck=IO12、mosi=IO11、miso=IO13、cs=IO2（TUYA_SPI1）。__board_register_sd() 仅配置 pinmux；SD/文件系统栈由 SDK 的 SPI + FS 组件驱动。未接卡检测引脚。"
+        }
+      }
     ]
   },
   "links": {
