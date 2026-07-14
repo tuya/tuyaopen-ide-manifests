@@ -433,7 +433,7 @@
         "zh-CN": "乐鑫 ESP32-C3 通用开发板"
       },
       "manufacturer": "乐鑫",
-      "platformId": "esp32c3",
+      "platformId": "esp32",
       "variantId": "esp32c3",
       "summary": {
         "en": "Generic ESP32-C3 development board target — single-core RISC-V with Wi-Fi and BLE 5.0. A cost-effective starting point for connected devices.",
