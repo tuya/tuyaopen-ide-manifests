@@ -17,6 +17,13 @@
         "GPIO",
         "ADC1_CH0"
       ]
+    },
+    {
+      "gpio": 39,
+      "functions": [
+        "GPIO",
+        "ADC1_CH3"
+      ]
     }
   ]
 }
