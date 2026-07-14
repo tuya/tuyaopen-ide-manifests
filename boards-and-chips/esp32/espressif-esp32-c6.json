@@ -12,5 +12,15 @@
       "zh-CN": "https://espressif.taobao.com/category-1694419066.htm?spm=a1z10.5-c.w4010-8715811634.26.37357a0bxof8KL&search=y&parentCatId=1341918256&parentCatName=%C4%A3%D7%E9&catName=ESP32-C6+%C4%A3%D7%E9#bd"
     }
   },
-  "boardSymbol": "ESP32_C6"
+  "boardSymbol": "ESP32_C6",
+  "expansionPins": [
+    {
+      "gpio": 2,
+      "functions": [
+        "GPIO",
+        "ADC1_CH2",
+        "SPI2_MISO"
+      ]
+    }
+  ]
 }
