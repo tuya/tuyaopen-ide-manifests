@@ -108,6 +108,13 @@
       ]
     },
     {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "SPI3_SCK"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
