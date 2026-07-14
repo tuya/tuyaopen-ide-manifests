@@ -84,6 +84,14 @@
       ]
     },
     {
+      "gpio": 16,
+      "functions": [
+        "GPIO",
+        "UART2_RX",
+        "ENET_REF_CLK"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
