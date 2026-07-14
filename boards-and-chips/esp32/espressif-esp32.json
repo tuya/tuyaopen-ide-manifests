@@ -21,6 +21,14 @@
       ]
     },
     {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "UART0_TX",
+        "ENET_RXD2"
+      ]
+    },
+    {
       "gpio": 2,
       "functions": [
         "GPIO",
