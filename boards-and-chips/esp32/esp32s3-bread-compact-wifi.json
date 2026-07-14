@@ -246,6 +246,12 @@
         "ADC2_CH3",
         "TOUCH14"
       ]
+    },
+    {
+      "gpio": 40,
+      "functions": [
+        "GPIO"
+      ]
     }
   ]
 }
