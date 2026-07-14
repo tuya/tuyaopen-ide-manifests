@@ -12,6 +12,17 @@
   "peripheralGroups": {},
   "expansionPins": [
     {
+      "gpio": 12,
+      "functions": [
+        "GPIO",
+        "ADC2_CH5",
+        "TOUCH5",
+        "ENET_TXD3",
+        "SPI2_MISO",
+        "SDIO_DATA2"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
