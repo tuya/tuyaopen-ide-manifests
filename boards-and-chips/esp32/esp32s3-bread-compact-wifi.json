@@ -123,5 +123,15 @@
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/ESP32/ESP32S3_BREAD_COMPACT_WIFI"
   },
-  "peripheralGroups": {}
+  "peripheralGroups": {},
+  "expansionPins": [
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "ADC1_CH0",
+        "TOUCH1"
+      ]
+    }
+  ]
 }
