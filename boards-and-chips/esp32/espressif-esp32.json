@@ -146,6 +146,14 @@
       ]
     },
     {
+      "gpio": 22,
+      "functions": [
+        "GPIO",
+        "UART0_RTS",
+        "ENET_TXD1"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
