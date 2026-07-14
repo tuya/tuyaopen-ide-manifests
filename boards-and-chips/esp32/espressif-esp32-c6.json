@@ -111,6 +111,13 @@
         "UART0_TX",
         "SPI2_CSN"
       ]
+    },
+    {
+      "gpio": 17,
+      "functions": [
+        "GPIO",
+        "UART0_RX"
+      ]
     }
   ]
 }
