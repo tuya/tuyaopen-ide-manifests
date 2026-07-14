@@ -139,6 +139,13 @@
         "GPIO",
         "SDIO_DATA0"
       ]
+    },
+    {
+      "gpio": 21,
+      "functions": [
+        "GPIO",
+        "SDIO_DATA1"
+      ]
     }
   ]
 }
