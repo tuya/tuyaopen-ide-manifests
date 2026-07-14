@@ -110,6 +110,13 @@
         "GPIO",
         "UART0_RX"
       ]
+    },
+    {
+      "gpio": 21,
+      "functions": [
+        "GPIO",
+        "UART0_TX"
+      ]
     }
   ]
 }
