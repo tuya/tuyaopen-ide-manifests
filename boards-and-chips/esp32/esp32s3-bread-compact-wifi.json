@@ -255,6 +255,13 @@
       ]
     },
     {
+      "gpio": 36,
+      "functions": [
+        "GPIO",
+        "SPI2_SCK"
+      ]
+    },
+    {
       "gpio": 40,
       "functions": [
         "GPIO"
