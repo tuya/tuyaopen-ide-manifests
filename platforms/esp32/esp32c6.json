@@ -544,7 +544,7 @@
         "LP_UART_DTRN",
         "XTAL_32K_P"
       ],
-      "note": "LP IO; ADC1 channel; analog XTAL_32K_P"
+      "note": "LP IO; ADC1_CH0; XTAL_32K_P (32 kHz crystal / external slow clock)"
     },
     {
       "pin": 7,
@@ -560,7 +560,7 @@
         "LP_UART_DSRN",
         "XTAL_32K_N"
       ],
-      "note": "LP IO; ADC1 channel; analog XTAL_32K_N"
+      "note": "LP IO; ADC1_CH1; XTAL_32K_N (32 kHz crystal)"
     },
     {
       "pin": 8,
@@ -576,7 +576,7 @@
         "LP_GPIO2",
         "LP_UART_RTSN"
       ],
-      "note": "LP IO; ADC1 channel"
+      "note": "LP IO; ADC1_CH2; SPI2 MISO (FSPIQ)"
     },
     {
       "pin": 9,
@@ -591,7 +591,7 @@
         "LP_GPIO3",
         "LP_UART_CTSN"
       ],
-      "note": "LP IO; ADC1 channel"
+      "note": "LP IO; ADC1_CH3"
     },
     {
       "pin": 10,
@@ -600,15 +600,16 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "ADC1_CH4"
+        "ADC1_CH4",
+        "SPI2_HD"
       ],
       "caps": [
         "LP_GPIO4",
         "LP_UART_RXD",
         "MTMS",
-        "FSPIHD"
+        "STRAP"
       ],
-      "note": "LP IO; ADC1 channel; LP_UART RXD; JTAG MTMS; strapping pin (SDIO sampling/driving clock edge)"
+      "note": "LP IO; ADC1_CH4; LP_UART RXD; JTAG MTMS; SPI2 HD (FSPIHD); strapping (SDIO sampling/driving clock edge)"
     },
     {
       "pin": 11,
@@ -617,15 +618,16 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "ADC1_CH5"
+        "ADC1_CH5",
+        "SPI2_WP"
       ],
       "caps": [
         "LP_GPIO5",
         "LP_UART_TXD",
         "MTDI",
-        "FSPIWP"
+        "STRAP"
       ],
-      "note": "LP IO; ADC1 channel; LP_UART TXD; JTAG MTDI; strapping pin (SDIO sampling/driving clock edge)"
+      "note": "LP IO; ADC1_CH5; LP_UART TXD; JTAG MTDI; SPI2 WP (FSPIWP); strapping (SDIO sampling/driving clock edge)"
     },
     {
       "pin": 12,
@@ -642,7 +644,7 @@
         "LP_I2C_SDA",
         "MTCK"
       ],
-      "note": "LP IO; ADC1 channel; LP_I2C SDA; JTAG MTCK"
+      "note": "LP IO; ADC1_CH6; LP_I2C SDA; JTAG MTCK; SPI2 SCK (FSPICLK)"
     },
     {
       "pin": 13,
@@ -658,7 +660,7 @@
         "LP_I2C_SCL",
         "MTDO"
       ],
-      "note": "LP IO; LP_I2C SCL; JTAG MTDO; not ADC-capable"
+      "note": "LP IO; LP_I2C SCL; JTAG MTDO; SPI2 MOSI (FSPID); not ADC-capable"
     },
     {
       "pin": 14,
@@ -668,8 +670,10 @@
       "functions": [
         "GPIO"
       ],
-      "caps": [],
-      "note": "Strapping pin (chip boot mode + ROM message printing)"
+      "caps": [
+        "STRAP"
+      ],
+      "note": "Strapping (chip boot mode + ROM message printing); default floating"
     },
     {
       "pin": 15,
@@ -679,8 +683,10 @@
       "functions": [
         "GPIO"
       ],
-      "caps": [],
-      "note": "Strapping pin (chip boot mode); weak pull-up at reset; BOOT button"
+      "caps": [
+        "STRAP"
+      ],
+      "note": "Strapping (chip boot mode); default weak pull-up selects SPI boot; BOOT button"
     },
     {
       "pin": 16,
@@ -690,7 +696,8 @@
       "functions": [
         "GPIO"
       ],
-      "caps": []
+      "caps": [],
+      "note": "QFN40-only (not bonded on QFN32)"
     },
     {
       "pin": 17,
@@ -700,7 +707,8 @@
       "functions": [
         "GPIO"
       ],
-      "caps": []
+      "caps": [],
+      "note": "QFN40-only (not bonded on QFN32)"
     },
     {
       "pin": 18,
@@ -708,11 +716,12 @@
       "gpio": 12,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO"
+      ],
+      "caps": [
         "USB_D-"
       ],
-      "caps": [],
-      "note": "USB-Serial-JTAG D- (fixed); analog-capable"
+      "note": "USB-Serial-JTAG D- (fixed, enabled by default); analog USB_D-; 40 mA drive; QFN40 pin18 / QFN32 pin16"
     },
     {
       "pin": 19,
@@ -720,95 +729,23 @@
       "gpio": 13,
       "type": "I/O",
       "functions": [
-        "GPIO",
+        "GPIO"
+      ],
+      "caps": [
         "USB_D+"
       ],
+      "note": "USB-Serial-JTAG D+ (fixed, USB pull-up by default); analog USB_D+; 40 mA drive; QFN40 pin19 / QFN32 pin17"
+    },
+    {
+      "pin": null,
+      "name": "GPIO14",
+      "gpio": 14,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
       "caps": [],
-      "note": "USB-Serial-JTAG D+ (fixed); analog-capable; USB pull-up enabled by default"
-    },
-    {
-      "pin": 20,
-      "name": "GPIO24",
-      "gpio": 24,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "SPICS0",
-        "GPIO24"
-      ],
-      "note": "Internal SPI flash CS (VDD_SPI domain); not recommended for other use"
-    },
-    {
-      "pin": 21,
-      "name": "GPIO25",
-      "gpio": 25,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "SPIQ",
-        "GPIO25"
-      ],
-      "note": "Internal SPI flash Q/D1 (VDD_SPI domain); not recommended for other use"
-    },
-    {
-      "pin": 22,
-      "name": "GPIO26",
-      "gpio": 26,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "SPIWP",
-        "GPIO26"
-      ],
-      "note": "Internal SPI flash WP/D3 (VDD_SPI domain); not recommended for other use"
-    },
-    {
-      "pin": 23,
-      "name": "GPIO27",
-      "gpio": 27,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "GPIO27",
-        "VDD_SPI"
-      ],
-      "note": "Default VDD_SPI flash power pin (Power/IO); usable as GPIO only if flash is externally powered"
-    },
-    {
-      "pin": 24,
-      "name": "GPIO28",
-      "gpio": 28,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "SPIHD",
-        "GPIO28"
-      ],
-      "note": "Internal SPI flash HD/D2 (VDD_SPI domain); not recommended for other use"
-    },
-    {
-      "pin": 25,
-      "name": "GPIO29",
-      "gpio": 29,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "SPICLK",
-        "GPIO29"
-      ],
-      "note": "Internal SPI flash CLK (VDD_SPI domain); not recommended for other use"
-    },
-    {
-      "pin": 26,
-      "name": "GPIO30",
-      "gpio": 30,
-      "type": "I/O",
-      "functions": [],
-      "caps": [
-        "SPID",
-        "GPIO30"
-      ],
-      "note": "Internal SPI flash D/D0 (VDD_SPI domain); not recommended for other use"
+      "note": "QFN32-only (QFN32 pin 18; not bonded on QFN40); no fixed peripheral"
     },
     {
       "pin": 27,
@@ -818,8 +755,10 @@
       "functions": [
         "GPIO"
       ],
-      "caps": [],
-      "note": "Strapping pin (JTAG signal source select)"
+      "caps": [
+        "STRAP"
+      ],
+      "note": "Strapping (JTAG signal source select, Table 3-7); no internal pull resistors - external drive required, no high-Z"
     },
     {
       "pin": 29,
@@ -832,7 +771,7 @@
         "SPI2_CSN"
       ],
       "caps": [],
-      "note": "UART0 default TX"
+      "note": "UART0 default TX (U0TXD); SPI2 CS0 (FSPICS0); WPU after reset"
     },
     {
       "pin": 30,
@@ -841,12 +780,11 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "UART0_RX"
+        "UART0_RX",
+        "SPI2_CS1"
       ],
-      "caps": [
-        "FSPICS1"
-      ],
-      "note": "UART0 default RX"
+      "caps": [],
+      "note": "UART0 default RX (U0RXD); SPI2 CS1 (FSPICS1); IE+WPU after reset"
     },
     {
       "pin": 31,
@@ -855,11 +793,11 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "SDIO_CMD"
+        "SDIO_CMD",
+        "SPI2_CS2"
       ],
-      "caps": [
-        "FSPICS2"
-      ]
+      "caps": [],
+      "note": "SDIO slave CMD; SPI2 CS2 (FSPICS2)"
     },
     {
       "pin": 32,
@@ -868,11 +806,11 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "SDIO_CLK"
+        "SDIO_CLK",
+        "SPI2_CS3"
       ],
-      "caps": [
-        "FSPICS3"
-      ]
+      "caps": [],
+      "note": "SDIO slave CLK; SPI2 CS3 (FSPICS3)"
     },
     {
       "pin": 33,
@@ -881,11 +819,11 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "SDIO_DATA0"
+        "SDIO_DATA0",
+        "SPI2_CS4"
       ],
-      "caps": [
-        "FSPICS4"
-      ]
+      "caps": [],
+      "note": "SDIO slave DATA0; SPI2 CS4 (FSPICS4)"
     },
     {
       "pin": 34,
@@ -894,11 +832,11 @@
       "type": "I/O",
       "functions": [
         "GPIO",
-        "SDIO_DATA1"
+        "SDIO_DATA1",
+        "SPI2_CS5"
       ],
-      "caps": [
-        "FSPICS5"
-      ]
+      "caps": [],
+      "note": "SDIO slave DATA1; SPI2 CS5 (FSPICS5)"
     },
     {
       "pin": 35,
@@ -909,7 +847,8 @@
         "GPIO",
         "SDIO_DATA2"
       ],
-      "caps": []
+      "caps": [],
+      "note": "SDIO slave DATA2"
     },
     {
       "pin": 36,
@@ -920,7 +859,85 @@
         "GPIO",
         "SDIO_DATA3"
       ],
-      "caps": []
+      "caps": [],
+      "note": "SDIO slave DATA3"
+    },
+    {
+      "pin": 20,
+      "name": "GPIO24",
+      "gpio": 24,
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "SPICS0"
+      ],
+      "note": "SPI0/1 flash CS (VDD_SPI); QFN40-only; not recommended for other use"
+    },
+    {
+      "pin": 21,
+      "name": "GPIO25",
+      "gpio": 25,
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "SPIQ"
+      ],
+      "note": "SPI0/1 flash Q/MISO (VDD_SPI); QFN40-only; not recommended"
+    },
+    {
+      "pin": 22,
+      "name": "GPIO26",
+      "gpio": 26,
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "SPIWP"
+      ],
+      "note": "SPI0/1 flash WP (VDD_SPI); QFN40-only; not recommended"
+    },
+    {
+      "pin": 23,
+      "name": "GPIO27",
+      "gpio": 27,
+      "type": "P/IO",
+      "functions": [],
+      "caps": [
+        "VDD_SPI"
+      ],
+      "note": "VDD_SPI flash power pin (Power/IO); QFN40-only; usable as GPIO only if flash externally powered"
+    },
+    {
+      "pin": 24,
+      "name": "GPIO28",
+      "gpio": 28,
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "SPIHD"
+      ],
+      "note": "SPI0/1 flash HD/HOLD (VDD_SPI); QFN40-only; not recommended"
+    },
+    {
+      "pin": 25,
+      "name": "GPIO29",
+      "gpio": 29,
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "SPICLK"
+      ],
+      "note": "SPI0/1 flash CLK (VDD_SPI); QFN40-only; not recommended"
+    },
+    {
+      "pin": 26,
+      "name": "GPIO30",
+      "gpio": 30,
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "SPID"
+      ],
+      "note": "SPI0/1 flash D/MOSI (VDD_SPI); QFN40-only; not recommended"
     }
   ],
   "platformSymbol": "ESP32"

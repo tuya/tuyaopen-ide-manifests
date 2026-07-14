@@ -47,14 +47,16 @@
       "gpio": 4,
       "functions": [
         "GPIO",
-        "ADC1_CH4"
+        "ADC1_CH4",
+        "SPI2_HD"
       ]
     },
     {
       "gpio": 5,
       "functions": [
         "GPIO",
-        "ADC1_CH5"
+        "ADC1_CH5",
+        "SPI2_WP"
       ]
     },
     {
@@ -87,15 +89,19 @@
     {
       "gpio": 12,
       "functions": [
-        "GPIO",
-        "USB_D-"
+        "GPIO"
       ]
     },
     {
       "gpio": 13,
       "functions": [
-        "GPIO",
-        "USB_D+"
+        "GPIO"
+      ]
+    },
+    {
+      "gpio": 14,
+      "functions": [
+        "GPIO"
       ]
     },
     {
@@ -116,35 +122,40 @@
       "gpio": 17,
       "functions": [
         "GPIO",
-        "UART0_RX"
+        "UART0_RX",
+        "SPI2_CS1"
       ]
     },
     {
       "gpio": 18,
       "functions": [
         "GPIO",
-        "SDIO_CMD"
+        "SDIO_CMD",
+        "SPI2_CS2"
       ]
     },
     {
       "gpio": 19,
       "functions": [
         "GPIO",
-        "SDIO_CLK"
+        "SDIO_CLK",
+        "SPI2_CS3"
       ]
     },
     {
       "gpio": 20,
       "functions": [
         "GPIO",
-        "SDIO_DATA0"
+        "SDIO_DATA0",
+        "SPI2_CS4"
       ]
     },
     {
       "gpio": 21,
       "functions": [
         "GPIO",
-        "SDIO_DATA1"
+        "SDIO_DATA1",
+        "SPI2_CS5"
       ]
     },
     {
