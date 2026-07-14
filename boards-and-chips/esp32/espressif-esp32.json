@@ -115,6 +115,15 @@
       ]
     },
     {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "UART0_CTS",
+        "SPI3_MISO",
+        "ENET_TXD0"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
