@@ -89,6 +89,13 @@
         "GPIO",
         "SPI2_CSN"
       ]
+    },
+    {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "USB_D-"
+      ]
     }
   ]
 }
