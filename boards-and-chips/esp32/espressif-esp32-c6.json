@@ -125,6 +125,13 @@
         "GPIO",
         "SDIO_CMD"
       ]
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "SDIO_CLK"
+      ]
     }
   ]
 }
