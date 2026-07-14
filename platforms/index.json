@@ -272,6 +272,26 @@
       "published": false
     },
     {
+      "id": "linux",
+      "platformId": "linux",
+      "name": {
+        "en": "Linux",
+        "zh-CN": "Linux"
+      },
+      "summary": {
+        "en": "TuyaOpen on Linux hosts and SBCs — Ubuntu PC, Raspberry Pi, TaishanPi, and other boards using the LINUX platform package (TuyaOpen-ubuntu). Native or cross-compiled ELF apps with ALSA, SDL2, and V4L2 peripherals.",
+        "zh-CN": "TuyaOpen Linux 平台 — 支持 Ubuntu PC、树莓派、泰山派等开发板，使用 LINUX 平台支持包（TuyaOpen-ubuntu）。可本机或交叉编译生成 ELF 应用，支持 ALSA、SDL2、V4L2 等外设。"
+      },
+      "image": {
+        "url": "images/linux/linux-hero.png"
+      },
+      "detailUrl": "platforms/linux/linux.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
+    },
+    {
       "id": "esp32p4",
       "platformId": "esp32",
       "name": {

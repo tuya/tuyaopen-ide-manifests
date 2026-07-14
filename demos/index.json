@@ -2013,6 +2013,44 @@
       "sdks": [
         "tuyaopen"
       ]
+    },
+    {
+      "id": "tuya-virtuamate",
+      "name": {
+        "en": "VirtuaMate — 3D Avatar AI Agent",
+        "zh-CN": "VirtuaMate — 3D 形象 AI 智能体"
+      },
+      "summary": {
+        "en": "Edge AI agent with VRM 3D avatar, voice chat, IM bots (Feishu / QQ / Telegram), skills, and OpenClaw gateway — runs on Ubuntu PC, Raspberry Pi, TaishanPi, and DshanPi via TuyaOpen.",
+        "zh-CN": "带 VRM 3D 形象的边缘 AI Agent：语音对话、飞书/QQ/Telegram 等 IM 机器人、技能扩展与 OpenClaw 网关，支持 Ubuntu 桌面、树莓派、泰山派、东山派。"
+      },
+      "tags": [
+        "app",
+        "ai",
+        "agent",
+        "linux",
+        "tuya-iot"
+      ],
+      "boards": [
+        "ubuntu",
+        "raspberrypi",
+        "taishanpi-3",
+        "dshanpi-a1"
+      ],
+      "compatibilityType": "board-specific",
+      "source": {
+        "repo": "https://github.com/tuya/VirtuaMate",
+        "ref": "master",
+        "kind": "external-repo"
+      },
+      "publish": true,
+      "image": {
+        "url": "images/tuya-virtuamate/banner.png"
+      },
+      "detailUrl": "demos/tuya-virtuamate.json",
+      "sdks": [
+        "tuyaopen"
+      ]
     }
   ]
 }

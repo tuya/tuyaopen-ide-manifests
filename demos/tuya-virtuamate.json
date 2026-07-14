@@ -1,0 +1,98 @@
+{
+  "id": "tuya-virtuamate",
+  "name": {
+    "en": "VirtuaMate — 3D Avatar AI Agent",
+    "zh-CN": "VirtuaMate — 3D 形象 AI 智能体"
+  },
+  "summary": {
+    "en": "Edge AI agent with VRM 3D avatar, voice chat, IM bots (Feishu / QQ / Telegram), skills, and OpenClaw gateway — runs on Ubuntu PC, Raspberry Pi, TaishanPi, and DshanPi via TuyaOpen.",
+    "zh-CN": "带 VRM 3D 形象的边缘 AI Agent：语音对话、飞书/QQ/Telegram 等 IM 机器人、技能扩展与 OpenClaw 网关，支持 Ubuntu 桌面、树莓派、泰山派、东山派。"
+  },
+  "tags": ["app", "ai", "agent", "linux", "tuya-iot"],
+  "compatibilityType": "board-specific",
+  "boards": [
+    "ubuntu",
+    "raspberrypi",
+    "taishanpi-3",
+    "dshanpi-a1"
+  ],
+  "source": {
+    "repo": "https://github.com/tuya/VirtuaMate",
+    "ref": "master",
+    "kind": "external-repo"
+  },
+  "configs": [
+    {
+      "board": "ubuntu",
+      "options": [
+        {
+          "file": "config/Ubuntu.config",
+          "name": {
+            "en": "Ubuntu desktop (SDL + ALSA)",
+            "zh-CN": "Ubuntu 桌面（SDL + ALSA）"
+          },
+          "peripherals": [
+            "sdl-display",
+            "audio"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "raspberrypi",
+      "options": [
+        {
+          "file": "config/RaspberryPi.config",
+          "name": {
+            "en": "Raspberry Pi (ALSA + optional SDL)",
+            "zh-CN": "树莓派（ALSA + 可选 SDL）"
+          },
+          "peripherals": [
+            "audio"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "taishanpi-3",
+      "options": [
+        {
+          "file": "config/TaishanPi_3.config",
+          "name": {
+            "en": "TaishanPi 3 (RK3576 + ES8388)",
+            "zh-CN": "泰山派 3（RK3576 + ES8388）"
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "dshanpi-a1",
+      "options": [
+        {
+          "file": "config/DshanPi_A1.config",
+          "name": {
+            "en": "DshanPi A1",
+            "zh-CN": "东山派 A1"
+          },
+          "peripherals": [
+            "audio",
+            "button"
+          ]
+        }
+      ]
+    }
+  ],
+  "documentation": {
+    "readme": {
+      "en": "https://github.com/tuya/VirtuaMate/blob/master/README.md",
+      "zh-CN": "https://github.com/tuya/VirtuaMate/blob/master/README.md"
+    }
+  },
+  "image": { "url": "images/tuya-virtuamate/banner.png" },
+  "publish": true
+}

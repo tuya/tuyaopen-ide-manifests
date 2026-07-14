@@ -742,6 +742,133 @@
       "sdks": [
         "tuyaopen"
       ]
+    },
+    {
+      "id": "ubuntu",
+      "name": {
+        "en": "Ubuntu Linux PC",
+        "zh-CN": "Ubuntu Linux 主机"
+      },
+      "manufacturer": {
+        "en": "Generic",
+        "zh-CN": "通用"
+      },
+      "platformId": "linux",
+      "variantId": "linux",
+      "chip": "Linux",
+      "summary": {
+        "en": "Run TuyaOpen apps natively on Ubuntu or other desktop Linux (x86_64 or arm64). Ideal for LVGL SDL simulator-style UI and cloud-connected demos on a PC.",
+        "zh-CN": "在 Ubuntu 或其他桌面 Linux（x86_64 / arm64）上原生运行 TuyaOpen 应用，适合 SDL 桌面 UI 与云端连接类 demo。"
+      },
+      "tags": [
+        "linux",
+        "ubuntu",
+        "desktop",
+        "sdl"
+      ],
+      "image": {
+        "url": "images/ubuntu/ubuntu.png"
+      },
+      "detailUrl": "boards-and-chips/linux/ubuntu.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "raspberrypi",
+      "name": {
+        "en": "Raspberry Pi",
+        "zh-CN": "树莓派"
+      },
+      "manufacturer": {
+        "en": "Raspberry Pi Foundation",
+        "zh-CN": "树莓派基金会"
+      },
+      "platformId": "linux",
+      "variantId": "linux",
+      "chip": "BCM2711/2712",
+      "summary": {
+        "en": "Raspberry Pi 4B / 5 running TuyaOpen with ALSA audio, optional SDL2 display, keyboard trigger, and V4L2 USB camera support.",
+        "zh-CN": "树莓派 4B / 5 运行 TuyaOpen，支持 ALSA 音频、可选 SDL2 显示、键盘触发与 V4L2 USB 摄像头。"
+      },
+      "tags": [
+        "linux",
+        "raspberrypi",
+        "sbc",
+        "ai"
+      ],
+      "image": {
+        "url": "images/raspberrypi/raspberrypi.png"
+      },
+      "detailUrl": "boards-and-chips/linux/raspberrypi.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "taishanpi-3",
+      "name": {
+        "en": "TaishanPi 3",
+        "zh-CN": "泰山派 3"
+      },
+      "manufacturer": {
+        "en": "TaishanPi",
+        "zh-CN": "泰山派"
+      },
+      "platformId": "linux",
+      "variantId": "linux",
+      "chip": "RK3576",
+      "summary": {
+        "en": "TaishanPi 3 SBC (Rockchip RK3576) with ALSA audio, SDL2 display, keyboard input, and optional V4L2 camera — for edge AI chatbot demos.",
+        "zh-CN": "泰山派 3（瑞芯微 RK3576）支持 ALSA 音频、SDL2 显示、键盘输入与可选 V4L2 摄像头，适用于端侧 AI 聊天 demo。"
+      },
+      "tags": [
+        "linux",
+        "taishanpi",
+        "rockchip",
+        "ai"
+      ],
+      "image": {
+        "url": "images/taishanpi-3/taishanpi-3.png"
+      },
+      "detailUrl": "boards-and-chips/linux/taishanpi-3.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "dshanpi-a1",
+      "name": {
+        "en": "DshanPi A1",
+        "zh-CN": "东山派 A1"
+      },
+      "manufacturer": {
+        "en": "100ask",
+        "zh-CN": "百问网"
+      },
+      "platformId": "linux",
+      "variantId": "linux",
+      "chip": "DshanPi_A1",
+      "summary": {
+        "en": "100ask DshanPi-A1 Linux board with ALSA audio (AEC) and keyboard trigger for TuyaOpen voice applications.",
+        "zh-CN": "百问网 DshanPi-A1 Linux 开发板，支持 ALSA 音频（AEC）与键盘触发，适用于 TuyaOpen 语音应用。"
+      },
+      "tags": [
+        "linux",
+        "audio",
+        "ai"
+      ],
+      "image": {
+        "url": "images/dshanpi-a1/dshanpi-a1.png"
+      },
+      "detailUrl": "boards-and-chips/linux/dshanpi-a1.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
     }
   ]
 }
