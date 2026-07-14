@@ -42,6 +42,13 @@
         "GPIO",
         "ADC1_CH3"
       ]
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "SPI2_CSN"
+      ]
     }
   ]
 }
