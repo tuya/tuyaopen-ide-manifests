@@ -21,6 +21,13 @@
         "ADC1_CH2",
         "SPI2_MISO"
       ]
+    },
+    {
+      "gpio": 3,
+      "functions": [
+        "GPIO",
+        "ADC1_CH3"
+      ]
     }
   ]
 }
