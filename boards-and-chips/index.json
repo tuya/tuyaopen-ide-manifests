@@ -665,14 +665,11 @@
     {
       "id": "waveshare-esp32c6-dev-kit-n16",
       "name": {
-        "en": "Waveshare ESP32-C6 Dev Kit N16",
+        "en": "微雪 ESP32-C6 开发套件 N16",
         "zh-CN": "微雪 ESP32-C6 开发套件 N16"
       },
-      "manufacturer": {
-        "en": "Waveshare",
-        "zh-CN": "微雪"
-      },
-      "platformId": "esp32c6",
+      "manufacturer": "微雪",
+      "platformId": "esp32",
       "variantId": "esp32c6",
       "summary": {
         "en": "Waveshare ESP32-C6 Dev Kit (N16, 16MB flash) — minimal board with a user button and an addressable RGB LED. Wi-Fi 6, BLE 5.3, and 802.15.4.",

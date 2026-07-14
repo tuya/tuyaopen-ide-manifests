@@ -60,7 +60,9 @@
   "links": {
     "schematic": null,
     "datasheet": null,
-    "productPage": "https://www.waveshare.com"
+    "productPage": {
+      "en": "https://www.waveshare.com"
+    }
   },
   "boardSymbol": "WAVESHARE_ESP32C6_DEV_KIT_N16",
   "source": {
