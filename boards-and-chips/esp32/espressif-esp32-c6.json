@@ -132,6 +132,13 @@
         "GPIO",
         "SDIO_CLK"
       ]
+    },
+    {
+      "gpio": 20,
+      "functions": [
+        "GPIO",
+        "SDIO_DATA0"
+      ]
     }
   ]
 }
