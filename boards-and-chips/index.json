@@ -459,11 +459,11 @@
     {
       "id": "espressif-esp32-c6",
       "name": {
-        "en": "乐鑫 ESP32-C6 通用开发板",
-        "zh-CN": "乐鑫 ESP32-C6 通用开发板"
+        "en": "ESP32-C6-MINI",
+        "zh-CN": "ESP32-C6-MINI"
       },
       "manufacturer": "乐鑫",
-      "platformId": "esp32c6",
+      "platformId": "esp32",
       "variantId": "esp32c6",
       "summary": {
         "en": "Generic ESP32-C6 development board target — RISC-V with Wi-Fi 6, BLE 5.3, and 802.15.4 (Zigbee/Thread). For multi-protocol smart-home devices.",
