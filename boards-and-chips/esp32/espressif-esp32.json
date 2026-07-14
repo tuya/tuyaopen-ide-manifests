@@ -9,5 +9,14 @@
     "productPage": null
   },
   "boardSymbol": "ESP32_MODULE",
-  "peripheralGroups": {}
+  "peripheralGroups": {},
+  "expansionPins": [
+    {
+      "gpio": 36,
+      "functions": [
+        "GPIO",
+        "ADC1_CH0"
+      ]
+    }
+  ]
 }
