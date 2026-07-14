@@ -448,7 +448,7 @@
         "development"
       ],
       "detailUrl": "boards-and-chips/esp32/espressif-esp32-c3.json",
-      "published": false,
+      "published": true,
       "sdks": [
         "tuyaopen"
       ]
