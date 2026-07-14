@@ -40,6 +40,14 @@
       ]
     },
     {
+      "gpio": 5,
+      "functions": [
+        "GPIO",
+        "SPI3_CSN",
+        "ENET_RX_CLK"
+      ]
+    },
+    {
       "gpio": 12,
       "functions": [
         "GPIO",
