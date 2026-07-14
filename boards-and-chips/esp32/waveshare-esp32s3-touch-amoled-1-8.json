@@ -243,10 +243,14 @@
     }
   },
   "links": {
-    "schematic": null,
-    "datasheet": null,
+    "schematic": "https://files.waveshare.com/wiki/ESP32-S3-Touch-AMOLED-1.8/ESP32-S3-Touch-AMOLED-1.8.pdf",
+    "datasheet": {
+      "en": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.8",
+      "zh-CN": "https://docs.waveshare.com/ESP32-S3-Touch-AMOLED-1.8"
+    },
     "productPage": {
-      "en": "https://www.waveshare.com/wiki/ESP32-S3-Touch-AMOLED-1.8"
+      "en": "https://www.waveshare.com/product/arduino/boards-kits/esp32-s3/esp32-s3-touch-amoled-1.8.htm?___SID=U",
+      "zh-CN": "https://www.waveshare.net/shop/ESP32-S3-Touch-AMOLED-1.8-EN.htm"
     }
   },
   "boardSymbol": "WAVESHARE_ESP32_S3_TOUCH_AMOLED_1_8",
