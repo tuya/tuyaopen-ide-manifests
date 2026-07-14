@@ -23,6 +23,17 @@
       ]
     },
     {
+      "gpio": 13,
+      "functions": [
+        "GPIO",
+        "ADC2_CH4",
+        "TOUCH4",
+        "ENET_RX_ER",
+        "SPI2_MOSI",
+        "SDIO_DATA3"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
