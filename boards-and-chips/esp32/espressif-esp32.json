@@ -30,6 +30,15 @@
       ]
     },
     {
+      "gpio": 27,
+      "functions": [
+        "GPIO",
+        "ADC2_CH7",
+        "TOUCH7",
+        "ENET_RXDV"
+      ]
+    },
+    {
       "gpio": 32,
       "functions": [
         "GPIO",
