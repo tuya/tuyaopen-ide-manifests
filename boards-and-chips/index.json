@@ -645,7 +645,7 @@
         "pmic"
       ],
       "detailUrl": "boards-and-chips/esp32/waveshare-esp32s3-touch-amoled-1-8.json",
-      "published": false,
+      "published": true,
       "sdks": [
         "tuyaopen"
       ]
