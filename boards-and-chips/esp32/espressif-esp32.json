@@ -1,44 +1,6 @@
 {
   "schemaVersion": 1,
   "peripheralPatterns": {
-    "display": [
-      {
-        "id": "lcd-st7789",
-        "model": "ST7789",
-        "name": {
-          "en": "Onboard LCD",
-          "zh-CN": "板载显示屏"
-        },
-        "interface": "SPI",
-        "width": 320,
-        "height": 240,
-        "pixelFormat": "RGB565",
-        "mounting": "onboard",
-        "pinLocked": true,
-        "pins": {
-          "SPI": [
-            {
-              "role": "sck",
-              "gpio": 18
-            },
-            {
-              "role": "mosi",
-              "gpio": 23
-            },
-            {
-              "role": "dc",
-              "gpio": 25
-            },
-            {
-              "role": "cs",
-              "gpio": 2
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": null
-      }
-    ],
     "audio": [
       {
         "id": "audio-es8388",
@@ -89,5 +51,6 @@
     },
     "productPage": null
   },
-  "boardSymbol": "ESP32_MODULE"
+  "boardSymbol": "ESP32_MODULE",
+  "peripheralGroups": {}
 }
