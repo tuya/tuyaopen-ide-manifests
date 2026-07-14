@@ -65,6 +65,13 @@
       ]
     },
     {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "SPI2_MOSI"
+      ]
+    },
+    {
       "gpio": 10,
       "functions": [
         "GPIO",
