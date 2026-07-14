@@ -852,7 +852,8 @@ export default {
     },
     "interfaces": [
       "SPI",
-      "SPI+PWM"
+      "SPI+PWM",
+      "RMT"
     ],
     "pins": {
       "SPI": [
@@ -864,6 +865,9 @@ export default {
         "sck",
         "cold",
         "warm"
+      ],
+      "RMT": [
+        "data"
       ]
     },
     "fields": [
@@ -947,6 +951,14 @@ export default {
           "labelKey": "periPixelPwmCh1",
           "type": "select",
           "options": []
+        }
+      ],
+      "RMT": [
+        {
+          "key": "lineSeq",
+          "labelKey": "periPixelLineSeq",
+          "type": "select",
+          "options": ["RGB","RBG","GRB","GBR","BRG","BGR"]
         }
       ]
     },

@@ -10,11 +10,11 @@
         },
         "model": "WS2812B",
         "count": 1,
-        "interface": "PWM",
+        "interface": "RMT",
         "mounting": "onboard",
         "pinLocked": true,
         "pins": {
-          "PWM": [
+          "RMT": [
             {
               "role": "data",
               "gpio": 8
@@ -23,8 +23,8 @@
         },
         "kconfig": null,
         "note": {
-          "en": "Single WS2812B addressable RGB LED on GPIO8, driven via RMT/PWM (ws1280 driver).",
-          "zh-CN": "单颗 WS2812B 可寻址 RGB LED，挂在 GPIO8，经 RMT/PWM 驱动（ws1280 驱动）。"
+          "en": "Single WS2812B addressable RGB LED on GPIO8, driven via RMT (ws1280 driver).",
+          "zh-CN": "单颗 WS2812B 可寻址 RGB LED，挂在 GPIO8，经 RMT 驱动（ws1280 驱动）。"
         }
       }
     ],

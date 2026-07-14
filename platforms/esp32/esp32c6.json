@@ -420,6 +420,12 @@
       "enabled": true,
       "count": 1
     },
+    "rmt": {
+      "enabled": true,
+      "spec": {
+        "routable": true
+      }
+    },
     "rtc": {
       "enabled": true,
       "count": 1
