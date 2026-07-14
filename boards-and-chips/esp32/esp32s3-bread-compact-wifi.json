@@ -306,6 +306,13 @@
       ]
     },
     {
+      "gpio": 44,
+      "functions": [
+        "GPIO",
+        "UART0_RX"
+      ]
+    },
+    {
       "gpio": 45,
       "functions": [
         "GPIO"
