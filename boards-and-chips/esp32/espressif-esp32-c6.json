@@ -118,6 +118,13 @@
         "GPIO",
         "UART0_RX"
       ]
+    },
+    {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "SDIO_CMD"
+      ]
     }
   ]
 }
