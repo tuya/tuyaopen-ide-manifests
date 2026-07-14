@@ -432,8 +432,8 @@
     {
       "id": "espressif-esp32-c3",
       "name": {
-        "en": "乐鑫 ESP32-C3 通用开发板",
-        "zh-CN": "乐鑫 ESP32-C3 通用开发板"
+        "en": "ESP32-C3-MINI",
+        "zh-CN": "ESP32-C3-MINI"
       },
       "manufacturer": "乐鑫",
       "platformId": "esp32",
