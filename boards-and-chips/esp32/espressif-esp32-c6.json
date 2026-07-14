@@ -83,6 +83,13 @@
       "functions": [
         "GPIO"
       ]
+    },
+    {
+      "gpio": 12,
+      "functions": [
+        "GPIO",
+        "USB_D-"
+      ]
     }
   ]
 }
