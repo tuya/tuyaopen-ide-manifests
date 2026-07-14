@@ -98,6 +98,20 @@
           "zh-CN": "GPIO0 上的 BOOT/启动选择按键，低电平有效。"
         }
       }
+    ],
+    "led": [
+      {
+        "id": "led",
+        "name": {
+          "en": "LED",
+          "zh-CN": "LED"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "kconfig": null,
+        "note": null
+      }
     ]
   },
   "links": {
@@ -108,5 +122,6 @@
   "boardSymbol": "BREAD_COMPACT_WIFI",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/ESP32/ESP32S3_BREAD_COMPACT_WIFI"
-  }
+  },
+  "peripheralGroups": {}
 }
