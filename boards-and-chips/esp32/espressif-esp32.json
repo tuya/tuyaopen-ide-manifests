@@ -20,6 +20,14 @@
       ]
     },
     {
+      "gpio": 33,
+      "functions": [
+        "GPIO",
+        "ADC1_CH5",
+        "TOUCH8"
+      ]
+    },
+    {
       "gpio": 34,
       "functions": [
         "GPIO",
