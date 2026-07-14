@@ -96,6 +96,13 @@
         "GPIO",
         "USB_D-"
       ]
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "USB_D+"
+      ]
     }
   ]
 }
