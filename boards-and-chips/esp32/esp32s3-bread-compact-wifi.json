@@ -205,6 +205,15 @@
         "TOUCH10",
         "SPI2_CSN"
       ]
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "ADC2_CH0",
+        "TOUCH11",
+        "SPI2_MOSI"
+      ]
     }
   ]
 }
