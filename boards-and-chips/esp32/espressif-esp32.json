@@ -131,6 +131,13 @@
       ]
     },
     {
+      "gpio": 21,
+      "functions": [
+        "GPIO",
+        "ENET_TXEN"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
