@@ -71,6 +71,12 @@
         "GPIO",
         "SPI2_MOSI"
       ]
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO"
+      ]
     }
   ]
 }
