@@ -45,6 +45,17 @@
       ]
     },
     {
+      "gpio": 15,
+      "functions": [
+        "GPIO",
+        "ADC2_CH3",
+        "TOUCH3",
+        "ENET_RXD3",
+        "SPI2_CSN",
+        "SDIO_CMD"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
