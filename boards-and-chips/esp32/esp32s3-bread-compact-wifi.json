@@ -188,6 +188,14 @@
         "ADC1_CH7",
         "TOUCH8"
       ]
+    },
+    {
+      "gpio": 9,
+      "functions": [
+        "GPIO",
+        "ADC1_CH8",
+        "TOUCH9"
+      ]
     }
   ]
 }
