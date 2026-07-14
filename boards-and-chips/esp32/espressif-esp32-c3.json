@@ -44,6 +44,13 @@
       ]
     },
     {
+      "gpio": 4,
+      "functions": [
+        "GPIO",
+        "ADC1_CH4"
+      ]
+    },
+    {
       "gpio": 10,
       "functions": [
         "GPIO",
