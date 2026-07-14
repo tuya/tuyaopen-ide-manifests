@@ -64,6 +64,13 @@
         "ADC1_CH6",
         "SPI2_SCK"
       ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "SPI2_MOSI"
+      ]
     }
   ]
 }
