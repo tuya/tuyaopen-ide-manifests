@@ -12,6 +12,14 @@
   "peripheralGroups": {},
   "expansionPins": [
     {
+      "gpio": 32,
+      "functions": [
+        "GPIO",
+        "ADC1_CH4",
+        "TOUCH9"
+      ]
+    },
+    {
       "gpio": 34,
       "functions": [
         "GPIO",
