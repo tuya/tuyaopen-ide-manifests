@@ -232,6 +232,14 @@
         "TOUCH13",
         "SPI2_MISO"
       ]
+    },
+    {
+      "gpio": 14,
+      "functions": [
+        "GPIO",
+        "ADC2_CH3",
+        "TOUCH14"
+      ]
     }
   ]
 }
