@@ -479,8 +479,8 @@
     {
       "id": "espressif-esp32-s3",
       "name": {
-        "en": "乐鑫 ESP32-S3 通用开发板",
-        "zh-CN": "乐鑫 ESP32-S3 通用开发板"
+        "en": "ESP32-S3-WROOM",
+        "zh-CN": "ESP32-S3-WROOM"
       },
       "manufacturer": "乐鑫",
       "platformId": "esp32",
