@@ -770,7 +770,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/esp32s3-bread-compact-wifi/esp32s3-bread-compact-wifi.jpg"
+      }
     },
     {
       "id": "ubuntu",
