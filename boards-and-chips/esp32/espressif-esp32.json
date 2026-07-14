@@ -154,6 +154,13 @@
       ]
     },
     {
+      "gpio": 23,
+      "functions": [
+        "GPIO",
+        "SPI3_MOSI"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
