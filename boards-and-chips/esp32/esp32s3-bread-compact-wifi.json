@@ -196,6 +196,15 @@
         "ADC1_CH8",
         "TOUCH9"
       ]
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "ADC1_CH9",
+        "TOUCH10",
+        "SPI2_CSN"
+      ]
     }
   ]
 }
