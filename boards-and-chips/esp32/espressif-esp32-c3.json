@@ -103,6 +103,13 @@
         "GPIO",
         "USB_D+"
       ]
+    },
+    {
+      "gpio": 20,
+      "functions": [
+        "GPIO",
+        "UART0_RX"
+      ]
     }
   ]
 }
