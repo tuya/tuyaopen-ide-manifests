@@ -34,6 +34,17 @@
       ]
     },
     {
+      "gpio": 14,
+      "functions": [
+        "GPIO",
+        "ADC2_CH6",
+        "TOUCH6",
+        "ENET_TXD2",
+        "SPI2_SCK",
+        "SDIO_CLK"
+      ]
+    },
+    {
       "gpio": 25,
       "functions": [
         "GPIO",
