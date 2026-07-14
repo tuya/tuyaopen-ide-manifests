@@ -499,7 +499,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/espressif-esp32-s3/espressif-esp32-s3.jpg"
+      }
     },
     {
       "id": "espressif-esp32-p4",
