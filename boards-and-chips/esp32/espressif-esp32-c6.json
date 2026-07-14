@@ -56,6 +56,14 @@
         "GPIO",
         "ADC1_CH5"
       ]
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "ADC1_CH6",
+        "SPI2_SCK"
+      ]
     }
   ]
 }
