@@ -72,6 +72,12 @@
       ]
     },
     {
+      "gpio": 8,
+      "functions": [
+        "GPIO"
+      ]
+    },
+    {
       "gpio": 10,
       "functions": [
         "GPIO",
