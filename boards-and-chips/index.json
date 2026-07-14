@@ -688,7 +688,7 @@
         "development"
       ],
       "detailUrl": "boards-and-chips/esp32/waveshare-esp32c6-dev-kit-n16.json",
-      "published": true,
+      "published": false,
       "sdks": [
         "tuyaopen"
       ]
