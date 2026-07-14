@@ -275,6 +275,12 @@
       ]
     },
     {
+      "gpio": 39,
+      "functions": [
+        "GPIO"
+      ]
+    },
+    {
       "gpio": 40,
       "functions": [
         "GPIO"
