@@ -12,6 +12,13 @@
   "peripheralGroups": {},
   "expansionPins": [
     {
+      "gpio": 34,
+      "functions": [
+        "GPIO",
+        "ADC1_CH6"
+      ]
+    },
+    {
       "gpio": 36,
       "functions": [
         "GPIO",
