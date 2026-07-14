@@ -252,7 +252,7 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": false
+      "published": true
     },
     {
       "id": "esp32s3",
