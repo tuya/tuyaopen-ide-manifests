@@ -15,6 +15,13 @@
   "boardSymbol": "ESP32_C6",
   "expansionPins": [
     {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "ADC1_CH0"
+      ]
+    },
+    {
       "gpio": 2,
       "functions": [
         "GPIO",
