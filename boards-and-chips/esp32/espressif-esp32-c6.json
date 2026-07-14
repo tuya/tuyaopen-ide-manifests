@@ -103,14 +103,6 @@
       "functions": [
         "GPIO"
       ]
-    },
-    {
-      "gpio": 16,
-      "functions": [
-        "GPIO",
-        "UART0_TX",
-        "SPI2_CSN"
-      ]
     }
   ]
 }
