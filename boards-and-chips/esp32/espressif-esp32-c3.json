@@ -51,6 +51,13 @@
       ]
     },
     {
+      "gpio": 5,
+      "functions": [
+        "GPIO",
+        "ADC2_CH0"
+      ]
+    },
+    {
       "gpio": 10,
       "functions": [
         "GPIO",
