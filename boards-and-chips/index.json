@@ -615,7 +615,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/atk-dnesp32s3-box2-wifi/atk-dnesp32s3-box2-wifi.jpg"
+      }
     },
     {
       "id": "waveshare-esp32s3-touch-amoled-1-8",
