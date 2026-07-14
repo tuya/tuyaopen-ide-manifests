@@ -21,6 +21,15 @@
       ]
     },
     {
+      "gpio": 26,
+      "functions": [
+        "GPIO",
+        "ADC2_CH9",
+        "DAC_2",
+        "ENET_RXD1"
+      ]
+    },
+    {
       "gpio": 32,
       "functions": [
         "GPIO",
