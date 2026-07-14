@@ -657,7 +657,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/waveshare-esp32s3-touch-amoled-1-8/waveshare-esp32s3-touch-amoled-1-8.jpg"
+      }
     },
     {
       "id": "waveshare-esp32c6-dev-kit-n16",
