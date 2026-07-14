@@ -477,7 +477,7 @@
         "development"
       ],
       "detailUrl": "boards-and-chips/esp32/espressif-esp32-c6.json",
-      "published": false,
+      "published": true,
       "sdks": [
         "tuyaopen"
       ]
