@@ -262,6 +262,13 @@
       ]
     },
     {
+      "gpio": 37,
+      "functions": [
+        "GPIO",
+        "SPI2_MISO"
+      ]
+    },
+    {
       "gpio": 40,
       "functions": [
         "GPIO"
