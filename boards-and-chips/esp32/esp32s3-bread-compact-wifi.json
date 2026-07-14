@@ -126,6 +126,12 @@
   "peripheralGroups": {},
   "expansionPins": [
     {
+      "gpio": 0,
+      "functions": [
+        "GPIO"
+      ]
+    },
+    {
       "gpio": 1,
       "functions": [
         "GPIO",
