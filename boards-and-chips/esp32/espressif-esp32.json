@@ -4,9 +4,13 @@
   "links": {
     "schematic": null,
     "datasheet": {
-      "en": "https://www.espressif.com/en/products/socs/esp32"
+      "en": "https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_en.pdf",
+      "zh-CN": "https://documentation.espressif.com/esp32-wroom-32e_esp32-wroom-32ue_datasheet_cn.pdf"
     },
-    "productPage": null
+    "productPage": {
+      "en": "https://www.amazon.com/stores/page/C3837B7E-1F18-4953-AA2F-B6B58928B87B?ingress=2&lp_context_asin=B09D76YPDM&visitId=0a690280-787f-4856-b0c6-52e517a31309&store_ref=bl_ast_dp_brandlogo_sto&ref_=ast_bln",
+      "zh-CN": "https://espressif.taobao.com/category-1341918258.htm?spm=a1z10.5-c.w4010-8715811634.22.ca0d3bcdf8WuZ6&search=y&parentCatId=1341918256&parentCatName=%C4%A3%D7%E9&catName=ESP32+%C4%A3%D7%E9#bd"
+    }
   },
   "boardSymbol": "ESP32_MODULE",
   "peripheralGroups": {},
