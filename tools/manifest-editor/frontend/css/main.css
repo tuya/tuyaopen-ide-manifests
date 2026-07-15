@@ -610,6 +610,8 @@ body {
   transition: var(--transition);
 }
 
+.form-input::placeholder { color: var(--color-muted); opacity: 0.6; }
+
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
