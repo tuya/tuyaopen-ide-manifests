@@ -162,7 +162,7 @@ export function renderBoardForm(board = null) {
             min="0"
             step="1"
             placeholder="16"
-            value="${board?.memory?.flashBytes ? (board.memory.flashBytes / 1048576) : ''}"
+            value="${board?.memory?.flashBytes != null ? (board.memory.flashBytes / 1048576) : ''}"
           >
           <small style="color: var(--color-muted);">${i18n.t('boardMemFlashHint')}</small>
         </div>
@@ -176,7 +176,7 @@ export function renderBoardForm(board = null) {
             min="0"
             step="1"
             placeholder="8"
-            value="${board?.memory?.psramBytes ? (board.memory.psramBytes / 1048576) : ''}"
+            value="${board?.memory?.psramBytes != null ? (board.memory.psramBytes / 1048576) : ''}"
           >
           <small style="color: var(--color-muted);">${i18n.t('boardMemPsramHint')}</small>
         </div>

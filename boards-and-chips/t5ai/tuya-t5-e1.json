@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "memory": {
-    "flashBytes": 16777216,
+    "flashBytes": 8388608,
     "psramBytes": 16777216
   },
   "packages": [
