@@ -1,5 +1,9 @@
 {
   "schemaVersion": 1,
+  "memory": {
+    "flashBytes": 16777216,
+    "psramBytes": 16777216
+  },
   "packages": [
     {
       "id": "t5-e1",

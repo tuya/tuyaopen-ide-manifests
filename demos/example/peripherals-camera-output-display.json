@@ -26,6 +26,18 @@
           }
         }
       ]
+    },
+    {
+      "board": "atk-dnesp32s3",
+      "options": [
+        {
+          "file": "DNESP32S3_CAMERA_LCD_MD0240_SPI.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3 (Camera + 2.4\" SPI LCD)",
+            "zh-CN": "正点原子 DNESP32S3 (摄像头 + 2.4 寸 SPI LCD)"
+          }
+        }
+      ]
     }
   ],
   "documentation": {

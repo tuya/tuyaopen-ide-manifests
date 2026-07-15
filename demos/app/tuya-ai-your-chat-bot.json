@@ -116,6 +116,113 @@
           ]
         }
       ]
+    },
+    {
+      "board": "atk-dnesp32s3",
+      "options": [
+        {
+          "file": "DNESP32S3.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3",
+            "zh-CN": "正点原子 DNESP32S3"
+          },
+          "peripherals": [
+            "audio",
+            "led",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "atk-dnesp32s3-box",
+      "options": [
+        {
+          "file": "DNESP32S3_BOX.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3-BOX",
+            "zh-CN": "正点原子 DNESP32S3-BOX"
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "led",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "atk-dnesp32s3-box2-wifi",
+      "options": [
+        {
+          "file": "DNESP32S3_BOX2_WIFI.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi)",
+            "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "led",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "esp32s3-bread-compact-wifi",
+      "options": [
+        {
+          "file": "ESP32S3_BREAD_COMPACT_WIFI.config",
+          "name": {
+            "en": "ESP32-S3 Bread Compact (Wi-Fi)",
+            "zh-CN": "ESP32-S3 面包板紧凑型 (Wi-Fi)"
+          },
+          "peripherals": [
+            "audio",
+            "led",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "waveshare-esp32s3-touch-amoled-1-8",
+      "options": [
+        {
+          "file": "WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8.config",
+          "name": {
+            "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\"",
+            "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "touchpad",
+            "led",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "xingzhi-esp32s3-cube-0-96-oled-wifi",
+      "options": [
+        {
+          "file": "XINGZHI_ESP32S3_Cube_0_96OLED_WIFI.config",
+          "name": {
+            "en": "Xingzhi ESP32-S3 Cube 0.96\" OLED",
+            "zh-CN": "行知 ESP32-S3 Cube 0.96 寸 OLED"
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "led",
+            "button"
+          ]
+        }
+      ]
     }
   ],
   "documentation": {

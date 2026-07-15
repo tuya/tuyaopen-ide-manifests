@@ -1,5 +1,9 @@
 {
   "schemaVersion": 1,
+  "memory": {
+    "flashBytes": 4194304,
+    "psramBytes": 0
+  },
   "peripheralPatterns": {},
   "links": {
     "schematic": null,

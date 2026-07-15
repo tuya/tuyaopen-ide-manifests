@@ -150,6 +150,38 @@ export function renderBoardForm(board = null) {
         <small style="color: var(--color-muted);">${i18n.t('boardKconfigIdHint')}</small>
       </div>
 
+      <!-- Memory: Flash & PSRAM -->
+      <div class="form-group form-row-2col">
+        <div class="form-col-half">
+          <label class="form-label" for="memFlashMB">${i18n.t('boardMemFlash')}</label>
+          <input
+            type="number"
+            id="memFlashMB"
+            name="memFlashMB"
+            class="form-input"
+            min="0"
+            step="1"
+            placeholder="16"
+            value="${board?.memory?.flashBytes ? (board.memory.flashBytes / 1048576) : ''}"
+          >
+          <small style="color: var(--color-muted);">${i18n.t('boardMemFlashHint')}</small>
+        </div>
+        <div class="form-col-half">
+          <label class="form-label" for="memPsramMB">${i18n.t('boardMemPsram')}</label>
+          <input
+            type="number"
+            id="memPsramMB"
+            name="memPsramMB"
+            class="form-input"
+            min="0"
+            step="1"
+            placeholder="8"
+            value="${board?.memory?.psramBytes ? (board.memory.psramBytes / 1048576) : ''}"
+          >
+          <small style="color: var(--color-muted);">${i18n.t('boardMemPsramHint')}</small>
+        </div>
+      </div>
+
       <!-- EN/ZH Pair: Summary -->
       <div class="form-group form-row-2col">
         <div class="form-col-half">
@@ -612,6 +644,15 @@ export async function saveBoardForm(formElement) {
   // project-creation time from platformId + boardSymbol — no scaffold stored.
   if (boardSymbol) {
     boardData.boardSymbol = boardSymbol;
+  }
+
+  // Memory: flash + PSRAM (MB → bytes)
+  const flashMB = parseFloat(document.getElementById('memFlashMB')?.value);
+  const psramMB = parseFloat(document.getElementById('memPsramMB')?.value);
+  if (flashMB > 0 || psramMB >= 0) {
+    boardData.memory = {};
+    if (flashMB > 0) boardData.memory.flashBytes = Math.round(flashMB * 1048576);
+    if (psramMB >= 0 && document.getElementById('memPsramMB')?.value !== '') boardData.memory.psramBytes = Math.round(psramMB * 1048576);
   }
 
   if (nameZh) {

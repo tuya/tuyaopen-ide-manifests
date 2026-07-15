@@ -475,6 +475,10 @@ const TRANSLATIONS = {
     // Board Kconfig & Scaffold
     boardKconfigId: 'Board Symbol',
     boardKconfigIdHint: 'Must match SDK board directory name (e.g. TUYA_T5AI_BOARD)',
+    boardMemFlash: 'Flash (MB)',
+    boardMemFlashHint: 'Board on-module flash size in MB (e.g. 16)',
+    boardMemPsram: 'PSRAM (MB)',
+    boardMemPsramHint: 'Board on-module PSRAM size in MB (0 if none)',
     // --- Board form (full i18n) ---
     boardFormCreateTitle: 'Create New Board',
     boardFormEditTitle: 'Edit Board',
@@ -1039,6 +1043,10 @@ const TRANSLATIONS = {
     // Board Kconfig & Scaffold
     boardKconfigId: '板级符号',
     boardKconfigIdHint: '须与 SDK 板级目录名一致（如 TUYA_T5AI_BOARD）',
+    boardMemFlash: 'Flash (MB)',
+    boardMemFlashHint: '板载模组实际 Flash 大小，单位 MB（如 16）',
+    boardMemPsram: 'PSRAM (MB)',
+    boardMemPsramHint: '板载模组实际 PSRAM 大小，无则填 0',
     // --- Board form (full i18n) ---
     boardFormCreateTitle: '创建开发板',
     boardFormEditTitle: '编辑开发板',

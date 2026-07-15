@@ -28,6 +28,7 @@ All skills are **board-agnostic** — they describe TDL API usage only.
 | LED indicator | `peripheral-led/SKILL.md` | `tdl_led_find_dev()`, `tdl_led_open()`, `tdl_led_flash()` |
 | Audio codec (mic + speaker) | `peripheral-audio/SKILL.md` | `tdl_audio_find()`, `tdl_audio_open()`, `tdl_audio_play()` |
 | Touch panel | `peripheral-touch/SKILL.md` | `tdl_tp_find_dev()`, `tdl_tp_dev_open()`, `tdl_tp_dev_read()` |
+| SD Card (SPI / SDIO) | `peripheral-sd/SKILL.md` | `tkl_fs_mount()`, `tkl_fopen()`, `tkl_fwrite()`, `tkl_fread()`, `tkl_fclose()` |
 | Thermal printer | `peripheral-printer/SKILL.md` | `tdl_printer_find()`, `tdl_printer_send_text()`, `tdl_printer_send_bitmap()` |
 | Infrared (NEC / timecode) | `peripheral-ir/SKILL.md` | `tdl_ir_dev_find()`, `tdl_ir_dev_send()`, `tdl_ir_dev_recv()` |
 | Joystick (2-axis + button) | `peripheral-joystick/SKILL.md` | `tdl_joystick_create()`, `tdl_joystick_event_register()`, `tdl_joystick_calibrated_xy()` |

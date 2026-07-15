@@ -63,6 +63,73 @@
           }
         }
       ]
+    },
+    {
+      "board": "atk-dnesp32s3",
+      "options": [
+        {
+          "file": "DNESP32S3_LCD_MD0240_SPI.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3 (2.4\" SPI LCD)",
+            "zh-CN": "正点原子 DNESP32S3 (2.4 寸 SPI LCD)"
+          }
+        },
+        {
+          "file": "DNESP32S3_LCD_MD0430R_RGB.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3 (4.3\" RGB LCD)",
+            "zh-CN": "正点原子 DNESP32S3 (4.3 寸 RGB LCD)"
+          }
+        }
+      ]
+    },
+    {
+      "board": "atk-dnesp32s3-box",
+      "options": [
+        {
+          "file": "DNESP32S3_BOX.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3-BOX",
+            "zh-CN": "正点原子 DNESP32S3-BOX"
+          }
+        }
+      ]
+    },
+    {
+      "board": "atk-dnesp32s3-box2-wifi",
+      "options": [
+        {
+          "file": "DNESP32S3_BOX2_WIFI.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi)",
+            "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
+          }
+        }
+      ]
+    },
+    {
+      "board": "waveshare-esp32p4c6-touch-lcd-4-3",
+      "options": [
+        {
+          "file": "WAVESHARE_ESP32P4C6_TOUCH_LCD_4.3.config",
+          "name": {
+            "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3\"",
+            "zh-CN": "微雪 ESP32-P4-C6 4.3 寸触摸 LCD"
+          }
+        }
+      ]
+    },
+    {
+      "board": "waveshare-esp32s3-touch-amoled-1-8",
+      "options": [
+        {
+          "file": "WAVESHARE_ESP32S3_Touch_AMOLED_1.8.config",
+          "name": {
+            "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\"",
+            "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
+          }
+        }
+      ]
     }
   ],
   "documentation": {

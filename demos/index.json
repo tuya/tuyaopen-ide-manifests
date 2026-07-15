@@ -224,9 +224,14 @@
         "graphics"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "atk-dnesp32s3-box2-wifi",
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
+        "waveshare-esp32p4c6-touch-lcd-4-3",
+        "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175"
       ],
       "compatibilityType": "board-specific",
@@ -251,8 +256,13 @@
         "graphics"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "atk-dnesp32s3-box2-wifi",
         "tuya-t5ai-board",
         "tuya-t5ai-pocket",
+        "waveshare-esp32p4c6-touch-lcd-4-3",
+        "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175"
       ],
       "compatibilityType": "board-specific",
@@ -597,8 +607,13 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "atk-dnesp32s3-box2-wifi",
+        "esp32s3-bread-compact-wifi",
         "tuya-t5ai-board",
-        "tuya-t5ai-pocket"
+        "tuya-t5ai-pocket",
+        "waveshare-esp32s3-touch-amoled-1-8"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-audio-codecs.json",
@@ -622,10 +637,15 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "atk-dnesp32s3-box2-wifi",
+        "esp32s3-bread-compact-wifi",
         "t5ai-mini",
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
-        "tuya-t5ai-pocket"
+        "tuya-t5ai-pocket",
+        "waveshare-esp32s3-touch-amoled-1-8"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-button.json",
@@ -649,6 +669,7 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
         "tuya-t5ai-board",
         "tuya-t5ai-pocket"
       ],
@@ -699,9 +720,13 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box2-wifi",
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
+        "waveshare-esp32p4c6-touch-lcd-4-3",
+        "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175"
       ],
       "compatibilityType": "board-specific",
@@ -726,9 +751,12 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
+        "waveshare-esp32p4c6-touch-lcd-4-3",
+        "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175"
       ],
       "compatibilityType": "board-specific",
@@ -934,10 +962,14 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "esp32s3-bread-compact-wifi",
         "t5ai-mini",
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
-        "tuya-t5ai-pocket"
+        "tuya-t5ai-pocket",
+        "waveshare-esp32c6-dev-kit-n16"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-led.json",
@@ -1007,8 +1039,11 @@
         "peripheral"
       ],
       "boards": [
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box2-wifi",
         "tuya-t5ai-board",
-        "tuya-t5ai-pocket"
+        "tuya-t5ai-pocket",
+        "waveshare-esp32s3-touch-amoled-1-8"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-sd.json",
@@ -1485,10 +1520,16 @@
         "tuya_cloud"
       ],
       "boards": [
-        "tuya-t5ai-core",
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "atk-dnesp32s3-box2-wifi",
+        "esp32s3-bread-compact-wifi",
         "tuya-t5ai-board",
+        "tuya-t5ai-core",
         "tuya-t5ai-evb",
-        "waveshare-t5ai-touch-amoled-175"
+        "waveshare-esp32s3-touch-amoled-1-8",
+        "waveshare-t5ai-touch-amoled-175",
+        "xingzhi-esp32s3-cube-0-96-oled-wifi"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-chat-bot.json",
@@ -1607,7 +1648,9 @@
       ],
       "boards": [
         "tuya-t5ai-board",
-        "tuya-t5ai-core"
+        "tuya-t5ai-core",
+        "waveshare-esp32s3-touch-amoled-1-8",
+        "xingzhi-esp32s3-cube-0-96-oled-wifi"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-serial-chat-bot.json",

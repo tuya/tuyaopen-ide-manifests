@@ -49,6 +49,54 @@
           }
         }
       ]
+    },
+    {
+      "board": "atk-dnesp32s3",
+      "options": [
+        {
+          "file": "DNESP32S3.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3",
+            "zh-CN": "正点原子 DNESP32S3"
+          }
+        }
+      ]
+    },
+    {
+      "board": "atk-dnesp32s3-box",
+      "options": [
+        {
+          "file": "DNESP32S3_BOX.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3-BOX",
+            "zh-CN": "正点原子 DNESP32S3-BOX"
+          }
+        }
+      ]
+    },
+    {
+      "board": "esp32s3-bread-compact-wifi",
+      "options": [
+        {
+          "file": "ESP32S3_BREAD_COMPACT_WIFI.config",
+          "name": {
+            "en": "ESP32-S3 Bread Compact (Wi-Fi)",
+            "zh-CN": "ESP32-S3 面包板紧凑型 (Wi-Fi)"
+          }
+        }
+      ]
+    },
+    {
+      "board": "waveshare-esp32c6-dev-kit-n16",
+      "options": [
+        {
+          "file": "WAVESHARE_ESP32C6_DEV_KIT_N16.config",
+          "name": {
+            "en": "Waveshare ESP32-C6 Dev Kit N16",
+            "zh-CN": "微雪 ESP32-C6 开发板 N16"
+          }
+        }
+      ]
     }
   ],
   "drivers": [

@@ -57,6 +57,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
   const merged = { ...board };
   if (detail) {
     if (detail.boardSymbol) merged.boardSymbol = detail.boardSymbol;
+    if (detail.memory) merged.memory = detail.memory;
     if (detail.links) merged.links = detail.links;
     if (detail.peripheralPatterns) merged.peripheralPatterns = detail.peripheralPatterns;
     if (detail.peripheralGroups) merged.peripheralGroups = detail.peripheralGroups;
@@ -222,8 +223,8 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   // Save index
   await manifestLoader.saveBoardsIndex(boards);
 
-  // Fields that go to the detail file: boardSymbol, demos, peripheralPatterns, links, source
-  const detailFields = ['boardSymbol', 'links', 'source'];
+  // Fields that go to the detail file: boardSymbol, demos, peripheralPatterns, links, source, memory
+  const detailFields = ['boardSymbol', 'links', 'source', 'memory'];
   // Map editor link fields back to nested links object (merge with existing)
   const editorLinkFields = ['schematicLink', 'guideDocs', 'purchaseLink', 'threeDModelLink'];
   const hasEditorLinks = editorLinkFields.some(k => updates[k] !== undefined);

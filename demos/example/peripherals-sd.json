@@ -25,6 +25,42 @@
           }
         }
       ]
+    },
+    {
+      "board": "atk-dnesp32s3",
+      "options": [
+        {
+          "file": "DNESP32S3_SDCARD.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3 (SD Card)",
+            "zh-CN": "正点原子 DNESP32S3 (SD 卡)"
+          }
+        }
+      ]
+    },
+    {
+      "board": "atk-dnesp32s3-box2-wifi",
+      "options": [
+        {
+          "file": "DNESP32S3_BOX2_WIFI.config",
+          "name": {
+            "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi)",
+            "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
+          }
+        }
+      ]
+    },
+    {
+      "board": "waveshare-esp32s3-touch-amoled-1-8",
+      "options": [
+        {
+          "file": "WAVESHARE_ESP32S3_Touch_AMOLED_1.8.config",
+          "name": {
+            "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\"",
+            "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
+          }
+        }
+      ]
     }
   ],
   "drivers": [

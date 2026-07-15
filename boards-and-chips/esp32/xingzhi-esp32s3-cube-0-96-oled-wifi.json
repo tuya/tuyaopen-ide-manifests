@@ -1,5 +1,9 @@
 {
   "schemaVersion": 1,
+  "memory": {
+    "flashBytes": 16777216,
+    "psramBytes": 8388608
+  },
   "peripheralPatterns": {
     "display": [
       {

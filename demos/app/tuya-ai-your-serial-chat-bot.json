@@ -30,6 +30,30 @@
           }
         }
       ]
+    },
+    {
+      "board": "waveshare-esp32s3-touch-amoled-1-8",
+      "options": [
+        {
+          "file": "WAVESHARE_ESP32S3_TOUCH_AMOLED_1_8.config",
+          "name": {
+            "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\"",
+            "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
+          }
+        }
+      ]
+    },
+    {
+      "board": "xingzhi-esp32s3-cube-0-96-oled-wifi",
+      "options": [
+        {
+          "file": "XINGZHI_ESP32S3_Cube_0_96OLED_WIFI.config",
+          "name": {
+            "en": "Xingzhi ESP32-S3 Cube 0.96\" OLED",
+            "zh-CN": "行知 ESP32-S3 Cube 0.96 寸 OLED"
+          }
+        }
+      ]
     }
   ],
   "documentation": {
