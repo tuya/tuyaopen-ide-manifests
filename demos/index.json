@@ -2059,6 +2059,7 @@
     },
     {
       "id": "tuya-virtuamate",
+      "type": "app",
       "name": {
         "en": "VirtuaMate — 3D Avatar AI Agent",
         "zh-CN": "VirtuaMate — 3D 形象 AI 智能体"
@@ -2090,7 +2091,7 @@
       "image": {
         "url": "images/tuya-virtuamate/banner.png"
       },
-      "detailUrl": "demos/tuya-virtuamate.json",
+      "detailUrl": "demos/external-repo/tuya-virtuamate.json",
       "sdks": [
         "tuyaopen"
       ]
