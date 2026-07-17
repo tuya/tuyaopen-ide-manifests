@@ -12,11 +12,11 @@
   "compatibilityType": "board-specific",
   "boards": [
     "tuya-t5ai-core",
-    "tuya-t5ai-board-lcd-3-5-camera",
+    "tuya-t5ai-board",
     "esp32s3-bread-compact-wifi",
     "raspberrypi",
     "dshanpi-a1",
-    "waveshare-t5ai-touch-amoled-1-75"
+    "waveshare-t5ai-touch-amoled-175"
   ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpenClaw",
@@ -26,11 +26,11 @@
   },
   "configs": [
     { "board": "tuya-t5ai-core",                    "options": [{ "file": "config/TUYA_T5AI_CORE.config" }] },
-    { "board": "tuya-t5ai-board-lcd-3-5-camera",    "options": [{ "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config" }] },
+    { "board": "tuya-t5ai-board",    "options": [{ "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config" }] },
     { "board": "esp32s3-bread-compact-wifi",         "options": [{ "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config" }] },
     { "board": "raspberrypi",                        "options": [{ "file": "config/RaspberryPi.config" }] },
     { "board": "dshanpi-a1",                         "options": [{ "file": "config/DshanPi_A1.config" }] },
-    { "board": "waveshare-t5ai-touch-amoled-1-75",  "options": [{ "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config" }] }
+    { "board": "waveshare-t5ai-touch-amoled-175",  "options": [{ "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config" }] }
   ],
   "documentation": {
     "readme": {
