@@ -6,7 +6,7 @@
     {
       "id": "tuya-t5-e1",
       "name": {
-        "en": "涂鸦 T5-E1 模组",
+        "en": "Tuya T5-E1 Module",
         "zh-CN": "涂鸦 T5-E1 模组"
       },
       "manufacturer": "Tuya",
@@ -35,7 +35,7 @@
     {
       "id": "tuya-t5ai-board",
       "name": {
-        "en": "涂鸦 T5AI-Board 开发板",
+        "en": "Tuya T5AI-Board",
         "zh-CN": "涂鸦 T5AI-Board 开发板"
       },
       "manufacturer": "Tuya",
@@ -65,7 +65,7 @@
     {
       "id": "tuya-t5ai-core",
       "name": {
-        "en": "涂鸦 T5AI-Core 核心板",
+        "en": "Tuya T5AI-Core",
         "zh-CN": "涂鸦 T5AI-Core 核心板"
       },
       "manufacturer": "Tuya",
@@ -163,7 +163,7 @@
     {
       "id": "tuya-t5ai-eink-nfc",
       "name": {
-        "en": "Tuya T5AI E-Ink NFC",
+        "en": "Tuya T5AI E-Ink NFC Board",
         "zh-CN": "涂鸦 T5AI 墨水屏 NFC 板"
       },
       "manufacturer": "Tuya",
@@ -195,7 +195,7 @@
     {
       "id": "t5ai-mini",
       "name": {
-        "en": "T5AI Mini 开发板",
+        "en": "T5AI Mini",
         "zh-CN": "T5AI Mini 开发板"
       },
       "manufacturer": "Tuya",
@@ -259,7 +259,7 @@
     {
       "id": "tuya-t5ai-evb",
       "name": {
-        "en": "涂鸦 T5AI 白盒",
+        "en": "Tuya T5AI EVB",
         "zh-CN": "涂鸦 T5AI 白盒"
       },
       "manufacturer": "Tuya",
@@ -287,7 +287,7 @@
     {
       "id": "lckfb-gd32vw553",
       "name": {
-        "en": "立创·GD32VW553 开发板",
+        "en": "LCKFB GD32VW553",
         "zh-CN": "立创·GD32VW553 开发板"
       },
       "platformId": "gd32",
@@ -315,7 +315,7 @@
     {
       "id": "gd32vw553-ty1",
       "name": {
-        "en": "GD32VW553-TY1 Wi-Fi 6 + BLE 模组",
+        "en": "GD32VW553-TY1 Wi-Fi 6 + BLE Module",
         "zh-CN": "GD32VW553-TY1 Wi-Fi 6 + BLE 模组"
       },
       "platformId": "gd32",
@@ -343,7 +343,7 @@
     {
       "id": "t5ai-otto",
       "name": {
-        "en": "T5AI Otto 机器人",
+        "en": "T5AI Otto Robot",
         "zh-CN": "T5AI Otto 机器人"
       },
       "platformId": "t5ai",
@@ -372,7 +372,7 @@
     {
       "id": "tuya-t5ai-dog",
       "name": {
-        "en": "涂鸦 T5AI 机器狗",
+        "en": "Tuya T5AI Robot Dog",
         "zh-CN": "涂鸦 T5AI 机器狗"
       },
       "platformId": "t5ai",
@@ -545,7 +545,7 @@
     {
       "id": "atk-dnesp32s3",
       "name": {
-        "en": "正点原子 DNESP32S3 开发板",
+        "en": "ALIENTEK DNESP32S3",
         "zh-CN": "正点原子 DNESP32S3 开发板"
       },
       "manufacturer": "正点原子",
@@ -575,7 +575,7 @@
     {
       "id": "atk-dnesp32s3-box",
       "name": {
-        "en": "正点原子 DNESP32S3-BOX",
+        "en": "ALIENTEK DNESP32S3-BOX",
         "zh-CN": "正点原子 DNESP32S3-BOX"
       },
       "manufacturer": "正点原子",
@@ -605,7 +605,7 @@
     {
       "id": "atk-dnesp32s3-box2-wifi",
       "name": {
-        "en": "正点原子 DNESP32S3-BOX2 (Wi-Fi)",
+        "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi)",
         "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
       },
       "manufacturer": "正点原子",
@@ -665,7 +665,7 @@
     {
       "id": "waveshare-esp32c6-dev-kit-n16",
       "name": {
-        "en": "微雪 ESP32-C6 开发套件 N16",
+        "en": "Waveshare ESP32-C6 Dev Kit N16",
         "zh-CN": "微雪 ESP32-C6 开发套件 N16"
       },
       "manufacturer": "微雪",
@@ -722,7 +722,7 @@
     {
       "id": "xingzhi-esp32s3-cube-0-96-oled-wifi",
       "name": {
-        "en": "虾哥 ESP32-S3 立方体 0.96 寸 OLED (Wi-Fi)",
+        "en": "Xingzhi ESP32-S3 Cube 0.96\" OLED (Wi-Fi)",
         "zh-CN": "虾哥 ESP32-S3 立方体 0.96 寸 OLED (Wi-Fi)"
       },
       "manufacturer": "虾哥",
@@ -749,7 +749,7 @@
     {
       "id": "esp32s3-bread-compact-wifi",
       "name": {
-        "en": "ESP32-S3 面包板紧凑型 (Wi-Fi)",
+        "en": "ESP32-S3 Breadboard Compact (Wi-Fi)",
         "zh-CN": "ESP32-S3 面包板紧凑型 (Wi-Fi)"
       },
       "manufacturer": "乐鑫",
@@ -901,6 +901,36 @@
       "sdks": [
         "tuyaopen"
       ]
+    },
+    {
+      "id": "zectrix-t5ai-note-4",
+      "name": {
+        "en": "Zectrix T5AI Note 4 ",
+        "zh-CN": "极趣 AI 便利贴"
+      },
+      "manufacturer": "Zectrix",
+      "platformId": "t5ai",
+      "variantId": "t5ai",
+      "summary": {
+        "en": "T5-E1 e-paper note device: 400x300 SSD2683 B/W e-ink display, internal-codec audio with NS4150B amp, 3-button navigation, indicator LED, microSD card, and Li-battery charge management.",
+        "zh-CN": "基于 T5-E1 的电子纸笔记设备：400×300 SSD2683 黑白墨水屏、内置 codec 音频与 NS4150B 功放、3 按键导航、指示灯、microSD 卡与锂电池充电管理。"
+      },
+      "detailUrl": "boards-and-chips/t5ai/zectrix-t5ai-note-4.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "display",
+        "audio",
+        "battery"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ],
+      "image": {
+        "url": "images/zectrix-t5ai-note-4/zectrix-t5ai-note-4.jpg"
+      }
     }
   ]
 }

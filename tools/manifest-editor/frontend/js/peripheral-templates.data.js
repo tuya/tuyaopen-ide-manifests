@@ -164,6 +164,7 @@ export default {
         "ST7305",
         "ST7306",
         "ST7789",
+        "SSD2683",
         "UC8276"
       ],
       "QSPI": [
@@ -817,6 +818,7 @@ export default {
     },
     "interfaces": [
       "GPIO",
+      "PWM",
       "RMT"
     ],
     "interfacePlatformRequires": {
@@ -824,6 +826,9 @@ export default {
     },
     "pins": {
       "GPIO": [
+        "led"
+      ],
+      "PWM": [
         "led"
       ],
       "RMT": [
@@ -842,8 +847,23 @@ export default {
     ],
     "modelAsSelect": true,
     "hideModelForInterface": [
-      "GPIO"
-    ]
+      "GPIO",
+      "PWM"
+    ],
+    "interfaceExtraFields": {
+      "PWM": [
+        {
+          "key": "pwmCh0",
+          "labelKey": "periPwmChannel",
+          "type": "select"
+        },
+        {
+          "key": "frequency",
+          "labelKey": "periPwmFrequency",
+          "type": "number"
+        }
+      ]
+    }
   },
   "led-pixel": {
     "label": {

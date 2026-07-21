@@ -2035,11 +2035,11 @@
       ],
       "boards": [
         "tuya-t5ai-core",
-        "tuya-t5ai-board",
+        "tuya-t5ai-board-lcd-3-5-camera",
         "esp32s3-bread-compact-wifi",
         "raspberrypi",
         "dshanpi-a1",
-        "waveshare-t5ai-touch-amoled-175"
+        "waveshare-t5ai-touch-amoled-1-75"
       ],
       "compatibilityType": "board-specific",
       "source": {
@@ -2059,7 +2059,6 @@
     },
     {
       "id": "tuya-virtuamate",
-      "type": "app",
       "name": {
         "en": "VirtuaMate — 3D Avatar AI Agent",
         "zh-CN": "VirtuaMate — 3D 形象 AI 智能体"
@@ -2091,7 +2090,7 @@
       "image": {
         "url": "images/tuya-virtuamate/banner.png"
       },
-      "detailUrl": "demos/external-repo/tuya-virtuamate.json",
+      "detailUrl": "demos/tuya-virtuamate.json",
       "sdks": [
         "tuyaopen"
       ]
