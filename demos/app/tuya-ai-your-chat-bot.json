@@ -223,6 +223,18 @@
           ]
         }
       ]
+    },
+    {
+      "board": "sparkleiot-t5ai-dev",
+      "options": [
+        {
+          "file": "SPARKLEIOT_T5AI_DEV.config",
+          "name": {
+            "en": "SparkleIoT T5AI Dev",
+            "zh-CN": "星火思创 T5AI 开发板"
+          }
+        }
+      ]
     }
   ],
   "documentation": {

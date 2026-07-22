@@ -1050,7 +1050,8 @@
         "tuya-t5ai-board",
         "tuya-t5ai-pocket",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "zectrix-t5ai-note-4"
+        "zectrix-t5ai-note-4",
+        "sparkleiot-t5ai-dev"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-sd.json",
@@ -1536,7 +1537,8 @@
         "tuya-t5ai-evb",
         "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175",
-        "xingzhi-esp32s3-cube-0-96-oled-wifi"
+        "xingzhi-esp32s3-cube-0-96-oled-wifi",
+        "sparkleiot-t5ai-dev"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-chat-bot.json",

@@ -931,6 +931,38 @@
       "image": {
         "url": "images/zectrix-t5ai-note-4/zectrix-t5ai-note-4.jpg"
       }
+    },
+    {
+      "id": "sparkleiot-t5ai-dev",
+      "name": {
+        "en": "星火思创 T5AI 开发板",
+        "zh-CN": "星火思创 T5AI 开发板"
+      },
+      "manufacturer": "SparkleIoT",
+      "platformId": "t5ai",
+      "variantId": "t5ai",
+      "summary": {
+        "en": "T5-E1 dev board: 240x320 ST7789 SPI LCD with CST816X capacitive touch, GC2145 camera, internal-codec audio, button, and microSD.",
+        "zh-CN": "基于 T5-E1 的开发板：240×320 ST7789 SPI 彩屏 + CST816X 电容触摸、GC2145 摄像头、内置 codec 音频、按键与 microSD 卡。"
+      },
+      "detailUrl": "boards-and-chips/t5ai/sparkleiot-t5ai-dev.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "display",
+        "touch",
+        "camera",
+        "audio",
+        "sd-card"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ],
+      "image": {
+        "url": "images/sparkleiot-t5ai-dev/sparkleiot-t5ai-dev.jpg"
+      }
     }
   ]
 }
