@@ -2042,11 +2042,11 @@
       ],
       "boards": [
         "tuya-t5ai-core",
-        "tuya-t5ai-board-lcd-3-5-camera",
+        "tuya-t5ai-board",
         "esp32s3-bread-compact-wifi",
         "raspberrypi",
         "dshanpi-a1",
-        "waveshare-t5ai-touch-amoled-1-75"
+        "waveshare-t5ai-touch-amoled-175"
       ],
       "compatibilityType": "board-specific",
       "source": {

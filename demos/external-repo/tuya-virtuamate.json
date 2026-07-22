@@ -8,7 +8,13 @@
     "en": "Edge AI agent with VRM 3D avatar, voice chat, IM bots (Feishu / QQ / Telegram), skills, and OpenClaw gateway — runs on Ubuntu PC, Raspberry Pi, TaishanPi, and DshanPi via TuyaOpen.",
     "zh-CN": "带 VRM 3D 形象的边缘 AI Agent：语音对话、飞书/QQ/Telegram 等 IM 机器人、技能扩展与 OpenClaw 网关，支持 Ubuntu 桌面、树莓派、泰山派、东山派。"
   },
-  "tags": ["app", "ai", "agent", "linux", "tuya-iot"],
+  "tags": [
+    "app",
+    "ai",
+    "agent",
+    "linux",
+    "tuya-iot"
+  ],
   "compatibilityType": "board-specific",
   "boards": [
     "ubuntu",
@@ -93,7 +99,9 @@
       "zh-CN": "https://github.com/tuya/VirtuaMate/blob/master/README.md"
     }
   },
-  "image": { "url": "images/tuya-virtuamate/banner.png" },
+  "image": {
+    "url": "images/tuya-virtuamate/banner.png"
+  },
   "publish": true,
   "cloud": {
     "oemUrl": "https://pbt.tuya.com/s?p=dd46368ae3840e54f018b2c45dc1550b&u=c38c8fc0a5d14c4f66cae9f0cfcb2a24&t=2"

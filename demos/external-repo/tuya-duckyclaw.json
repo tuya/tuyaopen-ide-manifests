@@ -8,15 +8,20 @@
     "en": "Hardware-oriented AI agent built on the TuyaOpen C SDK. Runs a Claw-style agent loop on edge devices (Tuya T5AI, ESP32, Raspberry Pi, Linux) with IM channels (Telegram, Discord, Feishu, WeChat, QQ Bot) and on-device MCP-style tools.",
     "zh-CN": "基于 TuyaOpen C SDK 构建的硬件导向 AI Agent。在边缘设备（Tuya T5AI、ESP32、Raspberry Pi、Linux）上运行 Claw 风格 Agent 循环，通过 IM 通道（Telegram、Discord、飞书、微信、QQ 机器人）通信，并在设备端执行 MCP 风格工具调用。"
   },
-  "tags": ["app", "ai", "agent", "tuya-iot"],
+  "tags": [
+    "app",
+    "ai",
+    "agent",
+    "tuya-iot"
+  ],
   "compatibilityType": "board-specific",
   "boards": [
     "tuya-t5ai-core",
-    "tuya-t5ai-board-lcd-3-5-camera",
+    "tuya-t5ai-board",
     "esp32s3-bread-compact-wifi",
     "raspberrypi",
     "dshanpi-a1",
-    "waveshare-t5ai-touch-amoled-1-75"
+    "waveshare-t5ai-touch-amoled-175"
   ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpenClaw",
@@ -25,20 +30,64 @@
     "kind": "external-repo"
   },
   "configs": [
-    { "board": "tuya-t5ai-core",                    "options": [{ "file": "config/TUYA_T5AI_CORE.config" }] },
-    { "board": "tuya-t5ai-board-lcd-3-5-camera",    "options": [{ "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config" }] },
-    { "board": "esp32s3-bread-compact-wifi",         "options": [{ "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config" }] },
-    { "board": "raspberrypi",                        "options": [{ "file": "config/RaspberryPi.config" }] },
-    { "board": "dshanpi-a1",                         "options": [{ "file": "config/DshanPi_A1.config" }] },
-    { "board": "waveshare-t5ai-touch-amoled-1-75",  "options": [{ "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config" }] }
+    {
+      "board": "tuya-t5ai-core",
+      "options": [
+        {
+          "file": "config/TUYA_T5AI_CORE.config"
+        }
+      ]
+    },
+    {
+      "board": "tuya-t5ai-board",
+      "options": [
+        {
+          "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config"
+        }
+      ]
+    },
+    {
+      "board": "esp32s3-bread-compact-wifi",
+      "options": [
+        {
+          "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config"
+        }
+      ]
+    },
+    {
+      "board": "raspberrypi",
+      "options": [
+        {
+          "file": "config/RaspberryPi.config"
+        }
+      ]
+    },
+    {
+      "board": "dshanpi-a1",
+      "options": [
+        {
+          "file": "config/DshanPi_A1.config"
+        }
+      ]
+    },
+    {
+      "board": "waveshare-t5ai-touch-amoled-175",
+      "options": [
+        {
+          "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config"
+        }
+      ]
+    }
   ],
   "documentation": {
     "readme": {
-      "en":    "https://github.com/tuya/TuyaOpenClaw/blob/master/README.md",
+      "en": "https://github.com/tuya/TuyaOpenClaw/blob/master/README.md",
       "zh-CN": "https://github.com/tuya/TuyaOpenClaw/blob/master/README_zh.md"
     }
   },
-  "image": { "url": "images/tuya-duckyclaw/banner.png" },
+  "image": {
+    "url": "images/tuya-duckyclaw/banner.png"
+  },
   "publish": true,
   "cloud": {
     "oemUrl": "https://pbt.tuya.com/s?p=dd46368ae3840e54f018b2c45dc1550b&u=c38c8fc0a5d14c4f66cae9f0cfcb2a24&t=2"
