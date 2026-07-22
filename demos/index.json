@@ -232,7 +232,8 @@
         "tuya-t5ai-pocket",
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "waveshare-t5ai-touch-amoled-175"
+        "waveshare-t5ai-touch-amoled-175",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/graphics-lvgl-demo.json",
@@ -263,7 +264,8 @@
         "tuya-t5ai-pocket",
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "waveshare-t5ai-touch-amoled-175"
+        "waveshare-t5ai-touch-amoled-175",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/graphics-lvgl-gif.json",
@@ -288,7 +290,8 @@
       ],
       "boards": [
         "tuya-t5ai-board",
-        "tuya-t5ai-pocket"
+        "tuya-t5ai-pocket",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/graphics-lvgl-label.json",
@@ -645,7 +648,8 @@
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
-        "waveshare-esp32s3-touch-amoled-1-8"
+        "waveshare-esp32s3-touch-amoled-1-8",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-button.json",
@@ -757,7 +761,8 @@
         "tuya-t5ai-pocket",
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "waveshare-t5ai-touch-amoled-175"
+        "waveshare-t5ai-touch-amoled-175",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-display-picture.json",
@@ -969,7 +974,8 @@
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
-        "waveshare-esp32c6-dev-kit-n16"
+        "waveshare-esp32c6-dev-kit-n16",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-led.json",
@@ -1043,7 +1049,8 @@
         "atk-dnesp32s3-box2-wifi",
         "tuya-t5ai-board",
         "tuya-t5ai-pocket",
-        "waveshare-esp32s3-touch-amoled-1-8"
+        "waveshare-esp32s3-touch-amoled-1-8",
+        "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-sd.json",

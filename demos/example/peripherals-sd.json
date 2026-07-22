@@ -61,6 +61,18 @@
           }
         }
       ]
+    },
+    {
+      "board": "zectrix-t5ai-note-4",
+      "options": [
+        {
+          "file": "ZECTRIX_T5AI_NOTE_4.config",
+          "name": {
+            "en": "Zectrix T5AI Note 4",
+            "zh-CN": "Zectrix T5AI Note 4 电子纸笔记本"
+          }
+        }
+      ]
     }
   ],
   "drivers": [
