@@ -156,7 +156,8 @@
         "localPath": "skills/cloud/tuya-iot-platform"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -198,7 +199,8 @@
         "localPath": "skills/embedded/smart-product-dev"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -275,7 +277,99 @@
         "localPath": "skills/embedded/tyutool_cli"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuyaos-build",
+      "order": 16,
+      "name": {
+        "en": "TuyaOS Build",
+        "zh-CN": "TuyaOS 编译"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Build or clean a TuyaOS app via build_app.sh (Project Details Build/Clean), and wire custom/vendor .c/.h paths in apps/*/local.mk.",
+        "zh-CN": "通过 build_app.sh 编译或清理 TuyaOS 应用（与项目详情构建/清理一致），并在 apps/*/local.mk 中接入自定义或 vendor 下的 .c/.h 路径。"
+      },
+      "whenToUse": {
+        "en": "Use when building/cleaning a TuyaOS app, or when adding custom source/header paths in local.mk (including files under software/TuyaOS/vendor/).",
+        "zh-CN": "编译/清理 TuyaOS 应用，或在 local.mk 中加入自定义源/头路径（含 software/TuyaOS/vendor/ 下文件）时使用。例如「编译 tuyaos xxx 应用」「把 vendor 的 .c/.h 加进编译」。"
+      },
+      "tags": [
+        "build",
+        "clean",
+        "build_app",
+        "tuyaos",
+        "compile",
+        "local.mk",
+        "vendor",
+        "sources",
+        "headers"
+      ],
+      "defaultEnabled": true,
+      "installPayload": "embedded/tuyaos-build",
+      "related": [
+        "tyutool-cli",
+        "smart-product-dev"
+      ],
+      "source": {
+        "localPath": "skills/embedded/tuyaos-build"
+      },
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuyaos-hardware-vibe-coding",
+      "order": 17,
+      "name": {
+        "en": "TuyaOS Hardware Vibe Coding",
+        "zh-CN": "TuyaOS 硬件 Vibe Coding"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Hardware-aware code generation for TuyaOS apps using tkl_*/tal_* (GPIO/I2C/PWM/ADC/SPI/timer/watchdog/mic/speaker/DVP) plus Wi-Fi (tal_wifi) and BLE (tal_bluetooth). Based on tuyaos_demo_examples; separate from TuyaOpen TDL skills.",
+        "zh-CN": "面向 TuyaOS 应用的硬件感知代码生成：tkl_*/tal_* 外设（GPIO/I2C/PWM/ADC/SPI/定时器/看门狗/麦克/喇叭/DVP）以及 Wi-Fi（tal_wifi）、BLE（tal_bluetooth）。"
+      },
+      "whenToUse": {
+        "en": "Use when initializing or driving hardware or connectivity on a TuyaOS project (GPIO, buses, audio/camera, Wi-Fi STA/AP/scan, BLE peripheral/central/remote), or any TuyaOS hardware vibe-coding request.",
+        "zh-CN": "在 TuyaOS 工程上初始化或驱动硬件/连接能力时使用：GPIO、总线、音视频、Wi-Fi（STA/AP/扫网）、BLE（从机/主机/遥控器），或任何 TuyaOS 硬件 vibe coding 请求。"
+      },
+      "tags": [
+        "hardware",
+        "peripheral",
+        "vibe-coding",
+        "tuyaos",
+        "gpio",
+        "pwm",
+        "i2c",
+        "spi",
+        "adc",
+        "timer",
+        "watchdog",
+        "audio",
+        "camera",
+        "wifi",
+        "ble",
+        "bluetooth",
+        "networking",
+        "sta",
+        "ap"
+      ],
+      "defaultEnabled": true,
+      "installPayload": "embedded/tuyaos-hardware-vibe-coding",
+      "related": [
+        "tuyaos-build",
+        "tyutool-cli",
+        "smart-product-dev"
+      ],
+      "source": {
+        "localPath": "skills/embedded/tuyaos-hardware-vibe-coding"
+      },
+      "sdks": [
+        "tuyaos"
       ]
     },
     {
@@ -531,7 +625,8 @@
         "localPath": "skills/miniapp/smart-panel-dev"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -561,7 +656,8 @@
         "localPath": "skills/miniapp/ray-common"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -595,7 +691,8 @@
         "localPath": "skills/miniapp/smart-ui"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -631,7 +728,8 @@
         "localPath": "skills/miniapp/lamp-panel"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -668,7 +766,8 @@
         "localPath": "skills/miniapp/socket-panel"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -703,7 +802,8 @@
         "localPath": "skills/miniapp/robot-vacuum"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -738,7 +838,8 @@
         "localPath": "skills/miniapp/ipc-panel"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -773,7 +874,8 @@
         "localPath": "skills/miniapp/charts-library"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -807,7 +909,8 @@
         "localPath": "skills/miniapp/electrician-timing"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -842,7 +945,8 @@
         "localPath": "skills/miniapp/energy-stats"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -873,7 +977,8 @@
         "localPath": "skills/miniapp/requirement-guide"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -907,7 +1012,8 @@
         "localPath": "skills/miniapp/performance-ux-guard"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     }
   ]
