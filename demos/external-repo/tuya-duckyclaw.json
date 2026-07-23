@@ -34,7 +34,11 @@
       "board": "tuya-t5ai-core",
       "options": [
         {
-          "file": "config/TUYA_T5AI_CORE.config"
+          "file": "config/TUYA_T5AI_CORE.config",
+          "name": {
+            "en": "Tuya T5AI-Core",
+            "zh-CN": "涂鸦 T5AI-Core 核心板"
+          }
         }
       ]
     },
@@ -42,7 +46,11 @@
       "board": "tuya-t5ai-board",
       "options": [
         {
-          "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config"
+          "file": "config/TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config",
+          "name": {
+            "en": "3.5\" LCD + Camera",
+            "zh-CN": "3.5寸 LCD 触摸屏 + 摄像头"
+          }
         }
       ]
     },
@@ -50,7 +58,11 @@
       "board": "esp32s3-bread-compact-wifi",
       "options": [
         {
-          "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config"
+          "file": "config/ESP32S3_BREAD_COMPACT_WIFI.config",
+          "name": {
+            "en": "ESP32-S3 Bread Compact (Wi-Fi)",
+            "zh-CN": "ESP32-S3 面包板紧凑型 (Wi-Fi)"
+          }
         }
       ]
     },
@@ -58,7 +70,11 @@
       "board": "raspberrypi",
       "options": [
         {
-          "file": "config/RaspberryPi.config"
+          "file": "config/RaspberryPi.config",
+          "name": {
+            "en": "Raspberry Pi",
+            "zh-CN": "树莓派"
+          }
         }
       ]
     },
@@ -66,7 +82,11 @@
       "board": "dshanpi-a1",
       "options": [
         {
-          "file": "config/DshanPi_A1.config"
+          "file": "config/DshanPi_A1.config",
+          "name": {
+            "en": "DshanPi A1",
+            "zh-CN": "东山派 A1"
+          }
         }
       ]
     },
@@ -74,7 +94,11 @@
       "board": "waveshare-t5ai-touch-amoled-175",
       "options": [
         {
-          "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config"
+          "file": "config/WAVESHARE_T5AI_TOUCH_AMOLED_1_75.config",
+          "name": {
+            "en": "Waveshare T5AI Touch AMOLED 1.75\"",
+            "zh-CN": "微雪 T5AI 1.75 寸触摸 AMOLED"
+          }
         }
       ]
     }
