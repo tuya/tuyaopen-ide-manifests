@@ -12,13 +12,7 @@
             "zh-CN": "双眼屏-同显",
             "en": "Dual Sync Eyes"
           }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "accessory": "group-mpxn93yq",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
           "name": {

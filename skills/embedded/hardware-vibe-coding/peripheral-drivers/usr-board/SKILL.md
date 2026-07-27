@@ -292,7 +292,7 @@ function), refer to the matching peripheral skill:
 
 Check the platform first: read `.tuyaopen/ide/platform.json`. This section applies **only
 when the target is an ESP32 family chip** (`esp32` / `esp32s3` / `esp32c3` / `esp32c6` /
-`esp32p4`). On other platforms use the normal `usr_board/` path above.
+`esp32p4c6`). On other platforms use the normal `usr_board/` path above.
 
 **Why.** On ESP32 the TuyaOpen build is two-stage: `usr_board/`, the app, and the SDK core
 are compiled into a "prebuilt library" stage that sees **only** the tkl/tal/tdl abstraction

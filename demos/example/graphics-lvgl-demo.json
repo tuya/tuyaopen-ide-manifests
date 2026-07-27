@@ -4,27 +4,26 @@
   "configs": [
     {
       "board": "tuya-t5ai-board",
-      "accessory": "lcd-eyes-a",
       "options": [
         {
           "file": "TUYA_T5AI_BOARD_EYES.config",
           "name": {
-            "zh-CN": "双眼屏-同显",
-            "en": "Dual Sync Eyes"
-          }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "accessory": "group-mpxn93yq",
-      "options": [
+            "en": "Dual Sync Eyes",
+            "zh-CN": "双眼屏-同显"
+          },
+          "peripherals": [
+            "lcd-eyes-a"
+          ]
+        },
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
           "name": {
             "en": "3.5\" LCD",
             "zh-CN": "3.5寸 LCD 触摸屏"
-          }
+          },
+          "peripherals": [
+            "group-mpxn93yq"
+          ]
         }
       ]
     },
@@ -48,7 +47,10 @@
           "name": {
             "en": "Tuya T5AI Pocket",
             "zh-CN": "涂鸦 T5AI Pocket 板"
-          }
+          },
+          "peripherals": [
+            "display"
+          ]
         }
       ]
     },
@@ -60,7 +62,11 @@
           "name": {
             "en": "Waveshare T5AI Touch AMOLED 1.75\"",
             "zh-CN": "微雪 T5AI 1.75 寸触摸 AMOLED"
-          }
+          },
+          "peripherals": [
+            "display",
+            "touchpad"
+          ]
         }
       ]
     },
@@ -72,14 +78,20 @@
           "name": {
             "en": "ALIENTEK DNESP32S3 (2.4\" SPI LCD)",
             "zh-CN": "正点原子 DNESP32S3 (2.4 寸 SPI LCD)"
-          }
+          },
+          "peripherals": [
+            "lcd-st7789"
+          ]
         },
         {
           "file": "DNESP32S3_LCD_MD0430R_RGB.config",
           "name": {
             "en": "ALIENTEK DNESP32S3 (4.3\" RGB LCD)",
             "zh-CN": "正点原子 DNESP32S3 (4.3 寸 RGB LCD)"
-          }
+          },
+          "peripherals": [
+            "group-mrinoyyp"
+          ]
         }
       ]
     },
@@ -91,7 +103,10 @@
           "name": {
             "en": "ALIENTEK DNESP32S3-BOX",
             "zh-CN": "正点原子 DNESP32S3-BOX"
-          }
+          },
+          "peripherals": [
+            "lcd-st7789"
+          ]
         }
       ]
     },
@@ -103,7 +118,10 @@
           "name": {
             "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi)",
             "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
-          }
+          },
+          "peripherals": [
+            "lcd-st7789"
+          ]
         }
       ]
     },
@@ -115,7 +133,10 @@
           "name": {
             "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3\"",
             "zh-CN": "微雪 ESP32-P4-C6 4.3 寸触摸 LCD"
-          }
+          },
+          "peripherals": [
+            "display"
+          ]
         }
       ]
     },
@@ -127,7 +148,10 @@
           "name": {
             "en": "Waveshare ESP32-S3 Touch AMOLED 1.8\"",
             "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
-          }
+          },
+          "peripherals": [
+            "display"
+          ]
         }
       ]
     },
@@ -139,7 +163,10 @@
           "name": {
             "en": "Zectrix T5AI Note 4",
             "zh-CN": "Zectrix T5AI Note 4 电子纸笔记本"
-          }
+          },
+          "peripherals": [
+            "display"
+          ]
         }
       ]
     }

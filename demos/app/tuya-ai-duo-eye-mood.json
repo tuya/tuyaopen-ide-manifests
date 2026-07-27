@@ -22,12 +22,7 @@
             "led",
             "lcd-eyes-a"
           ]
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_EYES_TWO_LCD.config",
           "name": {

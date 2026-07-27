@@ -224,15 +224,15 @@
         "graphics"
       ],
       "boards": [
-        "atk-dnesp32s3",
-        "atk-dnesp32s3-box",
-        "atk-dnesp32s3-box2-wifi",
         "tuya-t5ai-board",
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
+        "waveshare-t5ai-touch-amoled-175",
+        "atk-dnesp32s3",
+        "atk-dnesp32s3-box",
+        "atk-dnesp32s3-box2-wifi",
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "waveshare-t5ai-touch-amoled-175",
         "zectrix-t5ai-note-4"
       ],
       "compatibilityType": "board-specific",
@@ -1537,6 +1537,7 @@
         "tuya-t5ai-evb",
         "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175",
+        "zectrix-t5ai-note-4",
         "xingzhi-esp32s3-cube-0-96-oled-wifi",
         "sparkleiot-t5ai-dev"
       ],

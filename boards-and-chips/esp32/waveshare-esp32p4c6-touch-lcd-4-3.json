@@ -174,7 +174,9 @@
   "links": {
     "schematic": null,
     "datasheet": null,
-    "productPage": "https://www.waveshare.com/wiki/ESP32-P4-WIFI6-Touch-LCD-4.3"
+    "productPage": {
+      "en": "https://www.waveshare.com/wiki/ESP32-P4-WIFI6-Touch-LCD-4.3"
+    }
   },
   "boardSymbol": "WAVESHARE_ESP32P4C6_TOUCH_LCD_4_3",
   "source": {

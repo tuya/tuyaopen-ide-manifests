@@ -516,18 +516,15 @@
     {
       "id": "espressif-esp32-p4",
       "name": {
-        "en": "Espressif ESP32-P4 (Generic)",
-        "zh-CN": "乐鑫 ESP32-P4 通用开发板"
+        "en": "ESP32-P4-C6 Module",
+        "zh-CN": " ESP32-P4-C6 通用开发板"
       },
-      "manufacturer": {
-        "en": "Espressif",
-        "zh-CN": "乐鑫"
-      },
-      "platformId": "esp32p4",
-      "variantId": "esp32p4",
+      "manufacturer": "乐鑫",
+      "platformId": "esp32",
+      "variantId": "esp32p4c6",
       "summary": {
-        "en": "Generic ESP32-P4 development board target — high-performance dual-core RISC-V with MIPI-CSI/DSI and rich peripherals for HMI and edge-AI. Wi-Fi 6 / BLE via a companion ESP32-C6.",
-        "zh-CN": "通用 ESP32-P4 开发板目标 — 高性能双核 RISC-V，集成 MIPI-CSI/DSI 与丰富外设，面向人机交互与端侧 AI。Wi-Fi 6 / BLE 由配套 ESP32-C6 提供。"
+        "en": "Generic ESP32-P4-C6 development board target — high-performance dual-core RISC-V with MIPI-CSI/DSI and rich peripherals for HMI and edge-AI. Wi-Fi 6 / BLE via a companion ESP32-C6.",
+        "zh-CN": "通用 ESP32-P4-C6 开发板目标 — 高性能双核 RISC-V，集成 MIPI-CSI/DSI 与丰富外设，面向人机交互与端侧 AI。Wi-Fi 6 / BLE 由配套 ESP32-C6 提供。"
       },
       "tags": [
         "wifi",
@@ -540,7 +537,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/espressif-esp32-p4/espressif-esp32-p4.jpg"
+      }
     },
     {
       "id": "atk-dnesp32s3",
@@ -693,15 +693,12 @@
     {
       "id": "waveshare-esp32p4c6-touch-lcd-4-3",
       "name": {
-        "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3\"",
+        "en": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸",
         "zh-CN": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸"
       },
-      "manufacturer": {
-        "en": "Waveshare",
-        "zh-CN": "微雪"
-      },
-      "platformId": "esp32p4",
-      "variantId": "esp32p4",
+      "manufacturer": "微雪",
+      "platformId": "esp32",
+      "variantId": "esp32p4c6",
       "summary": {
         "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3\" board — 480x800 MIPI-DSI display with GT911 capacitive touch, ES8311 audio codec, and onboard ESP32-C6 for Wi-Fi 6 / BLE.",
         "zh-CN": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸开发板 — 480x800 MIPI-DSI 显示屏，配 GT911 电容触摸、ES8311 音频编解码器，板载 ESP32-C6 提供 Wi-Fi 6 / BLE。"
@@ -714,7 +711,7 @@
         "audio"
       ],
       "detailUrl": "boards-and-chips/esp32/waveshare-esp32p4c6-touch-lcd-4-3.json",
-      "published": true,
+      "published": false,
       "sdks": [
         "tuyaopen"
       ]

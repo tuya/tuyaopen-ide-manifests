@@ -42,12 +42,7 @@
             "camera",
             "printer"
           ]
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5_CAMERA.config",
           "name": {
@@ -61,12 +56,7 @@
             "group-mpxn93yq",
             "camera"
           ]
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
           "name": {
@@ -113,6 +103,24 @@
             "led",
             "button",
             "power"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "zectrix-t5ai-note-4",
+      "options": [
+        {
+          "file": "ZECTRIX_T5AI_NOTE_4.config",
+          "name": {
+            "en": "Zectrix T5AI Note 4",
+            "zh-CN": "极趣 AI 便利贴"
+          },
+          "peripherals": [
+            "audio",
+            "display",
+            "led",
+            "button"
           ]
         }
       ]

@@ -292,21 +292,21 @@
       "published": true
     },
     {
-      "id": "esp32p4",
+      "id": "esp32p4c6",
       "platformId": "esp32",
       "name": {
-        "en": "Espressif ESP32-P4",
-        "zh-CN": "乐鑫 ESP32-P4"
+        "en": "Espressif ESP32-P4-C6",
+        "zh-CN": "乐鑫 ESP32-P4-C6"
       },
       "summary": {
-        "en": "Espressif ESP32-P4 platform — dual-core RISC-V @400MHz with a RISC-V LP core, large internal SRAM and PSRAM support, MIPI-CSI/DSI, and rich peripherals for HMI and edge-AI. No on-chip radio — wireless is provided by a companion ESP32-C6 (Wi-Fi 6 / BLE).",
-        "zh-CN": "乐鑫 ESP32-P4 平台 — 双核 RISC-V，主频 400MHz，另含 RISC-V 低功耗核，内置大容量 SRAM 并支持 PSRAM，集成 MIPI-CSI/DSI 与丰富外设，面向人机交互（HMI）与端侧 AI。芯片本身无射频，无线能力由配套 ESP32-C6（Wi-Fi 6 / BLE）提供。"
+        "en": "Espressif ESP32-P4-C6 platform — dual-core RISC-V @400MHz with a RISC-V LP core, large internal SRAM and PSRAM support, MIPI-CSI/DSI, and rich peripherals for HMI and edge-AI. No on-chip radio — wireless is provided by a companion ESP32-C6 (Wi-Fi 6 / BLE).",
+        "zh-CN": "乐鑫 ESP32-P4-C6 平台 — 双核 RISC-V，主频 400MHz，另含 RISC-V 低功耗核，内置大容量 SRAM 并支持 PSRAM，集成 MIPI-CSI/DSI 与丰富外设，面向人机交互（HMI）与端侧 AI。芯片本身无射频，无线能力由配套 ESP32-C6（Wi-Fi 6 / BLE）提供。"
       },
-      "detailUrl": "platforms/esp32/esp32p4.json",
+      "detailUrl": "platforms/esp32/esp32p4c6.json",
       "sdks": [
         "tuyaopen"
       ],
-      "published": false
+      "published": true
     }
   ]
 }

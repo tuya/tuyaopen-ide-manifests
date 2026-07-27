@@ -11,39 +11,21 @@
             "en": "2.9\" E-Ink",
             "zh-CN": "2.9 寸墨水屏"
           }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "accessory": "lcd-eyes-a",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_EYES.config",
           "name": {
             "zh-CN": "双眼屏-同显",
             "en": "Dual Sync Eyes"
           }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "accessory": "lcd-eyes-b",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_EYES_TWO_LCD.config",
           "name": {
             "zh-CN": "双眼屏-异显",
             "en": "Dual Async Eyes"
           }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "accessory": "group-mpxn93yq",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
           "name": {

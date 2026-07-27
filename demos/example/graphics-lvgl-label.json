@@ -12,25 +12,14 @@
             "en": "0.96-inch OLED",
             "zh-CN": "0.96 寸 OLED 屏"
           }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_29_E-INK.config",
           "name": {
             "en": "2.9\" E-Ink",
             "zh-CN": "2.9 寸墨水屏"
           }
-        }
-      ]
-    },
-    {
-      "board": "tuya-t5ai-board",
-      "accessory": "group-mpxn93yq",
-      "options": [
+        },
         {
           "file": "TUYA_T5AI_BOARD_LCD_3.5.config",
           "name": {

@@ -226,7 +226,6 @@
       }
     },
     "spi": {
-      "enabled": true,
       "count": 4,
       "spec": {
         "role": [
@@ -276,6 +275,12 @@
                 "cs": 45,
                 "mosi": 46,
                 "miso": 47
+              },
+              {
+                "clk": 33,
+                "cs": 34,
+                "mosi": 35,
+                "miso": 36
               }
             ]
           },
@@ -332,7 +337,8 @@
             ]
           }
         ]
-      }
+      },
+      "enabled": true
     },
     "qspi": {
       "enabled": true,

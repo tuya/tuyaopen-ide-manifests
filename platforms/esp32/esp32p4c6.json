@@ -3,9 +3,9 @@
   "arch": "risc-v",
   "flashInterface": "qspi",
   "connectivity": {
-    "wifi": false,
-    "ble": false,
-    "ethernet": true,
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
     "cellular": false
   },
   "memory": {
@@ -548,12 +548,6 @@
       "enabled": true,
       "count": 3
     },
-    "rmt": {
-      "enabled": true,
-      "spec": {
-        "routable": true
-      }
-    },
     "rtc": {
       "enabled": true,
       "count": 1
@@ -817,40 +811,6 @@
               }
             ],
             "routable": true
-          }
-        ]
-      }
-    },
-    "can": {
-      "enabled": true,
-      "count": 2,
-      "spec": {
-        "mode": [
-          "TUYA_TWAI_MODE_NORMAL",
-          "TUYA_TWAI_MODE_LISTEN_ONLY"
-        ],
-        "baudrate": {
-          "min": 25000,
-          "max": 1000000
-        },
-        "ports": [
-          {
-            "id": 0,
-            "pinGroups": [
-              {
-                "tx": 46,
-                "rx": 47
-              }
-            ]
-          },
-          {
-            "id": 1,
-            "pinGroups": [
-              {
-                "tx": 48,
-                "rx": 49
-              }
-            ]
           }
         ]
       }
