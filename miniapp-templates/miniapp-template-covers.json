@@ -6,78 +6,21 @@
   "withoutCover": 8,
   "templates": [
     {
-      "id": "PublicPanelIpc",
-      "name_zh": "IPC通用模板",
-      "name_en": "IPC General Template",
+      "id": "PanelWirelessTapToRun",
+      "name_zh": "无线开关一键执行模板",
+      "name_en": "Wireless Switch Tap-to-Run Template",
       "publish": true,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17497839325fd6690227e.jpg",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PublicPanelIpc.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PublicPanelIpc/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PublicPanelIpc",
-      "baseversion": "2.27.3",
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17357849731bf2554bc96.png",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PanelWirelessTapToRun.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PanelWirelessTapToRun/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PanelWirelessTapToRun",
+      "baseversion": "2.19.2",
       "dependencies": {
-        "BaseKit": "3.0.0",
-        "MiniKit": "3.0.1",
-        "BizKit": "4.12.1",
-        "HomeKit": "3.0.2",
-        "DeviceKit": "4.11.8",
-        "IPCKit": "6.4.11"
-      },
-      "source": "ide+registry"
-    },
-    {
-      "id": "SweepRobotTemplate",
-      "name_zh": "扫地机小程序模版",
-      "name_en": "Sweeping Robot Template",
-      "publish": false,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1721023327e15a25d6683.png",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-SweepRobotTemplate.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-SweepRobotTemplate/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/SweepRobotTemplate",
-      "baseversion": "2.29.14",
-      "dependencies": {
-        "BaseKit": "3.0.0",
-        "MiniKit": "3.0.1",
-        "DeviceKit": "4.0.8",
-        "BizKit": "4.2.0",
-        "P2PKit": "2.1.1",
-        "IPCKit": "1.3.6"
-      },
-      "source": "ide+registry"
-    },
-    {
-      "id": "GyroSweeperTemplate",
-      "name_zh": "惯导扫地机模板",
-      "name_en": "Navigation Sweep Robot Template",
-      "publish": false,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/175085331055a52c0f4eb.png",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-GyroSweeperTemplate.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-GyroSweeperTemplate/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/GyroSweeperTemplate",
-      "baseversion": "2.28.6",
-      "dependencies": {
-        "BaseKit": "3.0.6",
-        "MiniKit": "3.0.7",
-        "DeviceKit": "4.0.8",
-        "BizKit": "4.2.0"
-      },
-      "source": "ide+registry"
-    },
-    {
-      "id": "PanelLock",
-      "name_zh": "可视对讲门锁面板模板",
-      "name_en": "Video Intercom Door Lock Panel Template",
-      "publish": true,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1763537404b036bb58c9c.png",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PanelLock.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PanelLock/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PanelLock",
-      "baseversion": "2.19.0",
-      "dependencies": {
-        "BaseKit": "3.0.0",
-        "MiniKit": "3.0.1",
-        "DeviceKit": "3.1.0",
-        "BizKit": "3.0.6"
+        "BaseKit": "3.11.3",
+        "MiniKit": "3.9.8",
+        "DeviceKit": "4.5.1",
+        "BizKit": "3.0.8",
+        "HomeKit": "3.4.0"
       },
       "source": "ide+registry"
     },
@@ -121,19 +64,6 @@
       "source": "ide+registry"
     },
     {
-      "id": "扫地机结构化地图模版",
-      "name_zh": "扫地机结构化地图模版",
-      "name_en": "Sweeping Robot Structured Map Template",
-      "publish": false,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/174288541232ef6e29447.png",
-      "qrCode": null,
-      "downloadUrl": null,
-      "sourceUrl": null,
-      "baseversion": null,
-      "dependencies": null,
-      "source": "ide-only"
-    },
-    {
       "id": "TempHumSenser",
       "name_zh": "温湿度传感器模版",
       "name_en": "Temperature & Humidity Sensor Template",
@@ -148,42 +78,6 @@
         "MiniKit": "3.9.8",
         "DeviceKit": "4.5.1",
         "BizKit": "4.5.1"
-      },
-      "source": "ide+registry"
-    },
-    {
-      "id": "ElectricStatisticsTemplate",
-      "name_zh": "电量统计模版",
-      "name_en": "Electricity Statistics Template",
-      "publish": true,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17640661638fab2dbba75.png",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-ElectricStatisticsTemplate.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-ElectricStatisticsTemplate/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/ElectricStatisticsTemplate",
-      "baseversion": "2.13.3",
-      "dependencies": {
-        "BaseKit": "3.0.0",
-        "MiniKit": "3.0.0",
-        "DeviceKit": "3.0.0",
-        "BizKit": "3.0.1"
-      },
-      "source": "ide+registry"
-    },
-    {
-      "id": "MultiSocketTemplate",
-      "name_zh": "电工排插面板模板",
-      "name_en": "Power Strip Panel Template",
-      "publish": true,
-      "coverUrl": "https://images.tuyacn.com/fe-static/docs/img/4578de95-dcad-4c82-9b56-3b207a343964.jpg",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-MultiSocketTemplate.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-MultiSocketTemplate/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/MultiSocketTemplate",
-      "baseversion": "2.13.3",
-      "dependencies": {
-        "BaseKit": "3.0.0",
-        "MiniKit": "3.0.1",
-        "DeviceKit": "3.0.2",
-        "BizKit": "3.0.6"
       },
       "source": "ide+registry"
     },
@@ -205,19 +99,6 @@
         "MediaKit": "3.2.1"
       },
       "source": "ide+registry"
-    },
-    {
-      "id": "IPC精彩时刻模版",
-      "name_zh": "IPC精彩时刻模版",
-      "name_en": "IPC Highlights Template",
-      "publish": false,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1744282762ac25583678c.jpg",
-      "qrCode": null,
-      "downloadUrl": null,
-      "sourceUrl": null,
-      "baseversion": null,
-      "dependencies": null,
-      "source": "ide-only"
     },
     {
       "id": "EnergyInverter",
@@ -278,7 +159,7 @@
     },
     {
       "id": "AiAgentTemplate",
-      "name_zh": "面板智能体",
+      "name_zh": "智能体面板模板",
       "name_en": "Panel AI Agent Template",
       "publish": true,
       "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17637150707ec035ea1a6.png",
@@ -293,19 +174,6 @@
         "BizKit": "4.15.2"
       },
       "source": "ide+registry"
-    },
-    {
-      "id": "电工单插件高级模板",
-      "name_zh": "电工单插件高级模板",
-      "name_en": "Advanced Single-Plug Template",
-      "publish": false,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/176407106178e8bc9c328.png",
-      "qrCode": null,
-      "downloadUrl": null,
-      "sourceUrl": null,
-      "baseversion": null,
-      "dependencies": null,
-      "source": "ide-only"
     },
     {
       "id": "PanelZigbeeRemoteGroup",
@@ -401,26 +269,6 @@
       "source": "ide+registry"
     },
     {
-      "id": "PanelAiPicture",
-      "name_zh": "AI 图像处理Demo",
-      "name_en": "AI Image Processing Demo",
-      "publish": true,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1757318063e4492249336.png",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PanelAiPicture.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PanelAiPicture/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PanelAiPicture",
-      "baseversion": "2.27.3",
-      "dependencies": {
-        "BaseKit": "3.0.6",
-        "MiniKit": "3.0.0",
-        "DeviceKit": "3.0.0",
-        "BizKit": "3.0.1",
-        "HomeKit": "3.0.2",
-        "AIKit": "1.4.3"
-      },
-      "source": "ide+registry"
-    },
-    {
       "id": "PanelOutdoorCycle",
       "name_zh": "出行两轮车通用模版",
       "name_en": "Two-Wheeler Mobility Template",
@@ -440,21 +288,38 @@
       "source": "ide+registry"
     },
     {
-      "id": "PanelWirelessTapToRun",
-      "name_zh": "无线开关一键执行模板",
-      "name_en": "Wireless Switch Tap-to-Run Template",
+      "id": "ElectricStatisticsTemplate",
+      "name_zh": "电量统计模版",
+      "name_en": "Electricity Statistics Template",
       "publish": true,
-      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17357849731bf2554bc96.png",
-      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PanelWirelessTapToRun.png",
-      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PanelWirelessTapToRun/template.tar.gz",
-      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PanelWirelessTapToRun",
-      "baseversion": "2.19.2",
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17640661638fab2dbba75.png",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-ElectricStatisticsTemplate.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-ElectricStatisticsTemplate/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/ElectricStatisticsTemplate",
+      "baseversion": "2.13.3",
       "dependencies": {
-        "BaseKit": "3.11.3",
-        "MiniKit": "3.9.8",
-        "DeviceKit": "4.5.1",
-        "BizKit": "3.0.8",
-        "HomeKit": "3.4.0"
+        "BaseKit": "3.0.0",
+        "MiniKit": "3.0.0",
+        "DeviceKit": "3.0.0",
+        "BizKit": "3.0.1"
+      },
+      "source": "ide+registry"
+    },
+    {
+      "id": "MultiSocketTemplate",
+      "name_zh": "电工排插面板模板",
+      "name_en": "Power Strip Panel Template",
+      "publish": true,
+      "coverUrl": "https://images.tuyacn.com/fe-static/docs/img/4578de95-dcad-4c82-9b56-3b207a343964.jpg",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-MultiSocketTemplate.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-MultiSocketTemplate/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/MultiSocketTemplate",
+      "baseversion": "2.13.3",
+      "dependencies": {
+        "BaseKit": "3.0.0",
+        "MiniKit": "3.0.1",
+        "DeviceKit": "3.0.2",
+        "BizKit": "3.0.6"
       },
       "source": "ide+registry"
     },
@@ -533,6 +398,26 @@
       "source": "registry-only"
     },
     {
+      "id": "PanelAiPicture",
+      "name_zh": "AI 图像处理Demo",
+      "name_en": "AI Image Processing Demo",
+      "publish": true,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1757318063e4492249336.png",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PanelAiPicture.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PanelAiPicture/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PanelAiPicture",
+      "baseversion": "2.27.3",
+      "dependencies": {
+        "BaseKit": "3.0.6",
+        "MiniKit": "3.0.0",
+        "DeviceKit": "3.0.0",
+        "BizKit": "3.0.1",
+        "HomeKit": "3.0.2",
+        "AIKit": "1.4.3"
+      },
+      "source": "ide+registry"
+    },
+    {
       "id": "PanelCommon",
       "name_zh": "通用面板模板",
       "name_en": "Panel Common Template",
@@ -584,6 +469,121 @@
         "BizKit": "3.0.6"
       },
       "source": "registry-only"
+    },
+    {
+      "id": "IPC精彩时刻模版",
+      "name_zh": "IPC精彩时刻模版",
+      "name_en": "IPC Highlights Template",
+      "publish": false,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1744282762ac25583678c.jpg",
+      "qrCode": null,
+      "downloadUrl": null,
+      "sourceUrl": null,
+      "baseversion": null,
+      "dependencies": null,
+      "source": "ide-only"
+    },
+    {
+      "id": "电工单插件高级模板",
+      "name_zh": "电工单插件高级模板",
+      "name_en": "Advanced Single-Plug Template",
+      "publish": false,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/176407106178e8bc9c328.png",
+      "qrCode": null,
+      "downloadUrl": null,
+      "sourceUrl": null,
+      "baseversion": null,
+      "dependencies": null,
+      "source": "ide-only"
+    },
+    {
+      "id": "PublicPanelIpc",
+      "name_zh": "IPC通用模板",
+      "name_en": "IPC General Template",
+      "publish": true,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/17497839325fd6690227e.jpg",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PublicPanelIpc.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PublicPanelIpc/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PublicPanelIpc",
+      "baseversion": "2.27.3",
+      "dependencies": {
+        "BaseKit": "3.0.0",
+        "MiniKit": "3.0.1",
+        "BizKit": "4.12.1",
+        "HomeKit": "3.0.2",
+        "DeviceKit": "4.11.8",
+        "IPCKit": "6.4.11"
+      },
+      "source": "ide+registry"
+    },
+    {
+      "id": "SweepRobotTemplate",
+      "name_zh": "扫地机小程序模版",
+      "name_en": "Sweeping Robot Template",
+      "publish": false,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1721023327e15a25d6683.png",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-SweepRobotTemplate.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-SweepRobotTemplate/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/SweepRobotTemplate",
+      "baseversion": "2.29.14",
+      "dependencies": {
+        "BaseKit": "3.0.0",
+        "MiniKit": "3.0.1",
+        "DeviceKit": "4.0.8",
+        "BizKit": "4.2.0",
+        "P2PKit": "2.1.1",
+        "IPCKit": "1.3.6"
+      },
+      "source": "ide+registry"
+    },
+    {
+      "id": "GyroSweeperTemplate",
+      "name_zh": "惯导扫地机模板",
+      "name_en": "Navigation Sweep Robot Template",
+      "publish": false,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/175085331055a52c0f4eb.png",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-GyroSweeperTemplate.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-GyroSweeperTemplate/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/GyroSweeperTemplate",
+      "baseversion": "2.28.6",
+      "dependencies": {
+        "BaseKit": "3.0.6",
+        "MiniKit": "3.0.7",
+        "DeviceKit": "4.0.8",
+        "BizKit": "4.2.0"
+      },
+      "source": "ide+registry"
+    },
+    {
+      "id": "扫地机结构化地图模版",
+      "name_zh": "扫地机结构化地图模版",
+      "name_en": "Sweeping Robot Structured Map Template",
+      "publish": false,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/174288541232ef6e29447.png",
+      "qrCode": null,
+      "downloadUrl": null,
+      "sourceUrl": null,
+      "baseversion": null,
+      "dependencies": null,
+      "source": "ide-only"
+    },
+    {
+      "id": "PanelLock",
+      "name_zh": "可视对讲门锁面板模板",
+      "name_en": "Video Intercom Door Lock Panel Template",
+      "publish": true,
+      "coverUrl": "https://images.tuyacn.com/smart/ui_design_pkg_icon/non-session-user/1763537404b036bb58c9c.png",
+      "qrCode": "https://raw.githubusercontent.com/Tuya-Community/tuya-ray-materials/main/qrCode/template-PanelLock.png",
+      "downloadUrl": "https://static1.tuyacn.com/static/txp-raytpl-PanelLock/template.tar.gz",
+      "sourceUrl": "https://github.com/Tuya-Community/tuya-ray-materials/tree/main/template/PanelLock",
+      "baseversion": "2.19.0",
+      "dependencies": {
+        "BaseKit": "3.0.0",
+        "MiniKit": "3.0.1",
+        "DeviceKit": "3.1.0",
+        "BizKit": "3.0.6"
+      },
+      "source": "ide+registry"
     }
   ]
 }
