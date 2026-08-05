@@ -1,7 +1,7 @@
 {
   "id": "tuya-ai-your-chat-bot",
   "cloud": {
-    "oemUrl": "https://pbt.tuya.com/s?p=e766ed60b3a28ef8e381965cf0cbb035&u=6232683ef12714848fae37955806cb9e&t=1",
+    "oemUrl": "https://pbt.tuya.com/s?p=833cbc87de4a645ec6be81d90a94e022&u=6232683ef12714848fae37955806cb9e&t=2",
     "pid": {
       "via": "kconfig"
     }

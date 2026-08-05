@@ -10,5 +10,8 @@
       "driver": "audio",
       "level": "optional"
     }
-  ]
+  ],
+  "cloud": {
+    "oemUrl": "https://pbt.tuya.com/s?p=21704bb2a11154148f41ce3f6fb24dcf&u=6232683ef12714848fae37955806cb9e&t=2"
+  }
 }

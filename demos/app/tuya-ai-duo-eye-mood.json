@@ -3,7 +3,8 @@
   "cloud": {
     "pid": {
       "via": "kconfig"
-    }
+    },
+    "oemUrl": "https://pbt.tuya.com/s?p=e766ed60b3a28ef8e381965cf0cbb035&u=6232683ef12714848fae37955806cb9e&t=2"
   },
   "source": "https://github.com/tuya/TuyaOpen/tree/master/apps/tuya.ai/duo_eye_mood",
   "configs": [

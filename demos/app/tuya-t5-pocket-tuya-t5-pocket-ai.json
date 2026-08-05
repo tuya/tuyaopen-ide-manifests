@@ -4,7 +4,8 @@
   "cloud": {
     "pid": {
       "via": "kconfig"
-    }
+    },
+    "oemUrl": "https://pbt.tuya.com/s?p=599dd1eaa73fb9ac36746ceee17a1df8&u=6232683ef12714848fae37955806cb9e&t=2"
   },
   "configs": [
     {

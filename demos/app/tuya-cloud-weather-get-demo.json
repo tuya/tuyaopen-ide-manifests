@@ -6,6 +6,7 @@
       "via": "macro",
       "macro": "TUYA_PRODUCT_ID",
       "file": "include/tuya_config.h"
-    }
+    },
+    "oemUrl": "https://pbt.tuya.com/s?p=dfbc56f91063eb6f7d2f68f86d46aab8&u=6232683ef12714848fae37955806cb9e&t=2"
   }
 }
