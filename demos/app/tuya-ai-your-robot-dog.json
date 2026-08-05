@@ -46,6 +46,9 @@
     }
   ],
   "cloud": {
-    "productId": "y0k6ydkxphvv5g7a"
+    "productId": "y0k6ydkxphvv5g7a",
+    "pid": {
+      "via": "kconfig"
+    }
   }
 }
