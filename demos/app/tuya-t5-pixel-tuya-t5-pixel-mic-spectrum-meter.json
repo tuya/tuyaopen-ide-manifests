@@ -24,5 +24,8 @@
       "driver": "audio",
       "level": "required"
     }
-  ]
+  ],
+  "cloud": {
+    "oemUrl": "https://pbt.tuya.com/s?p=6559682246779a054ad545874849d89b&u=6232683ef12714848fae37955806cb9e&t=2"
+  }
 }

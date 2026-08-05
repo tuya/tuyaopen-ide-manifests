@@ -44,5 +44,8 @@
       "driver": "led",
       "level": "optional"
     }
-  ]
+  ],
+  "cloud": {
+    "productId": "y0k6ydkxphvv5g7a"
+  }
 }
