@@ -50,19 +50,19 @@ holding a foreground terminal open.
 
 ```bash
 # Discover available CLI commands (auto-detects port; baud is always 115200)
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py help
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py help
 
 # Send a single command
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py send "sys_version"
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py send "sys_version"
 
 # Force a specific port (useful if auto-pick chooses the wrong ACM port)
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py -p /dev/ttyACM0 send "kv_dump"
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py -p /dev/ttyACM0 send "kv_dump"
 
 # List candidate serial ports (no connection)
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py list-ports
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py list-ports
 
 # JSON output for agent callers
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py --json help
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py --json help
 ```
 
 ## Sub-commands
@@ -133,16 +133,16 @@ Run `help` first to discover what's available.
 
 ```bash
 # 1. Discover ports
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py --json list-ports
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py --json list-ports
 
 # 2. Check what commands are available
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py --json help
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py --json help
 
 # 3. Send a debug command
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py --json send "heap_stats"
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py --json send "heap_stats"
 
 # 4. Reset the device remotely
-python .agents/skills/tuyaopen/cli-debug/scripts/cli_debug.py --json send "sys_reset"
+python .agents/skills/tuyaopen-cli-debug/scripts/cli_debug.py --json send "sys_reset"
 ```
 
 ## CLI not enabled: firmware config

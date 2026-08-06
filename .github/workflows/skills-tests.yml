@@ -3,14 +3,14 @@ name: Skills Script Tests
 on:
   pull_request:
     paths:
-      - "skills/embedded/tuyaopen/**"
+      - "skills/**"
       - "tests/skills/**"
       - ".github/workflows/skills-tests.yml"
   push:
     branches:
       - main
     paths:
-      - "skills/embedded/tuyaopen/**"
+      - "skills/**"
       - "tests/skills/**"
       - ".github/workflows/skills-tests.yml"
 

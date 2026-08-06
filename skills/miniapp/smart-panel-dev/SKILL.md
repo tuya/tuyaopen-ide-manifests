@@ -131,4 +131,4 @@ skill 直接进品类 skill；也**不能**跳过 conventions 直接写代码。
 | `scripts/fetch_doc.py` | 拉 `developer.tuya.com` 文档正文 / API schema |
 
 调用路径：从项目根或 `source/miniapp/` 均可用相对路径
-`.agents/skills/miniapp/smart-panel-dev/scripts/`。
+`.agents/skills/smart-panel-dev/scripts/`。

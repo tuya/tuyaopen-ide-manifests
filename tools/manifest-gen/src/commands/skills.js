@@ -87,10 +87,7 @@ export function registerSkillsCommands(program) {
     .option('--tags <tags...>', '')
     .option('--commands <cmds...>', '')
     .option('--enabled', '设为 defaultEnabled=true', false)
-    .option('--local-path <path>', '')
-    .option('--repo <repo>', '')
-    .option('--subpath <subpath>', '')
-    .option('--ref <ref>', '', 'master')
+    .requiredOption('--local-path <path>', 'source.localPath，形如 skills/<surface>/<name>')
     .action(async (id, opts) => {
       const data = await load()
       const items = getItems(data)
@@ -104,8 +101,8 @@ export function registerSkillsCommands(program) {
       if (opts.commands?.length) entry.commands = opts.commands
       entry.defaultEnabled = opts.enabled
       entry.installPayload = opts.payload
-      if (opts.localPath) entry.source = { localPath: opts.localPath }
-      else if (opts.repo) entry.source = { repo: opts.repo, subpath: opts.subpath || '', ref: opts.ref }
+      // localPath is the only supported source: skill payloads live in this repo.
+      entry.source = { localPath: opts.localPath }
       items.push(entry)
       items.sort((a, b) => (a.order ?? 9999) - (b.order ?? 9999))
       setItems(data, items)

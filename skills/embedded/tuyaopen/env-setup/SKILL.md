@@ -83,9 +83,9 @@ Or run the bundled check script:
 
 | Platform | Command |
 |----------|---------|
-| Linux / macOS | `.agents/skills/tuyaopen/env-setup/scripts/check_env.sh` |
-| Windows CMD | `.agents\skills\tuyaopen\env-setup\scripts\check_env.bat` |
-| Windows PowerShell | `.agents/skills/tuyaopen/env-setup/scripts/check_env.ps1` |
+| Linux / macOS | `.agents/skills/tuyaopen-env-setup/scripts/check_env.sh` |
+| Windows CMD | `.agents\skills\tuyaopen-env-setup\scripts\check_env.bat` |
+| Windows PowerShell | `.agents/skills/tuyaopen-env-setup/scripts/check_env.ps1` |
 
 ## Troubleshooting
 

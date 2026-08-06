@@ -40,6 +40,12 @@ jobs:
           echo "skills=$SKILLS"       >> "$GITHUB_OUTPUT"
           echo "→ Domain versions — boardsAndChips=$BOARDS demos=$DEMOS platforms=$PLATFORMS skills=$SKILLS"
 
+      - name: Validate skills index
+        run: |
+          # A tag can point at a commit that never went through PR checks —
+          # never package an index that fails validation.
+          python3 scripts/validate-skills-index.py
+
       - name: Stage package contents
         run: |
           mkdir -p staging

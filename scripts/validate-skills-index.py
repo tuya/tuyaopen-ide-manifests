@@ -8,9 +8,12 @@ Checks (all local / deterministic, no network):
   - Bilingual fields (name/summary/whenToUse) carry both 'en' and 'zh-CN'
   - 'id' is unique; 'surface' is one of the known surfaces
   - 'source' must be {localPath}; {devSkills + subpath} is rejected (dev-skills is archived)
-  - For local skills: source.localPath dir exists and installPayload == localPath minus 'skills/'
+  - For local skills: source.localPath holds a SKILL.md, sits under skills/<surface>/,
+    and installPayload == localPath minus 'skills/'
   - No orphan skills: every top-level skills/**/SKILL.md dir is referenced by
     exactly one item's source.localPath
+  - Every '.agents/skills/<x>' path written in skills/**/*.md names a known item id
+    (installs are flat: .agents/skills/<id>)
   - Every related[] entry resolves to a known item id
 
 Usage: python3 scripts/validate-skills-index.py [path/to/index.json]
@@ -64,9 +67,9 @@ def check_top_level(data: dict) -> None:
 
 
 def check_dev_skills_release(dsr) -> None:
-    # Optional tombstone: TuyaOpen-dev-skills is archived and its content is now
-    # inlined under skills/embedded/tuyaopen/. The field is retained only for IDE
-    # builds that read it unconditionally, so it may be absent.
+    # No longer published: TuyaOpen-dev-skills is archived and its content is now
+    # inlined under skills/embedded/tuyaopen/, so the field is normally absent.
+    # Kept lenient rather than forbidden so an old index can still be validated.
     if dsr is None:
         return
     if not isinstance(dsr, dict):
@@ -141,7 +144,7 @@ def check_source(label: str, item: dict) -> None:
         err(f"{label}: 'source' must be exactly one of localPath or devSkills, not both")
         return
     if not has_local and not has_dev:
-        err(f"{label}: 'source' must declare either localPath or devSkills")
+        err(f"{label}: 'source' must declare localPath")
         return
 
     if has_dev:
@@ -163,6 +166,21 @@ def check_source(label: str, item: dict) -> None:
         return
     if not (REPO_ROOT / local_path).is_dir():
         err(f"{label}: source.localPath does not exist: {local_path}")
+    elif not (REPO_ROOT / local_path / "SKILL.md").is_file():
+        # Without this an entry can point at a parent directory: the payload
+        # would install empty, and every real skill nested below it would be
+        # excused by the orphan check as a "bundled sub-skill".
+        err(f"{label}: source.localPath has no SKILL.md directly inside: {local_path}")
+
+    # surface must match the directory the payload actually sits in, since the
+    # IDE copies skills/<surface>/ trees into its cache per surface.
+    segments = local_path.split("/")
+    if len(segments) > 1 and item.get("surface") in SURFACES and segments[1] != item.get("surface"):
+        err(
+            f"{label}: surface {item['surface']!r} disagrees with source.localPath "
+            f"{local_path!r} (expected it under skills/{item['surface']}/)"
+        )
+
     expected_payload = re.sub(r"^skills/", "", local_path)
     if is_str(item.get("installPayload")) and item["installPayload"] != expected_payload:
         err(
@@ -227,6 +245,35 @@ def check_orphan_skill_dirs(items: list) -> None:
         )
 
 
+# Both separators: Windows instructions in SKILL.md legitimately use backslashes.
+AGENT_SKILL_PATH_RE = re.compile(r"\.agents[/\\]skills[/\\]([A-Za-z0-9._-]+)")
+
+
+def check_agent_skill_paths(ids: set) -> None:
+    """Markdown must reference the INSTALLED path, which is `.agents/skills/<id>`.
+
+    The IDE installs a skill to `path.join('.agents/skills', item.id)` — flat,
+    keyed off the id, not off localPath/installPayload. `.agents/skills/tuyaopen/build/`
+    is the old nested layout the IDE now repairs away from, so a SKILL.md telling
+    the agent to run a script there sends it to a path that does not exist.
+    """
+    for md in sorted((REPO_ROOT / "skills").rglob("*.md")):
+        rel = md.relative_to(REPO_ROOT).as_posix()
+        try:
+            text = md.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as e:
+            err(f"{rel}: unreadable as UTF-8: {e}")
+            continue
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            for segment in AGENT_SKILL_PATH_RE.findall(line):
+                if segment not in ids:
+                    err(
+                        f"{rel}:{lineno}: '.agents/skills/{segment}' is not an installed skill "
+                        f"path — the first segment must be an index item id (installs are flat: "
+                        f".agents/skills/<id>)"
+                    )
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
     if not index_path.is_file():
@@ -252,6 +299,7 @@ def main() -> int:
         check_item(item, index, seen_ids)
     check_related(items, seen_ids)
     check_orphan_skill_dirs(items)
+    check_agent_skill_paths(seen_ids)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)

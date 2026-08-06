@@ -457,4 +457,4 @@ export default App;
 ## 下一步
 
 - 上传前 → [upload-checklist.md](upload-checklist.md)
-- 跑自动化检查 → `node .agents/skills/miniapp/smart-panel-dev/scripts/validate.mjs`
+- 跑自动化检查 → `node .agents/skills/smart-panel-dev/scripts/validate.mjs`

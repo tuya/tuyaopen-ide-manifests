@@ -29,19 +29,31 @@ skills/
 
 ## Path rules
 
-Three paths describe the same skill; keep them consistent:
+Three paths describe the same skill. The first two are about **where the source
+lives**; the third is **where it gets installed**, and it is derived from the
+`id` — not from the other two. Getting this wrong is easy and silent.
 
 | | example | who reads it |
 |---|---|---|
 | `source.localPath` | `skills/embedded/tuyaopen/build` | this repo — where the payload lives |
-| `installPayload` | `embedded/tuyaopen/build` | the IDE installer — **must** equal `localPath` minus the `skills/` prefix (CI enforces this) |
-| runtime path | `.agents/skills/tuyaopen/build` | the SKILL.md text itself — the IDE also drops the surface prefix when installing into a project |
+| `installPayload` | `embedded/tuyaopen/build` | the IDE's cache layout — **must** equal `localPath` minus the `skills/` prefix (CI enforces this) |
+| installed dir | `.agents/skills/tuyaopen-build` | the SKILL.md text itself — **`.agents/skills/<id>`, flat.** Not the payload path |
 
-So when a `SKILL.md` refers to its own scripts, write the **runtime** form:
+The installed directory is `path.join('.agents/skills', item.id)` in the IDE
+(`src/core/skill/skills.ts`), so a skill with id `tuyaopen-build` installs to
+`.agents/skills/tuyaopen-build/` regardless of how deeply its source is nested.
+A *nested* form — `tuyaopen/build/` under `.agents/skills/` — is the **old**
+layout the IDE actively repairs away from
+(`src/core/skill/skillsLegacyMigration.ts`).
+
+So when a `SKILL.md` refers to its own scripts, write the **installed** form:
 
 ```bash
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/dev-loop/scripts/build_run.py
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-dev-loop/scripts/build_run.py
 ```
+
+CI enforces this: `validate-skills-index.py` rejects any `.agents/skills/…`
+path in a skill's markdown whose leading segment is not a known item `id`.
 
 Sub-skills bundled inside a parent skill (e.g.
 `embedded/hardware-vibe-coding/peripheral-drivers/onchip-gpio/SKILL.md`) are
@@ -77,6 +89,46 @@ exempts them.
    ```
 
 Both run in CI (`validate-skills-index.yml`, `skills-tests.yml`).
+
+## Using these skills without the TuyaOpen IDE
+
+The IDE installs skills for you. If you work in plain Cursor / Claude Code, the
+payloads here are usable directly — these instructions replace the ones that
+lived in the archived `TuyaOpen-dev-skills` README.
+
+Loader directories:
+
+| Location | Scope | Notes |
+|----------|-------|-------|
+| `.agents/skills/` | project | Cursor / VS Code Agent Skills |
+| `.cursor/skills/` | project | Cursor |
+| `~/.cursor/skills/` | user | Cursor, global |
+| `.claude/skills/` | project | Claude Code — walks **one** level only, so the directory name must be flat |
+
+Either ask the agent to install a skill for you:
+
+```text
+Install the skill for this project: https://github.com/tuya/tuyaopen-ide-manifests.git
+```
+
+…or copy it in yourself. **Name the destination directory after the `id`, flat** —
+that is what the SKILL.md files' own script paths assume:
+
+```bash
+git clone https://github.com/tuya/tuyaopen-ide-manifests.git
+mkdir -p /path/to/TuyaOpen/.agents/skills
+# skills/<surface>/<...>/<name>  →  .agents/skills/<id>
+cp -r tuyaopen-ide-manifests/skills/embedded/tuyaopen/build \
+      /path/to/TuyaOpen/.agents/skills/tuyaopen-build
+cp -r tuyaopen-ide-manifests/skills/embedded/tuyaopen/env-setup \
+      /path/to/TuyaOpen/.agents/skills/tuyaopen-env-setup
+```
+
+Look the `id` up in `index.json` — it is **not** derivable from the directory
+name (`skills/embedded/tuyaopen/build` → `tuyaopen-build`, but
+`skills/miniapp/smart-panel-dev` → `smart-panel-dev`). The archived repo's
+instructions copied whole trees into a `tuyaopen/` subdirectory instead; that
+nested layout no longer matches the script paths inside the skills.
 
 ## History: TuyaOpen-dev-skills
 

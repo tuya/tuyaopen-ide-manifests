@@ -55,9 +55,9 @@ The standard development iteration cycle for TuyaOpen hardware:
 For LINUX platform targets, skip flash/monitor — use the bundled script:
 
 ```bash
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/dev-loop/scripts/build_run.py          # build + run + auto-analyze (30s timeout)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/dev-loop/scripts/build_run.py 60       # custom timeout in seconds
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/dev-loop/scripts/build_run.py 0        # no timeout
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-dev-loop/scripts/build_run.py          # build + run + auto-analyze (30s timeout)
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-dev-loop/scripts/build_run.py 60       # custom timeout in seconds
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-dev-loop/scripts/build_run.py 0        # no timeout
 ```
 
 Or manually:
@@ -151,7 +151,7 @@ Built-in CLI (`tal_cli`) via debug UART (prompt: `tuya> `). Commands, registrati
 
 Full reference: skill **`tuyaopen/debug-helper`**. Script path (relative to SDK root):
 
-`.agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py`
+`.agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py`
 
 Logs are always written to **`<project_dir>/.target_logging/`** (gitignored by the SDK).
 
@@ -159,18 +159,18 @@ Logs are always written to **`<project_dir>/.target_logging/`** (gitignored by t
 
 ```bash
 # 1. Start background monitor (non-blocking)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py \
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py \
     --json start -p /dev/ttyACM1
 
 # 2. Flash on the other port while monitor keeps logging
 tos.py flash -p /dev/ttyACM0
 
 # 3. Read log after boot
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py \
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py \
     --json tail -n 200
 
 # 4. Stop and release port
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py stop
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py stop
 ```
 
 ### Iteration loop (analyze → fix → re-run)

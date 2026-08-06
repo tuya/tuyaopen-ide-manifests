@@ -94,10 +94,10 @@ Before writing auth credentials over UART, identify the correct port:
 2. For T5/T5AI boards (WCH dual-serial, VID `0x1a86` PID `0x55d2`): the **lower** enumerated port is typically used for flash/auth; the **higher** port for monitor/log. This is not guaranteed — swap if the auth command fails.
 3. Use skill `tuyaopen/debug-helper` to capture device logs in the background during the auth flow:
    ```bash
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py start -p <monitor-port>
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py start -p <monitor-port>
    # ... run auth on auth port ...
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py tail -n 100
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py stop
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py tail -n 100
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py stop
    ```
 
 ## Agent Strategy

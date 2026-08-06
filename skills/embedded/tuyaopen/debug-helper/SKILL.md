@@ -23,7 +23,7 @@ file and stops the process when done.
 ## Script location
 
 ```
-.agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py
+.agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py
 ```
 
 No extra dependencies — uses Python stdlib only.
@@ -32,13 +32,13 @@ No extra dependencies — uses Python stdlib only.
 
 ```bash
 # Start background monitor (logs to <project_dir>/.target_logging/YYYYMMDD_HHMMSS.log)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py start -p /dev/ttyACM1
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py start -p /dev/ttyACM1
 
 # Read last 200 lines (JSON output for agent parsing)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py --json tail -n 200
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py --json tail -n 200
 
 # Stop monitor (releases serial port)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py stop
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py stop
 ```
 
 ## Commands
@@ -93,20 +93,20 @@ ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null
 
 ```bash
 # 1. Start background monitor
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py \
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py \
     --json start -p /dev/ttyACM1
 
 # 2. Flash firmware (monitor keeps logging while flash runs on other port)
 tos.py flash -p /dev/ttyACM0
 
 # 3. Wait for boot, then read log
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py \
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py \
     --json tail -n 200
 
 # 4. Analyze: look for [ty E], OPRT_ errors, "feed watchdog", "mqtt connected"
 
 # 5. Stop when done
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen/debug-helper/scripts/monitor_helper.py stop
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py stop
 ```
 
 ## Log analysis patterns

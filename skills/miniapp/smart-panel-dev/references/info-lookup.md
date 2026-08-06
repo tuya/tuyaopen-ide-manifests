@@ -16,7 +16,7 @@
 Windows 10 1803+ 内置 curl）。
 
 **脚本调用路径**：从项目根目录或 `source/miniapp/` 均可用相对路径
-`.agents/skills/miniapp/smart-panel-dev/scripts/`；技能内部引用用 `scripts/` 简写。
+`.agents/skills/smart-panel-dev/scripts/`；技能内部引用用 `scripts/` 简写。
 
 ## 禁止凭记忆回答的 5 类问题
 
@@ -31,7 +31,7 @@ Windows 10 1803+ 内置 curl）。
 ## 1. 跑 `validate.mjs` 做上线自检
 
 ```bash
-node .agents/skills/miniapp/smart-panel-dev/scripts/validate.mjs
+node .agents/skills/smart-panel-dev/scripts/validate.mjs
 ```
 
 输出形如：

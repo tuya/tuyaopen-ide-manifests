@@ -142,7 +142,7 @@ Tuya 平台「网络请求白名单」里登记。审核时随机抽查请求 ho
 
 ```bash
 cd source/miniapp
-node .agents/skills/miniapp/smart-panel-dev/scripts/validate.mjs
+node .agents/skills/smart-panel-dev/scripts/validate.mjs
 ```
 
 退出码：
