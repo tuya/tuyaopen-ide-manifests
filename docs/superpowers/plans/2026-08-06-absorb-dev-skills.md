@@ -27,7 +27,11 @@
 已验证：`validate-skills-index.py` 通过（29 条目）；`pytest tests/skills` 15 passed；
 打包 dry-run 产物含全部 10 个 `SKILL.md`，体积 5.73 MB → 5.79 MB。
 
-**仍未做：** Task 6（发 v0.1.8 + IDE 冒烟）、Task 7 上游侧（归档 `TuyaOpen-dev-skills`）、
+随后做了一轮独立 review，发现 1 个 Blocker（安装路径写错，全部 SKILL.md 波及）+ 2 个
+Major + 8 个 Minor/Nit，已在 `b3ab228` 修完并加了护栏 —— 详见第六节。
+
+**仍未做：** Task 6（发 v0.1.8 + **同窗口推 IDE submodule 指针** + IDE 冒烟）、
+Task 7 上游侧（归档 `TuyaOpen-dev-skills`，含新发现的 `tuya-devplat-cli` 消费方）、
 Task 8 剩余低优先级清尾 + IDE 侧 4 项遗留。
 
 ---
@@ -162,7 +166,9 @@ tests/skills/         ← 原 tests/
 
 - [ ] 合并 Task 1–5 后打 tag `v0.1.8`（`release.yml` 会自动打包、写 release.json、同步 Gitee、开 PR 回写 main）
 - [ ] 下载产出的 `manifests.tar.gz`，确认含 `skills/embedded/tuyaopen/` 下 10 个 `SKILL.md`
-- [ ] IDE 端冒烟：安装 `tuyaopen-build`、`tuyaopen-dev-loop`，确认落到 `embedded/tuyaopen/...` 且**没有**发起 `TuyaOpen-dev-skills.tar.gz` 的下载请求
+- [ ] **⚠ 同一窗口内把 IDE 仓库的 `vendor/tuyaopen-ide-manifests` submodule 指针推到合并后的 commit。** 现 pin 在 `ee3102d`（迁移前），其树下没有 `skills/embedded/tuyaopen/`。dev 模式下 `manifestsRelease.ts:227-232` 在 submodule 存在时**直接跳过 tarball 下载**，`skills-registry/` 会是空的 —— 于是合并后、指针未动这段时间里，F5 下装这 10 个技能会拿到 `SKILL_NOT_CACHED_ERROR`，比现状更糟（现状至少还能回落到 dev-skills tar 包）。生产用户不受影响（走 release tarball）。
+- [ ] IDE 端冒烟：安装 `tuyaopen-build`、`tuyaopen-dev-loop`，确认①缓存落到 `skills-registry/embedded/tuyaopen/...`、②项目里落到 `.agents/skills/tuyaopen-build/`（扁平，不是 `tuyaopen/build/`）、③**没有**发起 `TuyaOpen-dev-skills.tar.gz` 的下载请求
+- [ ] 冒烟时实跑一次 SKILL.md 里的脚本命令（如 `$OPEN_SDK_PYTHON .agents/skills/tuyaopen-dev-loop/scripts/build_run.py`），确认路径修正后真的能执行
 
 ### Task 7：下线上游仓库（1 个 PR + 手工操作）
 
@@ -173,8 +179,17 @@ tests/skills/         ← 原 tests/
 - [ ] Gitee 镜像 `tuya-open/TuyaOpen-dev-skills` 同样加归档说明并设只读
 
 **在本仓：**
-- [ ] 删除 `.github/workflows/update-dev-skills.yml`
+- [x] 删除 `.github/workflows/update-dev-skills.yml`
 - [ ] 组织级 secret `MANIFESTS_DISPATCH_TOKEN` 若无其他用途则回收
+
+**第二个下游消费方（review 发现，原计划漏了）：** `tuya-devplat-cli`（IDE 仓库的另一个 submodule，`vendor/tuya-devplat-cli`）从上游 **release tar 包**里 vendor 了 5 个技能，pin 在 v0.0.9：
+
+- `scripts/sync-tuyaopen-skills.mjs:2` —— 注释写明「vendor TuyaOpen-dev-skills（pin v0.0.9）」
+- `opencode-config/skills/skills-vendor.manifest.json:3` —— `"source": "https://github.com/tuya/TuyaOpen-dev-skills"`
+- `.../sdk-project/references/TOS_COMMANDS.md:18` —— 指向上游 `skills/tuyaopen/project-config/references/TOS_COMMANDS.md`
+
+- [ ] 把该仓库的 vendor source 与文档链接改指 `tuyaopen-ide-manifests`
+- [ ] 归档说明里写明 **v0.0.9 和 v0.0.10 的 release 资产都不能删**（原计划只提了 v0.0.10）。归档本身不影响下载，但一旦有人清理 release，该仓库的 sync / `--check` 会挂
 
 ### Task 8：清尾
 
@@ -208,3 +223,41 @@ Task 0 已证明无需兼容窗口，本仓两项提前做完：
 - IDE 少一次网络下载与一次 sha256 校验
 - 少一条 `repository_dispatch` 链路、一个 workflow、一份重复的 `sync-gitee-release.sh`
 - 顺带修掉 `cli-debug` / `crash-decode` 两个技能「已分发但用户看不见」的问题，并用 validator 护栏防复发
+- 顺带修掉全部 36 处失效的技能自引用路径（见第六节 B1），`dev-loop` / `debug-helper` 这两个默认开启的技能之前就是坏的
+
+---
+
+## 六、独立 review 的发现与处置（2026-08-06）
+
+### B1（Blocker，已修）：安装路径不是载荷路径
+
+IDE 安装技能的目标目录是 `path.join('.agents/skills', item.id)`（`skills.ts:357`）—— **由 `id` 决定，扁平**；`skillsLegacyMigration.ts:5-8` 更明确把 `.agents/skills/tuyaopen/build/` 称作要修掉的 OLD layout。而上游 10 个 SKILL.md 里所有自引用都写成嵌套形式，指向不存在的路径。
+
+根因很有意思：上游 README 的手动安装说明装的就是 `.agents/skills/tuyaopen/`，所以在上游语境里这些路径是自洽的 —— 只是跟 IDE 安装器不一致。这些技能一直靠 IDE 分发，也就一直是坏的（`dev-loop`、`debug-helper` 都是 `defaultEnabled: true`）。
+
+处置：31 处 tuyaopen 引用 + 5 处 `skills/miniapp/smart-panel-dev`（其 id 是 `smart-panel-dev`，不带 `miniapp-` 前缀）全部改为扁平形式；含一处反斜杠写法的 Windows 路径。validator 新增护栏：`skills/**/*.md` 里任何 `.agents[/\]skills[/\]<seg>` 的首段必须是已知 item id —— 这条护栏在写文档过程中当场抓到我自己两处笔误。
+
+### 一并处置的其它发现
+
+| 级别 | 发现 | 处置 |
+|------|------|------|
+| Major | IDE submodule 指针停在迁移前，合并后 dev 模式会 `SKILL_NOT_CACHED_ERROR` | 写进 Task 6，必须同窗口推指针 |
+| Major | `tuya-devplat-cli` 是第二个下游消费方，pin 在上游 v0.0.9 | 写进 Task 7 |
+| Minor | `source.localPath` 只校验目录存在，指到父目录可同时骗过孤儿检查 | validator 增加「必须直接含 SKILL.md」 |
+| Minor | `surface` 与 `localPath` 所在目录可以不一致 | validator 增加一致性检查 |
+| Minor | `manifest-gen skills add` 两个 source 选项都不传时会写出无 `source` 的条目 | `--local-path` 改为必填，删掉 `--repo/--subpath/--ref` |
+| Minor | `skills-tests.yml` 只盯 `skills/embedded/tuyaopen/**` | 放宽到 `skills/**` |
+| Minor | `release.yml` 不跑 validator，但 README 声称会跑 | 打包前加一步校验 |
+| Minor | `registry.json` 的 `publishedAt` 未跟着 bump；skills `summary` 混入了迁移说明 | 都已修（已确认 IDE 不以 `publishedAt` 做刷新门禁，仅一致性问题） |
+| Nit | `check_env.sh` 上游是 100755，Windows 上 `cp` 丢了执行位 | `git update-index --chmod=+x` 复原（内容 blob 未变） |
+| Nit | 上游 README 独有的「手动安装（不用 IDE）」说明归档后会消失 | 按扁平布局重写后并入 `skills/README.md` |
+
+### 未处置 / 留给 IDE 侧
+
+- IDE 侧 4 项遗留见 Task 0 末尾；其中命令面板那个「同步 TuyaOpen-dev-skills」按钮迁移后必然空转，建议随本次发版一起下掉。
+- validator 仍不会检查「改了 `skills/**` 是否 bump 了 `registry.json` 的 skills 版本」—— 漏 bump 会让差分刷新给出旧缓存。需要跟 base 分支比对，暂未实现。
+- `cli_debug.py`（477 行，本次唯一体量较大且首次可被用户调用的脚本）没有任何测试，`tests/skills` 也没导入它。仅确认过 `py_compile` 通过。
+
+### 协调风险
+
+review 期间发现 IDE 仓库有并行改动（分支 `fix/skills-startup-triple-scan`，改 `skillsSync.ts` / `skillsFlow.ts` 及其测试），内容是给 `SkillSyncItemResult` 加 `changed` 字段修启动重复 push。它投入的正是本次迁移会让其永久走不到的 devSkills 同步通道（新测试完全建立在 `devSkillsRelease` fixture 上）。两边落地前应先对齐。
