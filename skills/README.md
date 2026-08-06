@@ -86,8 +86,19 @@ used to download as a **second** tarball resolved through the
 content was inlined here at upstream `d0655d46` (v0.0.10) — see
 `docs/superpowers/plans/2026-08-06-absorb-dev-skills.md`.
 
-`index.json` still carries `devSkillsRelease` as a **tombstone** so IDE builds
-that read the field unconditionally keep working; the v0.0.10 asset remains
-downloadable from the archived repo's releases. Remove the field once the
-oldest supported IDE no longer reads it. New skills must never use
-`source.devSkills` — the validator warns on it.
+`devSkillsRelease` and `source.devSkills` are **gone**, and the validator now
+rejects `source.devSkills`. Verified against the IDE before removing the field:
+it is optional-typed (`SkillsManifest.devSkillsRelease?`) and was guarded from
+the commit that introduced it — `skillsFlow.ts` only syncs when
+`devSkillsRelease != null && some(source.devSkills === true)`, and `syncSkills`
+logs-and-skips when the block is absent. `assertDomainEnvelope` validates only
+`schemaVersion` / `domain` / `items`, so no IDE build ever required the field.
+
+How the payload reaches the IDE now, both ways:
+
+- **dev** — read straight from the `vendor/tuyaopen-ide-manifests` submodule at
+  `vendor/tuyaopen-ide-manifests/<localPath>`.
+- **prod** — `manifests.tar.gz` is extracted and `skills/{embedded,cloud,miniapp}`
+  is copied to `<globalStorage>/cache/skills-registry/{surface}`, then resolved
+  per skill by `installPayload`. That is exactly why `installPayload` must equal
+  `localPath` minus `skills/`.

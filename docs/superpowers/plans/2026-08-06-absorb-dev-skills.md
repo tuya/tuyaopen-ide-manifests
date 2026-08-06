@@ -21,11 +21,14 @@
 | `7c3ad3e` | 删除 `update-dev-skills.yml` dispatch 监听 |
 | `3ae1627` | 文档：新增 `skills/README.md`，更新 README / manifest-architecture |
 
+随后 Task 0 在 IDE 仓库（只读）核实通过，据此删掉 `devSkillsRelease` 墓碑并把
+`source.devSkills` 从警告升级为报错 —— 详见下方 Task 0。
+
 已验证：`validate-skills-index.py` 通过（29 条目）；`pytest tests/skills` 15 passed；
 打包 dry-run 产物含全部 10 个 `SKILL.md`，体积 5.73 MB → 5.79 MB。
 
-**仍未做：** Task 0（IDE 端确认 `devSkillsRelease` 能否删）、Task 6（发 v0.1.8 + IDE 冒烟）、
-Task 7 上游侧（归档 `TuyaOpen-dev-skills`）、Task 8（清尾）。
+**仍未做：** Task 6（发 v0.1.8 + IDE 冒烟）、Task 7 上游侧（归档 `TuyaOpen-dev-skills`）、
+Task 8 剩余低优先级清尾 + IDE 侧 4 项遗留。
 
 ---
 
@@ -82,15 +85,25 @@ tests/skills/         ← 原 tests/
 
 ## 三、任务
 
-### Task 0：确认 IDE 端消费方式（前置，~15 分钟）
+### Task 0：确认 IDE 端消费方式 ✅ 已完成
 
-在 IDE 仓库里 grep 三个词，确认后再动 index.json：
+读 `D:\LENOVO\Documents\code\gitlib\tuyaopen_ide`（未做任何修改），结论：
 
-- [ ] `devSkillsRelease` —— 是否**无条件**读取/校验？缺失会不会抛错？决定墓碑保留策略
-- [ ] `localPath` —— 确认安装逻辑是「从 manifests 包内 `localPath` 拷到 `installPayload`」
-- [ ] `source.devSkills` / `subpath` —— 确认没有别处硬编码上游 URL 或 `skills/tuyaopen/` 前缀
+- [x] **`devSkillsRelease` 可以直接删** —— `SkillsManifest.devSkillsRelease?` 是可选类型，且从引入它的第一个 commit（`c3ab7948` / `e1e254d3` / `7ffdaaf8`，均 2026-05-27）起就带守卫：`skillsFlow.ts:199` 只在 `devSkillsRelease != null && some(source.devSkills === true)` 时才同步；`skillsSync.ts:192` 在缺失时 log 并跳过。`manifestsLoader.ts:464 assertDomainEnvelope` 只校验 `schemaVersion` / `domain` / `items`。**没有任何已发布版本会无条件读它**，因此墓碑已一并删除。
+- [x] **`localPath` 两条路径都对得上**：
+  - dev：`skillsRegistry.ts:356-366` 直读 `<extensionRoot>/vendor/tuyaopen-ide-manifests/<localPath>`
+  - prod：`manifestsCacheIntegrity.ts:110-118` 把解包后的 `skills/{embedded,cloud,miniapp}` 整体 `cp` 到 `<globalStorage>/cache/skills-registry/{surface}`，再由 `skills.ts:271,410` 按 `installPayload` 取用 —— 这正是 `installPayload == localPath - "skills/"` 必须成立的原因
+- [x] **没有硬编码上游 URL 或 `skills/tuyaopen/` 前缀** —— URL 全部来自 `devSkillsRelease` 数据；`src/` 里只剩注释和两条 i18n 文案提到该仓库名
+- [x] **IDE CI 不校验本仓 skills** —— `scripts/manifest-validator.mjs` 只覆盖 boards/demos/platforms，且只挂在手动 `npm run validate:manifest`，本次改动不会打破 IDE CI
 
-**若发现 IDE 无条件读 `devSkillsRelease`：** 墓碑必须留到「不再读它的 IDE 版本」成为最低支持版本之后，Task 6 相应延后。
+**顺带确认修掉了一个已记录的问题：** `docs/audit-2026-08-03/REPORT.md:448` 记录「submodule 里 8 个 skill 的 `installPayload` 实际不存在，dev 下 F5 仍要联网」。submodule 现 pin 在 `ee3102d`；本次迁移后这 8 个技能在 dev 下直接从 submodule 命中。
+
+**IDE 侧遗留（不阻塞发版，需另开 issue）：**
+
+1. `skillsFlow.ts:926 handleSyncUpstreamSkillsCommand`（命令面板「同步 TuyaOpen-dev-skills 技能目录…」）迁移后必然是空转：`filterSyncable` 要求 `source.repo`、devSkills 分支要求 `devSkillsRelease`，两者都已不存在 → 永远弹 "Synced 0 skill(s)."。应改为调 `manifestsReleaseManager.checkAndSync({ force: true })`，或直接下掉该命令 + 两条 i18n 文案（`en.ts:1441` / `zh-CN.ts:1425`）。
+2. `syncSkills` 的 `prunedCount` 清理逻辑随之不再触发（启动路径不再调用它）。技能从 index 移除后，`skills-registry/` 下的旧目录会残留；不影响目录展示（`reapplyManifestToEntries` 以 manifest 为准过滤），但缓存会慢慢变胖。
+3. `manifestsTypes.ts` 的 `devSkills` union 分支、`DevSkillsRelease` 类型、`skillsSync.ts` 的 devSkills 通道与 `.dev-skills-release.json` stamp 均已无数据可对应，可以删。
+4. `skillsFlow.ts:920` 注释称 tarball 落在 `skills-registry/upstream/`，与实际的 `skills-registry/<installPayload>` 不符（迁移前就已漂移）。
 
 ### Task 1：搬运文件（1 个 commit）
 
@@ -163,12 +176,15 @@ tests/skills/         ← 原 tests/
 - [ ] 删除 `.github/workflows/update-dev-skills.yml`
 - [ ] 组织级 secret `MANIFESTS_DISPATCH_TOKEN` 若无其他用途则回收
 
-### Task 8：清尾（可延后，等 IDE 底线版本抬上来）
+### Task 8：清尾
 
-- [ ] `skills/index.json` 删除 `devSkillsRelease`
-- [ ] `scripts/validate-skills-index.py` 删除 devSkills 分支（改为报错）
-- [ ] `tools/manifest-editor/frontend/js/skill-editor.js:20` 删除 dev-skills 显示分支
-- [ ] `tools/manifest-gen/src/commands/skills.js` 删除 `--repo/--subpath/--ref` 选项
+Task 0 已证明无需兼容窗口，本仓两项提前做完：
+
+- [x] `skills/index.json` 删除 `devSkillsRelease`
+- [x] `scripts/validate-skills-index.py`：`source.devSkills` 由警告改为**报错**（同时删掉随之失效的 warning 机制）
+- [ ] `tools/manifest-editor/frontend/js/skill-editor.js:20` 删除 dev-skills 显示分支（低优先级，无条目会命中）
+- [ ] `tools/manifest-gen/src/commands/skills.js` 删除 `--repo/--subpath/--ref` 选项（低优先级）
+- [ ] IDE 侧四项遗留见 Task 0 末尾
 
 ---
 
@@ -176,13 +192,13 @@ tests/skills/         ← 原 tests/
 
 | 风险 | 影响 | 处置 |
 |------|------|------|
-| IDE 无条件读 `devSkillsRelease`，被删后启动报错 | 高 | Task 0 先查；墓碑保留到确认为止（Task 8 才删） |
+| ~~IDE 无条件读 `devSkillsRelease`，被删后启动报错~~ | ~~高~~ | **已排除**：Task 0 核实该字段自引入起即为可选 + 有守卫，字段已删 |
 | 旧 IDE 版本仍去下上游 tar 包 | 低 | 归档 ≠ 删除，v0.0.10 资产长期可下载；三镜像（GitHub/Gitee/tuyacn CDN）均保留 |
 | `installPayload` 被顺手改动 | 高 | Task 2 明确禁止改；validator 的 `installPayload == localPath - "skills/"` 规则会拦住不一致 |
 | 归档后上游又收到 PR/需要热修 | 中 | 归档前在 README 写明「新 PR 提到 tuyaopen-ide-manifests」 |
 | 中文 JSON 编码被工具破坏 | 中 | 用 `manifest-gen skills` 子命令改，或确保以 UTF-8 读写；PR diff 里检查中文字段 |
 
-**回滚：** Task 6 发版前，revert PR 即可；`devSkillsRelease` 全程未动，旧链路立刻恢复。发版后回滚则再发一个 patch 版本把 8 个 `source` 改回 devSkills。
+**回滚：** Task 6 发版前，revert PR 即可（`devSkillsRelease` 与 8 个 devSkills `source` 一起回来，旧链路完整恢复 —— 上游 v0.0.10 的三个镜像仍在）。发版后回滚则再发一个 patch 版本做同样的 revert。
 
 ---
 

@@ -3,15 +3,6 @@
   "domain": "skills",
   "publishedAt": "2026-08-06T00:00:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
-  "devSkillsRelease": {
-    "version": "0.0.10",
-    "github": "https://github.com/tuya/TuyaOpen-dev-skills/releases/download/v0.0.10/TuyaOpen-dev-skills.tar.gz",
-    "gitee": "https://gitee.com/tuya-open/TuyaOpen-dev-skills/releases/download/v0.0.10/TuyaOpen-dev-skills.tar.gz",
-    "tuyacn": "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/TuyaOpen-dev-skills/TuyaOpen-dev-skills-0.0.10.tar.gz",
-    "sha256": "97389fbba3cd6cf398ed83ffb6e318d03d707873e0e4c64a744f0215aeb0c597",
-    "size": 38809,
-    "note": "Tombstone. TuyaOpen-dev-skills is archived and its content now lives in skills/embedded/tuyaopen/ (see source.localPath). Retained so IDE builds that read this field unconditionally keep working; the v0.0.10 asset stays downloadable. Remove once the oldest supported IDE no longer reads it."
-  },
   "items": [
     {
       "id": "tuyaopen-build",
