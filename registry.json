@@ -21,8 +21,8 @@
     },
     "skills": {
       "url": "skills/index.json",
-      "version": "0.1.0",
-      "summary": "AI agent skills (Cursor, Claude Code, etc.)"
+      "version": "0.2.0",
+      "summary": "AI agent skills (Cursor, Claude Code, etc.) — 内容全部内联于 skills/"
     }
   }
 }

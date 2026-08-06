@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-05-27T00:00:00Z",
+  "publishedAt": "2026-08-06T00:00:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "devSkillsRelease": {
     "version": "0.0.10",
@@ -9,7 +9,8 @@
     "gitee": "https://gitee.com/tuya-open/TuyaOpen-dev-skills/releases/download/v0.0.10/TuyaOpen-dev-skills.tar.gz",
     "tuyacn": "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/TuyaOpen-dev-skills/TuyaOpen-dev-skills-0.0.10.tar.gz",
     "sha256": "97389fbba3cd6cf398ed83ffb6e318d03d707873e0e4c64a744f0215aeb0c597",
-    "size": 38809
+    "size": 38809,
+    "note": "Tombstone. TuyaOpen-dev-skills is archived and its content now lives in skills/embedded/tuyaopen/ (see source.localPath). Retained so IDE builds that read this field unconditionally keep working; the v0.0.10 asset stays downloadable. Remove once the oldest supported IDE no longer reads it."
   },
   "items": [
     {
@@ -42,8 +43,7 @@
         "tuyaopen-project-config"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/build"
+        "localPath": "skills/embedded/tuyaopen/build"
       },
       "sdks": [
         "tuyaopen"
@@ -78,8 +78,7 @@
         "tuyaopen-build"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/project-config"
+        "localPath": "skills/embedded/tuyaopen/project-config"
       },
       "sdks": [
         "tuyaopen"
@@ -401,8 +400,7 @@
         "tuyaopen-device-auth"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/debug-helper"
+        "localPath": "skills/embedded/tuyaopen/debug-helper"
       },
       "sdks": [
         "tuyaopen"
@@ -436,8 +434,7 @@
         "tuyaopen-project-config"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/add-board"
+        "localPath": "skills/embedded/tuyaopen/add-board"
       },
       "sdks": [
         "tuyaopen"
@@ -470,8 +467,7 @@
         "tuyaopen-build"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/code-check"
+        "localPath": "skills/embedded/tuyaopen/code-check"
       },
       "sdks": [
         "tuyaopen"
@@ -505,8 +501,7 @@
         "tuyaopen-debug-helper"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/dev-loop"
+        "localPath": "skills/embedded/tuyaopen/dev-loop"
       },
       "sdks": [
         "tuyaopen"
@@ -540,8 +535,7 @@
         "tuyaopen-project-config"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/device-auth"
+        "localPath": "skills/embedded/tuyaopen/device-auth"
       },
       "sdks": [
         "tuyaopen"
@@ -574,8 +568,77 @@
         "tuyaopen-build"
       ],
       "source": {
-        "devSkills": true,
-        "subpath": "skills/tuyaopen/env-setup"
+        "localPath": "skills/embedded/tuyaopen/env-setup"
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuyaopen-cli-debug",
+      "order": 26,
+      "name": {
+        "en": "TuyaOpen CLI Debug",
+        "zh-CN": "TuyaOpen 设备 CLI 调试"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Send commands to the device serial CLI (tal_cli) over UART and capture the response.",
+        "zh-CN": "通过串口向设备 CLI（tal_cli）发送命令并捕获响应。"
+      },
+      "whenToUse": {
+        "en": "Use when the user wants to run CLI commands (sys_reset, kv_dump, fs_ls, custom commands) on a connected board without holding a foreground serial monitor open.",
+        "zh-CN": "当用户需要在已连接的开发板上执行 CLI 命令（sys_reset、kv_dump、fs_ls 或自定义命令），又不想占用前台串口监控时使用。"
+      },
+      "tags": [
+        "cli",
+        "serial",
+        "debug"
+      ],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen/cli-debug",
+      "related": [
+        "tuyaopen-debug-helper",
+        "tuyaopen-crash-decode",
+        "tuyaopen-dev-loop"
+      ],
+      "source": {
+        "localPath": "skills/embedded/tuyaopen/cli-debug"
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuyaopen-crash-decode",
+      "order": 27,
+      "name": {
+        "en": "TuyaOpen Crash Decode",
+        "zh-CN": "TuyaOpen 崩溃日志解码"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Decode a firmware crash dump (PC / LR / stack addresses) to source file:line via the per-platform addr2line.",
+        "zh-CN": "将固件崩溃转储中的 PC / LR / 栈地址，通过对应平台的 addr2line 解析为源码文件与行号。"
+      },
+      "whenToUse": {
+        "en": "Use when the user pastes a panic log or hard-fault dump containing raw hex code addresses (e.g. \"PC: 0x021d8e96\").",
+        "zh-CN": "当用户粘贴含原始十六进制地址的 panic 日志或 hard fault 转储（例如 \"PC: 0x021d8e96\"）时使用。"
+      },
+      "tags": [
+        "crash",
+        "addr2line",
+        "debug"
+      ],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen/crash-decode",
+      "related": [
+        "tuyaopen-debug-helper",
+        "tuyaopen-build",
+        "tuyaopen-cli-debug"
+      ],
+      "source": {
+        "localPath": "skills/embedded/tuyaopen/crash-decode"
       },
       "sdks": [
         "tuyaopen"
