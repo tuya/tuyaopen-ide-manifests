@@ -1,0 +1,34 @@
+name: Skills Script Tests
+
+on:
+  pull_request:
+    paths:
+      - "skills/embedded/tuyaopen/**"
+      - "tests/skills/**"
+      - ".github/workflows/skills-tests.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "skills/embedded/tuyaopen/**"
+      - "tests/skills/**"
+      - ".github/workflows/skills-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install test deps
+        run: python3 -m pip install --quiet pytest
+
+      - name: Run skill script tests
+        run: python3 -m pytest tests/skills -q
