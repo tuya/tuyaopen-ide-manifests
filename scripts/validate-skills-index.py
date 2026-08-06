@@ -3,16 +3,19 @@
 
 Checks (all local / deterministic, no network):
   - JSON parses and required top-level keys exist with correct types
-  - devSkillsRelease has required fields; github/gitee are well-formed URLs
+  - devSkillsRelease is optional (tombstone); when present its fields are checked
   - Each item has required fields with correct types
   - Bilingual fields (name/summary/whenToUse) carry both 'en' and 'zh-CN'
   - 'id' is unique; 'surface' is one of the known surfaces
   - 'source' is exactly one of {localPath} or {devSkills + subpath}
+  - source.devSkills is DEPRECATED (TuyaOpen-dev-skills is archived) -> warning
   - For local skills: source.localPath dir exists and installPayload == localPath minus 'skills/'
+  - No orphan skills: every top-level skills/**/SKILL.md dir is referenced by
+    exactly one item's source.localPath
   - Every related[] entry resolves to a known item id
 
 Usage: python3 scripts/validate-skills-index.py [path/to/index.json]
-Exits 0 on success, 1 on any error.
+Exits 0 on success, 1 on any error. Warnings do not affect the exit code.
 """
 
 import json
@@ -29,10 +32,15 @@ LANGS = ("en", "zh-CN")
 URL_RE = re.compile(r"^https?://[^\s]+$")
 
 errors: list[str] = []
+warnings: list[str] = []
 
 
 def err(msg: str) -> None:
     errors.append(msg)
+
+
+def warn(msg: str) -> None:
+    warnings.append(msg)
 
 
 def is_str(v) -> bool:
@@ -49,7 +57,7 @@ def check_bilingual(item_label: str, field: str, value) -> None:
 
 
 def check_top_level(data: dict) -> None:
-    for key in ("schemaVersion", "domain", "publishedAt", "publishedBy", "items", "devSkillsRelease"):
+    for key in ("schemaVersion", "domain", "publishedAt", "publishedBy", "items"):
         if key not in data:
             err(f"top-level: missing required key '{key}'")
     if "schemaVersion" in data and not isinstance(data["schemaVersion"], int):
@@ -62,6 +70,11 @@ def check_top_level(data: dict) -> None:
 
 
 def check_dev_skills_release(dsr) -> None:
+    # Optional tombstone: TuyaOpen-dev-skills is archived and its content is now
+    # inlined under skills/embedded/tuyaopen/. The field is retained only for IDE
+    # builds that read it unconditionally, so it may be absent.
+    if dsr is None:
+        return
     if not isinstance(dsr, dict):
         err("devSkillsRelease: must be an object")
         return
@@ -140,6 +153,10 @@ def check_source(label: str, item: dict) -> None:
     if has_dev:
         if not is_str(source.get("subpath")):
             err(f"{label}: dev-skill 'source.subpath' missing or not a non-empty string")
+        warn(
+            f"{label}: 'source.devSkills' is deprecated — TuyaOpen-dev-skills is archived. "
+            f"Move the payload under skills/ and switch to source.localPath."
+        )
         return
 
     # Local skill: dir must exist, installPayload must match localPath minus 'skills/'
@@ -178,6 +195,44 @@ def check_related(items: list, ids: set) -> None:
                 err(f"{label}: related id {ref!r} does not resolve to a known item")
 
 
+def check_orphan_skill_dirs(items: list) -> None:
+    """Every skill payload on disk must be reachable from the index.
+
+    A "top-level" skill dir is one holding a SKILL.md whose ancestors are not
+    themselves referenced by the index — sub-skills bundled inside a parent
+    (e.g. hardware-vibe-coding/peripheral-drivers/*) ship with the parent and
+    are intentionally not indexed.
+
+    This exists because tuyaopen-cli-debug and tuyaopen-crash-decode sat in the
+    payload for months, shipped in every package, and were never installable
+    because nothing referenced them.
+    """
+    referenced: dict[str, list[str]] = {}
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        local_path = (item.get("source") or {}).get("localPath")
+        if is_str(local_path):
+            referenced.setdefault(local_path.rstrip("/"), []).append(str(item.get("id")))
+
+    for path, ids in sorted(referenced.items()):
+        if len(ids) > 1:
+            err(f"source.localPath {path!r} is claimed by multiple items: {', '.join(sorted(ids))}")
+
+    skills_root = REPO_ROOT / "skills"
+    for skill_md in sorted(skills_root.rglob("SKILL.md")):
+        rel = skill_md.parent.relative_to(REPO_ROOT).as_posix()
+        if rel in referenced:
+            continue
+        # Bundled inside an indexed parent skill? Then it is not an orphan.
+        if any(rel.startswith(parent + "/") for parent in referenced):
+            continue
+        err(
+            f"orphan skill payload: {rel} holds a SKILL.md but no index item references it "
+            f"via source.localPath — it would ship in the package and never be installed"
+        )
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
     if not index_path.is_file():
@@ -202,6 +257,12 @@ def main() -> int:
     for index, item in enumerate(items):
         check_item(item, index, seen_ids)
     check_related(items, seen_ids)
+    check_orphan_skill_dirs(items)
+
+    if warnings:
+        print(f"! {index_path}: {len(warnings)} warning(s):", file=sys.stderr)
+        for w in warnings:
+            print(f"  - {w}", file=sys.stderr)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)
