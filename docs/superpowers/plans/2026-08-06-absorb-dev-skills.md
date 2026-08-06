@@ -8,6 +8,27 @@
 
 ---
 
+## 进展（2026-08-06）
+
+分支 `feat/absorb-dev-skills`，Task 1–5 已完成并各自成 commit：
+
+| commit | 内容 |
+|--------|------|
+| `6c28b9a` | 搬入 10 个技能 + `tests/skills/`（上游 `d0655d46`） |
+| `631480a` | 8 个 source 改 localPath、登记 cli-debug/crash-decode、skills 0.2.0 |
+| `9c76b65` | validator：`devSkillsRelease` 选填、devSkills 降级为警告、新增孤儿载荷检查 |
+| `f8c6a35` | 新增 `skills-tests.yml`（15 个测试全绿） |
+| `7c3ad3e` | 删除 `update-dev-skills.yml` dispatch 监听 |
+| `3ae1627` | 文档：新增 `skills/README.md`，更新 README / manifest-architecture |
+
+已验证：`validate-skills-index.py` 通过（29 条目）；`pytest tests/skills` 15 passed；
+打包 dry-run 产物含全部 10 个 `SKILL.md`，体积 5.73 MB → 5.79 MB。
+
+**仍未做：** Task 0（IDE 端确认 `devSkillsRelease` 能否删）、Task 6（发 v0.1.8 + IDE 冒烟）、
+Task 7 上游侧（归档 `TuyaOpen-dev-skills`）、Task 8（清尾）。
+
+---
+
 ## 一、现状（已核对）
 
 ### 上游仓库 `tuya/TuyaOpen-dev-skills`（master，约 160 KB）
@@ -48,13 +69,13 @@ tests/skills/         ← 原 tests/
 
 ---
 
-## 二、待确认（不阻塞开工，但影响 Task 2 / Task 4）
+## 二、决策（2026-08-06 已确认，按建议执行）
 
-1. **`cli-debug` 与 `crash-decode` 是否登记进 index？**
-   建议：**登记**，`defaultEnabled: false`。它们已经写好且随包分发了 3 个月却对用户不可见 —— 这本身是 bug。若决定不要，则直接删掉，不要留在 `skills/` 下当死内容。
-2. **是否保留上游 git 历史？**
-   建议：**直接复制文件**，commit body 里记上游 HEAD SHA。技能是小体量文档，历史留在 archived 仓库可查。若要求可追溯，改用 `git subtree add --prefix=skills/embedded/tuyaopen`（但上游路径是 `skills/tuyaopen/`，subtree 后还要一次 `git mv`，历史会有一层 rename）。
-3. **`devSkillsRelease` 墓碑保留几个 release？**
+1. **`cli-debug` 与 `crash-decode` 登记进 index** ✅ 已执行：`defaultEnabled: false`，order 26/27。
+   原建议：**登记**，`defaultEnabled: false`。它们已经写好且随包分发了 3 个月却对用户不可见 —— 这本身是 bug。若决定不要，则直接删掉，不要留在 `skills/` 下当死内容。
+2. **不保留上游 git 历史** ✅ 已执行：直接复制，上游 HEAD `d0655d464bcda9d9441aa2ba5e405b3f140fcb2c`（v0.0.10, 2026-07-15）记于 commit body。
+   原建议：**直接复制文件**，commit body 里记上游 HEAD SHA。技能是小体量文档，历史留在 archived 仓库可查。若要求可追溯，改用 `git subtree add --prefix=skills/embedded/tuyaopen`（但上游路径是 `skills/tuyaopen/`，subtree 后还要一次 `git mv`，历史会有一层 rename）。
+3. **`devSkillsRelease` 暂留为墓碑** ✅ 已执行：字段原样保留并加 `note` 说明；删除时机取决于 Task 0。
    取决于 IDE 是否在启动时无条件读它。Task 0 先查清；查清前不要删。
 
 ---
@@ -75,24 +96,24 @@ tests/skills/         ← 原 tests/
 
 **Files:** 新增 `skills/embedded/tuyaopen/**`、`tests/skills/**`
 
-- [ ] 克隆上游 master，记下 HEAD SHA
-- [ ] 8 个技能：`skills/tuyaopen/<name>` → `skills/embedded/tuyaopen/<name>`（含 `references/`、`scripts/`）
-- [ ] `skills/tuyaopen-cli-debug` → `skills/embedded/tuyaopen/cli-debug`（连 `requirements.txt`）
-- [ ] `skills/tuyaopen-crash-decode` → `skills/embedded/tuyaopen/crash-decode`
-- [ ] 两者 SKILL.md frontmatter 的 `name:` 归一到嵌套风格：`tuyaopen-cli-debug` → `tuyaopen/cli-debug`，`tuyaopen-crash-decode` → `tuyaopen/crash-decode`（与其余 8 个 `tuyaopen/build` 风格一致）
-- [ ] `tests/` → `tests/skills/`，改 3 个文件的 `sys.path.insert` 路径为 `../../skills/embedded/tuyaopen/<name>/scripts`
-- [ ] 不搬：`README.md`、`README_zh.md`、`LICENSE`、`release.json`、`.github/`、`scripts/sync-gitee-release.sh`（本仓已有等价物）
-- [ ] 确认没带入 `__pycache__` / `*.pyc`
+- [x] 克隆上游 master，记下 HEAD SHA
+- [x] 8 个技能：`skills/tuyaopen/<name>` → `skills/embedded/tuyaopen/<name>`（含 `references/`、`scripts/`）
+- [x] `skills/tuyaopen-cli-debug` → `skills/embedded/tuyaopen/cli-debug`（连 `requirements.txt`）
+- [x] `skills/tuyaopen-crash-decode` → `skills/embedded/tuyaopen/crash-decode`
+- [x] 两者 SKILL.md frontmatter 的 `name:` 归一到嵌套风格：`tuyaopen-cli-debug` → `tuyaopen/cli-debug`，`tuyaopen-crash-decode` → `tuyaopen/crash-decode`（与其余 8 个 `tuyaopen/build` 风格一致）
+- [x] `tests/` → `tests/skills/`，改 3 个文件的 `sys.path.insert` 路径为 `../../skills/embedded/tuyaopen/<name>/scripts`
+- [x] 不搬：`README.md`、`README_zh.md`、`LICENSE`、`release.json`、`.github/`、`scripts/sync-gitee-release.sh`（本仓已有等价物）
+- [x] 确认没带入 `__pycache__` / `*.pyc`
 
 **验证：** `find skills/embedded/tuyaopen -name SKILL.md | wc -l` = 10
 
 ### Task 2：改 `skills/index.json`（1 个 commit）
 
-- [ ] 8 个条目：`"source": {"devSkills": true, "subpath": "skills/tuyaopen/X"}` → `"source": {"localPath": "skills/embedded/tuyaopen/X"}`。`installPayload`、`id`、`order`、`commands` **一律不动** —— 这是「IDE 零改动」的前提
-- [ ] 新增 2 个条目（若 Task 0/决策 1 通过）：`tuyaopen-cli-debug`、`tuyaopen-crash-decode`；`surface: embedded`、`sdks: ["tuyaopen"]`、`defaultEnabled: false`、`order` 接在现有 embedded 段之后；双语 `name`/`summary`/`whenToUse` 从各自 SKILL.md 的 description 提炼（已含中文关键词，可直接复用）；`related` 指向 `tuyaopen-debug-helper` / `tuyaopen-build`
-- [ ] `devSkillsRelease` **保持原样**（墓碑），另加 `"note"` 字段说明「retained for IDE ≤ X compatibility, remove after」
-- [ ] 更新 `publishedAt`
-- [ ] `registry.json`：`manifests.skills.version` 0.1.0 → 0.2.0（minor：新增条目 + source 语义变更）
+- [x] 8 个条目：`"source": {"devSkills": true, "subpath": "skills/tuyaopen/X"}` → `"source": {"localPath": "skills/embedded/tuyaopen/X"}`。`installPayload`、`id`、`order`、`commands` **一律不动** —— 这是「IDE 零改动」的前提
+- [x] 新增 2 个条目（若 Task 0/决策 1 通过）：`tuyaopen-cli-debug`、`tuyaopen-crash-decode`；`surface: embedded`、`sdks: ["tuyaopen"]`、`defaultEnabled: false`、`order` 接在现有 embedded 段之后；双语 `name`/`summary`/`whenToUse` 从各自 SKILL.md 的 description 提炼（已含中文关键词，可直接复用）；`related` 指向 `tuyaopen-debug-helper` / `tuyaopen-build`
+- [x] `devSkillsRelease` **保持原样**（墓碑），另加 `"note"` 字段说明「retained for IDE ≤ X compatibility, remove after」
+- [x] 更新 `publishedAt`
+- [x] `registry.json`：`manifests.skills.version` 0.1.0 → 0.2.0（minor：新增条目 + source 语义变更）
 
 **注意** JSON 文件是 UTF-8 且含中文，编辑时不要让工具改写编码。可用 `node tools/manifest-gen/bin/manifest-gen.js skills list/get/set` 操作以避免手改整文件。
 
@@ -102,10 +123,10 @@ tests/skills/         ← 原 tests/
 
 **Files:** `scripts/validate-skills-index.py`
 
-- [ ] `devSkillsRelease` 从必填改为选填（存在时仍校验字段与 URL 格式）
-- [ ] `source` 的 devSkills 分支：保留解析能力，但对命中的条目打印 deprecation 警告（Task 6 后改为报错）
-- [ ] **新增「孤儿技能目录」检查**：遍历 `skills/**/SKILL.md`，每个目录必须被恰好一个 index 条目的 `source.localPath` 引用；否则报错。这正是漏掉 `cli-debug`/`crash-decode` 的那类 bug，装上护栏才不会复发
-- [ ] 同步更新文件头 docstring 的 Checks 列表
+- [x] `devSkillsRelease` 从必填改为选填（存在时仍校验字段与 URL 格式）
+- [x] `source` 的 devSkills 分支：保留解析能力，但对命中的条目打印 deprecation 警告（Task 6 后改为报错）
+- [x] **新增「孤儿技能目录」检查**：遍历 `skills/**/SKILL.md`，每个目录必须被恰好一个 index 条目的 `source.localPath` 引用；否则报错。这正是漏掉 `cli-debug`/`crash-decode` 的那类 bug，装上护栏才不会复发
+- [x] 同步更新文件头 docstring 的 Checks 列表
 
 **验证：** 故意删掉一个 index 条目 → 脚本报孤儿错误；恢复后通过
 
@@ -113,16 +134,16 @@ tests/skills/         ← 原 tests/
 
 **Files:** 新增 `.github/workflows/skills-tests.yml`
 
-- [ ] `on: pull_request/push` + `paths: ["skills/embedded/tuyaopen/**", "tests/skills/**", ".github/workflows/skills-tests.yml"]`
-- [ ] `python3 -m pip install pytest` → `python3 -m pytest tests/skills -q`
-- [ ] 本地先跑一遍确认 3 个测试文件在新路径下全绿（上游从未在 CI 跑过，可能本来就有失败）
+- [x] `on: pull_request/push` + `paths: ["skills/embedded/tuyaopen/**", "tests/skills/**", ".github/workflows/skills-tests.yml"]`
+- [x] `python3 -m pip install pytest` → `python3 -m pytest tests/skills -q`
+- [x] 本地先跑一遍确认 3 个测试文件在新路径下全绿（上游从未在 CI 跑过，可能本来就有失败）
 
 ### Task 5：文档（1 个 commit）
 
-- [ ] `README.md` skills 段落：说明 skills 内容现已完全内联，dev-skills 已归档
-- [ ] `docs/manifest-architecture.md`：目录树补上 `skills/embedded|cloud|miniapp/**`，删掉外部 dev-skills 依赖的描述
-- [ ] 新增 `skills/README.md`：布局约定、`localPath` 与 `installPayload` 的对应规则（`installPayload == localPath - "skills/"`）、加一个技能的步骤（建目录 → 写 SKILL.md → `manifest-gen skills add` → 跑 validator）
-- [ ] 在 `docs/superpowers/specs/` 或本 plan 同目录留一条迁移记录，含上游 HEAD SHA
+- [x] `README.md` skills 段落：说明 skills 内容现已完全内联，dev-skills 已归档
+- [x] `docs/manifest-architecture.md`：目录树补上 `skills/embedded|cloud|miniapp/**`，删掉外部 dev-skills 依赖的描述
+- [x] 新增 `skills/README.md`：布局约定、`localPath` 与 `installPayload` 的对应规则（`installPayload == localPath - "skills/"`）、加一个技能的步骤（建目录 → 写 SKILL.md → `manifest-gen skills add` → 跑 validator）
+- [x] 在 `docs/superpowers/specs/` 或本 plan 同目录留一条迁移记录，含上游 HEAD SHA
 
 ### Task 6：发版（1 个 release）
 
