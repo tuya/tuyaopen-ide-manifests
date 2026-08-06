@@ -3,8 +3,9 @@
 > Public manifest registry consumed by the **TuyaOpen IDE** at runtime.
 > The IDE fetches `registry.json` from this repo on startup, then
 > lazy-loads each domain's `index.json` only when the matching page is
-> opened. This repo intentionally ships **no code** — only structured
-> JSON pointing at the canonical source repos.
+> opened. Boards / demos / platforms are pure metadata pointing at the
+> canonical source repos; `skills/` is the one domain that also ships its
+> **payload** in-repo (see below).
 
 ```
 .
@@ -14,7 +15,10 @@
 ├── demos/
 │   └── index.json                 # demo / example projects
 └── skills/
-    └── index.json                 # Cursor / VS Code Chat skills
+    ├── index.json                 # AI agent skills registry (Cursor, Claude Code, …)
+    ├── embedded/                  # ── the skill payloads themselves ──
+    ├── cloud/                     #    SKILL.md + references/ + scripts/
+    └── miniapp/                   #    see skills/README.md
 ```
 
 ---
@@ -25,7 +29,7 @@
 | ---------------- | -------------------------------------- | --------------------------------- |
 | `boardsAndChips` | development boards and SoCs (official + ecosystem) | `boards-and-chips/index.json` |
 | `demos`          | example projects (point at git repos)  | `demos/index.json`                |
-| `skills`         | pluggable Cursor / VS Code Chat skills | `skills/index.json`               |
+| `skills`         | pluggable AI agent skills **+ their payload** | `skills/index.json` + `skills/<surface>/**` |
 
 The boards manifest mixes Tuya official boards and ecosystem boards into
 one list. The IDE filters on the `brand` field (`brand.en === "Tuya"`
@@ -41,8 +45,11 @@ the schema never relies on "implicit inheritance".
 2. **Flat + inlined** — each domain has exactly **one** `index.json` with
    every entry's fields inlined. No "catalog page → detail page" split.
    A few hundred entries per domain is fine.
-3. **Point at sources, never store code** — every product reference uses
+3. **Point at sources, don't copy them** — every *product* reference uses
    the same shape: `{ "repo": "...", "subpath": "...", "ref": "main|tag|sha" }`.
+   Skills are the deliberate exception: their payload lives here
+   (`source.localPath`) so a skill and the manifest describing it can never
+   drift apart, and the IDE gets everything from one `manifests.tar.gz`.
 4. **Versioned** — top-level `schemaVersion` (integer, structural compat)
    plus `publishedAt` (ISO-8601, cache busting), and per-domain
    `version` (semver, differential refresh) inside `registry.json`.
@@ -122,6 +129,10 @@ IDE startup
 
 - **Add / edit / remove an item** — edit the entries in the matching
   `<domain>/index.json` directly and open a PR.
+- **Add / edit a skill** — the payload and the index entry go in the same PR;
+  see [`skills/README.md`](./skills/README.md). CI runs
+  `scripts/validate-skills-index.py` (structure + no orphan payloads) and
+  `pytest tests/skills`.
 - **Schema bump** — bump the top-level `schemaVersion` and include a
   short migration note in the PR description.
 - **Release** — tag the commit; CI validates every JSON against the

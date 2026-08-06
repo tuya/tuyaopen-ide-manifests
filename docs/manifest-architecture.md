@@ -174,8 +174,21 @@ vendor/tuyaopen-ide-manifests/
 │   ├── wifi-sta.json
 │   └── ...
 └── skills/
-    └── index.json                         # IDE AI Skills 注册表
+    ├── index.json                         # IDE AI Skills 注册表
+    ├── embedded/                          # 技能载荷本体（SKILL.md/references/scripts）
+    │   ├── tuyaopen/                      # 原 TuyaOpen-dev-skills（已归档并内联）
+    │   ├── hardware-vibe-coding/
+    │   └── ...
+    ├── cloud/
+    └── miniapp/
 ```
+
+> `skills` 是唯一「索引 + 载荷同仓」的 domain：每个条目的
+> `source.localPath` 指向仓内目录，`installPayload` 恒等于 `localPath` 去掉
+> `skills/` 前缀。IDE 安装时再去掉 surface 前缀，落到项目的
+> `.agents/skills/<...>`。原 `tuya/TuyaOpen-dev-skills` 仓库已归档，其内容自
+> `skills` v0.2.0 起完整内联于 `skills/embedded/tuyaopen/`，IDE 不再单独下载
+> `TuyaOpen-dev-skills.tar.gz`。
 
 ### TuyaOpen SDK (构建系统实现)
 
