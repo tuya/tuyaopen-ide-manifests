@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // One-shot migration: clean up demos manifest structure.
-// See docs/superpowers/specs/2026-06-12-demos-manifest-cleanup-design.md
 //
 //   node tools/migrate-demos-schema.mjs           # dry-run (default): report only
 //   node tools/migrate-demos-schema.mjs --apply    # write changes to disk

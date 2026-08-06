@@ -135,8 +135,7 @@ nested layout no longer matches the script paths inside the skills.
 `skills/embedded/tuyaopen/` came from `tuya/TuyaOpen-dev-skills`, which the IDE
 used to download as a **second** tarball resolved through the
 `devSkillsRelease` field in `index.json`. That repo is **archived** and its
-content was inlined here at upstream `d0655d46` (v0.0.10) — see
-`docs/superpowers/plans/2026-08-06-absorb-dev-skills.md`.
+content was inlined here at upstream `d0655d46` (v0.0.10).
 
 `devSkillsRelease` and `source.devSkills` are **gone**, and the validator now
 rejects `source.devSkills`. Verified against the IDE before removing the field:

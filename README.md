@@ -96,8 +96,6 @@ the schema never relies on "implicit inheritance".
   their `pinGroups` become *defaults* and any `GPIO`-capable pin is selectable;
   an optional `candidates: [gpio,…]` constrains the routable set (e.g. LP-domain
   ports). ADC/analog ports stay `routable: false`.
-  See `docs/superpowers/specs/2026-06-30-pinout-functions-caps-split-matrix-design.md`
-  in the IDE repo for the full design.
 - **`published` gates downstream** — a platform item and a board item each carry
   `published` (default `true` when absent). A board's **effective** publish state
   is `board.published !== false` **AND** its chip platform's `published !== false`:
