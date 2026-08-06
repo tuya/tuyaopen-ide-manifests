@@ -40,6 +40,7 @@ tos.py config choice                           # interactive — list and pick
 tos.py config choice -c TUYA_T5AI_EVB         # non-interactive — select by name (Agent / CI)
 tos.py config choice -d                        # interactive — board default configs only
 tos.py config choice -d -c TUYA_T5AI_EVB      # non-interactive — from board defaults
+tos.py config choice -l                        # list names and exit, no clean (newer SDK — check `config choice -h`)
 ```
 
 All variants trigger a full clean. The selected config is written to `app_default.config`.
@@ -61,7 +62,27 @@ Menuconfig keys: arrows or `h`/`j`/`k`/`l`; `?` for help; write to `app_default.
 
 ### Writing a Custom Config (Agent / CI)
 
-Edit `app_default.config` in the project directory. The file uses **Kconfig defconfig format** — only specify values that **differ from defaults**:
+Two paths, depending on what the installed SDK supports. **Ask it — don't guess from a version number:**
+
+```bash
+tos.py config -h        # the subcommand list IS the answer; look for 'set'
+```
+
+Probe once, then commit to a branch. `tos.py version` prints a `git describe` string whose tag is the *previous* release, so it cannot distinguish the two generations.
+
+**Preferred — `tos.py config set`** (when `-h` lists `set`/`get`/`list`/`diff`). The `CONFIG_` prefix is optional:
+
+```bash
+tos.py config set ENABLE_LIBLVGL=y ENABLE_MBEDTLS_SSL_MAX_CONTENT_LEN=4096
+tos.py config set -u ENABLE_LIBLVGL       # revert to Kconfig default
+tos.py config get -a ENABLE_LIBLVGL       # inspect type/prompt/deps before setting
+tos.py config list -p LVGL                # find the right symbol name
+tos.py build                              # no clean needed
+```
+
+It applies changes through kconfiglib (so `choice` exclusivity and derived symbols are handled), writes both `using.config` and `app_default.config`, and invalidates the generated build artifacts — **no `tos.py clean` needed** for an ordinary option change. A failed assignment aborts the whole batch and writes nothing. See skill `tuyaopen/project-config`, `references/CONFIG_CLI.md`.
+
+**Fallback — hand-edit `app_default.config`** (any SDK). The file uses **Kconfig defconfig format** — only specify values that **differ from defaults**:
 
 ```
 CONFIG_PROJECT_VERSION="1.0.1"
@@ -79,13 +100,15 @@ Key points:
 - Boolean options: `CONFIG_X=y` to enable, `# CONFIG_X is not set` to disable.
 - String options: `CONFIG_X="value"`. Integer options: `CONFIG_X=1234`.
 
-> **After editing `app_default.config`, run `tos.py clean` before rebuilding.**
-> Unlike `config choice` / `config menu` (which trigger a full clean automatically), a manual edit of `app_default.config` does **not** clean the build. Without a clean, the stale `.build/cache/using.config` may be reused and your changes silently ignored:
+> **After hand-editing `app_default.config`, run `tos.py clean` before rebuilding.**
+> Unlike `config choice` / `config menu` / `config set` (which invalidate the build automatically), a manual edit of `app_default.config` does **not** clean the build. Without a clean, the stale `.build/cache/using.config` may be reused and your changes silently ignored:
 > ```bash
 > # after editing app_default.config
 > tos.py clean        # then rebuild
 > tos.py build
 > ```
+>
+> A hand-edit also bypasses kconfiglib entirely: `choice` symbols are not made mutually exclusive, and derived symbols (`CONFIG_PLATFORM_CHOICE`, `CONFIG_CHIP_CHOICE`) are not re-derived. Set exactly one platform and one board, and never write the derived symbols yourself. `tos.py config set` avoids all of this where available.
 
 Common platform + board config pairs:
 
@@ -174,6 +197,7 @@ Example (for a project named `hello_world_linux` version 1.0.0):
 | Build fails after config change | Incompatible options | `tos.py clean -f` then re-select: `tos.py config choice -c <name>` (non-interactive) or `tos.py config choice` (interactive) |
 | `No rule to make target` | Stale build cache | `tos.py clean -f && tos.py build` |
 | Build hangs with `y/n/d` prompt (Agent/CI) | Platform commit mismatch, missing suppress file | Run `mkdir -p .cache && touch .cache/.dont_prompt_update_platform` before building, or `tos.py update` first |
-| Config option silently ignored | Missing `depends on` prerequisite | Check `.build/cache/using.config` to verify; grep Kconfig files for dependency chain |
+| Config option silently ignored | Missing `depends on` prerequisite | `tos.py config get -a NAME` shows the dependency chain directly where supported; otherwise check `.build/cache/using.config` and grep Kconfig files |
+| `Error: No such command 'set'` | This SDK does not have `tos.py config set` | Probe with `tos.py config -h` first; hand-edit `app_default.config`, then `tos.py clean -f` |
 | `FATAL_ERROR ... using.config` | No config selected yet | Run `tos.py config choice -c <name>` (non-interactive) or `tos.py config choice` (interactive) |
 | Build succeeds but ELF not in `dist/` | Platform linker did not produce expected binary name | Check `.build/bin/` for the raw output; verify project name matches directory name |

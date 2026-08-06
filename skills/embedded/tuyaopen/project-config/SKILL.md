@@ -2,14 +2,17 @@
 name: tuyaopen/project-config
 description: >-
   Create new TuyaOpen projects and platforms, manage build configurations,
-  update platform dependencies, and use tos.py subcommands.
+  read and write Kconfig options non-interactively, update platform
+  dependencies, and use tos.py subcommands.
   Use when the user mentions creating a project, tos.py new, saving or
-  choosing a config, tos.py update, or general tos.py usage.
-  创建项目、新建工程、配置管理、保存配置、选择配置、更新依赖。
+  choosing a config, tos.py config set/get/list/diff, tos.py update, or
+  general tos.py usage.
+  创建项目、新建工程、配置管理、保存配置、选择配置、读写配置项、更新依赖。
 license: Apache-2.0
 compatibility:
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
   - TTY terminal required for interactive commands (tos.py new, config choice/menu/save)
+  - "tos.py config set/get/list/diff: newer SDKs only — detect with `tos.py config -h`, never from a version number"
 ---
 
 # TuyaOpen Project & Config Management
@@ -76,11 +79,38 @@ See skill `tuyaopen/add-board` for the full board adaptation guide.
 
 For detailed Kconfig editing guidance (dependency mechanisms, defconfig format, config pipeline), see skill **`tuyaopen/build`**.
 
+### Which config commands does this SDK have? — ask the SDK
+
+`tos.py config` has two generations. **Always ask the installed SDK what it supports; never infer it from a version number.**
+
+```bash
+tos.py config -h        # the list of subcommands IS the answer
+```
+
+| If `-h` lists… | Then |
+|----------------|------|
+| only `choice`, `menu`, `save` | older generation — hand-edit `app_default.config` + `tos.py clean -f` |
+| also `set`, `get`, `list`, `diff` | newer generation — use them; also implies `choice -l` and `save -n/-f` |
+
+Probe **once, before planning the change**, and commit to that branch. Do not run the new command and parse its failure.
+
+If the environment isn't activated or you aren't inside a project directory (`tos.py config` requires both), check the source tree instead:
+
+```bash
+test -f "$OPEN_SDK_ROOT/tools/cli_command/util_kconfig.py"          # bash
+Test-Path "$env:OPEN_SDK_ROOT/tools/cli_command/util_kconfig.py"    # PowerShell
+```
+
+`util_kconfig.py` ships with the new subcommands, so its presence tracks them exactly.
+
+> **Do not gate on `tos.py version`.** It prints a `git describe` string such as `v1.9.0-17-g13a1d0de` — the tag is whatever release came *before* the checkout, so SDKs with and without these subcommands both report the same tag. Feature detection is the only reliable gate.
+
 ### `tos.py config choice` (interactive)
 
 ```bash
 tos.py config choice       # list configs from project config/ or boards/
 tos.py config choice -d    # only show boards/ default configs (skip project config/)
+tos.py config choice -l    # print available config names and exit, no clean (newer SDK — probe first)
 ```
 
 Selects a pre-verified config. Writes to `app_default.config`. **Triggers a full clean first.**
@@ -99,26 +129,51 @@ tos.py config menu
 
 Opens a terminal-based Kconfig editor. **Triggers a full clean first.** Best for fine-tuning options with complex dependencies — the editor resolves `select` / `depends on` automatically. See skill `tuyaopen/build` for the Kconfig Dependency Guide.
 
-### `tos.py config save` (interactive, requires TTY)
+### `tos.py config save`
 
 ```bash
-tos.py config save
+tos.py config save                 # interactive — prompts for a name
+tos.py config save -n my_board     # non-interactive (newer SDK — probe first)
+tos.py config save -n my_board -f  # overwrite an existing preset
 ```
 
-Prompts for a name, then copies current `app_default.config` to the project's `config/` directory as a named preset. Useful after customizing with `config menu`.
+Copies the current `app_default.config` to the project's `config/` directory as a named preset. Useful after customizing with `config menu` or `config set`.
+
+Where `-n` is supported (check `tos.py config save -h`): it skips the prompt, an existing file is an error unless `-f` is given, and running without `-n` outside a TTY fails with a clear message instead of hanging.
 
 ### Non-Interactive Config (Agent / CI)
 
-Prefer `tos.py config choice -c <name>` when a pre-verified config already exists:
+**1. Switching to a whole pre-verified config** — works on every SDK:
 
 ```bash
 tos.py config choice -c TUYA_T5AI_EVB     # from project config/ dir
 tos.py config choice -d -c TUYA_T5AI_EVB  # from boards/ default configs
 ```
 
-Or edit `app_default.config` directly for custom configurations — no TTY needed. See skill `tuyaopen/build` for format details and Kconfig dependency handling.
+This triggers a full clean, which is exactly what a board switch needs.
 
-> **After editing `app_default.config`, run `tos.py clean -f` before rebuilding.** Unlike `config choice` / `config menu` (which clean automatically), a manual edit does **not** trigger a clean, so the stale `.build/cache/using.config` may be reused and your changes ignored. Run `tos.py clean -f` then `tos.py build`.
+**2. Changing individual options** — depends on what `tos.py config -h` reported (see above).
+
+*`set`/`get`/`list`/`diff` present — use them.* The `CONFIG_` prefix is optional everywhere:
+
+```bash
+tos.py config get ENABLE_WIFI                  # one value
+tos.py config get -a ENABLE_LIBLVGL            # type, prompt, visibility, deps
+tos.py config list -p MBEDTLS                  # filtered dump (-j for JSON)
+tos.py config set ENABLE_LIBLVGL=y ENABLE_MBEDTLS_SSL_MAX_CONTENT_LEN=8192
+tos.py config set -u ENABLE_LIBLVGL            # revert to Kconfig default
+tos.py config diff TUYA_T5AI_EVB               # semantic diff vs current config
+```
+
+`config set` is dependency-aware and all-or-nothing: every token is validated before anything is written, so a failed batch writes nothing. It re-derives `using.config` and invalidates the generated build artifacts — **no manual `tos.py clean -f` needed** for an ordinary option change.
+
+Full semantics, flags, and troubleshooting: `references/CONFIG_CLI.md`.
+
+*Not present — hand-edit `app_default.config`.* See skill `tuyaopen/build` for format details and Kconfig dependency handling.
+
+> **After hand-editing `app_default.config`, run `tos.py clean -f` before rebuilding.** Unlike `config choice` / `config menu` / `config set` (which handle this automatically), a manual edit does **not** invalidate the build, so the stale `.build/cache/using.config` may be reused and your changes ignored. Run `tos.py clean -f` then `tos.py build`.
+>
+> Hand-editing also bypasses kconfiglib: `choice` symbols are not made mutually exclusive and derived symbols (`CONFIG_PLATFORM_CHOICE`, `CONFIG_CHIP_CHOICE`) are not updated. Set exactly one platform and one board, and never set the derived symbols yourself.
 
 ## Non-Interactive Project Creation (Agent / CI)
 
@@ -261,7 +316,7 @@ Switches each platform submodule to its pinned commit (`$OPEN_SDK_ROOT/platform/
 
 ## tos.py Command Reference
 
-See `references/TOS_COMMANDS.md`.
+See `references/TOS_COMMANDS.md`. For the non-interactive config subcommands in depth, see `references/CONFIG_CLI.md`.
 
 ## Troubleshooting
 
@@ -273,3 +328,8 @@ See `references/TOS_COMMANDS.md`.
 | `could not lock config file` | Stale `~/.gitconfig.lock` | `rm ~/.gitconfig.lock` |
 | No configs shown in `config choice` | No `config/` dir and no board configs for current platform | Create `app_default.config` manually or check platform setup |
 | Build fails after `tos.py new` | No config selected yet | Run `tos.py config choice` or create `app_default.config` |
+| `Error: No such command 'set'` | This SDK does not have the non-interactive config subcommands | Probe with `tos.py config -h` first; hand-edit `app_default.config`, then `tos.py clean -f` |
+| `config set` fails with a dependency reason | `depends on` / visibility blocks the symbol | `tos.py config get -a NAME`; enable the parent, or set both in one `config set` |
+| `config save` hangs or aborts in CI | Prompting for a name without a TTY | Pass `-n NAME` if `config save -h` lists it |
+
+More config-specific troubleshooting: `references/CONFIG_CLI.md`.
