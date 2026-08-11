@@ -6,6 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-build",
+      "version": "1.0.0",
       "order": 1,
       "name": {
         "en": "TuyaOpen Build",
@@ -42,6 +43,7 @@
     },
     {
       "id": "tuyaopen-project-config",
+      "version": "1.0.0",
       "order": 6,
       "name": {
         "en": "TuyaOpen Project Config",
@@ -77,6 +79,7 @@
     },
     {
       "id": "ecosystem-wire-cmake",
+      "version": "1.0.0",
       "order": 8,
       "name": {
         "en": "Wire ecosystem library into CMake",
@@ -114,6 +117,7 @@
     },
     {
       "id": "tuya-iot-platform",
+      "version": "1.0.0",
       "order": 9,
       "name": {
         "en": "Tuya IoT Platform",
@@ -152,6 +156,7 @@
     },
     {
       "id": "smart-product-dev",
+      "version": "1.0.0",
       "order": 10,
       "name": {
         "en": "Smart Product Dev",
@@ -195,6 +200,7 @@
     },
     {
       "id": "hardware-vibe-coding",
+      "version": "1.0.0",
       "order": 11,
       "name": {
         "en": "Hardware Vibe Coding",
@@ -235,6 +241,7 @@
     },
     {
       "id": "tyutool-cli",
+      "version": "1.0.0",
       "order": 15,
       "name": {
         "en": "tyutool CLI",
@@ -273,6 +280,7 @@
     },
     {
       "id": "tuyaos-build",
+      "version": "1.0.0",
       "order": 16,
       "name": {
         "en": "TuyaOS Build",
@@ -313,6 +321,7 @@
     },
     {
       "id": "tuyaos-hardware-vibe-coding",
+      "version": "1.0.0",
       "order": 17,
       "name": {
         "en": "TuyaOS Hardware Vibe Coding",
@@ -364,6 +373,7 @@
     },
     {
       "id": "tuyaopen-debug-helper",
+      "version": "1.0.0",
       "order": 20,
       "name": {
         "en": "TuyaOpen Debug Helper",
@@ -399,6 +409,7 @@
     },
     {
       "id": "tuyaopen-add-board",
+      "version": "1.0.0",
       "order": 21,
       "name": {
         "en": "Add Board (BSP)",
@@ -433,6 +444,7 @@
     },
     {
       "id": "tuyaopen-code-check",
+      "version": "1.0.0",
       "order": 22,
       "name": {
         "en": "Code Check",
@@ -466,6 +478,7 @@
     },
     {
       "id": "tuyaopen-dev-loop",
+      "version": "1.0.0",
       "order": 23,
       "name": {
         "en": "Build–Flash–Monitor Loop",
@@ -500,6 +513,7 @@
     },
     {
       "id": "tuyaopen-device-auth",
+      "version": "1.0.0",
       "order": 24,
       "name": {
         "en": "Device Authorization",
@@ -534,6 +548,7 @@
     },
     {
       "id": "tuyaopen-env-setup",
+      "version": "1.0.0",
       "order": 25,
       "name": {
         "en": "Environment Setup",
@@ -567,6 +582,7 @@
     },
     {
       "id": "tuyaopen-cli-debug",
+      "version": "1.0.0",
       "order": 26,
       "name": {
         "en": "TuyaOpen CLI Debug",
@@ -602,6 +618,7 @@
     },
     {
       "id": "tuyaopen-crash-decode",
+      "version": "1.0.0",
       "order": 27,
       "name": {
         "en": "TuyaOpen Crash Decode",
@@ -637,6 +654,7 @@
     },
     {
       "id": "smart-panel-dev",
+      "version": "1.0.0",
       "order": 99,
       "name": {
         "en": "Smart Panel Development",
@@ -685,6 +703,7 @@
     },
     {
       "id": "miniapp-ray-common",
+      "version": "1.0.0",
       "order": 100,
       "name": {
         "en": "Ray Common Development",
@@ -716,6 +735,7 @@
     },
     {
       "id": "miniapp-smart-ui",
+      "version": "1.0.0",
       "order": 101,
       "name": {
         "en": "Smart UI Components",
@@ -751,6 +771,7 @@
     },
     {
       "id": "miniapp-lamp-panel",
+      "version": "1.0.0",
       "order": 110,
       "name": {
         "en": "Lighting Panel",
@@ -788,6 +809,7 @@
     },
     {
       "id": "miniapp-socket-panel",
+      "version": "1.0.0",
       "order": 111,
       "name": {
         "en": "Socket / Power Strip Panel",
@@ -826,6 +848,7 @@
     },
     {
       "id": "miniapp-robot-vacuum",
+      "version": "1.0.0",
       "order": 112,
       "name": {
         "en": "Robot Vacuum Panel",
@@ -862,6 +885,7 @@
     },
     {
       "id": "miniapp-ipc-panel",
+      "version": "1.0.0",
       "order": 113,
       "name": {
         "en": "IPC Camera Panel",
@@ -898,6 +922,7 @@
     },
     {
       "id": "miniapp-charts-library",
+      "version": "1.0.0",
       "order": 120,
       "name": {
         "en": "Charts Library",
@@ -934,6 +959,7 @@
     },
     {
       "id": "miniapp-electrician-timing",
+      "version": "1.0.0",
       "order": 121,
       "name": {
         "en": "Electrician Timing SDK",
@@ -969,6 +995,7 @@
     },
     {
       "id": "miniapp-energy-stats",
+      "version": "1.0.0",
       "order": 122,
       "name": {
         "en": "Energy Statistics",
@@ -1005,6 +1032,7 @@
     },
     {
       "id": "miniapp-requirement-guide",
+      "version": "1.0.0",
       "order": 130,
       "name": {
         "en": "Requirement Creating Guide",
@@ -1037,6 +1065,7 @@
     },
     {
       "id": "miniapp-performance-ux-guard",
+      "version": "1.0.0",
       "order": 131,
       "name": {
         "en": "Performance & UX Guard",

@@ -5,6 +5,7 @@ Checks (all local / deterministic, no network):
   - JSON parses and required top-level keys exist with correct types
   - devSkillsRelease is optional and no longer published; when present its fields are checked
   - Each item has required fields with correct types
+  - Every item carries a well-formed 'version' (x.y.z semver, numeric parts)
   - Bilingual fields (name/summary/whenToUse) carry both 'en' and 'zh-CN'
   - 'id' is unique; 'surface' is one of the known surfaces
   - 'source' must be {localPath}; {devSkills + subpath} is rejected (dev-skills is archived)
@@ -32,6 +33,9 @@ SDKS = {"tuyaopen", "tuyaos"}
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
 LANGS = ("en", "zh-CN")
 URL_RE = re.compile(r"^https?://[^\s]+$")
+# Per-item payload version. Same vocabulary as release.json's domains[].version:
+# plain x.y.z, no pre-release/build suffixes, no leading 'v', no leading zeros.
+VERSION_RE = re.compile(r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$")
 
 errors: list[str] = []
 
@@ -103,6 +107,18 @@ def check_item(item, index: int, seen_ids: set) -> None:
 
     if not isinstance(item.get("order"), (int, float)):
         err(f"{label}: 'order' missing or not numeric")
+
+    # Payload version. The IDE compares the installed copy's recorded version
+    # against this one to tell "upstream shipped an update" apart from "the user
+    # edited their installed copy" — a content hash alone cannot distinguish the
+    # two. Required, so that a missing version always means "old manifest", never
+    # "this skill happens not to be versioned".
+    version = item.get("version")
+    if not is_str(version) or not VERSION_RE.match(version):
+        err(
+            f"{label}: 'version' missing or not an x.y.z semver string "
+            f"(numeric parts, no 'v' prefix, no suffix), got {version!r}"
+        )
 
     surface = item.get("surface")
     if surface not in SURFACES:

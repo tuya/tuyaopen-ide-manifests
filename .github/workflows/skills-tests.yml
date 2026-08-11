@@ -4,14 +4,16 @@ on:
   pull_request:
     paths:
       - "skills/**"
-      - "tests/skills/**"
+      - "scripts/**"
+      - "tests/**"
       - ".github/workflows/skills-tests.yml"
   push:
     branches:
       - main
     paths:
       - "skills/**"
-      - "tests/skills/**"
+      - "scripts/**"
+      - "tests/**"
       - ".github/workflows/skills-tests.yml"
 
 permissions:
@@ -30,5 +32,7 @@ jobs:
       - name: Install test deps
         run: python3 -m pip install --quiet pytest
 
-      - name: Run skill script tests
-        run: python3 -m pytest tests/skills -q
+      # tests/skills covers the scripts shipped inside skill payloads;
+      # tests/scripts covers this repo's own CI scripts.
+      - name: Run skill and repo script tests
+        run: python3 -m pytest tests -q

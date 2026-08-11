@@ -5,6 +5,7 @@ on:
     paths:
       - "skills/**"
       - "scripts/validate-skills-index.py"
+      - "scripts/check-skill-version-bumps.py"
       - ".github/workflows/validate-skills-index.yml"
   push:
     branches:
@@ -12,6 +13,7 @@ on:
     paths:
       - "skills/**"
       - "scripts/validate-skills-index.py"
+      - "scripts/check-skill-version-bumps.py"
       - ".github/workflows/validate-skills-index.yml"
 
 permissions:
@@ -22,6 +24,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The bump check below diffs against the PR base commit; at the
+          # default depth of 1 that commit is not in the clone.
+          fetch-depth: 0
 
       - name: Validate structure and references
         run: python3 scripts/validate-skills-index.py
+
+      # A per-skill 'version' nobody bumps is worse than no version: the IDE
+      # would report installed copies as up to date while the payload changed.
+      # PR-only — on a push to main the same commits were already checked on
+      # their PR, and 'before' is unreliable for force-pushes / new branches.
+      - name: Require a version bump for changed skill payloads
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git show "$BASE_SHA:skills/index.json" > base-skills-index.json \
+            || : > base-skills-index.json
+          # --no-renames so a payload file moved out of a skill shows up as a
+          # change to that skill too, not only to the one it landed in.
+          git diff --name-only --no-renames "$BASE_SHA...HEAD" -- skills/ > changed-skills.txt
+          python3 scripts/check-skill-version-bumps.py \
+            --base-index base-skills-index.json \
+            --changed changed-skills.txt

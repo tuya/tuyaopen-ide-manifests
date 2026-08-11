@@ -60,6 +60,64 @@ Sub-skills bundled inside a parent skill (e.g.
 **not** indexed separately — they ship with the parent and the validator
 exempts them.
 
+## `version` — per-skill payload version
+
+Every item carries a required `version`, a plain `x.y.z` semver string:
+
+```json
+{ "id": "tuyaopen-build", "version": "1.0.0", "order": 1, … }
+```
+
+It versions **the payload** — the `SKILL.md` and its `references/` / `scripts/`
+that get installed into a user's project. It is not the repo version and not
+`registry.json`'s `manifests.skills.version` (that one is domain-level and
+drives whether the IDE refetches the *whole* skills domain).
+
+### Why it exists
+
+Without it the IDE has exactly one signal: a recursive hash of the installed
+copy versus the cached source. That hash cannot tell these apart:
+
+- upstream shipped a new version of the skill → the project copy should be updated;
+- the user hand-edited their installed copy → overwriting it destroys their work.
+
+Both look identical, so an "update all" button would silently overwrite local
+edits with no honest way to warn. The recorded version is what separates the
+two cases.
+
+### When to bump
+
+Bump it **in the same PR as the payload change** — any edit to a file under the
+skill's `source.localPath`, including its sub-skills and sidecar scripts:
+
+| change | bump |
+|---|---|
+| typo, wording, a corrected command | patch — `1.0.0` → `1.0.1` |
+| new steps, new script, meaningfully different behaviour | minor — `1.0.0` → `1.1.0` |
+| incompatible restructure (renamed/removed script paths a project may call) | major — `1.0.0` → `2.0.0` |
+
+Metadata-only edits in `index.json` (`name`, `summary`, `tags`, `order`) do not
+touch the installed payload and need no bump. New skills start at `1.0.0`. Every
+item was seeded at `1.0.0` when the field was introduced — the seed carries no
+history, only the bumps after it mean anything.
+
+CI enforces this on pull requests: `scripts/check-skill-version-bumps.py` diffs
+the PR against its base and **fails when a payload changed and its `version`
+did not** (and when a version moves backwards). A version nobody bumps is worse
+than no version — the IDE would confidently report installed copies as up to
+date while the content changed underneath them.
+
+### How the IDE reads it
+
+The IDE records the version it installed and compares it with the manifest's.
+A **missing** version means *unknown* — never *up to date*: an item with no
+version (an old cached manifest, a hand-written index) falls back to the
+hash-only behaviour and is never treated as current on the strength of an
+absent field. Adding the field was verified safe to publish ahead of IDE
+support: the loader validates only `schemaVersion` / `domain` / `items`
+(`src/manifests/manifestsLoader.ts`, `assertDomainEnvelope`) and per-item
+fields are never enumerated, so shipped builds ignore it silently.
+
 ## Adding a skill
 
 1. Create `skills/<surface>/<name>/SKILL.md` (frontmatter: `name`,
@@ -78,17 +136,22 @@ exempts them.
 
    `name` / `summary` / `whenToUse` are required in **both** `en` and `zh-CN`.
    Set `sdks: ["tuyaos"]` only for TuyaOS-specific skills — omitted means
-   `["tuyaopen"]`.
-3. Bump `manifests.skills.version` in `registry.json` (minor for new items,
+   `["tuyaopen"]`. `version` defaults to `1.0.0` (`--skill-version` to override).
+3. Editing an **existing** skill's payload? Bump that item's `version` — see
+   [`version`](#version--per-skill-payload-version) above. CI fails the PR
+   otherwise.
+4. Bump `manifests.skills.version` in `registry.json` (minor for new items,
    patch for content-only edits).
-4. Validate:
+5. Validate:
 
    ```bash
-   python3 scripts/validate-skills-index.py     # structure, paths, no orphans
-   python3 -m pytest tests/skills -q            # skill script unit tests
+   python3 scripts/validate-skills-index.py     # structure, paths, versions, no orphans
+   python3 -m pytest tests -q                   # skill + repo script unit tests
    ```
 
-Both run in CI (`validate-skills-index.yml`, `skills-tests.yml`).
+Both run in CI (`validate-skills-index.yml`, `skills-tests.yml`), which
+additionally runs the version-bump check — that one needs the PR's base commit,
+so it has no standalone local invocation.
 
 ## Using these skills without the TuyaOpen IDE
 

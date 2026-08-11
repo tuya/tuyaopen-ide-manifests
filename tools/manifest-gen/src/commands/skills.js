@@ -87,12 +87,18 @@ export function registerSkillsCommands(program) {
     .option('--tags <tags...>', '')
     .option('--commands <cmds...>', '')
     .option('--enabled', '设为 defaultEnabled=true', false)
+    .option('--skill-version <semver>', '技能载荷版本 x.y.z（默认 1.0.0，内容变更时须递增）', '1.0.0')
     .requiredOption('--local-path <path>', 'source.localPath，形如 skills/<surface>/<name>')
     .action(async (id, opts) => {
       const data = await load()
       const items = getItems(data)
       if (items.some(s => s.id === id)) { console.error(`Already exists: ${id}`); process.exit(1) }
-      const entry = { id, order: opts.order }
+      if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(opts.skillVersion)) {
+        console.error(`--skill-version must be x.y.z, got: ${opts.skillVersion}`); process.exit(1)
+      }
+      // version is required by scripts/validate-skills-index.py: it is what lets
+      // the IDE tell an upstream update apart from a user's local edit.
+      const entry = { id, version: opts.skillVersion, order: opts.order }
       if (opts.nameEn || opts.nameZh) entry.name = { en: opts.nameEn || id, 'zh-CN': opts.nameZh || id }
       entry.surface = opts.surface
       if (opts.summaryEn || opts.summaryZh) entry.summary = { en: opts.summaryEn || '', 'zh-CN': opts.summaryZh || '' }

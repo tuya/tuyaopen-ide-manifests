@@ -21,7 +21,7 @@
     },
     "skills": {
       "url": "skills/index.json",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "summary": "AI agent skills (Cursor, Claude Code, etc.)"
     }
   }

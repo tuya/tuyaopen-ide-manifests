@@ -53,6 +53,10 @@ the schema never relies on "implicit inheritance".
 4. **Versioned** — top-level `schemaVersion` (integer, structural compat)
    plus `publishedAt` (ISO-8601, cache busting), and per-domain
    `version` (semver, differential refresh) inside `registry.json`.
+   `skills` items additionally carry a **per-item** `version` (semver), because
+   their payload is installed into user projects: it is what lets the IDE tell
+   an upstream update apart from a user's local edit. See
+   [`skills/README.md`](./skills/README.md#version--per-skill-payload-version).
 5. **Localizable** — `name` / `summary` / similar fields accept either a
    plain string or `{ "en": "...", "zh-CN": "..." }`. The IDE picks by
    active locale and falls back to English.
@@ -127,10 +131,12 @@ IDE startup
 
 - **Add / edit / remove an item** — edit the entries in the matching
   `<domain>/index.json` directly and open a PR.
-- **Add / edit a skill** — the payload and the index entry go in the same PR;
+- **Add / edit a skill** — the payload and the index entry go in the same PR,
+  and editing a payload means bumping that item's `version`;
   see [`skills/README.md`](./skills/README.md). CI runs
-  `scripts/validate-skills-index.py` (structure + no orphan payloads) and
-  `pytest tests/skills`.
+  `scripts/validate-skills-index.py` (structure + versions + no orphan
+  payloads), `scripts/check-skill-version-bumps.py` (changed payload ⇒ version
+  bumped) and `pytest tests`.
 - **Schema bump** — bump the top-level `schemaVersion` and include a
   short migration note in the PR description.
 - **Release** — tag the commit; CI validates every JSON against the
