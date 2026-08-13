@@ -84,15 +84,34 @@ For CLI-based serial authorization (port selection, baud rates, commands), provi
 
 Before writing auth credentials over UART, identify the correct port:
 
-1. List available ports:
+1. List available ports, with the USB metadata that identifies them:
    ```bash
-   # Linux / macOS
-   ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null
-   # Windows PowerShell
-   [System.IO.Ports.SerialPort]::GetPortNames()
+   $OPEN_SDK_ROOT/tools/tyutool/tyutool_cli list-ports --json
    ```
-2. For T5/T5AI boards (WCH dual-serial, VID `0x1a86` PID `0x55d2`): the **lower** enumerated port is typically used for flash/auth; the **higher** port for monitor/log. This is not guaranteed — swap if the auth command fails.
-3. Use skill `tuyaopen/debug-helper` to capture device logs in the background during the auth flow:
+   Bare `ls /dev/ttyACM*` / `[System.IO.Ports.SerialPort]::GetPortNames()` gives
+   names only — enough to see *that* ports exist, not which one to authorize on.
+
+2. **Determine the board shape by grouping on `usbSerial`** — one physical board
+   is one `usbSerial`, however many ports it exposes:
+
+   | Ports sharing a `usbSerial` | Board | Auth port |
+   |---|---|---|
+   | 1 | **single-serial** | that port — flash, auth and log all share it |
+   | 2+ | **dual-serial** | the one with the lowest `usbInterface`; the other carries the log |
+
+   Rank by `usbInterface`, **not** by the `COM`/`ttyACM` number — the two
+   orderings disagree (a board can present `COM34` = interface 0 = auth port
+   alongside `COM33` = interface 2 = log port). Not guaranteed across vendors:
+   if `auth` gets no `tuya> ` prompt, try the other port of the same `usbSerial`.
+
+3. **Single-serial boards: free the port first.** Log output and the auth channel
+   are the same OS resource, so any open monitor — including the IDE's serial
+   panel — blocks authorization with `PermissionError 13` / `Access is denied` /
+   `Device or resource busy`. Stop the monitor, authorize at 115200, then reopen
+   it at the log baud. On dual-serial boards you can leave the monitor running.
+
+4. On dual-serial boards, use skill `tuyaopen/debug-helper` to capture logs in the
+   background while the auth flow runs on the other port:
    ```bash
    $OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py start -p <monitor-port>
    # ... run auth on auth port ...
@@ -100,7 +119,72 @@ Before writing auth credentials over UART, identify the correct port:
    $OPEN_SDK_PYTHON .agents/skills/tuyaopen-debug-helper/scripts/monitor_helper.py stop
    ```
 
+## IDE Ledger — Reporting Auth Back to the IDE
+
+The device and the TuyaOpen IDE keep **two independent records**. Confusing them
+is the most common source of "I authorized it but the IDE disagrees":
+
+| Record | Lives in | Changed by |
+|---|---|---|
+| Device credentials | KV / OTP on the chip | `tyutool_cli authorize`, the IDE's own serial-auth button, or `tuya_config.h` at build time |
+| IDE license ledger | 授权码 panel status (`未使用` / `使用中` / `已绑定`) | IDE-side events **only** |
+
+**Authorizing from the command line does not update the panel.** A license the
+device is genuinely running can still display `未使用`, because nothing told the
+IDE it happened. This is a bookkeeping gap, not an authorization failure — do
+not "fix" it by re-flashing credentials.
+
+Status semantics differ by license source:
+
+- **Cloud licenses** take their status from the Tuya backend, which flips it
+  only once the device actually activates against the cloud. The IDE never
+  overrides it, and neither can an agent.
+- **Local (pasted) licenses** are the ones an agent can and should report.
+
+### The `pending-auth.json` handback
+
+After authorizing a device outside the IDE, write `pending-auth.json` at the
+**IDE workspace root** — the `tuyaopen.workspaceRoot` setting, defaulting to
+`<home>/TuyaOpenIDE/`. Note this is the workspace root *above* the project, not
+the project directory itself.
+
+```json
+{ "uuid": "your_uuid_here", "mac": "AA:BB:CC:DD:EE:FF" }
+```
+
+| Field | Required | Meaning |
+|---|---|---|
+| `uuid` | YES | Must already exist in the IDE's license list, or the file is discarded |
+| `mac` | no | Binds the device MAC to the license entry |
+
+A file watcher consumes it, records an authorization event, flips a **local**
+license from `未使用` to `已绑定`, stamps the last-used time, and then **deletes
+the file**.
+
+Two cautions:
+
+1. **Deletion is not proof of success.** The "uuid not in the list" path deletes
+   the file too. Ask the developer to confirm the panel label rather than
+   inferring it from the file disappearing.
+2. **Never put the AuthKey in this file.** The protocol needs only `uuid` and
+   `mac`; the file sits on disk until the watcher fires.
+
+If the developer would rather the IDE track it natively, point them at the
+panel's own serial-auth button — that path records the event without a handback.
+
 ## Agent Strategy
+
+### After authorizing outside the IDE
+
+1. Write the `pending-auth.json` handback described above, so the IDE ledger
+   matches the hardware.
+2. Include the MAC when the firmware can give it — it is what lets the panel
+   show which physical device a license went to. Send `read_mac` on the same
+   port and baud you just authorized on (`references/PROVISIONING.md` → *CLI
+   Auth Commands*); run `help` first if unsure the build has it. Skip the field
+   if the command is absent — it is optional, and the boot log on the monitor
+   port is a fallback, not a requirement.
+3. Report the panel label as **unconfirmed** until the developer eyeballs it.
 
 ### When generating or modifying tuya_config.h
 

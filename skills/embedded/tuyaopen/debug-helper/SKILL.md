@@ -70,24 +70,35 @@ This location keeps logs with the project they belong to. The TuyaOpen SDK `.git
 Session state (PID + log file path) is stored in `<project_dir>/.target_logging/session.json`.
 Only one monitor session runs at a time — starting a new one automatically stops the previous.
 
-## Port selection for T5 dual-UART boards
+## Port selection: single-serial vs dual-UART boards
 
-T5 / T5AI boards expose two serial ports (WCH dual-serial, VID `0x1a86` PID `0x55d2`):
-
-- **Linux typical:** `ttyACM0` = flash, `ttyACM1` = monitor/log
-- **Windows typical:** lower COM = flash, higher COM = monitor/log
-
-These are common cases, not guarantees. If log output is absent or garbled after `start`, try the other port.
-
-List available ports:
+List ports with the USB metadata that identifies them, and **group on
+`usbSerial`** — one physical board is one `usbSerial`:
 
 ```bash
-# Linux / macOS
-ls /dev/ttyACM* /dev/ttyUSB* 2>/dev/null
-
-# Windows PowerShell
-[System.IO.Ports.SerialPort]::GetPortNames()
+$OPEN_SDK_ROOT/tools/tyutool/tyutool_cli list-ports --json
 ```
+
+| Ports sharing a `usbSerial` | Board | Monitor port |
+|---|---|---|
+| 1 | **single-serial** | that port — it also carries flash and auth |
+| 2+ | **dual-serial** (e.g. T5/T5AI, WCH `0x1a86:0x55d2`) | the **highest** `usbInterface`; the lowest is flash/auth |
+
+Rank by `usbInterface`, **not** by `COM`/`ttyACM` number — they disagree on
+Windows, where a board can enumerate `COM33` = interface 2 (log) next to `COM34`
+= interface 0 (flash). Typical, not guaranteed: if log output is absent or
+garbled after `start`, try the other port of the same `usbSerial`.
+
+> **Single-serial boards: the monitor owns the port exclusively.** Flash, auth
+> and log all share one OS resource, so a running monitor makes `tos.py flash` /
+> `tyutool_cli authorize` fail with `PermissionError 13` / `Access is denied` /
+> `Device or resource busy`. `stop` the session before those commands and `start`
+> it again afterwards — on these boards the build-flash-monitor loop is strictly
+> sequential. Dual-serial boards can hold the log port open throughout.
+
+Bare `ls /dev/ttyACM*` or `[System.IO.Ports.SerialPort]::GetPortNames()` still
+shows *that* ports exist, but carries no `usbSerial` / `usbInterface`, so it
+cannot tell you which port to open or whether two entries are one board.
 
 ## Typical agent workflow
 

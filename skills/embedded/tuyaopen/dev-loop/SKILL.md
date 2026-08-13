@@ -40,11 +40,21 @@ The standard development iteration cycle for TuyaOpen hardware:
    tos.py flash -p <port> -d      # debug output
    ```
 
-   **T5 dual serial ports:** T5/T5AI boards expose two serial ports. Typical mapping (not guaranteed):
-   - Linux: flash = `ttyACM0`, monitor/log = `ttyACM1`
-   - Windows: flash = lower COM number, monitor/log = higher COM number
+   **Which port?** Run `tyutool_cli list-ports --json` and group on `usbSerial`
+   — one physical board is one `usbSerial`:
+   - **1 port** → single-serial board: flash, auth and log all share it.
+   - **2+ ports** → dual-serial board (T5/T5AI etc.): flash = lowest
+     `usbInterface`, monitor/log = the other.
 
-   If flash fails on one port, swap to the other. Serial permission required on Linux (once): `sudo usermod -aG dialout $USER` then reboot.
+   Rank by `usbInterface`, not by `COM`/`ttyACM` number — on Windows the flash
+   port can be the *higher* COM. Typical, not guaranteed: if flash fails on one
+   port, swap to the other of the same `usbSerial`. Serial permission required on
+   Linux (once): `sudo usermod -aG dialout $USER` then reboot.
+
+   **On single-serial boards the loop is sequential**: the monitor holds the only
+   port, so `stop` it before flashing (else `Access is denied` / `Device or
+   resource busy`) and `start` it again after. Dual-serial boards can keep the log
+   port open across a flash.
 
 3. **Monitor / capture logs**: `tos.py monitor -p <port>` for interactive sessions, or **hands-off** background logging via `tuyaopen/debug-helper` (`monitor_helper.py start -p <port>` → `tail` → `stop`).
 4. **Analyze**: read the log file under **`<project_dir>/.target_logging/`** for errors, warnings, crash indicators (patterns below)

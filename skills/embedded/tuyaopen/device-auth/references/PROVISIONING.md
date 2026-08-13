@@ -6,12 +6,26 @@ For devices with `tal_cli` enabled, you can write credentials at runtime via the
 
 ### Which Serial Port to Use
 
-| Platform | Auth port | How to connect |
+| Platform / board | Auth port | How to connect |
 |----------|----------|----------------|
 | LINUX (Ubuntu, etc.) | N/A — use monitor port | `tos.py monitor` (stdout, no physical serial) |
-| T5AI, ESP32, T2, T3, etc. | **Flash/download port** (not monitor port!) | `tos.py monitor -p <flash_port> -b 115200` |
+| MCU, **single-serial** board (one port) | that single port — it is also the log port | `tos.py monitor -p <the_port> -b 115200` |
+| MCU, **dual-serial** board (two ports) | **Flash/download port** (not the log port!) | `tos.py monitor -p <flash_port> -b 115200` |
 
 > For MCU platforms, authorization is done through the **flash port** (the same port used for `tos.py flash`), **not** the monitor/log port. The authorization baud rate is **115200** regardless of chip type.
+
+Tell the two board shapes apart by grouping `tyutool_cli list-ports --json` on
+`usbSerial` — one board is one `usbSerial`, and the number of ports carrying it
+is the answer. On dual-serial boards pick the lowest `usbInterface` for auth;
+do **not** rank by `COM` / `ttyACM` number, which does not track interface order
+on Windows. See skill `tyutool-cli` → *Port Selection* for the full rule.
+
+> **Single-serial boards — release the port before authorizing.** The log stream
+> and the auth shell are the same OS resource. An open monitor (the IDE's serial
+> panel included) makes `auth` fail with `PermissionError 13` / `Access is denied`
+> / `Device or resource busy` — which looks like a wiring or firmware fault but
+> is not. Close the monitor, authorize at 115200, then reopen at the log baud.
+> Dual-serial boards can keep the log port open throughout.
 
 ### Steps
 
@@ -32,6 +46,24 @@ tuya> auth <UUID> <AUTHKEY>
 | `auth <uuid> <authkey>` | Write new credentials to KV storage |
 | `auth-read` | Read and display current stored credentials |
 | `auth-reset` | Clear stored credentials |
+| `read_mac` | Print the device MAC address |
+| `help` | List every command this firmware actually exposes |
+
+Run `help` first — the command set depends on what the firmware was built with,
+and a missing command means the build lacks it rather than the port being wrong.
+Some builds gate extra commands (`sys_*`, `fs_*`, `kv_*`) behind
+`ENABLE_SERIAL_CLI_CMD` in Kconfig.
+
+`read_mac` is the cheapest way to get the MAC for the `pending-auth.json`
+handback (see SKILL.md → *IDE Ledger*) — it needs no reboot and no log capture,
+and it runs on the same port and baud you just used to authorize:
+
+```
+tuya> read_mac
+mac: aa:bb:cc:dd:ee:ff
+```
+
+If the firmware has no `read_mac`, skip the MAC — it is an optional field.
 
 ### Authorization Fails?
 
