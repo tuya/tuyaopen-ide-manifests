@@ -130,6 +130,91 @@ def test_windows_style_changed_paths_are_normalized():
     assert len(errors) == 1
 
 
+PAYLOAD = ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]
+
+
+# --- release baseline: only published versions have to be bumped -------------
+
+
+def test_unpublished_version_absorbs_payload_changes():
+    """The seeded 1.0.0 never shipped, so editing under it is fine."""
+    base = index(item(version="1.0.0"))
+    head = index(item(version="1.0.0"))
+    released = index()  # last release predates this item entirely
+    assert checker.check(base, head, PAYLOAD, released) == []
+
+
+def test_version_present_but_unversioned_at_release_is_unpublished():
+    """Released baseline from before the 'version' field existed."""
+    released_item = item()
+    del released_item["version"]
+    base = index(item(version="1.0.0"))
+    head = index(item(version="1.0.0"))
+    assert checker.check(base, head, PAYLOAD, index(released_item)) == []
+
+
+def test_published_version_still_requires_a_bump():
+    base = index(item(version="1.0.0"))
+    head = index(item(version="1.0.0"))
+    released = index(item(version="1.0.0"))
+    errors = checker.check(base, head, PAYLOAD, released)
+    assert len(errors) == 1
+    assert "still 1.0.0" in errors[0]
+
+
+def test_second_edit_in_a_release_cycle_needs_no_further_bump():
+    """1.0.0 shipped, a prior PR moved to 1.0.1; 1.0.1 is not out yet."""
+    base = index(item(version="1.0.1"))
+    head = index(item(version="1.0.1"))
+    released = index(item(version="1.0.0"))
+    assert checker.check(base, head, PAYLOAD, released) == []
+
+
+def test_omitting_release_baseline_keeps_strict_behaviour():
+    base = index(item(version="1.0.0"))
+    head = index(item(version="1.0.0"))
+    assert len(checker.check(base, head, PAYLOAD)) == 1
+    assert len(checker.check(base, head, PAYLOAD, None)) == 1
+
+
+def test_undoing_an_unpublished_bump_is_allowed():
+    base = index(item(version="1.0.1"))
+    head = index(item(version="1.0.0"))
+    released = index()  # nothing shipped, so 1.0.0 is still free
+    assert checker.check(base, head, PAYLOAD, released) == []
+
+
+def test_cannot_fall_back_onto_a_published_version():
+    """1.0.0 shipped; reusing it for a different payload must fail."""
+    base = index(item(version="1.0.1"))
+    head = index(item(version="1.0.0"))
+    released = index(item(version="1.0.0"))
+    errors = checker.check(base, head, PAYLOAD, released)
+    assert len(errors) == 1
+    assert "backwards" in errors[0]
+
+
+def test_cannot_fall_below_a_published_version():
+    base = index(item(version="1.2.0"))
+    head = index(item(version="1.0.5"))
+    released = index(item(version="1.1.0"))
+    errors = checker.check(base, head, PAYLOAD, released)
+    assert len(errors) == 1
+    assert "backwards" in errors[0]
+
+
+def test_unpublished_untouched_payload_is_still_fine():
+    base = index(item(version="1.0.0"))
+    head = index(item(version="1.0.0"))
+    assert checker.check(base, head, ["README.md"], index()) == []
+
+
+def test_moved_payload_under_unpublished_version_needs_no_bump():
+    base = index(item(version="1.0.0", local_path="skills/embedded/old-home"))
+    head = index(item(version="1.0.0", local_path="skills/embedded/new-home"))
+    assert checker.check(base, head, [], index()) == []
+
+
 @pytest.mark.parametrize(
     "raw,expected",
     [

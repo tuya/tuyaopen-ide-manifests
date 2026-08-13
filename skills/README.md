@@ -101,11 +101,46 @@ touch the installed payload and need no bump. New skills start at `1.0.0`. Every
 item was seeded at `1.0.0` when the field was introduced — the seed carries no
 history, only the bumps after it mean anything.
 
-CI enforces this on pull requests: `scripts/check-skill-version-bumps.py` diffs
-the PR against its base and **fails when a payload changed and its `version`
-did not** (and when a version moves backwards). A version nobody bumps is worse
-than no version — the IDE would confidently report installed copies as up to
-date while the content changed underneath them.
+### Only published versions are frozen
+
+A version has to be protected once it can be *installed*, which means once it has
+been **released**. A version that has not shipped yet — the seeded `1.0.0`, or a
+number an earlier PR in this same cycle already bumped to — may keep absorbing
+payload edits without moving again. Otherwise a skill polished over four PRs
+before its first release would debut at `1.0.4`, and the number would say nothing
+about anything.
+
+Concretely, within one release cycle: **the first PR that touches a released
+payload bumps it; later PRs in that cycle ride the same number.** Once that
+version ships, the next payload change bumps again.
+
+What this never permits is landing on or below a number that already shipped —
+that would make one version describe two different payloads.
+
+CI enforces it on pull requests: `scripts/check-skill-version-bumps.py` compares
+the PR against its base, and against `skills/index.json` as of the release tag in
+`release.json`, to tell shipped versions from in-flight ones. It **fails when a
+payload changed and a *published* `version` did not**, and when a version moves
+backwards onto released ground. A version nobody bumps is worse than no version —
+the IDE would confidently report installed copies as up to date while the content
+changed underneath them.
+
+Run it locally the way CI does:
+
+```bash
+RELEASE_TAG="$(python3 -c 'import json;print(json.load(open("release.json"))["tag"])')"
+git show "$RELEASE_TAG:skills/index.json" > /tmp/released-index.json
+git show HEAD:skills/index.json          > /tmp/base-index.json
+git diff --name-only --no-renames HEAD -- skills/ \
+  | python3 scripts/check-skill-version-bumps.py \
+      --base-index /tmp/base-index.json \
+      --released-index /tmp/released-index.json \
+      --changed -
+```
+
+Omitting `--released-index` falls back to treating every base version as
+published — stricter, never looser, so a broken or missing release tag can only
+ask for an unnecessary bump, never wave a needed one through.
 
 ### How the IDE reads it
 

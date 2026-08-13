@@ -25,8 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          # The bump check below diffs against the PR base commit; at the
-          # default depth of 1 that commit is not in the clone.
+          # The bump check below reads the PR base commit and the last release
+          # tag; at the default depth of 1 neither is in the clone.
           fetch-depth: 0
 
       - name: Validate structure and references
@@ -43,9 +43,17 @@ jobs:
         run: |
           git show "$BASE_SHA:skills/index.json" > base-skills-index.json \
             || : > base-skills-index.json
+          # Versions that never shipped may keep absorbing edits under the same
+          # number, so the check needs to know what the last release contained.
+          # An unreadable tag leaves the file empty, which falls back to the
+          # strict "assume everything shipped" behaviour rather than skipping.
+          RELEASE_TAG="$(python3 -c 'import json;print(json.load(open("release.json"))["tag"])')"
+          git show "$RELEASE_TAG:skills/index.json" > released-skills-index.json \
+            || : > released-skills-index.json
           # --no-renames so a payload file moved out of a skill shows up as a
           # change to that skill too, not only to the one it landed in.
           git diff --name-only --no-renames "$BASE_SHA...HEAD" -- skills/ > changed-skills.txt
           python3 scripts/check-skill-version-bumps.py \
             --base-index base-skills-index.json \
+            --released-index released-skills-index.json \
             --changed changed-skills.txt

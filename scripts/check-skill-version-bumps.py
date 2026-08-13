@@ -8,25 +8,41 @@ nobody bumps is *worse* than no version at all: the IDE would confidently
 report "up to date" while the payload changed underneath it. This check is what
 makes the field trustworthy.
 
-Deliberately does no git plumbing of its own — the caller (CI) supplies the two
+Only *published* versions need protecting. A user can only have installed a
+version that actually shipped, so a version still in flight — introduced after
+the last release and never packaged — may keep absorbing payload edits under the
+same number. Requiring a bump for those would inflate the version through a
+release cycle and ship, say, 1.0.4 as a skill's first public release. That is
+what --released-index is for; without it the script assumes everything shipped
+and behaves exactly as it did before.
+
+Deliberately does no git plumbing of its own — the caller (CI) supplies the
 inputs, which keeps the whole decision testable without a repository:
 
-  --base-index  skills/index.json as of the base commit
-                (`git show <base>:skills/index.json`); an empty/missing file
-                means "no baseline", and the check passes
-  --changed     newline-separated repo-relative paths changed by the PR
-                (`git diff --name-only --no-renames <base>...HEAD -- skills/`),
-                or '-' to read them from stdin
+  --base-index      skills/index.json as of the base commit
+                    (`git show <base>:skills/index.json`); an empty/missing file
+                    means "no baseline", and the check passes
+  --changed         newline-separated repo-relative paths changed by the PR
+                    (`git diff --name-only --no-renames <base>...HEAD -- skills/`),
+                    or '-' to read them from stdin
+  --released-index  optional: skills/index.json as of the last published release
+                    (`git show <release.json .tag>:skills/index.json`). Omit it —
+                    or point it at an empty file — and every base version counts
+                    as published, which is the strict, pre-existing behaviour.
 
 Rules, per item in the *head* index:
   - payload changed (a file under source.localPath, or localPath itself moved)
-    and the item existed at base ⇒ version must be strictly greater than base
+    and the base version is *published* ⇒ version must be strictly greater
+  - base version never published (absent from the release baseline, or carrying
+    a different version there) ⇒ payload may change freely under that version
   - item is new at head ⇒ nothing to compare, passes
   - base entry had no/invalid version (pre-versioning baseline) ⇒ passes
-  - a version that moves backwards fails even without a payload change
+  - a version that moves backwards fails, unless both ends sit above every
+    published version — undoing a premature bump is fine, landing on or below a
+    shipped number is not
 
 Usage: python3 scripts/check-skill-version-bumps.py --base-index B --changed C
-       [--head-index skills/index.json]
+       [--released-index R] [--head-index skills/index.json]
 Exits 0 on success, 1 on any error.
 """
 
@@ -79,7 +95,21 @@ def touches(changed: list, directory: str) -> bool:
     return any(path == directory or path.startswith(prefix) for path in changed)
 
 
-def check(base_data, head_data, changed: list) -> list:
+def released_version_of(released, item_id):
+    """The version this item shipped with, or None when it never shipped.
+
+    `released` is None when the caller supplied no release baseline — then we
+    cannot tell shipped from unshipped and must assume the strict case.
+    """
+    if released is None:
+        return None
+    entry = released.get(item_id)
+    if not isinstance(entry, dict):
+        return None
+    return parse_version(entry.get("version"))
+
+
+def check(base_data, head_data, changed: list, released_data=None) -> list:
     """Return the list of problems; empty means the change is fine."""
     errors: list = []
     base = items_by_id(base_data)
@@ -88,6 +118,7 @@ def check(base_data, head_data, changed: list) -> list:
         # carry skills/index.json). Nothing this check can honestly assert.
         return errors
 
+    released = items_by_id(released_data) if released_data is not None else None
     changed = [p.strip().replace("\\", "/") for p in changed if p.strip()]
 
     for item_id, head_item in items_by_id(head_data).items():
@@ -112,15 +143,27 @@ def check(base_data, head_data, changed: list) -> list:
         if base_version is None:
             continue  # baseline predates the field; nothing to compare
 
+        released_version = released_version_of(released, item_id)
+        # Without a release baseline we cannot tell shipped from unshipped, so
+        # assume the base version shipped — the strict, pre-existing behaviour.
+        base_published = True if released is None else released_version == base_version
+
         if head_version < base_version:
-            errors.append(
-                f"item '{item_id}': version moved backwards "
-                f"({base_item['version']} → {head_item['version']})"
+            # Undoing a bump that never shipped is legitimate; dropping onto or
+            # below a published number would make one version describe two
+            # different payloads.
+            stays_unpublished = not base_published and (
+                released_version is None or head_version > released_version
             )
-            continue
+            if not stays_unpublished:
+                errors.append(
+                    f"item '{item_id}': version moved backwards "
+                    f"({base_item['version']} → {head_item['version']})"
+                )
+                continue
 
         payload_changed = touches(changed, head_dir) or (base_dir != head_dir)
-        if payload_changed and head_version == base_version:
+        if payload_changed and head_version == base_version and base_published:
             errors.append(
                 f"item '{item_id}': payload {head_dir or '(unknown path)'} changed but "
                 f"'version' is still {head_item['version']} — bump it (patch for a wording "
@@ -145,6 +188,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--base-index", required=True, help="index.json at the base commit")
     parser.add_argument("--changed", required=True, help="file of changed paths, or '-' for stdin")
+    parser.add_argument(
+        "--released-index",
+        default=None,
+        help="index.json as of the last published release; omit to treat every base version as published",
+    )
     parser.add_argument(
         "--head-index",
         default=str(REPO_ROOT / "skills" / "index.json"),
@@ -171,13 +219,26 @@ def main() -> int:
         print("• no base skills/index.json to compare against — version bump check skipped")
         return 0
 
+    released_data = None
+    if args.released_index:
+        try:
+            released_data = read_json(Path(args.released_index))
+        except json.JSONDecodeError as e:
+            print(f"✗ {args.released_index}: invalid JSON: {e}", file=sys.stderr)
+            return 1
+        if released_data is None:
+            print(
+                "• no released skills/index.json supplied — every base version "
+                "treated as published"
+            )
+
     if args.changed == "-":
         changed = sys.stdin.read().splitlines()
     else:
         changed_path = Path(args.changed)
         changed = changed_path.read_text(encoding="utf-8").splitlines() if changed_path.is_file() else []
 
-    errors = check(base_data, head_data, changed)
+    errors = check(base_data, head_data, changed, released_data)
     if errors:
         print(f"✗ skill version bump check: {len(errors)} problem(s) found:", file=sys.stderr)
         for e in errors:
