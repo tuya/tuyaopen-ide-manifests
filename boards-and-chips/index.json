@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-05-13T00:00:00Z",
+  "publishedAt": "2026-08-13T00:00:00Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -9,7 +9,10 @@
         "en": "Tuya T5-E1 Module",
         "zh-CN": "涂鸦 T5-E1 模组"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -38,7 +41,10 @@
         "en": "Tuya T5AI-Board",
         "zh-CN": "涂鸦 T5AI-Board 开发板"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -68,7 +74,10 @@
         "en": "Tuya T5AI-Core",
         "zh-CN": "涂鸦 T5AI-Core 核心板"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -101,7 +110,10 @@
         "en": "Tuya T5AI Pixel",
         "zh-CN": "涂鸦 T5AI Pixel 板"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -132,7 +144,10 @@
         "en": "Tuya T5AI Pocket",
         "zh-CN": "涂鸦 T5AI Pocket 板"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -166,7 +181,10 @@
         "en": "Tuya T5AI E-Ink NFC Board",
         "zh-CN": "涂鸦 T5AI 墨水屏 NFC 板"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -198,7 +216,10 @@
         "en": "T5AI Mini",
         "zh-CN": "T5AI Mini 开发板"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -227,7 +248,10 @@
         "en": "Waveshare T5AI Touch AMOLED 1.75\"",
         "zh-CN": "微雪 T5AI 1.75 寸触摸 AMOLED"
       },
-      "manufacturer": "Waveshare",
+      "manufacturer": {
+        "en": "Waveshare",
+        "zh-CN": "微雪"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -262,7 +286,10 @@
         "en": "Tuya T5AI EVB",
         "zh-CN": "涂鸦 T5AI 白盒"
       },
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -292,7 +319,10 @@
       },
       "platformId": "gd32",
       "variantId": "gd32vw553",
-      "manufacturer": "嘉立创",
+      "manufacturer": {
+        "en": "JLC",
+        "zh-CN": "嘉立创"
+      },
       "summary": {
         "en": "LCKFB GD32VW553 development board based on the GigaDevice GD32VW553 (RISC-V @160MHz with integrated Wi-Fi 6 and Bluetooth LE 5.2). Breaks out rich GPIO and peripheral interfaces (UART/I2C/SPI/QSPI/ADC/PWM) for wireless IoT development.",
         "zh-CN": "立创·GD32VW553 开发板,基于兆易创新 GD32VW553(RISC-V,主频 160MHz,集成 Wi-Fi 6 与蓝牙 BLE 5.2)。引出丰富的 GPIO 及外设接口(UART/I2C/SPI/QSPI/ADC/PWM),适合无线物联网应用开发。"
@@ -320,7 +350,10 @@
       },
       "platformId": "gd32",
       "variantId": "gd32vw553",
-      "manufacturer": "兆易创新",
+      "manufacturer": {
+        "en": "GigaDevice",
+        "zh-CN": "兆易创新"
+      },
       "summary": {
         "en": "GigaDevice GD32VW553-TY1 2.4GHz Wi-Fi 6 (802.11b/g/n/ax) + BLE module on the GD32VW553 (RISC-V @160MHz, 4MB flash, onboard PCB antenna, 15 GPIO pins). Default UART2 on PA6/PA7 for download & log, UART1 on PB15/PA8 for AT commands; PC8=BOOT0, PB1=BOOT1. Maps to SDK board GD32_MC_FOC_VWS_VW553.",
         "zh-CN": "兆易创新 GD32VW553-TY1 2.4GHz Wi-Fi 6 (802.11b/g/n/ax) + BLE 模组，基于 GD32VW553（RISC-V 主频 160MHz，4MB Flash，板载 PCB 天线，引出 15 个 GPIO）。默认 PA6/PA7 = UART2（下载/日志），PB15/PA8 = UART1（AT 指令）；PC8=BOOT0，PB1=BOOT1。对应 SDK board GD32_MC_FOC_VWS_VW553。"
@@ -348,7 +381,10 @@
       },
       "platformId": "t5ai",
       "variantId": "t5ai",
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "summary": {
         "en": "T5AI Otto robot board based on the Tuya T5 (T5AI). Onboard audio codec with AEC plus an optional SPI LCD expansion module (ST7789 / ST7735S / GC9D01) for the Otto robot reference design.",
         "zh-CN": "基于涂鸦 T5（T5AI）的 Otto 机器人开发板。板载带 AEC 的音频编解码器，并支持可选 SPI LCD 扩展模块（ST7789 / ST7735S / GC9D01），用于 Otto 机器人参考设计。"
@@ -377,7 +413,10 @@
       },
       "platformId": "t5ai",
       "variantId": "t5ai",
-      "manufacturer": "Tuya",
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
       "summary": {
         "en": "Tuya T5AI robot dog board based on the Tuya T5 (T5AI). Onboard audio codec, user button, indicator LED and a built-in 172x320 SPI LCD for the robot dog reference design.",
         "zh-CN": "基于涂鸦 T5（T5AI）的机器狗开发板。板载音频编解码器、用户按键、指示灯，以及内置 172x320 SPI LCD，用于机器狗参考设计。"
@@ -408,7 +447,10 @@
         "en": "ESP32-WROOM-32E",
         "zh-CN": "ESP32-WROOM-32E"
       },
-      "manufacturer": "乐鑫",
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
       "platformId": "esp32",
       "variantId": "esp32",
       "summary": {
@@ -435,7 +477,10 @@
         "en": "ESP32-C3-MINI",
         "zh-CN": "ESP32-C3-MINI"
       },
-      "manufacturer": "乐鑫",
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
       "platformId": "esp32",
       "variantId": "esp32c3",
       "summary": {
@@ -462,7 +507,10 @@
         "en": "ESP32-C6-MINI",
         "zh-CN": "ESP32-C6-MINI"
       },
-      "manufacturer": "乐鑫",
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
       "platformId": "esp32",
       "variantId": "esp32c6",
       "summary": {
@@ -491,7 +539,10 @@
         "en": "ESP32-S3-WROOM",
         "zh-CN": "ESP32-S3-WROOM"
       },
-      "manufacturer": "乐鑫",
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -519,7 +570,10 @@
         "en": "ESP32-P4-C6 Module",
         "zh-CN": " ESP32-P4-C6 通用开发板"
       },
-      "manufacturer": "乐鑫",
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
       "platformId": "esp32",
       "variantId": "esp32p4c6",
       "summary": {
@@ -548,7 +602,10 @@
         "en": "ALIENTEK DNESP32S3",
         "zh-CN": "正点原子 DNESP32S3 开发板"
       },
-      "manufacturer": "正点原子",
+      "manufacturer": {
+        "en": "ALIENTEK",
+        "zh-CN": "正点原子"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -578,7 +635,10 @@
         "en": "ALIENTEK DNESP32S3-BOX",
         "zh-CN": "正点原子 DNESP32S3-BOX"
       },
-      "manufacturer": "正点原子",
+      "manufacturer": {
+        "en": "ALIENTEK",
+        "zh-CN": "正点原子"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -608,7 +668,10 @@
         "en": "ALIENTEK DNESP32S3-BOX2 (Wi-Fi)",
         "zh-CN": "正点原子 DNESP32S3-BOX2 (Wi-Fi)"
       },
-      "manufacturer": "正点原子",
+      "manufacturer": {
+        "en": "ALIENTEK",
+        "zh-CN": "正点原子"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -638,7 +701,10 @@
         "en": "Waveshare ESP32-S3 Touch AMOLED 1.8 ",
         "zh-CN": "微雪 ESP32-S3 Touch AMOLED 1.8 寸"
       },
-      "manufacturer": "微雪",
+      "manufacturer": {
+        "en": "Waveshare",
+        "zh-CN": "微雪"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -668,7 +734,10 @@
         "en": "Waveshare ESP32-C6 Dev Kit N16",
         "zh-CN": "微雪 ESP32-C6 开发套件 N16"
       },
-      "manufacturer": "微雪",
+      "manufacturer": {
+        "en": "Waveshare",
+        "zh-CN": "微雪"
+      },
       "platformId": "esp32",
       "variantId": "esp32c6",
       "summary": {
@@ -696,7 +765,10 @@
         "en": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸",
         "zh-CN": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸"
       },
-      "manufacturer": "微雪",
+      "manufacturer": {
+        "en": "Waveshare",
+        "zh-CN": "微雪"
+      },
       "platformId": "esp32",
       "variantId": "esp32p4c6",
       "summary": {
@@ -749,7 +821,10 @@
         "en": "ESP32-S3 Breadboard Compact (Wi-Fi)",
         "zh-CN": "ESP32-S3 面包板紧凑型 (Wi-Fi)"
       },
-      "manufacturer": "乐鑫",
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {

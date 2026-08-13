@@ -14,11 +14,13 @@
 │   └── index.json                 # boards + chips (Tuya official + ecosystem)
 ├── demos/
 │   └── index.json                 # demo / example projects
-└── skills/
-    ├── index.json                 # AI agent skills registry (Cursor, Claude Code, …)
-    ├── embedded/                  # ── the skill payloads themselves ──
-    ├── cloud/                     #    SKILL.md + references/ + scripts/
-    └── miniapp/                   #    see skills/README.md
+├── skills/
+│   ├── index.json                 # AI agent skills registry (Cursor, Claude Code, …)
+│   ├── embedded/                  # ── the skill payloads themselves ──
+│   ├── cloud/                     #    SKILL.md + references/ + scripts/
+│   └── miniapp/                   #    see skills/README.md
+└── miniapp-templates/             # shipped in the tarball, but NOT a domain
+    └── miniapp-template-covers.json
 ```
 
 ---
@@ -31,12 +33,30 @@
 | `demos`          | example projects (point at git repos)  | `demos/index.json`                |
 | `skills`         | pluggable AI agent skills **+ their payload** | `skills/index.json` + `skills/<surface>/**` |
 
+### Shipped in the tarball but *not* a domain
+
+`miniapp-templates/miniapp-template-covers.json` rides in `manifests.tar.gz`
+from 1.0.0 on, and the IDE reads it by its manifest-relative path like any
+board `detailUrl` — but it must **never** be added to `registry.json#manifests`.
+It is `schemaVersion: 2`, has no `domain` field and names its array `templates`
+instead of `items`, so the IDE's domain-envelope check rejects it; worse, a
+registry entry makes the IDE's cache-integrity check demand a file that older
+releases do not carry, which forces a full tarball re-download on every startup
+for anyone pinned to such a release.
+
+`peripheral-templates/index.json` is the mirror case: it stays in this repo as
+the canonical source, but is **not** packaged — the IDE serves that catalogue
+from its own bundled copy and syncs it in at build time.
+
 The boards manifest mixes Tuya official boards and ecosystem boards into
-one list. The IDE filters on the `brand` field (`brand.en === "Tuya"`
-means official) — no separate manifest needed. When the brand and
-manufacturer differ (typical for ODM / OEM boards), use the
-`manufacturer` field; when they're the same, fill **both** explicitly so
-the schema never relies on "implicit inheritance".
+one list. The IDE tells them apart from **`manufacturer` first, falling
+back to `brand`** — it resolves that value in the active locale and treats
+`Tuya` / `TuyaOpen` / `Tuya Inc.`, or any name starting with `涂鸦`, as
+official. No separate manifest needed. `manufacturer` is therefore the
+field every board must carry; `brand` is optional and only worth setting
+when the brand owner genuinely differs from the fabricator (ODM / OEM).
+Note that a `brand` alone does **not** move a board into the official
+group — `manufacturer` wins whenever both are present.
 
 ## Design principles
 
@@ -72,10 +92,15 @@ the schema never relies on "implicit inheritance".
 - **Cross-domain references** use IDs (e.g. a board's
   `recommendedDemos: ["switch-3-iot"]`), never URLs — moving a file
   doesn't break the link.
-- **Boards**: `brand` is the brand owner, `manufacturer` is who actually
-  fabricates it. Often identical (e.g. Espressif for an ESP32 DevKit),
-  but split for ODM / OEM cases. Always fill both — never rely on
-  "missing means same as brand".
+- **Boards**: `manufacturer` is who actually fabricates the board and is
+  **required**; `brand` is the brand owner and is **optional**, meant for
+  the ODM / OEM case where the two genuinely differ. Do not fill `brand`
+  with a copy of `manufacturer`: the IDE reads `manufacturer || brand`, so
+  a duplicate buys nothing, and the board card only renders a separate
+  manufacturer row when the two values differ. Prefer the localized form
+  `{ "en": …, "zh-CN": … }` over a single-language string — a bare `"微雪"`
+  shows up as Chinese for English users, and the same vendor spelled two
+  ways reads as two vendors.
 - **SDK applicability** (`sdks`) — optional array marking which SDK(s) an
   entry applies to, on `boardsAndChips` / `demos` / `skills` items.
   Values: `"tuyaopen"`, `"tuyaos"`; an entry may list one or both
@@ -103,19 +128,33 @@ the schema never relies on "implicit inheritance".
 - **`published` gates downstream** — a platform item and a board item each carry
   `published` (default `true` when absent). A board's **effective** publish state
   is `board.published !== false` **AND** its chip platform's `published !== false`:
-  if the platform (the variant a board targets via `platformId`) is unpublished,
+  if the platform (the variant a board targets via `variantId`) is unpublished,
   every board on it is effectively unpublished too — even boards flagged
   `published: true`. Consumers treat effectively-unpublished boards as not-yet-released
   (the editor sorts them to the end of their tab, published first; the IDE should hide
   them from the board picker). Rationale: you can't ship a board whose SoC platform
-  isn't released yet. (Same idea applies to demos gated by their platform.)
-- **Board list grouping (multi-variant platforms)** — the editor groups boards into
-  one tab per SDK **platform group**. A board's `platformId` may be the group itself
-  (single-chip platforms: `t5ai`, `gd32`) OR a specific chip **variant** (multi-chip
-  platforms: `esp32s3`, `esp32c6`, …). To place every chip of one SDK platform in a
-  single tab, resolve a board's `platformId` to its group via the platforms list
-  (`platform.id → platform.platformId`). Keep `board.platformId = the variant` (so the
-  IDE resolves the correct per-chip detail) and `board.variantId = the same variant`.
+  isn't released yet.
+- **`demos` spells the same flag `publish`, not `published`** — deliberately, and
+  the IDE reads the two names on different domains: `published` on
+  `boardsAndChips` / `platforms`, `publish` on `demos` (and on the
+  `miniapp-templates` covers catalogue). Both default to visible when absent, so
+  spelling it the other way on a demo does not hide that demo — it silently
+  publishes it. Do not "normalise" one into the other without changing the IDE
+  in the same release.
+- **Board list grouping (multi-variant platforms)** — a board carries **two**
+  platform pointers and they are not interchangeable:
+  - `board.platformId` = the **platform group**, which is what the boards list tabs
+    on (`t5ai`, `gd32`, `esp32`, `linux`). A platform item's own group is its
+    `platformId` field, so several items share one: all of `esp32`, `esp32c3`,
+    `esp32c6`, `esp32s3`, `esp32p4c6` carry `platformId: "esp32"`.
+  - `board.variantId` = the exact chip **variant**, i.e. some platform item's `id`.
+    This is what resolves the per-chip detail, and it must be set on every board —
+    including single-chip platforms, where it repeats the group (`t5ai` → `t5ai`).
+
+  The consumer binds on `variantId` when present and only falls back to matching
+  `platformId` against a platform item's `id` **or** its group when it is absent.
+  So a group id that no platform item uses as its `id` (`gd32`) is fine in
+  `platformId` — `variantId: "gd32vw553"` is what does the resolving.
 
 ## How the IDE consumes this repo
 
@@ -137,10 +176,21 @@ IDE startup
   `scripts/validate-skills-index.py` (structure + versions + no orphan
   payloads), `scripts/check-skill-version-bumps.py` (changed payload ⇒ version
   bumped) and `pytest tests`.
+- **Bump the domain version** — any change to a `<domain>/index.json` or the
+  items under it needs `registry.json`'s `manifests.<domain>.version` bumped
+  (minor for added / removed items, patch for content-only edits). That number
+  is what lights the "this page has an update" dot in the IDE; leaving it
+  untouched means an already-synced IDE never tells the user anything changed.
+  Refresh that domain's `publishedAt` in the same PR.
 - **Schema bump** — bump the top-level `schemaVersion` and include a
   short migration note in the PR description.
-- **Release** — tag the commit; CI validates every JSON against the
-  schema; the tag is what the CDN / IDE pins to.
+- **Release** — add a [`CHANGELOG.md`](./CHANGELOG.md) entry, then tag the
+  commit and publish a GitHub Release for the tag; CI validates the JSON, packs
+  `manifests.tar.gz`, generates `release.json` from `registry.json`'s domain
+  versions, and mirrors both to Gitee. The tag is what the CDN / IDE pins to.
+  The `images.tuyacn.com` copy named in `release.json#package.tuyacn` is **not**
+  uploaded by CI — publish it by hand, or Mainland-China clients resolving that
+  mirror get a 404.
 
 This is meant to be edited like any normal git repo: PR, review, merge,
 tag. No special tooling needed beyond a JSON-aware editor.
@@ -149,8 +199,7 @@ tag. No special tooling needed beyond a JSON-aware editor.
 
 - `schemas/*.json` — JSON Schema per domain, enforced by CI.
 - `mirrors.json` — Mainland China mirrors / Gitee fallback URLs.
-- `CHANGELOG.md` — manifest-level changelog the IDE references in its
-  "manifests updated" toast.
+- Uploading the `images.tuyacn.com` tarball from CI instead of by hand.
 
 ## License
 

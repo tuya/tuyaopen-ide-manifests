@@ -2,8 +2,8 @@
   "schemaVersion": 2,
   "description": "Merged template catalog: IDE covers + registry metadata",
   "totalTemplates": 32,
-  "withCover": 26,
-  "withoutCover": 8,
+  "withCover": 32,
+  "withoutCover": 0,
   "templates": [
     {
       "id": "PanelWirelessTapToRun",

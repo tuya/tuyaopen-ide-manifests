@@ -50,7 +50,16 @@ jobs:
         run: |
           mkdir -p staging
           cp registry.json staging/
-          for dir in boards-and-chips demos platforms skills; do
+          # `miniapp-templates` is NOT a manifest domain and must never be
+          # registered in registry.json — its covers file is schemaVersion 2 with
+          # a `templates` array and no `domain` field, so the IDE's
+          # assertDomainEnvelope() rejects it, and a registry entry would make
+          # cacheIntegrity() demand a file that predates this release, forcing a
+          # tarball re-download on every startup. It ships here because the IDE
+          # reads it by manifest-relative path through the ordinary loader.
+          # `peripheral-templates` is deliberately absent: the IDE serves that
+          # catalogue from its own bundled media/ copy.
+          for dir in boards-and-chips demos platforms skills miniapp-templates; do
             [ -d "$dir" ] && cp -r "$dir" staging/ && echo "  + $dir/"
           done
           FILE_COUNT="$(find staging -type f | wc -l)"
