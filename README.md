@@ -189,8 +189,11 @@ IDE startup
   `manifests.tar.gz`, generates `release.json` from `registry.json`'s domain
   versions, and mirrors both to Gitee. The tag is what the CDN / IDE pins to.
   The `images.tuyacn.com` copy named in `release.json#package.tuyacn` is **not**
-  uploaded by CI — publish it by hand, or Mainland-China clients resolving that
-  mirror get a 404.
+  uploaded by CI — publish it by hand. Skipping it does not break the release:
+  the IDE cycles `tuyacn → gitee → github` (CN locale) across six attempts, so a
+  404 there costs one failed request and a short backoff before Gitee serves the
+  tarball. It does mean every Mainland-China client pays that penalty on every
+  cold sync, which is the whole reason the CDN entry exists.
 
 This is meant to be edited like any normal git repo: PR, review, merge,
 tag. No special tooling needed beyond a JSON-aware editor.
