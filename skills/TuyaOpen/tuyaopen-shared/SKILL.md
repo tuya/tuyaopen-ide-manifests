@@ -1,0 +1,303 @@
+---
+name: tuyaopen-shared
+description: >-
+  Foundation conventions shared by every other TuyaOpen skill: how to find and
+  identify the `tuyaopen` CLI, the `--json` envelope contract, the exit-code
+  promise, the P0/P1/P2 confirmation-gate mechanics (including the derived
+  `--confirm` token), command/skill self-discovery, the `tos.py` ↔ `tuyaopen`
+  fallback map, the `.tuyaopen/` project layout, and the master intent→skill
+  routing table. Read this first, or when another skill says "not in scope,
+  see tuyaopen-shared". Not a task skill by itself — it has no action of its
+  own.
+  基础约定与总路由：如何定位并识别 tuyaopen CLI、--json 信封契约、退出码承诺、
+  P0/P1/P2 确认门（含派生 --confirm token）、命令/技能自发现、tos.py 与 tuyaopen
+  的能力映射表、.tuyaopen/ 项目布局，以及意图到技能的总路由表。任何技能标注
+  "超出本技能范围，见 tuyaopen-shared" 时来这里查。本身不是任务技能，没有独立动作。
+license: Apache-2.0
+compatibility:
+  - tuyaopen CLI, either form — bundled with the IDE (out/cli/cli.js inside the
+    extension install) or the standalone npm package (@tuya/tuyaopen-cli,
+    `tuyaopen` binary on PATH)
+  - Node.js (whatever version the CLI you found reports via `diag doctor --json`)
+---
+
+# TuyaOpen Shared Conventions
+
+This skill carries no action of its own. It is the one place the load-bearing
+facts about the `tuyaopen` CLI and the skill catalogue are written **once** —
+every other TuyaOpen skill should link here instead of restating them, and
+should say "not in scope, see skill `tuyaopen-shared`" rather than naming
+sibling skills by name (see § *Routing table* for why).
+
+## 1. Finding the CLI, and knowing which one you found
+
+Two independent things can be running under the name `tuyaopen`:
+
+- **bundled** — inside a TuyaOpen IDE (VSCode/Cursor extension) install, at
+  `<extension>/out/cli/cli.js`. Run it with `node <path>/out/cli/cli.js <args>`.
+- **standalone** — the npm package `@tuya/tuyaopen-cli`, installed globally or
+  as a project devDependency, exposing a `tuyaopen` binary on `PATH`
+  (`dist/cli/cli.js` under the hood).
+
+Don't guess which one a shell has — ask it:
+
+```bash
+tuyaopen diag doctor --json
+```
+
+The `cli` block in the response identifies the binary you are actually
+running:
+
+```json
+{
+  "cli": {
+    "entryPath": "/abs/path/to/cli.js",
+    "version": "0.1.0",
+    "contractVersion": 1,
+    "processNodeVersion": "v22.22.0",
+    "packaging": "bundled",
+    "cacheRoot": { "path": "/home/<user>/TuyaOpenIDE/.tuyaopen/cache", "source": "default" },
+    "devplatSpawnNode": "/path/to/node"
+  }
+}
+```
+
+- `packaging` is `"bundled"` (running from inside an IDE install), `"standalone"`
+  (the npm package), or `"unknown"`.
+- `contractVersion` is the machine-contract version of the `--json` envelope
+  and the command schema (see § 2) — an add-only counter, currently `1`.
+- `diag doctor --json` also reports `node`/`git`/`uv`/`python` toolchain
+  status, `sdk.{installed,tosPresent,envReady}`, `devplatCli.{present,path}`,
+  and `credential.{loggedIn,source}` in the same call — one round-trip to
+  triage "why isn't this working" before touching anything.
+
+## 2. The `--json` envelope contract
+
+Every command returns one JSON object on a single stdout line under
+`--json` / `--format json` (default when stdout is piped; `human` is the
+default in a TTY). Never parse human-mode output.
+
+```ts
+interface CommandResult {
+  ok: boolean;
+  data?: unknown;                 // payload; shape is per-command
+  error?: string;                 // legacy human message
+  code?: string;                  // legacy stable machine code
+  suggestion?: string;            // legacy hint (superseded by `hint`)
+  type?: ErrorCategory;           // 'validation'|'authentication'|'authorization'
+                                   // |'config'|'network'|'api'|'policy'|'internal'
+                                   // |'confirmation'|'tooling'|'envstate'
+  subtype?: string;               // closed-set sub-classifier
+  hint?: string;                  // actionable one-liner
+  retryable?: boolean;
+  next_steps?: string[];          // ordered follow-up commands
+  details?: unknown;              // structured detail, never rendered in human mode
+  meta?: { elapsed_ms?: number; mutating?: boolean; riskLevel?: 'P0'|'P1'|'P2'|'P3'; [k: string]: unknown };
+}
+```
+
+`contractVersion` (currently `1`) is stamped onto the **outer** object at
+render time — sibling to `ok`/`data`, not nested under `meta` — on every
+`--json` response including the crash-net envelope. Treat it as the one
+add-only flag that says "I know this envelope shape"; do not infer the shape
+from which fields happen to be present.
+
+**A programmatic caller classifies by `type` / `subtype` / `code` — never by
+exit code number.** See § 3.
+
+List payloads (a bare array, or an object wrapping one under `list` /
+`dataList` / `datas` / `items` / `records` / `data`) can be cropped with the
+global `--fields name,other` / `--max-items N` flags — useful for keeping a
+large listing inside an AI context window.
+
+## 3. Exit codes: only `0` / non-zero is a promise
+
+**The only contract is `0` = success, non-zero = failure.** The CLI does map
+error categories to specific non-zero values internally, and that mapping is
+real and in force today — but it is an **internal implementation detail, not
+a stable interface**. Categories can be added or re-mapped over time.
+
+**Do not branch on a specific exit code number** (`=== 7`, etc.). Read
+`type` / `subtype` / `code` from the parsed `--json` envelope instead — that
+is the add-only machine contract this CLI actually promises to keep stable.
+
+## 4. Risk gate — P0/P1 need a **derived** `--confirm` token, P2 needs `--yes` + env
+
+Every mutating command carries a `riskLevel` (visible via `schema get`, see
+§ 5): `P0` (destructive: delete/remove/flash/authorize), `P1` (publish/
+release/upload), `P2` (ordinary mutating: add/create/update/set/bind/unbind/
+install/sync/write/…), or none (read-only).
+
+**P0 / P1 — the two-phase ritual:**
+
+```bash
+tuyaopen <group> <command> --dry-run [...same flags you intend to run with]
+# → preview + meta.confirm_token
+tuyaopen <group> <command> --confirm <token-from-the-preview> [...same flags]
+```
+
+**The token is derived, not a password and not a nonce you can invent.** It
+is a SHA-256 hash (first 8 hex chars) of the group name, the command name, and
+every command-specific flag value (sorted, presentation flags like `--json`/
+`--dry-run`/`--yes`/`--fields`/`--max-items`/`--stream` excluded) — computed
+identically by the `--dry-run` branch and by the gate that checks `--confirm`.
+That means:
+
+- **A caller that has not run `--dry-run` for this exact operation cannot
+  produce a valid token.** Guessing, reusing an old token, or inventing a
+  plausible-looking string (`--confirm THIS-IS-NOT-THE-REAL-TOKEN`) fails
+  closed as `confirmation:bad_confirm_token` — this used to be a real bypass
+  (any non-empty string passed) and was fixed 2026-08-14. **Never try to
+  construct a token yourself; always run `--dry-run` first and copy the value
+  it hands back.**
+- A token minted for one set of flags does not confirm a different set — change
+  `--uuid` and the old token is rejected.
+- `--yes` is **never** accepted for P0/P1, only `--confirm <token>`.
+- `--dry-run` is always allowed for any risk tier (it only previews, never applies).
+
+**P2** — pass `--yes` **and** set env var `TUYAOPEN_AUTOCONFIRM_P2=1`. The env
+var exists specifically so a script can't blindly hardcode `--yes` and skip
+the operator's attention.
+
+**Read-only commands** — no gate at all.
+
+## 5. Command self-discovery — don't hardcode flags here or anywhere
+
+```bash
+tuyaopen schema list [--group <g>]                     # every command's contract
+tuyaopen schema get --group <g> --command <c>           # one command's flags/mutating/riskLevel
+tuyaopen <group> --help                                 # human-readable, same info
+```
+
+**Never copy a flag list into a skill's prose.** The CLI's own schema is the
+source of truth and changes are contract-versioned; a hardcoded flag table
+goes stale the moment a command gains or loses a flag. Point at `schema get`
+instead.
+
+## 6. Skill self-discovery
+
+```bash
+tuyaopen skills list [--json]                 # catalog: id/name/summary/whenToUse/surfaces/tags/commands/defaultEnabled
+tuyaopen skills list-installed --project-root <dir> [--scope project|global]
+tuyaopen skills install --scope project|global [--ids <id1,id2>] [--default] [--force]
+tuyaopen skills uninstall --scope project|global --id <id>
+tuyaopen skills sync [--stream]                # populate the local cache so install works
+```
+
+- **Project scope** (default) installs a real, editable copy at
+  `<project>/.agents/skills/<id>/` (and mirrors it, regenerated on every
+  install, to `<project>/.claude/skills/<id>/` — that mirror is IDE-managed;
+  edit the `.agents/` copy, not the mirror).
+- **Global scope** (`--scope global`, since 2026-08-14) installs to a single
+  **hub** at `~/.agents/skills/<id>/`, then links `~/.claude/skills/<id>/`,
+  `~/.codex/skills/<id>/` and `~/.cursor/skills/<id>/` back into it (a
+  directory symlink on macOS/Linux, a junction on Windows) — so Claude Code,
+  Claude Desktop, Codex and Cursor all read the same install. See § 10 for
+  what that means for editing one.
+- `install --default` pulls in every manifest-declared default-enabled skill
+  (the same set a New Project installs automatically) and unions with
+  `--ids` rather than replacing it.
+- `list-installed` reports drift (`upToDate`) per skill so an agent can decide
+  whether to re-install, and — with a project open — whether a same-id
+  project-scope copy is *shadowing* a global one (or vice versa): same-id
+  project copies always win over the global hub, so a hub update alone does
+  not reach a project that already has its own copy.
+
+## 7. `tos.py` ↔ `tuyaopen` — what's covered, what still needs `tos.py`
+
+`tos.py` (the TuyaOpen SDK's own build tool, 13 verbs: `build` `clean` `flash`
+`monitor` `new` `update` `config` `dev` `idf` `prepare` `hello` `check`
+`version`) predates this CLI and is still required for anything the table
+below doesn't cover.
+
+| `tos.py` verb | `tuyaopen` CLI equivalent | Note |
+|---|---|---|
+| `build` / `clean` / `flash` / `monitor` | `firmware build` / `firmware clean` / `firmware flash` / `firmware monitor` | Directly wrapped |
+| `new` (project) | `project create` | Non-interactive equivalent of the interactive `tos.py new project` |
+| `update` | `sdk update` | Same operation, different name |
+| `config` (Kconfig / menuconfig) | — | **See the warning below — do not confuse with `tuyaopen config`** |
+| `dev` / `idf` / `prepare` / `hello` / `check` / `version` | — | No `tuyaopen` equivalent; use `tos.py` |
+| `tyutool_cli authorize` | `firmware authorize` | Wrapped (writes UUID/AuthKey over UART) |
+
+> **⚠ `tos.py config` and `tuyaopen config` are two unrelated commands that
+> happen to share a name.**
+>
+> - `tos.py config` (`choice`/`menu`/`save`/`set`/`get`/`list`/`diff`) edits the
+>   **project's Kconfig build configuration** — `app_default.config`,
+>   `.build/cache/using.config`. See skill `tuyaopen-build`.
+> - `tuyaopen config` (`get`/`set`/`list`) edits **IDE settings**, and only
+>   three keys exist: `language`, `gitMirror`, `manifestsSource`. It has
+>   **nothing to do with Kconfig.**
+>
+> The intuitive guess for "set a build config option" is `tuyaopen config
+> set` — that is the wrong command and will silently do nothing to the
+> project's Kconfig (it will just reject the key, since it isn't one of the
+> three above). Use `tos.py config set` (or hand-edit `app_default.config`,
+> see skill `tuyaopen-build`) for Kconfig.
+
+## 8. Project layout
+
+```
+<project>/
+├── .tuyaopen/                    # AI/SDK-readable metadata, at ROOT
+│   ├── project.json              # schema-versioned project descriptor
+│   ├── status.json                # lifecycle / intent status
+│   ├── architecture.json          # platform/board/framework record
+│   ├── dependencies.lock.json     # pinned ecosystem library versions
+│   ├── ide/                       # IDE-private state — do not hand-edit
+│   └── platform/                  # IDE-private platform/devplat state
+└── source/
+    ├── embedded/                  # firmware application code
+    └── miniapp/                   # Ray panel miniapp code
+```
+
+Everything at `.tuyaopen/`'s root is meant to be read (and in places written)
+by an AI agent or the SDK; `ide/` and `platform/` under it are IDE-private —
+treat them as opaque.
+
+## 9. Routing table — which skill for which intent
+
+30 skills exist in this catalogue (`tuyaopen skills list --json` is the live
+count). Rather than every skill naming every sibling it might hand off to —
+an O(n²) maintenance burden where adding one skill means editing many others'
+prose — **the rule is one-way**: a task-specific skill that hits something out
+of its scope says "not in scope, see skill `tuyaopen-shared`'s routing table"
+and stops there; it does not name which sibling skill picks it up. This file
+is the only place that maps intent → skill, in `references/ROUTING.md`.
+
+## 10. Editing an installed skill
+
+**Project-scope** installs are a real, editable recursive copy at
+`<project>/.agents/skills/<id>/` — edit it directly.
+
+**Global-scope** installs (`--scope global`) are different since 2026-08-14:
+the one real copy is the **hub**, at `~/.agents/skills/<id>/`, and
+`~/.claude/skills/<id>/`, `~/.codex/skills/<id>/`, `~/.cursor/skills/<id>/`
+are each a directory *link* into it (a symlink on macOS/Linux, a junction on
+Windows) rather than independent copies. That means:
+
+- Editing the skill through **any** of those four paths edits the same
+  bytes — there is exactly one copy to keep track of, not four.
+- The hub content is written **read-only** on install, so an edit attempted
+  through any of the four paths is meant to fail loudly rather than silently
+  diverge from the catalogue. **This is best-effort, not a hard guarantee —
+  most of all on Windows.** macOS/Linux enforce it with real POSIX
+  permission bits (`chmod`-cleared before deletion, restored on every write).
+  Windows has no equivalent access-control mechanism for directories, and for
+  files `chmod` there only toggles the FILE_ATTRIBUTE_READONLY flag, which any
+  process with ordinary write access to the volume can clear before writing
+  anyway — so on Windows a global-scope skill's files can, in practice, still
+  be edited in place, and the IDE will not know they were.
+- One of the four paths can occasionally be a **real recursive copy instead
+  of a link** — the IDE falls back to that when creating a directory
+  link/junction isn't possible in a given environment (uncommon: an
+  unsupported filesystem, a sandbox, or, on Windows specifically, a link
+  needs `SeCreateSymbolicLinkPrivilege`/Developer Mode that isn't present).
+  A copy like that is a genuinely independent, writable directory — editing
+  it does **not** propagate anywhere else, and the IDE overwrites it on the
+  next install of that skill.
+
+**If you need to tweak a skill's instructions, install (or re-install) it at
+project scope instead** (`tuyaopen skills install --scope project --ids
+<id>`, landing at `<project>/.agents/skills/<id>/`) — that copy is
+unambiguously yours to edit, on every platform, with no read-only surprise.

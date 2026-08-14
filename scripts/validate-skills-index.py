@@ -28,6 +28,11 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SURFACES = {"embedded", "cloud", "miniapp"}
+# Top level under skills/ — the product line. Since the 2026-08-14 reorg this is
+# NOT the surface: a `tuyaopen-miniapp-*` skill has surface "miniapp" but lives
+# under TuyaOpen/, because the product line and the capability surface are
+# orthogonal. See skills/README.md's Layout section.
+PRODUCT_LINES = {"TuyaOpen", "TuyaOS"}
 # SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default).
 SDKS = {"tuyaopen", "tuyaos"}
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
@@ -188,13 +193,41 @@ def check_source(label: str, item: dict) -> None:
         # excused by the orphan check as a "bundled sub-skill".
         err(f"{label}: source.localPath has no SKILL.md directly inside: {local_path}")
 
-    # surface must match the directory the payload actually sits in, since the
-    # IDE copies skills/<surface>/ trees into its cache per surface.
+    # NOTE: until the 2026-08-14 reorg, this function also asserted that
+    # local_path's second segment equalled item['surface'] ("embedded" /
+    # "cloud" / "miniapp"), since the top level of skills/ used to be the
+    # capability surface and the IDE copied skills/<surface>/ trees into its
+    # cache one surface at a time. That reorg made the top level *product
+    # line* (TuyaOpen/TuyaOS) instead — see skills/README.md's Layout section
+    # — so 'surface' is now an orthogonal field with no directory it could
+    # agree with (a tuyaopen-miniapp-* skill's surface is "miniapp" but it
+    # lives under TuyaOpen/, by design). The check was removed rather than
+    # updated because there is no longer any path segment to compare against;
+    # it could only ever have been re-derived as "trivially true" or deleted.
+    #
+    # What replaces it are the two invariants the new layout actually rests on.
+    # Deleting the old check without adding these would have left the reorg's
+    # load-bearing rule — "id is the directory name" — with nothing enforcing
+    # it, which is the whole reason the pre-reorg tree drifted into having three
+    # different names per skill (directory, frontmatter `name`, and index `id`).
     segments = local_path.split("/")
-    if len(segments) > 1 and item.get("surface") in SURFACES and segments[1] != item.get("surface"):
+
+    # 1. Top level under skills/ is the product line, and only these two exist.
+    #    A typo ("Tuyaopen/") would otherwise install fine and only surface as a
+    #    missing skill much later.
+    if len(segments) > 1 and segments[1] not in PRODUCT_LINES:
         err(
-            f"{label}: surface {item['surface']!r} disagrees with source.localPath "
-            f"{local_path!r} (expected it under skills/{item['surface']}/)"
+            f"{label}: source.localPath must sit under one of "
+            f"{sorted(PRODUCT_LINES)}, got {segments[1]!r} in {local_path!r}"
+        )
+
+    # 2. `id` IS the directory name — the rule that lets a human (or an agent
+    #    copying a skill in by hand) derive one from the other, and that lets
+    #    `.claude/skills/<id>/` be a one-level mirror without a flattening step.
+    if len(segments) > 2 and is_str(item.get("id")) and segments[-1] != item["id"]:
+        err(
+            f"{label}: id {item['id']!r} must equal the payload directory name, "
+            f"got {segments[-1]!r} in {local_path!r}"
         )
 
     expected_payload = re.sub(r"^skills/", "", local_path)

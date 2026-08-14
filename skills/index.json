@@ -5,8 +5,44 @@
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
-      "id": "tuyaopen-build",
+      "id": "tuyaopen-shared",
       "version": "1.0.0",
+      "order": 0,
+      "name": {
+        "en": "TuyaOpen Shared Conventions",
+        "zh-CN": "TuyaOpen 共享约定"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI identity/discovery, the --json envelope + exit-code contract, the P0/P1/P2 confirmation gate, command/skill self-discovery, the tos.py <-> tuyaopen fallback map, project layout, and the master intent-to-skill routing table.",
+        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位与识别、--json 信封与退出码契约、P0/P1/P2 确认门、命令与技能自发现、tos.py 与 tuyaopen 的能力映射表、项目布局，以及意图到技能的总路由表。"
+      },
+      "whenToUse": {
+        "en": "Read first, or whenever another skill says its task is out of scope and points here for the routing table. Not a task skill by itself.",
+        "zh-CN": "作为其他技能的前置阅读，或当某技能提示超出范围并指向本技能的路由表时使用。本身不是任务技能。"
+      },
+      "tags": [
+        "foundation",
+        "cli",
+        "conventions",
+        "routing"
+      ],
+      "defaultEnabled": true,
+      "installPayload": "TuyaOpen/tuyaopen-shared",
+      "related": [
+        "tuyaopen-skill-maker"
+      ],
+      "source": {
+        "localPath": "skills/TuyaOpen/tuyaopen-shared"
+      },
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuyaopen-build",
+      "version": "1.0.1",
       "order": 1,
       "name": {
         "en": "TuyaOpen Build",
@@ -29,57 +65,95 @@
         "tuyaopen.skill.build"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen/build",
+      "installPayload": "TuyaOpen/tuyaopen-build",
       "related": [
-        "tuyaopen-dev-loop",
-        "tuyaopen-project-config"
+        "tuyaopen-workflow-dev-loop",
+        "tuyaopen-project"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/build"
+        "localPath": "skills/TuyaOpen/tuyaopen-build"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-project-config",
+      "id": "tuyaopen-skill-maker",
       "version": "1.0.0",
-      "order": 6,
+      "order": 2,
       "name": {
-        "en": "TuyaOpen Project Config",
-        "zh-CN": "TuyaOpen 项目配置"
+        "en": "TuyaOpen Skill Maker",
+        "zh-CN": "TuyaOpen 技能制作指南"
       },
       "surface": "embedded",
       "summary": {
-        "en": "Read or update the tuyaopen.project.ini for the active project.",
-        "zh-CN": "读取或修改当前项目的 tuyaopen.project.ini。"
+        "en": "How to author or edit a skill in this catalogue: frontmatter contract, id naming rules, TuyaOpen vs TuyaOS placement, the Shortcuts-table rule, references/ progressive disclosure, out-of-scope wording, index.json registration, and version-bump rules.",
+        "zh-CN": "如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则、TuyaOpen 与 TuyaOS 归属、Shortcuts 表规则、references/ 渐进披露、超出范围的写法、index.json 注册、以及 version 升号规则。"
       },
       "whenToUse": {
-        "en": "Use when the user wants to change platform, rename, or edit project settings.",
-        "zh-CN": "当用户希望更换平台、重命名或修改项目级设置时使用。"
+        "en": "Use when adding a new skill, editing an existing SKILL.md, or registering an item in skills/index.json.",
+        "zh-CN": "新增技能、修改现有 SKILL.md 或注册 index.json 条目时使用。"
+      },
+      "tags": [
+        "foundation",
+        "meta",
+        "authoring",
+        "index.json"
+      ],
+      "defaultEnabled": true,
+      "installPayload": "TuyaOpen/tuyaopen-skill-maker",
+      "related": [
+        "tuyaopen-shared"
+      ],
+      "source": {
+        "localPath": "skills/TuyaOpen/tuyaopen-skill-maker"
+      },
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuyaopen-project",
+      "version": "1.1.0",
+      "order": 6,
+      "name": {
+        "en": "TuyaOpen Project, Demos & Config",
+        "zh-CN": "TuyaOpen 项目、Demo 与配置"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Read/write the .tuyaopen/ project descriptor and tuyaopen.project.ini (tuyaopen project *), browse the local demo catalogue (tuyaopen demos *), and manage the three IDE settings (tuyaopen config *) — plus the underlying tos.py new / tos.py config Kconfig tooling.",
+        "zh-CN": "读写 .tuyaopen/ 项目描述符与 tuyaopen.project.ini（tuyaopen project *）、浏览本地 demo 目录（tuyaopen demos *）、管理三项 IDE 设置（tuyaopen config *），以及底层的 tos.py new / tos.py config Kconfig 工具链。"
+      },
+      "whenToUse": {
+        "en": "Use when the user wants to change platform, rename, or edit project settings, create a project, bind a product, browse demos, or read/write an IDE setting (language/gitMirror/manifestsSource).",
+        "zh-CN": "当用户希望更换平台、重命名或修改项目级设置、创建项目、绑定产品、浏览 demo，或读写 IDE 设置（language/gitMirror/manifestsSource）时使用。"
       },
       "tags": [
         "config",
-        "project"
+        "project",
+        "demos",
+        "cli"
       ],
       "commands": [
         "tuyaopen.skill.editProjectConfig"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen/project-config",
+      "installPayload": "TuyaOpen/tuyaopen-project",
       "related": [
         "tuyaopen-build"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/project-config"
+        "localPath": "skills/TuyaOpen/tuyaopen-project"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "ecosystem-wire-cmake",
-      "version": "1.0.0",
+      "id": "tuyaopen-dependency",
+      "version": "1.0.1",
       "order": 8,
       "name": {
         "en": "Wire ecosystem library into CMake",
@@ -103,21 +177,21 @@
         "tuyaopen.skill.wireCmake"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/ecosystem-wire-cmake",
+      "installPayload": "TuyaOpen/tuyaopen-dependency",
       "related": [
         "tuyaopen-build",
-        "tuyaopen-project-config"
+        "tuyaopen-project"
       ],
       "source": {
-        "localPath": "skills/embedded/ecosystem-wire-cmake"
+        "localPath": "skills/TuyaOpen/tuyaopen-dependency"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuya-iot-platform",
-      "version": "1.0.0",
+      "id": "tuyaopen-cloud",
+      "version": "1.0.1",
       "order": 9,
       "name": {
         "en": "Tuya IoT Platform",
@@ -142,12 +216,12 @@
         "tuyaopen.skill.tuyaIotPlatform"
       ],
       "defaultEnabled": true,
-      "installPayload": "cloud/tuya-iot-platform",
+      "installPayload": "TuyaOpen/tuyaopen-cloud",
       "related": [
         "tuyaopen-device-auth"
       ],
       "source": {
-        "localPath": "skills/cloud/tuya-iot-platform"
+        "localPath": "skills/TuyaOpen/tuyaopen-cloud"
       },
       "sdks": [
         "tuyaopen",
@@ -155,8 +229,8 @@
       ]
     },
     {
-      "id": "smart-product-dev",
-      "version": "1.0.0",
+      "id": "tuyaopen-workflow-product-dev",
+      "version": "1.0.1",
       "order": 10,
       "name": {
         "en": "Smart Product Dev",
@@ -184,14 +258,14 @@
         "tuyaopen.skill.smartProductDev"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/smart-product-dev",
+      "installPayload": "TuyaOpen/tuyaopen-workflow-product-dev",
       "related": [
-        "tuya-iot-platform",
-        "tuyaopen-dev-loop",
-        "tuyaopen-project-config"
+        "tuyaopen-cloud",
+        "tuyaopen-workflow-dev-loop",
+        "tuyaopen-project"
       ],
       "source": {
-        "localPath": "skills/embedded/smart-product-dev"
+        "localPath": "skills/TuyaOpen/tuyaopen-workflow-product-dev"
       },
       "sdks": [
         "tuyaopen",
@@ -199,8 +273,8 @@
       ]
     },
     {
-      "id": "hardware-vibe-coding",
-      "version": "1.0.0",
+      "id": "tuyaopen-hardware",
+      "version": "1.0.1",
       "order": 11,
       "name": {
         "en": "Hardware Vibe Coding",
@@ -226,52 +300,54 @@
         "led"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/hardware-vibe-coding",
+      "installPayload": "TuyaOpen/tuyaopen-hardware",
       "related": [
-        "smart-product-dev",
+        "tuyaopen-workflow-product-dev",
         "tuyaopen-build",
-        "tuyaopen-project-config"
+        "tuyaopen-project"
       ],
       "source": {
-        "localPath": "skills/embedded/hardware-vibe-coding"
+        "localPath": "skills/TuyaOpen/tuyaopen-hardware"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tyutool-cli",
-      "version": "1.0.0",
+      "id": "tuyaopen-flash",
+      "version": "1.1.0",
       "order": 15,
       "name": {
-        "en": "tyutool CLI",
-        "zh-CN": "tyutool 命令行工具"
+        "en": "TuyaOpen Flash & Serial",
+        "zh-CN": "TuyaOpen 烧录与串口"
       },
       "surface": "embedded",
       "summary": {
-        "en": "Flash firmware, read flash, hardware reset (DTR/RTS), and authorize devices (UUID/AuthKey via UART) using tyutool_cli directly.",
-        "zh-CN": "直接使用 tyutool_cli 烧录固件、读取 Flash、硬件复位（DTR/RTS）、写入设备授权码（UUID/AuthKey）。"
+        "en": "Flash firmware, monitor serial output, and pick the right serial port via the tuyaopen CLI (firmware flash / firmware monitor / device list-ports), with a documented tyutool_cli fallback for reading flash, a bare hardware reset, or disambiguating a dual-serial port.",
+        "zh-CN": "通过 tuyaopen CLI（firmware flash / firmware monitor / device list-ports）烧录固件、监控串口输出、选择正确的串口；并提供 tyutool_cli 直连兜底，覆盖读取 Flash、纯硬件复位、双串口歧义排查等场景。"
       },
       "whenToUse": {
-        "en": "Use when the agent needs to flash firmware, read flash memory, hardware-reset a device, or write UUID/AuthKey credentials over UART using tyutool_cli directly.",
-        "zh-CN": "当需要直接使用 tyutool_cli 烧录固件、读取 Flash、硬件复位设备或通过 UART 写入 UUID/AuthKey 授权码时使用。"
+        "en": "Use when the agent needs to flash firmware, choose a serial port, monitor serial output, hardware-reset a device, read flash memory, or write UUID/AuthKey credentials over UART directly via tyutool_cli.",
+        "zh-CN": "当需要烧录固件、选择串口、监控串口输出、硬件复位设备、读取 Flash，或直接使用 tyutool_cli 通过 UART 写入 UUID/AuthKey 授权码时使用。"
       },
       "tags": [
         "flash",
+        "firmware",
+        "serial",
         "tyutool",
         "uart",
         "authorize",
         "reset"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tyutool_cli",
+      "installPayload": "TuyaOpen/tuyaopen-flash",
       "related": [
-        "tuyaopen-dev-loop",
+        "tuyaopen-workflow-dev-loop",
         "tuyaopen-device-auth",
-        "tuyaopen-debug-helper"
+        "tuyaopen-diagnose"
       ],
       "source": {
-        "localPath": "skills/embedded/tyutool_cli"
+        "localPath": "skills/TuyaOpen/tuyaopen-flash"
       },
       "sdks": [
         "tuyaopen",
@@ -280,7 +356,7 @@
     },
     {
       "id": "tuyaos-build",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "order": 16,
       "name": {
         "en": "TuyaOS Build",
@@ -306,14 +382,14 @@
         "sources",
         "headers"
       ],
-      "defaultEnabled": true,
-      "installPayload": "embedded/tuyaos-build",
+      "defaultEnabled": false,
+      "installPayload": "TuyaOS/tuyaos-build",
       "related": [
-        "tyutool-cli",
-        "smart-product-dev"
+        "tuyaopen-flash",
+        "tuyaopen-workflow-product-dev"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaos-build"
+        "localPath": "skills/TuyaOS/tuyaos-build"
       },
       "sdks": [
         "tuyaos"
@@ -321,7 +397,7 @@
     },
     {
       "id": "tuyaos-hardware-vibe-coding",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "order": 17,
       "name": {
         "en": "TuyaOS Hardware Vibe Coding",
@@ -357,51 +433,57 @@
         "sta",
         "ap"
       ],
-      "defaultEnabled": true,
-      "installPayload": "embedded/tuyaos-hardware-vibe-coding",
+      "defaultEnabled": false,
+      "installPayload": "TuyaOS/tuyaos-hardware-vibe-coding",
       "related": [
         "tuyaos-build",
-        "tyutool-cli",
-        "smart-product-dev"
+        "tuyaopen-flash",
+        "tuyaopen-workflow-product-dev"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaos-hardware-vibe-coding"
+        "localPath": "skills/TuyaOS/tuyaos-hardware-vibe-coding"
       },
       "sdks": [
         "tuyaos"
       ]
     },
     {
-      "id": "tuyaopen-debug-helper",
-      "version": "1.0.0",
+      "id": "tuyaopen-diagnose",
+      "version": "1.1.0",
       "order": 20,
       "name": {
-        "en": "TuyaOpen Debug Helper",
-        "zh-CN": "TuyaOpen 调试助手"
+        "en": "TuyaOpen Diagnose",
+        "zh-CN": "TuyaOpen 诊断"
       },
       "surface": "embedded",
       "summary": {
-        "en": "Non-blocking background serial log capture for TuyaOpen devices. Runs tos.py monitor -l in background, writes logs to <project_dir>/.target_logging/, lets agent tail or stop at any time.",
-        "zh-CN": "TuyaOpen 设备非阻塞后台串口日志捕获。后台运行 tos.py monitor -l，日志写入 <project_dir>/.target_logging/，agent 可随时读取或停止。"
+        "en": "Environment/CLI triage (diag doctor), a diagnostics bundle for bug reports (diag export), non-blocking background serial log capture, sending ad-hoc commands to the device CLI (tal_cli), and decoding a firmware crash dump (addr2line) to source file:line.",
+        "zh-CN": "环境与 CLI 自身状态排查（diag doctor）、生成问题反馈用诊断包（diag export）、非阻塞后台串口日志捕获、向设备 CLI（tal_cli）发送调试命令，以及将固件崩溃转储（PC/LR/栈地址）通过 addr2line 解析为源码文件与行号。"
       },
       "whenToUse": {
-        "en": "Use when the agent needs to capture device serial logs without blocking, monitor UART output during a build-flash-analyze loop, or read device logs asynchronously.",
-        "zh-CN": "当 AI 代理需要在不阻塞的情况下捕获设备串口日志、在编译-烧录-分析闭环中监控 UART 输出，或异步读取设备日志时使用。"
+        "en": "Use when something is broken and you need to find out why: checking the dev environment / which CLI is running, exporting diagnostics for a bug report, capturing device serial logs without blocking, running CLI commands (sys_reset, kv_dump, fs_ls) on a connected board, or decoding a panic/hard-fault dump with raw hex addresses.",
+        "zh-CN": "当出现问题需要排查时使用：检查开发环境或确认当前运行的 CLI、导出诊断包用于问题反馈、非阻塞捕获设备串口日志、在已连接开发板上执行 CLI 命令（sys_reset、kv_dump、fs_ls），或解码含原始十六进制地址的 panic/hard fault 转储。"
       },
       "tags": [
+        "diag",
         "debug",
         "serial",
         "monitor",
-        "log"
+        "log",
+        "cli",
+        "crash",
+        "addr2line"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen/debug-helper",
+      "installPayload": "TuyaOpen/tuyaopen-diagnose",
       "related": [
-        "tuyaopen-dev-loop",
-        "tuyaopen-device-auth"
+        "tuyaopen-workflow-dev-loop",
+        "tuyaopen-device-auth",
+        "tuyaopen-flash",
+        "tuyaopen-build"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/debug-helper"
+        "localPath": "skills/TuyaOpen/tuyaopen-diagnose"
       },
       "sdks": [
         "tuyaopen"
@@ -409,7 +491,7 @@
     },
     {
       "id": "tuyaopen-add-board",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "order": 21,
       "name": {
         "en": "Add Board (BSP)",
@@ -429,14 +511,14 @@
         "board",
         "hardware"
       ],
-      "defaultEnabled": false,
-      "installPayload": "embedded/tuyaopen/add-board",
+      "defaultEnabled": true,
+      "installPayload": "TuyaOpen/tuyaopen-add-board",
       "related": [
         "tuyaopen-build",
-        "tuyaopen-project-config"
+        "tuyaopen-project"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/add-board"
+        "localPath": "skills/TuyaOpen/tuyaopen-add-board"
       },
       "sdks": [
         "tuyaopen"
@@ -444,7 +526,7 @@
     },
     {
       "id": "tuyaopen-code-check",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "order": 22,
       "name": {
         "en": "Code Check",
@@ -464,21 +546,21 @@
         "format",
         "quality"
       ],
-      "defaultEnabled": false,
-      "installPayload": "embedded/tuyaopen/code-check",
+      "defaultEnabled": true,
+      "installPayload": "TuyaOpen/tuyaopen-code-check",
       "related": [
         "tuyaopen-build"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/code-check"
+        "localPath": "skills/TuyaOpen/tuyaopen-code-check"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-dev-loop",
-      "version": "1.0.0",
+      "id": "tuyaopen-workflow-dev-loop",
+      "version": "1.0.1",
       "order": 23,
       "name": {
         "en": "Build–Flash–Monitor Loop",
@@ -499,13 +581,13 @@
         "workflow"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen/dev-loop",
+      "installPayload": "TuyaOpen/tuyaopen-workflow-dev-loop",
       "related": [
         "tuyaopen-build",
-        "tuyaopen-debug-helper"
+        "tuyaopen-diagnose"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/dev-loop"
+        "localPath": "skills/TuyaOpen/tuyaopen-workflow-dev-loop"
       },
       "sdks": [
         "tuyaopen"
@@ -513,7 +595,7 @@
     },
     {
       "id": "tuyaopen-device-auth",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "order": 24,
       "name": {
         "en": "Device Authorization",
@@ -534,13 +616,13 @@
         "uuid"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen/device-auth",
+      "installPayload": "TuyaOpen/tuyaopen-device-auth",
       "related": [
-        "tuyaopen-dev-loop",
-        "tuyaopen-project-config"
+        "tuyaopen-workflow-dev-loop",
+        "tuyaopen-project"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/device-auth"
+        "localPath": "skills/TuyaOpen/tuyaopen-device-auth"
       },
       "sdks": [
         "tuyaopen"
@@ -548,7 +630,7 @@
     },
     {
       "id": "tuyaopen-env-setup",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "order": 25,
       "name": {
         "en": "Environment Setup",
@@ -569,92 +651,58 @@
         "deps"
       ],
       "defaultEnabled": true,
-      "installPayload": "embedded/tuyaopen/env-setup",
+      "installPayload": "TuyaOpen/tuyaopen-env-setup",
       "related": [
         "tuyaopen-build"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/env-setup"
+        "localPath": "skills/TuyaOpen/tuyaopen-env-setup"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-cli-debug",
+      "id": "tuyaopen-miniapp",
       "version": "1.0.0",
-      "order": 26,
+      "order": 98,
       "name": {
-        "en": "TuyaOpen CLI Debug",
-        "zh-CN": "TuyaOpen 设备 CLI 调试"
+        "en": "TuyaOpen MiniApp CLI",
+        "zh-CN": "TuyaOpen MiniApp 命令行"
       },
-      "surface": "embedded",
+      "surface": "miniapp",
       "summary": {
-        "en": "Send commands to the device serial CLI (tal_cli) over UART and capture the response.",
-        "zh-CN": "通过串口向设备 CLI（tal_cli）发送命令并捕获响应。"
+        "en": "Build, install the runtime, sync the DP schema, preview, manage metadata/templates, and upload the panel miniapp via the tuyaopen CLI's miniapp command group (build/install/meta/preview/sync-schema/template/upload).",
+        "zh-CN": "通过 tuyaopen CLI 的 miniapp 命令组（build/install/meta/preview/sync-schema/template/upload）构建、安装运行时、同步 DP schema、预览、管理元数据/模板，并上传面板小程序。"
       },
       "whenToUse": {
-        "en": "Use when the user wants to run CLI commands (sys_reset, kv_dump, fs_ls, custom commands) on a connected board without holding a foreground serial monitor open.",
-        "zh-CN": "当用户需要在已连接的开发板上执行 CLI 命令（sys_reset、kv_dump、fs_ls 或自定义命令），又不想占用前台串口监控时使用。"
+        "en": "Use when the user wants to build, preview, upload, or scaffold the miniapp from a template, sync its DP schema, set its appid, or install the MiniApp runtime — the command-line operations, not panel architecture or UI conventions.",
+        "zh-CN": "当用户需要构建、预览、上传小程序，从模板创建小程序，同步 DP schema，设置 appid，或安装 MiniApp 运行时——即命令行操作本身，而非面板架构或 UI 编码规范时使用。"
       },
       "tags": [
+        "miniapp",
         "cli",
-        "serial",
-        "debug"
+        "build",
+        "upload",
+        "template",
+        "schema"
       ],
-      "defaultEnabled": false,
-      "installPayload": "embedded/tuyaopen/cli-debug",
+      "defaultEnabled": true,
+      "installPayload": "TuyaOpen/tuyaopen-miniapp",
       "related": [
-        "tuyaopen-debug-helper",
-        "tuyaopen-crash-decode",
-        "tuyaopen-dev-loop"
+        "tuyaopen-miniapp-panel-dev"
       ],
       "source": {
-        "localPath": "skills/embedded/tuyaopen/cli-debug"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
-      "id": "tuyaopen-crash-decode",
-      "version": "1.0.0",
-      "order": 27,
-      "name": {
-        "en": "TuyaOpen Crash Decode",
-        "zh-CN": "TuyaOpen 崩溃日志解码"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Decode a firmware crash dump (PC / LR / stack addresses) to source file:line via the per-platform addr2line.",
-        "zh-CN": "将固件崩溃转储中的 PC / LR / 栈地址，通过对应平台的 addr2line 解析为源码文件与行号。"
-      },
-      "whenToUse": {
-        "en": "Use when the user pastes a panic log or hard-fault dump containing raw hex code addresses (e.g. \"PC: 0x021d8e96\").",
-        "zh-CN": "当用户粘贴含原始十六进制地址的 panic 日志或 hard fault 转储（例如 \"PC: 0x021d8e96\"）时使用。"
-      },
-      "tags": [
-        "crash",
-        "addr2line",
-        "debug"
-      ],
-      "defaultEnabled": false,
-      "installPayload": "embedded/tuyaopen/crash-decode",
-      "related": [
-        "tuyaopen-debug-helper",
-        "tuyaopen-build",
-        "tuyaopen-cli-debug"
-      ],
-      "source": {
-        "localPath": "skills/embedded/tuyaopen/crash-decode"
-      },
-      "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "smart-panel-dev",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-panel-dev",
+      "version": "1.0.1",
       "order": 99,
       "name": {
         "en": "Smart Panel Development",
@@ -679,22 +727,23 @@
         "audit"
       ],
       "defaultEnabled": true,
-      "installPayload": "miniapp/smart-panel-dev",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-panel-dev",
       "related": [
-        "miniapp-ray-common",
-        "miniapp-smart-ui",
-        "miniapp-charts-library",
-        "miniapp-socket-panel",
-        "miniapp-lamp-panel",
-        "miniapp-robot-vacuum",
-        "miniapp-ipc-panel",
-        "miniapp-electrician-timing",
-        "miniapp-energy-stats",
-        "miniapp-performance-ux-guard",
-        "miniapp-requirement-guide"
+        "tuyaopen-miniapp",
+        "tuyaopen-miniapp-ray-common",
+        "tuyaopen-miniapp-smart-ui",
+        "tuyaopen-miniapp-charts-library",
+        "tuyaopen-miniapp-socket-panel",
+        "tuyaopen-miniapp-lamp-panel",
+        "tuyaopen-miniapp-robot-vacuum",
+        "tuyaopen-miniapp-ipc-panel",
+        "tuyaopen-miniapp-electrician-timing",
+        "tuyaopen-miniapp-energy-stats",
+        "tuyaopen-miniapp-performance-ux-guard",
+        "tuyaopen-miniapp-requirement-guide"
       ],
       "source": {
-        "localPath": "skills/miniapp/smart-panel-dev"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-panel-dev"
       },
       "sdks": [
         "tuyaopen",
@@ -702,8 +751,8 @@
       ]
     },
     {
-      "id": "miniapp-ray-common",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-ray-common",
+      "version": "1.0.1",
       "order": 100,
       "name": {
         "en": "Ray Common Development",
@@ -723,10 +772,10 @@
         "ray",
         "panel"
       ],
-      "defaultEnabled": true,
-      "installPayload": "miniapp/ray-common",
+      "defaultEnabled": false,
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-ray-common",
       "source": {
-        "localPath": "skills/miniapp/ray-common"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ray-common"
       },
       "sdks": [
         "tuyaopen",
@@ -734,8 +783,8 @@
       ]
     },
     {
-      "id": "miniapp-smart-ui",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-smart-ui",
+      "version": "1.0.1",
       "order": 101,
       "name": {
         "en": "Smart UI Components",
@@ -757,12 +806,12 @@
         "components"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/smart-ui",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-smart-ui",
       "related": [
-        "miniapp-ray-common"
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/miniapp/smart-ui"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-smart-ui"
       },
       "sdks": [
         "tuyaopen",
@@ -770,8 +819,8 @@
       ]
     },
     {
-      "id": "miniapp-lamp-panel",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-lamp-panel",
+      "version": "1.0.1",
       "order": 110,
       "name": {
         "en": "Lighting Panel",
@@ -794,13 +843,13 @@
         "lighting"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/lamp-panel",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-lamp-panel",
       "related": [
-        "miniapp-ray-common",
-        "miniapp-smart-ui"
+        "tuyaopen-miniapp-ray-common",
+        "tuyaopen-miniapp-smart-ui"
       ],
       "source": {
-        "localPath": "skills/miniapp/lamp-panel"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-lamp-panel"
       },
       "sdks": [
         "tuyaopen",
@@ -808,8 +857,8 @@
       ]
     },
     {
-      "id": "miniapp-socket-panel",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-socket-panel",
+      "version": "1.0.1",
       "order": 111,
       "name": {
         "en": "Socket / Power Strip Panel",
@@ -832,14 +881,14 @@
         "electrician"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/socket-panel",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-socket-panel",
       "related": [
-        "miniapp-ray-common",
-        "miniapp-electrician-timing",
-        "miniapp-energy-stats"
+        "tuyaopen-miniapp-ray-common",
+        "tuyaopen-miniapp-electrician-timing",
+        "tuyaopen-miniapp-energy-stats"
       ],
       "source": {
-        "localPath": "skills/miniapp/socket-panel"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-socket-panel"
       },
       "sdks": [
         "tuyaopen",
@@ -847,8 +896,8 @@
       ]
     },
     {
-      "id": "miniapp-robot-vacuum",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-robot-vacuum",
+      "version": "1.0.1",
       "order": 112,
       "name": {
         "en": "Robot Vacuum Panel",
@@ -871,12 +920,12 @@
         "map"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/robot-vacuum",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-robot-vacuum",
       "related": [
-        "miniapp-ray-common"
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/miniapp/robot-vacuum"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-robot-vacuum"
       },
       "sdks": [
         "tuyaopen",
@@ -884,8 +933,8 @@
       ]
     },
     {
-      "id": "miniapp-ipc-panel",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-ipc-panel",
+      "version": "1.0.1",
       "order": 113,
       "name": {
         "en": "IPC Camera Panel",
@@ -908,12 +957,12 @@
         "camera"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/ipc-panel",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-ipc-panel",
       "related": [
-        "miniapp-ray-common"
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/miniapp/ipc-panel"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ipc-panel"
       },
       "sdks": [
         "tuyaopen",
@@ -921,8 +970,8 @@
       ]
     },
     {
-      "id": "miniapp-charts-library",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-charts-library",
+      "version": "1.0.1",
       "order": 120,
       "name": {
         "en": "Charts Library",
@@ -944,13 +993,13 @@
         "visualization"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/charts-library",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-charts-library",
       "related": [
-        "miniapp-ray-common",
-        "miniapp-energy-stats"
+        "tuyaopen-miniapp-ray-common",
+        "tuyaopen-miniapp-energy-stats"
       ],
       "source": {
-        "localPath": "skills/miniapp/charts-library"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-charts-library"
       },
       "sdks": [
         "tuyaopen",
@@ -958,8 +1007,8 @@
       ]
     },
     {
-      "id": "miniapp-electrician-timing",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-electrician-timing",
+      "version": "1.0.1",
       "order": 121,
       "name": {
         "en": "Electrician Timing SDK",
@@ -981,12 +1030,12 @@
         "timing"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/electrician-timing",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-electrician-timing",
       "related": [
-        "miniapp-socket-panel"
+        "tuyaopen-miniapp-socket-panel"
       ],
       "source": {
-        "localPath": "skills/miniapp/electrician-timing"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-electrician-timing"
       },
       "sdks": [
         "tuyaopen",
@@ -994,8 +1043,8 @@
       ]
     },
     {
-      "id": "miniapp-energy-stats",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-energy-stats",
+      "version": "1.0.1",
       "order": 122,
       "name": {
         "en": "Energy Statistics",
@@ -1017,13 +1066,13 @@
         "statistics"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/energy-stats",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-energy-stats",
       "related": [
-        "miniapp-charts-library",
-        "miniapp-socket-panel"
+        "tuyaopen-miniapp-charts-library",
+        "tuyaopen-miniapp-socket-panel"
       ],
       "source": {
-        "localPath": "skills/miniapp/energy-stats"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-energy-stats"
       },
       "sdks": [
         "tuyaopen",
@@ -1031,8 +1080,8 @@
       ]
     },
     {
-      "id": "miniapp-requirement-guide",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-requirement-guide",
+      "version": "1.0.1",
       "order": 130,
       "name": {
         "en": "Requirement Creating Guide",
@@ -1054,9 +1103,9 @@
         "planning"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/requirement-guide",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-requirement-guide",
       "source": {
-        "localPath": "skills/miniapp/requirement-guide"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-requirement-guide"
       },
       "sdks": [
         "tuyaopen",
@@ -1064,8 +1113,8 @@
       ]
     },
     {
-      "id": "miniapp-performance-ux-guard",
-      "version": "1.0.0",
+      "id": "tuyaopen-miniapp-performance-ux-guard",
+      "version": "1.0.1",
       "order": 131,
       "name": {
         "en": "Performance & UX Guard",
@@ -1087,12 +1136,12 @@
         "ux"
       ],
       "defaultEnabled": false,
-      "installPayload": "miniapp/performance-ux-guard",
+      "installPayload": "TuyaOpen/tuyaopen-miniapp-performance-ux-guard",
       "related": [
-        "miniapp-ray-common"
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/miniapp/performance-ux-guard"
+        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-performance-ux-guard"
       },
       "sdks": [
         "tuyaopen",

@@ -2,7 +2,7 @@ import os
 import sys
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "skills", "embedded", "tuyaopen", "code-check", "scripts"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "skills", "TuyaOpen", "tuyaopen-code-check", "scripts"))
 import check_files
 
 
