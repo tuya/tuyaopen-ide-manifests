@@ -214,7 +214,7 @@ below doesn't cover.
 |---|---|---|
 | `build` / `clean` / `flash` / `monitor` | `firmware build` / `firmware clean` / `firmware flash` / `firmware monitor` | Directly wrapped |
 | `new` (project) | `project create` | Non-interactive equivalent of the interactive `tos.py new project` |
-| `update` | `sdk update` | Same operation, different name |
+| `update` | `sdk update` | **Not the same operation** — `tuyaopen sdk update` is `git pull --ff-only` on the SDK clone (`pullSdk`), while `tos.py update` pins the platform sub-SDK. Use whichever you actually mean; neither replaces the other |
 | `config` (Kconfig / menuconfig) | — | **See the warning below — do not confuse with `tuyaopen config`** |
 | `dev` / `idf` / `prepare` / `hello` / `check` / `version` | — | No `tuyaopen` equivalent; use `tos.py` |
 | `tyutool_cli authorize` | `firmware authorize` | Wrapped (writes UUID/AuthKey over UART) |

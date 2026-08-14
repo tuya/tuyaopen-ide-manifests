@@ -16,6 +16,14 @@ Checks (all local / deterministic, no network):
   - Every '.agents/skills/<x>' path written in skills/**/*.md names a known item id
     (installs are flat: .agents/skills/<id>)
   - Every related[] entry resolves to a known item id
+  - Every requires[] entry resolves to a known item id and is not self-referential
+  - 'surfaces' (optional, multi-valued) is a non-empty array of known surfaces;
+    when both 'surface' and 'surfaces' are present, 'surface' must be a member
+    of 'surfaces' (the two must never silently disagree)
+  - 'aliases' (optional) entries are non-empty strings, never equal to their own
+    item's id, never equal to any item's canonical id (an alias must not shadow
+    a real id), and unique across the whole catalogue (no old id resolves to
+    two different new ids)
 
 Usage: python3 scripts/validate-skills-index.py [path/to/index.json]
 Exits 0 on success, 1 on any error.
@@ -128,6 +136,20 @@ def check_item(item, index: int, seen_ids: set) -> None:
     surface = item.get("surface")
     if surface not in SURFACES:
         err(f"{label}: 'surface' must be one of {sorted(SURFACES)}, got {surface!r}")
+
+    # Optional multi-valued surfaces (2026-08-14). Preferred by the IDE over
+    # 'surface' when present (see manifestsTypes.ts's SkillManifestItem.surfaces
+    # docstring) — checked here only for internal consistency, never as a
+    # replacement for 'surface', which stays required above.
+    surfaces = item.get("surfaces")
+    if surfaces is not None:
+        if not isinstance(surfaces, list) or not surfaces or not all(s in SURFACES for s in surfaces):
+            err(f"{label}: 'surfaces' when present must be a non-empty array of {sorted(SURFACES)}, got {surfaces!r}")
+        elif surface in SURFACES and surface not in surfaces:
+            err(
+                f"{label}: 'surface' ({surface!r}) must be a member of 'surfaces' "
+                f"({surfaces!r}) when both are present — they must never disagree"
+            )
 
     for field in BILINGUAL_FIELDS:
         check_bilingual(label, field, item.get(field))
@@ -256,6 +278,70 @@ def check_related(items: list, ids: set) -> None:
                 err(f"{label}: related id {ref!r} does not resolve to a known item")
 
 
+def check_requires(items: list, ids: set) -> None:
+    """`requires[]` is a real install dependency edge (unlike `related[]`,
+    which is display-only) — see manifestsTypes.ts's SkillManifestItem.requires
+    docstring. Every entry must resolve, and a self-reference is always a
+    mistake (the installer's cycle guard tolerates a cycle at runtime, but
+    there is never a legitimate reason to author one directly here).
+    """
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            continue
+        requires = item.get("requires")
+        if requires is None:
+            continue
+        label = f"item '{item.get('id', index)}'"
+        if not isinstance(requires, list):
+            err(f"{label}: 'requires' must be an array")
+            continue
+        for ref in requires:
+            if not is_str(ref):
+                err(f"{label}: requires entry must be a non-empty string, got {ref!r}")
+            elif ref not in ids:
+                err(f"{label}: requires id {ref!r} does not resolve to a known item")
+            elif is_str(item.get("id")) and ref == item["id"]:
+                err(f"{label}: 'requires' must not reference its own id")
+
+
+def check_aliases(items: list, ids: set) -> None:
+    """Old ids resolved by `skills install`/`uninstall` (see
+    manifestsTypes.ts's SkillManifestItem.aliases docstring). An alias must
+    never collide with a real id (ambiguous: which does the caller mean?) or
+    with another item's alias (an old id can only ever mean one new id).
+    """
+    seen_aliases: dict[str, str] = {}
+    for index, item in enumerate(items):
+        if not isinstance(item, dict):
+            continue
+        aliases = item.get("aliases")
+        if aliases is None:
+            continue
+        item_id = item.get("id")
+        label = f"item '{item_id if is_str(item_id) else index}'"
+        if not isinstance(aliases, list):
+            err(f"{label}: 'aliases' must be an array")
+            continue
+        for alias in aliases:
+            if not is_str(alias):
+                err(f"{label}: alias entry must be a non-empty string, got {alias!r}")
+                continue
+            if alias in ids:
+                err(f"{label}: alias {alias!r} collides with a real item id")
+                continue
+            if is_str(item_id) and alias == item_id:
+                err(f"{label}: alias {alias!r} equals its own item's id (redundant)")
+                continue
+            prior_owner = seen_aliases.get(alias)
+            if prior_owner is not None and prior_owner != item_id:
+                err(
+                    f"{label}: alias {alias!r} is already claimed by item "
+                    f"'{prior_owner}' — an old id must resolve to exactly one new id"
+                )
+                continue
+            seen_aliases[alias] = item_id
+
+
 def check_orphan_skill_dirs(items: list) -> None:
     """Every skill payload on disk must be reachable from the index.
 
@@ -347,6 +433,8 @@ def main() -> int:
     for index, item in enumerate(items):
         check_item(item, index, seen_ids)
     check_related(items, seen_ids)
+    check_requires(items, seen_ids)
+    check_aliases(items, seen_ids)
     check_orphan_skill_dirs(items)
     check_agent_skill_paths(seen_ids)
 

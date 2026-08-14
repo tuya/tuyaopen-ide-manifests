@@ -2,18 +2,81 @@
 name: tuyaopen-device-auth
 description: >-
   Configure device authorization credentials (UUID, AuthKey, PID) and network
-  provisioning for TuyaOpen devices. Use when the user mentions device auth,
-  authorization, UUID, AuthKey, tuya_config.h, provisioning, pairing, or
-  cloud connection. 设备授权、授权码、配网、UUID、AuthKey、云连接。
+  provisioning for TuyaOpen devices via `tuyaopen license list/add/import/
+  remove` (a local CLI-only license store) and `tuyaopen firmware authorize`
+  (writes the code to the device over serial, P0). Use when the user mentions
+  device auth, authorization, UUID, AuthKey, tuya_config.h, provisioning,
+  pairing, or cloud connection.
+  设备授权、授权码、配网、UUID、AuthKey、云连接、tuyaopen license、
+  tuyaopen firmware authorize。
 license: Apache-2.0
 compatibility:
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen license`/`firmware authorize`)
+  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — needed for the `tyutool_cli`-direct fallback, not for the CLI commands above
   - Tuya IoT Platform account (platform.tuya.com) for credentials
 ---
 
 # TuyaOpen Device Authorization & Provisioning
 
 Docs: <https://tuyaopen.ai/docs/quick-start/equipment-authorization>
+
+## Shortcuts — `tuyaopen license` / `tuyaopen firmware authorize`
+
+| Intent | Command |
+|---|---|
+| List locally-saved UUID/AuthKey pairs | `tuyaopen license list` (AuthKey masked; add `--full` for the real value) |
+| Save a UUID/AuthKey pair to the local CLI store | `tuyaopen license add --uuid <u>` — AuthKey via `TUYA_LICENSE_AUTHKEY` env var or stdin, **never** as a flag |
+| Bulk-import from an Excel file | `tuyaopen license import --xlsx <path>` |
+| Delete a saved license | `tuyaopen license remove --uuid <u>` — **P0**, needs `--dry-run` → `--confirm <token>` |
+| Write a UUID+AuthKey code to the device over serial | `tuyaopen firmware authorize --port <port> --uuid <u> --authkey <k>` — **P0**, same two-phase ritual |
+
+**⚠ Never try to construct the `--confirm` token yourself for `license
+remove` or `firmware authorize`.** It is a derived SHA-256 hash of the exact
+group + command + flags, computed by the CLI's own `--dry-run` branch and
+compared byte-for-byte — a token minted for one UUID/port does not confirm a
+different one, and there is no shortcut around running `--dry-run` first and
+copying the value it hands back. Full mechanics: skill `tuyaopen-shared` § 4.
+
+**⚠ `tuyaopen license *` is a *third*, independent record — not the device,
+and not the IDE panel.** Verified against `src/cli/commands/license.ts` +
+`src/core/licenses/licenseFileStore.ts` + `src/licenses/localStore.ts`:
+
+| Record | Lives in | Written by |
+|---|---|---|
+| Device credentials | KV / OTP on the chip | `firmware authorize` / `tyutool_cli authorize` / `tuya_config.h` at build time |
+| IDE license panel (授权码 page) | `vscode.SecretStorage` key `tuyaopen-ide.licenses.local` | IDE UI events only |
+| **CLI license store** | Plain JSON file `~/TuyaOpenIDE/.tuyaopen/licenses.json` (or `TUYAOPEN_LICENSES_DIR` env override) | `tuyaopen license add/import/remove` only |
+
+The CLI store and the IDE panel store happen to share the same on-disk JSON
+*shape* (`{version, items}`) but are two different storage locations with no
+sync between them — `tuyaopen license add`ing a UUID does **not** make it
+appear on the IDE's 授权码 page, and vice versa. Don't use `tuyaopen license
+add` expecting it to populate the panel; it's a scratch space for an agent's
+own bookkeeping, not a route into the IDE ledger (see § *IDE Ledger* below
+for the actual handback mechanism).
+
+**⚠ `firmware authorize --authkey` is on argv — a deliberate, narrow
+exception to the repo's "secrets never on argv" rule.** `license add` takes
+AuthKey via env var/stdin specifically to keep it off argv, but
+`firmware authorize` wraps `tyutool_cli`, which only accepts `--authkey
+<value>` as a flag (no env/stdin form on that binary) — so the AuthKey sits in
+argv for the ~30s authorize window, world-readable via `ps`/`/proc`. The CLI
+never echoes it back in its own output, and scrubs the device's echo of it
+too. This is a documented trade-off (see the security comment on
+`firmwareAuthorize` in `src/cli/commands/firmware.ts`), not an oversight —
+don't "fix" it by trying to route the AuthKey through an env var instead,
+`tyutool_cli` won't read it there.
+
+Full flags (baud, `--sdk-root`, `--product-id`, `--label`): `tuyaopen license
+--help` / `tuyaopen firmware --help`, or `tuyaopen schema get --group license
+--command <cmd>` — don't hardcode the flag list here (skill `tuyaopen-shared`
+§ 5).
+
+**Serial port discovery still needs the SDK's own tool, not the `tuyaopen`
+CLI** — `tuyaopen device list-ports` (skill `tuyaopen-flash`) doesn't expose
+the `usbSerial`/`usbInterface` grouping a dual-serial board needs to
+disambiguate flash vs. auth vs. log ports. See § *Serial port discovery*
+below, which uses `tyutool_cli list-ports --json` directly.
 
 ## Authorization Overview
 
@@ -201,3 +264,10 @@ panel's own serial-auth button — that path records the event without a handbac
 ### Detecting placeholder values
 
 Placeholder patterns to check: values containing `your_`, `xxx`, `here`, empty strings, or strings shorter than expected length (UUID ~20 chars, AuthKey ~32 chars).
+
+## Not in scope
+
+Flashing firmware or choosing a serial port for reasons unrelated to
+authorization, and network-provisioning protocol details beyond writing the
+credential — not in scope here, see skill `tuyaopen-shared`'s routing table
+(`references/ROUTING.md`).

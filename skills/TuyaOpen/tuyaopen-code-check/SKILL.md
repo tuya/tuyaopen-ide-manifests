@@ -2,9 +2,12 @@
 name: tuyaopen-code-check
 description: >-
   Check C/C++ code formatting, detect Chinese characters, and validate file
-  headers using clang-format and check_format.py. Use when the user mentions
-  code format, lint, clang-format, style check, PR check, or after editing
-  C/C++ files. 代码格式、格式检查、代码风格、PR检查、代码规范。
+  headers using clang-format and check_format.py. No `tuyaopen` CLI group
+  covers this — it is this skill's own bundled scripts only. Use when the
+  user mentions code format, lint, clang-format, style check, PR check, or
+  after editing C/C++ files.
+  代码格式、格式检查、代码风格、PR检查、代码规范 —— 无对应 tuyaopen CLI 命令组，
+  仅靠本 skill 自带脚本。
 license: Apache-2.0
 compatibility:
   - clang-format installed (Linux: `apt install clang-format`; macOS: `brew install clang-format`; Windows: `choco install llvm` or LLVM release)
@@ -13,7 +16,18 @@ compatibility:
 
 # TuyaOpen Code Format Check
 
-> **SDK root:** All `$OPEN_SDK_PYTHON tools/check_format.py` commands must be run from the TuyaOpen SDK root (`$OPEN_SDK_ROOT`). The bundled `check_files.py` script resolves the SDK root automatically via `$OPEN_SDK_ROOT` or by walking upward for `.clang-format`.
+## No `tuyaopen` CLI coverage
+
+Verified against `tuyaopen schema list --json` (20 groups: boards, config,
+credential, demos, dependency, device, diag, dp, ecosystem, firmware,
+hardware, library, license, manifests, miniapp, product, project, schema,
+sdk, skills — none named `check`/`format`/`lint`/`code`). C/C++ formatting,
+Chinese-character detection, and file-header validation have no `tuyaopen`
+CLI wrapper; everything in this skill is `tools/check_format.py` (an SDK
+script) plus this skill's own `scripts/check_files.py` wrapper. There is
+nothing to route to `tuyaopen --help` for here.
+
+> **SDK root:** All `$OPEN_SDK_PYTHON tools/check_format.py` commands must be run from the TuyaOpen SDK root (`$OPEN_SDK_ROOT`). The bundled `check_files.py` script resolves the SDK root automatically via `$OPEN_SDK_ROOT` or by walking upward for `.clang-format`. See skill `tuyaopen-env-setup` if not yet activated.
 
 ## Overview
 
@@ -145,3 +159,9 @@ Do not modify these third-party files for formatting. If you add new third-party
 ## Related
 
 - The `.clang-format` config at SDK root defines the full formatting rules (LLVM-based, 4-space indent, brace after control statement, etc.)
+
+## Not in scope
+
+Building, flashing, or anything beyond formatting/header/Chinese-character
+checks — not in scope here, see skill `tuyaopen-shared`'s routing table
+(`references/ROUTING.md`).

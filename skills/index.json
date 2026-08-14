@@ -13,6 +13,11 @@
         "zh-CN": "TuyaOpen 共享约定"
       },
       "surface": "embedded",
+      "surfaces": [
+        "embedded",
+        "cloud",
+        "miniapp"
+      ],
       "summary": {
         "en": "Foundation conventions shared by every other TuyaOpen skill: CLI identity/discovery, the --json envelope + exit-code contract, the P0/P1/P2 confirmation gate, command/skill self-discovery, the tos.py <-> tuyaopen fallback map, project layout, and the master intent-to-skill routing table.",
         "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位与识别、--json 信封与退出码契约、P0/P1/P2 确认门、命令与技能自发现、tos.py 与 tuyaopen 的能力映射表、项目布局，以及意图到技能的总路由表。"
@@ -70,6 +75,9 @@
         "tuyaopen-workflow-dev-loop",
         "tuyaopen-project"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-build"
       },
@@ -86,6 +94,11 @@
         "zh-CN": "TuyaOpen 技能制作指南"
       },
       "surface": "embedded",
+      "surfaces": [
+        "embedded",
+        "cloud",
+        "miniapp"
+      ],
       "summary": {
         "en": "How to author or edit a skill in this catalogue: frontmatter contract, id naming rules, TuyaOpen vs TuyaOS placement, the Shortcuts-table rule, references/ progressive disclosure, out-of-scope wording, index.json registration, and version-bump rules.",
         "zh-CN": "如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则、TuyaOpen 与 TuyaOS 归属、Shortcuts 表规则、references/ 渐进披露、超出范围的写法、index.json 注册、以及 version 升号规则。"
@@ -103,6 +116,9 @@
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-skill-maker",
       "related": [
+        "tuyaopen-shared"
+      ],
+      "requires": [
         "tuyaopen-shared"
       ],
       "source": {
@@ -144,6 +160,12 @@
       "related": [
         "tuyaopen-build"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "tuyaopen-project-config"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-project"
       },
@@ -182,6 +204,12 @@
         "tuyaopen-build",
         "tuyaopen-project"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "ecosystem-wire-cmake"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-dependency"
       },
@@ -219,6 +247,12 @@
       "installPayload": "TuyaOpen/tuyaopen-cloud",
       "related": [
         "tuyaopen-device-auth"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "tuya-iot-platform"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-cloud"
@@ -264,6 +298,12 @@
         "tuyaopen-workflow-dev-loop",
         "tuyaopen-project"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "smart-product-dev"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-workflow-product-dev"
       },
@@ -306,6 +346,12 @@
         "tuyaopen-build",
         "tuyaopen-project"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "hardware-vibe-coding"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-hardware"
       },
@@ -345,6 +391,13 @@
         "tuyaopen-workflow-dev-loop",
         "tuyaopen-device-auth",
         "tuyaopen-diagnose"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "tyutool-cli",
+        "tuyaopen-tyutool-cli"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-flash"
@@ -387,6 +440,9 @@
       "related": [
         "tuyaopen-flash",
         "tuyaopen-workflow-product-dev"
+      ],
+      "requires": [
+        "tuyaopen-shared"
       ],
       "source": {
         "localPath": "skills/TuyaOS/tuyaos-build"
@@ -440,6 +496,9 @@
         "tuyaopen-flash",
         "tuyaopen-workflow-product-dev"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
       "source": {
         "localPath": "skills/TuyaOS/tuyaos-hardware-vibe-coding"
       },
@@ -482,6 +541,14 @@
         "tuyaopen-flash",
         "tuyaopen-build"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "tuyaopen-cli-debug",
+        "tuyaopen-crash-decode",
+        "tuyaopen-debug-helper"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-diagnose"
       },
@@ -517,6 +584,9 @@
         "tuyaopen-build",
         "tuyaopen-project"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-add-board"
       },
@@ -550,6 +620,9 @@
       "installPayload": "TuyaOpen/tuyaopen-code-check",
       "related": [
         "tuyaopen-build"
+      ],
+      "requires": [
+        "tuyaopen-shared"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-code-check"
@@ -586,6 +659,12 @@
         "tuyaopen-build",
         "tuyaopen-diagnose"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "tuyaopen-dev-loop"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-workflow-dev-loop"
       },
@@ -621,6 +700,9 @@
         "tuyaopen-workflow-dev-loop",
         "tuyaopen-project"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-device-auth"
       },
@@ -654,6 +736,9 @@
       "installPayload": "TuyaOpen/tuyaopen-env-setup",
       "related": [
         "tuyaopen-build"
+      ],
+      "requires": [
+        "tuyaopen-shared"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-env-setup"
@@ -691,6 +776,9 @@
       "installPayload": "TuyaOpen/tuyaopen-miniapp",
       "related": [
         "tuyaopen-miniapp-panel-dev"
+      ],
+      "requires": [
+        "tuyaopen-shared"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp"
@@ -742,6 +830,12 @@
         "tuyaopen-miniapp-performance-ux-guard",
         "tuyaopen-miniapp-requirement-guide"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "smart-panel-dev"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-panel-dev"
       },
@@ -774,6 +868,12 @@
       ],
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-ray-common",
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-ray-common"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ray-common"
       },
@@ -809,6 +909,12 @@
       "installPayload": "TuyaOpen/tuyaopen-miniapp-smart-ui",
       "related": [
         "tuyaopen-miniapp-ray-common"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-smart-ui"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-smart-ui"
@@ -847,6 +953,12 @@
       "related": [
         "tuyaopen-miniapp-ray-common",
         "tuyaopen-miniapp-smart-ui"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-lamp-panel"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-lamp-panel"
@@ -887,6 +999,12 @@
         "tuyaopen-miniapp-electrician-timing",
         "tuyaopen-miniapp-energy-stats"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-socket-panel"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-socket-panel"
       },
@@ -923,6 +1041,12 @@
       "installPayload": "TuyaOpen/tuyaopen-miniapp-robot-vacuum",
       "related": [
         "tuyaopen-miniapp-ray-common"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-robot-vacuum"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-robot-vacuum"
@@ -961,6 +1085,12 @@
       "related": [
         "tuyaopen-miniapp-ray-common"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-ipc-panel"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ipc-panel"
       },
@@ -998,6 +1128,12 @@
         "tuyaopen-miniapp-ray-common",
         "tuyaopen-miniapp-energy-stats"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-charts-library"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-charts-library"
       },
@@ -1033,6 +1169,12 @@
       "installPayload": "TuyaOpen/tuyaopen-miniapp-electrician-timing",
       "related": [
         "tuyaopen-miniapp-socket-panel"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-electrician-timing"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-electrician-timing"
@@ -1071,6 +1213,12 @@
         "tuyaopen-miniapp-charts-library",
         "tuyaopen-miniapp-socket-panel"
       ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-energy-stats"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-energy-stats"
       },
@@ -1088,6 +1236,11 @@
         "zh-CN": "需求创建指南"
       },
       "surface": "miniapp",
+      "surfaces": [
+        "embedded",
+        "cloud",
+        "miniapp"
+      ],
       "summary": {
         "en": "Guide for capturing and structuring miniapp product requirements before implementation.",
         "zh-CN": "在动手开发前，规范化捕获并结构化小程序产品需求的指南。"
@@ -1104,6 +1257,12 @@
       ],
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-requirement-guide",
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-requirement-guide"
+      ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-requirement-guide"
       },
@@ -1139,6 +1298,12 @@
       "installPayload": "TuyaOpen/tuyaopen-miniapp-performance-ux-guard",
       "related": [
         "tuyaopen-miniapp-ray-common"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "aliases": [
+        "miniapp-performance-ux-guard"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-performance-ux-guard"

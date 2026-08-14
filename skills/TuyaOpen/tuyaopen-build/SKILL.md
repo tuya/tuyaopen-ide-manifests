@@ -1,14 +1,19 @@
 ---
 name: tuyaopen-build
 description: >-
-  Build and compile TuyaOpen projects, select build configurations, edit
-  Kconfig options, clean artifacts, and run Linux ELF binaries. Use when the
-  user mentions compiling, building, tos.py build, config choice, menuconfig,
-  Kconfig, build error, or running a project.
-  项目编译、构建、编译配置、清理编译、编译错误、menuconfig、Kconfig。
+  Build and compile TuyaOpen projects via the `tuyaopen firmware build/clean`
+  CLI (IDE-scaffolded projects) or `tos.py build`/`tos.py clean` (raw SDK
+  checkouts), select build configurations, edit Kconfig options, and run
+  Linux ELF binaries. Covers the `tuyaopen config` vs `tos.py config` naming
+  trap. Use when the user mentions compiling, building, tos.py build,
+  tuyaopen firmware build, config choice, menuconfig, Kconfig, build error,
+  or running a project.
+  项目编译、构建、tuyaopen firmware build/clean、编译配置、清理编译、编译错误、
+  menuconfig、Kconfig，以及 tuyaopen config 与 tos.py config 的同名陷阱。
 license: Apache-2.0
 compatibility:
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen firmware build/clean`)
+  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — only needed for the `tos.py`-direct path; `tuyaopen firmware build/clean` self-activates
   - cmake >= 3.28, ninja >= 1.6
 ---
 
@@ -16,7 +21,57 @@ compatibility:
 
 Docs: <https://tuyaopen.ai/docs/quick-start/project-compilation>
 
-> **SDK root:** All paths and commands in this skill are relative to the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell, `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see skill `tuyaopen-env-setup`.
+## Shortcuts — `tuyaopen firmware` (IDE-scaffolded projects)
+
+| Intent | Command |
+|---|---|
+| Compile | `tuyaopen firmware build --project-root <project>` |
+| Remove build artifacts | `tuyaopen firmware clean --project-root <project>` |
+| Full clean (deletes `.build/` entirely, `tos.py clean -f`) | `tuyaopen firmware clean --project-root <project> --force` |
+
+`--project-root` is the **IDE project root** — the directory holding
+`.tuyaopen/` and `source/embedded/` (see skill `tuyaopen-shared` § 8) — not an
+SDK `apps/`/`examples/` directory. It defaults to the current directory, so
+`cd <project>` then omit the flag works too. Both commands are risk tier
+**P3**: mutating, but **no** `--dry-run`/`--confirm`/`--yes` gate applies (see
+skill `tuyaopen-shared` § 4 — P3 is a real tier, distinct from P0/P1/P2, for
+commands the framework doesn't consider destructive).
+
+Two things `tuyaopen firmware build`/`clean` do that raw `tos.py build` does
+not, verified against `src/cli/commands/firmware.ts`:
+
+- **Self-activates the SDK env** — it calls the same bootstrap `tuyaopen sdk
+  env-init` would, so you don't need `. ./export.sh` first.
+- **Pre-syncs the platform submodule to its pinned commit** before building,
+  so the `y/n/d` "platform commit mismatch" prompt that raw `tos.py build`
+  can hang on (see § *Build* below) never fires — the
+  `.cache/.dont_prompt_update_platform` workaround is a `tos.py`-direct-only
+  concern.
+
+Full flags (baud, `--sdk-root`, `--stream` for ndjson progress): `tuyaopen
+firmware --help` / `tuyaopen schema get --group firmware --command build` —
+don't hardcode the flag list here, it drifts (see skill `tuyaopen-shared` § 5).
+
+**Everything below this point — Kconfig, `tos.py config`/`menu`/`choice`, and
+building inside a raw SDK checkout's `apps/`/`examples/` tree — has no
+`tuyaopen` CLI equivalent.** `tuyaopen config` is a different, unrelated
+command (see the warning immediately below); use `tos.py` directly for all of
+it.
+
+## ⚠ `tuyaopen config` is not Kconfig — read before touching either `config`
+
+`tos.py config` (Kconfig/menuconfig — everything in this skill) and
+`tuyaopen config` (`get`/`set`/`list` over exactly three **IDE settings**:
+`language`, `gitMirror`, `manifestsSource`) are two unrelated commands that
+share a word. Typing `tuyaopen config set` to change a build option is the
+intuitive guess and the **wrong** one — it silently rejects the key instead of
+touching Kconfig, since none of the three IDE settings match. Full detail:
+skill `tuyaopen-shared` § 7.
+
+> **SDK root:** All `tos.py`-direct paths and commands below are relative to
+> the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell,
+> `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see
+> skill `tuyaopen-env-setup`.
 
 ## Project Locations
 
@@ -151,7 +206,7 @@ tos.py build -v     # verbose (shows full compiler commands)
 > ```bash
 > mkdir -p .cache && touch .cache/.dont_prompt_update_platform
 > ```
-> Create this file once after activating the environment. Without it, `tos.py build` may hang waiting for a `y/n/d` prompt when the platform commit has changed.
+> Create this file once after activating the environment. Without it, `tos.py build` may hang waiting for a `y/n/d` prompt when the platform commit has changed. `tuyaopen firmware build` (§ *Shortcuts* above) pre-syncs the platform commit itself and never hits this prompt — this workaround is only needed on the `tos.py`-direct path.
 
 ### Build All Configs (testing)
 
@@ -201,3 +256,10 @@ Example (for a project named `hello_world_linux` version 1.0.0):
 | `Error: No such command 'set'` | This SDK does not have `tos.py config set` | Probe with `tos.py config -h` first; hand-edit `app_default.config`, then `tos.py clean -f` |
 | `FATAL_ERROR ... using.config` | No config selected yet | Run `tos.py config choice -c <name>` (non-interactive) or `tos.py config choice` (interactive) |
 | Build succeeds but ELF not in `dist/` | Platform linker did not produce expected binary name | Check `.build/bin/` for the raw output; verify project name matches directory name |
+| `tuyaopen firmware build` fails with `embedded directory not found` | `--project-root` doesn't point at an IDE-scaffolded project (no `source/embedded/`) | Run inside the project root, pass the correct `--project-root`, or use `tos.py build` directly for a raw SDK `apps/`/`examples/` layout |
+
+## Not in scope
+
+Anything outside compiling / cleaning / Kconfig for a TuyaOpen project — not
+in scope here, see skill `tuyaopen-shared`'s routing table
+(`references/ROUTING.md`).

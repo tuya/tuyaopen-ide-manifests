@@ -2,9 +2,12 @@
 name: tuyaopen-add-board
 description: >-
   Add new board (BSP) support to TuyaOpen, including board directory structure,
-  Kconfig, drivers, and config files. Use when the user mentions adding a
-  board, new board, BSP, board support, hardware adaptation, or tos.py new
-  board. 添加开发板、板级适配、新增BSP、硬件适配。
+  Kconfig, drivers, and config files. No `tuyaopen` CLI command covers this —
+  it is `tos.py new board` (interactive) or manual copy-and-edit only. Use
+  when the user mentions adding a board, new board, BSP, board support,
+  hardware adaptation, or tos.py new board.
+  添加开发板、板级适配、新增BSP、硬件适配 —— 无对应 tuyaopen CLI 命令，只能用
+  tos.py new board 或手动复制编辑。
 license: Apache-2.0
 compatibility:
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
@@ -13,7 +16,22 @@ compatibility:
 
 # TuyaOpen: Adding a New Board
 
-> **SDK root:** All paths and commands in this skill are relative to the TuyaOpen SDK root. After activating the environment, the SDK root is available as `$OPEN_SDK_ROOT` (Linux/macOS/PowerShell) or `%OPEN_SDK_ROOT%` (Windows CMD). Navigate there with `cd $OPEN_SDK_ROOT` before running any commands below.
+## No `tuyaopen` CLI coverage — this is a `tos.py`/manual-only flow
+
+Verified against `tuyaopen schema list --json` (20 groups, none named
+`board`/`bsp`): creating a new board BSP in the SDK's `boards/<platform>/`
+tree has no `tuyaopen` CLI command. Everything below is `tos.py new board`
+(interactive) or the manual copy-and-edit steps.
+
+**⚠ `tuyaopen boards list`/`boards detail` is a different, unrelated
+catalog — it will never show a board you add here.** That CLI command reads
+the **published manifest catalog** used by `tuyaopen project create --board
+<id>` (a curated onboarding list), not the SDK's own `boards/` source tree.
+Adding a board via this skill does not register it there, and it doesn't
+need to — `tos.py config choice -c <BOARD_NAME>` picks it straight from the
+SDK checkout regardless of manifest state.
+
+> **SDK root:** All paths and commands in this skill are relative to the TuyaOpen SDK root. After activating the environment, the SDK root is available as `$OPEN_SDK_ROOT` (Linux/macOS/PowerShell) or `%OPEN_SDK_ROOT%` (Windows CMD). Navigate there with `cd $OPEN_SDK_ROOT` before running any commands below. See skill `tuyaopen-env-setup` if not yet activated.
 
 Reference: `$OPEN_SDK_ROOT/boards/add_new_board.md`
 
@@ -110,3 +128,9 @@ tos.py build
 ## Code Layer Rules & Shared Drivers
 
 For the dependency layer diagram (platform → src → boards/common → boards/BOARD → apps), existing ESP32 shared drivers (audio, LCD, touch, IO expander, LED), and the board CMakeLists.txt template, see `references/BOARD_LAYERS.md`.
+
+## Not in scope
+
+Peripheral/pin code generation on an already-adapted board, and Kconfig
+option semantics beyond selecting the new board — not in scope here, see
+skill `tuyaopen-shared`'s routing table (`references/ROUTING.md`).
