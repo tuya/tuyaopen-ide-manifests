@@ -1,6 +1,6 @@
 ---
 id: peripheral-sd
-name: SD Card Storage
+name: tuyaopen/peripheral-sd
 description: >-
   TDL + filesystem API for Micro SD card over SPI.
   用 tkl_fs_mount() + tkl_fopen/fwrite/fread 读写 SD 卡。
