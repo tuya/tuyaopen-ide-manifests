@@ -36,6 +36,23 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SURFACES = {"embedded", "cloud", "miniapp"}
+# Install group — the unit the `tuyaopen` CLI offers, so a user picks among five
+# groups instead of 28 individual skills. **A second axis, not a replacement for
+# `surface`**, and the two deliberately disagree: `surface` drives the IDE's
+# filter tabs (browsing, "which end of the product is this about"), `group`
+# drives CLI installs ("what am I setting out to do"). `tuyaopen-device-auth`
+# is surface=embedded but group=cloud, and that is correct on both axes.
+#
+# - core / embedded / cloud / miniapp — grouped by capability.
+# - category — grouped by **product category** instead: the lamp / socket /
+#   robot-vacuum / IPC playbooks a developer installs exactly one of. Not named
+#   after miniapp even though every member is one today, because embedded
+#   per-category skills are expected here too; when they arrive, `surface`
+#   keeps telling the IDE which tab they belong in.
+# Required for TuyaOpen items only: `group` is that product line's CLI concept,
+# and each consumer's SDK gate drops the other line's items before they reach a
+# catalogue, so grouping them would describe something nothing can install.
+GROUPS = {"core", "embedded", "cloud", "miniapp", "category"}
 # Top level under skills/ — the product line. Since the 2026-08-14 reorg this is
 # NOT the surface: a `tuyaopen-miniapp-*` skill has surface "miniapp" but lives
 # under TuyaOpen/, because the product line and the capability surface are
@@ -136,6 +153,18 @@ def check_item(item, index: int, seen_ids: set) -> None:
     surface = item.get("surface")
     if surface not in SURFACES:
         err(f"{label}: 'surface' must be one of {sorted(SURFACES)}, got {surface!r}")
+
+    # `group` is required for TuyaOpen items and must be absent for the other
+    # product line — see GROUPS. Derived from the payload path rather than a
+    # separate field so the two can never disagree.
+    src = item.get("source")
+    local_path = src.get("localPath") if isinstance(src, dict) else None
+    is_tuyaopen = isinstance(local_path, str) and local_path.split("/")[1:2] == ["TuyaOpen"]
+    group = item.get("group")
+    if is_tuyaopen and group not in GROUPS:
+        err(f"{label}: 'group' must be one of {sorted(GROUPS)}, got {group!r}")
+    if not is_tuyaopen and group is not None:
+        err(f"{label}: 'group' is a TuyaOpen-only field, got {group!r}")
 
     # Optional multi-valued surfaces (2026-08-14). Preferred by the IDE over
     # 'surface' when present (see manifestsTypes.ts's SkillManifestItem.surfaces

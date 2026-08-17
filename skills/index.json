@@ -7,6 +7,7 @@
     {
       "id": "tuyaopen-shared",
       "version": "1.1.0",
+      "group": "core",
       "order": 0,
       "name": {
         "en": "TuyaOpen Shared Conventions",
@@ -48,6 +49,7 @@
     {
       "id": "tuyaopen-build",
       "version": "1.0.1",
+      "group": "embedded",
       "order": 1,
       "name": {
         "en": "TuyaOpen Build",
@@ -88,6 +90,7 @@
     {
       "id": "tuyaopen-skill-maker",
       "version": "1.0.1",
+      "group": "core",
       "order": 2,
       "name": {
         "en": "TuyaOpen Skill Maker",
@@ -132,6 +135,7 @@
     {
       "id": "tuyaopen-project",
       "version": "1.1.0",
+      "group": "embedded",
       "order": 6,
       "name": {
         "en": "TuyaOpen Project, Demos & Config",
@@ -176,6 +180,7 @@
     {
       "id": "tuyaopen-dependency",
       "version": "1.0.2",
+      "group": "embedded",
       "order": 8,
       "name": {
         "en": "Wire ecosystem library into CMake",
@@ -220,6 +225,7 @@
     {
       "id": "tuyaopen-cloud",
       "version": "1.0.1",
+      "group": "cloud",
       "order": 9,
       "name": {
         "en": "Tuya IoT Platform",
@@ -265,6 +271,7 @@
     {
       "id": "tuyaopen-workflow-product-dev",
       "version": "1.0.1",
+      "group": "cloud",
       "order": 10,
       "name": {
         "en": "Smart Product Dev",
@@ -315,6 +322,7 @@
     {
       "id": "tuyaopen-hardware",
       "version": "1.0.2",
+      "group": "embedded",
       "order": 11,
       "name": {
         "en": "Hardware Vibe Coding",
@@ -362,6 +370,7 @@
     {
       "id": "tuyaopen-flash",
       "version": "1.1.0",
+      "group": "embedded",
       "order": 15,
       "name": {
         "en": "TuyaOpen Flash & Serial",
@@ -509,6 +518,7 @@
     {
       "id": "tuyaopen-diagnose",
       "version": "1.1.0",
+      "group": "embedded",
       "order": 20,
       "name": {
         "en": "TuyaOpen Diagnose",
@@ -559,6 +569,7 @@
     {
       "id": "tuyaopen-add-board",
       "version": "1.0.1",
+      "group": "embedded",
       "order": 21,
       "name": {
         "en": "Add Board (BSP)",
@@ -597,6 +608,7 @@
     {
       "id": "tuyaopen-code-check",
       "version": "1.0.1",
+      "group": "embedded",
       "order": 22,
       "name": {
         "en": "Code Check",
@@ -634,6 +646,7 @@
     {
       "id": "tuyaopen-workflow-dev-loop",
       "version": "1.0.1",
+      "group": "embedded",
       "order": 23,
       "name": {
         "en": "Build–Flash–Monitor Loop",
@@ -675,6 +688,7 @@
     {
       "id": "tuyaopen-device-auth",
       "version": "1.0.1",
+      "group": "cloud",
       "order": 24,
       "name": {
         "en": "Device Authorization",
@@ -713,6 +727,7 @@
     {
       "id": "tuyaopen-env-setup",
       "version": "1.0.1",
+      "group": "embedded",
       "order": 25,
       "name": {
         "en": "Environment Setup",
@@ -750,6 +765,7 @@
     {
       "id": "tuyaopen-miniapp",
       "version": "1.0.0",
+      "group": "miniapp",
       "order": 98,
       "name": {
         "en": "TuyaOpen MiniApp CLI",
@@ -790,7 +806,8 @@
     },
     {
       "id": "tuyaopen-miniapp-panel-dev",
-      "version": "1.0.1",
+      "version": "1.1.0",
+      "group": "miniapp",
       "order": 99,
       "name": {
         "en": "Smart Panel Development",
@@ -847,6 +864,7 @@
     {
       "id": "tuyaopen-miniapp-ray-common",
       "version": "1.0.1",
+      "group": "miniapp",
       "order": 100,
       "name": {
         "en": "Ray Common Development",
@@ -885,6 +903,7 @@
     {
       "id": "tuyaopen-miniapp-smart-ui",
       "version": "1.0.1",
+      "group": "miniapp",
       "order": 101,
       "name": {
         "en": "Smart UI Components",
@@ -927,6 +946,7 @@
     {
       "id": "tuyaopen-miniapp-lamp-panel",
       "version": "1.0.1",
+      "group": "category",
       "order": 110,
       "name": {
         "en": "Lighting Panel",
@@ -971,6 +991,7 @@
     {
       "id": "tuyaopen-miniapp-socket-panel",
       "version": "1.0.1",
+      "group": "category",
       "order": 111,
       "name": {
         "en": "Socket / Power Strip Panel",
@@ -1016,6 +1037,7 @@
     {
       "id": "tuyaopen-miniapp-robot-vacuum",
       "version": "1.0.1",
+      "group": "category",
       "order": 112,
       "name": {
         "en": "Robot Vacuum Panel",
@@ -1059,6 +1081,7 @@
     {
       "id": "tuyaopen-miniapp-ipc-panel",
       "version": "1.0.1",
+      "group": "category",
       "order": 113,
       "name": {
         "en": "IPC Camera Panel",
@@ -1102,6 +1125,7 @@
     {
       "id": "tuyaopen-miniapp-charts-library",
       "version": "1.0.1",
+      "group": "miniapp",
       "order": 120,
       "name": {
         "en": "Charts Library",
@@ -1145,6 +1169,7 @@
     {
       "id": "tuyaopen-miniapp-electrician-timing",
       "version": "1.0.1",
+      "group": "category",
       "order": 121,
       "name": {
         "en": "Electrician Timing SDK",
@@ -1187,6 +1212,7 @@
     {
       "id": "tuyaopen-miniapp-energy-stats",
       "version": "1.0.1",
+      "group": "category",
       "order": 122,
       "name": {
         "en": "Energy Statistics",
@@ -1230,6 +1256,7 @@
     {
       "id": "tuyaopen-miniapp-requirement-guide",
       "version": "1.0.1",
+      "group": "miniapp",
       "order": 130,
       "name": {
         "en": "Requirement Creating Guide",
@@ -1274,6 +1301,7 @@
     {
       "id": "tuyaopen-miniapp-performance-ux-guard",
       "version": "1.0.1",
+      "group": "miniapp",
       "order": 131,
       "name": {
         "en": "Performance & UX Guard",

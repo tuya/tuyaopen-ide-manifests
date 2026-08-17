@@ -89,6 +89,39 @@ related:
 **规则**：先用本 skill 定位 + 基础约束，再按上表派单。AI **不能**跳过本
 skill 直接进品类 skill；也**不能**跳过 conventions 直接写代码。
 
+### 品类 skill 默认没装 —— 这是本节存在的原因
+
+上表第 3 步派给的六个品类 skill 属于 `category` 安装组，**`tuyaopen skills
+install --all` 不会装它们**。它们互斥：做灯的人同时装上扫地机、IPC、插座的
+手册，不会多出三项能力，只会给 agent 多出三个不相干的候选去挑。
+
+所以本表就是它们的**唯一可见入口**。一个没装的 skill 在 agent 的上下文里
+完全不存在 —— 看不到名字、看不到描述、无从"顺便发现"。你现在读到的这张
+表，就是那六个 skill 在被装上之前唯一留下的痕迹。
+
+判断品类后，先装再用：
+
+```bash
+tuyaopen skills install --ids tuyaopen-miniapp-lamp-panel     # 照明
+tuyaopen skills install --ids tuyaopen-miniapp-socket-panel   # 插座 / 电工
+tuyaopen skills install --ids tuyaopen-miniapp-robot-vacuum   # 扫地机
+tuyaopen skills install --ids tuyaopen-miniapp-ipc-panel      # 摄像头 / IPC
+tuyaopen skills install --ids tuyaopen-miniapp-electrician-timing  # 电工定时
+tuyaopen skills install --ids tuyaopen-miniapp-energy-stats   # 能耗统计
+tuyaopen skills install --group category                      # 六个全装（少见：一次只做一个品类）
+```
+
+（命令写作裸 `tuyaopen`；若这台机器上它不在 `PATH`，先按 skill
+`tuyaopen-shared` § 1 解析一次。）
+
+**装完要让 agent 真正读到它**：新装的 skill 不会进入当前会话的上下文，
+需要重新加载 skill 列表或开一个新会话，再按品类 skill 的内容继续。
+
+**产品品类不在上面六项里**（例如温控器、门锁、传感器）：没有对应的品类
+skill，就留在本 skill + `tuyaopen-miniapp-ray-common` +
+`tuyaopen-miniapp-smart-ui` 里做，**不要**挑一个"最像的"品类 skill 套用 ——
+品类手册里的 DP 语义、组件选型和状态机是按那个品类写死的，套错比没有更糟。
+
 ## 你必须立即拒绝的 9 类 AI 输出
 
 1. **`useState(dpValue)` 管理 DP 状态** —— 走 panel-sdk hook（Basic DP 用
