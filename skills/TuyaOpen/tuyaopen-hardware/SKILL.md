@@ -21,6 +21,8 @@ when_to_use: >-
 
 id: tuyaopen-hardware
 surfaces: [embedded]
+compatibility:
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen hardware`/`boards`)
 tags: [hardware, peripheral, vibe-coding, routing]
 ---
 

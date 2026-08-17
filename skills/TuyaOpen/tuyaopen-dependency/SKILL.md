@@ -18,6 +18,8 @@ when_to_use: Triggered automatically after the IDE (or an agent via `tuyaopen ec
 
 id: tuyaopen-dependency
 surfaces: [embedded]
+compatibility:
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen ecosystem`/`dependency`/`library`)
 tags: [cmake, dependencies, vibeCode]
 command: tuyaopen.skill.wireCmake
 fallback_commands: []

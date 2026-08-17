@@ -15,6 +15,7 @@ description: >-
   index.json 条目时使用。
 license: Apache-2.0
 compatibility:
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen schema get`)
   - Python 3 (for scripts/validate-skills-index.py, scripts/check-skill-version-bumps.py)
   - Node.js (for tools/manifest-gen/bin/manifest-gen.js)
 ---

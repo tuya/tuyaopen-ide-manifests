@@ -31,18 +31,89 @@ sibling skills by name (see § *Routing table* for why).
 
 ## 1. Finding the CLI, and knowing which one you found
 
-Two independent things can be running under the name `tuyaopen`:
+### 1.1 Resolve it first — `tuyaopen` is usually NOT on `PATH`
 
-- **bundled** — inside a TuyaOpen IDE (VSCode/Cursor extension) install, at
-  `<extension>/out/cli/cli.js`. Run it with `node <path>/out/cli/cli.js <args>`.
-- **standalone** — the npm package `@tuya/tuyaopen-cli`, installed globally or
-  as a project devDependency, exposing a `tuyaopen` binary on `PATH`
-  (`dist/cli/cli.js` under the hood).
-
-Don't guess which one a shell has — ask it:
+**Do this once, before the first `tuyaopen` command in a session.** Every
+example in every TuyaOpen skill is written as bare `tuyaopen …`. This defines a
+shell function of that name, so all of them then work verbatim — you never edit
+a command line to add a path.
 
 ```bash
-tuyaopen diag doctor --json
+# Define `tuyaopen` for this shell. Run once; then use the skills' examples as written.
+if [ -n "$TUYAOPEN_CLI_PATH" ] && [ -f "$TUYAOPEN_CLI_PATH" ]; then
+  _tuyaopen_entry="$TUYAOPEN_CLI_PATH"             # explicit override wins
+  tuyaopen() { node "$_tuyaopen_entry" "$@"; }
+elif command -v tuyaopen >/dev/null 2>&1; then
+  :                                                # already on PATH — nothing to do
+else                                               # search upward for the IDE-written wrapper
+  _d="$PWD"
+  while [ "$_d" != "/" ]; do
+    if [ -x "$_d/.tuyaopen/ide/bin/tuyaopen" ]; then
+      _tuyaopen_bin="$_d/.tuyaopen/ide/bin/tuyaopen"
+      tuyaopen() { "$_tuyaopen_bin" "$@"; }
+      break
+    fi
+    _d=$(dirname "$_d")
+  done
+fi
+command -v tuyaopen >/dev/null 2>&1 || echo "TuyaOpen CLI not found — see below" >&2
+```
+
+Two properties this shape buys, both of which the obvious
+`TUYAOPEN_CLI="node /path/cli.js"` variable does **not**:
+
+- **Paths with spaces survive.** A two-word variable breaks the moment anyone
+  quotes it (`"$TUYAOPEN_CLI" …` looks for one executable whose name contains a
+  space) and breaks differently unquoted (a path with a space splits into two
+  arguments). A function passing `"$@"` has neither failure.
+- **Existing examples work unchanged**, so the other TuyaOpen skills need no
+  per-command edit and cannot drift out of sync with this recipe.
+
+A shell function lives in **one shell**. If you run each command in a fresh
+shell, re-run this block first, or export `TUYAOPEN_CLI_PATH` once and use
+`node "$TUYAOPEN_CLI_PATH" …` directly.
+
+On Windows the wrapper is `.tuyaopen\ide\bin\tuyaopen.cmd`.
+
+**When the search finds nothing, stop and tell the user** — do not improvise a
+path, and do not fall back to `tos.py` for something the CLI was supposed to
+do. The message they need is:
+
+> The TuyaOpen CLI wrapper is written by TuyaOpen IDE into
+> `.tuyaopen/ide/bin/` when it opens a TuyaOpen project. Open this project in
+> the IDE once, or set `TUYAOPEN_CLI_PATH` to an `out/cli/cli.js` /
+> `dist/cli/cli.js` you already have.
+
+Three things about that wrapper are worth knowing, because they decide when
+the search succeeds:
+
+- It is written **per project, on IDE activation with that project open** —
+  not at clone time, and not for a project the IDE has never opened.
+- It is in `.gitignore` (`.tuyaopen/ide/`), so it is **never committed**. A
+  fresh clone and a CI checkout have no wrapper and no CLI. That is expected,
+  not a misconfiguration.
+- Inside the IDE's integrated terminal it is also on `PATH`, which is why bare
+  `tuyaopen` works there and nowhere else.
+
+The wrapper resolves the real entry itself, highest priority first:
+`TUYAOPEN_CLI_PATH` → a stable pointer file the IDE rewrites on every
+activation (so it survives extension upgrades) → the path baked in at write
+time. You never need to know which one it picked.
+
+> **`@tuya/tuyaopen-cli` is not published yet.** The npm package is the
+> intended standalone distribution and the `bin` entry is already `tuyaopen`,
+> but `npm install -g @tuya/tuyaopen-cli` returns 404 today. Until it ships,
+> "on `PATH`" in practice means "an IDE integrated terminal".
+
+### 1.2 Then identify what you resolved
+
+Two independent builds can answer to the name `tuyaopen`: the **bundled** one
+inside a TuyaOpen IDE install (`<extension>/out/cli/cli.js`), and the
+**standalone** npm package (`dist/cli/cli.js`). They share this contract but
+not necessarily a version. Don't guess which one a shell has — ask it:
+
+```bash
+"$TUYAOPEN_CLI" diag doctor --json
 ```
 
 The `cli` block in the response identifies the binary you are actually

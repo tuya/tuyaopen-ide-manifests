@@ -1,8 +1,11 @@
 # Intent → skill routing table
 
-Built from `tuyaopen skills list --json` (29 catalogued skills as of
-2026-08-13) plus the two foundation skills this reorg adds
-(`tuyaopen-shared`, `tuyaopen-skill-maker`) — 31 total. Grouped by intent, not
+Built from `tuyaopen skills list --json` — **30 catalogued skills** as of
+2026-08-15, `tuyaopen-shared` and `tuyaopen-skill-maker` among them. (This
+line previously read "29 … plus the two foundation skills this reorg adds —
+31 total", which double-counted: those two were registered in `index.json` in
+the same reorg, so they are inside the catalogue count, not additions to it.)
+Grouped by intent, not
 by the on-disk `TuyaOpen/` vs `TuyaOS/` product-line split (see that
 distinction in skill `tuyaopen-skill-maker`).
 
