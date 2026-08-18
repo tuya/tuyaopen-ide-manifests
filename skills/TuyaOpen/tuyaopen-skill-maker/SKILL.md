@@ -108,10 +108,115 @@ the manifest (`sdkAppliesToItem()` — `skillsFlow.ts:179` for the IDE,
 "hidden" downstream, it never enters the catalogue at all. There is no reason to
 set the field by hand today; omit it.
 
-## 4. Shortcuts table rule: command names, never flag lists
+## 4. The relationship with the CLI must be declared
 
-A skill's body may name commands (`tos.py config set`, `tuyaopen firmware
-flash`) but **must not** enumerate their flags in prose. Point the reader at:
+Every skill states how it relates to the `tuyaopen` CLI in **two** places, and
+they must agree: the machine-checkable `cli` field in `skills/index.json`,
+and the human/agent-facing `## Shortcuts` section in the body (its exact
+shape is § 6 below). This section covers the `index.json` half and why the
+split exists at all; § 5 covers writing the fallback prose that goes with it.
+
+### The `cli` field's three shapes
+
+```json
+{ "cli": { "groups": ["schema"] } }
+```
+
+```json
+{ "cli": { "groups": ["firmware", "diag", "device"], "fallback": ["tos.py", "tyutool_cli"] } }
+```
+
+```json
+{ "cli": { "groups": "none", "reason": "加 board 是纯 tos.py / 手工流程", "fallback": ["tos.py"] } }
+```
+
+1. **`groups: [...]`, no `fallback`** — the CLI covers everything this skill
+   needs; there is no older tool to drop back to. This skill's own
+   declaration is this shape: `{"groups": ["schema"]}`.
+2. **`groups: [...]` with `fallback: [...]`** — the CLI covers it, but an
+   older tool remains as the decidable fallback for when the CLI is
+   unavailable (§ 5).
+3. **`groups: "none"`, with a required `reason`** (optionally with
+   `fallback`) — the CLI has no coverage for this skill at all.
+
+### Why the field lives in `index.json`, not the frontmatter
+
+`cli: { groups: [...] }` is a **nested mapping**, and the consumer that reads
+`SKILL.md` frontmatter — `src/core/skill/skillsFrontmatter.ts` in the IDE
+repo — is deliberately flat. Its own docstring says nested mappings are
+"skipped without blowing up." Put this field in the frontmatter and it looks
+like it worked: the file parses, nothing errors, and the value is silently
+gone on the read side — the one failure mode a validator here cannot catch,
+because the validator never sees the IDE's runtime parse. `index.json` is
+already JSON, is already parsed by `validate-skills-index.py`, and already
+carries every other machine field (`group`, `surface`, `tags`,
+`defaultEnabled`, `requires`, `aliases`) — `cli` belongs with them.
+
+### The `## Shortcuts` section template
+
+```markdown
+## Shortcuts — `tuyaopen <group1>` / `tuyaopen <group2>`
+
+| What | Command |
+|---|---|
+| <what it does> | `tuyaopen <group> <command>` |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+usually not on `PATH`).
+```
+
+The header names every group the skill declared in `index.json` — no more,
+no fewer (see § 6's hard-rule note on why that has to be exact). The table
+lists command names only, never flags (§ 6).
+
+When a skill's `cli.groups` is `"none"`, the body does not get this table at
+all — it gets the sentence the validator looks for instead, verbatim:
+
+> No `tuyaopen` CLI coverage
+
+(followed by the reason, in prose). `tuyaopen-add-board` and
+`tuyaopen-code-check` already use this heading; match their wording rather
+than inventing a new one.
+
+## 5. Writing a fallback
+
+A step that has both a CLI command and an older-tool equivalent gets one
+blockquote under it, naming the fallback command and nothing else:
+
+```markdown
+> **No CLI?** Equivalent: `tos.py build`, but you parse its output yourself.
+> Full mapping: `tuyaopen-shared` § 7.
+```
+
+**The blockquote gives a command name, never a semantic explanation.**
+Anything that needs explaining — `tos.py update` is not `sdk update`; `tos.py
+config` and `tuyaopen config` collide in name but edit unrelated things — is
+written **once**, in `tuyaopen-shared` § 7. If every skill restated the
+semantic differences for its own fallback command, sixteen copies would
+exist and drift is the only possible outcome; a reader who needs the nuance
+follows the link instead.
+
+**Fall back only when the CLI is unavailable — never because it refused
+you.** "Unavailable" means: `tuyaopen-shared` § 1's resolve step found
+nothing, the command/flag doesn't exist (an old CLI build), or the envelope's
+`type` is `tooling` with subtype `tool_missing`. Every other typed error —
+`confirmation`, `policy`, `authentication`, `validation`, `config`, and the
+rest of the exhaustive, default-deny table in `tuyaopen-shared` § 4 — means
+the CLI ran, is working correctly, and is declining on purpose. Reaching for
+the fallback tool at that point is not "trying another way" — it is going
+around the CLI's risk gate. Concretely: `tuyaopen firmware flash` sits
+behind a P2 gate (`--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`); `tos.py flash` /
+`tyutool_cli flash` gate nothing at all. A skill body that says "if flash
+asks for confirmation, just use `tos.py flash`" has handed an agent exactly
+the bypass this catalogue exists to prevent.
+
+## 6. Shortcuts table rule: command names, never flag lists
+
+**This section is a hard requirement, not a style preference — read the
+second paragraph before skipping it.** A skill's body may name commands
+(`tos.py config set`, `tuyaopen firmware flash`) but **must not** enumerate
+their flags in prose. Point the reader at:
 
 ```bash
 tos.py <group> -h
@@ -128,7 +233,15 @@ The existing `tuyaopen-build` / `tuyaopen-project` skills follow this:
 they describe *what* a config subcommand does and route the reader to
 `tos.py config -h` for the current flag surface, never hardcoding it.
 
-## 5. `references/` — progressive disclosure
+**Why the section as a whole is now mandatory, not optional convention:** the
+`## Shortcuts` section is no longer just a reader convenience — it is also
+what the validator's rule 3 checks the `index.json` `cli.groups` declaration
+against, in both directions (declared but not named in the section, or named
+in the section but not declared, are both hard failures). A skill that skips
+the section, or lets it drift from the declaration, now fails CI, not just a
+style review.
+
+## 7. `references/` — progressive disclosure
 
 `SKILL.md` is a router: intent recognition, a decision table, and pointers.
 Move anything that is "read this only if you're doing the deep version" into
@@ -140,7 +253,7 @@ Move anything that is "read this only if you're doing the deep version" into
 - `tuyaopen-project/references/{TOS_COMMANDS.md,CONFIG_CLI.md}` — the
   full `tos.py` command table and non-interactive config CLI semantics.
 - `tuyaopen-shared/references/ROUTING.md` — the intent→skill routing table
-  this skill's § 6 tells you to link to instead of copying.
+  this skill's § 8 tells you to link to instead of copying.
 
 A helper script goes in `scripts/` (see `tuyaopen-env-setup/scripts/` for a
 per-OS example: `.sh`/`.ps1`/`.bat` variants of the same check). Reference it
@@ -156,7 +269,7 @@ product-line segment before the id. `validate-skills-index.py` rejects any
 item id — which is exactly what would catch that old nested shape if it were
 written literally.)
 
-## 6. Wording an out-of-scope handoff
+## 8. Wording an out-of-scope handoff
 
 Do not name a sibling skill directly from inside your skill's prose (e.g.
 "if the user wants X, use skill `tuyaopen-cloud`"). That produces an O(n²)
@@ -169,7 +282,7 @@ and add your own row to `tuyaopen-shared/references/ROUTING.md` in the same
 change (that file is the one place allowed to name every skill, precisely
 because it is the only thing that has to change when the catalogue grows).
 
-## 7. Registering in `skills/index.json`
+## 9. Registering in `skills/index.json`
 
 Preferred: the generator keeps the JSON well-formed and fills in the
 mechanical fields for you:
@@ -195,10 +308,11 @@ Whether generated or hand-written, an item needs:
 | `defaultEnabled` | **Must be set explicitly.** `validate-skills-index.py` in this repo requires it present and boolean — omitting it fails validation outright. But the IDE's own runtime type (`SkillManifestItem.defaultEnabled` in the IDE's `src/manifests/manifestsTypes.ts`) declares it **optional**, and `defaultEnabledSkillIds()` filters on truthiness — so if this repo's validator were ever bypassed, an omitted field would silently read as `false` there too. Two independent reasons to always write `true` or `false` explicitly, never rely on omission. |
 | `installPayload` | Must equal `source.localPath` with the leading `skills/` stripped — the validator checks this exactly |
 | `source.localPath` | `skills/TuyaOpen/<id>` |
-| `related` (optional) | Ids of closely-coupled sibling skills only (not a routing mechanism — see § 6) |
+| `related` (optional) | Ids of closely-coupled sibling skills only (not a routing mechanism — see § 8) |
 | `sdks` (optional) | Applicability flag; defaults to `["tuyaopen"]` when omitted — omit it (§ 3) |
+| `cli` | The CLI relationship declaration (§ 4) — required on every item |
 
-## 8. `version` bump rules
+## 10. `version` bump rules
 
 Full policy lives in `skills/README.md` § *`version` — per-skill payload
 version* — this is the short form:
@@ -215,7 +329,7 @@ enforces this against **published** versions only (an unreleased version may
 keep absorbing edits) — see that script's docstring for the exact base/head/
 released-index comparison it runs.
 
-## 9. Local validation
+## 11. Local validation
 
 Run before opening a PR:
 

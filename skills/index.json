@@ -107,7 +107,7 @@
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "group": "core",
       "order": 2,
       "name": {
@@ -730,7 +730,7 @@
           "firmware"
         ],
         "fallback": [
-          "tyutool_cli list-ports"
+          "tyutool_cli"
         ]
       },
       "defaultEnabled": true,
