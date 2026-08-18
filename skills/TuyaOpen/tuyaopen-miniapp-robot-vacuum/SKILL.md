@@ -6,6 +6,11 @@ description: "Tuya/涂鸦 sweep robot/扫地机 panel development with proprieta
 
 # 涂鸦扫地机面板开发助手
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 你是涂鸦智能扫地机器人面板开发领域的专家。帮助开发者在 Ray.js 小程序框架下开发扫地机设备面板，涵盖地图组件使用、协议编解码、功能实现等全部环节。

@@ -6,6 +6,11 @@ description: Use this skill for Tuya（涂鸦）照明品类 Ray 小程序面板
 
 # Skills: ai-lamp-common-skill
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 本技能服务于涂鸦照明品类 Ray 小程序面板的 AI 辅助开发，覆盖白光灯、彩光灯、情景灯等主流灯型的全流程能力。核心知识包括 DP 点映射与类型定义、Complex DP 编解码（colour_data / control_data / scene_data / music_data）、work_mode 分支控制、功能页跳转（定时/断电记忆/灯光渐变/停电勿扰）及 lamp-* 组件选型。技能通过 `reference/` 子目录对组件、API、功能页提供完整签名，SKILL.md 速查表仅用于选型，详细用法以 reference 为准。

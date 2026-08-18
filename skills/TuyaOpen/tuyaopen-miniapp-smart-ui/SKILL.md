@@ -4,6 +4,10 @@ id: tuyaopen-miniapp-smart-ui
 description: 面向 Ray 小程序 smart-ui，基于 meta-first 工作流协助生成与修改页面与组件。在用户提出 UI 搭建、组件改造、表单与反馈交互、导航展示、图片转代码或 smart-ui 排障升级时使用；仅覆盖 smart-ui，实现前须查阅 _meta.json 与组件文档，禁止虚构 props、事件与能力。
 ---
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
 ## 概述 {#description}
 
 本 skill 是 Ray 小程序 **smart-ui** 的专项开发入口，采用 **meta-first** 流程（先索引、再文档、最后输出），不使用任务分区。目标是在有据可查的前提下完成页面与组件的设计、改造与排障，避免对文档未载明的能力进行猜测。

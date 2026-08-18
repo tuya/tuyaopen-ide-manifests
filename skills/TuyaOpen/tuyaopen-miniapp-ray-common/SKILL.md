@@ -6,6 +6,11 @@ description: 面向 Ray 小程序开发提供以索引为先的文档导航与�
 
 # RayCommonDevelopSkill
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 本技能是 Ray 小程序开发的「地图」：主文件只负责分区、导航与强约束，细节一律下沉到 `references/`。工作流为先选区、再读 `references/ray/INDEX.md`（Section | Key | Title）与对应 `references/router/task-*.md`，每次仅打开 1 个入口索引与 1～2 个目标文档，不足再增量追加；禁止跳过索引猜测 API、生命周期或组件属性。输出须区分 **`文档确认`**（来自当前已读文档）与 **`经验推断`**（文档未覆盖时的保守假设）。同步脚本 `scripts/index.js` 不再生成 `_meta.json`，导航以 `INDEX.md` 与目录内文件为准。

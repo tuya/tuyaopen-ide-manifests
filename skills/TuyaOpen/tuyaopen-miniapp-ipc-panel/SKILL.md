@@ -6,6 +6,11 @@ description: 涂鸦 IPC（摄像机）面板小程序模板（panel-ipc / public
 
 # Skills: tuya-ipc-panel-template
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 本技能服务于涂鸦 IPC 摄像机品类 Ray 小程序面板模板的二次开发，覆盖固定/云台/可移动等主流摄像机的全流程开发。核心知识包括：声明式 FeatureMenu/TabBar 数据驱动渲染、`@ray-js/ipc-player-integration` 融合播放器接入、DP 监听与下发约定（`publishDpOutTime` / `useActions` 双轨）、VAS `pageType` 跳转规则、路径巡航 hooks（`useCreatePath` 等）、弹窗 `componentMap` 注册机制。技能通过 `reference/` 子目录对组件、API、Redux、原生路由提供完整签名，SKILL.md 速查表仅用于选型，详细用法以 reference 为准。

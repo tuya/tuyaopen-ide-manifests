@@ -6,6 +6,11 @@ description: 帮助 Agent 在 Ray 小程序中正确集成 `@ray/charts-library`
 
 # @ray/charts-library Skill
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 本 Skill 帮助 Agent 在 Ray 小程序页面中正确集成 `@ray/charts-library`。该库提供三类能力：**场景图表卡片**（开箱即用）、**可组合周期控件**（自定义布局）、以及**周期上下文 Hook**（完全自定义 UI）。

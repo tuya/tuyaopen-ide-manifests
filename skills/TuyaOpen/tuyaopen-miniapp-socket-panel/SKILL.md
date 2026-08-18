@@ -6,6 +6,11 @@ description: 用于开发涂鸦电工插座/排插/智能开关面板小程序�
 
 # Skills: socket-panel-development-guidelines
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 本技能服务于涂鸦电工插座/排插/智能开关品类 Ray 小程序面板的 AI 辅助开发。核心知识包括多路开关动态渲染（switch_1~6）、倒计时控制（countdown_1~6 秒级转 HH:MM 展示）、用电统计（add_ele/cur_power/cur_voltage/cur_current 含换算规则与统计 API）、Complex DP 解析（cycle_time/random_time/switch_inching）、功能页跳转（电工定时/电费设置）、设备操作日志，以及断电记忆/童锁/故障告警等安全保护功能。技能通过 `reference/` 子目录对 API、功能页提供完整签名，SKILL.md 速查表仅用于选型，详细用法以 reference 为准。

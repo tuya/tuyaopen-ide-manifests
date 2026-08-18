@@ -841,7 +841,7 @@
     },
     {
       "id": "tuyaopen-miniapp-panel-dev",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "group": "miniapp",
       "order": 99,
       "name": {
@@ -901,7 +901,7 @@
     },
     {
       "id": "tuyaopen-miniapp-ray-common",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "miniapp",
       "order": 100,
       "name": {
@@ -943,7 +943,7 @@
     },
     {
       "id": "tuyaopen-miniapp-smart-ui",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "miniapp",
       "order": 101,
       "name": {
@@ -989,7 +989,7 @@
     },
     {
       "id": "tuyaopen-miniapp-lamp-panel",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "category",
       "order": 110,
       "name": {
@@ -1037,7 +1037,7 @@
     },
     {
       "id": "tuyaopen-miniapp-socket-panel",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "category",
       "order": 111,
       "name": {
@@ -1086,7 +1086,7 @@
     },
     {
       "id": "tuyaopen-miniapp-robot-vacuum",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "category",
       "order": 112,
       "name": {
@@ -1133,7 +1133,7 @@
     },
     {
       "id": "tuyaopen-miniapp-ipc-panel",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "category",
       "order": 113,
       "name": {
@@ -1180,7 +1180,7 @@
     },
     {
       "id": "tuyaopen-miniapp-charts-library",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "miniapp",
       "order": 120,
       "name": {
@@ -1227,7 +1227,7 @@
     },
     {
       "id": "tuyaopen-miniapp-electrician-timing",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "category",
       "order": 121,
       "name": {
@@ -1273,7 +1273,7 @@
     },
     {
       "id": "tuyaopen-miniapp-energy-stats",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "category",
       "order": 122,
       "name": {
@@ -1320,7 +1320,7 @@
     },
     {
       "id": "tuyaopen-miniapp-requirement-guide",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "miniapp",
       "order": 130,
       "name": {
@@ -1368,7 +1368,7 @@
     },
     {
       "id": "tuyaopen-miniapp-performance-ux-guard",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "miniapp",
       "order": 131,
       "name": {

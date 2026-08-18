@@ -7,6 +7,11 @@ description: >-
 
 # Miniapp Performance UX Guard
 
+## No `tuyaopen` CLI coverage
+
+`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+
+
 ## 概述 {#description}
 
 本技能服务于涂鸦 Ray/miniapp 项目代码下限、项目性能、体验与发布质量治理，覆盖日常功能开发护栏、启动/首屏优化、上线前评审门禁、以及 MasterGo 设计稿还原与组件架构设计四类高频任务。它的价值不只是“多一份规则”，而是把 AI 锁回项目真实约束里：优先沿现有项目模式改代码，先补下限，再做性能、评审和设计落地，避免 AI 在上下文不足时凭空发明组件、状态流、接口能力或不适配小程序/Ray 的泛化方案。

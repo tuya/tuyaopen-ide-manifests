@@ -43,6 +43,11 @@ related:
 
 # 智能面板开发（Smart Panel Development）
 
+## No `tuyaopen` CLI coverage
+
+面板架构、UI 结构、DP 编排等本技能自身承担的调度工作，没有对应的 `tuyaopen` CLI 命令组——`miniapp` 组覆盖的是构建 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`），不是这里的架构调度职责。下文出现的 `tuyaopen skills install` 调用是子技能目录的 bootstrap 安装，不属于面板开发本身，也不落在 Shortcuts 小节内。
+
+
 ## Overview
 
 面板小程序（panel miniapp）**全流程的主技能**——从需求 → 架构 → 编码 →
