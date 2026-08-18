@@ -24,6 +24,9 @@ Checks (all local / deterministic, no network):
     item's id, never equal to any item's canonical id (an alias must not shadow
     a real id), and unique across the whole catalogue (no old id resolves to
     two different new ids)
+  - Every item carries a 'cli' object declaring its tuyaopen CLI relationship:
+    either {"groups": [...]} naming real CLI command groups, or
+    {"groups": "none", "reason": "..."} when the CLI does not cover it
 
 Usage: python3 scripts/validate-skills-index.py [path/to/index.json]
 Exits 0 on success, 1 on any error.
@@ -65,6 +68,14 @@ PRODUCT_LINES = {"TuyaOpen"}
 # SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default),
 # which is now the only legal value — this catalogue is TuyaOpen-only.
 SDKS = {"tuyaopen"}
+# `tuyaopen` CLI 的命令组。权威来源是 CLI 自己的 `tuyaopen schema list`，这里是一份
+# 手工镜像 —— manifests 仓不能依赖 IDE 仓的产物，所以只能镜像。CLI 改组名时两边一起改，
+# 而这份镜像过期正是我们想让它红的时刻（技能会声明一个不存在的组）。
+CLI_GROUPS = {
+    "boards", "config", "credential", "demos", "dependency", "device", "diag",
+    "dp", "ecosystem", "firmware", "hardware", "library", "license", "manifests",
+    "miniapp", "product", "project", "schema", "sdk", "skills",
+}
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
 LANGS = ("en", "zh-CN")
 URL_RE = re.compile(r"^https?://[^\s]+$")
@@ -438,6 +449,58 @@ def check_agent_skill_paths(ids: set) -> None:
                     )
 
 
+def check_cli_declaration(items: list) -> None:
+    """Every item must state its relationship to the `tuyaopen` CLI.
+
+    Rule 1 (field required) exists because "not stating it" was an invisible
+    state: measured 2026-08-17, three skills mentioned the CLI zero times and
+    all three were among the nine that had never declared anything. Nothing
+    could see it.
+
+    Rule 2 (group names must be real) catches both a typo here and a rename in
+    the CLI.
+
+    Rule 3 (declaration agrees with the body's Shortcuts section) is NOT here —
+    it needs a `## Shortcuts` section that most bodies do not have yet, so it
+    lands with the body rewrites.
+    """
+    for item in items:
+        label = f"item {item.get('id', '?')!r}"
+        cli = item.get("cli")
+        if not isinstance(cli, dict):
+            err(f"{label}: missing 'cli' — declare the CLI groups it uses, or "
+                f"{{\"groups\": \"none\", \"reason\": \"…\"}}")
+            continue
+
+        groups = cli.get("groups")
+        if groups == "none":
+            if not is_str(cli.get("reason")):
+                err(f"{label}: cli.groups is \"none\" but there is no 'reason' — "
+                    f"say why the CLI does not cover this skill")
+            continue
+
+        if not isinstance(groups, list):
+            err(f"{label}: cli.groups must be a list of group names, or the "
+                f"string \"none\", got {groups!r}")
+            continue
+        if not groups:
+            err(f"{label}: cli.groups is an empty list — declare real groups, or "
+                f"use \"none\" with a reason")
+            continue
+        for g in groups:
+            if not is_str(g):
+                err(f"{label}: cli.groups entries must be strings, got {g!r}")
+            elif g not in CLI_GROUPS:
+                err(f"{label}: cli.groups names {g!r}, which is not a tuyaopen CLI "
+                    f"group. Known: {', '.join(sorted(CLI_GROUPS))}")
+
+        fallback = cli.get("fallback")
+        if fallback is not None and not (
+            isinstance(fallback, list) and all(is_str(f) for f in fallback)
+        ):
+            err(f"{label}: cli.fallback must be a list of tool names, got {fallback!r}")
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
     if not index_path.is_file():
@@ -466,6 +529,7 @@ def main() -> int:
     check_aliases(items, seen_ids)
     check_orphan_skill_dirs(items)
     check_agent_skill_paths(seen_ids)
+    check_cli_declaration(items)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)
