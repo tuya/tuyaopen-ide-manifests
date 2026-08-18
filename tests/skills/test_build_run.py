@@ -34,3 +34,167 @@ def test_analyze_log_no_errors():
     assert errors == 0
     assert warns == 0
     assert wdts == 1
+
+
+class _FakePopen:
+    """Stand-in for `subprocess.Popen`, just enough for `_run_build`'s use:
+    an iterable `.stdout` of ndjson lines (as real Popen text-mode iteration
+    would yield them) and a `.wait()` that sets and returns the configured
+    exit code.
+    """
+
+    def __init__(self, lines, returncode):
+        self.stdout = iter(lines)
+        self._returncode = returncode
+        self.returncode = None
+
+    def wait(self):
+        self.returncode = self._returncode
+        return self._returncode
+
+
+class _FakeCompletedProcess:
+    def __init__(self, returncode):
+        self.returncode = returncode
+
+
+def _forbid_run(*args, **kwargs):
+    raise AssertionError("tos.py fallback must not run here")
+
+
+def _forbid_popen(*args, **kwargs):
+    raise AssertionError("the tuyaopen CLI must not be spawned here")
+
+
+def test_run_build_cli_present_success_streams_and_returns_true(monkeypatch, capsys):
+    """CLI present, build succeeds: `--stream` lines are relayed live and
+    success comes from the exit code, not a parsed envelope (there is none
+    in --stream mode).
+    """
+    monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: ["tuyaopen"])
+    captured = {}
+
+    def fake_popen(argv, **kwargs):
+        captured["argv"] = argv
+        lines = [
+            '{"ts": 1, "phase": "stdout", "msg": "Compiling main.c"}\n',
+            '{"ts": 2, "phase": "done", "msg": "build completed"}\n',
+        ]
+        return _FakePopen(lines, 0)
+
+    monkeypatch.setattr(build_run.subprocess, "Popen", fake_popen)
+    monkeypatch.setattr(build_run.subprocess, "run", _forbid_run)
+
+    assert build_run._run_build() is True
+    assert captured["argv"][-3:] == ["firmware", "build", "--stream"]
+    out = capsys.readouterr().out
+    assert "Compiling main.c" in out
+    assert "build completed" in out
+
+
+def test_run_build_cli_present_failure_returns_false_without_fallback(monkeypatch):
+    """CLI present, build fails: the non-zero exit code is propagated as
+    False, and the tos.py fallback must never run — a CLI-reported failure
+    is not the same as the CLI being unavailable.
+    """
+    monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: ["tuyaopen"])
+
+    def fake_popen(argv, **kwargs):
+        lines = ['{"ts": 1, "phase": "stderr", "msg": "main.c:10: error: expected \';\'"}\n']
+        return _FakePopen(lines, 1)
+
+    monkeypatch.setattr(build_run.subprocess, "Popen", fake_popen)
+    monkeypatch.setattr(build_run.subprocess, "run", _forbid_run)
+
+    assert build_run._run_build() is False
+
+
+def test_run_build_falls_back_to_tos_py_when_cli_unresolvable(monkeypatch):
+    """CLI cannot be resolved at all: this is the one case that legitimately
+    falls back, and the fallback is a plain exit-code check on tos.py.
+    """
+    monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: None)
+    monkeypatch.setattr(build_run.subprocess, "Popen", _forbid_popen)
+
+    calls = {}
+
+    def fake_run(argv, check=False, **kwargs):
+        calls["argv"] = argv
+        return _FakeCompletedProcess(0)
+
+    monkeypatch.setattr(build_run.subprocess, "run", fake_run)
+
+    assert build_run._run_build() is True
+    assert calls["argv"][-1] == "build"
+
+
+def test_run_build_cli_refusal_is_not_treated_as_unavailable(monkeypatch):
+    """A `confirmation`-type refusal is the CLI working correctly and
+    declining on purpose (see `tuyaopen-shared` § 4's unavailable-vs-refused
+    rule) — it still exits non-zero, so `_run_build` reports failure, but it
+    must not reach for the tos.py fallback just because the CLI said no.
+    This is the scenario the fallback rule exists for, more than the plain
+    happy path above.
+    """
+    monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: ["tuyaopen"])
+
+    def fake_popen(argv, **kwargs):
+        lines = [
+            '{"ts": 1, "phase": "error", '
+            '"msg": "confirmation required: re-run with --confirm <token>"}\n'
+        ]
+        return _FakePopen(lines, 7)  # EXIT_BY_CATEGORY['confirmation'], non-zero
+
+    monkeypatch.setattr(build_run.subprocess, "Popen", fake_popen)
+    monkeypatch.setattr(build_run.subprocess, "run", _forbid_run)
+
+    assert build_run._run_build() is False
+
+
+def test_stream_line_message_extracts_msg_field():
+    assert build_run._stream_line_message('{"ts": 1, "phase": "stdout", "msg": "hello"}') == "hello"
+
+
+def test_stream_line_message_falls_back_to_raw_line_when_not_json():
+    assert build_run._stream_line_message("not json at all") == "not json at all"
+
+
+def test_resolve_tuyaopen_prefers_explicit_env_override(monkeypatch, tmp_path):
+    cli_path = tmp_path / "cli.js"
+    cli_path.write_text("// fake cli entry\n")
+    monkeypatch.setenv("TUYAOPEN_CLI_PATH", str(cli_path))
+
+    assert build_run._resolve_tuyaopen() == ["node", str(cli_path)]
+
+
+def test_resolve_tuyaopen_falls_back_to_path(monkeypatch, tmp_path):
+    monkeypatch.delenv("TUYAOPEN_CLI_PATH", raising=False)
+    monkeypatch.setattr(
+        build_run.shutil, "which", lambda name: "/usr/local/bin/tuyaopen" if name == "tuyaopen" else None
+    )
+
+    assert build_run._resolve_tuyaopen() == ["/usr/local/bin/tuyaopen"]
+
+
+def test_resolve_tuyaopen_walks_up_to_project_wrapper(monkeypatch, tmp_path):
+    monkeypatch.delenv("TUYAOPEN_CLI_PATH", raising=False)
+    monkeypatch.setattr(build_run.shutil, "which", lambda name: None)
+
+    wrapper_dir = tmp_path / ".tuyaopen" / "ide" / "bin"
+    wrapper_dir.mkdir(parents=True)
+    wrapper = wrapper_dir / "tuyaopen"
+    wrapper.write_text("#!/bin/sh\n")
+
+    nested = tmp_path / "source" / "embedded"
+    nested.mkdir(parents=True)
+    monkeypatch.chdir(nested)
+
+    assert build_run._resolve_tuyaopen() == [str(wrapper)]
+
+
+def test_resolve_tuyaopen_returns_none_when_nothing_found(monkeypatch, tmp_path):
+    monkeypatch.delenv("TUYAOPEN_CLI_PATH", raising=False)
+    monkeypatch.setattr(build_run.shutil, "which", lambda name: None)
+    monkeypatch.chdir(tmp_path)
+
+    assert build_run._resolve_tuyaopen() is None

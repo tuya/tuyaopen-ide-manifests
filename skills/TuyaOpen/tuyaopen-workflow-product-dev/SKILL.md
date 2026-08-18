@@ -38,9 +38,9 @@ End-to-end orchestration: requirements → Tuya Platform product/DP → embedded
 
 ## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp` / `tuyaopen project`
 
-| What | Command |
+| Intent | Command |
 |---|---|
-| Check sign-in state / sign in / sign out | `tuyaopen credential status` · `credential login` · `credential logout` |
+| Check sign-in state / sign in / sign out | `tuyaopen credential status` · `credential login` · `credential logout` (P2) |
 | Sync / view the bound product | `tuyaopen product sync` (P2) · `product info` |
 | List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
 | Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
@@ -199,7 +199,16 @@ Delegate to `tuyaopen-cloud` → `ops/manage-dp.md`. Dry-run → developer appro
 
 ### Step 6 — Bind PID
 
-Edit `tuyaopen.project.ini` → `[product] pid = <pid>`. This is the only file you write for binding.
+Bind the PID:
+
+```bash
+export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
+tuyaopen project bind-product --pid <pid> --yes --json
+```
+
+(P2 — needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`.) This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
+
+> **No CLI?** Hand-edit `tuyaopen.project.ini` → `[product] pid = <pid>` directly. See `tuyaopen-shared` § 7.
 
 **Do NOT hand-edit the firmware PID** (the Kconfig `CONFIG_TUYA_PRODUCT_ID` in `source/embedded/app_default.config` / `config/*.config`, or a `TUYA_PRODUCT_ID` macro). The IDE owns the firmware rewrite: it reads the demo's PID-location spec from `.tuyaopen/ide/demo.json` (`cloud.pid.via` / `kconfigKey` / `macro` / `file`) and writes the PID to the exact location that demo declares — which is often NOT the default symbol. Editing it yourself will likely target the wrong key/macro/file and bind the wrong PID.
 

@@ -157,7 +157,7 @@ carries every other machine field (`group`, `surface`, `tags`,
 ```markdown
 ## Shortcuts — `tuyaopen <group1>` / `tuyaopen <group2>`
 
-| What | Command |
+| Intent | Command |
 |---|---|
 | <what it does> | `tuyaopen <group> <command>` |
 

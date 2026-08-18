@@ -25,14 +25,14 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 
 ## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp`
 
-| What | Command |
+| Intent | Command |
 |---|---|
-| Sign in / check sign-in state / sign out | `tuyaopen credential login` · `credential status` · `credential logout` |
+| Sign in / check sign-in state / sign out | `tuyaopen credential login` · `credential status` · `credential logout` (P2) |
 | Sync the bound product's snapshot | `tuyaopen product sync` (P2) |
 | View the bound product | `tuyaopen product info` |
 | List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
 | Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
-| Generate code from DPs | `tuyaopen dp generate` · `dp sync` |
+| Generate code from DPs | `tuyaopen dp generate` · `dp sync` (P2) |
 
 Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
 for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is

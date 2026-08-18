@@ -5,9 +5,17 @@ Usage: python build_run.py [timeout_seconds]
   timeout_seconds: default 30. Pass 0 for no timeout.
 
 Split of responsibility (2026-08-18): the *build* half now goes through the
-`tuyaopen` CLI (`firmware build --json`, read `.ok`) when it can be resolved,
-falling back to `tos.py build` only when the CLI is not reachable — never
-because it failed. The *run + analyze* half (executing the LINUX ELF and
+`tuyaopen` CLI (`firmware build --stream`) when it can be resolved, falling
+back to `tos.py build` only when the CLI is not reachable — never because it
+failed. `--stream` (rather than `--json`) is deliberate: a `--json` build
+buffers the whole build's output into one envelope printed only at the end
+(the CLI's `bufferedOut` path fires whenever its own stdout is not a TTY,
+which a piped subprocess always is), so a human watching this script would
+see nothing until the build was already over. `--stream` emits one ndjson
+line per line of build output as it happens, and the exit code is still a
+faithful success signal in that mode: `cli.ts` computes it from `result.ok`/
+`result.type` before it checks whether to skip printing the envelope for a
+streamed command. The *run + analyze* half (executing the LINUX ELF and
 scanning its stdout for error/warning/watchdog patterns) is unchanged and
 stays on `subprocess` directly: the CLI has no command that runs a built
 LINUX binary, only one that builds it. See skill `tuyaopen-shared` § 4 for
@@ -71,17 +79,35 @@ def _log_dir():
     return log_dir
 
 
+def _stream_line_message(line):
+    """Extract the human-readable text from one `--stream` ndjson line
+    (`{"ts": ..., "phase": ..., "msg": "..."}`). Falls back to the raw line
+    when it isn't JSON we understand, so an unexpected stdout line is still
+    relayed rather than swallowed.
+    """
+    try:
+        event = json.loads(line)
+    except ValueError:
+        return line
+    msg = event.get("msg")
+    return msg if msg is not None else line
+
+
 def _run_build():
     """Build the firmware. Returns True on success, False on failure.
 
-    Tries `tuyaopen firmware build --json` first and reads the envelope's
-    `.ok` — no stdout scraping (stdout carries exactly one JSON line; any
-    build log the CLI captured comes back under `details.stdout`/`stderr` on
-    non-TTY output). Falls back to `tos.py build` only when `tuyaopen` cannot
-    be resolved at all; a CLI-reported failure is reported as-is, never
-    retried against `tos.py` (see the unavailable-vs-refused rule in skill
-    `tuyaopen-shared` § 4 — build is a P3/ungated command, so this fallback
-    boundary is about reachability, not about being turned away).
+    Runs `tuyaopen firmware build --stream` and relays each progress line's
+    `msg` to stdout as it arrives — live output, not a single envelope
+    printed after the fact (see the module docstring for why `--stream`
+    replaces `--json` here). Success is read from the process exit code,
+    which stays a faithful signal in `--stream` mode (see module docstring).
+
+    Falls back to `tos.py build` only when `tuyaopen` cannot be resolved at
+    all — never on a CLI-reported failure (see the unavailable-vs-refused
+    rule in skill `tuyaopen-shared` § 4). That fallback, immediately below,
+    already decides success the same way: a plain exit-code check, no output
+    parsing — the `--stream` path above just applies the identical test to
+    the CLI's exit code instead of `tos.py`'s.
     """
     argv = _resolve_tuyaopen()
     if argv is None:
@@ -89,45 +115,19 @@ def _run_build():
         ret = subprocess.run([_python_exe(), _tos_py(), "build"], check=False)
         return ret.returncode == 0
 
-    proc = subprocess.run(
-        argv + ["firmware", "build", "--json"],
-        capture_output=True,
+    proc = subprocess.Popen(
+        argv + ["firmware", "build", "--stream"],
+        stdout=subprocess.PIPE,
+        stderr=None,  # the CLI's own logs already go to stderr — let them hit the terminal live
         text=True,
-        check=False,
+        bufsize=1,
     )
-    envelope = None
-    if proc.stdout.strip():
-        try:
-            envelope = json.loads(proc.stdout.strip().splitlines()[-1])
-        except ValueError:
-            envelope = None
-
-    if envelope is None:
-        # The CLI resolved but did not emit a parseable envelope — a CLI
-        # failure, not a CLI-unavailable one, so report it and stop rather
-        # than silently retrying against tos.py.
-        print("[ERROR] `tuyaopen firmware build --json` returned no parseable JSON.")
-        if proc.stderr:
-            sys.stderr.write(proc.stderr)
-        return False
-
-    details = envelope.get("details") or {}
-    if details.get("stdout"):
-        print(details["stdout"], end="")
-    if proc.stderr:
-        sys.stderr.write(proc.stderr)
-
-    if envelope.get("ok"):
-        return True
-
-    print(
-        "[ERROR] tuyaopen firmware build failed: "
-        f"{envelope.get('type')}/{envelope.get('subtype')} — "
-        f"{envelope.get('error') or envelope.get('hint') or '(no message)'}"
-    )
-    if details.get("stderr"):
-        print(details["stderr"], end="")
-    return False
+    for line in proc.stdout:
+        line = line.rstrip("\n")
+        if line:
+            print(_stream_line_message(line))
+    proc.wait()
+    return proc.returncode == 0
 
 
 def find_binary():

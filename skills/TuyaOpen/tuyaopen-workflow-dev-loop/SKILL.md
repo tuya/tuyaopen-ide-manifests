@@ -16,7 +16,7 @@ compatibility:
 
 ## Shortcuts — `tuyaopen firmware` / `tuyaopen diag` / `tuyaopen device`
 
-| What | Command |
+| Intent | Command |
 |---|---|
 | Build / clean | `tuyaopen firmware build` · `tuyaopen firmware clean` |
 | Flash | `tuyaopen firmware flash` (P2: `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`) |
@@ -181,7 +181,7 @@ Built-in CLI (`tal_cli`) via debug UART (prompt: `tuya> `). Commands, registrati
 1. Read the compiler error output carefully.
 2. Identify the source file and line.
 3. Fix the code.
-4. `tos.py build` again. Repeat until build succeeds.
+4. `tuyaopen firmware build --json` again (`tos.py build` on the fallback path). Repeat until build succeeds.
 
 ### On flash failure
 
