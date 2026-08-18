@@ -853,8 +853,8 @@
       },
       "surface": "miniapp",
       "summary": {
-        "en": "Single entry point and orchestrator for Tuya Ray panel miniapp development. Covers architecture, dev conventions, upload audit, and dispatches to category- or topic-specific skills (ray-common, smart-ui, charts-library, lamp/socket/robot-vacuum/ipc/electrician-timing/energy-stats, performance-ux-guard, requirement-guide) when deeper detail is needed.",
-        "zh-CN": "Tuya Ray 面板小程序开发的统一入口与调度器。涵盖架构、开发铁律、上传审核自检，并按需分派到子技能（ray-common、smart-ui、charts-library、灯/插座/扫地机/IPC/电工定时/能耗统计、performance-ux-guard、requirement-guide）。通过本技能即可跑通整条面板开发流水线。"
+        "en": "Entry point and orchestrator for Tuya Ray panel miniapp development — architecture, dev conventions, upload audit, and dispatch to category/topic sub-skills (ray-common, smart-ui, charts-library, category panels, performance-ux-guard, requirement-guide) for deeper detail.",
+        "zh-CN": "Tuya Ray 面板小程序开发的统一入口与调度器：架构、开发铁律、上传审核自检，并按需分派到子技能（ray-common、smart-ui、charts-library、各品类面板、performance-ux-guard、requirement-guide）。"
       },
       "whenToUse": {
         "en": "Use the moment any panel miniapp work begins — opening a project, reading or writing a DP, picking a category template, designing a page, writing PRD, reviewing code, preparing for upload. From here, dispatch to ray-common / smart-ui / category skill / performance-ux-guard / requirement-guide as the task demands.",
