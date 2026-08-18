@@ -212,7 +212,7 @@
     },
     {
       "id": "tuyaopen-dependency",
-      "version": "1.0.4",
+      "version": "1.1.0",
       "group": "embedded",
       "order": 8,
       "name": {
@@ -238,9 +238,6 @@
           "dependency",
           "ecosystem",
           "library"
-        ],
-        "fallback": [
-          "tos.py"
         ]
       },
       "commands": [
