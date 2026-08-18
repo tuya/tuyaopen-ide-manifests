@@ -29,6 +29,9 @@ Docs: <https://tuyaopen.ai/docs/quick-start/project-compilation>
 | Remove build artifacts | `tuyaopen firmware clean --project-root <project>` |
 | Full clean (deletes `.build/` entirely, `tos.py clean -f`) | `tuyaopen firmware clean --project-root <project> --force` |
 
+> **No CLI?** `tos.py build` / `tos.py clean` (`-f` for full clean). See
+> skill `tuyaopen-shared` § 7.
+
 `--project-root` is the **IDE project root** — the directory holding
 `.tuyaopen/` and `source/embedded/` (see skill `tuyaopen-shared` § 8) — not an
 SDK `apps/`/`examples/` directory. It defaults to the current directory, so

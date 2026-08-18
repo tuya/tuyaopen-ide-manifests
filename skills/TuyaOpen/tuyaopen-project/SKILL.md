@@ -28,6 +28,26 @@ compatibility:
 
 Docs: <https://tuyaopen.ai/docs/tos-tools/tos-guide>
 
+## Shortcuts — `tuyaopen project` / `tuyaopen config` / `tuyaopen demos` / `tuyaopen manifests`
+
+| Intent | Command |
+|---|---|
+| Read the `.tuyaopen/` project descriptor | `tuyaopen project info` |
+| Create a project non-interactively | `tuyaopen project create` (P2) |
+| Set platform / board / lifecycle status / AI intent | `tuyaopen project set-platform` · `set-board` · `set-status` · `set-intent` (all P2) |
+| Bind a product PID to this project | `tuyaopen project bind-product` (P2) |
+| Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — **not** Kconfig, see the warning below) | `tuyaopen config get` · `config list` · `config set` (P2) |
+| Browse the local demo/example catalogue | `tuyaopen demos list` · `demos detail` |
+| Local manifest cache status / sync | `tuyaopen manifests status` · `manifests sync` (P2) |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
+(it is usually not on `PATH`).
+
+> **No CLI?** `project create` → `tos.py new project` (interactive; see
+> § *Creating a New Project* below). No older-tool equivalent for the rest
+> of this table — see skill `tuyaopen-shared` § 7.
+
 ## ⚠ Two commands named `config` — read this before touching either
 
 `tos.py config` and `tuyaopen config` are **two unrelated commands that

@@ -44,6 +44,11 @@ it applies:
 | (Re)write `.vscode/c_cpp_properties.json` for the project's platform/SDK | `tuyaopen hardware intellisense --project-root <project>` |
 | Browse the **published board catalog** (used by `project create --board`, not this project's board) | `tuyaopen boards list` / `tuyaopen boards detail --id <id>` |
 
+> **No CLI?** No `tos.py` equivalent for `hardware`/`boards` — hand-read /
+> hand-write `.tuyaopen/used-peripherals.json` and `.tuyaopen/board-context.md`
+> directly, exactly as Steps 1–4 below describe. See skill `tuyaopen-shared`
+> § 7.
+
 All `hardware` subcommands are read-only except `set-used` and `intellisense`
 (both **P2** — need `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`, or `--dry-run` to
 preview; see skill `tuyaopen-shared` § 4).

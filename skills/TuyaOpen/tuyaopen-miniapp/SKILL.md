@@ -40,21 +40,23 @@ the IDE, pass `--extension-path <path>` explicitly or set
 `TUYAOPEN_EXTENSION_PATH`. Without it, these commands fail with a clear
 `config:project_not_open` hint rather than doing partial work.
 
-## Commands
+## Shortcuts — `tuyaopen miniapp`
 
-| Subcommand | Purpose | Risk |
-|---|---|---|
-| `build` | Build the miniapp (wraps `miniapp.runBuild` via the local npm runtime) | P3 |
-| `install` | Ensure the MiniApp runtime is installed in the shared TuyaOpenIDE cache | P2 |
-| `meta set-appid <appid>` | Write the miniapp's appid into project metadata | P3 (mutating, but not gated — P3 carries no confirmation requirement) |
-| `sync-schema` | Read the local DP cache for the bound product and regenerate `source/miniapp/src/devices/schema.ts` | P2 |
-| `preview` | Start the dev server (minipack watch); `--screenshot <path>` captures a PNG and exits instead | P3 (read-only) |
-| `template list` \| `template create --id <id>` | Browse / apply the miniapp template gallery | `list`: none; `create`: P2 |
-| `upload` | Build, sign, and upload to the Tuya platform (ray build → minipack → sign → COS upload → version register) | P2 |
+| Intent | Command |
+|---|---|
+| Build the miniapp (wraps `miniapp.runBuild` via the local npm runtime) | `tuyaopen miniapp build` |
+| Ensure the MiniApp runtime is installed in the shared TuyaOpenIDE cache | `tuyaopen miniapp install` (P2) |
+| Write the miniapp's appid into project metadata | `tuyaopen miniapp meta set-appid <appid>` (mutating, but P3 — not gated) |
+| Read the local DP cache and regenerate `source/miniapp/src/devices/schema.ts` | `tuyaopen miniapp sync-schema` (P2) |
+| Start the dev server (minipack watch), or capture a screenshot and exit | `tuyaopen miniapp preview` · `preview --screenshot <path>` |
+| Browse / apply the template gallery | `tuyaopen miniapp template list` · `template create` (P2) |
+| Build, sign, and upload to the Tuya platform | `tuyaopen miniapp upload` (P2) |
 
-Full flags for any of these: `tuyaopen miniapp --help` or `tuyaopen schema
-get --group miniapp --command <name>` — don't memorize a flag list here, see
-skill `tuyaopen-shared` § 5 for why.
+Flags aren't listed here — run `tuyaopen schema get --group miniapp --command
+<c>` for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared`
+§ 1 (it is usually not on `PATH`).
+
+Example invocations:
 
 ```bash
 tuyaopen miniapp build --project-root <dir>

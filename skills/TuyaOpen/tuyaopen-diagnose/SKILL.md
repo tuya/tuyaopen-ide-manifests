@@ -21,22 +21,42 @@ compatibility:
 
 # TuyaOpen Diagnose
 
-Covers the CLI groups `diag doctor` / `diag export`, plus three absorbed
+Covers the CLI groups `diag doctor` / `diag export` / `sdk doctor` /
+`device list-ports` / `firmware monitor`, plus three absorbed
 device-debugging skills that all answer "something's wrong, now what" and
-used to overlap without a clear boundary: non-blocking serial log capture,
-sending ad-hoc commands to the device's CLI, and decoding a crash dump. Pick
+used to overlap without a clear boundary: serial log capture, sending
+ad-hoc commands to the device's CLI, and decoding a crash dump. Pick
 the section that matches the symptom:
 
 | Symptom | Section |
 |---|---|
 | "Is my dev environment set up right?" / "which CLI am I even running?" | § 1 `diag doctor` |
 | "I need to attach diagnostics to a bug report" | § 2 `diag export` |
-| "I want the device's boot/runtime log without blocking my terminal" | § 3 Capture device serial logs |
+| "I just want to watch device logs live" | § 3 Foreground |
+| "I want the device's boot/runtime log without blocking my terminal" | § 3 Background / non-blocking |
 | "I want to poke the running device — dump KV, check heap, force a reset" | § 4 Send commands to the device CLI |
 | "The device pasted a panic/hard-fault dump with hex addresses" | § 5 Decode a crash dump |
 
 For the CLI's envelope, exit codes, and self-discovery (`schema get`), see
 skill `tuyaopen-shared` — not repeated here.
+
+## Shortcuts — `tuyaopen diag` / `tuyaopen device` / `tuyaopen sdk` / `tuyaopen firmware`
+
+| Intent | Command |
+|---|---|
+| Environment/CLI-identity triage (one round trip) | `tuyaopen diag doctor` |
+| Diagnostics bundle for a bug report | `tuyaopen diag export` |
+| SDK-only diagnostic (install / Python env / `tos.py` presence) | `tuyaopen sdk doctor --sdk-root <path>` |
+| List serial ports (for § 3/§ 4 port selection) | `tuyaopen device list-ports --chip <chip>` |
+| Foreground serial monitor | `tuyaopen firmware monitor --port <port>` |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
+(it is usually not on `PATH`).
+
+> **No CLI?** `tos.py monitor -p <port>` (foreground); `tos.py check` covers
+> part of what `diag doctor` reports. `diag export` and `sdk doctor` have no
+> `tos.py` equivalent. See skill `tuyaopen-shared` § 7.
 
 ## 1. `tuyaopen diag doctor` — environment triage
 
@@ -88,11 +108,33 @@ diagnostics. Refuses to overwrite an existing `--out` path unless `--force`
 is given. This is a **local file write** (P3, not gated), not a network
 upload — hand the resulting file to whoever is helping debug.
 
-## 3. Capture device serial logs (background, non-blocking)
+## 3. Monitor / capture device serial logs
 
-A helper script wraps `tos.py monitor -l` as a detached background process so
-an agent can flash on one port while a monitor keeps logging on another,
-without holding a foreground terminal open. Installed at:
+### Foreground (interactive)
+
+```bash
+tuyaopen firmware monitor --port <port> [--baud <rate>] [--log]
+```
+
+Blocking — it inherits your terminal's stdin, Ctrl+C to exit. Pass `--log`
+to also tee output to `source/embedded/monitor.log` (or `--log-file <path>`).
+There is no confirmation gate — `monitor` is read-only from the device's
+perspective. It is also **exempt from the CLI's task kill-timer** (the
+timeout every other long-running mutating command gets) because it is
+meant to run indefinitely in the foreground — don't treat it as a bounded
+command that will eventually return on its own.
+
+> **No CLI?** `tos.py monitor -p <port>`. See skill `tuyaopen-shared` § 7.
+
+### Background / non-blocking
+
+For the actual use case below — capturing logs while doing something else,
+e.g. flashing on another port — **neither the CLI nor `tos.py` has a
+built-in detached/background monitor mode**; this is a genuine coverage gap,
+not a case of the CLI being merely unavailable. A helper script wraps
+`tos.py monitor -l` as a detached background process so an agent can flash
+on one port while a monitor keeps logging on another, without holding a
+foreground terminal open. Installed at:
 
 ```
 .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py

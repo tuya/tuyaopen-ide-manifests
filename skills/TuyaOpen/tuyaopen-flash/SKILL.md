@@ -4,7 +4,7 @@ description: >-
   Flash firmware, monitor serial output, and pick the right serial port for a
   TuyaOpen device via the `tuyaopen` CLI (`firmware flash`, `firmware
   monitor`, `device list-ports`). Covers single-serial vs dual-serial board
-  identification, the P0 flash confirmation ritual, and when to fall back to
+  identification, the P2 flash confirmation ritual, and when to fall back to
   the SDK's own `tyutool_cli` directly (reading flash back out, a bare
   DTR/RTS hardware reset, or disambiguating a port the CLI's own listing
   can't). Use when the user mentions flashing, burning firmware, choosing a
@@ -24,6 +24,22 @@ Covers the CLI groups `firmware flash`, `firmware monitor`, and `device
 list-ports`. For everything about `tuyaopen`'s envelope, exit codes, and the
 P0/P2 risk-gate mechanics referenced below, see skill `tuyaopen-shared` — this
 skill only covers what's specific to flashing and serial ports.
+
+## Shortcuts — `tuyaopen firmware` / `tuyaopen device`
+
+| Intent | Command |
+|---|---|
+| List serial ports (with per-chip baud when `--chip` is given) | `tuyaopen device list-ports --chip <chip>` |
+| Flash firmware to the device | `tuyaopen firmware flash --port <port>` (P2) |
+| Foreground serial monitor | `tuyaopen firmware monitor --port <port>` |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
+(it is usually not on `PATH`).
+
+> **No CLI?** `tos.py flash -p <port>` / `tos.py monitor -p <port>`; for
+> port disambiguation the raw `tyutool_cli list-ports --json` (§ 4) is the
+> fallback, not `tos.py`. See skill `tuyaopen-shared` § 7.
 
 ## 1. Choose a port
 
@@ -84,7 +100,7 @@ flash will fail with a port-busy error (see the troubleshooting table) until
 you stop it yourself.
 
 Device authorization (writing a UUID/AuthKey credential) is a related but
-separate P0 command, `firmware authorize` — not in scope here, see skill
+separate P2 command, `firmware authorize` — not in scope here, see skill
 `tuyaopen-shared`'s routing table.
 
 ## 3. Monitor serial output — `firmware monitor`

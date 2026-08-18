@@ -28,6 +28,17 @@ validators before opening a PR against `tuya/tuyaopen-ide-manifests`. It does
 not cover any one skill's subject matter — for that, see the routing table in
 skill `tuyaopen-shared` (§ *Routing table*).
 
+## Shortcuts — `tuyaopen schema`
+
+| Intent | Command |
+|---|---|
+| List every command's contract (use this to find which group/command your new skill should point at) | `tuyaopen schema list [--group <g>]` |
+| One command's flags/mutating/riskLevel | `tuyaopen schema get --group <g> --command <c>` |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+usually not on `PATH`).
+
 ## 1. Frontmatter contract
 
 ```yaml

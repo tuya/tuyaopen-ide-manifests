@@ -32,6 +32,12 @@ Docs: <https://tuyaopen.ai/docs/quick-start/enviroment-setup>
 | Local manifest cache (boards/demos/skills) status | `tuyaopen manifests status` |
 | Download the latest manifest registry into the local cache | `tuyaopen manifests sync` |
 
+> **No CLI?** `sdk clone` → `git clone` the SDK by hand; `sdk env-init` →
+> the shell-activation path below (`export.sh`/`.ps1`/`.bat`) bootstraps the
+> same venv; `sdk update` → `git pull --ff-only` in the SDK clone. `manifests
+> status`/`sync` have no older-tool equivalent — there was no local manifest
+> cache before this CLI. See skill `tuyaopen-shared` § 7.
+
 All five `sdk` subcommands are risk tier **P3** — mutating (`clone`,
 `env-init`, `env-pull`, `update`), but no `--dry-run`/`--confirm`/`--yes` gate
 applies (see skill `tuyaopen-shared` § 4). `manifests sync` is **P2** — needs

@@ -20,7 +20,7 @@ compatibility:
 
 Docs: <https://tuyaopen.ai/docs/quick-start/equipment-authorization>
 
-## Shortcuts — `tuyaopen license` / `tuyaopen firmware authorize`
+## Shortcuts — `tuyaopen license` / `tuyaopen firmware`
 
 | Intent | Command |
 |---|---|
@@ -41,6 +41,11 @@ P0 to **P2** on 2026-08-18 (the KV it writes is rewritable and `firmware
 auth-status` reads it back, so it fails the P0 criterion) — it takes `--yes`
 + `TUYAOPEN_AUTOCONFIRM_P2=1` instead, and its `--dry-run` does not hand back
 a confirm token at all. Full mechanics: skill `tuyaopen-shared` § 4.
+
+> **No CLI?** `firmware authorize` → `tyutool_cli authorize` directly (see
+> § *Serial port discovery* below). `license *` has no older-tool
+> equivalent — it's a new, CLI-only local store; there is nothing to fall
+> back to for it. See skill `tuyaopen-shared` § 7.
 
 **⚠ `tuyaopen license *` is a *third*, independent record — not the device,
 and not the IDE panel.** Verified against `src/cli/commands/license.ts` +

@@ -29,6 +29,27 @@ every other TuyaOpen skill should link here instead of restating them, and
 should say "not in scope, see skill `tuyaopen-shared`" rather than naming
 sibling skills by name (see § *Routing table* for why).
 
+## Shortcuts — `tuyaopen schema` / `tuyaopen skills` / `tuyaopen config` / `tuyaopen diag`
+
+| Intent | Command |
+|---|---|
+| Every command's contract / one command's flags | `tuyaopen schema list` · `schema get --group <g> --command <c>` |
+| Environment/CLI-identity triage (one round trip) | `tuyaopen diag doctor` |
+| Diagnostics bundle for a bug report | `tuyaopen diag export` |
+| Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — not Kconfig) | `tuyaopen config get` · `config list` · `config set` (P2) |
+| Skill catalogue / installed-skill queries | `tuyaopen skills list` · `skills list-installed` · `skills groups` |
+| Install / uninstall a skill, or sync the local skill cache | `tuyaopen skills install` (P2) · `skills uninstall` (P2) · `skills sync` |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per § 1 above (it is usually
+not on `PATH`).
+
+> **No CLI?** None of `schema`/`skills`/`config`/`diag` have a `tos.py`
+> equivalent — skill discovery, IDE settings, and environment triage are new,
+> CLI-only capabilities. When the CLI is genuinely unavailable there is
+> nothing to fall back to for these four groups; see § 7 for the mapping
+> that does exist, for the groups that have one.
+
 ## 1. Finding the CLI, and knowing which one you found
 
 ### 1.1 Resolve it first — `tuyaopen` is usually NOT on `PATH`

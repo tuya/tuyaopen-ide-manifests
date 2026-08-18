@@ -46,8 +46,16 @@ own job (CMake wiring, which none of these commands touch):
 | Download + extract + record a library (writes the lockfile) | `tuyaopen ecosystem install --owner <o> --name <n> --tarball-url <url>` |
 | Record a library **already** on disk (no download) | `tuyaopen dependency add --owner <o> --name <n> --version <v> --path <dir>` |
 | List recorded project dependencies (`.tuyaopen/dependencies.lock.json`) | `tuyaopen dependency list` |
-| Remove a recorded dependency | `tuyaopen dependency remove --id <owner>/<name>` — **P0**, needs `--dry-run` → `--confirm <token>` |
+| Remove a recorded dependency | `tuyaopen dependency remove --id <owner>/<name>` — **P2**, needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` |
 | List the SDK's own bundled platform sub-SDKs (a *different* layer — see below) | `tuyaopen library list` |
+
+> **No CLI?** `ecosystem`/`dependency`/`library` have no `tos.py` equivalent
+> — download/clone the library into
+> `source/embedded/dependencies/<owner>/<name>/` by hand and hand-write the
+> lockfile entry. This is exactly the manual work these commands exist to
+> replace, and it's still what the CMake/Kconfig wiring step below needs
+> regardless of which path got the library onto disk. See skill
+> `tuyaopen-shared` § 7.
 
 **⚠ `tuyaopen library install` and `tuyaopen ecosystem install` are the exact
 same operation under two group names** — verified against
