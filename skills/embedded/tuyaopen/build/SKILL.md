@@ -38,6 +38,7 @@ cd apps/tuya_cloud/switch_demo
 ```bash
 tos.py config choice                           # interactive — list and pick
 tos.py config choice -c TUYA_T5AI_EVB         # non-interactive — select by name (Agent / CI)
+tos.py config choice -c Linux                  # non-interactive — LINUX / Ubuntu native build
 tos.py config choice -d                        # interactive — board default configs only
 tos.py config choice -d -c TUYA_T5AI_EVB      # non-interactive — from board defaults
 tos.py config choice -l                        # list names and exit, no clean (newer SDK — check `config choice -h`)
@@ -50,6 +51,8 @@ Config lookup priority: project `config/` dir > `boards/` global configs.
 **`-c` flag (non-interactive, preferred for Agent / CI):**  
 Matches config by filename — `.config` extension is optional (`TUYA_T5AI_EVB` and `TUYA_T5AI_EVB.config` are equivalent).  
 If the name is not found, the command exits with an error and prints the available config names.
+
+Config names do not always match the platform or board directory — the LINUX / Ubuntu target is `Linux` — so list them with `-l` instead of guessing. A config file may also be legitimately **empty**: defconfig records only deviations from Kconfig defaults, so a target that already *is* the default (such as `boards/LINUX/config/Linux.config`) has nothing to record. A 0-byte config is valid, not broken.
 
 ### Fine-Tuning with Menuconfig (requires TTY)
 
