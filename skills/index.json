@@ -20,8 +20,8 @@
         "miniapp"
       ],
       "summary": {
-        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI identity/discovery, the --json envelope + exit-code contract, the confirmation gate (P0 = derived --confirm token, license remove only; P2 = --yes + TUYAOPEN_AUTOCONFIRM_P2=1; P3 ungated), command/skill self-discovery, the tos.py <-> tuyaopen fallback map, project layout, and the master intent-to-skill routing table.",
-        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位与识别、--json 信封与退出码契约、确认门（P0 需派生的 --confirm 令牌，且仅 license remove 属于 P0；P2 需 --yes 加 TUYAOPEN_AUTOCONFIRM_P2=1；P3 无需确认）、命令与技能自发现、tos.py 与 tuyaopen 的能力映射表、项目布局，以及意图到技能的总路由表。"
+        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI discovery, the --json/exit-code contract, the confirmation gate (P0 = dry-run token, license remove only; P2 = --yes + env flag; P3 ungated), skill self-discovery, and the routing table.",
+        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位识别、--json 与退出码契约、确认门（P0 = dry-run 派生令牌，仅 license remove 属于 P0；P2 = --yes 加环境变量；P3 无需确认）、技能自发现，以及总路由表。"
       },
       "whenToUse": {
         "en": "Read first, or whenever another skill says its task is out of scope and points here for the routing table. Not a task skill by itself.",
@@ -80,9 +80,7 @@
       ],
       "cli": {
         "groups": [
-          "firmware",
-          "config",
-          "sdk"
+          "firmware"
         ],
         "fallback": [
           "tos.py"
@@ -415,8 +413,7 @@
       "cli": {
         "groups": [
           "hardware",
-          "boards",
-          "project"
+          "boards"
         ],
         "fallback": [
           "tos.py"
@@ -730,11 +727,10 @@
       "cli": {
         "groups": [
           "license",
-          "firmware",
-          "device"
+          "firmware"
         ],
         "fallback": [
-          "tyutool_cli"
+          "tyutool_cli list-ports"
         ]
       },
       "defaultEnabled": true,
@@ -875,7 +871,7 @@
       ],
       "cli": {
         "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
+        "reason": "面板架构/UI/DP 编排等本技能自身任务没有对应的 tuyaopen CLI 命令组；body 中出现的 `tuyaopen skills install` 调用是目录 bootstrap（安装子技能），不属于面板开发本身的工作，也不落在 Shortcuts 小节内。"
       },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-panel-dev",
