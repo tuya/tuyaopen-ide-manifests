@@ -20,8 +20,8 @@
         "miniapp"
       ],
       "summary": {
-        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI identity/discovery, the --json envelope + exit-code contract, the P0/P1/P2 confirmation gate, command/skill self-discovery, the tos.py <-> tuyaopen fallback map, project layout, and the master intent-to-skill routing table.",
-        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位与识别、--json 信封与退出码契约、P0/P1/P2 确认门、命令与技能自发现、tos.py 与 tuyaopen 的能力映射表、项目布局，以及意图到技能的总路由表。"
+        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI identity/discovery, the --json envelope + exit-code contract, the confirmation gate (P0 = derived --confirm token, license remove only; P2 = --yes + TUYAOPEN_AUTOCONFIRM_P2=1; P3 ungated), command/skill self-discovery, the tos.py <-> tuyaopen fallback map, project layout, and the master intent-to-skill routing table.",
+        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位与识别、--json 信封与退出码契约、确认门（P0 需派生的 --confirm 令牌，且仅 license remove 属于 P0；P2 需 --yes 加 TUYAOPEN_AUTOCONFIRM_P2=1；P3 无需确认）、命令与技能自发现、tos.py 与 tuyaopen 的能力映射表、项目布局，以及意图到技能的总路由表。"
       },
       "whenToUse": {
         "en": "Read first, or whenever another skill says its task is out of scope and points here for the routing table. Not a task skill by itself.",
@@ -33,6 +33,17 @@
         "conventions",
         "routing"
       ],
+      "cli": {
+        "groups": [
+          "schema",
+          "skills",
+          "config",
+          "diag"
+        ],
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-shared",
       "related": [
@@ -67,6 +78,16 @@
         "build",
         "tos.py"
       ],
+      "cli": {
+        "groups": [
+          "firmware",
+          "config",
+          "sdk"
+        ],
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "commands": [
         "tuyaopen.skill.build"
       ],
@@ -115,6 +136,11 @@
         "authoring",
         "index.json"
       ],
+      "cli": {
+        "groups": [
+          "schema"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-skill-maker",
       "related": [
@@ -154,6 +180,17 @@
         "demos",
         "cli"
       ],
+      "cli": {
+        "groups": [
+          "project",
+          "config",
+          "demos",
+          "manifests"
+        ],
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "commands": [
         "tuyaopen.skill.editProjectConfig"
       ],
@@ -198,6 +235,16 @@
         "dependencies",
         "vibeCode"
       ],
+      "cli": {
+        "groups": [
+          "dependency",
+          "ecosystem",
+          "library"
+        ],
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "commands": [
         "tuyaopen.skill.wireCmake"
       ],
@@ -244,6 +291,16 @@
         "dp",
         "tuya-devplat-cli"
       ],
+      "cli": {
+        "groups": [
+          "credential",
+          "product",
+          "dp"
+        ],
+        "fallback": [
+          "tuya-devplat-cli"
+        ]
+      },
       "commands": [
         "tuyaopen.skill.tuyaIotPlatform"
       ],
@@ -292,6 +349,18 @@
         "workflow",
         "orchestration"
       ],
+      "cli": {
+        "groups": [
+          "credential",
+          "product",
+          "dp",
+          "project"
+        ],
+        "fallback": [
+          "tos.py",
+          "tuya-devplat-cli"
+        ]
+      },
       "commands": [
         "tuyaopen.skill.smartProductDev"
       ],
@@ -343,6 +412,16 @@
         "imu",
         "led"
       ],
+      "cli": {
+        "groups": [
+          "hardware",
+          "boards",
+          "project"
+        ],
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-hardware",
       "related": [
@@ -390,6 +469,16 @@
         "authorize",
         "reset"
       ],
+      "cli": {
+        "groups": [
+          "firmware",
+          "device"
+        ],
+        "fallback": [
+          "tos.py",
+          "tyutool_cli"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-flash",
       "related": [
@@ -439,6 +528,18 @@
         "crash",
         "addr2line"
       ],
+      "cli": {
+        "groups": [
+          "diag",
+          "device",
+          "sdk",
+          "firmware"
+        ],
+        "fallback": [
+          "tos.py",
+          "tyutool_cli"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-diagnose",
       "related": [
@@ -485,6 +586,13 @@
         "board",
         "hardware"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "加 board 是纯 tos.py / 手工流程",
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-add-board",
       "related": [
@@ -524,6 +632,10 @@
         "format",
         "quality"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "格式与文件头检查走 clang-format / check_files.py"
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-code-check",
       "related": [
@@ -562,6 +674,17 @@
         "flash",
         "workflow"
       ],
+      "cli": {
+        "groups": [
+          "firmware",
+          "diag",
+          "device"
+        ],
+        "fallback": [
+          "tos.py",
+          "tyutool_cli"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-workflow-dev-loop",
       "related": [
@@ -604,6 +727,16 @@
         "auth",
         "uuid"
       ],
+      "cli": {
+        "groups": [
+          "license",
+          "firmware",
+          "device"
+        ],
+        "fallback": [
+          "tyutool_cli"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-device-auth",
       "related": [
@@ -643,6 +776,15 @@
         "sdk",
         "deps"
       ],
+      "cli": {
+        "groups": [
+          "sdk",
+          "manifests"
+        ],
+        "fallback": [
+          "tos.py"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-env-setup",
       "related": [
@@ -684,6 +826,11 @@
         "template",
         "schema"
       ],
+      "cli": {
+        "groups": [
+          "miniapp"
+        ]
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-miniapp",
       "related": [
@@ -726,6 +873,10 @@
         "architecture",
         "audit"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-panel-dev",
       "related": [
@@ -778,6 +929,10 @@
         "ray",
         "panel"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-ray-common",
       "requires": [
@@ -817,6 +972,10 @@
         "smart-ui",
         "components"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-smart-ui",
       "related": [
@@ -860,6 +1019,10 @@
         "lamp",
         "lighting"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-lamp-panel",
       "related": [
@@ -904,6 +1067,10 @@
         "socket",
         "electrician"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-socket-panel",
       "related": [
@@ -949,6 +1116,10 @@
         "robot-vacuum",
         "map"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-robot-vacuum",
       "related": [
@@ -992,6 +1163,10 @@
         "ipc",
         "camera"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-ipc-panel",
       "related": [
@@ -1034,6 +1209,10 @@
         "charts",
         "visualization"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-charts-library",
       "related": [
@@ -1077,6 +1256,10 @@
         "electrician",
         "timing"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-electrician-timing",
       "related": [
@@ -1119,6 +1302,10 @@
         "energy",
         "statistics"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-energy-stats",
       "related": [
@@ -1167,6 +1354,10 @@
         "requirement",
         "planning"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-requirement-guide",
       "requires": [
@@ -1206,6 +1397,10 @@
         "performance",
         "ux"
       ],
+      "cli": {
+        "groups": "none",
+        "reason": "面板开发不经 tuyaopen CLI"
+      },
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-performance-ux-guard",
       "related": [
