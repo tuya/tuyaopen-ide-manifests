@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "tuyaopen-ide-manifests",
   "description": "Top-level index. IDE fetches this first and uses the URLs below to lazy-load each domain's index.json.",
-  "publishedAt": "2026-08-13T00:00:00Z",
+  "publishedAt": "2026-08-18T00:00:00Z",
   "manifests": {
     "platforms": {
       "url": "platforms/index.json",
@@ -21,8 +21,8 @@
     },
     "skills": {
       "url": "skills/index.json",
-      "version": "1.0.0",
-      "summary": "AI agent skills (Cursor, Claude Code, etc.)"
+      "version": "1.2.0",
+      "summary": "AI agent skills for TuyaOpen (Cursor, Claude Code, Codex …)"
     }
   }
 }

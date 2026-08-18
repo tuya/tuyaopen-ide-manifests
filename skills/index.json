@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-08-13T00:00:00Z",
+  "publishedAt": "2026-08-18T00:00:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.1.0",
+      "version": "1.2.1",
       "group": "core",
       "order": 0,
       "name": {
@@ -42,13 +42,12 @@
         "localPath": "skills/TuyaOpen/tuyaopen-shared"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
       "id": "tuyaopen-build",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "embedded",
       "order": 1,
       "name": {
@@ -89,7 +88,7 @@
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "group": "core",
       "order": 2,
       "name": {
@@ -103,8 +102,8 @@
         "miniapp"
       ],
       "summary": {
-        "en": "How to author or edit a skill in this catalogue: frontmatter contract, id naming rules, TuyaOpen vs TuyaOS placement, the Shortcuts-table rule, references/ progressive disclosure, out-of-scope wording, index.json registration, and version-bump rules.",
-        "zh-CN": "如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则、TuyaOpen 与 TuyaOS 归属、Shortcuts 表规则、references/ 渐进披露、超出范围的写法、index.json 注册、以及 version 升号规则。"
+        "en": "How to author or edit a skill in this catalogue: frontmatter contract, id naming rules, payload placement, the Shortcuts-table rule, references/ progressive disclosure, out-of-scope wording, index.json registration, and version-bump rules.",
+        "zh-CN": "如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则、载荷放置、Shortcuts 表规则、references/ 渐进披露、超出范围的写法、index.json 注册、以及 version 升号规则。"
       },
       "whenToUse": {
         "en": "Use when adding a new skill, editing an existing SKILL.md, or registering an item in skills/index.json.",
@@ -128,13 +127,12 @@
         "localPath": "skills/TuyaOpen/tuyaopen-skill-maker"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
       "id": "tuyaopen-project",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "group": "embedded",
       "order": 6,
       "name": {
@@ -179,7 +177,7 @@
     },
     {
       "id": "tuyaopen-dependency",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "embedded",
       "order": 8,
       "name": {
@@ -264,8 +262,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-cloud"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -315,13 +312,12 @@
         "localPath": "skills/TuyaOpen/tuyaopen-workflow-product-dev"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
       "id": "tuyaopen-hardware",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "embedded",
       "order": 11,
       "name": {
@@ -412,107 +408,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-flash"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
-      ]
-    },
-    {
-      "id": "tuyaos-build",
-      "version": "1.0.1",
-      "order": 16,
-      "name": {
-        "en": "TuyaOS Build",
-        "zh-CN": "TuyaOS 编译"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Build or clean a TuyaOS app via build_app.sh (Project Details Build/Clean), and wire custom/vendor .c/.h paths in apps/*/local.mk.",
-        "zh-CN": "通过 build_app.sh 编译或清理 TuyaOS 应用（与项目详情构建/清理一致），并在 apps/*/local.mk 中接入自定义或 vendor 下的 .c/.h 路径。"
-      },
-      "whenToUse": {
-        "en": "Use when building/cleaning a TuyaOS app, or when adding custom source/header paths in local.mk (including files under software/TuyaOS/vendor/).",
-        "zh-CN": "编译/清理 TuyaOS 应用，或在 local.mk 中加入自定义源/头路径（含 software/TuyaOS/vendor/ 下文件）时使用。例如「编译 tuyaos xxx 应用」「把 vendor 的 .c/.h 加进编译」。"
-      },
-      "tags": [
-        "build",
-        "clean",
-        "build_app",
-        "tuyaos",
-        "compile",
-        "local.mk",
-        "vendor",
-        "sources",
-        "headers"
-      ],
-      "defaultEnabled": false,
-      "installPayload": "TuyaOS/tuyaos-build",
-      "related": [
-        "tuyaopen-flash",
-        "tuyaopen-workflow-product-dev"
-      ],
-      "requires": [
-        "tuyaopen-shared"
-      ],
-      "source": {
-        "localPath": "skills/TuyaOS/tuyaos-build"
-      },
-      "sdks": [
-        "tuyaos"
-      ]
-    },
-    {
-      "id": "tuyaos-hardware-vibe-coding",
-      "version": "1.0.1",
-      "order": 17,
-      "name": {
-        "en": "TuyaOS Hardware Vibe Coding",
-        "zh-CN": "TuyaOS 硬件 Vibe Coding"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Hardware-aware code generation for TuyaOS apps using tkl_*/tal_* (GPIO/I2C/PWM/ADC/SPI/timer/watchdog/mic/speaker/DVP) plus Wi-Fi (tal_wifi) and BLE (tal_bluetooth). Based on tuyaos_demo_examples; separate from TuyaOpen TDL skills.",
-        "zh-CN": "面向 TuyaOS 应用的硬件感知代码生成：tkl_*/tal_* 外设（GPIO/I2C/PWM/ADC/SPI/定时器/看门狗/麦克/喇叭/DVP）以及 Wi-Fi（tal_wifi）、BLE（tal_bluetooth）。"
-      },
-      "whenToUse": {
-        "en": "Use when initializing or driving hardware or connectivity on a TuyaOS project (GPIO, buses, audio/camera, Wi-Fi STA/AP/scan, BLE peripheral/central/remote), or any TuyaOS hardware vibe-coding request.",
-        "zh-CN": "在 TuyaOS 工程上初始化或驱动硬件/连接能力时使用：GPIO、总线、音视频、Wi-Fi（STA/AP/扫网）、BLE（从机/主机/遥控器），或任何 TuyaOS 硬件 vibe coding 请求。"
-      },
-      "tags": [
-        "hardware",
-        "peripheral",
-        "vibe-coding",
-        "tuyaos",
-        "gpio",
-        "pwm",
-        "i2c",
-        "spi",
-        "adc",
-        "timer",
-        "watchdog",
-        "audio",
-        "camera",
-        "wifi",
-        "ble",
-        "bluetooth",
-        "networking",
-        "sta",
-        "ap"
-      ],
-      "defaultEnabled": false,
-      "installPayload": "TuyaOS/tuyaos-hardware-vibe-coding",
-      "related": [
-        "tuyaos-build",
-        "tuyaopen-flash",
-        "tuyaopen-workflow-product-dev"
-      ],
-      "requires": [
-        "tuyaopen-shared"
-      ],
-      "source": {
-        "localPath": "skills/TuyaOS/tuyaos-hardware-vibe-coding"
-      },
-      "sdks": [
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -800,8 +696,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -857,8 +752,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-panel-dev"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -896,8 +790,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ray-common"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -939,8 +832,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-smart-ui"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -984,8 +876,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-lamp-panel"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1030,8 +921,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-socket-panel"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1074,8 +964,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-robot-vacuum"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1118,8 +1007,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ipc-panel"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1162,8 +1050,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-charts-library"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1205,8 +1092,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-electrician-timing"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1249,8 +1135,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-energy-stats"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1294,8 +1179,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-requirement-guide"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     },
     {
@@ -1337,8 +1221,7 @@
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-performance-ux-guard"
       },
       "sdks": [
-        "tuyaopen",
-        "tuyaos"
+        "tuyaopen"
       ]
     }
   ]

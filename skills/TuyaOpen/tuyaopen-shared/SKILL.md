@@ -3,14 +3,14 @@ name: tuyaopen-shared
 description: >-
   Foundation conventions shared by every other TuyaOpen skill: how to find and
   identify the `tuyaopen` CLI, the `--json` envelope contract, the exit-code
-  promise, the P0/P1/P2 confirmation-gate mechanics (including the derived
+  promise, the P0/P2 confirmation-gate mechanics (including the derived
   `--confirm` token), command/skill self-discovery, the `tos.py` ↔ `tuyaopen`
   fallback map, the `.tuyaopen/` project layout, and the master intent→skill
   routing table. Read this first, or when another skill says "not in scope,
   see tuyaopen-shared". Not a task skill by itself — it has no action of its
   own.
   基础约定与总路由：如何定位并识别 tuyaopen CLI、--json 信封契约、退出码承诺、
-  P0/P1/P2 确认门（含派生 --confirm token）、命令/技能自发现、tos.py 与 tuyaopen
+  P0/P2 确认门（含派生 --confirm token）、命令/技能自发现、tos.py 与 tuyaopen
   的能力映射表、.tuyaopen/ 项目布局，以及意图到技能的总路由表。任何技能标注
   "超出本技能范围，见 tuyaopen-shared" 时来这里查。本身不是任务技能，没有独立动作。
 license: Apache-2.0
@@ -163,7 +163,7 @@ interface CommandResult {
   retryable?: boolean;
   next_steps?: string[];          // ordered follow-up commands
   details?: unknown;              // structured detail, never rendered in human mode
-  meta?: { elapsed_ms?: number; mutating?: boolean; riskLevel?: 'P0'|'P1'|'P2'|'P3'; [k: string]: unknown };
+  meta?: { elapsed_ms?: number; mutating?: boolean; riskLevel?: 'P0'|'P2'|'P3'; [k: string]: unknown };
 }
 ```
 
@@ -192,45 +192,23 @@ a stable interface**. Categories can be added or re-mapped over time.
 `type` / `subtype` / `code` from the parsed `--json` envelope instead — that
 is the add-only machine contract this CLI actually promises to keep stable.
 
-## 4. Risk gate — P0/P1 need a **derived** `--confirm` token, P2 needs `--yes` + env
+## 4. 风险门 —— P0 需要**派生的** `--confirm` token，P2 需要 `--yes` + 环境变量
 
-Every mutating command carries a `riskLevel` (visible via `schema get`, see
-§ 5): `P0` (destructive: delete/remove/flash/authorize), `P1` (publish/
-release/upload), `P2` (ordinary mutating: add/create/update/set/bind/unbind/
-install/sync/write/…), or none (read-only).
+| 等级 | 门槛 | 今天有哪些 |
+|---|---|---|
+| **P0** | `--confirm <token>`，且 token 必须是**这个操作**的 `--dry-run` 发的那一个 | 只有 `license remove` |
+| **P2** | `--yes` **且** `TUYAOPEN_AUTOCONFIRM_P2=1` | 其余全部变更命令 |
+| 只读 | 无门槛 | — |
 
-**P0 / P1 — the two-phase ritual:**
+P0 的判据是**后果**，不是动词：没有反向命令，**并且**会毁掉调用方重建不出来的状态。
+`firmware flash` / `firmware authorize` / `dependency remove` / `skills uninstall`
+在 2026-08-18 从 P0 降到 P2 —— 它们都有反向命令（`authorize` 另有
+`firmware auth-status` 可读回验证）。
 
-```bash
-tuyaopen <group> <command> --dry-run [...same flags you intend to run with]
-# → preview + meta.confirm_token
-tuyaopen <group> <command> --confirm <token-from-the-preview> [...same flags]
-```
+`P1` 这一层已删除（2026-08-18）。它的门槛与 P0 逐字节相同，且从未有命令落在里面。
 
-**The token is derived, not a password and not a nonce you can invent.** It
-is a SHA-256 hash (first 8 hex chars) of the group name, the command name, and
-every command-specific flag value (sorted, presentation flags like `--json`/
-`--dry-run`/`--yes`/`--fields`/`--max-items`/`--stream` excluded) — computed
-identically by the `--dry-run` branch and by the gate that checks `--confirm`.
-That means:
-
-- **A caller that has not run `--dry-run` for this exact operation cannot
-  produce a valid token.** Guessing, reusing an old token, or inventing a
-  plausible-looking string (`--confirm THIS-IS-NOT-THE-REAL-TOKEN`) fails
-  closed as `confirmation:bad_confirm_token` — this used to be a real bypass
-  (any non-empty string passed) and was fixed 2026-08-14. **Never try to
-  construct a token yourself; always run `--dry-run` first and copy the value
-  it hands back.**
-- A token minted for one set of flags does not confirm a different set — change
-  `--uuid` and the old token is rejected.
-- `--yes` is **never** accepted for P0/P1, only `--confirm <token>`.
-- `--dry-run` is always allowed for any risk tier (it only previews, never applies).
-
-**P2** — pass `--yes` **and** set env var `TUYAOPEN_AUTOCONFIRM_P2=1`. The env
-var exists specifically so a script can't blindly hardcode `--yes` and skip
-the operator's attention.
-
-**Read-only commands** — no gate at all.
+**被拒绝 ≠ 不可用。** 见 §7 —— `confirmation` 类错误意味着 CLI
+正常工作并且在拒绝你，此时**不许**改走 `tos.py`。
 
 ## 5. Command self-discovery — don't hardcode flags here or anywhere
 
