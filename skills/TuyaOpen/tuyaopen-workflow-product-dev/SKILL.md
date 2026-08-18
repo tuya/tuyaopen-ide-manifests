@@ -36,6 +36,29 @@ End-to-end orchestration: requirements → Tuya Platform product/DP → embedded
 
 ---
 
+## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp` / `tuyaopen project`
+
+| What | Command |
+|---|---|
+| Check sign-in state / sign in / sign out | `tuyaopen credential status` · `credential login` · `credential logout` |
+| Sync / view the bound product | `tuyaopen product sync` (P2) · `product info` |
+| List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
+| Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
+| Bind a product PID to this project | `tuyaopen project bind-product` (P2) |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+usually not on `PATH`).
+
+**Still routed through `tuya-devplat-cli` / `tuyaopen-cloud`'s Python
+helpers, no `tuyaopen` coverage:** product search and creation, and the
+standard DP catalog (browse/add/remove/validate) — see skill `tuyaopen-cloud`.
+**Still `tos.py`-only, no `tuyaopen` coverage:** Kconfig validation
+(`tos.py check`, used in State: has-dps Step 5 and the Failure & Rollback
+table below).
+
+---
+
 ## dpSchema Unwrap Convention
 
 Always unwrap before any DP access — `dpSchema` may be a `{ ok, data }` wrapper:
@@ -56,8 +79,7 @@ Run in order. Stop on first failure.
 
 | Check | How | If failing |
 |-------|-----|------------|
-| CLI binary | `.tuyaopen/ide/bin/tuya-devplat-cli` exists | "Please open this project in TuyaOpen IDE first — the IDE writes the CLI wrapper on project open." |
-| Platform auth | `tuya-devplat-cli auth status --format json` → exit 0 AND `authenticated: true` | "Please sign in via **TuyaOpen IDE → Developer Platform** sidebar." **Never run `auth login`.** Timeout >10 s → report network issue. |
+| Platform auth | `tuyaopen credential status --json` → `loggedIn: true` | Not signed in → `tuyaopen credential login` (see skill `tuyaopen-cloud`). **No CLI?** Fall back to `.tuyaopen/ide/bin/tuya-devplat-cli auth status --format json` → exit 0 AND `authenticated: true`; if still not signed in, "Please sign in via **TuyaOpen IDE → Developer Platform** sidebar." **Never run `tuya-devplat-cli auth login` directly** — use `tuyaopen credential login` instead (see the Never list below). Timeout >10 s → report network issue. |
 | SDK env | `$OPEN_SDK_ROOT` set and dir contains `export.sh`/`export.bat`/`export.ps1` | SDK present but not activated → delegate to `tuyaopen-env-setup`. SDK absent → "Please clone the SDK via TuyaOpen IDE → Library." |
 
 ---
@@ -373,7 +395,7 @@ Delegate to `tuyaopen-workflow-dev-loop`.
 - Apply dpSchema unwrap before any DP access
 
 **Never:**
-- Run `tuya-devplat-cli auth login`
+- Run `tuya-devplat-cli auth login` — use `tuyaopen credential login` instead
 - Invent a PID or DP code
 - Assume a GPIO pin without developer confirmation
 - Re-ask hardware questions already in `architecture.json`

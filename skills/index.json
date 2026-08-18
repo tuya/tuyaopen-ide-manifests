@@ -267,7 +267,7 @@
     },
     {
       "id": "tuyaopen-cloud",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "group": "cloud",
       "order": 9,
       "name": {
@@ -322,7 +322,7 @@
     },
     {
       "id": "tuyaopen-workflow-product-dev",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "group": "cloud",
       "order": 10,
       "name": {

@@ -23,6 +23,26 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 
 > **Communication type:** This skill only targets **Wi-Fi + Bluetooth (`wf_ble_*`)** dual-mode solutions.
 
+## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp`
+
+| What | Command |
+|---|---|
+| Sign in / check sign-in state / sign out | `tuyaopen credential login` · `credential status` · `credential logout` |
+| Sync the bound product's snapshot | `tuyaopen product sync` (P2) |
+| View the bound product | `tuyaopen product info` |
+| List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
+| Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
+| Generate code from DPs | `tuyaopen dp generate` · `dp sync` |
+
+Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+usually not on `PATH`).
+
+**Still routed through `tuya-devplat-cli` + this skill's Python helpers, no
+`tuyaopen` coverage:** product search and creation, and browsing / adding /
+removing / validating the standard DP catalog. See
+[ops/product.md](ops/product.md) and [ops/manage-dp.md](ops/manage-dp.md).
+
 ## Operations
 
 | Operation | File |
@@ -50,14 +70,27 @@ the path via the `TUYA_DEVPLAT_CLI` environment variable.
 
 ### Auth
 
-Always verify auth before any operation:
+Check sign-in state first:
 
 ```bash
-tuya-devplat-cli auth status    # must show "authenticated"
+tuyaopen credential status --json
 ```
 
-If not authenticated, ask the developer to sign in via **TuyaOpen IDE → Developer Platform** sidebar.
-**Never run `auth login` directly** — it requires interactive browser input and will hang.
+If not signed in, **sign in directly** — don't send the developer to click
+around the IDE:
+
+```bash
+tuyaopen credential login              # opens a browser; --timeout defaults to 300s
+tuyaopen credential login --port 7788  # fixed port on a remote machine, for port-forwarding
+```
+
+> **No CLI?** *That's* when you fall back to "please sign in via **TuyaOpen
+> IDE → Developer Platform** sidebar" — `tuya-devplat-cli auth login` needs
+> interactive browser input and will hang in a non-interactive session.
+> Check with `tuya-devplat-cli auth status` (must show `"authenticated"`).
+
+`dp list` reads the **local snapshot** (`.tuyaopen/platform/product-<pid>.json`),
+not the cloud. Run `tuyaopen product sync` first if you need the latest.
 
 ### Output format
 
