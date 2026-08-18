@@ -14,6 +14,20 @@ compatibility:
 
 # TuyaOpen Build-Deploy-Debug Loop
 
+## Shortcuts — `tuyaopen firmware` / `tuyaopen diag` / `tuyaopen device`
+
+| What | Command |
+|---|---|
+| Build / clean | `tuyaopen firmware build` · `tuyaopen firmware clean` |
+| Flash | `tuyaopen firmware flash` (P2: `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`) |
+| Serial monitor | `tuyaopen firmware monitor` |
+| List ports | `tuyaopen device list-ports` |
+| Environment check-up / diagnostic bundle | `tuyaopen diag doctor` · `tuyaopen diag export` |
+
+Flags aren't listed here — run `tuyaopen schema get --group firmware --command
+flash` for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1
+(it is usually not on `PATH`).
+
 ## Loop Workflow
 
 The standard development iteration cycle for TuyaOpen hardware:
@@ -31,14 +45,26 @@ The standard development iteration cycle for TuyaOpen hardware:
 
 ### Step-by-step
 
-1. **Build**: `tos.py build` — compile firmware (see skill `tuyaopen-build`)
-2. **Flash**: Flash firmware to the device from the project directory:
+1. **Build**:
 
    ```bash
-   tos.py flash -p <port>        # specify port (recommended)
-   tos.py flash                   # auto-detect port
-   tos.py flash -p <port> -d      # debug output
+   tuyaopen firmware build --json
    ```
+
+   Read `.ok`. On failure, `.type` / `.subtype` classify the error — no need
+   to parse stdout.
+
+   > **No CLI?** Equivalent: `tos.py build`, but you parse its output
+   > yourself. Full mapping: `tuyaopen-shared` § 7.
+
+2. **Flash**: flash firmware to the device from the project directory:
+
+   ```bash
+   export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
+   tuyaopen firmware flash --port <port> --yes --json
+   ```
+
+   > **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-shared` § 7.
 
    **Which port?** Run `tyutool_cli list-ports --json` and group on `usbSerial`
    — one physical board is one `usbSerial`:
@@ -56,7 +82,20 @@ The standard development iteration cycle for TuyaOpen hardware:
    resource busy`) and `start` it again after. Dual-serial boards can keep the log
    port open across a flash.
 
-3. **Monitor / capture logs**: `tos.py monitor -p <port>` for interactive sessions, or **hands-off** background logging via `tuyaopen-diagnose` (`monitor_helper.py start -p <port>` → `tail` → `stop`).
+3. **Monitor / capture logs**:
+
+   ```bash
+   tuyaopen firmware monitor --port <port>
+   ```
+
+   for interactive sessions.
+
+   > **No CLI?** `tos.py monitor -p <port>`. See `tuyaopen-shared` § 7.
+
+   For **hands-off** background logging (capture while doing something
+   else), use `tuyaopen-diagnose` (`monitor_helper.py start -p <port>` →
+   `tail` → `stop`) regardless of which of the above you used — neither the
+   CLI nor `tos.py` has a background/detached monitor mode.
 4. **Analyze**: read the log file under **`<project_dir>/.target_logging/`** for errors, warnings, crash indicators (patterns below)
 5. **Decide**: pass (device healthy) or fail (fix code and restart loop)
 
@@ -79,6 +118,15 @@ Or manually:
 Both `dist/` (canonical output) and `.build/bin/` (build intermediate) contain the ELF. Use `dist/` for consistency.
 
 ## Log Format & Patterns
+
+Build and flash success is read from the envelope, not matched against
+stdout: `--json`'s `.ok` is a boolean, and on failure `.type` / `.subtype`
+classify what went wrong. stdout carries exactly one line of JSON; everything
+else is on stderr.
+
+Matching output only matters on the `tos.py` fallback path, and for
+interpreting the *device's* runtime log (which no envelope covers) — that's
+what the pattern table below is for.
 
 ### TuyaOpen log format
 
@@ -173,7 +221,8 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
     --json start -p /dev/ttyACM1
 
 # 2. Flash on the other port while monitor keeps logging
-tos.py flash -p /dev/ttyACM0
+export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
+tuyaopen firmware flash --port /dev/ttyACM0 --yes --json
 
 # 3. Read log after boot
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
@@ -183,11 +232,15 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py stop
 ```
 
+> **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-shared` § 7.
+
 ### Iteration loop (analyze → fix → re-run)
 
 Repeat until logs are clean:
 
-1. **Build** → **`tos.py flash -p <port>`**
+1. **Build** → **`tuyaopen firmware flash --port <port> --yes --json`**
+   (`TUYAOPEN_AUTOCONFIRM_P2=1` once per session; no CLI? `tos.py flash -p
+   <port>` — see `tuyaopen-shared` § 7)
 2. **`monitor_helper.py start -p <monitor-port>`** — capture boot + runtime trace
 3. **`monitor_helper.py tail -n 200`** → search `ty E`, `OPRT_`, watchdog, MQTT
 4. Edit code → go to step 1

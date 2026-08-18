@@ -3,10 +3,22 @@
 
 Usage: python build_run.py [timeout_seconds]
   timeout_seconds: default 30. Pass 0 for no timeout.
+
+Split of responsibility (2026-08-18): the *build* half now goes through the
+`tuyaopen` CLI (`firmware build --json`, read `.ok`) when it can be resolved,
+falling back to `tos.py build` only when the CLI is not reachable — never
+because it failed. The *run + analyze* half (executing the LINUX ELF and
+scanning its stdout for error/warning/watchdog patterns) is unchanged and
+stays on `subprocess` directly: the CLI has no command that runs a built
+LINUX binary, only one that builds it. See skill `tuyaopen-shared` § 4 for
+the unavailable-vs-refused fallback rule this file follows, and § 7 for the
+`tos.py` <-> `tuyaopen` command mapping.
 """
 import datetime
 import glob
+import json
 import os
+import shutil
 import subprocess
 import sys
 
@@ -20,11 +32,102 @@ def _tos_py():
     return os.path.join(os.environ.get("OPEN_SDK_ROOT", "."), "tos.py")
 
 
+def _resolve_tuyaopen():
+    """Return an argv prefix that invokes the `tuyaopen` CLI, or None if it
+    cannot be resolved. Mirrors the resolve-once recipe in skill
+    `tuyaopen-shared` § 1 (explicit override -> PATH -> the IDE-written
+    per-project wrapper found by walking up from the current directory),
+    reimplemented in stdlib Python since that skill's shell-function version
+    only works from a shell. Deliberately does not shell out to `node
+    --version` or otherwise probe further than "does a file/executable
+    exist" — a missing or broken Node install just falls through to "not
+    resolved", which this script's caller already treats as the CLI-
+    unavailable case.
+    """
+    cli_path = os.environ.get("TUYAOPEN_CLI_PATH")
+    if cli_path and os.path.isfile(cli_path):
+        return ["node", cli_path]
+
+    on_path = shutil.which("tuyaopen")
+    if on_path:
+        return [on_path]
+
+    wrapper_name = "tuyaopen.cmd" if os.name == "nt" else "tuyaopen"
+    current = os.getcwd()
+    while True:
+        candidate = os.path.join(current, ".tuyaopen", "ide", "bin", wrapper_name)
+        if os.path.isfile(candidate):
+            return [candidate]
+        parent = os.path.dirname(current)
+        if parent == current:
+            return None
+        current = parent
+
+
 def _log_dir():
     """Write logs to <project_dir>/.target_logging/ — gitignored by SDK .gitignore."""
     log_dir = os.path.join(os.getcwd(), ".target_logging")
     os.makedirs(log_dir, exist_ok=True)
     return log_dir
+
+
+def _run_build():
+    """Build the firmware. Returns True on success, False on failure.
+
+    Tries `tuyaopen firmware build --json` first and reads the envelope's
+    `.ok` — no stdout scraping (stdout carries exactly one JSON line; any
+    build log the CLI captured comes back under `details.stdout`/`stderr` on
+    non-TTY output). Falls back to `tos.py build` only when `tuyaopen` cannot
+    be resolved at all; a CLI-reported failure is reported as-is, never
+    retried against `tos.py` (see the unavailable-vs-refused rule in skill
+    `tuyaopen-shared` § 4 — build is a P3/ungated command, so this fallback
+    boundary is about reachability, not about being turned away).
+    """
+    argv = _resolve_tuyaopen()
+    if argv is None:
+        print("[tuyaopen CLI not found — falling back to tos.py build]")
+        ret = subprocess.run([_python_exe(), _tos_py(), "build"], check=False)
+        return ret.returncode == 0
+
+    proc = subprocess.run(
+        argv + ["firmware", "build", "--json"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    envelope = None
+    if proc.stdout.strip():
+        try:
+            envelope = json.loads(proc.stdout.strip().splitlines()[-1])
+        except ValueError:
+            envelope = None
+
+    if envelope is None:
+        # The CLI resolved but did not emit a parseable envelope — a CLI
+        # failure, not a CLI-unavailable one, so report it and stop rather
+        # than silently retrying against tos.py.
+        print("[ERROR] `tuyaopen firmware build --json` returned no parseable JSON.")
+        if proc.stderr:
+            sys.stderr.write(proc.stderr)
+        return False
+
+    details = envelope.get("details") or {}
+    if details.get("stdout"):
+        print(details["stdout"], end="")
+    if proc.stderr:
+        sys.stderr.write(proc.stderr)
+
+    if envelope.get("ok"):
+        return True
+
+    print(
+        "[ERROR] tuyaopen firmware build failed: "
+        f"{envelope.get('type')}/{envelope.get('subtype')} — "
+        f"{envelope.get('error') or envelope.get('hint') or '(no message)'}"
+    )
+    if details.get("stderr"):
+        print(details["stderr"], end="")
+    return False
 
 
 def find_binary():
@@ -60,8 +163,7 @@ def main():
 
     print("--- Building ---")
     build_start = datetime.datetime.now().timestamp()
-    ret = subprocess.run([_python_exe(), _tos_py(), "build"], check=False)
-    if ret.returncode != 0:
+    if not _run_build():
         print("\nRESULT: Build FAILED.")
         sys.exit(1)
 
