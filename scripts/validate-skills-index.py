@@ -27,6 +27,10 @@ Checks (all local / deterministic, no network):
   - Every item carries a 'cli' object declaring its tuyaopen CLI relationship:
     either {"groups": [...]} naming real CLI command groups, or
     {"groups": "none", "reason": "..."} when the CLI does not cover it
+  - That declaration agrees with the SKILL.md body's '## Shortcuts' section in
+    both directions: every declared group is actually invoked there, and every
+    group the section invokes is declared (tuyaopen-shared is exempt from the
+    second direction — see check_shortcuts_agreement)
 
 Usage: python3 scripts/validate-skills-index.py [path/to/index.json]
 Exits 0 on success, 1 on any error.
@@ -449,6 +453,79 @@ def check_agent_skill_paths(ids: set) -> None:
                     )
 
 
+# Rule 3 support: the declaration (skills/index.json's cli.groups) and the
+# body's `## Shortcuts` section must name the same groups, in both directions.
+#
+# `tuyaopen-shared` is the tos.py <-> tuyaopen mapping table itself (its §7),
+# which by design points out nearly every command group, so the reverse
+# direction (body mentions a group it did not declare) is exempted for it by
+# name. The forward direction (declared but unused) still applies.
+SHORTCUTS_REVERSE_EXEMPT = {"tuyaopen-shared"}
+
+_SHORTCUTS_HEADING = re.compile(r"^##\s+Shortcuts\b", re.MULTILINE)
+_NEXT_H2 = re.compile(r"^##\s+", re.MULTILINE)
+_CLI_INVOCATION = re.compile(r"`?tuyaopen\s+([a-z][a-z0-9-]*)")
+
+
+def extract_shortcuts_section(body: str) -> "str | None":
+    """Return the text of the `## Shortcuts` section, or None when absent.
+
+    Scoped on purpose: a whole-body scan would force `tuyaopen-shared` to
+    declare the seven-plus groups its §7 mapping table names, and would trip
+    on every fallback blockquote or piece of prose that quotes an example
+    command only to say not to use it (e.g. tuyaopen-build calling
+    `tuyaopen config` "a different, unrelated command"). The section stops at
+    the next `##` heading, not at end of file, so trailing sections (like the
+    `## Other`/`> **No CLI?**` material below Shortcuts) are excluded too.
+    """
+    m = _SHORTCUTS_HEADING.search(body)
+    if not m:
+        return None
+    rest = body[m.end():]
+    nxt = _NEXT_H2.search(rest)
+    return rest[: nxt.start()] if nxt else rest
+
+
+def check_shortcuts_agreement(skill_id: str, groups, body: str) -> list:
+    """Rule 3: the declaration and the body's Shortcuts section must agree.
+
+    `groups` is `item["cli"]["groups"]` — either the string "none" or a list
+    of declared group names. Returns a list of error strings (does not touch
+    the module-level `errors` accumulator, so it can be unit-tested directly).
+    """
+    out = []
+    if groups == "none":
+        if "No `tuyaopen` CLI coverage" not in body:
+            out.append(
+                f"item {skill_id!r}: cli.groups is \"none\" but the body never says "
+                f"``No `tuyaopen` CLI coverage`` — the reader needs to see it too"
+            )
+        return out
+
+    section = extract_shortcuts_section(body)
+    if section is None:
+        out.append(
+            f"item {skill_id!r}: declares CLI groups but has no `## Shortcuts` section — "
+            f"that section is the agent's entry point, not optional"
+        )
+        return out
+
+    mentioned = set(_CLI_INVOCATION.findall(section))
+    declared = set(groups)
+    for g in sorted(declared - mentioned):
+        out.append(
+            f"item {skill_id!r}: declares cli group {g!r} but the Shortcuts section "
+            f"never invokes `tuyaopen {g} …` — declared but unused"
+        )
+    if skill_id not in SHORTCUTS_REVERSE_EXEMPT:
+        for g in sorted((mentioned & CLI_GROUPS) - declared):
+            out.append(
+                f"item {skill_id!r}: Shortcuts section invokes `tuyaopen {g} …` but "
+                f"{g!r} is not in cli.groups — used but undeclared"
+            )
+    return out
+
+
 def check_cli_declaration(items: list) -> None:
     """Every item must state its relationship to the `tuyaopen` CLI.
 
@@ -460,10 +537,23 @@ def check_cli_declaration(items: list) -> None:
     Rule 2 (group names must be real) catches both a typo here and a rename in
     the CLI.
 
-    Rule 3 (declaration agrees with the body's Shortcuts section) is NOT here —
-    it needs a `## Shortcuts` section that most bodies do not have yet, so it
-    lands with the body rewrites.
+    Rule 3 (declaration agrees with the body's `## Shortcuts` section, see
+    check_shortcuts_agreement) ties the two halves together: it reads each
+    item's own SKILL.md (never anything under references/) and checks both
+    directions — declared-but-unused and used-but-undeclared.
     """
+    def run_shortcuts_check(item: dict, groups) -> None:
+        local_path = (item.get("source") or {}).get("localPath")
+        if not is_str(local_path):
+            return
+        md = REPO_ROOT / local_path / "SKILL.md"
+        if not md.is_file():
+            return
+        for e in check_shortcuts_agreement(
+            item.get("id", "?"), groups, md.read_text(encoding="utf-8")
+        ):
+            err(e)
+
     for item in items:
         label = f"item {item.get('id', '?')!r}"
         cli = item.get("cli")
@@ -477,6 +567,7 @@ def check_cli_declaration(items: list) -> None:
             if not is_str(cli.get("reason")):
                 err(f"{label}: cli.groups is \"none\" but there is no 'reason' — "
                     f"say why the CLI does not cover this skill")
+            run_shortcuts_check(item, groups)
             continue
 
         if not isinstance(groups, list):
@@ -499,6 +590,8 @@ def check_cli_declaration(items: list) -> None:
             isinstance(fallback, list) and all(is_str(f) for f in fallback)
         ):
             err(f"{label}: cli.fallback must be a list of tool names, got {fallback!r}")
+
+        run_shortcuts_check(item, groups)
 
 
 def main() -> int:
