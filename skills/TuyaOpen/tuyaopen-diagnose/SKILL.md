@@ -120,7 +120,7 @@ Blocking — it inherits your terminal's stdin, Ctrl+C to exit. Pass `--log`
 to also tee output to `source/embedded/monitor.log` (or `--log-file <path>`).
 There is no confirmation gate — `monitor` is read-only from the device's
 perspective. It is also **exempt from the CLI's task kill-timer** (the
-timeout every other long-running mutating command gets) because it is
+timeout its `firmware` siblings `build`/`clean`/`flash` get) because it is
 meant to run indefinitely in the foreground — don't treat it as a bounded
 command that will eventually return on its own.
 
