@@ -73,6 +73,10 @@ def test_every_real_cli_group_is_in_the_constant():
     assert len(validator.CLI_GROUPS) == 20
 
 
+# Real skill bodies use an English "Intent | Command" header (verified against
+# all 14 tables in skills/TuyaOpen/*/SKILL.md) — the fixture matches that,
+# not a placeholder, so these tests exercise the same header text production
+# actually uses.
 SHORTCUTS_BODY = """---
 name: tuyaopen-x
 ---
@@ -81,9 +85,9 @@ name: tuyaopen-x
 
 ## Shortcuts — `tuyaopen firmware`
 
-| 干什么 | 命令 |
+| Intent | Command |
 |---|---|
-| 编译 | `tuyaopen firmware build` |
+| Compile | `tuyaopen firmware build` |
 
 ## Other
 
@@ -139,12 +143,30 @@ def test_missing_shortcuts_section_entirely_is_an_error():
     assert any("Shortcuts" in e for e in errs)
 
 
-def test_empty_shortcuts_section_is_an_error():
-    # Fails closed: a `## Shortcuts` heading with nothing under it (section
-    # exists but names no groups) must still flag the declared-but-unused group.
+def test_shortcuts_section_with_no_table_is_an_error():
+    # Fails closed on the *first* of two now-distinguishable "nothing here"
+    # states: a `## Shortcuts` heading with no markdown table under it at all
+    # (prose-only, or blank) must not silently pass, and must say so via the
+    # "no Command-column table" message — not the per-group "declared but
+    # unused" wording, which is reserved for the *other* state (see next test).
     body = "---\nname: x\n---\n\n# X\n\n## Shortcuts\n\n## Other\n\n后面别的内容。\n"
     errs = validator.check_shortcuts_agreement("tuyaopen-x", ["firmware"], body)
-    assert any("firmware" in e for e in errs)
+    assert any("no table with a `Command` column" in e for e in errs)
+
+
+def test_shortcuts_section_with_empty_table_is_an_error():
+    # Fails closed on the *second* distinguishable state: a genuine
+    # Command-column table that exists but has zero data rows. `[]` (table
+    # found, nothing in it) must still flag the declared group as unused,
+    # exactly like the no-table case, but via the per-group message since
+    # there IS a table — just an empty one.
+    body = (
+        "---\nname: x\n---\n\n# X\n\n## Shortcuts\n\n"
+        "| Intent | Command |\n|---|---|\n\n## Other\n\n后面别的内容。\n"
+    )
+    errs = validator.check_shortcuts_agreement("tuyaopen-x", ["firmware"], body)
+    assert any("firmware" in e and "declared but unused" in e for e in errs)
+    assert not any("no table with a `Command` column" in e for e in errs)
 
 
 def test_section_boundary_stops_at_next_heading():
@@ -153,3 +175,72 @@ def test_section_boundary_stops_at_next_heading():
     section = validator.extract_shortcuts_section(SHORTCUTS_BODY)
     assert "dp" not in section
     assert "firmware" in section
+
+
+# Scoped one level finer than the section: only the Command column of a real
+# markdown table asserts "this skill invokes this". This fixture packs all
+# three non-asserting shapes a real Shortcuts section can contain — a
+# discovery-boilerplate prose line, a `> **No CLI?**` fallback blockquote, and
+# steering-away prose — around ONE real table row that must still count. One
+# fixture, both directions: this is what stops a later "just scan the section"
+# simplification from reintroducing the false positives found in the real
+# 28-skill run (schema-discovery lines, `tuyaopen config` "is a different,
+# unrelated command", `tuyaopen device list-ports` "doesn't expose the
+# grouping…").
+TABLE_SCOPE_BODY = """---
+name: tuyaopen-x
+---
+
+# X
+
+## Shortcuts — `tuyaopen firmware`
+
+| Intent | Command |
+|---|---|
+| Compile | `tuyaopen firmware build` |
+| Look up flags | `tuyaopen diag doctor` |
+
+Flags aren't listed here — run `tuyaopen schema get --group firmware --command build`
+for the current set; `tuyaopen sdk env-init` runs automatically as part of the
+build, it is not something you invoke here.
+
+> **No CLI?** `tos.py build`. A related tool also offers `tuyaopen dependency
+> check` for context, but that's not this skill's job.
+"""
+
+
+def test_prose_and_fallback_blockquote_mentions_do_not_count_only_table_rows_do():
+    # `sdk` (discovery-boilerplate prose), and `dependency` (fallback
+    # blockquote) are both named inside the Shortcuts section boundary but
+    # never in a Command-column table row — none of the three must count.
+    # `diag`, named in an actual table row, must still trip as used-but-
+    # undeclared. `schema` is separately exempted (see next test) so its
+    # absence here proves nothing about column-scoping specifically.
+    errs = validator.check_shortcuts_agreement("tuyaopen-x", ["firmware"], TABLE_SCOPE_BODY)
+    assert errs == [
+        "item 'tuyaopen-x': Shortcuts Command column invokes `tuyaopen diag …` "
+        "but 'diag' is not in cli.groups — used but undeclared"
+    ]
+
+
+def test_schema_is_exempt_from_the_reverse_direction_even_in_a_table_row():
+    # `schema` is the catalogue-wide self-discovery idiom: exempted from the
+    # reverse ("used but undeclared") direction regardless of whether it shows
+    # up in prose or in an actual Command-column row.
+    body = (
+        "---\nname: x\n---\n\n# X\n\n## Shortcuts — `tuyaopen firmware`\n\n"
+        "| Intent | Command |\n|---|---|\n"
+        "| Compile | `tuyaopen firmware build` |\n"
+        "| Inspect | `tuyaopen schema get --group firmware --command build` |\n"
+    )
+    errs = validator.check_shortcuts_agreement("tuyaopen-x", ["firmware"], body)
+    assert errs == []
+
+
+def test_schema_forward_check_still_applies_when_genuinely_declared():
+    # The exemption only silences the reverse direction. A skill whose actual
+    # subject IS schema introspection (tuyaopen-skill-maker, tuyaopen-shared)
+    # must still be flagged if it declares `schema` but never has a
+    # Command-column row that invokes it.
+    errs = validator.check_shortcuts_agreement("tuyaopen-x", ["schema"], SHORTCUTS_BODY)
+    assert any("schema" in e and "declared but unused" in e for e in errs)

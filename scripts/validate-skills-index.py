@@ -462,6 +462,23 @@ def check_agent_skill_paths(ids: set) -> None:
 # name. The forward direction (declared but unused) still applies.
 SHORTCUTS_REVERSE_EXEMPT = {"tuyaopen-shared"}
 
+# `schema` is the catalogue-wide self-discovery idiom — nearly every skill's
+# Shortcuts section has a "flags aren't listed here, run `tuyaopen schema get
+# --group <g> --command <c>`" row or line, because that is how an agent looks
+# up a command's flags without this doc hardcoding them (see the "don't
+# hardcode the flag list" rule referenced from every skill: `tuyaopen-shared`
+# § 5). That is advice about *finding* commands, not the skill's own task
+# using the `schema` group as a dependency. Counting it would force ~27 of 28
+# skills to declare `schema`, which would sit on nearly everything and stop
+# distinguishing anything — the whole information value of the declaration is
+# that it differs between skills. So `schema` is exempted from the *reverse*
+# ("used but undeclared") direction only. Skills whose actual subject matter
+# is schema introspection (`tuyaopen-skill-maker`, `tuyaopen-shared`) still
+# get the *forward* check — if they declare `schema` but their Command column
+# never has a `tuyaopen schema …` row, that still fires, because forward
+# checking is untouched by this set.
+GROUPS_EXEMPT_FROM_REVERSE_CHECK = {"schema"}
+
 _SHORTCUTS_HEADING = re.compile(r"^##\s+Shortcuts\b", re.MULTILINE)
 _NEXT_H2 = re.compile(r"^##\s+", re.MULTILINE)
 _CLI_INVOCATION = re.compile(r"`?tuyaopen\s+([a-z][a-z0-9-]*)")
@@ -484,6 +501,62 @@ def extract_shortcuts_section(body: str) -> "str | None":
     rest = body[m.end():]
     nxt = _NEXT_H2.search(rest)
     return rest[: nxt.start()] if nxt else rest
+
+
+def _is_table_separator_row(line: str) -> bool:
+    """`|---|---|` (optionally with `:` alignment markers) — a GFM table's
+    second row. Deliberately permissive about spacing/colon placement; the
+    only thing that matters is "this row is punctuation, not content"."""
+    stripped = line.strip()
+    return bool(stripped) and "-" in stripped and set(stripped) <= set("-:| \t")
+
+
+def extract_command_column_mentions(section: str) -> "list[str] | None":
+    """Return every `tuyaopen <group>` mention found in the *Command* column
+    of every markdown table inside `section`, or None when the section
+    contains no such table at all.
+
+    Rule 3's declaration is about what the skill *invokes* — only a table row
+    under a literal "Command" header asserts that. Everything else that can
+    appear in a real `## Shortcuts` section quotes a `tuyaopen <group>`
+    command without asserting a dependency: the "flags aren't listed here,
+    run `tuyaopen schema get …`" discovery line, the `> **No CLI?**` fallback
+    blockquote (which names the *old* tool, but may quote a `tuyaopen`
+    equivalent for contrast), and steering-away prose ("`tuyaopen config` is
+    a different, unrelated command"). Scoping one level finer than the
+    section — to the Command column specifically — removes all three false
+    positive classes by construction, rather than by an exemption list that
+    grows every time someone writes a sentence.
+
+    None vs. `[]` matters: None means "no Command-column table found at all"
+    (the section is prose-only, or its table uses different headers); `[]`
+    means "a Command-column table exists but named no `tuyaopen` group in any
+    row" (e.g. every row is `tos.py`-only). Both are treated as "nothing
+    asserted" by the caller, but are surfaced as distinct error messages so a
+    missing table isn't silently indistinguishable from an empty one.
+    """
+    lines = section.splitlines()
+    found_table = False
+    mentions: list[str] = []
+    i = 0
+    while i < len(lines) - 1:
+        header_line = lines[i]
+        sep_line = lines[i + 1]
+        if header_line.strip().startswith("|") and _is_table_separator_row(sep_line):
+            headers = [c.strip().lower() for c in header_line.strip().strip("|").split("|")]
+            if "command" in headers:
+                found_table = True
+                col = headers.index("command")
+                j = i + 2
+                while j < len(lines) and lines[j].strip().startswith("|"):
+                    cells = [c.strip() for c in lines[j].strip().strip("|").split("|")]
+                    if col < len(cells):
+                        mentions.extend(_CLI_INVOCATION.findall(cells[col]))
+                    j += 1
+                i = j
+                continue
+        i += 1
+    return mentions if found_table else None
 
 
 def check_shortcuts_agreement(skill_id: str, groups, body: str) -> list:
@@ -510,17 +583,27 @@ def check_shortcuts_agreement(skill_id: str, groups, body: str) -> list:
         )
         return out
 
-    mentioned = set(_CLI_INVOCATION.findall(section))
     declared = set(groups)
+    mentions = extract_command_column_mentions(section)
+    if mentions is None:
+        out.append(
+            f"item {skill_id!r}: declares CLI groups but the `## Shortcuts` section has "
+            f"no table with a `Command` column — that table's rows are the only place "
+            f"the body asserts what it actually invokes"
+        )
+        mentioned: set = set()
+    else:
+        mentioned = set(mentions)
+
     for g in sorted(declared - mentioned):
         out.append(
-            f"item {skill_id!r}: declares cli group {g!r} but the Shortcuts section "
-            f"never invokes `tuyaopen {g} …` — declared but unused"
+            f"item {skill_id!r}: declares cli group {g!r} but no Shortcuts Command-column "
+            f"row invokes `tuyaopen {g} …` — declared but unused"
         )
     if skill_id not in SHORTCUTS_REVERSE_EXEMPT:
-        for g in sorted((mentioned & CLI_GROUPS) - declared):
+        for g in sorted((mentioned & CLI_GROUPS) - declared - GROUPS_EXEMPT_FROM_REVERSE_CHECK):
             out.append(
-                f"item {skill_id!r}: Shortcuts section invokes `tuyaopen {g} …` but "
+                f"item {skill_id!r}: Shortcuts Command column invokes `tuyaopen {g} …` but "
                 f"{g!r} is not in cli.groups — used but undeclared"
             )
     return out
