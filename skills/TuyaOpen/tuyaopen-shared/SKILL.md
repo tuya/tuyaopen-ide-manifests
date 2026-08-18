@@ -192,23 +192,37 @@ a stable interface**. Categories can be added or re-mapped over time.
 `type` / `subtype` / `code` from the parsed `--json` envelope instead — that
 is the add-only machine contract this CLI actually promises to keep stable.
 
-## 4. 风险门 —— P0 需要**派生的** `--confirm` token，P2 需要 `--yes` + 环境变量
+## 4. Risk gate — P0 needs a **derived** `--confirm` token, P2 needs `--yes` + env
 
-| 等级 | 门槛 | 今天有哪些 |
+| Tier | Gate | What's here today |
 |---|---|---|
-| **P0** | `--confirm <token>`，且 token 必须是**这个操作**的 `--dry-run` 发的那一个 | 只有 `license remove` |
-| **P2** | `--yes` **且** `TUYAOPEN_AUTOCONFIRM_P2=1` | 其余全部变更命令 |
-| 只读 | 无门槛 | — |
+| **P0** | `--confirm <token>`, and the token must be the one **this exact operation's** `--dry-run` handed back | Only `license remove` |
+| **P2** | `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1` | Every other mutating command |
+| Read-only | No gate | — |
 
-P0 的判据是**后果**，不是动词：没有反向命令，**并且**会毁掉调用方重建不出来的状态。
-`firmware flash` / `firmware authorize` / `dependency remove` / `skills uninstall`
-在 2026-08-18 从 P0 降到 P2 —— 它们都有反向命令（`authorize` 另有
-`firmware auth-status` 可读回验证）。
+P0 is judged by **consequence**, not verb: no reverse command exists, **and**
+running it destroys state the caller cannot reconstruct. `firmware flash` /
+`firmware authorize` / `dependency remove` / `skills uninstall` dropped from
+P0 to P2 on 2026-08-18 — all four have a reverse command (`authorize` also
+gained `firmware auth-status`, which reads the result back off the device so
+you verify after the fact instead of proving intent with a token beforehand).
 
-`P1` 这一层已删除（2026-08-18）。它的门槛与 P0 逐字节相同，且从未有命令落在里面。
+`P1` was removed entirely (2026-08-18). Its gate was byte-for-byte identical
+to P0's, and no command ever landed in it.
 
-**被拒绝 ≠ 不可用。** 见 §7 —— `confirmation` 类错误意味着 CLI
-正常工作并且在拒绝你，此时**不许**改走 `tos.py`。
+**`--dry-run` works on every mutating command, regardless of tier.** The
+guard was deliberately decoupled from risk level onto `mutating`, so it is
+always available to preview a change without applying it.
+
+For a P0 command, `--dry-run`'s response carries the token in
+`meta.confirm_token`. **`--confirm` must be re-run with the identical flags**
+used for that `--dry-run` call — a token minted for one flag set does not
+confirm a different one. **Never fabricate or guess a token**; always copy
+the exact value `--dry-run` handed back.
+
+**Rejected ≠ unusable.** A `confirmation`-type error (the `type` field from
+§2) means the CLI is working correctly and refusing you on purpose — do not
+switch to `tos.py` because of it.
 
 ## 5. Command self-discovery — don't hardcode flags here or anywhere
 
@@ -306,7 +320,7 @@ treat them as opaque.
 
 ## 9. Routing table — which skill for which intent
 
-30 skills exist in this catalogue (`tuyaopen skills list --json` is the live
+28 skills exist in this catalogue (`tuyaopen skills list --json` is the live
 count). Rather than every skill naming every sibling it might hand off to —
 an O(n²) maintenance burden where adding one skill means editing many others'
 prose — **the rule is one-way**: a task-specific skill that hits something out
