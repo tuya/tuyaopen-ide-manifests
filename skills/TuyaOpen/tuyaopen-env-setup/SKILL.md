@@ -130,17 +130,25 @@ After activation: `$OPEN_SDK_ROOT`, `$OPEN_SDK_PYTHON`, `$OPEN_SDK_PIP` are set;
 ## Step 3: Verify
 
 ```bash
+tuyaopen diag doctor --json
+```
+
+Read `sdk.envReady` / `sdk.tosPresent`, and the `status` field of each of
+`git`, `python`, `cmake`, `ninja`, `uv`. This replaces the three
+`check_env.{sh,ps1,bat}` scripts (deleted 2026-08-18) — `diag doctor` covers
+every one of the 7 checks they ran, and maintaining three per-OS copies of
+the same script was pure overhead.
+
+`tos.py check` does one thing `diag doctor` doesn't: it runs `git submodule
+update --init` as a side effect. Run it too when submodules might be stale:
+
+```bash
 tos.py version    # e.g. v1.3.0-23-g6bcb5aa
 tos.py check      # validates tool versions + runs git submodule update --init
 ```
 
-Or run the bundled check script:
-
-| Platform | Command |
-|----------|---------|
-| Linux / macOS | `.agents/skills/tuyaopen-env-setup/scripts/check_env.sh` |
-| Windows CMD | `.agents\skills\tuyaopen-env-setup\scripts\check_env.bat` |
-| Windows PowerShell | `.agents/skills/tuyaopen-env-setup/scripts/check_env.ps1` |
+> **No CLI?** Check by hand: `tos.py` is on `PATH`, `$OPEN_SDK_ROOT` is set,
+> and `git` / `python3` / `cmake` / `ninja` all run.
 
 ## Troubleshooting
 
