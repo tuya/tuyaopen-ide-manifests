@@ -4,7 +4,7 @@ description: >-
   Configure device authorization credentials (UUID, AuthKey, PID) and network
   provisioning for TuyaOpen devices via `tuyaopen license list/add/import/
   remove` (a local CLI-only license store) and `tuyaopen firmware authorize`
-  (writes the code to the device over serial, P0). Use when the user mentions
+  (writes the code to the device over serial, P2). Use when the user mentions
   device auth, authorization, UUID, AuthKey, tuya_config.h, provisioning,
   pairing, or cloud connection.
   设备授权、授权码、配网、UUID、AuthKey、云连接、tuyaopen license、
@@ -28,14 +28,19 @@ Docs: <https://tuyaopen.ai/docs/quick-start/equipment-authorization>
 | Save a UUID/AuthKey pair to the local CLI store | `tuyaopen license add --uuid <u>` — AuthKey via `TUYA_LICENSE_AUTHKEY` env var or stdin, **never** as a flag |
 | Bulk-import from an Excel file | `tuyaopen license import --xlsx <path>` |
 | Delete a saved license | `tuyaopen license remove --uuid <u>` — **P0**, needs `--dry-run` → `--confirm <token>` |
-| Write a UUID+AuthKey code to the device over serial | `tuyaopen firmware authorize --port <port> --uuid <u> --authkey <k>` — **P0**, same two-phase ritual |
+| Write a UUID+AuthKey code to the device over serial | `tuyaopen firmware authorize --port <port> --uuid <u> --authkey <k>` — **P2**, needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` |
 
-**⚠ Never try to construct the `--confirm` token yourself for `license
-remove` or `firmware authorize`.** It is a derived SHA-256 hash of the exact
-group + command + flags, computed by the CLI's own `--dry-run` branch and
-compared byte-for-byte — a token minted for one UUID/port does not confirm a
-different one, and there is no shortcut around running `--dry-run` first and
-copying the value it hands back. Full mechanics: skill `tuyaopen-shared` § 4.
+**⚠ `license remove` and `firmware authorize` are gated differently — don't
+carry one's ritual over to the other.** `license remove` is **P0**: never
+try to construct the `--confirm` token yourself, it is a derived SHA-256 hash
+of the exact group + command + flags, computed by the CLI's own `--dry-run`
+branch and compared byte-for-byte — a token minted for one UUID does not
+confirm a different one, and there is no shortcut around running `--dry-run`
+first and copying the value it hands back. `firmware authorize` dropped from
+P0 to **P2** on 2026-08-18 (the KV it writes is rewritable and `firmware
+auth-status` reads it back, so it fails the P0 criterion) — it takes `--yes`
++ `TUYAOPEN_AUTOCONFIRM_P2=1` instead, and its `--dry-run` does not hand back
+a confirm token at all. Full mechanics: skill `tuyaopen-shared` § 4.
 
 **⚠ `tuyaopen license *` is a *third*, independent record — not the device,
 and not the IDE panel.** Verified against `src/cli/commands/license.ts` +
@@ -43,9 +48,17 @@ and not the IDE panel.** Verified against `src/cli/commands/license.ts` +
 
 | Record | Lives in | Written by |
 |---|---|---|
-| Device credentials | KV / OTP on the chip | `firmware authorize` / `tyutool_cli authorize` / `tuya_config.h` at build time |
+| Device credentials | **KV** (`UUID_TUYAOPEN` / `AUTHKEY_TUYAOPEN`, rewritable) | `firmware authorize` / `tyutool_cli authorize` / `tuya_config.h` at build time |
 | IDE license panel (授权码 page) | `vscode.SecretStorage` key `tuyaopen-ide.licenses.local` | IDE UI events only |
 | **CLI license store** | Plain JSON file `~/TuyaOpenIDE/.tuyaopen/licenses.json` (or `TUYAOPEN_LICENSES_DIR` env override) | `tuyaopen license add/import/remove` only |
+
+> **OTP is not a write location.** It is the **factory-preburned module's**
+> read source (see Credential Resolution Priority tier 2,
+> `tuya_iot_license_read()`). Our commands write to KV, which **can be
+> re-flashed** — listing the two side by side as write destinations makes
+> authorization look like a one-time operation, so people are afraid to
+> retry it. Verify after writing with `tuyaopen firmware auth-status --port
+> <port>`.
 
 The CLI store and the IDE panel store happen to share the same on-disk JSON
 *shape* (`{version, items}`) but are two different storage locations with no
@@ -189,8 +202,12 @@ is the most common source of "I authorized it but the IDE disagrees":
 
 | Record | Lives in | Changed by |
 |---|---|---|
-| Device credentials | KV / OTP on the chip | `tyutool_cli authorize`, the IDE's own serial-auth button, or `tuya_config.h` at build time |
+| Device credentials | **KV** (`UUID_TUYAOPEN` / `AUTHKEY_TUYAOPEN`, rewritable) | `tyutool_cli authorize`, the IDE's own serial-auth button, or `tuya_config.h` at build time |
 | IDE license ledger | 授权码 panel status (`未使用` / `使用中` / `已绑定`) | IDE-side events **only** |
+
+> **OTP is not a write location** — see the § *Shortcuts* note above
+> (KV/OTP correction, `tuya_iot_license_read()`). This row means the same
+> thing as that one: the chip's own state is **KV**, rewritable at any time.
 
 **Authorizing from the command line does not update the panel.** A license the
 device is genuinely running can still display `未使用`, because nothing told the

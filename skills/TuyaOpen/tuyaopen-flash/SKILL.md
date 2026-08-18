@@ -22,7 +22,7 @@ compatibility:
 
 Covers the CLI groups `firmware flash`, `firmware monitor`, and `device
 list-ports`. For everything about `tuyaopen`'s envelope, exit codes, and the
-P0/P1 confirmation ritual referenced below, see skill `tuyaopen-shared` — this
+P0/P2 risk-gate mechanics referenced below, see skill `tuyaopen-shared` — this
 skill only covers what's specific to flashing and serial ports.
 
 ## 1. Choose a port
@@ -57,16 +57,19 @@ If `description` doesn't disambiguate a dual-serial pair, or you need the
 authoritative `usbSerial`/`usbInterface` grouping, fall back to `tyutool_cli`
 directly — § 4.
 
-## 2. Flash firmware — `firmware flash` (P0)
+## 2. Flash firmware — `firmware flash` (P2)
 
-Flashing is destructive (overwrites the device's current firmware) and is
-gated P0 — the two-phase `--dry-run` → `--confirm <token>` ritual from skill
-`tuyaopen-shared` § 4 applies exactly as written there:
+Flashing overwrites the device's current firmware, but it has a reverse
+command (re-flash), so it dropped from P0 to P2 on 2026-08-18 (`license
+remove` is the only P0 command left in the CLI — see skill `tuyaopen-shared`
+§ 4). It is gated by `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1`, not a
+derived `--confirm` token:
 
 ```bash
 tuyaopen firmware flash --port <port> --dry-run
-# → preview + meta.confirm_token
-tuyaopen firmware flash --port <port> --confirm <token-from-the-preview>
+# → preview only — a P2 dry-run does not hand back a confirm token
+export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
+tuyaopen firmware flash --port <port> --yes
 ```
 
 Flag reference (baud, project/SDK root overrides): `tuyaopen firmware --help`
@@ -126,7 +129,7 @@ The `firmware` CLI group covers flash and monitor; it does **not** wrap every
 | Flash fails with a port-busy error (`PermissionError 13` / `Access is denied` / `Device or resource busy`) | A `firmware monitor` (or any other process) still holds the port — single-serial boards share flash and log on one OS resource | Stop the monitor session, retry the flash, reopen the monitor after |
 | `tuyaopen device list-ports` returns two ports with the same or no `description` and you can't tell which is which | Thin port listing can't disambiguate | Fall back to `tyutool_cli list-ports --json` (§ 4) and group by `usbSerial`/`usbInterface` |
 | Flash unstable / drops mid-transfer | Baud too high for the physical link | Retry with a lower `--baud` (the per-chip default is usually right; only override on developer instruction) |
-| `firmware flash --confirm <token>` rejected as `confirmation:bad_confirm_token` | Token wasn't from this exact `--dry-run`, or a flag changed since | Re-run `--dry-run` with the exact same flags and copy the fresh token — see skill `tuyaopen-shared` § 4 |
+| `firmware flash` rejected as `confirmation:needs_yes` | Missing `--yes` and/or `TUYAOPEN_AUTOCONFIRM_P2=1` | Pass both, or `--dry-run` to preview first — see skill `tuyaopen-shared` § 4 |
 | Need to read flash contents, hard-reset without flashing, or disambiguate a dual-serial pair | Not covered by the `firmware` CLI group | § 4 fallback — `tyutool_cli` directly |
 
 ## References

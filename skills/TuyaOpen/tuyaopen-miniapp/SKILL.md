@@ -28,7 +28,7 @@ vacuum/ipc/...), or upload-content review — that is a separate, closely
 related skill focused on *how to build the panel*, where this one is about
 *running the CLI commands*. See `related` in this skill's catalogue entry.
 
-For the CLI's envelope, exit codes, and P0/P1/P2 confirmation ritual, see
+For the CLI's envelope, exit codes, and P0/P2 risk-gate mechanics, see
 skill `tuyaopen-shared` — not repeated here.
 
 ## Runtime prerequisite: `--extension-path`

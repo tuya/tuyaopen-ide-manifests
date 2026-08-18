@@ -34,7 +34,7 @@ Docs: <https://tuyaopen.ai/docs/quick-start/project-compilation>
 SDK `apps/`/`examples/` directory. It defaults to the current directory, so
 `cd <project>` then omit the flag works too. Both commands are risk tier
 **P3**: mutating, but **no** `--dry-run`/`--confirm`/`--yes` gate applies (see
-skill `tuyaopen-shared` § 4 — P3 is a real tier, distinct from P0/P1/P2, for
+skill `tuyaopen-shared` § 4 — P3 is a real tier, distinct from P0/P2, for
 commands the framework doesn't consider destructive).
 
 Two things `tuyaopen firmware build`/`clean` do that raw `tos.py build` does
