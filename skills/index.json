@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-08-18T00:00:00Z",
+  "publishedAt": "2026-08-18T06:00:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.2.2",
+      "version": "1.3.0",
       "group": "core",
       "order": 0,
       "name": {
@@ -58,7 +58,7 @@
     },
     {
       "id": "tuyaopen-build",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "embedded",
       "order": 1,
       "name": {
@@ -107,7 +107,7 @@
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.2.1",
+      "version": "1.3.0",
       "group": "core",
       "order": 2,
       "name": {
@@ -156,7 +156,7 @@
     },
     {
       "id": "tuyaopen-project",
-      "version": "1.1.1",
+      "version": "1.2.0",
       "group": "embedded",
       "order": 6,
       "name": {
@@ -212,7 +212,7 @@
     },
     {
       "id": "tuyaopen-dependency",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "group": "embedded",
       "order": 8,
       "name": {
@@ -384,7 +384,7 @@
     },
     {
       "id": "tuyaopen-hardware",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "group": "embedded",
       "order": 11,
       "name": {
@@ -441,7 +441,7 @@
     },
     {
       "id": "tuyaopen-flash",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "group": "embedded",
       "order": 15,
       "name": {
@@ -499,7 +499,7 @@
     },
     {
       "id": "tuyaopen-diagnose",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "group": "embedded",
       "order": 20,
       "name": {
@@ -703,7 +703,7 @@
     },
     {
       "id": "tuyaopen-device-auth",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "group": "cloud",
       "order": 24,
       "name": {
@@ -751,7 +751,7 @@
     },
     {
       "id": "tuyaopen-env-setup",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "group": "embedded",
       "order": 25,
       "name": {
@@ -798,7 +798,7 @@
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "group": "miniapp",
       "order": 98,
       "name": {
