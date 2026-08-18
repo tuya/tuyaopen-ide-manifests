@@ -39,9 +39,6 @@
           "skills",
           "config",
           "diag"
-        ],
-        "fallback": [
-          "tos.py"
         ]
       },
       "defaultEnabled": true,
