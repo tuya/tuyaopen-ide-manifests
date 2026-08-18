@@ -43,7 +43,9 @@ Flow:
 1. Prompts for platform name.
 2. Creates `platform/<name>/` with adapter templates and `.gitignore`.
 3. Opens menuconfig to select platform capabilities.
-4. Generates porting skeleton (`tuyaos_adapter/`) based on selected features.
+4. Generates the porting skeleton based on selected features. Its directory is
+   `tuyaos_adapter/` — a TuyaOpen SDK path (`platform/<chip>/tuyaos_adapter/`),
+   historical name, unrelated to any other product.
 5. Creates `boards/<name>/` with board Kconfig.
 
 This is an advanced operation — see official docs for the full porting guide.

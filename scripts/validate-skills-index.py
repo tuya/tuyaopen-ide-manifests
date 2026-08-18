@@ -49,17 +49,22 @@ SURFACES = {"embedded", "cloud", "miniapp"}
 #   after miniapp even though every member is one today, because embedded
 #   per-category skills are expected here too; when they arrive, `surface`
 #   keeps telling the IDE which tab they belong in.
-# Required for TuyaOpen items only: `group` is that product line's CLI concept,
-# and each consumer's SDK gate drops the other line's items before they reach a
-# catalogue, so grouping them would describe something nothing can install.
+# Required on every item: `group` is the CLI's install unit
+# (`tuyaopen skills groups` / `install --group`), so an ungrouped item is one
+# no group-install can ever reach. Two items were legitimately ungrouped while
+# a second product line lived here; that line moved out on 2026-08-17, so the
+# field is now unconditionally required.
 GROUPS = {"core", "embedded", "cloud", "miniapp", "category"}
-# Top level under skills/ — the product line. Since the 2026-08-14 reorg this is
-# NOT the surface: a `tuyaopen-miniapp-*` skill has surface "miniapp" but lives
-# under TuyaOpen/, because the product line and the capability surface are
-# orthogonal. See skills/README.md's Layout section.
-PRODUCT_LINES = {"TuyaOpen", "TuyaOS"}
-# SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default).
-SDKS = {"tuyaopen", "tuyaos"}
+# Top level under skills/. Since the 2026-08-14 reorg this is NOT the surface:
+# a `tuyaopen-miniapp-*` skill has surface "miniapp" but still lives under
+# TuyaOpen/, because placement and capability surface are orthogonal. See
+# skills/README.md's Layout section. Set-valued rather than a bare string
+# because the check below reports `sorted(...)` and a typo ("Tuyaopen/") must
+# name what was expected.
+PRODUCT_LINES = {"TuyaOpen"}
+# SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default),
+# which is now the only legal value — this catalogue is TuyaOpen-only.
+SDKS = {"tuyaopen"}
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
 LANGS = ("en", "zh-CN")
 URL_RE = re.compile(r"^https?://[^\s]+$")
@@ -154,17 +159,12 @@ def check_item(item, index: int, seen_ids: set) -> None:
     if surface not in SURFACES:
         err(f"{label}: 'surface' must be one of {sorted(SURFACES)}, got {surface!r}")
 
-    # `group` is required for TuyaOpen items and must be absent for the other
-    # product line — see GROUPS. Derived from the payload path rather than a
-    # separate field so the two can never disagree.
+    # `group` is required on every item — see GROUPS.
     src = item.get("source")
     local_path = src.get("localPath") if isinstance(src, dict) else None
-    is_tuyaopen = isinstance(local_path, str) and local_path.split("/")[1:2] == ["TuyaOpen"]
     group = item.get("group")
-    if is_tuyaopen and group not in GROUPS:
+    if group not in GROUPS:
         err(f"{label}: 'group' must be one of {sorted(GROUPS)}, got {group!r}")
-    if not is_tuyaopen and group is not None:
-        err(f"{label}: 'group' is a TuyaOpen-only field, got {group!r}")
 
     # Optional multi-valued surfaces (2026-08-14). Preferred by the IDE over
     # 'surface' when present (see manifestsTypes.ts's SkillManifestItem.surfaces
@@ -249,7 +249,7 @@ def check_source(label: str, item: dict) -> None:
     # "cloud" / "miniapp"), since the top level of skills/ used to be the
     # capability surface and the IDE copied skills/<surface>/ trees into its
     # cache one surface at a time. That reorg made the top level *product
-    # line* (TuyaOpen/TuyaOS) instead — see skills/README.md's Layout section
+    # line* instead — see skills/README.md's Layout section
     # — so 'surface' is now an orthogonal field with no directory it could
     # agree with (a tuyaopen-miniapp-* skill's surface is "miniapp" but it
     # lives under TuyaOpen/, by design). The check was removed rather than
@@ -263,7 +263,7 @@ def check_source(label: str, item: dict) -> None:
     # different names per skill (directory, frontmatter `name`, and index `id`).
     segments = local_path.split("/")
 
-    # 1. Top level under skills/ is the product line, and only these two exist.
+    # 1. Top level under skills/ is TuyaOpen/, and nothing else.
     #    A typo ("Tuyaopen/") would otherwise install fine and only surface as a
     #    missing skill much later.
     if len(segments) > 1 and segments[1] not in PRODUCT_LINES:

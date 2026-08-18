@@ -10,14 +10,14 @@ always in the same commit, and the IDE gets everything from the single
 
 ## Layout
 
-Top level is **product line**, not capability surface: every skill lives
-under `TuyaOpen/` or `TuyaOS/`, one directory per skill, **one level deep**,
-and the directory name **is** the skill's `id`.
+Top level is a single product-line directory, not the capability surface: every
+skill lives under `TuyaOpen/`, one directory per skill, **one level deep**, and
+the directory name **is** the skill's `id`.
 
 ```
 skills/
-├── index.json                          # the registry (30 items)
-├── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
+├── index.json                          # the registry (28 items)
+└── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
 │   ├── tuyaopen-shared/  tuyaopen-skill-maker/       #   foundation, not task skills
 │   ├── tuyaopen-build/  tuyaopen-env-setup/  tuyaopen-device-auth/
 │   ├── tuyaopen-add-board/  tuyaopen-code-check/  tuyaopen-project/
@@ -31,10 +31,14 @@ skills/
 │       tuyaopen-miniapp-socket-panel/  tuyaopen-miniapp-robot-vacuum/
 │       tuyaopen-miniapp-ipc-panel/  tuyaopen-miniapp-charts-library/
 │       tuyaopen-miniapp-electrician-timing/  tuyaopen-miniapp-energy-stats/
-│       tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
-└── TuyaOS/                             # 2 skills — id starts with `tuyaos-`
-    └── tuyaos-build/  tuyaos-hardware-vibe-coding/   #   bundles sub-skills under peripheral-drivers/
+        tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
 ```
+
+On **2026-08-17** the catalogue narrowed to TuyaOpen only: the two items of the
+second product line were dropped from `index.json` (30 → 28) and their payload
+moved, byte-for-byte, to the repo-root `tuyaos-skills/` — outside `skills/`, so
+the orphan check is satisfied and the release workflow (which packs an explicit
+domain list) no longer ships it. Nothing was edited; see `tuyaos-skills/README.md`.
 
 The 2026-08-14 CLI-coverage pass merged five former standalone skills into
 three renamed ones — `tuyaopen-tyutool-cli` into `tuyaopen-flash`;
@@ -44,8 +48,8 @@ added `tuyaopen-miniapp` as a brand-new skill covering the `miniapp` CLI
 command group. See [History: TuyaOpen-dev-skills](#history-tuyaopen-dev-skills)
 and each merged skill's own `references/` for what moved where.
 
-Every `id` in the index carries its product-line prefix (`tuyaopen-` or
-`tuyaos-`) for a reason unrelated to this directory split: the global install
+Every `id` in the index carries the `tuyaopen-` prefix for a reason unrelated to
+the directory layout: the global install
 hub (`~/.agents/skills/`) is **shared with the community `npx skills`
 registry** (vercel-labs/skills), so an unprefixed name like the old
 `smart-panel-dev` could collide with and be overwritten by an unrelated
@@ -136,7 +140,7 @@ A pure relocation — `source.localPath` moves but no file under it changes in
 substance — still counts as a payload change under
 `check-skill-version-bumps.py` (it treats `base_dir != head_dir` the same as a
 touched file) and still needs a bump once the prior version has shipped. The
-2026-08-14 `embedded/cloud/miniapp` → `TuyaOpen/TuyaOS` reorg moved and, for
+2026-08-14 `embedded/cloud/miniapp` → product-line reorg moved and, for
 most items, renamed the `id` of all 29 skills; every item was bumped a single
 **patch** version for it, on the theory that fixing a skill's own
 self-references (frontmatter `name`/`id`, `related`, and in-body `see skill
@@ -198,9 +202,9 @@ fields are never enumerated, so shipped builds ignore it silently.
 
 ## Adding a skill
 
-1. Create `skills/<ProductLine>/<id>/SKILL.md` (`<ProductLine>` is `TuyaOpen`
-   or `TuyaOS`; `<id>` must already carry the matching `tuyaopen-` / `tuyaos-`
-   prefix — see the collision note under [Layout](#layout)). Frontmatter:
+1. Create `skills/TuyaOpen/<id>/SKILL.md` (`<id>` must already carry the
+   `tuyaopen-` prefix — see the collision note under [Layout](#layout)).
+   Frontmatter:
    `name`, `description` — include Chinese keywords so retrieval works in both
    languages — `license`, `compatibility`. Put helper scripts in `scripts/`
    and long-form docs in `references/`.
@@ -216,9 +220,9 @@ fields are never enumerated, so shipped builds ignore it silently.
 
    `name` / `summary` / `whenToUse` are required in **both** `en` and `zh-CN`.
    `--surface` is the semantic capability surface (`embedded` / `cloud` /
-   `miniapp`) — pick it independently of `<ProductLine>`; it no longer needs to
-   agree with any path segment. Set `sdks: ["tuyaos"]` only for TuyaOS-specific
-   skills — omitted means `["tuyaopen"]`. `version` defaults to `1.0.0`
+   `miniapp`) — it does not need to agree with any path segment. Leave `sdks`
+   omitted; the default `["tuyaopen"]` is the only legal value and the
+   validator enforces it. `version` defaults to `1.0.0`
    (`--skill-version` to override).
 3. Editing an **existing** skill's payload? Bump that item's `version` — see
    [`version`](#version--per-skill-payload-version) above. CI fails the PR
@@ -275,8 +279,9 @@ reorg. (Before 2026-08-14, the source tree nested three or four levels deep
 under a capability surface — `skills/embedded/tuyaopen/build` — and the `id`
 had to be looked up separately because it wasn't derivable from the directory
 name; `skills/miniapp/smart-panel-dev` installed as `smart-panel-dev`, for
-example. That indirection is gone: every directory name under `TuyaOpen/` or
-`TuyaOS/` is already the installed name.)
+example. That indirection is gone: every directory name under `TuyaOpen/` is
+already the installed name — and `smart-panel-dev` itself became
+`tuyaopen-miniapp-panel-dev`, keeping the old name as an `aliases` entry.)
 
 ## History: TuyaOpen-dev-skills
 

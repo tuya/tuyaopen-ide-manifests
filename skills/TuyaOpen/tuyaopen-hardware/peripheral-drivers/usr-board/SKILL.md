@@ -333,6 +333,9 @@ idf_component_set_property(${COMPONENT_NAME} WHOLE_ARCHIVE ON)
 - `REQUIRES tuyaos_adapter` makes ALL TuyaOpen public headers resolvable (tkl/tal/tdl,
   including the umbrella `tal_api.h`). Add every ESP-IDF component your driver includes
   (`esp_lcd`, `driver`, `esp_codec_dev`, `esp_lcd_touch_*`, …).
+  `tuyaos_adapter` is the TuyaOpen SDK's own porting-layer component
+  (`platform/<chip>/tuyaos_adapter/`) — a historical name, unrelated to any
+  other product. It must be spelled exactly this way or the link fails.
 - `WHOLE_ARCHIVE ON` is **mandatory** here (see keep-alive below).
 
 ### Register + call it (keep-alive — mandatory)

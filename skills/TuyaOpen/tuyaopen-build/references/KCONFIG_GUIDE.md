@@ -92,5 +92,5 @@ Root CMakeLists.txt
 4. CMake generates build files in `.build/` using `ninja`.
 5. Root `CMakeLists.txt` scans `src/` via `list_components()` — every subdirectory with its own `CMakeLists.txt` becomes an SDK component automatically.
 6. Board-level code from `boards/<PLATFORM>/<BOARD>/CMakeLists.txt` is included.
-7. Application code from the project's `CMakeLists.txt` is built as `tuyaapp` and linked against the `tuyaos` static library.
+7. Application code from the project's `CMakeLists.txt` is built as `tuyaapp` and linked against the SDK's aggregate static library. That library is named `tuyaos` — `set(COMPONENTS_ALL_LIB "tuyaos")` in the TuyaOpen SDK's own root `CMakeLists.txt`. It is TuyaOpen's artefact name, historical and unrelated to any other product; you will see it in link errors, so don't "correct" it.
 8. Final binaries go to `.build/bin/`.

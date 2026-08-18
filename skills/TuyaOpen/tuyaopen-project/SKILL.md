@@ -135,10 +135,15 @@ Flow:
 Generated project structure:
 ```
 my_app/
-├── CMakeLists.txt    # collects src/, include/, links against tuyaos
+├── CMakeLists.txt    # collects src/, include/, links the SDK's aggregate lib
 └── src/
     └── tuya_app_main.c
 ```
+
+The SDK's aggregate static library is named `tuyaos`
+(`set(COMPONENTS_ALL_LIB "tuyaos")` in the TuyaOpen SDK's root
+`CMakeLists.txt`) — a historical TuyaOpen artefact name, unrelated to any other
+product. It shows up in link errors, so don't "correct" it.
 
 **After creation — next steps:**
 1. `cd my_app`

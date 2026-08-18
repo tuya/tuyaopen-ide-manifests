@@ -182,6 +182,21 @@ IDE startup
   is what lights the "this page has an update" dot in the IDE; leaving it
   untouched means an already-synced IDE never tells the user anything changed.
   Refresh that domain's `publishedAt` in the same PR.
+
+  Enforced since 2026-08-17 by `scripts/check-domain-version-bumps.py`
+  (workflow `validate-domains.yml`) — run it before opening the PR:
+
+  ```bash
+  python3 scripts/check-domain-version-bumps.py                     # structure only
+  python3 scripts/check-domain-version-bumps.py --base-ref main     # + bump rule
+  ```
+
+  It was unenforced until then, and the rule was simply not followed: six
+  commits changed 439 files under `skills/` while `manifests.skills.version`
+  stayed at the `1.0.0` that shipped with `v1.0.0`. The check also fails on a
+  registry entry whose `url` is missing or whose `domain` field disagrees with
+  its key — the IDE's `cacheIntegrity()` refuses to start on either, so those
+  are startup failures rather than tidiness.
 - **Schema bump** — bump the top-level `schemaVersion` and include a
   short migration note in the PR description.
 - **Release** — add a [`CHANGELOG.md`](./CHANGELOG.md) entry, then tag the

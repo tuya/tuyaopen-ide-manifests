@@ -54,10 +54,12 @@ same operation under two group names** — verified against
 `src/cli/commands/library.ts` / `src/cli/commands/ecosystem.ts`, both call
 `installEcosystemLibrary()` with identical parameters. Use whichever noun
 reads better; there is no behavioral difference. `tuyaopen library list`,
-however, is **not** the project-dependency inventory — it lists the TuyaOS
-platform sub-SDKs (LVGL, mbedtls, …) bundled with the SDK itself, a different
-on-disk layer from `.tuyaopen/dependencies.lock.json`. Use `tuyaopen
-dependency list` to see what this project has pulled in.
+however, is **not** the project-dependency inventory — it lists the **TuyaOpen
+platform sub-SDKs** from the SDK's own `platform/platform_config.yaml`
+(the TuyaOpen core repo plus its per-chip platform repos: `TuyaOpen-T2`,
+`TuyaOpen-T3`, `TuyaOpen-ubuntu`, T5AI, ESP32 …), a different on-disk layer
+from `.tuyaopen/dependencies.lock.json`. Use `tuyaopen dependency list` to see
+what this project has pulled in.
 
 `ecosystem search`/`dependency list` are read-only. `ecosystem install`,
 `library install`, and `dependency add` are **P2** (need `--yes` +

@@ -1,13 +1,14 @@
 # Intent → skill routing table
 
-Built from `tuyaopen skills list --json` — **30 catalogued skills** as of
-2026-08-15, `tuyaopen-shared` and `tuyaopen-skill-maker` among them. (This
+Built from `tuyaopen skills list --json` — **28 catalogued skills** as of
+2026-08-17, `tuyaopen-shared` and `tuyaopen-skill-maker` among them. (This
 line previously read "29 … plus the two foundation skills this reorg adds —
 31 total", which double-counted: those two were registered in `index.json` in
-the same reorg, so they are inside the catalogue count, not additions to it.)
-Grouped by intent, not
-by the on-disk `TuyaOpen/` vs `TuyaOS/` product-line split (see that
-distinction in skill `tuyaopen-skill-maker`).
+the same reorg, so they are inside the catalogue count, not additions to it.
+It then read 30, before the catalogue narrowed to TuyaOpen only.) Grouped by
+intent, not by `surface` — a `tuyaopen-miniapp-*` skill has surface
+`"miniapp"` but can be the right answer to an embedded-flavoured question, and
+vice versa.
 
 This table is the **single** place skill-to-skill handoff is spelled out.
 Every other skill points here instead of naming siblings directly — see
@@ -31,7 +32,6 @@ Every other skill points here instead of naming siblings directly — see
 | Skill id | Use when |
 |---|---|
 | `tuyaopen-build` | Compiling a TuyaOpen (embedded) project, Kconfig/menuconfig, build errors, running the LINUX ELF output |
-| `tuyaos-build` | Building/cleaning a TuyaOS app via `build_app.sh`, wiring vendor `.c`/`.h` into `apps/*/local.mk` |
 
 ## Flash / serial tooling
 
@@ -64,7 +64,6 @@ Every other skill points here instead of naming siblings directly — see
 | Skill id | Use when |
 |---|---|
 | `tuyaopen-hardware` | TuyaOpen (TDL-layer) peripheral code generation — display, camera, IMU, LED, button, joystick, PMIC, any board hardware; "vibe coding" requests |
-| `tuyaos-hardware-vibe-coding` | TuyaOS (`tkl_*`/`tal_*`) peripheral + connectivity code generation — GPIO/I2C/PWM/ADC/SPI/timer/watchdog/mic/speaker/DVP, Wi-Fi, BLE |
 
 ## Dependencies & ecosystem
 

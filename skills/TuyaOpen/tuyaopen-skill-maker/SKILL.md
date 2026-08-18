@@ -2,14 +2,14 @@
 name: tuyaopen-skill-maker
 description: >-
   How to author or edit a skill in this catalogue: frontmatter contract, id
-  naming rules (product-line prefix, no slashes), TuyaOpen vs TuyaOS
-  placement, the Shortcuts-table rule (command names only, never flag lists),
-  progressive disclosure into references/, how to word an out-of-scope
-  handoff, index.json registration fields, version-bump rules, and local
-  validation commands. Use when adding a new skill, editing an existing
-  SKILL.md, or registering an item in skills/index.json.
-  如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则（产品线前缀、
-  不含斜杠）、TuyaOpen 与 TuyaOS 归属、Shortcuts 表规则（只写命令名不写 flag
+  naming rules (tuyaopen- prefix, no slashes), where the payload goes, the
+  Shortcuts-table rule (command names only, never flag lists), progressive
+  disclosure into references/, how to word an out-of-scope handoff,
+  index.json registration fields, version-bump rules, and local validation
+  commands. Use when adding a new skill, editing an existing SKILL.md, or
+  registering an item in skills/index.json.
+  如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则（tuyaopen-
+  前缀、不含斜杠）、载荷放在哪里、Shortcuts 表规则（只写命令名不写 flag
   清单）、references/ 渐进披露、"超出本技能范围"的写法、index.json 注册字段、
   version 升号规则、本地校验命令。新增技能、修改现有 SKILL.md 或注册
   index.json 条目时使用。
@@ -43,7 +43,7 @@ compatibility:
 ```
 
 - `name` **must equal** the skill's `id`, which **must equal** the payload
-  directory name (`skills/<ProductLine>/<id>/`). Since the 2026-08-14 reorg
+  directory name (`skills/TuyaOpen/<id>/`). Since the 2026-08-14 reorg
   all three are mechanically the same string — getting them out of sync is a
   typo away, not a structural necessity, so double-check it.
 - `description` carries **both** languages in one field (unlike the
@@ -62,7 +62,7 @@ compatibility:
 
 ## 2. id naming rules
 
-- The `id` **is** the second path segment: `skills/<ProductLine>/<id>/SKILL.md`.
+- The `id` **is** the second path segment: `skills/TuyaOpen/<id>/SKILL.md`.
   No nesting deeper than that — a sub-skill bundled inside a parent (e.g.
   `tuyaopen-hardware/peripheral-drivers/onchip-gpio/`) is fine, but it is not
   separately indexed and does not get its own top-level `<id>` directory.
@@ -70,40 +70,43 @@ compatibility:
   exactly one level deep and silently skips anything nested further — a
   slash-bearing id like the pre-reorg `miniapp/ray-common` would install
   invisibly there.
-- **Must carry the product-line prefix**: `tuyaopen-` under `TuyaOpen/`,
-  `tuyaos-` under `TuyaOS/`. This is not cosmetic: the **global** install hub
-  (`~/.cursor/skills/`, see skill `tuyaopen-shared` § 6) is the same directory
-  the community `npx skills` tool (vercel-labs/skills) installs into. An
-  unprefixed name (the pre-reorg `smart-panel-dev` is the example on record)
-  can collide with, and be silently overwritten by, an unrelated third-party
-  skill of the same name. The prefix is the whole defense.
+- **Must be `tuyaopen-` prefixed.** This is not cosmetic: the **global**
+  install hub (`~/.cursor/skills/`, see skill `tuyaopen-shared` § 6) is the
+  same directory the community `npx skills` tool (vercel-labs/skills) installs
+  into. An unprefixed name (the pre-reorg `smart-panel-dev` is the example on
+  record — it became `tuyaopen-miniapp-panel-dev` for exactly this reason, with
+  `smart-panel-dev` kept as an `aliases` entry) can collide with, and be
+  silently overwritten by, an unrelated third-party skill of the same name. The
+  prefix is the whole defense.
+- The same argument applies **one level down**, to bundled sub-skills, because
+  some hosts do not stop at the top level: Codex scans `$HOME/.agents/skills`
+  recursively and registers every nested `SKILL.md` as an independent skill, so
+  a sub-skill's `name` is a globally visible identifier there too. Hence the
+  `tuyaopen/<slug>` namespace form under `peripheral-drivers/` — measured
+  2026-08-17, when `peripheral-sd` was still announcing itself as
+  `SD Card Storage`.
 
-## 3. Product-line placement: `TuyaOpen/` vs `TuyaOS/`
+## 3. Where the payload goes
 
-Top level under `skills/` is **product line**, not capability surface:
+One layout, one level deep: **`skills/TuyaOpen/<id>/`**, and the directory name
+**is** the `id` (§ 2). `validate-skills-index.py` enforces both halves — the
+path must match `installPayload`, and every `skills/**/SKILL.md` directory must
+be referenced by an item in `index.json` (the orphan check), so a payload you
+forget to register fails the build rather than shipping unreachable.
 
-- `TuyaOpen/` — everything for the TuyaOpen SDK track, **including** its
-  miniapp/panel skills (`tuyaopen-miniapp-*` skills live under `TuyaOpen/`
-  even though their `surface` field is `"miniapp"` — `surface` and product
-  line are orthogonal fields, see `skills/README.md`'s Layout section).
-- `TuyaOS/` — the TuyaOS SDK track (`tuyaos-build`,
-  `tuyaos-hardware-vibe-coding`).
+`surface` (`embedded` / `cloud` / `miniapp`) is a **browsing filter, not a
+path**: a `tuyaopen-miniapp-*` skill has `surface: "miniapp"` and still lives at
+`skills/TuyaOpen/<id>/` like everything else. Do not try to encode `surface`,
+`group`, or anything else into the directory tree — the pre-2026-08-14 layout
+did exactly that and it is why ids used to carry slashes.
 
-**A `tuyaos`-only skill (`sdks: ["tuyaos"]`, no `"tuyaopen"`) never reaches the
-TuyaOpen IDE's Skills page at all** — `sdkAppliesToItem()`
-(`src/manifests/manifestsTypes.ts` in the IDE repo) drops any item whose
-`sdks` doesn't include the build's `ACTIVE_SDK` (`'tuyaopen'` for this IDE)
-*before* the webview ever sees it; `skillsFlow.ts` applies that filter at
-manifest-hydrate time and logs how many were dropped. This filtering is
-**IDE-webview-only** — the `tuyaopen skills list --json` CLI command does not
-apply it and lists all items (including `tuyaos-build` /
-`tuyaos-hardware-vibe-coding`) regardless of `sdks`. So a `TuyaOS/`-prefixed,
-`tuyaos`-only skill still validates, ships in the package, and is
-discoverable via the CLI, but a user browsing the IDE's own Skills sidebar
-page will not see it.
-
-Pick `<ProductLine>` by which SDK the skill's instructions are actually
-written against — not by guessing from `surface`.
+`sdks` is an applicability flag, not a placement rule. It defaults to
+`["tuyaopen"]` when omitted, and every item in this catalogue is
+`["tuyaopen"]`; each consumer applies its own SDK gate at the point it ingests
+the manifest (`sdkAppliesToItem()` — `skillsFlow.ts:179` for the IDE,
+`cli/commands/skills.ts:161` for the CLI), so an item the gate rejects is not
+"hidden" downstream, it never enters the catalogue at all. There is no reason to
+set the field by hand today; omit it.
 
 ## 4. Shortcuts table rule: command names, never flag lists
 
@@ -174,7 +177,7 @@ mechanical fields for you:
 ```bash
 node tools/manifest-gen/bin/manifest-gen.js skills add <id> \
   --surface embedded --order <n> \
-  --payload <ProductLine>/<id> --local-path skills/<ProductLine>/<id> \
+  --payload TuyaOpen/<id> --local-path skills/TuyaOpen/<id> \
   --name-en "…" --name-zh "…" --summary-en "…" --summary-zh "…" \
   --when-en "…" --when-zh "…" --tags a b
 ```
@@ -183,17 +186,17 @@ Whether generated or hand-written, an item needs:
 
 | Field | Notes |
 |---|---|
-| `id` | Directory name, `tuyaopen-`/`tuyaos-` prefixed |
+| `id` | Directory name, `tuyaopen-` prefixed (§ 2) |
 | `version` | `x.y.z`; new skills start at `1.0.0` |
 | `order` | Manual integer/float, purely a display sort key — pick a value that puts it where it belongs; don't renumber existing items |
 | `name` / `summary` / `whenToUse` | Each an object with **both** `en` and `zh-CN` — required, not optional |
-| `surface` | One of `embedded` / `cloud` / `miniapp` — the capability surface, independent of product line (§ 3) |
+| `surface` | One of `embedded` / `cloud` / `miniapp` — a browsing filter, **not** a path segment (§ 3) |
 | `tags` | Array of free-form strings |
 | `defaultEnabled` | **Must be set explicitly.** `validate-skills-index.py` in this repo requires it present and boolean — omitting it fails validation outright. But the IDE's own runtime type (`SkillManifestItem.defaultEnabled` in the IDE's `src/manifests/manifestsTypes.ts`) declares it **optional**, and `defaultEnabledSkillIds()` filters on truthiness — so if this repo's validator were ever bypassed, an omitted field would silently read as `false` there too. Two independent reasons to always write `true` or `false` explicitly, never rely on omission. |
 | `installPayload` | Must equal `source.localPath` with the leading `skills/` stripped — the validator checks this exactly |
-| `source.localPath` | `skills/<ProductLine>/<id>` |
+| `source.localPath` | `skills/TuyaOpen/<id>` |
 | `related` (optional) | Ids of closely-coupled sibling skills only (not a routing mechanism — see § 6) |
-| `sdks` (optional) | `["tuyaopen"]` (default when omitted) or `["tuyaos"]` / both |
+| `sdks` (optional) | Applicability flag; defaults to `["tuyaopen"]` when omitted — omit it (§ 3) |
 
 ## 8. `version` bump rules
 
