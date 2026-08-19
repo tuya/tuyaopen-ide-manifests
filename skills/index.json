@@ -838,7 +838,7 @@
     },
     {
       "id": "tuyaopen-miniapp-panel-dev",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "group": "miniapp",
       "order": 99,
       "name": {

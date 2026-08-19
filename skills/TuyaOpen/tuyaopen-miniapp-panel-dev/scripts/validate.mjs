@@ -562,15 +562,23 @@ async function scanStyleScales(root, report) {
 
         // scale literals
         if (SKIP_LESS_FROM_SCALE_SCAN.has(e.name)) continue;
-        const d = line.match(/(^|[{;\s])([a-z-]+)\s*:\s*([^;{}]+)/);
-        if (!d) continue;
-        const bucket = bucketFor(d[2]);
-        if (!bucket) continue;
-        for (const tok of d[3].replace(/var\([^)]*\)/g, '').split(/\s+/)) {
-          const n = tok.match(/^([0-9]+(?:\.[0-9]+)?)rpx$/);
-          if (!n) continue;                       // 0 / % / auto / calc() / var() all skipped
-          const val = Number(n[1]);
-          if (!SCALE_RPX[bucket].has(val)) off[bucket].push(`${rel}:${i + 1}  ${d[2]}: ${tok}`);
+        // `matchAll` + /g, NOT `match`: a non-global match returns only the
+        // FIRST declaration on the line, so a one-line rule like
+        // `.card { border-radius: 26rpx; padding: 18rpx; }` had its padding
+        // silently skipped while the identical pair written across two lines
+        // was flagged. Measured before the fix, not hypothesised.
+        // The `\s` inside the leading delimiter class is what lets successive
+        // matches work: the previous match stops at `;`, and the space after
+        // it becomes the next match's delimiter.
+        for (const d of line.matchAll(/(^|[{;\s])([a-z-]+)\s*:\s*([^;{}]+)/g)) {
+          const bucket = bucketFor(d[2]);
+          if (!bucket) continue;
+          for (const tok of d[3].replace(/var\([^)]*\)/g, '').split(/\s+/)) {
+            const n = tok.match(/^([0-9]+(?:\.[0-9]+)?)rpx$/);
+            if (!n) continue;                     // 0 / % / auto / calc() / var() all skipped
+            const val = Number(n[1]);
+            if (!SCALE_RPX[bucket].has(val)) off[bucket].push(`${rel}:${i + 1}  ${d[2]}: ${tok}`);
+          }
         }
       }
     }
