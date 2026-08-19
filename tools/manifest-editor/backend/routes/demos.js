@@ -5,14 +5,20 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
-// SDK applicability — optional array; omitted ⇒ ['tuyaopen'] (default). Returns a
-// deduped subset of known SDK ids, or undefined when empty/absent (drop field).
+// SDK applicability — REQUIRED, with no default: an entry naming no line is
+// hidden from both IDE product lines with no user-visible error (see
+// scripts/sdk_applicability.py). Returns a deduped subset of known ids, or
+// undefined when nothing valid was submitted — which is now a 400, not a
+// silently dropped field.
 const SDKS = ['tuyaopen', 'tuyaos'];
 function normalizeSdks(v) {
   if (!Array.isArray(v)) return undefined;
   const arr = [...new Set(v.filter((s) => SDKS.includes(s)))];
   return arr.length ? arr : undefined;
 }
+const SDKS_REQUIRED_ERROR =
+  `sdks must name at least one product line (${SDKS.join(' / ')}) — an entry that names ` +
+  'none is hidden from every IDE build, in both product lines, with no error shown to the user';
 
 // Build the demo detail object. Holds the source path + build config + docs;
 // identity, classification and tags stay in the index. `configs` is an array
@@ -151,6 +157,11 @@ router.post('/', asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, error: 'configs must be an array of board targets' });
   }
 
+  const normalizedSdks = normalizeSdks(sdks);
+  if (!normalizedSdks) {
+    return res.status(400).json({ success: false, error: SDKS_REQUIRED_ERROR });
+  }
+
   const demos = await manifestLoader.loadDemos();
   if (demos.items.some(d => d.id === id)) {
     return res.status(409).json({ success: false, error: `Demo "${id}" already exists` });
@@ -167,7 +178,7 @@ router.post('/', asyncHandler(async (req, res) => {
     boards: boards || [],
     ...(Array.isArray(platforms) && platforms.length ? { platforms } : {}),
     compatibilityType: compatibilityType || 'universal',
-    ...(normalizeSdks(sdks) ? { sdks: normalizeSdks(sdks) } : {}),
+    sdks: normalizedSdks,
     detailUrl: `demos/${demoType}/${id}.json`,
     publish: publish !== false,
   };
@@ -211,11 +222,15 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   for (const key of indexFields) {
     if (updates[key] !== undefined) item[key] = updates[key];
   }
-  // SDK applicability — empty/invalid clears it (defaults back to tuyaopen).
+  // SDK applicability — a submitted value must still name a line; clearing it
+  // is what used to hide the demo from both products. An update that does not
+  // mention `sdks` leaves the stored value alone.
   if (updates.sdks !== undefined) {
     const arr = normalizeSdks(updates.sdks);
-    if (arr) item.sdks = arr;
-    else delete item.sdks;
+    if (!arr) {
+      return res.status(400).json({ success: false, error: SDKS_REQUIRED_ERROR });
+    }
+    item.sdks = arr;
   }
   // Drop the scope field that no longer applies after a scope change.
   const ct = updates.compatibilityType !== undefined ? updates.compatibilityType : item.compatibilityType;

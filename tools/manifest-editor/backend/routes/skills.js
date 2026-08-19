@@ -92,17 +92,24 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     }
   }
 
-  // sdks — optional SDK-applicability flag. Omitted/empty ⇒ default (drop field).
+  // sdks — REQUIRED, with no default: a skill naming no line is hidden from both
+  // IDE product lines *and* never downloaded, with no user-visible error (see
+  // scripts/sdk_applicability.py). Clearing the field used to be how that
+  // happened; an update that does not mention `sdks` leaves the stored value be.
   if (u.sdks !== undefined) {
     const arr = cleanStringArray(u.sdks);
-    if (arr && arr.length) {
-      if (!arr.every((s) => SDKS.includes(s))) {
-        return res.status(400).json({ success: false, error: `sdks must be a subset of ${SDKS.join(', ')}` });
-      }
-      item.sdks = arr;
-    } else {
-      delete item.sdks;
+    if (!arr || !arr.length) {
+      return res.status(400).json({
+        success: false,
+        error:
+          `sdks must name at least one product line (${SDKS.join(' / ')}) — a skill that names ` +
+          'none is hidden from every IDE build and never installed, with no error shown to the user',
+      });
     }
+    if (!arr.every((s) => SDKS.includes(s))) {
+      return res.status(400).json({ success: false, error: `sdks must be a subset of ${SDKS.join(', ')}` });
+    }
+    item.sdks = arr;
   }
 
   await manifestLoader.saveSkillsIndex(skills);

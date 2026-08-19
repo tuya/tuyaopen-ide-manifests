@@ -3,6 +3,10 @@ import { loadJson, saveJson } from '../utils/json-file.js'
 
 const INDEX_PATH = fileURLToPath(new URL('../../../../skills/index.json', import.meta.url))
 
+// Product lines a skill may apply to. Same vocabulary as
+// scripts/sdk_applicability.py, which is the gate that enforces it.
+const SDKS = ['tuyaopen', 'tuyaos']
+
 async function load() { return loadJson(INDEX_PATH) }
 async function save(data) { return saveJson(INDEX_PATH, data) }
 
@@ -88,6 +92,7 @@ export function registerSkillsCommands(program) {
     .option('--commands <cmds...>', '')
     .option('--enabled', '设为 defaultEnabled=true', false)
     .option('--skill-version <semver>', '技能载荷版本 x.y.z（默认 1.0.0，内容变更时须递增）', '1.0.0')
+    .option('--sdks <ids...>', '适用产品线（tuyaopen | tuyaos），默认 tuyaopen', ['tuyaopen'])
     .requiredOption('--local-path <path>', 'source.localPath，形如 skills/<surface>/<name>')
     .action(async (id, opts) => {
       const data = await load()
@@ -95,6 +100,16 @@ export function registerSkillsCommands(program) {
       if (items.some(s => s.id === id)) { console.error(`Already exists: ${id}`); process.exit(1) }
       if (!/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(opts.skillVersion)) {
         console.error(`--skill-version must be x.y.z, got: ${opts.skillVersion}`); process.exit(1)
+      }
+      // sdks is required by scripts/sdk_applicability.py and has no default in
+      // the schema: a skill naming no line is hidden from both product lines and
+      // never installed. Defaulted here rather than left out, because "forgot the
+      // flag" must not be the same thing as "belongs to nothing".
+      const sdks = [...new Set(opts.sdks)]
+      const unknownSdks = sdks.filter(s => !SDKS.includes(s))
+      if (!sdks.length || unknownSdks.length) {
+        console.error(`--sdks must name one or more of: ${SDKS.join(', ')} (got: ${opts.sdks.join(', ') || '<empty>'})`)
+        process.exit(1)
       }
       // version is required by scripts/validate-skills-index.py: it is what lets
       // the IDE tell an upstream update apart from a user's local edit.
@@ -106,6 +121,7 @@ export function registerSkillsCommands(program) {
       if (opts.tags?.length) entry.tags = opts.tags
       if (opts.commands?.length) entry.commands = opts.commands
       entry.defaultEnabled = opts.enabled
+      entry.sdks = sdks
       entry.installPayload = opts.payload
       // localPath is the only supported source: skill payloads live in this repo.
       entry.source = { localPath: opts.localPath }

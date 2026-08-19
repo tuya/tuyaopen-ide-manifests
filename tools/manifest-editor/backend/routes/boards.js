@@ -6,14 +6,20 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
-// SDK applicability — optional array; omitted ⇒ ['tuyaopen'] (default). Returns
-// a deduped subset of known SDK ids, or undefined when empty/absent (drop field).
+// SDK applicability — REQUIRED, and there is no default to fall back on: an
+// entry naming no line is hidden from both IDE product lines with no
+// user-visible error (see scripts/sdk_applicability.py). This used to drop the
+// field when nothing valid came in, which made "author ticked no checkbox" the
+// easiest way to publish an invisible board.
 const SDKS = ['tuyaopen', 'tuyaos'];
 function normalizeSdks(v) {
   if (!Array.isArray(v)) return undefined;
   const arr = [...new Set(v.filter((s) => SDKS.includes(s)))];
   return arr.length ? arr : undefined;
 }
+const SDKS_REQUIRED_ERROR =
+  `sdks must name at least one product line (${SDKS.join(' / ')}) — an entry that names ` +
+  'none is hidden from every IDE build, in both product lines, with no error shown to the user';
 
 // Resolve a board's platform reference (its `platformId` field — which holds a
 // platform *variant id*, e.g. "gd32vw553") to that platform's detail. The detail
@@ -118,7 +124,10 @@ router.post('/', asyncHandler(async (req, res) => {
   };
 
   const sdks = normalizeSdks(req.body.sdks);
-  if (sdks) newBoard.sdks = sdks;
+  if (!sdks) {
+    return res.status(400).json({ success: false, error: SDKS_REQUIRED_ERROR });
+  }
+  newBoard.sdks = sdks;
 
   // Validate ID uniqueness
   const boards = await manifestLoader.loadBoards();
@@ -206,11 +215,15 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     }
   }
 
-  // SDK applicability — empty/invalid clears it (defaults back to tuyaopen).
+  // SDK applicability — a submitted value must still name a line. Rejecting is
+  // the point: clearing the field here is what silently un-published a board.
+  // (An update that does not mention `sdks` at all leaves the stored value be.)
   if (updates.sdks !== undefined) {
     const arr = normalizeSdks(updates.sdks);
-    if (arr) board.sdks = arr;
-    else delete board.sdks;
+    if (!arr) {
+      return res.status(400).json({ success: false, error: SDKS_REQUIRED_ERROR });
+    }
+    board.sdks = arr;
   }
 
   // If the SDK platform group changed, the detail file moves to the new group's

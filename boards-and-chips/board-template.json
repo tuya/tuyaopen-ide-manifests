@@ -14,7 +14,7 @@
     "zh-CN": "<制造商中文名>"
   },
   "platformId": "<platform-id: t5ai | ...>",
-  "sdks": ["<which SDK(s) this board applies to: tuyaopen | tuyaos; omit the field entirely = tuyaopen only>"],
+  "sdks": ["<REQUIRED, no default: which product line(s) this board applies to — tuyaopen | tuyaos | both. Naming none hides the board from every IDE build, in both lines, with no error>"],
   "image": {
     "url": "<path or URL to board image, e.g. /images/board-id-500x500.jpg>",
     "alt": {

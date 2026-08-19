@@ -1,0 +1,41 @@
+name: SDK Applicability Check
+
+# Every catalogue entry must name the product line(s) it applies to. An entry
+# whose `sdks` is missing or empty is hidden from BOTH IDE product lines (from
+# IDE 1.0.1 on) with no user-visible error, so the mistake is invisible until
+# someone asks why a board they added never appeared. See
+# scripts/sdk_applicability.py for the rule and why it has no default.
+
+on:
+  pull_request:
+    paths:
+      - "platforms/index.json"
+      - "boards-and-chips/index.json"
+      - "demos/index.json"
+      - "skills/index.json"
+      - "scripts/sdk_applicability.py"
+      - "scripts/validate-sdk-applicability.py"
+      - ".github/workflows/validate-sdk-applicability.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "platforms/index.json"
+      - "boards-and-chips/index.json"
+      - "demos/index.json"
+      - "skills/index.json"
+      - "scripts/sdk_applicability.py"
+      - "scripts/validate-sdk-applicability.py"
+      - ".github/workflows/validate-sdk-applicability.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate sdks on every catalogue entry
+        run: python3 scripts/validate-sdk-applicability.py

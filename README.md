@@ -101,15 +101,25 @@ group — `manufacturer` wins whenever both are present.
   `{ "en": …, "zh-CN": … }` over a single-language string — a bare `"微雪"`
   shows up as Chinese for English users, and the same vendor spelled two
   ways reads as two vendors.
-- **SDK applicability** (`sdks`) — optional array marking which SDK(s) an
-  entry applies to, on `boardsAndChips` / `demos` / `skills` items.
-  Values: `"tuyaopen"`, `"tuyaos"`; an entry may list one or both
-  (`["tuyaopen", "tuyaos"]`). **Omitted ⇒ `["tuyaopen"]`** — every
-  pre-existing entry is TuyaOpen-only, so existing data needs no
-  back-fill; only TuyaOS-capable entries set the field explicitly.
-  Forward-compatible: an IDE predating the field ignores it (shows
-  everything); an SDK-aware IDE filters the catalogue by the active SDK.
-  `platforms` items do **not** carry this field.
+- **SDK applicability** (`sdks`) — **required** array naming which SDK(s) an
+  entry applies to, on every `platforms` / `boardsAndChips` / `demos` /
+  `skills` item. Values: `"tuyaopen"`, `"tuyaos"`; an entry may list one or
+  both (`["tuyaopen", "tuyaos"]`).
+  **There is no default.** An entry that names no line — field missing or an
+  empty array — is a data error: an SDK-aware IDE (1.0.1 and later) hides it
+  from **both** product lines, and the only trace is a line in the IDE's log
+  that no end user sees. So the failure mode is "the board I added never
+  appeared", with nothing pointing back at the manifest. CI enforces this:
+  `scripts/validate-sdk-applicability.py` runs on every PR touching a domain
+  index and again before a release is packaged.
+  Earlier text here said "Omitted ⇒ `["tuyaopen"]`"; the IDE never implemented
+  that, and the contradiction was resolved against both readings on 2026-08-19
+  — see the IDE repo's finding CY. Nothing needs back-filling: every entry has
+  carried the field since `v0.0.18`.
+  Still forward-compatible: an IDE predating the field ignores it and shows
+  everything; a pre-`v0.0.18` catalogue (where *no* entry carries it) is
+  recognised as such by IDE ≥ 1.0.1 and treated as TuyaOpen content rather
+  than being hidden wholesale.
 - **Platform pinout `functions` vs `caps`** — in a platform detail file each
   `pinout[]` entry splits its labels into two arrays: `functions[]` is a
   **controlled, selection-only** vocabulary of editor-selectable *routing*

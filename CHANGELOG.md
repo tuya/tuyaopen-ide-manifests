@@ -5,6 +5,49 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 [`registry.json`](./registry.json) and are what drive the IDE's per-page
 "update available" indicator.
 
+## [Unreleased]
+
+### Changed
+
+- **`sdks` is now required on every catalogue entry, with no default.** All four
+  domains (`platforms`, `boardsAndChips`, `demos`, `skills`) must name the
+  product line(s) an entry applies to. Previously this README documented
+  "Omitted ⇒ `["tuyaopen"]`" while the IDE admitted an unmarked entry on *every*
+  line — a contradiction that only became reachable when the TuyaOS line made
+  `activeSdk` something other than `tuyaopen`, and that was resolved on
+  2026-08-19 against both readings: from IDE 1.0.1 on, an entry naming no line
+  is **hidden from both products**, and the only trace is a log line no end user
+  sees. No data changes — every entry has carried the field since `v0.0.18`;
+  what changes is that nothing can quietly lose it again.
+
+### Added
+
+- **CI gate `scripts/validate-sdk-applicability.py`** (workflow
+  `SDK Applicability Check`) — checks all four domain indexes on every PR and
+  push touching them, and again in `release.yml` before the tarball is built,
+  because a tag can point at a commit that never saw PR checks. The rule lives
+  in `scripts/sdk_applicability.py` and is imported by
+  `validate-skills-index.py` too, so the two entry points cannot drift. Unit
+  tests: `tests/scripts/test_sdk_applicability.py`.
+
+### Fixed
+
+- **The producers can no longer write an unmarked entry**, which is where these
+  would have come from:
+  - `tools/manifest-editor` **dropped** `sdks` when an author ticked no
+    checkbox (boards / demos / skills) or wrote `"sdks": []` verbatim
+    (platforms) — one unticked box was enough to publish an invisible board, or
+    an invisible platform and with it every board grouped under it. All four
+    routes now answer `400` with the reason instead, on create and on update.
+  - `manifest-gen skills add` never wrote the field at all; it now takes
+    `--sdks` and defaults to `tuyaopen`, so "forgot the flag" is no longer the
+    same as "belongs to nothing".
+- **Documentation corrected in three places**: the README's `sdks` bullet (the
+  bogus default, and the claim that `platforms` items do not carry the field —
+  all 16 do, 5 of them TuyaOS-only), and the inline note in
+  `boards-and-chips/board-template.json` that told authors omitting the field
+  meant TuyaOpen-only.
+
 ## [1.0.0] - 2026-08-13
 
 First release paired with TuyaOpen IDE 1.0.0. All four domain versions are

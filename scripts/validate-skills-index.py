@@ -6,6 +6,8 @@ Checks (all local / deterministic, no network):
   - devSkillsRelease is optional and no longer published; when present its fields are checked
   - Each item has required fields with correct types
   - Every item carries a well-formed 'version' (x.y.z semver, numeric parts)
+  - Every item names its product line(s) in 'sdks' — required, no default
+    (shared rule: scripts/sdk_applicability.py)
   - Bilingual fields (name/summary/whenToUse) carry both 'en' and 'zh-CN'
   - 'id' is unique; 'surface' is one of the known surfaces
   - 'source' must be {localPath}; {devSkills + subpath} is rejected (dev-skills is archived)
@@ -26,10 +28,12 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from sdk_applicability import check_item_sdks  # noqa: E402
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SURFACES = {"embedded", "cloud", "miniapp"}
-# SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default).
-SDKS = {"tuyaopen", "tuyaos"}
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
 LANGS = ("en", "zh-CN")
 URL_RE = re.compile(r"^https?://[^\s]+$")
@@ -134,12 +138,11 @@ def check_item(item, index: int, seen_ids: set) -> None:
     if not is_str(item.get("installPayload")):
         err(f"{label}: 'installPayload' missing or not a non-empty string")
 
-    # Optional SDK applicability flag. Omitted ⇒ ["tuyaopen"]; when present
-    # it must be a non-empty array of known SDK ids.
-    sdks = item.get("sdks")
-    if sdks is not None:
-        if not isinstance(sdks, list) or not sdks or not all(s in SDKS for s in sdks):
-            err(f"{label}: 'sdks' when present must be a non-empty array of {sorted(SDKS)}, got {sdks!r}")
+    # SDK applicability. Required, with no default: an entry naming no line is
+    # hidden from both products. The rule itself lives in `sdk_applicability.py`
+    # so this and `validate-sdk-applicability.py` cannot drift apart.
+    for problem in check_item_sdks(item, index):
+        err(problem)
 
     check_source(label, item)
 

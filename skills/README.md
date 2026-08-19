@@ -170,8 +170,12 @@ fields are never enumerated, so shipped builds ignore it silently.
    ```
 
    `name` / `summary` / `whenToUse` are required in **both** `en` and `zh-CN`.
-   Set `sdks: ["tuyaos"]` only for TuyaOS-specific skills — omitted means
-   `["tuyaopen"]`. `version` defaults to `1.0.0` (`--skill-version` to override).
+   `sdks` is **required** and has no default — `--sdks` defaults to
+   `tuyaopen`, pass `--sdks tuyaos` or `--sdks tuyaopen tuyaos` instead when
+   the skill applies elsewhere. A skill naming no line is hidden from both
+   product lines *and* never installed, with nothing shown to the user; CI
+   rejects it (`scripts/validate-sdk-applicability.py`).
+   `version` defaults to `1.0.0` (`--skill-version` to override).
 3. Editing an **existing** skill's payload? Bump that item's `version` — see
    [`version`](#version--per-skill-payload-version) above. CI fails the PR
    otherwise.
@@ -180,13 +184,15 @@ fields are never enumerated, so shipped builds ignore it silently.
 5. Validate:
 
    ```bash
-   python3 scripts/validate-skills-index.py     # structure, paths, versions, no orphans
-   python3 -m pytest tests -q                   # skill + repo script unit tests
+   python3 scripts/validate-skills-index.py         # structure, paths, versions, no orphans
+   python3 scripts/validate-sdk-applicability.py    # every entry names its product line(s)
+   python3 -m pytest tests -q                       # skill + repo script unit tests
    ```
 
-Both run in CI (`validate-skills-index.yml`, `skills-tests.yml`), which
-additionally runs the version-bump check — that one needs the PR's base commit,
-so it has no standalone local invocation.
+All three run in CI (`validate-skills-index.yml`,
+`validate-sdk-applicability.yml`, `skills-tests.yml`), which additionally runs
+the version-bump check — that one needs the PR's base commit, so it has no
+standalone local invocation.
 
 ## Using these skills without the TuyaOpen IDE
 

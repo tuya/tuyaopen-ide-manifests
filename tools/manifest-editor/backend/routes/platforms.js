@@ -16,6 +16,21 @@ function detailUrlFor(platformId, id) {
   return `platforms/${platformId}/${id}.json`;
 }
 
+// SDK applicability — REQUIRED, with no default: an entry naming no line is
+// hidden from both IDE product lines with no user-visible error (see
+// scripts/sdk_applicability.py). This route used to accept whatever array came
+// in, so an author who ticked no checkbox published `"sdks": []` — an invisible
+// platform, and with it every board grouped under it.
+const SDKS = ['tuyaopen', 'tuyaos'];
+function normalizeSdks(v) {
+  if (!Array.isArray(v)) return undefined;
+  const arr = [...new Set(v.filter((s) => SDKS.includes(s)))];
+  return arr.length ? arr : undefined;
+}
+const SDKS_REQUIRED_ERROR =
+  `sdks must name at least one product line (${SDKS.join(' / ')}) — an entry that names ` +
+  'none is hidden from every IDE build, in both product lines, with no error shown to the user';
+
 // GET /api/platforms - list items, enriched (display-only) with arch read
 // from each detail file. Does not change stored index.json.
 router.get('/', asyncHandler(async (req, res) => {
@@ -63,6 +78,11 @@ router.post('/', asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, error: 'platformId must be lowercase kebab-case' });
   }
 
+  const normalizedSdks = normalizeSdks(sdks);
+  if (!normalizedSdks) {
+    return res.status(400).json({ success: false, error: SDKS_REQUIRED_ERROR });
+  }
+
   const platforms = await manifestLoader.loadPlatforms();
   if (!platforms.items) platforms.items = [];
   if (platforms.items.some((p) => p.id === id)) {
@@ -76,7 +96,7 @@ router.post('/', asyncHandler(async (req, res) => {
     summary: summary || {},
     ...(image ? { image } : {}),
     detailUrl: detailUrlFor(pid, id),
-    ...(Array.isArray(sdks) ? { sdks } : {}),
+    sdks: normalizedSdks,
     ...(published !== undefined ? { published } : {}),
   };
   platforms.items.push(newItem);
@@ -106,8 +126,14 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   const oldPid = item.platformId || item.id;
 
   const index = req.body.index || {};
+  // `sdks` gets validated rather than copied: the blind copy below would happily
+  // store the empty array the editor sends when no checkbox is ticked, which
+  // hides this platform — and every board grouped under it — from both products.
+  if (index.sdks !== undefined && !normalizeSdks(index.sdks)) {
+    return res.status(400).json({ success: false, error: SDKS_REQUIRED_ERROR });
+  }
   for (const key of INDEX_FIELDS) {
-    if (index[key] !== undefined) item[key] = index[key];
+    if (index[key] !== undefined) item[key] = key === 'sdks' ? normalizeSdks(index[key]) : index[key];
   }
   const newPid = item.platformId || item.id;
   // Keep detailUrl consistent with platformId/id.

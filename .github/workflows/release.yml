@@ -46,6 +46,14 @@ jobs:
           # never package an index that fails validation.
           python3 scripts/validate-skills-index.py
 
+      - name: Validate SDK applicability across all domains
+        run: |
+          # Same reason as above, for the one field whose absence is silent in
+          # the product: an entry that names no line in `sdks` is hidden from
+          # both IDE product lines, so shipping one means shipping a board or
+          # demo that nobody can see and no error explains.
+          python3 scripts/validate-sdk-applicability.py
+
       - name: Stage package contents
         run: |
           mkdir -p staging
