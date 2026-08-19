@@ -1,6 +1,6 @@
 # 如何写一个外设 vibe-coding skill
 
-这份指南记录了为 TuyaOpen tuyaopen-hardware 新增外设 skill 的完整流程与踩坑经验。
+这份指南记录了为 TuyaOpen tuyaopen-embedded-hardware 新增外设 skill 的完整流程与踩坑经验。
 目标读者：给某个外设（display / camera / audio / ir / ...）补一份 `peripheral-<x>/SKILL.md`
 并接入 vibe coding 路由的人。
 
@@ -116,7 +116,7 @@ skill 文件放好后，要让 vibe coding 在用户 prompt 命中关键词时�
    `{ name: 'peripheral-<x>', keywords: [/.../i] }`。**这是线上真正的路由**，必须改。
 2. **`scripts/vibe-test-runner.mjs`** 的 `SUB_SKILL_MATCH` —— 镜像同样的关键词。
 3. **`scripts/vibe-test-llm.mjs`** 的 `SUB_SKILL_MATCH` —— 镜像同样的关键词。
-4. **主 `tuyaopen-hardware/SKILL.md`** Step 4 的委派表 —— 加一行类型→skill 路径。
+4. **主 `tuyaopen-embedded-hardware/SKILL.md`** Step 4 的委派表 —— 加一行类型→skill 路径。
 5. **`peripheral-drivers/SKILL.md`** 的索引表 —— 加一行外设→skill+关键 API。
 
 关键词设计：

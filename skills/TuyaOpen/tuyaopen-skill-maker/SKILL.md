@@ -75,7 +75,7 @@ compatibility:
 
 - The `id` **is** the second path segment: `skills/TuyaOpen/<id>/SKILL.md`.
   No nesting deeper than that — a sub-skill bundled inside a parent (e.g.
-  `tuyaopen-hardware/peripheral-drivers/onchip-gpio/`) is fine, but it is not
+  `tuyaopen-embedded-hardware/peripheral-drivers/onchip-gpio/`) is fine, but it is not
   separately indexed and does not get its own top-level `<id>` directory.
 - **No slashes in the id.** `.claude/skills/` (Claude Code's loader) walks
   exactly one level deep and silently skips anything nested further — a
@@ -186,8 +186,8 @@ all — it gets the sentence the validator looks for instead, verbatim:
 
 > No `tuyaopen` CLI coverage
 
-(followed by the reason, in prose). `tuyaopen-add-board` and
-`tuyaopen-code-check` already use this heading; match their wording rather
+(followed by the reason, in prose). `tuyaopen-embedded-add-board` and
+`tuyaopen-embedded-code-check` already use this heading; match their wording rather
 than inventing a new one.
 
 ## 5. Writing a fallback
@@ -240,7 +240,7 @@ set is protected by an add-only contract snapshot (`cliSchemaDrift.test.ts` in
 the IDE repo) specifically so it can grow safely — a flag list copied into a
 skill's Markdown has no such protection and silently goes stale the moment the
 real command gains, renames, or (rarely, with an owner decision) drops a flag.
-The existing `tuyaopen-build` / `tuyaopen-project` skills follow this:
+The existing `tuyaopen-embedded-build` / `tuyaopen-embedded-project` skills follow this:
 they describe *what* a config subcommand does and route the reader to
 `tos.py config -h` for the current flag surface, never hardcoding it.
 
@@ -258,15 +258,15 @@ style review.
 Move anything that is "read this only if you're doing the deep version" into
 `references/<TOPIC>.md` and link it. Precedents in this catalogue:
 
-- `tuyaopen-build/references/KCONFIG_GUIDE.md` — the `select`/`depends on`/`if`
+- `tuyaopen-embedded-build/references/KCONFIG_GUIDE.md` — the `select`/`depends on`/`if`
   dependency mechanics, needed only when a config change interacts with
   Kconfig dependencies.
-- `tuyaopen-project/references/{TOS_COMMANDS.md,CONFIG_CLI.md}` — the
+- `tuyaopen-embedded-project/references/{TOS_COMMANDS.md,CONFIG_CLI.md}` — the
   full `tos.py` command table and non-interactive config CLI semantics.
 - `tuyaopen-shared/references/ROUTING.md` — the intent→skill routing table
   this skill's § 8 tells you to link to instead of copying.
 
-A helper script goes in `scripts/` (see `tuyaopen-env-setup/scripts/` for a
+A helper script goes in `scripts/` (see `tuyaopen-embedded-env-setup/scripts/` for a
 per-OS example: `.sh`/`.ps1`/`.bat` variants of the same check). Reference it
 by its **installed** path, not its source path:
 

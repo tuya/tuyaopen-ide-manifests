@@ -91,7 +91,7 @@ Full flags (baud, `--sdk-root`, `--product-id`, `--label`): `tuyaopen license
 § 5).
 
 **Serial port discovery still needs the SDK's own tool, not the `tuyaopen`
-CLI** — `tuyaopen device list-ports` (skill `tuyaopen-flash`) doesn't expose
+CLI** — `tuyaopen device list-ports` (skill `tuyaopen-embedded-flash`) doesn't expose
 the `usbSerial`/`usbInterface` grouping a dual-serial board needs to
 disambiguate flash vs. auth vs. log ports. See § *Serial port discovery*
 below, which uses `tyutool_cli list-ports --json` directly.
@@ -191,13 +191,13 @@ Before writing auth credentials over UART, identify the correct port:
    `Device or resource busy`. Stop the monitor, authorize at 115200, then reopen
    it at the log baud. On dual-serial boards you can leave the monitor running.
 
-4. On dual-serial boards, use skill `tuyaopen-diagnose` to capture logs in the
+4. On dual-serial boards, use skill `tuyaopen-embedded-diagnose` to capture logs in the
    background while the auth flow runs on the other port:
    ```bash
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py start -p <monitor-port>
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py start -p <monitor-port>
    # ... run auth on auth port ...
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py tail -n 100
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py stop
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py tail -n 100
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py stop
    ```
 
 ## IDE Ledger — Reporting Auth Back to the IDE

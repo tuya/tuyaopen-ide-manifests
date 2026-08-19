@@ -7,6 +7,52 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### 嵌入式技能加面名前缀:`tuyaopen-embedded-*`(2026-08-19)
+
+`embedded` 组 10 条技能的 id 与目录改名,与既有的 `tuyaopen-miniapp-*` 对称:
+
+| 旧 id | 新 id |
+|---|---|
+| `tuyaopen-build` | `tuyaopen-embedded-build` |
+| `tuyaopen-project` | `tuyaopen-embedded-project` |
+| `tuyaopen-dependency` | `tuyaopen-embedded-dependency` |
+| `tuyaopen-hardware` | `tuyaopen-embedded-hardware` |
+| `tuyaopen-flash` | `tuyaopen-embedded-flash` |
+| `tuyaopen-diagnose` | `tuyaopen-embedded-diagnose` |
+| `tuyaopen-add-board` | `tuyaopen-embedded-add-board` |
+| `tuyaopen-code-check` | `tuyaopen-embedded-code-check` |
+| `tuyaopen-env-setup` | `tuyaopen-embedded-env-setup` |
+| `tuyaopen-workflow-dev-loop` | `tuyaopen-embedded-dev-loop` |
+
+最后一条**没有**机械插入(`tuyaopen-embedded-workflow-dev-loop` 太长),`workflow-` 段去掉了;
+它原本就有 `tuyaopen-dev-loop` 这个别名在用。
+
+`cloud` 与 `core` 两组不动:`tuyaopen-cloud` 本身已带面名,而地基层是跨面的。
+
+**旧 id 全部进 `aliases[]`**,所以 `--ids tuyaopen-build` 仍解析到新技能。但**别名只做输入
+重定向**:已经装在项目里的旧目录不会自己改名。IDE 侧靠 `scanLegacySkillLayout` 的一键修复
+接住(主仓同 MR 让它认 `aliases`,此前会把旧目录报成 orphan);纯 CLI 用户需要自己删掉旧目录,
+或重装一次。
+
+payload 内容除交叉引用与 frontmatter `name:` 外未变,因此**未提升各技能的 `version`** ——
+按 `scripts/check-skill-version-bumps.py` 的规则,这些版本号自上次发布起从未打包过
+(v1.0.0 不含它们,内测 v0.0.9 根本没有 `version` 字段),属"in flight",可以在同一号下继续
+吸收改动。
+
+`skills/TuyaOS/` 下两处正文提到旧 id,**刻意未改** —— 那棵树不进产品,且有"不改动 TuyaOS"的
+约定在。
+
+### 修:版本号门禁自布局拆分起就没真跑过(2026-08-19)
+
+`scripts/check-skill-version-bumps.py` 的 `--head-index` 默认值仍指向拆分前的
+`skills/index.json`,而它的 `--help` 文案**已经写成了新路径** —— 于是凡是基于拆分后 main 的
+PR,这个检查都以 `✗ index file not found` 退出 1,"让 `version` 可信"的那道门自此没有执行过。
+错得难被发现,恰恰因为 help 是对的:读 `--help` 得到的是关于代码的错误信息。
+
+同时修 `.github/workflows/validate-skills-index.yml` 里两处 `git show`:改为先试
+`skills/TuyaOpen/index.json`、再回落 `skills/index.json`。回落是必须的 —— 上次发布的 tag
+仍是扁平布局,只写一个路径就会静默产出一个空基线,而空基线意味着"什么都不用 bump"。
+
 ### 目录布局:两条产品线显式分离(2026-08-19)
 
 `skills/index.json` → **`skills/TuyaOpen/index.json`**;TuyaOS 的 payload 从

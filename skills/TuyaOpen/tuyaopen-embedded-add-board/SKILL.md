@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-add-board
+name: tuyaopen-embedded-add-board
 description: >-
   Add new board (BSP) support to TuyaOpen, including board directory structure,
   Kconfig, drivers, and config files. No `tuyaopen` CLI command covers this —
@@ -31,7 +31,7 @@ Adding a board via this skill does not register it there, and it doesn't
 need to — `tos.py config choice -c <BOARD_NAME>` picks it straight from the
 SDK checkout regardless of manifest state.
 
-> **SDK root:** All paths and commands in this skill are relative to the TuyaOpen SDK root. After activating the environment, the SDK root is available as `$OPEN_SDK_ROOT` (Linux/macOS/PowerShell) or `%OPEN_SDK_ROOT%` (Windows CMD). Navigate there with `cd $OPEN_SDK_ROOT` before running any commands below. See skill `tuyaopen-env-setup` if not yet activated.
+> **SDK root:** All paths and commands in this skill are relative to the TuyaOpen SDK root. After activating the environment, the SDK root is available as `$OPEN_SDK_ROOT` (Linux/macOS/PowerShell) or `%OPEN_SDK_ROOT%` (Windows CMD). Navigate there with `cd $OPEN_SDK_ROOT` before running any commands below. See skill `tuyaopen-embedded-env-setup` if not yet activated.
 
 Reference: `$OPEN_SDK_ROOT/boards/add_new_board.md`
 

@@ -284,8 +284,23 @@ tuyaopen skills list [--json]                 # catalog: id/name/summary/whenToU
 tuyaopen skills list-installed --project-root <dir> [--scope project|global]
 tuyaopen skills install --scope project|global [--ids <id1,id2>] [--default] [--force]
 tuyaopen skills uninstall --scope project|global --id <id>
-tuyaopen skills sync [--stream]                # populate the local cache so install works
+tuyaopen skills sync [--stream]                # fetch payloads for catalogue items that declare source.repo
 ```
+
+**Cold start — `skills list` came back `no_manifest_cache`?** Then this machine
+has no catalogue yet (typical right after `npm i -g @tuya/tuyaopen-cli`; the IDE
+does this for you). The fix is `manifests sync`, **not** `skills sync`:
+
+```bash
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes    # downloads the catalogue + skill bodies
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --default --yes
+```
+
+`skills sync` only fetches items whose manifest entry carries a `source.repo`.
+Every item in this catalogue ships inside the manifest release instead, so it
+reports `external: 0`, exits 0, and changes nothing — running it in place of
+`manifests sync` leaves you exactly where you started. `tuyaopen diag doctor`
+reports the catalogue state under `manifests` if you want to check first.
 
 - **Project scope** (default) installs a real, editable copy at
   `<project>/.agents/skills/<id>/` (and mirrors it, regenerated on every
@@ -327,7 +342,7 @@ below doesn't cover.
 >
 > - `tos.py config` (`choice`/`menu`/`save`/`set`/`get`/`list`/`diff`) edits the
 >   **project's Kconfig build configuration** — `app_default.config`,
->   `.build/cache/using.config`. See skill `tuyaopen-build`.
+>   `.build/cache/using.config`. See skill `tuyaopen-embedded-build`.
 > - `tuyaopen config` (`get`/`set`/`list`) edits **IDE settings**, and only
 >   three keys exist: `language`, `gitMirror`, `manifestsSource`. It has
 >   **nothing to do with Kconfig.**
@@ -336,7 +351,7 @@ below doesn't cover.
 > set` — that is the wrong command and will silently do nothing to the
 > project's Kconfig (it will just reject the key, since it isn't one of the
 > three above). Use `tos.py config set` (or hand-edit `app_default.config`,
-> see skill `tuyaopen-build`) for Kconfig.
+> see skill `tuyaopen-embedded-build`) for Kconfig.
 
 ## 8. Project layout
 

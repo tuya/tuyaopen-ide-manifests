@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-hardware
+name: tuyaopen-embedded-hardware
 description: >-
   Hardware-aware code generation for TuyaOpen embedded projects. Reads the
   project's confirmed hardware via `tuyaopen hardware list-used`/`board-context`
@@ -19,7 +19,7 @@ when_to_use: >-
   hardware, enforces confirm-before-code, and routes to the specific peripheral
   sub-skill. 任何涉及硬件/外设/引脚/串口的需求都先加载本 skill。
 
-id: tuyaopen-hardware
+id: tuyaopen-embedded-hardware
 surfaces: [embedded]
 compatibility:
   - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen hardware`/`boards`)
@@ -68,7 +68,7 @@ set is a bare device/on-chip id with no pins to record.
 for **this project's already-selected board** — they are unrelated to
 `tuyaopen boards list/detail`, which reads the **published manifest
 catalog** (the same one `tuyaopen project create --board <id>` picks from).
-Don't confuse the two: a custom board you add via skill `tuyaopen-add-board`
+Don't confuse the two: a custom board you add via skill `tuyaopen-embedded-add-board`
 will never show up in `tuyaopen boards list` — that command doesn't read the
 SDK's `boards/` source tree at all.
 

@@ -29,7 +29,7 @@ is still an LED. The `tkl_gpio` example below is for non-LED loads.
 
 - Provided by the platform. **Do NOT** write `CONFIG_ENABLE_GPIO` — platform-selected. No `app_default.config` change needed.
 - No `board_register_hardware()` step. Call `tkl_gpio_*` directly with `TUYA_GPIO_NUM_<n>`.
-- Confirm **which GPIO** and its direction with the user; record it in `used-peripherals.json` as `onchip:gpio<n>` (see `tuyaopen-hardware`).
+- Confirm **which GPIO** and its direction with the user; record it in `used-peripherals.json` as `onchip:gpio<n>` (see `tuyaopen-embedded-hardware`).
 - **Do not reuse a pin already taken** by a confirmed peripheral — check the pin-occupancy summary in the hardware context first.
 
 ## Platform spec — read, don't hardcode

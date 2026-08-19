@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-env-setup
+name: tuyaopen-embedded-env-setup
 description: >-
   Set up and activate the TuyaOpen development environment via `tuyaopen sdk
   clone/doctor/env-init/env-pull/update` (headless, self-bootstrapping) or the
@@ -57,7 +57,7 @@ Two things worth knowing before you reach for these, verified against
   `tos.py update` after either — a fresh SDK clone/pull can leave platform
   submodules behind.
 
-`tuyaopen firmware build/clean` (skill `tuyaopen-build`) self-bootstraps the
+`tuyaopen firmware build/clean` (skill `tuyaopen-embedded-build`) self-bootstraps the
 SDK env via the same path as `sdk env-init` — you don't need to run any of the
 above before it. Reach for `sdk doctor`/`sdk clone`/`sdk env-init` directly
 when you're setting up headlessly (CI, an agent with no shell activation) or

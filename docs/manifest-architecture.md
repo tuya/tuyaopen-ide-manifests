@@ -187,7 +187,7 @@ vendor/tuyaopen-ide-manifests/
 > `source.localPath` 指向仓内目录，`installPayload` 恒等于 `localPath` 去掉
 > `skills/` 前缀 —— 这条等式定位的是 IDE **缓存**里的位置
 > （`skills-registry/<installPayload>`）。**安装到项目里的目录另有一套规则：由
-> `id` 决定，扁平**，即 `.agents/skills/<id>`（如 `.agents/skills/tuyaopen-build`），
+> `id` 决定，扁平**，即 `.agents/skills/<id>`（如 `.agents/skills/tuyaopen-embedded-build`），
 > 与载荷嵌套多深无关。SKILL.md 里引用自身脚本必须写这个安装后路径。
 > 原 `tuya/TuyaOpen-dev-skills` 仓库已归档，其内容自 `skills` v0.2.0 起完整内联于
 > `skills/embedded/tuyaopen/`，IDE 不再单独下载 `TuyaOpen-dev-skills.tar.gz`。

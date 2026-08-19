@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-code-check
+name: tuyaopen-embedded-code-check
 description: >-
   Check C/C++ code formatting, detect Chinese characters, and validate file
   headers using clang-format and check_format.py. No `tuyaopen` CLI group
@@ -27,7 +27,7 @@ CLI wrapper; everything in this skill is `tools/check_format.py` (an SDK
 script) plus this skill's own `scripts/check_files.py` wrapper. There is
 nothing to route to `tuyaopen --help` for here.
 
-> **SDK root:** All `$OPEN_SDK_PYTHON tools/check_format.py` commands must be run from the TuyaOpen SDK root (`$OPEN_SDK_ROOT`). The bundled `check_files.py` script resolves the SDK root automatically via `$OPEN_SDK_ROOT` or by walking upward for `.clang-format`. See skill `tuyaopen-env-setup` if not yet activated.
+> **SDK root:** All `$OPEN_SDK_PYTHON tools/check_format.py` commands must be run from the TuyaOpen SDK root (`$OPEN_SDK_ROOT`). The bundled `check_files.py` script resolves the SDK root automatically via `$OPEN_SDK_ROOT` or by walking upward for `.clang-format`. See skill `tuyaopen-embedded-env-setup` if not yet activated.
 
 ## Overview
 
@@ -99,7 +99,7 @@ When editing C/C++ files in this repo:
 
 1. Make your changes.
 2. **Check for sensitive information** before committing (see below).
-3. Run the bundled wrapper: `$OPEN_SDK_PYTHON .agents/skills/tuyaopen-code-check/scripts/check_files.py <changed_files>`
+3. Run the bundled wrapper: `$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-code-check/scripts/check_files.py <changed_files>`
    Or directly: `$OPEN_SDK_PYTHON tools/check_format.py --debug --files <changed_files>`
 4. If **format errors**: run `clang-format -style=file -i <file>` to auto-fix, then re-check.
 5. If **Chinese character errors**: replace Chinese text with English — this applies to comments and strings too, not just identifiers.

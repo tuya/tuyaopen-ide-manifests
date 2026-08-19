@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-workflow-dev-loop
+name: tuyaopen-embedded-dev-loop
 description: >-
   Automated build-flash-monitor-analyze development loop for TuyaOpen devices.
   Covers log analysis, error patterns, CLI testing, and iterative debugging.
@@ -96,7 +96,7 @@ The standard development iteration cycle for TuyaOpen hardware:
    > **No CLI?** `tos.py monitor -p <port>`. See `tuyaopen-shared` § 7.
 
    For **hands-off** background logging (capture while doing something
-   else), use `tuyaopen-diagnose` (`monitor_helper.py start -p <port>` →
+   else), use `tuyaopen-embedded-diagnose` (`monitor_helper.py start -p <port>` →
    `tail` → `stop`) regardless of which of the above you used — neither the
    CLI nor `tos.py` has a background/detached monitor mode.
 4. **Analyze**: read the log file under **`<project_dir>/.target_logging/`** for errors, warnings, crash indicators (patterns below)
@@ -107,9 +107,9 @@ The standard development iteration cycle for TuyaOpen hardware:
 For LINUX platform targets, skip flash/monitor — use the bundled script:
 
 ```bash
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-workflow-dev-loop/scripts/build_run.py          # build + run + auto-analyze (30s timeout)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-workflow-dev-loop/scripts/build_run.py 60       # custom timeout in seconds
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-workflow-dev-loop/scripts/build_run.py 0        # no timeout
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-dev-loop/scripts/build_run.py          # build + run + auto-analyze (30s timeout)
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-dev-loop/scripts/build_run.py 60       # custom timeout in seconds
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-dev-loop/scripts/build_run.py 0        # no timeout
 ```
 
 Or manually:
@@ -208,11 +208,11 @@ Built-in CLI (`tal_cli`) via debug UART (prompt: `tuya> `). Commands, registrati
 2. Reset the device manually.
 3. If still no output, the firmware may have crashed before log init — review recent code changes.
 
-## AI agent helper: `tuyaopen-diagnose` (`monitor_helper.py`)
+## AI agent helper: `tuyaopen-embedded-diagnose` (`monitor_helper.py`)
 
-Full reference: skill **`tuyaopen-diagnose`**. Script path (relative to SDK root):
+Full reference: skill **`tuyaopen-embedded-diagnose`**. Script path (relative to SDK root):
 
-`.agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py`
+`.agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py`
 
 Logs are always written to **`<project_dir>/.target_logging/`** (gitignored by the SDK).
 
@@ -220,7 +220,7 @@ Logs are always written to **`<project_dir>/.target_logging/`** (gitignored by t
 
 ```bash
 # 1. Start background monitor (non-blocking)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py \
     --json start -p /dev/ttyACM1
 
 # 2. Flash on the other port while monitor keeps logging
@@ -228,11 +228,11 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
 TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port /dev/ttyACM0 --yes --json
 
 # 3. Read log after boot
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py \
     --json tail -n 200
 
 # 4. Stop and release port
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py stop
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py stop
 ```
 
 > **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-shared` § 7.

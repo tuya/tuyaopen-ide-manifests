@@ -22,12 +22,12 @@ skills/
 └── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
     ├── index.json                      #   THE registry the IDE and CLI read
 │   ├── tuyaopen-shared/  tuyaopen-skill-maker/       #   foundation, not task skills
-│   ├── tuyaopen-build/  tuyaopen-env-setup/  tuyaopen-device-auth/
-│   ├── tuyaopen-add-board/  tuyaopen-code-check/  tuyaopen-project/
-│   ├── tuyaopen-diagnose/  tuyaopen-flash/
-│   ├── tuyaopen-workflow-dev-loop/  tuyaopen-workflow-product-dev/
-│   ├── tuyaopen-hardware/              #   bundles sub-skills under peripheral-drivers/
-│   ├── tuyaopen-dependency/
+│   ├── tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/  tuyaopen-device-auth/
+│   ├── tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/  tuyaopen-embedded-project/
+│   ├── tuyaopen-embedded-diagnose/  tuyaopen-embedded-flash/
+│   ├── tuyaopen-embedded-dev-loop/  tuyaopen-workflow-product-dev/
+│   ├── tuyaopen-embedded-hardware/              #   bundles sub-skills under peripheral-drivers/
+│   ├── tuyaopen-embedded-dependency/
 │   ├── tuyaopen-cloud/
 │   └── tuyaopen-miniapp/  tuyaopen-miniapp-panel-dev/  tuyaopen-miniapp-ray-common/
 │       tuyaopen-miniapp-smart-ui/  tuyaopen-miniapp-lamp-panel/
@@ -70,9 +70,9 @@ Nothing in the TuyaOS payload was edited in either move; see
 [`TuyaOS/README.md`](./TuyaOS/README.md).
 
 The 2026-08-14 CLI-coverage pass merged five former standalone skills into
-three renamed ones — `tuyaopen-tyutool-cli` into `tuyaopen-flash`;
+three renamed ones — `tuyaopen-tyutool-cli` into `tuyaopen-embedded-flash`;
 `tuyaopen-cli-debug` + `tuyaopen-crash-decode` + `tuyaopen-debug-helper` into
-`tuyaopen-diagnose`; `tuyaopen-project-config` into `tuyaopen-project` — and
+`tuyaopen-embedded-diagnose`; `tuyaopen-project-config` into `tuyaopen-embedded-project` — and
 added `tuyaopen-miniapp` as a brand-new skill covering the `miniapp` CLI
 command group. See [History: TuyaOpen-dev-skills](#history-tuyaopen-dev-skills)
 and each merged skill's own `references/` for what moved where.
@@ -98,13 +98,13 @@ was when the source tree nested three and four levels deep.
 
 | | example | who reads it |
 |---|---|---|
-| `source.localPath` | `skills/TuyaOpen/tuyaopen-build` | this repo — where the payload lives |
-| `installPayload` | `TuyaOpen/tuyaopen-build` | the IDE's cache layout — **must** equal `localPath` minus the `skills/` prefix (CI enforces this) |
-| installed dir | `.agents/skills/tuyaopen-build` | the SKILL.md text itself — **`.agents/skills/<id>`, flat.** Not the payload path |
+| `source.localPath` | `skills/TuyaOpen/tuyaopen-embedded-build` | this repo — where the payload lives |
+| `installPayload` | `TuyaOpen/tuyaopen-embedded-build` | the IDE's cache layout — **must** equal `localPath` minus the `skills/` prefix (CI enforces this) |
+| installed dir | `.agents/skills/tuyaopen-embedded-build` | the SKILL.md text itself — **`.agents/skills/<id>`, flat.** Not the payload path |
 
 The installed directory is `path.join('.agents/skills', item.id)` in the IDE
-(`src/core/skill/skills.ts`), so a skill with id `tuyaopen-build` installs to
-`.agents/skills/tuyaopen-build/` regardless of how deeply its source is
+(`src/core/skill/skills.ts`), so a skill with id `tuyaopen-embedded-build` installs to
+`.agents/skills/tuyaopen-embedded-build/` regardless of how deeply its source is
 nested. A *nested* form — `tuyaopen/build/` under `.agents/skills/` — is the
 **old** layout the IDE actively repairs away from
 (`src/core/skill/skillsLegacyMigration.ts`); it predates this reorg and is
@@ -113,14 +113,14 @@ kept only as a migration target, not something new content should produce.
 So when a `SKILL.md` refers to its own scripts, write the **installed** form:
 
 ```bash
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-workflow-dev-loop/scripts/build_run.py
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-dev-loop/scripts/build_run.py
 ```
 
 CI enforces this: `validate-skills-index.py` rejects any `.agents/skills/…`
 path in a skill's markdown whose leading segment is not a known item `id`.
 
 Sub-skills bundled inside a parent skill (e.g.
-`TuyaOpen/tuyaopen-hardware/peripheral-drivers/onchip-gpio/SKILL.md`) are
+`TuyaOpen/tuyaopen-embedded-hardware/peripheral-drivers/onchip-gpio/SKILL.md`) are
 **not** indexed separately — they ship with the parent and the validator
 exempts them.
 
@@ -129,7 +129,7 @@ exempts them.
 Every item carries a required `version`, a plain `x.y.z` semver string:
 
 ```json
-{ "id": "tuyaopen-build", "version": "1.0.0", "order": 1, … }
+{ "id": "tuyaopen-embedded-build", "version": "1.0.0", "order": 1, … }
 ```
 
 It versions **the payload** — the `SKILL.md` and its `references/` / `scripts/`
@@ -297,10 +297,10 @@ is the `id`, flat** — copy it straight across:
 git clone https://github.com/tuya/tuyaopen-ide-manifests.git
 mkdir -p /path/to/TuyaOpen/.agents/skills
 # skills/<ProductLine>/<id>  →  .agents/skills/<id>
-cp -r tuyaopen-ide-manifests/skills/TuyaOpen/tuyaopen-build \
-      /path/to/TuyaOpen/.agents/skills/tuyaopen-build
-cp -r tuyaopen-ide-manifests/skills/TuyaOpen/tuyaopen-env-setup \
-      /path/to/TuyaOpen/.agents/skills/tuyaopen-env-setup
+cp -r tuyaopen-ide-manifests/skills/TuyaOpen/tuyaopen-embedded-build \
+      /path/to/TuyaOpen/.agents/skills/tuyaopen-embedded-build
+cp -r tuyaopen-ide-manifests/skills/TuyaOpen/tuyaopen-embedded-env-setup \
+      /path/to/TuyaOpen/.agents/skills/tuyaopen-embedded-env-setup
 ```
 
 No lookup in `index.json` needed to find the `id` — that was the point of the
@@ -314,10 +314,10 @@ already the installed name — and `smart-panel-dev` itself became
 
 ## History: TuyaOpen-dev-skills
 
-The skills now under `TuyaOpen/tuyaopen-build/`, `TuyaOpen/tuyaopen-env-setup/`,
-`TuyaOpen/tuyaopen-device-auth/`, `TuyaOpen/tuyaopen-add-board/`,
-`TuyaOpen/tuyaopen-code-check/`, `TuyaOpen/tuyaopen-project/` (as
-`tuyaopen-project-config`), and `TuyaOpen/tuyaopen-diagnose/` (as
+The skills now under `TuyaOpen/tuyaopen-embedded-build/`, `TuyaOpen/tuyaopen-embedded-env-setup/`,
+`TuyaOpen/tuyaopen-device-auth/`, `TuyaOpen/tuyaopen-embedded-add-board/`,
+`TuyaOpen/tuyaopen-embedded-code-check/`, `TuyaOpen/tuyaopen-embedded-project/` (as
+`tuyaopen-project-config`), and `TuyaOpen/tuyaopen-embedded-diagnose/` (as
 `tuyaopen-debug-helper` + `tuyaopen-cli-debug` + `tuyaopen-crash-decode`) came
 from `tuya/TuyaOpen-dev-skills`, which the IDE used to download as a
 **second** tarball resolved through the `devSkillsRelease` field in
@@ -327,8 +327,8 @@ originally under `skills/embedded/tuyaopen/` — at upstream `d0655d46`
 nine skills to its own `TuyaOpen/<id>/` directory, and a same-day
 CLI-coverage pass (see the note under [Layout](#layout)) merged three of
 those nine (`tuyaopen-debug-helper`, `tuyaopen-cli-debug`,
-`tuyaopen-crash-decode`) into `tuyaopen-diagnose` and renamed
-`tuyaopen-project-config` to `tuyaopen-project`.
+`tuyaopen-crash-decode`) into `tuyaopen-embedded-diagnose` and renamed
+`tuyaopen-project-config` to `tuyaopen-embedded-project`.
 
 `devSkillsRelease` and `source.devSkills` are **gone**, and the validator now
 rejects `source.devSkills`. Verified against the IDE before removing the field:

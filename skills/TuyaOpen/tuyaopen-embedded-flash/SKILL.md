@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-flash
+name: tuyaopen-embedded-flash
 description: >-
   Flash firmware, monitor serial output, and pick the right serial port for a
   TuyaOpen device via the `tuyaopen` CLI (`firmware flash`, `firmware

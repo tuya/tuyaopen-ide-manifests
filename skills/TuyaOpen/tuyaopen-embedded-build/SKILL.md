@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-build
+name: tuyaopen-embedded-build
 description: >-
   Build and compile TuyaOpen projects via the `tuyaopen firmware build/clean`
   CLI (IDE-scaffolded projects) or `tos.py build`/`tos.py clean` (raw SDK
@@ -74,7 +74,7 @@ skill `tuyaopen-shared` § 7.
 > **SDK root:** All `tos.py`-direct paths and commands below are relative to
 > the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell,
 > `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see
-> skill `tuyaopen-env-setup`.
+> skill `tuyaopen-embedded-env-setup`.
 
 ## Project Locations
 
@@ -141,7 +141,7 @@ tos.py config list -p LVGL                # find the right symbol name
 tos.py build                              # no clean needed
 ```
 
-It applies changes through kconfiglib (so `choice` exclusivity and derived symbols are handled), writes both `using.config` and `app_default.config`, and invalidates the generated build artifacts — **no `tos.py clean` needed** for an ordinary option change. A failed assignment aborts the whole batch and writes nothing. See skill `tuyaopen-project`, `references/CONFIG_CLI.md`.
+It applies changes through kconfiglib (so `choice` exclusivity and derived symbols are handled), writes both `using.config` and `app_default.config`, and invalidates the generated build artifacts — **no `tos.py clean` needed** for an ordinary option change. A failed assignment aborts the whole batch and writes nothing. See skill `tuyaopen-embedded-project`, `references/CONFIG_CLI.md`.
 
 **Fallback — hand-edit `app_default.config`** (any SDK). The file uses **Kconfig defconfig format** — only specify values that **differ from defaults**:
 

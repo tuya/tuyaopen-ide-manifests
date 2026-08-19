@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-dependency
+name: tuyaopen-embedded-dependency
 description: >-
   Search, install and record ecosystem (PlatformIO) libraries via `tuyaopen
   ecosystem search/install`, `tuyaopen dependency add/list/remove`, and
@@ -16,7 +16,7 @@ description: >-
   的步骤。
 when_to_use: Triggered automatically after the IDE (or an agent via `tuyaopen ecosystem install`) downloads a third-party library into `source/embedded/dependencies/<owner>/<name>/`. Use it when the user asks the agent to "wire", "integrate", or "register" a freshly-installed library into the build.
 
-id: tuyaopen-dependency
+id: tuyaopen-embedded-dependency
 surfaces: [embedded]
 compatibility:
   - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen ecosystem`/`dependency`/`library`)
@@ -24,7 +24,7 @@ tags: [cmake, dependencies, vibeCode]
 command: tuyaopen.skill.wireCmake
 fallback_commands: []
 default_enabled: true
-related: [tuyaopen-build, tuyaopen-project]
+related: [tuyaopen-embedded-build, tuyaopen-embedded-project]
 i18n_title: skill.wireCmake.title
 i18n_description: skill.wireCmake.description
 i18n_when: skill.wireCmake.when
@@ -120,7 +120,7 @@ Building or flashing the project once the library is wired, and downloading/reco
 
 ## Related skills
 
-- `tuyaopen-build`
-- `tuyaopen-project`
+- `tuyaopen-embedded-build`
+- `tuyaopen-embedded-project`
 
 _Maintained in the TuyaOpen IDE skills registry. Reinstall the skill from the IDE's Skills page after registry updates._

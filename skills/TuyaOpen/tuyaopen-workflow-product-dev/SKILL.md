@@ -9,8 +9,8 @@ when_to_use: >-
   Use when the developer says "I want to make a [device]", "帮我做一个XX",
   "what's next?", "下一步该干什么", or describes product features and expects
   end-to-end guidance. Do NOT use for pure platform ops (→ tuyaopen-cloud),
-  pure build/debug (→ tuyaopen-workflow-dev-loop), or project creation only
-  (→ tuyaopen-project).
+  pure build/debug (→ tuyaopen-embedded-dev-loop), or project creation only
+  (→ tuyaopen-embedded-project).
 id: tuyaopen-workflow-product-dev
 surface: embedded
 tags: [product, dp, pid, embedded, iot, workflow, orchestration]
@@ -18,9 +18,9 @@ license: Apache-2.0
 defaultEnabled: true
 related:
   - tuyaopen-cloud
-  - tuyaopen-workflow-dev-loop
-  - tuyaopen-project
-  - tuyaopen-env-setup
+  - tuyaopen-embedded-dev-loop
+  - tuyaopen-embedded-project
+  - tuyaopen-embedded-env-setup
 command: tuyaopen.skill.smartProductDev
 ---
 
@@ -30,8 +30,8 @@ End-to-end orchestration: requirements → Tuya Platform product/DP → embedded
 
 **Disambiguation:** If only doing one sub-task, use the dedicated skill:
 - Platform operations only → `tuyaopen-cloud`
-- Build/debug only → `tuyaopen-workflow-dev-loop`
-- Project creation only → `tuyaopen-project`
+- Build/debug only → `tuyaopen-embedded-dev-loop`
+- Project creation only → `tuyaopen-embedded-project`
 - "Add a DP to my existing product" → `tuyaopen-cloud`
 
 ---
@@ -80,7 +80,7 @@ Run in order. Stop on first failure.
 | Check | How | If failing |
 |-------|-----|------------|
 | Platform auth | `tuyaopen credential status --json` → `loggedIn: true` | Not signed in → `tuyaopen credential login` (see skill `tuyaopen-cloud`). **No CLI?** Fall back to `.tuyaopen/ide/bin/tuya-devplat-cli auth status --format json` → exit 0 AND `authenticated: true`; if still not signed in, "Please sign in via **TuyaOpen IDE → Developer Platform** sidebar." **Never run `tuya-devplat-cli auth login` directly** — use `tuyaopen credential login` instead (see the Never list below). Timeout >10 s → report network issue. |
-| SDK env | `$OPEN_SDK_ROOT` set and dir contains `export.sh`/`export.bat`/`export.ps1` | SDK present but not activated → delegate to `tuyaopen-env-setup`. SDK absent → "Please clone the SDK via TuyaOpen IDE → Library." |
+| SDK env | `$OPEN_SDK_ROOT` set and dir contains `export.sh`/`export.bat`/`export.ps1` | SDK present but not activated → delegate to `tuyaopen-embedded-env-setup`. SDK absent → "Please clone the SDK via TuyaOpen IDE → Library." |
 
 ---
 
@@ -138,7 +138,7 @@ in-progress   pid non-empty
 
 ## State: no-project
 
-Delegate to `tuyaopen-project` to create the project. After creation re-run from Context Reading.
+Delegate to `tuyaopen-embedded-project` to create the project. After creation re-run from Context Reading.
 
 ---
 
@@ -342,7 +342,7 @@ Write new peripherals and modules to `architecture.json surfaces.embedded`. **Th
 
 ### Step 8 — Build
 
-Delegate to `tuyaopen-workflow-dev-loop`. If build fails, diagnose and fix in place. If Kconfig is root cause, go to Step 5 and rebuild.
+Delegate to `tuyaopen-embedded-dev-loop`. If build fails, diagnose and fix in place. If Kconfig is root cause, go to Step 5 and rebuild.
 
 ---
 
@@ -375,7 +375,7 @@ After completing, update `architecture.json` (`has-dps` Step 7).
 
 ### Step 4 — Build
 
-Delegate to `tuyaopen-workflow-dev-loop`.
+Delegate to `tuyaopen-embedded-dev-loop`.
 
 ---
 

@@ -26,7 +26,7 @@ def _clean():
     validator.errors.clear()
 
 
-def item(item_id="tuyaopen-build", cli=None):
+def item(item_id="tuyaopen-embedded-build", cli=None):
     out = {"id": item_id}
     if cli is not None:
         out["cli"] = cli

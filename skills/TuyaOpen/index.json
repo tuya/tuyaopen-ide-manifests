@@ -54,7 +54,7 @@
       ]
     },
     {
-      "id": "tuyaopen-build",
+      "id": "tuyaopen-embedded-build",
       "version": "1.0.4",
       "group": "embedded",
       "order": 1,
@@ -87,19 +87,22 @@
         "tuyaopen.skill.build"
       ],
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-build",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-build",
       "related": [
-        "tuyaopen-workflow-dev-loop",
-        "tuyaopen-project"
+        "tuyaopen-embedded-dev-loop",
+        "tuyaopen-embedded-project"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-build"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-build"
       },
       "sdks": [
         "tuyaopen"
+      ],
+      "aliases": [
+        "tuyaopen-build"
       ]
     },
     {
@@ -152,7 +155,7 @@
       ]
     },
     {
-      "id": "tuyaopen-project",
+      "id": "tuyaopen-embedded-project",
       "version": "1.2.0",
       "group": "embedded",
       "order": 6,
@@ -190,25 +193,26 @@
         "tuyaopen.skill.editProjectConfig"
       ],
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-project",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-project",
       "related": [
-        "tuyaopen-build"
+        "tuyaopen-embedded-build"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "aliases": [
+        "tuyaopen-project",
         "tuyaopen-project-config"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-project"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-project"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-dependency",
+      "id": "tuyaopen-embedded-dependency",
       "version": "1.1.0",
       "group": "embedded",
       "order": 8,
@@ -241,19 +245,20 @@
         "tuyaopen.skill.wireCmake"
       ],
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-dependency",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-dependency",
       "related": [
-        "tuyaopen-build",
-        "tuyaopen-project"
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-project"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "aliases": [
+        "tuyaopen-dependency",
         "ecosystem-wire-cmake"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-dependency"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-dependency"
       },
       "sdks": [
         "tuyaopen"
@@ -360,8 +365,8 @@
       "installPayload": "TuyaOpen/tuyaopen-workflow-product-dev",
       "related": [
         "tuyaopen-cloud",
-        "tuyaopen-workflow-dev-loop",
-        "tuyaopen-project"
+        "tuyaopen-embedded-dev-loop",
+        "tuyaopen-embedded-project"
       ],
       "requires": [
         "tuyaopen-shared"
@@ -377,7 +382,7 @@
       ]
     },
     {
-      "id": "tuyaopen-hardware",
+      "id": "tuyaopen-embedded-hardware",
       "version": "1.0.4",
       "group": "embedded",
       "order": 11,
@@ -414,27 +419,28 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-hardware",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-hardware",
       "related": [
         "tuyaopen-workflow-product-dev",
-        "tuyaopen-build",
-        "tuyaopen-project"
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-project"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "aliases": [
+        "tuyaopen-hardware",
         "hardware-vibe-coding"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-hardware"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-hardware"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-flash",
+      "id": "tuyaopen-embedded-flash",
       "version": "1.2.0",
       "group": "embedded",
       "order": 15,
@@ -471,28 +477,29 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-flash",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-flash",
       "related": [
-        "tuyaopen-workflow-dev-loop",
+        "tuyaopen-embedded-dev-loop",
         "tuyaopen-device-auth",
-        "tuyaopen-diagnose"
+        "tuyaopen-embedded-diagnose"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "aliases": [
+        "tuyaopen-flash",
         "tyutool-cli",
         "tuyaopen-tyutool-cli"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-flash"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-flash"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-diagnose",
+      "id": "tuyaopen-embedded-diagnose",
       "version": "1.2.0",
       "group": "embedded",
       "order": 20,
@@ -532,30 +539,31 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-diagnose",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-diagnose",
       "related": [
-        "tuyaopen-workflow-dev-loop",
+        "tuyaopen-embedded-dev-loop",
         "tuyaopen-device-auth",
-        "tuyaopen-flash",
-        "tuyaopen-build"
+        "tuyaopen-embedded-flash",
+        "tuyaopen-embedded-build"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "aliases": [
+        "tuyaopen-diagnose",
         "tuyaopen-cli-debug",
         "tuyaopen-crash-decode",
         "tuyaopen-debug-helper"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-diagnose"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-diagnose"
       },
       "sdks": [
         "tuyaopen"
       ]
     },
     {
-      "id": "tuyaopen-add-board",
+      "id": "tuyaopen-embedded-add-board",
       "version": "1.0.1",
       "group": "embedded",
       "order": 21,
@@ -585,23 +593,26 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-add-board",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-add-board",
       "related": [
-        "tuyaopen-build",
-        "tuyaopen-project"
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-project"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-add-board"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-add-board"
       },
       "sdks": [
         "tuyaopen"
+      ],
+      "aliases": [
+        "tuyaopen-add-board"
       ]
     },
     {
-      "id": "tuyaopen-code-check",
+      "id": "tuyaopen-embedded-code-check",
       "version": "1.0.1",
       "group": "embedded",
       "order": 22,
@@ -628,22 +639,25 @@
         "reason": "格式与文件头检查走 clang-format / check_files.py"
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-code-check",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-code-check",
       "related": [
-        "tuyaopen-build"
+        "tuyaopen-embedded-build"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-code-check"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-code-check"
       },
       "sdks": [
         "tuyaopen"
+      ],
+      "aliases": [
+        "tuyaopen-code-check"
       ]
     },
     {
-      "id": "tuyaopen-workflow-dev-loop",
+      "id": "tuyaopen-embedded-dev-loop",
       "version": "1.2.0",
       "group": "embedded",
       "order": 23,
@@ -677,19 +691,20 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-workflow-dev-loop",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-dev-loop",
       "related": [
-        "tuyaopen-build",
-        "tuyaopen-diagnose"
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-diagnose"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "aliases": [
+        "tuyaopen-workflow-dev-loop",
         "tuyaopen-dev-loop"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-workflow-dev-loop"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-dev-loop"
       },
       "sdks": [
         "tuyaopen"
@@ -730,8 +745,8 @@
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-device-auth",
       "related": [
-        "tuyaopen-workflow-dev-loop",
-        "tuyaopen-project"
+        "tuyaopen-embedded-dev-loop",
+        "tuyaopen-embedded-project"
       ],
       "requires": [
         "tuyaopen-shared"
@@ -744,7 +759,7 @@
       ]
     },
     {
-      "id": "tuyaopen-env-setup",
+      "id": "tuyaopen-embedded-env-setup",
       "version": "1.1.0",
       "group": "embedded",
       "order": 25,
@@ -776,18 +791,21 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-env-setup",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-env-setup",
       "related": [
-        "tuyaopen-build"
+        "tuyaopen-embedded-build"
       ],
       "requires": [
         "tuyaopen-shared"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-env-setup"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-env-setup"
       },
       "sdks": [
         "tuyaopen"
+      ],
+      "aliases": [
+        "tuyaopen-env-setup"
       ]
     },
     {

@@ -76,7 +76,7 @@ def main():
         print("\nRESULT: Some checks FAILED.")
         print("  - Format errors: run 'clang-format -style=file -i <file>' to auto-fix")
         print("  - Chinese chars: replace with English text")
-        print("  - Header errors: add proper Doxygen header (see skill tuyaopen-code-check)")
+        print("  - Header errors: add proper Doxygen header (see skill tuyaopen-embedded-code-check)")
         sys.exit(1)
 
 

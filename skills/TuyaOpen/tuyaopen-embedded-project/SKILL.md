@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-project
+name: tuyaopen-embedded-project
 description: >-
   Read and mutate the `.tuyaopen/` project descriptor via the `tuyaopen`
   CLI (`project info/create/set-platform/set-board/set-status/set-intent/
@@ -24,7 +24,7 @@ compatibility:
 
 # TuyaOpen Project, Demos & Config
 
-> **SDK root:** `tos.py`-side paths and commands in this skill are relative to the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell, `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see skill `tuyaopen-env-setup`. The `tuyaopen project` / `demos` / `config` CLI commands below don't need SDK-env activation — they read/write `.tuyaopen/` and IDE settings directly.
+> **SDK root:** `tos.py`-side paths and commands in this skill are relative to the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell, `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see skill `tuyaopen-embedded-env-setup`. The `tuyaopen project` / `demos` / `config` CLI commands below don't need SDK-env activation — they read/write `.tuyaopen/` and IDE settings directly.
 
 Docs: <https://tuyaopen.ai/docs/tos-tools/tos-guide>
 
@@ -167,7 +167,7 @@ product. It shows up in link errors, so don't "correct" it.
 
 **After creation — next steps:**
 1. `cd my_app`
-2. Select a config: `tos.py config choice` (interactive), or manually create `app_default.config` (see skill `tuyaopen-build` for Kconfig format).
+2. Select a config: `tos.py config choice` (interactive), or manually create `app_default.config` (see skill `tuyaopen-embedded-build` for Kconfig format).
 3. Build: `tos.py build`
 
 A new project has no `app_default.config` — the build system will copy an empty template on first build, but you must configure a platform/board before a meaningful build succeeds.
@@ -183,11 +183,11 @@ Flow:
 4. Automatically registers the board in `boards/<platform>/Kconfig` so it appears in `config choice`.
 5. For ESP32, chip name defaults to `esp32s3`; for other platforms, uses the platform name.
 
-See skill `tuyaopen-add-board` for the full board adaptation guide.
+See skill `tuyaopen-embedded-add-board` for the full board adaptation guide.
 
 ## Configuration Management
 
-For detailed Kconfig editing guidance (dependency mechanisms, defconfig format, config pipeline), see skill **`tuyaopen-build`**.
+For detailed Kconfig editing guidance (dependency mechanisms, defconfig format, config pipeline), see skill **`tuyaopen-embedded-build`**.
 
 ### Which config commands does this SDK have? — ask the SDK
 
@@ -237,7 +237,7 @@ Config lookup priority:
 tos.py config menu
 ```
 
-Opens a terminal-based Kconfig editor. **Triggers a full clean first.** Best for fine-tuning options with complex dependencies — the editor resolves `select` / `depends on` automatically. See skill `tuyaopen-build` for the Kconfig Dependency Guide.
+Opens a terminal-based Kconfig editor. **Triggers a full clean first.** Best for fine-tuning options with complex dependencies — the editor resolves `select` / `depends on` automatically. See skill `tuyaopen-embedded-build` for the Kconfig Dependency Guide.
 
 ### `tos.py config save`
 
@@ -279,7 +279,7 @@ tos.py config diff TUYA_T5AI_EVB               # semantic diff vs current config
 
 Full semantics, flags, and troubleshooting: `references/CONFIG_CLI.md`.
 
-*Not present — hand-edit `app_default.config`.* See skill `tuyaopen-build` for format details and Kconfig dependency handling.
+*Not present — hand-edit `app_default.config`.* See skill `tuyaopen-embedded-build` for format details and Kconfig dependency handling.
 
 > **After hand-editing `app_default.config`, run `tos.py clean -f` before rebuilding.** Unlike `config choice` / `config menu` / `config set` (which handle this automatically), a manual edit does **not** invalidate the build, so the stale `.build/cache/using.config` may be reused and your changes ignored. Run `tos.py clean -f` then `tos.py build`.
 >

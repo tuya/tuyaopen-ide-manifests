@@ -85,7 +85,7 @@ tkl_io_pinmux_config(TUYA_IO_PIN_41, TUYA_UART2_TX);
 If the chosen port has one pin group, **skip the block above and `tkl_pinmux.h` entirely**.
 
 Record the confirmed UART in `.tuyaopen/used-peripherals.json` as `onchip:uart<N>`
-before generating code — see the `tuyaopen-hardware` skill.
+before generating code — see the `tuyaopen-embedded-hardware` skill.
 
 ## Step 2 — Init + send/receive
 

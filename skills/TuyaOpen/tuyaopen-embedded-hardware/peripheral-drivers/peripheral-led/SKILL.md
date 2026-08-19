@@ -134,7 +134,7 @@ CONFIG_ENABLE_LED_2=y     # makes slot 2 (LED_NAME_2) available; one extra on a 
 
 **T5AI-Board example** (board N=1, one extra): `CONFIG_ENABLE_LED_2=y`, register `LED_NAME_2`.
 
-**After any hand-edit to `app_default.config`**, refresh before build (see skill **`tuyaopen-build`**, section *After editing app_default.config manually*):
+**After any hand-edit to `app_default.config`**, refresh before build (see skill **`tuyaopen-embedded-build`**, section *After editing app_default.config manually*):
 
 ```bash
 cd source/embedded
@@ -165,7 +165,7 @@ Pins: led=GPIO1(high)
 
 ### Extra GPIO LED → `usr_board`
 
-Read skill **`tuyaopen-hardware/peripheral-drivers/usr-board/SKILL.md`** for CMake wiring.
+Read skill **`tuyaopen-embedded-hardware/peripheral-drivers/usr-board/SKILL.md`** for CMake wiring.
 
 Register the **second** device name (`LED_NAME_2`), not `LED_NAME`:
 

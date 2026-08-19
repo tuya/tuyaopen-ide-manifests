@@ -25,19 +25,19 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-env-setup` | First-time SDK environment activation, `tos.py` not found, `OPEN_SDK_ROOT` unset, installing system dependencies |
+| `tuyaopen-embedded-env-setup` | First-time SDK environment activation, `tos.py` not found, `OPEN_SDK_ROOT` unset, installing system dependencies |
 
 ## Build
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-build` | Compiling a TuyaOpen (embedded) project, Kconfig/menuconfig, build errors, running the LINUX ELF output |
+| `tuyaopen-embedded-build` | Compiling a TuyaOpen (embedded) project, Kconfig/menuconfig, build errors, running the LINUX ELF output |
 
 ## Flash / serial tooling
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-flash` | Flashing firmware, opening a serial monitor, listing serial ports. Also covers reaching for `tyutool_cli` directly (read flash, bare DTR/RTS reset) — see its `references/TYUTOOL_CLI.md` |
+| `tuyaopen-embedded-flash` | Flashing firmware, opening a serial monitor, listing serial ports. Also covers reaching for `tyutool_cli` directly (read flash, bare DTR/RTS reset) — see its `references/TYUTOOL_CLI.md` |
 
 ## Device authorization
 
@@ -49,9 +49,9 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-project` | Creating a project, binding a product, setting board / platform / intent / status, reading project info, browsing demos, and editing `tuyaopen.project.ini` / non-interactive Kconfig via `tos.py config` |
-| `tuyaopen-add-board` | Adding a new board / BSP (directory, Kconfig, drivers, pin map) |
-| `tuyaopen-code-check` | Validating C/C++ formatting, file headers, forbidden characters via clang-format / `check_format.py` |
+| `tuyaopen-embedded-project` | Creating a project, binding a product, setting board / platform / intent / status, reading project info, browsing demos, and editing `tuyaopen.project.ini` / non-interactive Kconfig via `tos.py config` |
+| `tuyaopen-embedded-add-board` | Adding a new board / BSP (directory, Kconfig, drivers, pin map) |
+| `tuyaopen-embedded-code-check` | Validating C/C++ formatting, file headers, forbidden characters via clang-format / `check_format.py` |
 
 ## Cloud & DP
 
@@ -63,25 +63,25 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-hardware` | TuyaOpen (TDL-layer) peripheral code generation — display, camera, IMU, LED, button, joystick, PMIC, any board hardware; "vibe coding" requests |
+| `tuyaopen-embedded-hardware` | TuyaOpen (TDL-layer) peripheral code generation — display, camera, IMU, LED, button, joystick, PMIC, any board hardware; "vibe coding" requests |
 
 ## Dependencies & ecosystem
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-dependency` | Wiring a freshly-downloaded PlatformIO ecosystem library into CMakeLists.txt / Kconfig, right after the IDE's Library → Ecosystem download |
+| `tuyaopen-embedded-dependency` | Wiring a freshly-downloaded PlatformIO ecosystem library into CMakeLists.txt / Kconfig, right after the IDE's Library → Ecosystem download |
 
 ## Diagnostics
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-diagnose` | Reading `tuyaopen diag doctor` / `diag export`, non-blocking background serial log capture, sending commands to the device serial CLI, and decoding a crash dump to `file:line` |
+| `tuyaopen-embedded-diagnose` | Reading `tuyaopen diag doctor` / `diag export`, non-blocking background serial log capture, sending commands to the device serial CLI, and decoding a crash dump to `file:line` |
 
 ## Cross-cutting workflows
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-workflow-dev-loop` | Full automated build–flash–monitor–analyze cycle with log/error-pattern matching |
+| `tuyaopen-embedded-dev-loop` | Full automated build–flash–monitor–analyze cycle with log/error-pattern matching |
 | `tuyaopen-workflow-product-dev` | End-to-end product development from requirements through Tuya Platform product/DP creation to complete embedded firmware — a state machine that resumes from wherever the project currently stands |
 
 ## Panel miniapp — entry point & cross-cutting

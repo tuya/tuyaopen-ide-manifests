@@ -22,13 +22,13 @@ Rows marked **†** exist only on newer SDKs. Confirm with `tos.py config -h` (i
 | `tos.py config get NAME ...` | No | Print value(s); `-a` for type/prompt/deps, `-j` for JSON — **†** |
 | `tos.py config list [-p PATTERN]` | No | Dump effective config; substring or glob filter, `-j` for JSON — **†** |
 | `tos.py config diff A [B]` | No | Semantic diff of two configs, expanded through Kconfig — **†** |
-| `tos.py build` | No | Build current project (see skill `tuyaopen-build`) |
+| `tos.py build` | No | Build current project (see skill `tuyaopen-embedded-build`) |
 | `tos.py build -v` | No | Build with verbose output |
 | `tos.py clean` | No | Clean build artifacts (ninja clean) |
 | `tos.py clean -f` | No | Full clean (delete `.build/`) |
-| `tos.py flash -p <port>` | No | Flash firmware non-interactively (see skill `tuyaopen-workflow-dev-loop`) |
+| `tos.py flash -p <port>` | No | Flash firmware non-interactively (see skill `tuyaopen-embedded-dev-loop`) |
 | `tos.py flash` | **Yes** | Flash firmware (prompts for port if not specified) |
-| `tos.py monitor -p <port>` | No | View serial logs non-interactively (see skill `tuyaopen-workflow-dev-loop`) |
+| `tos.py monitor -p <port>` | No | View serial logs non-interactively (see skill `tuyaopen-embedded-dev-loop`) |
 | `tos.py monitor` | **Yes** | View serial logs (prompts for port if not specified) |
 | `tos.py update` | No | Sync platform dependencies to pinned commits |
 | `tos.py dev bac` | No | Build all configs (testing) |

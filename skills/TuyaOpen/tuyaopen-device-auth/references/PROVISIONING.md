@@ -18,7 +18,7 @@ Tell the two board shapes apart by grouping `tyutool_cli list-ports --json` on
 `usbSerial` — one board is one `usbSerial`, and the number of ports carrying it
 is the answer. On dual-serial boards pick the lowest `usbInterface` for auth;
 do **not** rank by `COM` / `ttyACM` number, which does not track interface order
-on Windows. See skill `tuyaopen-flash` § 1 / its `references/TYUTOOL_CLI.md` *Port Selection* for the full rule.
+on Windows. See skill `tuyaopen-embedded-flash` § 1 / its `references/TYUTOOL_CLI.md` *Port Selection* for the full rule.
 
 > **Single-serial boards — release the port before authorizing.** The log stream
 > and the auth shell are the same OS resource. An open monitor (the IDE's serial

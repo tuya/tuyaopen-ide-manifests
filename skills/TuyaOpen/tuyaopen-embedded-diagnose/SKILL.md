@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-diagnose
+name: tuyaopen-embedded-diagnose
 description: >-
   Diagnose a TuyaOpen environment or a misbehaving device: read `tuyaopen
   diag doctor`'s environment/CLI-identity report, export a `diag export`
@@ -137,21 +137,21 @@ on one port while a monitor keeps logging on another, without holding a
 foreground terminal open. Installed at:
 
 ```
-.agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py
+.agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py
 ```
 
 ```bash
 # Start (auto-names the log file if -l is omitted)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py start -p /dev/ttyACM1
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py start -p /dev/ttyACM1
 
 # Read the last 200 lines (JSON output for agent parsing)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py --json tail -n 200
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py --json tail -n 200
 
 # Stop — releases the serial port
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py stop
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py stop
 
 # Check whether a session is already running
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py status
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py status
 ```
 
 Add `--json` before the subcommand for machine-readable output. No extra
@@ -170,12 +170,12 @@ from the cwd for `app_default.config`), gitignored by the SDK's unanchored
 Only one session runs at a time — starting a new one stops the previous.
 
 **Port selection** — group `tuyaopen device list-ports --chip <chip> --json`
-output the same way as skill `tuyaopen-flash`: a single-serial board's one
+output the same way as skill `tuyaopen-embedded-flash`: a single-serial board's one
 port carries flash, auth, and log together (so `stop` this session before a
 flash on that board); a dual-serial board (e.g. T5AI) can keep this monitor
 running on the log port while flashing the other. `tuyaopen device
 list-ports` output is coarser than the raw `tyutool_cli list-ports --json`
-(no `usbSerial`/`usbInterface`) — see skill `tuyaopen-flash` § 1 / § 4 when
+(no `usbSerial`/`usbInterface`) — see skill `tuyaopen-embedded-flash` § 1 / § 4 when
 you need the authoritative grouping.
 
 **Log analysis patterns**:
@@ -195,12 +195,12 @@ For inspecting live device state (heap, KV store, filesystem, threads) without
 opening a foreground monitor — `sys_reset`, `kv_dump`, `fs_ls`, or any custom
 command the firmware registers. Full reference, options, and troubleshooting:
 [references/CLI_DEBUG.md](references/CLI_DEBUG.md). Script installed at
-`.agents/skills/tuyaopen-diagnose/scripts/cli_debug.py` (needs `pip install
+`.agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py` (needs `pip install
 pyserial`; requires firmware built with `CONFIG_ENABLE_SERIAL_CLI_CMD=y`).
 
 ```bash
-python .agents/skills/tuyaopen-diagnose/scripts/cli_debug.py --json help
-python .agents/skills/tuyaopen-diagnose/scripts/cli_debug.py --json send "heap_stats"
+python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json help
+python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json send "heap_stats"
 ```
 
 **Baud is always 115200** — `tal_cli` hardcodes it on every platform,

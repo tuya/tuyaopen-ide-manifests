@@ -8,7 +8,7 @@ description: >-
 when_to_use: >-
   Use when writing code to control a specific peripheral using the TDL
   layer. This collection is board-agnostic — for board-specific GPIO/Kconfig
-  lookup, use tuyaopen-hardware first.
+  lookup, use tuyaopen-embedded-hardware first.
 
 id: peripheral-drivers
 surfaces: [embedded]
@@ -62,4 +62,4 @@ the instance + pins and record as `onchip:<type><n>` in `used-peripherals.json`.
 2. Refer to the matching peripheral SKILL.md for TDL API usage
 3. For per-device pins and Kconfig, look the device up by its `ID:` (from
    `.tuyaopen/board-context.md`) in `.tuyaopen/ide/board.json`
-   (handled by the `tuyaopen-hardware` skill)
+   (handled by the `tuyaopen-embedded-hardware` skill)

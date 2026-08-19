@@ -7,7 +7,7 @@ description: >-
 when_to_use: >-
   Use when the user wants a hardware timer: a periodic or one-shot callback at
   a precise interval. For simple software timeouts inside TDL flows use
-  tal_sw_timer instead (see the tuyaopen-hardware entry skill).
+  tal_sw_timer instead (see the tuyaopen-embedded-hardware entry skill).
 
 id: onchip-timer
 surfaces: [embedded]

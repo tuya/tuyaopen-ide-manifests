@@ -505,7 +505,7 @@ def extract_shortcuts_section(body: str) -> "str | None":
     Scoped on purpose: a whole-body scan would force `tuyaopen-shared` to
     declare the seven-plus groups its §7 mapping table names, and would trip
     on every fallback blockquote or piece of prose that quotes an example
-    command only to say not to use it (e.g. tuyaopen-build calling
+    command only to say not to use it (e.g. tuyaopen-embedded-build calling
     `tuyaopen config` "a different, unrelated command"). The section stops at
     the next `##` heading, not at end of file, so trailing sections (like the
     `## Other`/`> **No CLI?**` material below Shortcuts) are excluded too.

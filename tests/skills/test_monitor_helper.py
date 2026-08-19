@@ -4,7 +4,7 @@ import sys
 import unittest.mock as mock
 import pytest
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "skills", "TuyaOpen", "tuyaopen-diagnose", "scripts"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "skills", "TuyaOpen", "tuyaopen-embedded-diagnose", "scripts"))
 import monitor_helper
 
 
