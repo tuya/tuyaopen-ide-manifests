@@ -7,8 +7,20 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
-Accumulated on the branch since `v1.0.0`; `skills` is the only registered
-domain that changed, and its version moves `1.0.0` → **`1.1.0`**.
+Accumulated on the branch since `v1.0.0`. `skills` is the only registered
+domain that changed, and its version moves `1.0.0` → **`1.3.2`**
+(`registry.json` → `manifests.skills.version`) in four steps:
+`1.0.0` → `1.2.0` → `1.3.0` → `1.3.1` → `1.3.2`. Three of those are the
+catalogue work described below. `1.3.1` is not: it came from a concurrent branch
+(rpx style scale in `tuyaopen-miniapp-panel-dev`'s theme doc and its
+`validate.mjs`) and is recorded here only so the arithmetic reconciles — that
+work is not summarised in the entries below.
+
+The headline is that **the `tuyaopen` CLI is now the primary path in every
+skill body**, with the legacy tools (`tos.py`, `tyutool_cli`,
+`tuya-devplat-cli`) kept as a fallback the agent can *decide* to take rather
+than a parallel set of instructions it has to guess between. All **28**
+registered `SKILL.md` bodies changed in service of that.
 
 ### Changed
 
@@ -24,8 +36,38 @@ domain that changed, and its version moves `1.0.0` → **`1.1.0`**.
   is that they are now absent rather than filtered. See
   [`tuyaos-skills/README.md`](./tuyaos-skills/README.md).
 - **Every item now carries `group`**, so `tuyaopen skills groups` and
-  `install --group` reach all 28. The only two that legitimately lacked one were
-  the other line's; the validator's group check is now unconditional.
+  `install --group` reach all 28 across the five install units (`core` 2,
+  `embedded` 10, `cloud` 3, `miniapp` 7, `category` 6). The only two that
+  legitimately lacked one were the other line's; the validator's group check is
+  now unconditional. 17 items carry `defaultEnabled: true` — the set New
+  Project and `skills install --default` install.
+- **Every item now carries a `cli` object** declaring its relationship to the
+  `tuyaopen` CLI, and it is a *hard* field, not an optional hint. Fourteen items
+  name the CLI groups they invoke (`cli.groups`, e.g. `tuyaopen-flash` →
+  `["firmware", "device"]`); the other fourteen — `tuyaopen-add-board`,
+  `tuyaopen-code-check` and the twelve MiniApp skills — declare
+  `{"groups": "none", "reason": "…"}` and say so in the body too. Eleven items
+  additionally declare `cli.fallback`, the legacy tool(s) the body falls back to
+  when the CLI is unavailable (`tos.py`, `tyutool_cli`, `tuya-devplat-cli`).
+  Before this, "not stating it" was an invisible state: measured 2026-08-17,
+  three skills mentioned the CLI zero times and all three were among the nine
+  that had never declared anything.
+- **The risk-gate documentation was recalibrated to what the CLI enforces.**
+  `P1` is gone entirely — its gate was byte-for-byte identical to P0's and no
+  command ever landed in it. `P0` now means one thing: no reverse command
+  exists *and* the run destroys state the caller cannot reconstruct. On that
+  test `firmware flash`, `firmware authorize`, `dependency remove` and
+  `skills uninstall` all dropped to P2, leaving `license remove` as the only P0
+  command, and the bodies that documented a `--confirm <token>` ceremony for
+  those four were corrected to the P2 gate (`--yes` +
+  `TUYAOPEN_AUTOCONFIRM_P2=1`, and a P2 `--dry-run` hands back no token).
+  `tuyaopen-shared` § 4 now also documents the **P3** tier — ungated, yet
+  twelve of its members still write — so "not P2" can no longer be misread as
+  "does not write", and it teaches the env var as a per-invocation prefix
+  rather than an `export`, which would leave every later P2 command in the
+  shell one `--yes` away.
+- `tuyaopen-env-setup` Step 3 points at **`tuyaopen diag doctor`** instead of a
+  bundled script (see *Removed*).
 - `tuyaopen-skill-maker` § 3 rewritten around a single payload location. It also
   carried a false claim worth naming: that the CLI does not apply the `sdks`
   filter and lists every item. `cli/commands/skills.ts` has filtered since
@@ -37,10 +79,7 @@ domain that changed, and its version moves `1.0.0` → **`1.1.0`**.
   adds — the other half of the very paragraph that sentence was drawing a
   distinction in. The IDE-side command description carried the same error and
   was corrected there in the same change.
-- Six skill payloads bumped: `tuyaopen-shared` 1.2.0, `tuyaopen-skill-maker`
-  1.1.0 (both minor — the routing table lost two destinations and the placement
-  rule changed), `tuyaopen-build` 1.0.2, `tuyaopen-project` 1.1.1,
-  `tuyaopen-dependency` 1.0.3, `tuyaopen-hardware` 1.0.3.
+- Per-skill payload `version`s bumped alongside the bodies they describe.
 - **Twelve more MiniApp templates** published to `miniapp-templates/`. Not a
   registered domain, so no domain version moves — see the 1.0.0 entry for why.
 
@@ -59,6 +98,39 @@ domain that changed, and its version moves `1.0.0` → **`1.1.0`**.
   `cacheIntegrity()` will not start on either, so those are startup failures
   rather than tidiness. Unit-tested in `tests/scripts/`, and all three failure
   branches were verified by mutation against this very state.
+- **Three `cli`-declaration rules in `scripts/validate-skills-index.py`**, each
+  closing a different way the declaration could be wrong:
+  1. **The field is required.** An item with no `cli` object fails, so "never
+     declared" stops being indistinguishable from "declared no coverage".
+     `{"groups": "none"}` must come with a `reason`, and the body must also
+     carry the sentence ``No `tuyaopen` CLI coverage`` — the reader needs to see
+     it, not just the index.
+  2. **Group names must be real.** `cli.groups` entries are checked against the
+     CLI's actual group list, which catches a typo here *and* a group rename on
+     the CLI side.
+  3. **The declaration and the body must agree, in both directions.** The
+     validator reads the item's own `SKILL.md` (never anything under
+     `references/`) and compares `cli.groups` against the **Command column of
+     the `## Shortcuts` table** — deliberately that column and nothing else,
+     because Rule 3 is about what the skill *invokes*, and prose, an `## Other`
+     section or a `> **No CLI?**` aside mentioning a group is not an
+     invocation. A declared group with no matching Command-column row is
+     *declared but unused*; a Command-column row invoking a group that is not
+     declared is *used but undeclared*. An item declaring groups with no
+     `## Shortcuts` section at all fails outright — that section is the agent's
+     entry point.
+  Unit-tested in `tests/scripts/test_validate_cli_declaration.py`.
+
+### Removed
+
+- **`tuyaopen-env-setup/scripts/check_env.{sh,ps1,bat}`** (162 lines: 65 + 43 +
+  54). `tuyaopen diag doctor` now answers all seven of the questions those
+  scripts asked — the activated venv and `OPEN_SDK_ROOT` (as
+  `sdk.envReady` / `sdk.installed`), `tos.py` on PATH (`sdk.tosPresent`), git,
+  python3, and **cmake and ninja, which were added to `diag doctor` for this**
+  — so three per-platform copies of the same probe were pure maintenance cost,
+  and the shell/PowerShell/batch triplet was the part most likely to drift
+  apart silently. Step 3 of the skill points at the CLI command instead.
 
 ### Fixed
 
