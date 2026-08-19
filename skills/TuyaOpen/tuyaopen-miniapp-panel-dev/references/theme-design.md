@@ -1,10 +1,14 @@
-# 颜色风格与主题设计（Theme & Color Design）
+# 视觉风格与主题设计（Theme & Visual Design）
 
 > **本文档适用场景**：用户提出颜色/视觉风格意图（"深色科技感"、"清新绿"、
-> "涂鸦默认橙白"），或明确要求设计/修改面板的整体配色基调。
+> "涂鸦默认橙白"），或明确要求设计/修改面板的整体配色基调；
+> 以及**任何时候要写圆角、间距、字号**（见 §5 尺寸标度）。
 >
-> **与其他规范的关系**：本文档只管颜色 token 层，样式写法规范（`.module.less`、
-> CSS Modules、禁止内联 style）仍以 `conventions.md` Rule 4 为准。
+> **与其他规范的关系**：本文档管**设计 token 层** —— 颜色（§1–§4）与
+> 尺寸标度（§5）。样式写法规范（`.module.less`、CSS Modules、禁止内联 style）
+> 仍以 `conventions.md` Rule 4 为准。
+>
+> **自检**：`scripts/validate.mjs` 会检查 §5 的标度与 §1.2 的变量定义完整性。
 
 ---
 
@@ -186,7 +190,77 @@ JS 来切换颜色变量。
 
 ---
 
-## 5. 不要做的事
+## 5. 尺寸标度：圆角 / 间距 / 字号
+
+颜色有 `--app-*` 可以指，圆角、间距、字号却没有 —— 这是面板样式最容易长歪的地方。
+没有标度就没有判据：没人能判断一处 `26rpx` 到底对不对，也就没人会去改。
+
+### 5.1 标度
+
+单位一律 `rpx`（Ray 响应式单位，750rpx = 屏宽）。
+
+<!-- 这三组是 TuyaOpen IDE 面板视觉标度的 rpx 投影（= px 值 ×2）。
+     改动其中一侧时，另一侧必须同步，否则 IDE 侧面板与小程序面板会分叉。 -->
+
+| 组 | 档位（rpx） |
+|---|---|
+| 圆角 `radius` | `8` · `12` · `16` · `24` · `999`（胶囊） |
+| 字号 `text` | `20` · `22` · `24` · `26`（正文） · `28` · `32` · `36` · `44` |
+| 间距 `space` | `4` · `8` · `12` · `16` · `24` · `32` · `48` · `64` |
+
+豁免：`0`、百分比（如 `50%` 圆形头像）、`auto`、`calc()`。
+
+### 5.2 定义在 `app.tokens.less`，由 `app.less` 引入
+
+```less
+/* app.tokens.less */
+:root {
+  --app-radius-sm: 8rpx;   --app-radius-md: 12rpx;  --app-radius-lg: 16rpx;
+  --app-radius-xl: 24rpx;  --app-radius-pill: 999rpx;
+
+  --app-text-xs: 20rpx;   --app-text-sm: 22rpx;   --app-text-md: 24rpx;
+  --app-text-base: 26rpx; --app-text-lg: 28rpx;   --app-text-xl: 32rpx;
+  --app-text-2xl: 36rpx;  --app-text-3xl: 44rpx;
+
+  --app-space-2xs: 4rpx;  --app-space-xs: 8rpx;   --app-space-sm: 12rpx;
+  --app-space-md: 16rpx;  --app-space-lg: 24rpx;  --app-space-xl: 32rpx;
+  --app-space-2xl: 48rpx; --app-space-3xl: 64rpx;
+}
+```
+
+```less
+/* app.less 顶部 */
+@import './app.tokens.less';
+```
+
+> 只有 `src/app.tsx` 里的 `import './app.less'` 一处样式入口，
+> **不 `@import` 就完全不生效**。
+
+### 5.3 在 `.module.less` 中引用
+
+```less
+/* ✅ 正确 */
+.card {
+  background: var(--app-B1, #ffffff);
+  border-radius: var(--app-radius-lg, 16rpx);
+  padding: var(--app-space-lg, 24rpx);
+}
+.title { font-size: var(--app-text-xl, 32rpx); }
+
+/* ❌ 错误：字面量不在标度上，且没有名字可复用 */
+.card { border-radius: 26rpx; padding: 18rpx; }
+.title { font-size: 34rpx; }
+```
+
+### 5.4 需要标度外的值时
+
+先问是不是真的需要。如果确实需要（例如某个视觉稿要求的特殊尺寸），
+**扩标度而不是写字面量** —— 在 `app.tokens.less` 里加一档并在此表补一行，
+让下一个人也能复用。
+
+---
+
+## 6. 不要做的事
 
 - **不要**在 `app.config.ts` 的 `backgroundColor` 里使用品牌色（此字段
   控制导航栏/webshell，应与 `--webshell-backgroundColor` 保持一致，
@@ -196,10 +270,14 @@ JS 来切换颜色变量。
   里定义，两端加载同一份 CSS 才是真正一致；JS 注入只能覆盖本地预览，生产包无效
 - **不要**用 `@media (prefers-color-scheme: dark)` 来切换主题色——用
   `:root[theme='dark'] {}` 选择器，与 App 行为保持一致
+- **不要**在 `.module.less` 里写圆角 / 间距 / 字号的字面量——走 §5 的
+  `--app-radius-*` / `--app-space-*` / `--app-text-*`
+- **不要**引用未定义的 `--app-*` 变量。带 fallback 时页面不会崩，但那处样式
+  **在深色模式下不会跟随**，属于静默缺陷（`validate.mjs` 会报出来）
 
 ---
 
-## 6. 快速自检
+## 7. 快速自检
 
 颜色方案完成后，在本地浏览器：
 
@@ -208,4 +286,10 @@ JS 来切换颜色变量。
 2. 切换 OS 深色模式，确认 <html> 上 theme='dark' 属性随之出现/消失
 3. DevTools → Elements → :root style，确认 --app-* 变量值已切换
 4. 实机扫码，切换手机深色模式，确认面板颜色响应正确
+```
+
+尺寸标度与变量定义完整性由脚本检查：
+
+```
+node scripts/validate.mjs
 ```

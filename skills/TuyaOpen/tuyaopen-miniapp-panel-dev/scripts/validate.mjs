@@ -62,6 +62,22 @@ const SKIP_DIRS = new Set([
 // Files extensions we scan for code rules
 const CODE_EXTS = new Set(['.ts', '.tsx', '.js', '.jsx']);
 
+// Shared visual scale, in rpx. These are the x2 projection of the TuyaOpen IDE
+// panel scale (px). Change one side and the other must follow, or the two
+// surfaces drift apart. Documented in references/theme-design.md section 5.
+const SCALE_RPX = {
+  radius: new Set([8, 12, 16, 24, 999]),
+  text:   new Set([20, 22, 24, 26, 28, 32, 36, 44]),
+  space:  new Set([4, 8, 12, 16, 24, 32, 48, 64]),
+};
+const SCALE_PROP = {
+  radius: { label: 'border-radius', token: '--app-radius-*' },
+  text:   { label: 'font-size',     token: '--app-text-*' },
+  space:  { label: 'padding/gap',   token: '--app-space-*' },
+};
+// app.tokens.less is where the scale itself is declared, so it is exempt.
+const SKIP_LESS_FROM_SCALE_SCAN = new Set(['app.tokens.less']);
+
 // ─────────────────────────────────────────────────────────────────────────
 //  Report collector
 // ─────────────────────────────────────────────────────────────────────────
@@ -482,6 +498,116 @@ async function checkCdnAssets(root, report) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
+//  Style scale + design-token integrity  (theme-design.md section 5)
+// ─────────────────────────────────────────────────────────────────────────
+
+/**
+ * Three findings, all advisory (warn, never error) so a style nit can never
+ * block an upload:
+ *   1. radius / font-size / padding / gap literals that are off the rpx scale
+ *   2. the same hardcoded hex repeated across two or more .less files
+ *      (theme-design.md section 6 already forbids this; this makes it visible)
+ *   3. var(--app-X) referenced but never declared — with a fallback the page
+ *      still renders, so the only symptom is that the colour silently stops
+ *      following dark mode
+ */
+async function scanStyleScales(root, report) {
+  const off = { radius: [], text: [], space: [] };
+  const hexFiles = new Map();   // '#rrggbb' -> Set(relative file)
+  const declared = new Set();   // --app-X declared anywhere
+  const referenced = new Map(); // --app-X -> first 'file:line'
+
+  const stripComments = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|\s)\/\/.*$/gm, '$1');
+
+  function bucketFor(prop) {
+    if (prop === 'border-radius') return 'radius';
+    if (prop === 'font-size') return 'text';
+    if (prop === 'padding' || prop.startsWith('padding-')) return 'space';
+    if (prop === 'gap' || prop === 'row-gap' || prop === 'column-gap') return 'space';
+    return null;
+  }
+
+  async function walk(dir) {
+    let entries;
+    try { entries = await readdir(dir, { withFileTypes: true }); }
+    catch { return; }
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        if (SKIP_DIRS.has(e.name)) continue;
+        await walk(full);
+        continue;
+      }
+      if (!e.isFile() || path.extname(e.name) !== '.less') continue;
+
+      const rel = path.relative(root, full);
+      const lines = stripComments(await readFile(full, 'utf8')).split('\n');
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+
+        // --app-X declarations and references
+        const decl = line.match(/^\s*(--app-[A-Za-z0-9-]+)\s*:/);
+        if (decl) declared.add(decl[1]);
+        for (const m of line.matchAll(/var\(\s*(--app-[A-Za-z0-9-]+)/g)) {
+          if (!referenced.has(m[1])) referenced.set(m[1], `${rel}:${i + 1}`);
+        }
+
+        // hex literals outside var() fallbacks
+        for (const m of line.replace(/var\([^)]*\)/g, '').matchAll(/#[0-9a-fA-F]{3,8}\b/g)) {
+          const hex = m[0].toLowerCase();
+          if (!hexFiles.has(hex)) hexFiles.set(hex, new Set());
+          hexFiles.get(hex).add(rel);
+        }
+
+        // scale literals
+        if (SKIP_LESS_FROM_SCALE_SCAN.has(e.name)) continue;
+        const d = line.match(/(^|[{;\s])([a-z-]+)\s*:\s*([^;{}]+)/);
+        if (!d) continue;
+        const bucket = bucketFor(d[2]);
+        if (!bucket) continue;
+        for (const tok of d[3].replace(/var\([^)]*\)/g, '').split(/\s+/)) {
+          const n = tok.match(/^([0-9]+(?:\.[0-9]+)?)rpx$/);
+          if (!n) continue;                       // 0 / % / auto / calc() / var() all skipped
+          const val = Number(n[1]);
+          if (!SCALE_RPX[bucket].has(val)) off[bucket].push(`${rel}:${i + 1}  ${d[2]}: ${tok}`);
+        }
+      }
+    }
+  }
+  await walk(path.join(root, 'src'));
+
+  // 1. off-scale literals
+  for (const bucket of ['radius', 'text', 'space']) {
+    const hits = off[bucket];
+    if (hits.length === 0) continue;
+    const { label, token } = SCALE_PROP[bucket];
+    report.warn(`${hits.length} ${label} literal(s) are off the rpx scale — use ${token} (theme-design.md section 5)`);
+    for (const h of hits.slice(0, 3)) console.error(`     ${h}`);
+    if (hits.length > 3) console.error(`     ... and ${hits.length - 3} more`);
+  }
+
+  // 2. same hex hardcoded in two or more files
+  const shared = [...hexFiles.entries()].filter(([, f]) => f.size >= 2);
+  if (shared.length > 0) {
+    report.warn(`${shared.length} colour(s) hardcoded in 2+ .less files — give them an --app-* token (theme-design.md section 6)`);
+    for (const [hex, files] of shared.slice(0, 3)) console.error(`     ${hex} in ${[...files].slice(0, 3).join(', ')}`);
+  }
+
+  // 3. referenced but never declared
+  const missing = [...referenced.entries()].filter(([name]) => !declared.has(name));
+  if (missing.length > 0) {
+    report.warn(`${missing.length} --app-* variable(s) referenced but never declared in any .less — the fallback hides it, but those colours will NOT follow dark mode`);
+    for (const [name, at] of missing.slice(0, 3)) console.error(`     ${name}  first used at ${at}`);
+  }
+
+  if (off.radius.length === 0 && off.text.length === 0 && off.space.length === 0
+      && shared.length === 0 && missing.length === 0) {
+    report.pass('style scale + design tokens clean');
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
 //  Main
 // ─────────────────────────────────────────────────────────────────────────
 
@@ -505,6 +631,7 @@ async function main() {
   await scanForbiddenAPIs(root, report);
   await scanUseStateForDp(root, report);
   await scanHardcodedChinese(root, report);
+  await scanStyleScales(root, report);
   await checkBundleSize(root, report);
   await checkCdnAssets(root, report);
 
