@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "domain": "skills",
+  "publishedAt": "2026-08-19T08:44:59Z",
+  "publishedBy": "tuya/tuyaopen-ide-manifests",
+  "$comment": "TuyaOS 产品线的技能索引。**TuyaOpen IDE 与 tuyaopen CLI 都不读这份文件**，registry.json 的 skills 域指向 skills/TuyaOpen/index.json；release 打包也刻意排除 skills/TuyaOS/。这份索引存在的唯一目的是让这条产品线的 payload 有可纳管的清单，而不是散在仓库里没有归属。因此它不受 validate-skills-index.py 的 TuyaOpen 专有规则（cli 关系声明、sdks 单值等）约束——那些规则描述的是与 tuyaopen CLI 的关系，对 TuyaOS 技能没有意义。",
+  "items": [
+    {
+      "id": "tuyaos-build",
+      "version": "1.0.0",
+      "group": "embedded",
+      "order": 0,
+      "name": {
+        "en": "Tuyaos Build",
+        "zh-CN": "tuyaos-build"
+      },
+      "surface": "embedded",
+      "surfaces": [
+        "embedded"
+      ],
+      "summary": {
+        "en": "Use when the user asks to build, compile, rebuild, or clean a TuyaOS (tuyaos-legacy) app — including Chinese prompts like「编译 tuyaos xxx 应用」 「清理编译产物」「重新编译当前 app」, or English \"build/compile/clean the TuyaOS app\". Also use when adding custom .c/.h paths to apps/*/local.mk, wiring directories under software/TuyaOS/vendor/, or fixing missing headers / undefined references after adding sources. Runs build_app.sh/bat like Project Details Build / Clean. Do NOT use for TuyaOpen (tos.py) or flash/monitor.",
+        "zh-CN": "Use when the user asks to build, compile, rebuild, or clean a TuyaOS (tuyaos-legacy) app — including Chinese prompts like「编译 tuyaos xxx 应用」 「清理编译产物」「重新编译当前 app」, or English \"build/compile/clean the TuyaOS app\". Also use when adding custom .c/.h paths to apps/*/local.mk, wiring directories under software/TuyaOS/vendor/, or fixing missing headers / undefined references after adding sources. Runs build_app.sh/bat like Project Details Build / Clean. Do NOT use for TuyaOpen (tos.py) or flash/monitor."
+      },
+      "whenToUse": {
+        "en": "Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app; 加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build.",
+        "zh-CN": "Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app; 加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build."
+      },
+      "installPayload": "TuyaOS/tuyaos-build",
+      "sdks": [
+        "tuyaos-legacy"
+      ]
+    },
+    {
+      "id": "tuyaos-hardware-vibe-coding",
+      "version": "1.0.0",
+      "group": "embedded",
+      "order": 1,
+      "name": {
+        "en": "Tuyaos Hardware Vibe Coding",
+        "zh-CN": "tuyaos-hardware-vibe-coding"
+      },
+      "surface": "embedded",
+      "surfaces": [
+        "embedded"
+      ],
+      "summary": {
+        "en": "Hardware-aware code generation for TuyaOS (tuyaos-legacy) apps. Confirms pins/instance with the user, writes tkl_*/tal_* driver code under apps/<app>/src, and registers sources/headers in local.mk when needed. Canonical demos: software/TuyaOS/apps/tuyaos_demo_examples/src/examples/. GPIO、PWM、I2C、SPI、ADC、定时器、看门狗、麦克风、喇叭、DVP 摄像头、WiFi、BLE、 蓝牙、联网、STA、AP、扫网、广播、扫描、串口、外设初始化、硬件驱动、点灯、按键、 录音、播放、引脚、片上外设、TuyaOS 硬件。",
+        "zh-CN": "Hardware-aware code generation for TuyaOS (tuyaos-legacy) apps. Confirms pins/instance with the user, writes tkl_*/tal_* driver code under apps/<app>/src, and registers sources/headers in local.mk when needed. Canonical demos: software/TuyaOS/apps/tuyaos_demo_examples/src/examples/. GPIO、PWM、I2C、SPI、ADC、定时器、看门狗、麦克风、喇叭、DVP 摄像头、WiFi、BLE、 蓝牙、联网、STA、AP、扫网、广播、扫描、串口、外设初始化、硬件驱动、点灯、按键、 录音、播放、引脚、片上外设、TuyaOS 硬件。"
+      },
+      "whenToUse": {
+        "en": "Use for ANY hardware / peripheral / connectivity request on a TuyaOS project — GPIO, PWM, I2C, SPI, ADC, timer, watchdog, mic, speaker, DVP camera, Wi-Fi (STA/AP/scan/LP), BLE (peripheral/central/remote), or \"make the hardware do X\". Load this skill FIRST; it routes to the matching TuyaOS peripheral sub-skill. Do NOT use on TuyaOpen (tos.py / TDL) projects.",
+        "zh-CN": "Use for ANY hardware / peripheral / connectivity request on a TuyaOS project — GPIO, PWM, I2C, SPI, ADC, timer, watchdog, mic, speaker, DVP camera, Wi-Fi (STA/AP/scan/LP), BLE (peripheral/central/remote), or \"make the hardware do X\". Load this skill FIRST; it routes to the matching TuyaOS peripheral sub-skill. Do NOT use on TuyaOpen (tos.py / TDL) projects."
+      },
+      "installPayload": "TuyaOS/tuyaos-hardware-vibe-coding",
+      "sdks": [
+        "tuyaos-legacy"
+      ]
+    }
+  ]
+}

@@ -7,6 +7,33 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### 目录布局:两条产品线显式分离(2026-08-19)
+
+`skills/index.json` → **`skills/TuyaOpen/index.json`**;TuyaOS 的 payload 从
+repo-root `tuyaos-skills/` 移回 **`skills/TuyaOS/`**,并补上它自己的 `index.json`。
+两次移动都未修改 payload 内容(git 记录为 rename)。
+
+`manifests.skills.version` 1.3.4 → **1.4.0**(布局变更,不是内容修补)。
+`manifests.skills.url` 同步指向新路径。
+
+三处**各自独立**的机制把第二条产品线挡在产品之外 —— 刻意不合成一处,因为一处就是
+一处可以被遗忘:
+
+| 什么 | 在哪里生效 |
+|---|---|
+| IDE/CLI 只解析一份索引 | `registry.json` 的 `manifests.skills.url` |
+| release 不打包这棵树 | `release.yml` 在 staging 后 `rm -rf staging/skills/TuyaOS` |
+| 验证器不评判它 | `validate-skills-index.py` 的 `GOVERNED_SUBTREE` |
+
+验证器的收窄**不是豁免**:该脚本的每条规则描述的都是与 `tuyaopen` CLI 的关系
+(`cli` 声明、单值 `sdks`、Shortcuts 一致性),套到 TuyaOS 技能上会断言无意义的事。
+在此之前那些扫描遍历整个 `skills/`,而那只在 `skills/` 恰好只有一条产品线时才正确。
+
+双向验证过:在 `skills/TuyaOpen/` 下放一个未索引目录仍会报 orphan;放在
+`skills/TuyaOS/` 下则不再误报。`release.yml` 的排除也实测过 —— staging 后
+`skills/` 下只剩 `TuyaOpen/`,且 `registry.json` 的 url 在包内可解析到 28 条。
+
+
 Accumulated on the branch since `v1.0.0`. `skills` is the only registered
 domain that changed, and its version moves `1.0.0` → **`1.3.2`**
 (`registry.json` → `manifests.skills.version`) in four steps:

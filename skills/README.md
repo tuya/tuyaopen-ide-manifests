@@ -16,8 +16,11 @@ the directory name **is** the skill's `id`.
 
 ```
 skills/
-├── index.json                          # the registry (28 items)
+├── TuyaOS/                             # the other product line — NOTHING reads it
+│   ├── index.json                      #   management only; excluded from releases
+│   └── tuyaos-build/  tuyaos-hardware-vibe-coding/
 └── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
+    ├── index.json                      #   THE registry the IDE and CLI read
 │   ├── tuyaopen-shared/  tuyaopen-skill-maker/       #   foundation, not task skills
 │   ├── tuyaopen-build/  tuyaopen-env-setup/  tuyaopen-device-auth/
 │   ├── tuyaopen-add-board/  tuyaopen-code-check/  tuyaopen-project/
@@ -34,11 +37,37 @@ skills/
         tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
 ```
 
+### Two product lines, one consumed
+
 On **2026-08-17** the catalogue narrowed to TuyaOpen only: the two items of the
-second product line were dropped from `index.json` (30 → 28) and their payload
-moved, byte-for-byte, to the repo-root `tuyaos-skills/` — outside `skills/`, so
-the orphan check is satisfied and the release workflow (which packs an explicit
-domain list) no longer ships it. Nothing was edited; see `tuyaos-skills/README.md`.
+second product line were dropped from the index (30 → 28) and their payload was
+moved, byte-for-byte, to a repo-root `tuyaos-skills/` — outside `skills/`, which
+satisfied the orphan check by putting the tree where no scan looked.
+
+On **2026-08-19** that placement was reversed and the separation made explicit
+instead of incidental. `skills/TuyaOpen/index.json` became **`skills/TuyaOpen/index.json`**
+and the TuyaOS payload moved back to **`skills/TuyaOS/`**, where it now carries
+its own `index.json` so those files have a listed owner rather than sitting in the
+repo unaccounted for.
+
+Three things keep the second line out of the product, and each is enforced
+somewhere different — that is deliberate, because one mechanism would be one
+mechanism to forget:
+
+| What | Where |
+|---|---|
+| The IDE and CLI resolve exactly one index | `registry.json`'s `manifests.skills.url` → `skills/TuyaOpen/index.json` |
+| Releases do not ship the tree | `.github/workflows/release.yml` deletes `staging/skills/TuyaOS` after staging |
+| The validator does not judge it | `GOVERNED_SUBTREE` in `scripts/validate-skills-index.py` scopes every scan to `TuyaOpen/` |
+
+The validator scoping is **not an exemption**. Every rule in that script describes
+a relationship with the `tuyaopen` CLI — the `cli` declaration, the single-valued
+`sdks`, the Shortcuts agreement — so applying them to TuyaOS skills would assert
+things that are meaningless there. Before this change the scans walked all of
+`skills/`, which was correct only while `skills/` held exactly one product line.
+
+Nothing in the TuyaOS payload was edited in either move; see
+[`TuyaOS/README.md`](./TuyaOS/README.md).
 
 The 2026-08-14 CLI-coverage pass merged five former standalone skills into
 three renamed ones — `tuyaopen-tyutool-cli` into `tuyaopen-flash`;
@@ -165,7 +194,7 @@ What this never permits is landing on or below a number that already shipped —
 that would make one version describe two different payloads.
 
 CI enforces it on pull requests: `scripts/check-skill-version-bumps.py` compares
-the PR against its base, and against `skills/index.json` as of the release tag in
+the PR against its base, and against `skills/TuyaOpen/index.json` as of the release tag in
 `release.json`, to tell shipped versions from in-flight ones. It **fails when a
 payload changed and a *published* `version` did not**, and when a version moves
 backwards onto released ground. A version nobody bumps is worse than no version —
@@ -176,7 +205,7 @@ Run it locally the way CI does:
 
 ```bash
 RELEASE_TAG="$(python3 -c 'import json;print(json.load(open("release.json"))["tag"])')"
-git show "$RELEASE_TAG:skills/index.json" > /tmp/released-index.json
+git show "$RELEASE_TAG:skills/TuyaOpen/index.json" > /tmp/released-index.json
 git show HEAD:skills/index.json          > /tmp/base-index.json
 git diff --name-only --no-renames HEAD -- skills/ \
   | python3 scripts/check-skill-version-bumps.py \

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate skills/index.json structure and references.
+"""Validate skills/TuyaOpen/index.json structure and references.
 
 Checks (all local / deterministic, no network):
   - JSON parses and required top-level keys exist with correct types
@@ -386,6 +386,21 @@ def check_aliases(items: list, ids: set) -> None:
             seen_aliases[alias] = item_id
 
 
+# The ONLY subtree this validator governs.
+#
+# `skills/TuyaOS/` is the other product line. It carries its own
+# `index.json` purely so its payloads have an owner, and **nothing reads it** —
+# registry.json's skills domain points at skills/TuyaOpen/index.json, and
+# .github/workflows/release.yml excludes skills/TuyaOS from the package. Every
+# rule in this file describes a relationship with the `tuyaopen` CLI (the `cli`
+# declaration, the single-valued `sdks`, the Shortcuts agreement), so applying
+# them to TuyaOS skills would assert things that are meaningless there. Scoping
+# by this constant is therefore not an exemption — the rules genuinely do not
+# describe that tree. Before 2026-08-19 the scans below walked all of `skills/`,
+# which was correct only while `skills/` held exactly one product line.
+GOVERNED_SUBTREE = "TuyaOpen"
+
+
 def check_orphan_skill_dirs(items: list) -> None:
     """Every skill payload on disk must be reachable from the index.
 
@@ -410,7 +425,7 @@ def check_orphan_skill_dirs(items: list) -> None:
         if len(ids) > 1:
             err(f"source.localPath {path!r} is claimed by multiple items: {', '.join(sorted(ids))}")
 
-    skills_root = REPO_ROOT / "skills"
+    skills_root = REPO_ROOT / "skills" / GOVERNED_SUBTREE
     for skill_md in sorted(skills_root.rglob("SKILL.md")):
         rel = skill_md.parent.relative_to(REPO_ROOT).as_posix()
         if rel in referenced:
@@ -436,7 +451,7 @@ def check_agent_skill_paths(ids: set) -> None:
     is the old nested layout the IDE now repairs away from, so a SKILL.md telling
     the agent to run a script there sends it to a path that does not exist.
     """
-    for md in sorted((REPO_ROOT / "skills").rglob("*.md")):
+    for md in sorted((REPO_ROOT / "skills" / GOVERNED_SUBTREE).rglob("*.md")):
         rel = md.relative_to(REPO_ROOT).as_posix()
         try:
             text = md.read_text(encoding="utf-8")
@@ -678,7 +693,7 @@ def check_cli_declaration(items: list) -> None:
 
 
 def main() -> int:
-    index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
+    index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "TuyaOpen" / "index.json"
     if not index_path.is_file():
         print(f"✗ index file not found: {index_path}", file=sys.stderr)
         return 1

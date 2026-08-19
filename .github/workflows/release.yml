@@ -62,6 +62,15 @@ jobs:
           for dir in boards-and-chips demos platforms skills miniapp-templates; do
             [ -d "$dir" ] && cp -r "$dir" staging/ && echo "  + $dir/"
           done
+          # `skills/TuyaOS/` is the other product line. registry.json's skills
+          # domain points at skills/TuyaOpen/index.json, so the IDE would never
+          # install anything from TuyaOS — shipping it would be dead weight on
+          # every user's disk, and a package whose contents nothing reads is how
+          # a stale tree survives unnoticed. Dropped AFTER the copy rather than
+          # by listing subdirectories, so a future skills/<line>/ is included by
+          # default and has to be excluded deliberately, not forgotten silently.
+          rm -rf staging/skills/TuyaOS
+          echo "  - skills/TuyaOS/ (other product line, not consumed by the IDE)"
           FILE_COUNT="$(find staging -type f | wc -l)"
           echo "→ Staged $FILE_COUNT files"
 

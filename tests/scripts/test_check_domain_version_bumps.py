@@ -78,7 +78,7 @@ def test_version_re_rejects_everything_else(bad):
 
 
 def test_load_registry_accepts_a_well_formed_registry():
-    text = json.dumps({"manifests": {"skills": {"url": "skills/index.json"}}})
+    text = json.dumps({"manifests": {"skills": {"url": "skills/TuyaOpen/index.json"}}})
     assert checker.load_registry(text, "x") is not None
     assert checker.errors == []
 
