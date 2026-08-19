@@ -218,8 +218,27 @@ is the add-only machine contract this CLI actually promises to keep stable.
 | Tier | Gate | What's here today |
 |---|---|---|
 | **P0** | `--confirm <token>`, and the token must be the one **this exact operation's** `--dry-run` handed back | Only `license remove` |
-| **P2** | `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1` | Every other mutating command |
+| **P2** | `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1` | Most mutating commands — `firmware flash` / `authorize`, `skills install` / `uninstall`, `dependency add` / `remove`, `dp add` / `sync`, `project *`, `config set`, `license add` / `import`, `manifests sync`, `product sync`, `miniapp upload` / `install` / `sync-schema`, `library install`, `ecosystem install`, `hardware set-used` / `intellisense`, `credential logout` |
+| **P3** | **No gate at all** — not even `--yes` | Mostly long-running reads, but the writers among them are ungated too: `sdk clone` / `update` / `env-init` / `env-pull`, `firmware build` / `clean`, `skills sync`, `miniapp build` / `meta` / `template`, `credential login`, `diag export`. Each guards itself on its own preconditions instead — `diag export` refuses an existing `--out` without `--force`; `sdk clone` refuses a non-empty target. **So do not read "it is not P2" as "it does not write."** |
 | Read-only | No gate | — |
+
+Ask `tuyaopen schema list --json` for a command's `riskLevel` rather than
+inferring it: the table above is a snapshot, `schema list` is the contract.
+
+**`TUYAOPEN_AUTOCONFIRM_P2=1` belongs on the invocation, not in the shell.**
+
+```bash
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port <port> --yes   # do this
+export TUYAOPEN_AUTOCONFIRM_P2=1                                        # NOT this
+```
+
+Both forms satisfy the gate, but `export` disarms it for the **rest of the
+session**: after it, every P2 command in that shell is a single `--yes` away,
+including ones you never meant to enable — `firmware authorize`,
+`skills uninstall`, `dependency remove`, `dp add`. The prefix costs the same
+keystrokes and its scope ends when the command does. The env var exists
+precisely so that `--yes` alone cannot carry a mutation; exporting it hands
+that protection back.
 
 P0 is judged by **consequence**, not verb: no reverse command exists, **and**
 running it destroys state the caller cannot reconstruct. `firmware flash` /

@@ -84,9 +84,15 @@ derived `--confirm` token:
 ```bash
 tuyaopen firmware flash --port <port> --dry-run
 # → preview only — a P2 dry-run does not hand back a confirm token
-export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
-tuyaopen firmware flash --port <port> --yes
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port <port> --yes
 ```
+
+**Prefix the invocation; do not `export`.** An `export` disarms the P2 gate for
+the rest of the shell, so *every* later P2 command — `firmware authorize`,
+`skills uninstall`, `dependency remove`, `dp add` — becomes one `--yes` away.
+The prefix form is the same keystrokes and its scope ends with this one
+command, which is the whole point of the env var (see skill `tuyaopen-shared`
+§ 4).
 
 Flag reference (baud, project/SDK root overrides): `tuyaopen firmware --help`
 or `tuyaopen schema get --group firmware --command flash` — do not hardcode a

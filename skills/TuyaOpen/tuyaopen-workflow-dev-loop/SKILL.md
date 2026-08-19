@@ -60,9 +60,12 @@ The standard development iteration cycle for TuyaOpen hardware:
 2. **Flash**: flash firmware to the device from the project directory:
 
    ```bash
-   export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
-   tuyaopen firmware flash --port <port> --yes --json
+   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port <port> --yes --json
    ```
+
+   The env var is a **prefix on this one invocation**, not an `export`: an
+   export leaves every later P2 command in the shell one `--yes` away. Same
+   keystrokes, scope ends with the command (skill `tuyaopen-shared` § 4).
 
    > **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-shared` § 7.
 
@@ -221,8 +224,8 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
     --json start -p /dev/ttyACM1
 
 # 2. Flash on the other port while monitor keeps logging
-export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
-tuyaopen firmware flash --port /dev/ttyACM0 --yes --json
+#    (env var prefixes this one command — never `export` it)
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port /dev/ttyACM0 --yes --json
 
 # 3. Read log after boot
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py \
@@ -239,8 +242,9 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-diagnose/scripts/monitor_helper.py stop
 Repeat until logs are clean:
 
 1. **Build** → **`tuyaopen firmware flash --port <port> --yes --json`**
-   (`TUYAOPEN_AUTOCONFIRM_P2=1` once per session; no CLI? `tos.py flash -p
-   <port>` — see `tuyaopen-shared` § 7)
+   (prefix that one invocation with `TUYAOPEN_AUTOCONFIRM_P2=1` — never
+   `export` it, or every later P2 command in the shell is one `--yes` away;
+   no CLI? `tos.py flash -p <port>` — see `tuyaopen-shared` § 7)
 2. **`monitor_helper.py start -p <monitor-port>`** — capture boot + runtime trace
 3. **`monitor_helper.py tail -n 200`** → search `ty E`, `OPRT_`, watchdog, MQTT
 4. Edit code → go to step 1

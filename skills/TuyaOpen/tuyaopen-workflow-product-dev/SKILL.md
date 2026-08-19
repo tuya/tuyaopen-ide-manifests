@@ -202,11 +202,10 @@ Delegate to `tuyaopen-cloud` → `ops/manage-dp.md`. Dry-run → developer appro
 Bind the PID:
 
 ```bash
-export TUYAOPEN_AUTOCONFIRM_P2=1        # once per session
-tuyaopen project bind-product --pid <pid> --yes --json
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen project bind-product --pid <pid> --yes --json
 ```
 
-(P2 — needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`.) This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
+(P2 — needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`.) The env var **prefixes this one invocation**; do not `export` it, or every later P2 command in that shell — `skills uninstall`, `dependency remove`, `dp add` — is one `--yes` away. This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
 
 > **No CLI?** Hand-edit `tuyaopen.project.ini` → `[product] pid = <pid>` directly. See `tuyaopen-shared` § 7.
 
