@@ -195,7 +195,14 @@ def main() -> int:
     )
     parser.add_argument(
         "--head-index",
-        default=str(REPO_ROOT / "skills" / "index.json"),
+        # `skills/TuyaOpen/index.json` since the 2026-08-19 product-line split.
+        # The help text below already said so while this default still pointed
+        # at the pre-split `skills/index.json` — so the check exited 1 with
+        # "index file not found" on every PR based on post-split main, and the
+        # one gate that makes `version` trustworthy has not actually run since.
+        # The mismatch was invisible precisely because the help string was
+        # correct: reading `--help` told you the wrong thing about the code.
+        default=str(REPO_ROOT / "skills" / "TuyaOpen" / "index.json"),
         help="index.json under review (default: skills/TuyaOpen/index.json)",
     )
     args = parser.parse_args()

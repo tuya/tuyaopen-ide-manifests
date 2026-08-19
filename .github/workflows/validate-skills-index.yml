@@ -41,14 +41,21 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          git show "$BASE_SHA:skills/index.json" > base-skills-index.json \
+          # Two layouts to cover: `skills/TuyaOpen/index.json` since the
+          # 2026-08-19 product-line split, `skills/index.json` before it. The
+          # base of a PR can be either, and the released tag below is still the
+          # flat one — so try the current path first and fall back, rather than
+          # naming one and silently producing an empty baseline for the other.
+          git show "$BASE_SHA:skills/TuyaOpen/index.json" > base-skills-index.json 2>/dev/null \
+            || git show "$BASE_SHA:skills/index.json" > base-skills-index.json 2>/dev/null \
             || : > base-skills-index.json
           # Versions that never shipped may keep absorbing edits under the same
           # number, so the check needs to know what the last release contained.
           # An unreadable tag leaves the file empty, which falls back to the
           # strict "assume everything shipped" behaviour rather than skipping.
           RELEASE_TAG="$(python3 -c 'import json;print(json.load(open("release.json"))["tag"])')"
-          git show "$RELEASE_TAG:skills/index.json" > released-skills-index.json \
+          git show "$RELEASE_TAG:skills/TuyaOpen/index.json" > released-skills-index.json 2>/dev/null \
+            || git show "$RELEASE_TAG:skills/index.json" > released-skills-index.json 2>/dev/null \
             || : > released-skills-index.json
           # --no-renames so a payload file moved out of a skill shows up as a
           # change to that skill too, not only to the one it landed in.
