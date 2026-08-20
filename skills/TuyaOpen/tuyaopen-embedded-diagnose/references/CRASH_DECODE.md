@@ -13,34 +13,84 @@ There is no shared Python wrapper. Just call the toolchain binary directly —
 the path is fully determined by the platform and is sitting in the TuyaOpen
 tree after the first `tos.py build`.
 
-## 1. Identify the platform from the dump
+## 1. Identify the platform, then the ISA
 
-| Dump signal | Platform | Toolchain prefix |
-|---|---|---|
-| `Firmware name: app@cpu0` or `app@cpu1`, `bk7258` in path | **T5AI** (dual-core ARM Cortex-M33) | `arm-none-eabi-` |
-| `ESP-IDF`, `EPC1/2/3`, `EXCVADDR`, `Guru Meditation Error` | **ESP32 / ESP32-S3** (Xtensa) | `xtensa-esp32-elf-` or `xtensa-esp32s3-elf-` |
-| Cortex-M registers (`PC`, `LR`, `xPSR`, `CFSR`), no `app@cpu` and no ESP-IDF | **T2 / T3 / LN882H** (single-core ARM Cortex-M) | `arm-none-eabi-` |
-| `RIP`, `RSP` (x86) | **LINUX** (Ubuntu/Raspberry Pi) | system `addr2line` |
+Two lookups, not one. `tos.py` builds against **eight platform repos**
+(`platform/platform_config.yaml` is the authoritative list: T2, T3, T5AI,
+ESP32, LN882H, BK7231X, GD32, LINUX), and the 16 chip ids the IDE offers map
+onto those eight. What decides which `addr2line` you need is the **ISA**, and
+one platform repo can carry more than one.
+
+| Dump signal | Platform repo | Chip ids | ISA → toolchain prefix |
+|---|---|---|---|
+| `Firmware name: app@cpu0` / `app@cpu1`, `bk7258` in a path | **T5AI** | `t5ai` | ARM Cortex-M33 → `arm-none-eabi-` |
+| Cortex-M registers (`PC`, `LR`, `xPSR`, `CFSR`), no `app@cpu`, no ESP-IDF | **T2** · **T3** · **LN882H** · **BK7231X** | `t1` `t2` `t2ai` `t3` `t3ai` `bk7231n` `rtl8720cf` `rtl8720cf-vu2` | ARM Cortex-M → `arm-none-eabi-` |
+| `ESP-IDF`, `EPC1/2/3`, `EXCVADDR`, `Guru Meditation Error` | **ESP32** | `esp32` `esp32s3` | **Xtensa** → `xtensa-esp32-elf-` / `xtensa-esp32s3-elf-` |
+| `ESP-IDF` / `Guru Meditation`, but registers are `MEPC` / `MTVAL` / `MCAUSE` and there is **no** `EPC1` | **ESP32** | `esp32c3` `esp32c6` `esp32p4c6` | **RISC-V** → `riscv32-esp-elf-` |
+| RISC-V registers (`mepc`, `mcause`), GigaDevice in the build path | **GD32** | `gd32vw553` | **RISC-V** → toolchain ships with the GD32 platform repo (see §2) |
+| `RIP`, `RSP`, x86-64 backtrace, or a plain glibc `SIGSEGV` dump | **LINUX** | `linux` | host → system `addr2line`; aarch64 targets (Raspberry Pi and friends) → `aarch64-none-linux-gnu-` |
+
+> **The ESP32 row splits, and getting it wrong silently wastes an hour.**
+> `esp32` / `esp32s3` are Xtensa; `esp32c3` / `esp32c6` / `esp32p4c6` are
+> **RISC-V** and need `riscv32-esp-elf-addr2line`. An Xtensa `addr2line`
+> pointed at a RISC-V ELF does not usually refuse — it prints `??:0` or
+> plausible-looking garbage. Verified against the ESP32 platform's own
+> toolchain files: `platform/ESP32/tools/{esp32c3,esp32c6,esp32p4}/toolchain_*.cmake`
+> all resolve `riscv32-esp-elf`, and `.espressif/tools/` on a built tree
+> contains both `xtensa-esp-elf/` and `riscv32-esp-elf/`.
+>
+> This reference named only the two Xtensa prefixes until 2026-08-19, so it was
+> wrong for three of the five ESP chip ids the catalogue offers.
 
 For T5AI dual-core: `app@cpu0` ↔ CP core ↔ `bk7258/app.elf`, `app@cpu1` ↔ AP core ↔ `bk7258_ap/app.elf`. Pick the matching one.
+
+**Don't guess the prefix from the chip name.** Every platform repo carries a
+`toolchain_file.cmake` that states it — that file is the answer, and it stays
+right when a platform bumps its toolchain:
+
+```bash
+grep -rn 'TOOLCHAIN_PRE\|xtensa-\|riscv32-\|aarch64-' \
+  TuyaOpen/platform/<PLATFORM>/toolchain_file.cmake \
+  TuyaOpen/platform/<PLATFORM>/tools/*/toolchain_*.cmake 2>/dev/null
+```
 
 ## 2. Locate `addr2line`
 
 After `tos.py build` runs once for any platform, the matching toolchain lives under `TuyaOpen/platform/tools/`. Search order:
 
 ```bash
-# ARM (T5AI, T2, T3, LN882H)
-find TuyaOpen/platform/tools -name 'arm-none-eabi-addr2line' -executable | head -1
-# Example: TuyaOpen/platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-addr2line
+# One search that covers every platform — let the filename tell you what you
+# have, instead of guessing which prefix to look for:
+find TuyaOpen/platform -type f -name '*addr2line*' -perm -u+x 2>/dev/null
 
-# ESP32 / ESP32-S3 (Xtensa)
-find TuyaOpen/platform/ESP32/esp-idf -name 'xtensa-esp32s3-elf-addr2line' 2>/dev/null | head -1
-# Or, if ESP-IDF is installed system-wide:
-find ~/.espressif/tools "$IDF_PATH/tools" /opt/esp/tools -name 'xtensa-esp32*-elf-addr2line' 2>/dev/null | head -1
+# ARM Cortex-M (T5AI, T2, T3, LN882H, BK7231X)
+find TuyaOpen/platform/tools -name 'arm-none-eabi-addr2line' -perm -u+x | head -1
+# Measured path: platform/tools/gcc-arm-none-eabi-10.3-2021.10/bin/arm-none-eabi-addr2line
 
-# Linux / Ubuntu / Raspberry Pi
+# ESP32 — the toolchains live under the platform's own .espressif, and the
+# DIRECTORY name is the unified ESP-IDF 5.x one while the BINARY keeps the
+# per-chip prefix. Measured on a built tree:
+#   platform/ESP32/.espressif/tools/xtensa-esp-elf/esp-14.2.0_20241119/xtensa-esp-elf/bin/xtensa-esp32-elf-addr2line
+#   platform/ESP32/.espressif/tools/riscv32-esp-elf/.../bin/riscv32-esp-elf-addr2line
+find TuyaOpen/platform/ESP32/.espressif/tools -name 'xtensa-esp32*-elf-addr2line' 2>/dev/null | head -1   # esp32 / esp32s3
+find TuyaOpen/platform/ESP32/.espressif/tools -name 'riscv32-esp-elf-addr2line'   2>/dev/null | head -1   # esp32c3 / c6 / p4c6
+# Fall back to a system-wide ESP-IDF only if the platform copy is absent:
+find ~/.espressif/tools "$IDF_PATH/tools" /opt/esp/tools -name '*-esp*-elf-addr2line' 2>/dev/null | head -3
+
+# GD32 (RISC-V) — prefix comes from the platform repo's toolchain_file.cmake;
+# this reference does not hardcode it because the GD32 platform is fetched on
+# demand and was not present on the machine this was verified on.
+find TuyaOpen/platform/GD32 -name '*addr2line*' -perm -u+x 2>/dev/null | head -1
+
+# LINUX — host build uses the system binutils; an aarch64 target (Raspberry Pi,
+# DshanPi, TaishanPi) uses the cross toolchain under platform/tools/
 which addr2line
+find TuyaOpen/platform/tools -name 'aarch64-none-linux-gnu-addr2line' -perm -u+x | head -1
 ```
+
+**`-perm -u+x` rather than `-executable`**: the same directories also ship
+`*-addr2line.1` man pages, and on some trees a non-executable duplicate — both
+match a bare `-name` search and neither runs.
 
 If `find` returns empty for an embedded platform, run `tos.py build` once to trigger the toolchain download. The same directory also contains `*-nm`, `*-objdump`, `*-readelf` — useful for the steps below.
 

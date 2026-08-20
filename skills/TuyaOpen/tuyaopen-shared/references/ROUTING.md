@@ -43,7 +43,7 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-device-auth` | UUID/AuthKey/PID configuration, network provisioning, device pairing, obtaining authorization codes from platform.tuya.com |
+| `tuyaopen-embedded-device-auth` | UUID/AuthKey/PID configuration, network provisioning, device pairing, obtaining authorization codes from platform.tuya.com |
 
 ## Project & product configuration
 

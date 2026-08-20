@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-device-auth
+name: tuyaopen-embedded-device-auth
 description: >-
   Configure device authorization credentials (UUID, AuthKey, PID) and network
   provisioning for TuyaOpen devices via `tuyaopen license list/add/import/
@@ -156,6 +156,42 @@ TuyaOpen-specific authorization codes come in three ways:
 3. **Free developer codes** — Tuya periodically offers free authorization codes for developers; check the platform for current offers.
 
 > Important: only **TuyaOpen-specific** authorization codes work. Standard Tuya module authorization codes are **not compatible**.
+
+## Device ID (`devid`) — after provisioning, not before
+
+**A device ID only exists once the device has finished network provisioning.**
+Before that there is nothing to fetch: UUID/AuthKey identify the *hardware*,
+`devid` identifies the *provisioned cloud device*. Panel development, DP
+debugging and per-device APIs all key off `devid`, so "there is no devid yet"
+usually means "this device has not been provisioned", not "the lookup failed".
+
+**Method 1 — Smart Life app (no code, no rebuild).**
+Provision the device with the app, then: device page → `···` (top right) →
+**Device information** → **Virtual ID**. That value is the `devid`. This is the
+method to reach for when you do not own the firmware.
+
+**Method 2 — print it from firmware.** Add the call below and read it off the
+serial log after provisioning completes:
+
+```c
+#include "tuya_iot.h"          /* src/tuya_cloud_service/cloud/tuya_iot.h */
+
+const char *devid = tuya_iot_devid_get(tuya_iot_client_get());
+PR_INFO("devid: %s", devid ? devid : "(null)");
+```
+
+`tuya_iot_devid_get(tuya_iot_client_t *client)` returns a `const char *` owned
+by the client — do not free it, and do not cache it across a re-provision.
+Call it **after** the device is activated; before that the client has no id to
+return. An in-tree example of the same pairing is
+`apps/tuya_t5_pocket/tuya_t5_pocket_ai/src/game_pet.c`, which passes the result
+straight into `tuya_iot_dp_obj_report()`.
+
+> Panel developers get this same pair, stated compactly, in skill
+> `tuyaopen-miniapp-panel-dev`. That is a deliberate duplication rather than a
+> pointer: a panel developer often does not own the firmware, and forcing them
+> through an embedded skill to learn a two-step app lookup is worse than
+> repeating five lines.
 
 ## Writing Auth via Serial & Network Provisioning
 

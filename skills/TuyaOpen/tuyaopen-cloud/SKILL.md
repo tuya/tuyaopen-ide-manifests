@@ -14,7 +14,7 @@ tags: [cloud, product, dp, pid, tuya-devplat-cli]
 command: tuyaopen.skill.tuyaIotPlatform
 fallback_commands: []
 default_enabled: false
-related: [tuyaopen-device-auth]
+related: [tuyaopen-embedded-device-auth]
 ---
 
 # Tuya IoT Platform

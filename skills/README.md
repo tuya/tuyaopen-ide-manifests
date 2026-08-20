@@ -22,7 +22,7 @@ skills/
 └── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
     ├── index.json                      #   THE registry the IDE and CLI read
 │   ├── tuyaopen-shared/  tuyaopen-skill-maker/       #   foundation, not task skills
-│   ├── tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/  tuyaopen-device-auth/
+│   ├── tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/  tuyaopen-embedded-device-auth/
 │   ├── tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/  tuyaopen-embedded-project/
 │   ├── tuyaopen-embedded-diagnose/  tuyaopen-embedded-flash/
 │   ├── tuyaopen-embedded-dev-loop/  tuyaopen-workflow-product-dev/
@@ -315,7 +315,7 @@ already the installed name — and `smart-panel-dev` itself became
 ## History: TuyaOpen-dev-skills
 
 The skills now under `TuyaOpen/tuyaopen-embedded-build/`, `TuyaOpen/tuyaopen-embedded-env-setup/`,
-`TuyaOpen/tuyaopen-device-auth/`, `TuyaOpen/tuyaopen-embedded-add-board/`,
+`TuyaOpen/tuyaopen-embedded-device-auth/`, `TuyaOpen/tuyaopen-embedded-add-board/`,
 `TuyaOpen/tuyaopen-embedded-code-check/`, `TuyaOpen/tuyaopen-embedded-project/` (as
 `tuyaopen-project-config`), and `TuyaOpen/tuyaopen-embedded-diagnose/` (as
 `tuyaopen-debug-helper` + `tuyaopen-cli-debug` + `tuyaopen-crash-decode`) came

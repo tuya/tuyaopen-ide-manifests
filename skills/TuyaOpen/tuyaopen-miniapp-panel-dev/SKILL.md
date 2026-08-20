@@ -127,6 +127,38 @@ skill，就留在本 skill + `tuyaopen-miniapp-ray-common` +
 `tuyaopen-miniapp-smart-ui` 里做，**不要**挑一个"最像的"品类 skill 套用 ——
 品类手册里的 DP 语义、组件选型和状态机是按那个品类写死的，套错比没有更糟。
 
+## 拿设备 ID（`devid`）—— 真机联调的前置
+
+面板跑在真机上、调 DP、调按设备维度的接口，都要一个 `devid`。两件事先说清楚：
+
+- **配网完成之后才有。** `devid` 标识的是"已激活的云端设备"，不是硬件本身
+  （硬件身份是 UUID/AuthKey）。所以"取不到 devid"通常等于"这台设备还没配网"，
+  不是查询失败。
+- **不要编。** 用一个猜的 devid 去调接口，得到的错误信息和"面板写错了"长得一样，
+  会把排查带偏很久。
+
+**方法一 —— 智能生活 APP（不用改代码、不用重新烧）**
+
+配网完成后进设备页 → 右上角 `···` → **设备信息** → **虚拟 ID**。那串就是
+`devid`。**面板开发默认走这条** —— 你通常不拥有固件，也不该为了拿一个 id 去改它。
+
+**方法二 —— 让固件打出来**（需要能改并重新烧写嵌入式代码）
+
+```c
+#include "tuya_iot.h"          /* src/tuya_cloud_service/cloud/tuya_iot.h */
+
+const char *devid = tuya_iot_devid_get(tuya_iot_client_get());
+PR_INFO("devid: %s", devid ? devid : "(null)");
+```
+
+配网完成后从串口日志里读。必须在设备激活**之后**调用，早于激活时客户端没有 id
+可返回。返回的指针由 client 持有，别 free、也别跨重新配网缓存。
+
+固件侧的完整说明（凭证优先级、UUID/AuthKey 与 devid 的关系、串口写授权）在
+skill `tuyaopen-embedded-device-auth`。上面这两条在那边也有一份 —— 这是有意重复
+而不是指针：面板开发者常常不拥有固件，为了一个两步的 APP 查询把人赶去读一个嵌入式
+skill，比重复五行更糟。
+
 ## 你必须立即拒绝的 9 类 AI 输出
 
 1. **`useState(dpValue)` 管理 DP 状态** —— 走 panel-sdk hook（Basic DP 用

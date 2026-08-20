@@ -304,7 +304,7 @@
       "defaultEnabled": true,
       "installPayload": "TuyaOpen/tuyaopen-cloud",
       "related": [
-        "tuyaopen-device-auth"
+        "tuyaopen-embedded-device-auth"
       ],
       "requires": [
         "tuyaopen-shared"
@@ -480,7 +480,7 @@
       "installPayload": "TuyaOpen/tuyaopen-embedded-flash",
       "related": [
         "tuyaopen-embedded-dev-loop",
-        "tuyaopen-device-auth",
+        "tuyaopen-embedded-device-auth",
         "tuyaopen-embedded-diagnose"
       ],
       "requires": [
@@ -542,7 +542,7 @@
       "installPayload": "TuyaOpen/tuyaopen-embedded-diagnose",
       "related": [
         "tuyaopen-embedded-dev-loop",
-        "tuyaopen-device-auth",
+        "tuyaopen-embedded-device-auth",
         "tuyaopen-embedded-flash",
         "tuyaopen-embedded-build"
       ],
@@ -711,7 +711,7 @@
       ]
     },
     {
-      "id": "tuyaopen-device-auth",
+      "id": "tuyaopen-embedded-device-auth",
       "version": "1.1.0",
       "group": "cloud",
       "order": 24,
@@ -743,7 +743,7 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-device-auth",
+      "installPayload": "TuyaOpen/tuyaopen-embedded-device-auth",
       "related": [
         "tuyaopen-embedded-dev-loop",
         "tuyaopen-embedded-project"
@@ -752,10 +752,13 @@
         "tuyaopen-shared"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-device-auth"
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-device-auth"
       },
       "sdks": [
         "tuyaopen"
+      ],
+      "aliases": [
+        "tuyaopen-device-auth"
       ]
     },
     {
@@ -1422,6 +1425,54 @@
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp-performance-ux-guard"
+      },
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuyaopen-embedded-lvgl-simulator",
+      "version": "1.0.0",
+      "group": "embedded",
+      "order": 26,
+      "name": {
+        "en": "LVGL PC Simulator",
+        "zh-CN": "LVGL 电脑模拟器"
+      },
+      "surface": "embedded",
+      "summary": {
+        "en": "Iterate LVGL UI on the host in an SDL2 window instead of flashing a board — TuyaOpen's built-in LVGL_PC_SIMULATOR. Linux only, and this skill says exactly why.",
+        "zh-CN": "用宿主机上的 SDL2 窗口迭代 LVGL 界面，不必反复烧板 —— TuyaOpen 内置的 LVGL_PC_SIMULATOR。仅 Linux 可用，本技能说明确切原因。"
+      },
+      "whenToUse": {
+        "en": "Use when the user wants to preview or iterate an LVGL screen on their PC, mentions the LVGL simulator / SDL window / running the UI locally, is tired of reflashing to see a layout change, or asks whether the simulator works on macOS or Windows.",
+        "zh-CN": "当用户希望在电脑上预览或快速迭代 LVGL 界面、提到 LVGL 模拟器 / SDL 窗口 / 本地跑 UI、不想为了看一次布局改动就重新烧写，或询问 macOS / Windows 能否用模拟器时使用。"
+      },
+      "tags": [
+        "lvgl",
+        "simulator",
+        "ui",
+        "sdl2",
+        "linux"
+      ],
+      "cli": {
+        "groups": "none",
+        "reason": "模拟器完全由 tos.py 的 config/build 驱动，tuyaopen CLI 没有对应命令（firmware build 走的是目标平台，不是 LINUX 宿主构建）",
+        "fallback": [
+          "tos.py"
+        ]
+      },
+      "defaultEnabled": false,
+      "installPayload": "TuyaOpen/tuyaopen-embedded-lvgl-simulator",
+      "related": [
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-project"
+      ],
+      "requires": [
+        "tuyaopen-shared"
+      ],
+      "source": {
+        "localPath": "skills/TuyaOpen/tuyaopen-embedded-lvgl-simulator"
       },
       "sdks": [
         "tuyaopen"

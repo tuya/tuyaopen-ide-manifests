@@ -47,7 +47,7 @@ SURFACES = {"embedded", "cloud", "miniapp"}
 # groups instead of 28 individual skills. **A second axis, not a replacement for
 # `surface`**, and the two deliberately disagree: `surface` drives the IDE's
 # filter tabs (browsing, "which end of the product is this about"), `group`
-# drives CLI installs ("what am I setting out to do"). `tuyaopen-device-auth`
+# drives CLI installs ("what am I setting out to do"). `tuyaopen-embedded-device-auth`
 # is surface=embedded but group=cloud, and that is correct on both axes.
 #
 # - core / embedded / cloud / miniapp — grouped by capability.
