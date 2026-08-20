@@ -64,6 +64,36 @@ tuya-devplat-cli product detail --id <pid> \
 
 ### Create a product
 
+> **Account cap — read before creating.** The platform limits how many products
+> may sit in **Developing** (开发中) state at once. The cap counts *only*
+> Developing products, **not** the account's product total: on a measured
+> account (2026-08-20) the ceiling was **10 Developing** while 24 products
+> existed overall. A refusal looks like this:
+>
+> ```json
+> { "ok": false,
+>   "code": "CREATE_PRODUCT_DEVELOPING_LINE",
+>   "error": "The number of products in Developing state has reached the limit. Try finishing the development of a product or upgrading your account" }
+> ```
+>
+> Three ways out, in order of cost: **finish** a Developing product (its
+> `developStatus` goes 0 → 3 and it stops counting), **delete** a Developing
+> product you no longer need, or **upgrade the account**. Both of the first two
+> are done at <https://platform.tuya.com/pmg/list>.
+>
+> Deleting a **released** product frees nothing — it was never in the Developing
+> bucket. To see which products actually count, list them and filter on
+> `developStatus == 0` (`0` = developing, `3` = released):
+>
+> ```bash
+> tuya-devplat-cli product list --page-size 100 --format json \
+>   --fields id,name,developStatus
+> ```
+>
+> The CLI's `suggestion` field is **not** useful for this refusal — it falls back
+> to the generic "Check parameters or run the command with --help", which is
+> wrong advice here. Trust `code` and `error`.
+
 #### Step 1 — Find the category code
 
 Skip if using a known category from the reference table in SKILL.md.
@@ -132,3 +162,4 @@ Confirm `communicationCodes` contains both `"wifi"` and `"bluetooth"`.
 | `solutionModuleVOS` absent | Use `communication-list` fallback (Case B) |
 | `confirm_token` rejected (`INVALID_CONFIRMATION`) | Re-run `--dry-run` to get a new token |
 | `API_OR_API_VERSION_WRONG` | Check auth: `tuya-devplat-cli auth status` |
+| `CREATE_PRODUCT_DEVELOPING_LINE` | The account's **Developing**-product cap is full (measured ceiling: 10). Finish or delete a Developing product at <https://platform.tuya.com/pmg/list>, or upgrade the account. Deleting a *released* product does **not** help — see the account-cap note above |

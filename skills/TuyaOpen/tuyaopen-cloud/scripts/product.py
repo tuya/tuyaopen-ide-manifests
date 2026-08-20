@@ -59,6 +59,25 @@ DEFAULT_CATEGORY = "wf_ble_qt"
 DEFAULT_SOLUTION_ID = "10019526"
 
 
+# The account's cap on products in **Developing** state. Counts only
+# developStatus == 0 (0=developing, 3=released) — NOT the product total, so
+# deleting a released product frees nothing. Measured ceiling 2026-08-20: 10
+# Developing products on an account holding 24 in total.
+DEVELOPING_LIMIT_CODE = "CREATE_PRODUCT_DEVELOPING_LINE"
+DEVELOPING_LIMIT_HINT = (
+    "The account's 'Developing' product slots are full. This cap counts only",
+    "products with developStatus == 0, not the account total.",
+    "Free a slot one of three ways:",
+    "  1. Finish a Developing product (developStatus 0 -> 3; it stops counting)",
+    "  2. Delete a Developing product you no longer need",
+    "  3. Upgrade the account",
+    "Both (1) and (2) are done at https://platform.tuya.com/pmg/list",
+    "Deleting a RELEASED product does not help. To see what counts, run:",
+    "  product.py list --max 100   # last column is developStatus; keep the 0s",
+    "(--max defaults to 20, which silently truncates a larger account.)",
+)
+
+
 def run(args: list[str]) -> dict:
     result = subprocess.run(CLI + args, capture_output=True, text=True)
     try:
@@ -68,8 +87,16 @@ def run(args: list[str]) -> dict:
         sys.exit(1)
 
     if not data.get("ok"):
-        print(f"[error] {data.get('error', 'unknown error')} ({data.get('code', '')})", file=sys.stderr)
-        if data.get("suggestion"):
+        code = data.get("code", "")
+        print(f"[error] {data.get('error', 'unknown error')} ({code})", file=sys.stderr)
+        if code == DEVELOPING_LIMIT_CODE:
+            # The platform's own `suggestion` for this refusal is the generic
+            # "Check parameters or run the command with --help", which is wrong
+            # advice: nothing is wrong with the parameters. Replace it, don't
+            # print both.
+            for line in DEVELOPING_LIMIT_HINT:
+                print(f"[hint]  {line}", file=sys.stderr)
+        elif data.get("suggestion"):
             print(f"[hint]  {data['suggestion']}", file=sys.stderr)
         sys.exit(1)
 
