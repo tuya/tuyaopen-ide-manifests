@@ -72,7 +72,8 @@ related:
 
 ## 分派表：流程阶段 + 子技能
 
-从零到上线 7 步——每步标出在本 skill 内解决，还是跳到哪个子技能。
+从零到上线 9 步——每步标出在本 skill 内解决，还是跳到哪个子技能。最后两步
+（提审 / 发布、绑定）**没有任何命令行入口**，只能在网页上做，见下面的专节。
 
 | 阶段 / 场景 | 在本 skill 内 | 跳子技能 |
 |---|---|---|
@@ -88,7 +89,9 @@ related:
 | 4. Kit 类型定义缺失 / 添加 MediaKit/MapKit/P2PKit | [references/kit-acquisition.md](references/kit-acquisition.md) | — |
 | 5. 上线前 review（性能 / UX / release gate） | — | `tuyaopen-miniapp-performance-ux-guard` |
 | 6. 上传自检 | [references/upload-checklist.md](references/upload-checklist.md) + `scripts/validate.mjs` | — |
-| 7. 发布 | Tuya 开发者平台提交版本 | — |
+| 7. 上传（内测包） | — | `tuyaopen-miniapp`（`tuyaopen miniapp upload`，命令行可做） |
+| 8. 提审 / 发布 / 上线 | [只能在网页上做 —— 见下节](#提审发布与绑定只能在网页上做) | — |
+| 9. 绑定面板小程序到产品 | [只能在网页上做，且必须在第 8 步之后 —— 见下节](#提审发布与绑定只能在网页上做) | — |
 | —— 找文档 / 查 API / 查报错 | [references/info-lookup.md](references/info-lookup.md)（`search_help.py` / `fetch_doc.py` / `validate.mjs`） | — |
 
 **规则**：先用本 skill 定位 + 基础约束，再按上表派单。AI **不能**跳过本
@@ -127,6 +130,82 @@ skill，就留在本 skill + `tuyaopen-miniapp-ray-common` +
 `tuyaopen-miniapp-smart-ui` 里做，**不要**挑一个"最像的"品类 skill 套用 ——
 品类手册里的 DP 语义、组件选型和状态机是按那个品类写死的，套错比没有更糟。
 
+## 提审发布与绑定只能在网页上做
+
+面板小程序的生命周期里有 **四个步骤既不在本 skill、也不在 `tuyaopen` CLI、
+也不在 IDE 内**——只能开浏览器去涂鸦开发者平台做。AI 走到这四步时必须**明确
+告诉用户"这一步要去网页"并给出拼好参数的网址**，不要停在这里干等，更不要编一条
+`tuyaopen miniapp publish` / `submit` / `review` / `bind` 之类的命令——
+`tuyaopen` 的 `miniapp` 组只有 `build` / `install` / `meta` / `preview` /
+`sync-schema` / `template` / `upload` 七条，跑 `tuyaopen schema list --json`
+可以自己核实。
+
+**网址要带参数拼好，不要丢一个光秃秃的首页过去。** IDE 就是在点击时把参数拼
+进 URL 的（`src/host/externalLinkHandlers.ts`），一点直达那一页那一个 tab；
+只给基础域名等于让用户自己去几十个产品、几十个小程序里翻。
+
+| # | 步骤 | 为什么命令行做不了 | 打开哪个 URL |
+|---|---|---|---|
+| 1 | **创建小程序**（拿到 appid） | appid 由平台签发。`tuyaopen miniapp meta set-appid <appid>` 只是把一个**已有的** appid 写进项目元数据，它不会创建小程序；`upload` 也要求 appid 已存在 | `https://platform.tuya.com/miniapp/` —— 唯一不带参数的一步，因为参数要指的那个东西还不存在。创建完把 id 抄回来：`tuyaopen miniapp meta set-appid <appid>` |
+| 2 | **提审** | 审核是平台上有真人审核员的工作流，CLI 里没有对应接口 | `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>` |
+| 3 | **发布 / 灰度 / 上线 / 回滚** | 影响这款产品线上**所有**终端用户，刻意不放到命令行 | 同第 2 步的版本管理页 |
+| 4 | **把面板小程序绑定到产品** | 绑定关系挂在产品上，不在项目里，本地任何东西都断言不了 | `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` |
+
+### 两个参数分别是什么、从哪读
+
+两个都从 `source/miniapp/project.tuya.json` 读（读不到再退到
+`<project>/project.tuya.json`——IDE 也是按这两个候选顺序试的），并且都要
+URL 编码（IDE 用的是 `encodeURIComponent`）：
+
+| 占位符 | JSON 字段 | 实际装的是什么 | 为空说明什么 |
+|---|---|---|---|
+| `<appid>` | `appid` | **小程序 id**，就是 `tuyaopen miniapp meta set-appid` 写进去的值 | 平台上还没创建这个小程序 → 先做第 **1** 步。此时没有任何东西可提审、可发布 |
+| `<projectId>` | `projectId` | ⚠ **云端产品 PID** —— 尽管字段名叫 projectId，它**不是**小程序 id | 这个项目还没绑产品（或被解绑了）→ 先绑产品；没有 PID 就没有产品页可开 |
+
+> **⚠ `projectId` 装的是产品 PID。** 看字段名想当然把它当小程序 id，是这里
+> 最容易犯的错，而且拼出来的 URL 会静悄悄开到另一个页面。已核对
+> `src/miniapp/bindingManager.ts` —— `readProjectId` / `writeProjectId` 的注释
+> 原文就是 *"Read/Write projectId (PID)"*；所有调用方传的都是产品 pid：
+> `src/host/agentFlow.ts:257`（`writeProjectId(<dir>, pid)`）、
+> `src/host/product/index.ts:173`（`message.pid`），`:208` 传 `''` 表示解绑。
+> IDE 自己给这个字段为空时的提示文案写的是「产品 ID 为空……请先绑定产品」。
+
+**绑定 URL 的 `&tab=operation#PRIVATE` 是有用的，要原样照抄。** 只给 `id=`
+会开到产品页默认的那个 tab；`tab=operation` 这个 query 加上 `#PRIVATE` 这个
+hash 才是选中"小程序绑定"所在的那一栏。少任何一半，用户会到对的产品、错的页面。
+
+参数取不到时就照 IDE 的做法办：**不要开链接，直接说清缺哪个前置步骤**
+（IDE 会弹 `miniapp.v3.step5.appidEmpty` /
+`miniapp.v3.step5.projectIdEmpty` 并且什么都不打开）。不要拿占位符、
+猜的值或者基础域名去凑。
+
+### 上传 / 发布 / 绑定是三件不同的事
+
+三件事按顺序发生，而且**只有第一件有命令行入口**：
+
+1. **上传（upload）** —— `tuyaopen miniapp upload`（或 IDE MiniApp 页面的
+   「上传」按钮）在平台上登记一个**版本**。**只有这一步有 CLI 命令。**
+   包只是给你和团队内测用，终端用户看不到。
+2. **发布（提审 → 上线）** —— 第 2、3 步，把那个版本放出去。只能在网页做。
+3. **绑定** —— 第 4 步，把**已发布**的小程序挂到产品上，面板才真的能到这款
+   产品的设备上。只能在网页做。
+
+**顺序是死的：不能先绑定再发布。** 第 4 步绑的是一个**已经发布**的小程序，
+第 3 步没做完就没有东西可挂。IDE 给出的正是这个顺序——发布是 STEP 1、绑定是
+STEP 2（见 `media/webview/help/miniapp-step3.*.md`）。所以：`upload` 绿了
+**不等于**已发布，已发布**也不等于**已经能到设备上。照实说三件里做完了哪几件，
+别让"上传成功"顶替"已上线"。
+
+> **别把两种"绑定"搞混。** 本 skill 其他地方（第 2.5 步、
+> [references/platform-cache.md](references/platform-cache.md)）说的"绑定 /
+> 绑产品"是**把产品 PID 绑到项目上**，为的是能同步 DP schema，属于开发前置；
+> 这里第 4 步说的是**把已发布的小程序绑到产品上**，属于上线动作。两者只在一
+> 点上相连：前者写进 `projectId` 的那个 PID，正是后者 URL 里 `id=` 要用的值。
+
+平台在审核时到底查什么（包大小、i18n、禁用 API、权限说明），见
+[references/upload-checklist.md](references/upload-checklist.md)；命令行那一侧
+（`upload` 的参数、P2 门禁、报错）见 skill `tuyaopen-miniapp`。
+
 ## 拿设备 ID（`devid`）—— 真机联调的前置
 
 面板跑在真机上、调 DP、调按设备维度的接口，都要一个 `devid`。两件事先说清楚：
@@ -154,8 +233,10 @@ PR_INFO("devid: %s", devid ? devid : "(null)");
 配网完成后从串口日志里读。必须在设备激活**之后**调用，早于激活时客户端没有 id
 可返回。返回的指针由 client 持有，别 free、也别跨重新配网缓存。
 
-固件侧的完整说明（凭证优先级、UUID/AuthKey 与 devid 的关系、串口写授权）在
-skill `tuyaopen-embedded-device-auth`。上面这两条在那边也有一份 —— 这是有意重复
+固件侧的完整说明（凭证优先级、UUID/AuthKey 与 devid 的关系、串口写授权，以及
+**设备授权码怎么免费领 / 怎么买**）在 skill `tuyaopen-embedded-device-auth`
+——授权码获取途径全目录只在那一处写，这里只给指针，不复制网址。
+上面这两条在那边也有一份 —— 这是有意重复
 而不是指针：面板开发者常常不拥有固件，为了一个两步的 APP 查询把人赶去读一个嵌入式
 skill，比重复五行更糟。
 

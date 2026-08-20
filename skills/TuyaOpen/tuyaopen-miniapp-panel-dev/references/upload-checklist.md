@@ -136,7 +136,10 @@ Tuya 平台「网络请求白名单」里登记。审核时随机抽查请求 ho
 
 ---
 
-## C. 上传前自检流程
+## C. 上传前自检流程 → 上传 → 提审发布 → 绑定
+
+（步骤 1–4 是上传前自检，步骤 5 是上传，步骤 6、7 是**只能在网页上做**的
+提审发布与绑定——顺序不能反，绑定要求小程序已发布。）
 
 ### 步骤 1：跑自动化检查
 
@@ -176,7 +179,50 @@ find cdn -size +500k          # 找超过 500KB 的单个资源
 
 ### 步骤 5：上传
 
-走 IDE 的 MiniApp 页面「上传」按钮。**不要**在审核中心绕过 IDE 上传未签名包。
+走 IDE 的 MiniApp 页面「上传」按钮，或命令行 `tuyaopen miniapp upload`
+（P2，参数与报错见 skill `tuyaopen-miniapp`）。**不要**在审核中心绕过 IDE
+上传未签名包。
+
+### 步骤 6：提审 → 发布上线（**只能在网页上做**，IDE 的 STEP 1）
+
+**上传 ≠ 发布。** 步骤 5 只是把签名包交付到平台供内测，终端用户看不到。
+提审、灰度、上线、回滚在 IDE 和 `tuyaopen` CLI 里**都没有入口**，只能开浏览器
+去这个**拼好参数**的地址（别只丢首页过去）：
+
+```
+https://platform.tuya.com/miniapp/version?miniProgramId=<appid>
+```
+
+`<appid>` = **小程序 id**，取 `source/miniapp/project.tuya.json` 的 `appid`
+字段（取不到再看 `<project>/project.tuya.json`），需要 URL 编码。
+为空说明平台上还没创建这个小程序：先去 <https://platform.tuya.com/miniapp/>
+创建，再 `tuyaopen miniapp meta set-appid <appid>` 抄回项目。
+
+在这一页提交审核；审核通过后再在同一页上线。
+
+### 步骤 7：绑定面板小程序到产品（**只能在网页上做**，IDE 的 STEP 2）
+
+发布完还差一步：**把已发布的面板小程序绑定到产品**，面板才真的会出现在这款
+产品的设备上。绑定关系挂在产品上，本地和 CLI 都做不了：
+
+```
+https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE
+```
+
+- `<projectId>` = ⚠ **云端产品 PID**，**不是**小程序 id（字段名叫 projectId，
+  装的是 PID——见 `src/miniapp/bindingManager.ts` 的 `readProjectId` /
+  `writeProjectId` 注释）。同样取 `project.tuya.json`，同样要 URL 编码。
+  为空说明这个项目还没绑产品，先绑产品。
+- **`&tab=operation#PRIVATE` 要原样照抄。** 只给 `id=` 会开到产品页默认 tab，
+  绑定入口不在那一栏。
+
+**顺序不能反：先发布（步骤 6），再绑定（步骤 7）。** 步骤 7 绑的是一个**已经
+发布**的小程序，步骤 6 没做完就没有东西可挂。
+
+> 三件事别混：`upload` 登记**版本**（唯一有 CLI 命令的一步）、发布把版本**放
+> 出去**、绑定把它**挂到产品上**。**不要**声称"已发布"或"已上线"——本清单
+> 步骤 1–4 跑完只代表**可以上传**；步骤 5 跑完只是内测包；要到步骤 7 做完，
+> 面板才真的到了用户设备上。
 
 ---
 

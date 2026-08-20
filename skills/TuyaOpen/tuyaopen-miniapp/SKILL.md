@@ -69,6 +69,85 @@ tuyaopen miniapp template create --id <template-id> --dry-run
 tuyaopen miniapp upload --version 1.0.0 --description "..." --extension-path <ext-path>
 ```
 
+## Web-only steps — the CLI stops at `upload`
+
+The `miniapp` group covers **exactly** the seven subcommands in the table
+above and nothing else. **Four** steps of the miniapp lifecycle have **no CLI
+command at all** and can only be done in a browser on the Tuya developer
+platform. If the user is at one of these steps, say so and hand them the
+fully-constructed URL — **do not** invent a `tuyaopen miniapp create` /
+`submit` / `review` / `publish` / `bind` command, because none exists
+(`tuyaopen schema list --json` is the authority; check it before claiming
+otherwise).
+
+**Construct the URL with its query parameters — never hand over a bare base
+page.** The IDE builds each link at click time so one click lands on the exact
+page and tab (`src/host/externalLinkHandlers.ts`); a bare base URL leaves the
+user hunting for the right product, the right miniapp and the right tab.
+
+| # | Step | Why the CLI can't | URL to open |
+|---|---|---|---|
+| 1 | **Create the miniapp** (mint the appid) | `meta set-appid <appid>` *records* an appid into project metadata; it does not create one, and `upload` needs one that already exists. Only the platform issues an appid | `https://platform.tuya.com/miniapp/` — the one step with no parameter, because the thing the id would name does not exist yet. Create it, then copy the id back with `tuyaopen miniapp meta set-appid <appid>` |
+| 2 | **Submit for review** (提审) | Review is a platform workflow with human reviewers; this CLI has no API surface for it | `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>` |
+| 3 | **Publish / gray release / go live / roll back** (发布・灰度・上线・回滚) | These affect every end user of the product; deliberately kept off the command line | same version-management page as #2 |
+| 4 | **Bind the MiniApp to the product** (绑定面板小程序) | The binding lives on the product, not in the project; nothing local can assert it | `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` |
+
+### The two parameters, and where to read them
+
+Both come from `source/miniapp/project.tuya.json` (fall back to
+`<project>/project.tuya.json` — the IDE tries that second candidate too), and
+both must be URL-encoded, as the IDE does with `encodeURIComponent`:
+
+| Placeholder | JSON field | What it actually holds | Empty means |
+|---|---|---|---|
+| `<appid>` | `appid` | The **MiniApp id**. Same value `tuyaopen miniapp meta set-appid` writes | The miniapp was never created on the platform → do step **1** first. There is nothing to review or publish yet |
+| `<projectId>` | `projectId` | ⚠ The **cloud product PID** — *not* a MiniApp id, despite the field name | No product is bound to this project (or it was unbound) → bind the product first; without a PID there is no product page to open |
+
+> **⚠ `projectId` is the product PID.** Reading the field name and assuming it
+> is a MiniApp id is the obvious mistake here, and it silently builds a URL
+> that opens the wrong page. Verified in `src/miniapp/bindingManager.ts` —
+> `readProjectId` / `writeProjectId` are documented there as *"Read/Write
+> projectId (PID)"* — and every caller passes a product pid:
+> `src/host/agentFlow.ts:257` (`writeProjectId(<dir>, pid)`) and
+> `src/host/product/index.ts:173` (`message.pid`); `:208` writes `''` to
+> unbind. The IDE's own warning string for the empty case calls it 产品 ID /
+> "Project ID", i.e. the product.
+
+**`&tab=operation#PRIVATE` on the bind URL is load-bearing — copy it
+verbatim.** `id=` alone opens the product page on whatever tab it defaults to;
+the `tab=operation` query and the `#PRIVATE` hash are what select the tab
+where the MiniApp binding actually lives. Dropping either sends the user to
+the right product and the wrong screen.
+
+If a value is empty, do what the IDE does: **refuse to open the link and say
+which prerequisite step is missing** (it warns
+`miniapp.v3.step5.appidEmpty` / `miniapp.v3.step5.projectIdEmpty` and opens
+nothing). Do not substitute a placeholder, a guess, or the base URL.
+
+### Three different things: upload, publish, bind
+
+Keep these apart — they are sequential, and only the first has a command:
+
+1. **Upload** — `tuyaopen miniapp upload` registers a *version* on the
+   platform. **This is the only one with a CLI command.** The build is
+   available for you and your team to test internally; end users see nothing.
+2. **Publish** — submit that version for review, then take it live (steps 2–3
+   above). Releases the version. Web-only.
+3. **Bind** — attach the *published* MiniApp to the product (step 4 above), so
+   the panel actually reaches that product's devices. Web-only.
+
+**Ordering is fixed: you cannot bind before publishing.** Step 4 binds an
+*already-published* MiniApp; there is nothing to attach until step 3 finished.
+The IDE presents exactly this order — publish is STEP 1 and bind is STEP 2 of
+its two-step web flow (`media/webview/help/miniapp-step3.*.md`). So a green
+`upload` is *not* released, and a released miniapp is *not* yet reaching
+devices. Tell the user which of the three they have actually done rather than
+letting "uploaded" stand in for "shipped".
+
+For what the platform checks during review (package size, i18n, forbidden
+APIs, permission declarations), see skill `tuyaopen-miniapp-panel-dev` →
+`references/upload-checklist.md`. This skill only owns the command line.
+
 ### `sync-schema` needs a bound product
 
 `sync-schema` reads `.tuyaopen/platform/product-<pid>.json` — a snapshot
@@ -92,6 +171,13 @@ Runs the full ray build → minipack → sign → COS upload → version-registe
 pipeline. `--dry-run` first is worth it here more than most P2 commands,
 given how long the real run takes.
 
+A successful `upload` registers a **version**, it does not release it and it
+does not attach it to a product. The three steps after it — submit for review,
+publish, then bind the published MiniApp to the product — are all browser-only;
+see § *Web-only steps* above for the constructed URLs. Report `upload` as
+"uploaded for internal testing", never as "published" and never as "live on the
+device".
+
 ## Troubleshooting
 
 | Symptom | Cause | Fix |
@@ -102,3 +188,6 @@ given how long the real run takes.
 | `sync-schema` fails `config:no_product_cache` | Product bound, but no local DP snapshot cached yet | Refresh/bind the product from the TuyaOpen IDE, then retry |
 | `template create` rejected as `confirmation:needs_yes` | P2 gate — missing `--yes` / `TUYAOPEN_AUTOCONFIRM_P2` | Add both, or use `--dry-run` to preview first |
 | `template create` fails `config:manifest_item_missing` (unknown template id) | Wrong or stale `--id` | Run `tuyaopen miniapp template list` for current ids |
+| `upload` succeeded but end users still don't see the miniapp | Expected — `upload` registers a version for internal testing only | Publish it in the browser at `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>`, **then** bind it to the product at `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE`. Both web-only; see § *Web-only steps* |
+| Miniapp is published, review passed, but the panel still doesn't appear on the device | Publishing ≠ binding — the published MiniApp is not attached to the product yet | Bind it: `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` (`<projectId>` = the **product PID** from `project.tuya.json`, keep `&tab=operation#PRIVATE` verbatim) |
+| `upload` fails `config:no_pid_bound` — *"No appid in project.tuya.json"* | No appid recorded; often because the miniapp was never created on the platform. Note this is the **same** subtype `sync-schema` uses for a missing *product* pid — read the message, not just the code | Create the miniapp at <https://platform.tuya.com/miniapp/> if it doesn't exist, then `tuyaopen miniapp meta set-appid <appid>` (or use the IDE binding flow) |

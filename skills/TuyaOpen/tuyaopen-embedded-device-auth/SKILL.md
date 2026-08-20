@@ -149,11 +149,31 @@ Optional for AP provisioning with QR code:
 
 ### UUID + AuthKey
 
+> **This section is the catalogue's single home for "how do I get an
+> authorization code".** Other skills that mention UUID/AuthKey (
+> `tuyaopen-embedded-flash`, `tuyaopen-embedded-dev-loop`,
+> `tuyaopen-miniapp-panel-dev`, `tuyaopen-shared`) point here rather than
+> repeating the routes — do not copy the two URLs below into them.
+
 TuyaOpen-specific authorization codes come in three ways:
 
 1. **Pre-burned modules** — some Tuya modules ship with credentials in OTP; no manual setup needed.
-2. **Purchase from Tuya platform** — <https://platform.tuya.com/purchase/index?type=6>
-3. **Free developer codes** — Tuya periodically offers free authorization codes for developers; check the platform for current offers.
+2. **Free developer codes — two of them, claimed on the web** —
+   <https://tuyaopen.ai/zh/pricing-guide> documents the free allowance: during
+   development you can claim **2 free device authorizations** from the Tuya
+   Developer Platform. Read that page for the current claim steps (log in →
+   create a product → pick the module → claim the codes from the product page)
+   — it is the authoritative source, so do not reconstruct the steps from
+   memory.
+3. **Purchase from Tuya platform** — <https://platform.tuya.com/purchase/index?type=6>
+   for any quantity beyond the two free codes.
+
+**Both routes are web-only.** There is no `tuyaopen` CLI command that claims,
+buys, or fetches an authorization code — `tuyaopen license add` / `import`
+only *record* a UUID/AuthKey pair you already hold into the local CLI store,
+and `tuyaopen firmware authorize` only *writes* one you already hold to the
+device. If the user has no code yet, send them to one of the two URLs above;
+do not invent a command.
 
 > Important: only **TuyaOpen-specific** authorization codes work. Standard Tuya module authorization codes are **not compatible**.
 
