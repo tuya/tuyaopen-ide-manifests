@@ -42,6 +42,59 @@ tuyaopen diag doctor --json      # 看 deviceAuth.localLicenses
 
 `localLicenses: 0` 时它会直接给出下一步。本机有码之后再按下面的表把码写进设备。
 
+## 授权码的两条硬规则 —— 先读这个，再动手
+
+<code data-type="tag" style="color:#ff4d4f">写之前必须先问用户</code>
+
+**规则一：可以反复烧写、可以擦除。** 写进设备的是一条 KV，`firmware authorize` 因此在
+2026-08-18 从 P0 降到 P2 —— 它不满足 P0 的判据（没有反向命令、且销毁不可重建的状态），
+写错了再写一次就行，`firmware auth-status` 能读回来核对。
+
+**规则二：同一个码同一时间只能用在一台设备上。** 这一条不是从命令行为里能看出来的，
+但它决定了你该怎么用：
+
+- 把同一个 UUID 写进第二台设备，**不是**「两台都能用」，而是两台互相冲突 —— 云端按 UUID
+  认设备。
+- 所以「设备 B 也要联网」的正确做法不是复用设备 A 的码，而是**再要一个码**。
+- 反过来说，一台设备**换**码是安全的（规则一），把旧设备的码挪到新设备也可以 —— 前提是
+  旧设备不再需要联网。
+
+**因此：写码之前一定要问用户。** 不是走确认门（`--yes` + 环境变量）那种形式上的确认，而是
+真的要问清楚**这个码现在是不是空闲的**：
+
+> 我要把 UUID `xxxx…` 写进 `/dev/ttyACM0`。这个码同一时间只能给一台设备用 ——
+> 请确认它现在没有用在别的设备上（用过的可以擦掉重写，但不能两台同时用）。确认后我就写。
+
+## 没有授权码怎么办
+
+先看有没有：
+
+```bash
+tuyaopen diag doctor --json      # deviceAuth.localLicenses
+tuyaopen license list --json     # 本地存了哪些（AuthKey 默认打码）
+```
+
+`localLicenses: 0` 时，**`tuyaopen` 侧没有申领命令** —— `license` 组只有
+`list` / `add` / `import` / `remove`，都是本地库操作。码必须先从云端拿到，三条路：
+
+| 路径 | 怎么做 | 什么时候用 |
+|---|---|---|
+| **TuyaOpen IDE** | 侧边栏 *Developer Tools → Licenses*，按已绑定的 PID 申领（内部走 `tuya-devplat-cli auth-code fetch --pid <pid>`），拿到后会写进本地库 | 装了 IDE 时最省事；**需要项目已绑定 PID** |
+| **开发者平台网页** | 在产品的「设备授权」/ 授权码页面申领，导出 Excel | 没装 IDE，或要批量 |
+| **别人给你一个 xlsx** | `tuyaopen license import --xlsx <path>` | 团队里已有一批码 |
+
+拿到之后：
+
+```bash
+tuyaopen license add --uuid <uuid>          # AuthKey 走 TUYA_LICENSE_AUTHKEY 或 stdin，绝不上 argv
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware authorize --port <port> --uuid <u> --authkey <k> --yes
+tuyaopen firmware auth-status --port <port> # 读回来核对
+```
+
+**如果一个码都拿不到**：停下来告诉用户，并说清卡在哪一步 —— 是没绑 PID、没装 IDE、还是
+平台侧没有可申领的额度。**不要**继续往下做然后让设备卡在 `client no active`，也不要编一个
+UUID 试试看。
+
 ## Shortcuts — `tuyaopen license` / `tuyaopen firmware`
 
 | Intent | Command |
