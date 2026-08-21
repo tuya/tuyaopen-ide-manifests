@@ -7,6 +7,32 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### 修:三条已发布技能的 payload 变了但 `version` 没动(2026-08-21)
+
+`tuyaopen-shared` 1.3.0 → **1.4.0**(新增两节:wrapper 存活自检、目录陈旧检测 —— 新行为,取
+minor)、`tuyaopen-skill-maker` 1.3.0 → **1.3.1**、`tuyaopen-workflow-product-dev` 1.2.0 →
+**1.2.1**(后两条是措辞修补,取 patch)。
+
+**为什么门禁没拦住它。** `check-skill-version-bumps.py` 的 `--released-index` 由 CI 用
+`git show "$RELEASE_TAG:skills/…index.json"` 取,而在这个 fork 上**没有任何 git ref 描述实际
+发布出去的内容**:
+
+| | 内容 |
+|---|---|
+| `v0.0.9` **tag 指向的树** | 扁平 `skills/index.json`,23 条,斜杠式旧 id(`tuyaopen/build`) |
+| `v0.0.9` **实际发布的 tarball** | 扁平 `skills/index.json`,28 条,连字符 id;payload 在 `skills/TuyaOpen/<id>/`;**没有** `skills/TuyaOpen/index.json` |
+
+两者的 id 集合几乎不相交,所以以 tag 树为基线时,当前每一条 id 都被判成"从未发布"→ 可以自由
+吸收改动 → 门禁**空过**。而仓库里 `release.json` 的 `tag` 字段是上游的 `v1.0.0`,CI 取的其实是
+那个,在 fork 上更不是内测基线。
+
+要发现这件事只能**把 tarball 下载下来逐字节比**——这也是这次的做法:比完之后真实漂移只有
+上面三条,另外 11 条被首轮误报的 miniapp 技能 payload **逐字节相同**(误报源于用 tag 树算
+`--changed`,与 CI 那个基线错误同一类)。
+
+**门禁本身没改。** 它的逻辑是对的,错的是喂给它的基线;在 fork 上正确的基线是 release asset,
+不是 git ref。发下一个内测版本前,基线应当取自已发布的 tarball。
+
 ### 嵌入式技能加面名前缀:`tuyaopen-embedded-*`(2026-08-19)
 
 `embedded` 组 10 条技能的 id 与目录改名,与既有的 `tuyaopen-miniapp-*` 对称:

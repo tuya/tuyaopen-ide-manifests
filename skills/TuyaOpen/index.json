@@ -6,7 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "group": "core",
       "order": 0,
       "name": {
@@ -107,7 +107,7 @@
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "group": "core",
       "order": 2,
       "name": {
@@ -321,7 +321,7 @@
     },
     {
       "id": "tuyaopen-workflow-product-dev",
-      "version": "1.2.0",
+      "version": "1.2.1",
       "group": "cloud",
       "order": 10,
       "name": {
