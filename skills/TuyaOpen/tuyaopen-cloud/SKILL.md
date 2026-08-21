@@ -124,7 +124,29 @@ around the IDE:
 ```bash
 tuyaopen credential login              # opens a browser; --timeout defaults to 300s
 tuyaopen credential login --port 7788  # fixed port on a remote machine, for port-forwarding
+tuyaopen credential login --emit-url   # ALSO print the URL to stdout as one JSON line
 ```
+
+**If you are an agent, use `--emit-url`.** The URL normally goes to **stderr**
+(stdout carries exactly one line of JSON — that is the contract). But stderr is
+not always *visible*: a harness that captures the two streams separately, or
+buffers stderr until the child exits, shows the human nothing while this command
+blocks for up to `--timeout`. That happened in beta round 1 — the agent could
+not obtain the URL through any combination of `--json` / `--format human` /
+`stdbuf` / `setsid`, and wrote polling scripts to hunt for a URL the CLI had
+already printed.
+
+`--emit-url` puts it on stdout as `{"event":"login_url","url":"…"}` **before**
+the final envelope, so it arrives as data:
+
+```bash
+tuyaopen credential login --emit-url --json
+# {"event":"login_url","url":"http://127.0.0.1:39355/?deviceId=ide&..."}   <- hand this to the human
+# {"ok":true,"data":{...},"contractVersion":1}                            <- after they finish
+```
+
+Hand the URL to the developer and **wait** — do not kill the process. Killing it
+(SIGTERM) is what round 1 did three times, and it cancels the login.
 
 > **No CLI?** *That's* when you fall back to "please sign in via **TuyaOpen
 > IDE → Developer Platform** sidebar" — `tuya-devplat-cli auth login` needs

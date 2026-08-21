@@ -33,6 +33,15 @@ skill only covers what's specific to flashing and serial ports.
 | Flash firmware to the device | `tuyaopen firmware flash --port <port>` (P2) |
 | Foreground serial monitor | `tuyaopen firmware monitor --port <port>` |
 
+**一块板子可能有多个串口，用途和波特率都不同。** 内测第一轮在 `tuya-t5ai-board` 上实测：
+`/dev/ttyACM0 @ 115200` 是应用 CLI（`tal_cli`，我们注册的命令在这里），
+`/dev/ttyACM1 @ 460800` 才是芯片日志口（`PR_DEBUG` / `PR_NOTICE` 从这里出来）。测试者在
+ACM0 上只看到开机 banner、看不到任何 `PR_*`，一度以为是自己 Kconfig 的日志等级配错了，
+试了四档波特率才对上。
+
+所以：`tuyaopen device list-ports --json` 报出多于一个口时，它会附一条 `hint` 提醒这件事。
+**看不到应用日志时，先换口、再换波特率，最后才怀疑日志等级。**
+
 Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
 for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
 (it is usually not on `PATH`).

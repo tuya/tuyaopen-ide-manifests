@@ -29,6 +29,42 @@ every other TuyaOpen skill should link here instead of restating them, and
 should say "not in scope, see skill `tuyaopen-shared`" rather than naming
 sibling skills by name (see § *Routing table* for why).
 
+## 0. Order of operations — install and read the skills BEFORE you act
+
+This is first because it is the single most expensive mistake made in beta
+round 1, by the tester's own account: *"读的时机偏晚"* — the catalogue was
+synced at the very start, and the skills were installed and read only **after**
+a wrong command recipe had already been handed to the user.
+
+Two concrete costs from that one run:
+
+- `tuyaopen-cloud` states plainly that `product solution-list` always returns
+  empty and that you must use `custom-list`, and that devplat writes take
+  `--dry-run` → `--confirm <token>` rather than `--yes`. The wrong recipe —
+  `solution-list` + `--yes` — had already been sent when that was read.
+- `tuyaopen-shared` § 8 draws the project layout (`.tuyaopen/` +
+  `source/embedded/`). It was instead re-derived from a `firmware build` error
+  and rebuilt by hand.
+
+`tuyaopen-workflow-product-dev` was installed and never opened. It is the
+end-to-end orchestrator; for anything shaped like "build me a device", read it
+**first** and let it route you.
+
+```bash
+# 1. catalogue (once per machine)
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes
+# 2. what exists, and which one covers this task — match on whenToUse, not the id
+tuyaopen skills list --json
+# 3. install the ones that do, then READ their SKILL.md before the first action
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
+```
+
+**Also ask the CLI before assuming a capability is missing.** `<group> --help`
+lists a group's whole surface in one round trip. Round 1 reported "there should
+be a logout command that clears the local SK token" — `tuyaopen credential
+logout` already existed, and `credential --help` lists it on the third line.
+`schema list --json` is the same answer for the entire CLI.
+
 ## Shortcuts — `tuyaopen schema` / `tuyaopen skills` / `tuyaopen config` / `tuyaopen diag`
 
 | Intent | Command |

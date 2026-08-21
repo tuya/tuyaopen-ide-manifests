@@ -7,6 +7,44 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### 内测第一轮反馈落地(2026-08-21)
+
+第一轮实战测试(claude sonnet 5 / Linux / t5ai / 可调色温灯)暴露的问题,技能侧的修法。
+CLI 侧的对应改动见主仓库。
+
+`tuyaopen-shared` 1.4.0 → **1.5.0**,新增 **§0「先装先读,再动手」**。这是那一轮里最贵的
+一个错误,而且是测试者自己认的:目录一开始就同步了,技能却是在**已经把错的命令配方发给用户
+之后**才装、才读。两个具体代价 ——`tuyaopen-cloud` 明写着 `product solution-list` 永远返回空、
+要用 `custom-list`,以及 devplat 写操作走 `--dry-run` → `--confirm` 而不是 `--yes`,而错配方
+恰恰是 `solution-list` + `--yes`;`tuyaopen-shared` §8 画了 `.tuyaopen/` + `source/embedded/`
+的布局,结果是靠 `firmware build` 的报错反推、手工拼出来的。`tuyaopen-workflow-product-dev`
+装了但从没打开 —— 它正是本该第一个读的编排技能。
+
+同一节还加了一条:**先问 CLI,再断言功能缺失。** 那一轮报了「应该有个删除本地 SK token 的
+logout 命令」,而 `tuyaopen credential logout` 一直都在,`credential --help` 第三行就列着它。
+
+`tuyaopen-cloud` 1.2.0 → **1.3.0**:`credential login --emit-url`。登录 URL 一直走 stderr
+（stdout 要守单行 JSON 契约),但 stderr **不一定可见** —— 分开捕获两个流、或把 stderr 缓冲到
+子进程退出的 harness,会让人什么都看不到,而这条命令要阻塞到 `--timeout`。那一轮就是这样:
+agent 换遍 `--json`/`--format human`/`stdbuf`/`setsid` 都拿不到 URL,写了轮询脚本去找一个
+CLI 早就打印过的地址,还三次把进程 SIGTERM 掉(等于取消登录)。新 flag 把它作为
+`{"event":"login_url","url":…}` 放在 stdout,排在最终信封前面。
+
+`tuyaopen-embedded-device-auth` 1.2.0 → **1.3.0**:开头补「为什么会走到这一步:
+`client no active`」。那一轮固件编译、烧录、DP 处理、上报调用全对,设备却永远不出现在 App 里,
+串口只有一行 `client no active` —— **没有授权码就上不了云**,而在此之前没有任何一步提示过
+需要授权。判据现在是 `diag doctor` 的 `deviceAuth.localLicenses`。
+
+`tuyaopen-embedded-build` 1.0.4 → **1.1.0**:`firmware build --timeout`。默认 300 s 对**首次**
+全量编译几乎必然不够(还要下载平台与工具链),那一轮因此放弃包装层直接跑 `tos.py build`,
+连带丢掉日志捕获和类型化信封。
+
+`tuyaopen-embedded-flash` 1.2.0 → **1.3.0**:一块板子可能有多个串口,用途与波特率都不同。
+实测 `tuya-t5ai-board`:`ttyACM0 @ 115200` 是应用 CLI,`ttyACM1 @ 460800` 才是日志口。
+测试者在 ACM0 上看不到任何 `PR_*`,一度以为是自己的日志等级配错,试了四档波特率才对上。
+
+`manifests.skills.version` 1.4.0 → **1.5.0**。
+
 ### 修:三条已发布技能的 payload 变了但 `version` 没动(2026-08-21)
 
 `tuyaopen-shared` 1.3.0 → **1.4.0**(新增两节:wrapper 存活自检、目录陈旧检测 —— 新行为,取

@@ -20,6 +20,28 @@ compatibility:
 
 Docs: <https://tuyaopen.ai/docs/quick-start/equipment-authorization>
 
+## 为什么会走到这一步：`client no active`
+
+<code data-type="tag" style="color:#faad14">内测第一轮实测的失败形态</code>
+
+固件编译通过、烧录成功、DP 处理函数被调用、串口能看到上报调用 —— 然后设备**永远不出现在
+涂鸦 App 里**，串口日志只有一行：
+
+```
+[tuya_iot_dp.c:224] client no active
+```
+
+这不是代码 bug。**设备没有授权码（UUID + AuthKey）就无法接入涂鸦云。** 第一轮的测试者一路
+做到「本地功能全对、云端完全不通」，而在此之前**没有任何一步提示过需要授权**。
+
+所以：只要目标是「设备能被 App 控制」，授权就是**必经步骤**，不是可选的收尾。判据是
+
+```bash
+tuyaopen diag doctor --json      # 看 deviceAuth.localLicenses
+```
+
+`localLicenses: 0` 时它会直接给出下一步。本机有码之后再按下面的表把码写进设备。
+
 ## Shortcuts — `tuyaopen license` / `tuyaopen firmware`
 
 | Intent | Command |

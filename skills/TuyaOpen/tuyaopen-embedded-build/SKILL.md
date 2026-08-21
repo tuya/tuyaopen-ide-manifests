@@ -29,6 +29,16 @@ Docs: <https://tuyaopen.ai/docs/quick-start/project-compilation>
 | Remove build artifacts | `tuyaopen firmware clean --project-root <project>` |
 | Full clean (deletes `.build/` entirely, `tos.py clean -f`) | `tuyaopen firmware clean --project-root <project> --force` |
 
+**首次全量编译要放宽超时。** `firmware build` 默认 300 s，而**第一次**编译还要下载平台与
+工具链，正常就会超过 —— 内测第一轮就撞上了，然后被迫放弃包装层直接跑 `tos.py build`，同时
+丢掉了日志捕获和类型化信封。改成：
+
+```bash
+tuyaopen firmware build --timeout 1800     # 首次全量；0 = 完全不设超时
+```
+
+超时的报错现在会点名这个 flag。增量编译用默认值就够（实测约 40 s）。
+
 > **No CLI?** `tos.py build` / `tos.py clean` (`-f` for full clean). See
 > skill `tuyaopen-shared` § 7.
 
