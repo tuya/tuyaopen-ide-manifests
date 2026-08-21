@@ -1,14 +1,13 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.0",
-  "tag": "v1.0.0",
-  "publishedAt": "2026-08-13T07:05:50Z",
+  "version": "0.0.13",
+  "tag": "v0.0.13",
+  "publishedAt": "2026-08-21T10:25:15Z",
   "package": {
-    "github": "https://github.com/tuya/tuyaopen-ide-manifests/releases/download/v1.0.0/manifests.tar.gz",
-    "gitee": "https://gitee.com/tuya-open/tuyaopen-ide-manifests/releases/download/v1.0.0/manifests.tar.gz",
-    "tuyacn": "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/tuyaopen-ide-manifests/manifests-1.0.0.tar.gz",
-    "sha256": "3286d6a34c1d7ae30e7b0b66858bdfdbf6e120e2af33318c79f14cb9815e891e",
-    "size": 5793927
+    "github": "https://github.com/maidang-xing/tuyaopen-ide-manifests/releases/download/v0.0.13/manifests.tar.gz",
+    "gitee": "https://github.com/maidang-xing/tuyaopen-ide-manifests/releases/download/v0.0.13/manifests.tar.gz",
+    "sha256": "d25f0399e3e99a96496407d8962f2e2b89b5d778b77d0c4d4dd3f6ef06d279ad",
+    "size": 5879586
   },
   "domains": {
     "boardsAndChips": {
@@ -21,7 +20,7 @@
       "version": "1.0.0"
     },
     "skills": {
-      "version": "1.0.0"
+      "version": "1.7.0"
     }
   }
 }
