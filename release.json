@@ -1,13 +1,13 @@
 {
   "schemaVersion": 1,
-  "version": "0.0.13",
-  "tag": "v0.0.13",
-  "publishedAt": "2026-08-21T10:25:15Z",
+  "version": "0.0.14",
+  "tag": "v0.0.14",
+  "publishedAt": "2026-08-21T11:10:53Z",
   "package": {
-    "github": "https://github.com/maidang-xing/tuyaopen-ide-manifests/releases/download/v0.0.13/manifests.tar.gz",
-    "gitee": "https://github.com/maidang-xing/tuyaopen-ide-manifests/releases/download/v0.0.13/manifests.tar.gz",
-    "sha256": "d25f0399e3e99a96496407d8962f2e2b89b5d778b77d0c4d4dd3f6ef06d279ad",
-    "size": 5879586
+    "github": "https://github.com/maidang-xing/tuyaopen-ide-manifests/releases/download/v0.0.14/manifests.tar.gz",
+    "gitee": "https://github.com/maidang-xing/tuyaopen-ide-manifests/releases/download/v0.0.14/manifests.tar.gz",
+    "sha256": "40f265976fabd930aa38545f725903b9eb502a5dffd052185b2de82923f62189",
+    "size": 5883113
   },
   "domains": {
     "boardsAndChips": {
@@ -20,7 +20,7 @@
       "version": "1.0.0"
     },
     "skills": {
-      "version": "1.7.0"
+      "version": "1.8.0"
     }
   }
 }
