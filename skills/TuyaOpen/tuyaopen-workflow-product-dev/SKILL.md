@@ -130,7 +130,21 @@ in-progress   pid non-empty
               AND at least one of:
                 · architecture.json surfaces.embedded.peripherals has any entry  ← authoritative
                 · source/embedded/src/ has non-scaffold .c files
+
+built         everything `in-progress` requires
+              AND `tuyaopen firmware build` has exited 0 for the current source
+              (there is no on-disk flag for this — it is the state you are in
+               after has-dps Step 8 / in-progress Step 4 succeeds, and you fall
+               back out of it the moment a later edit breaks the build)
 ```
+
+`built` is the only state above with no file-system signature, and that is
+deliberate: inventing one (a marker file, a mtime comparison) would let a stale
+flag claim a device is ready to authorize when the firmware no longer compiles.
+Treat it as a *session* fact — you built it, so you know — and re-derive it by
+building again if you are unsure. The practical consequence is the one that
+matters: **you may not enter `built` Step 2 on the strength of a guess**, which
+is exactly the guard round 2 lacked.
 
 *Scaffold files: at time of writing, only `tuya_app_main.c`. When `architecture.json.surfaces.embedded.peripherals` has entries, that is the definitive `in-progress` signal regardless of file listing. Do not rely on header scanning alone — the scaffold may include umbrella headers (e.g., `tal_api.h`) that reference hardware headers transitively.
 
@@ -379,6 +393,54 @@ Delegate to `tuyaopen-embedded-dev-loop`.
 
 ---
 
+## State: built — bring the device online
+
+**Goal:** a device the user can control from their phone. This state existed
+implicitly and that was the bug: the state machine above ended at "it
+compiles", so nothing owned the question "when do we get the device onto the
+cloud", and beta round 2's agent asked for an authorization code in its very
+first turn — before the project directory existed. Everything below happens
+**after** `firmware build` exits 0, in this order, and not before.
+
+### Step 1 — Flash
+
+Delegate to `tuyaopen-embedded-flash`. Pick the port via `tuyaopen device
+list-ports` (multi-port boards: that command's `hint` tells you how to
+disambiguate). Note the default baud can be slow enough to hit the build/flash
+timeout on a large image — `--baud 921600` is the usual fix, and
+`--timeout <ms>` raises the ceiling.
+
+### Step 2 — Authorization code (the FIRST time it is legitimate to ask)
+
+Delegate to `tuyaopen-embedded-device-auth` and read its **§0** before opening
+your mouth: a code is needed here and nowhere earlier, one code may only be in
+use on **one** device at a time, and you must ask the user to confirm the code
+is free before writing it. If the user has no code, that skill's *没有授权码怎么办*
+section is the answer — do not stall the build waiting for one.
+
+```bash
+tuyaopen diag doctor --json          # deviceAuth.localLicenses — 0 means "none stored here"
+```
+
+### Step 3 — Write it, then read it back
+
+`tuyaopen firmware authorize` (P2 — needs `--yes`), then **verify** with
+`tuyaopen firmware auth-status --port <port>`. A write you did not read back is
+not a completed step.
+
+### Step 4 — Hand provisioning to the user
+
+Provisioning is a **phone** action; no CLI can do it. Tell the user, explicitly,
+that the next three steps are theirs: install **智能生活 / Smart Life**, sign in
+with an account in the **same region as the product**, then "Add device" and pair
+while the device sits in provisioning mode.
+
+Your own success criterion is not "paired" — you cannot observe that. It is
+`auth-status` reporting a code on the device and the serial log no longer
+printing `client no active`.
+
+---
+
 ## Reverse Transitions
 
 | Trigger | Action |
@@ -388,6 +450,8 @@ Delegate to `tuyaopen-embedded-dev-loop`.
 | Build fails: missing Kconfig | → `has-dps` Step 5 |
 | Developer wants different PID | Clear `[product] pid` from ini. Delete `product-<old-pid>.json`. Keep `ai.*`. → bare Step 3 (persist intent) then Step 6 (bind the new PID). Skip Steps 4–5 — the product already exists on the platform. |
 | Change product category | Clear `ai.productCategory` + `ai.expectedDps` from `project.json`. → bare Step 1. |
+| Device never appears in the App, log says `client no active` | → `built` Step 2. This is missing authorization, not a code bug — see `tuyaopen-embedded-device-auth`. |
+| User asks for an auth code before the firmware builds | Say what it is for and that it is not needed yet; finish `has-dps` Step 8 first. Do **not** collect a code early — a code in hand is a code occupied. |
 
 ---
 

@@ -57,7 +57,46 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes
 tuyaopen skills list --json
 # 3. install the ones that do, then READ their SKILL.md before the first action
 TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
+# 4. confirm your own tool can SEE them — `install` reports this now
+#    (data.reachability; `tuyaopen diag doctor --json` → agentSkills says the same)
 ```
+
+### 0.1 A green install is not proof your tool can see the skills
+
+Round 2 installed 19 skills, exit 0, both project mirrors populated — and the
+tester's `/skills` listing showed **none of them**. The install was fine. The
+reason is a trap worth knowing by name:
+
+> **Every agent tool binds its skill roots to the workspace it was LAUNCHED in,
+> once, at launch.** The TuyaOpen flow inverts that order — you are launched,
+> *then* you install the CLI, *then* the CLI creates the project directory,
+> *then* skills land inside it. If the workspace was the parent directory (a
+> home directory, most often), a project-scope install lands somewhere the
+> tool will never look, for the rest of the session.
+
+You cannot detect this by listing files: `skills list-installed` reports what
+is on disk and it is *correct*. What you check instead is reachability, which
+`skills install` now returns in the same envelope, and which `diag doctor`
+reports standalone:
+
+```bash
+tuyaopen diag doctor --json     # → .data.agentSkills.blind  (tools that see nothing)
+                                #   .data.agentSkills.hint   (what to do about it)
+```
+
+Two fixes, and the second one is the one to prefer when you are an agent that
+just created the project directory it is standing in:
+
+1. Restart with the project directory as the workspace (a human action).
+2. Install where launch order cannot matter — the global roots exist before any
+   project does:
+   ```bash
+   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --default --scope global --yes
+   ```
+
+**Read the bodies off disk regardless.** Whether or not your tool's own skill
+loader picked them up, `cat <project>/.agents/skills/<id>/SKILL.md` always
+works, and § 6.1 is the fallback path for exactly that.
 
 **Also ask the CLI before assuming a capability is missing.** `<group> --help`
 lists a group's whole surface in one round trip. Round 1 reported "there should
@@ -418,11 +457,30 @@ the catalogue's `publishedAt` / `skillsVersion`, offline.
 
 ### 6.1 Your tool's skill directory isn't one of the four? Install them yourself
 
-Global scope writes the hub plus links into `~/.claude/`, `~/.codex/` and
-`~/.cursor/` — and that is the complete list. If you are an agent tool that
-reads none of those (or reads no skill directory at all), **nothing is missing
-and nothing needs to be added on our side.** The catalogue is machine-readable
-and installation is a command you can run yourself:
+**Which tool reads what** (measured 2026-08-21 against shipped builds; the
+`tuyaopen skills install` result and `diag doctor` both report this per tool,
+with a `confidence` field saying whether the row was probed or assumed):
+
+| Tool | project scope | global scope |
+|---|---|---|
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` |
+| Antigravity (`agy`) | `.agents/skills/` | `~/.gemini/config/skills/` (**two** levels, not a typo) |
+| Codex | `.agents/skills/` (**not** `.claude/`) | `~/.codex/skills/` |
+| opencode | `.agents/skills/`, `.claude/skills/`, `.opencode/skill(s)/` | `~/.agents/skills/` — **the hub itself**, no link needed |
+| Cursor | unknown | `~/.cursor/skills/` — *unverified*, no CLI to probe |
+
+A project-scope install writes `.agents/skills/` **and** `.claude/skills/`, so
+it covers the first four. Global scope writes the hub plus links into
+`~/.claude/`, `~/.codex/`, `~/.cursor/` and `~/.gemini/config/`.
+
+**This table has been wrong twice, in both directions**, which is why it now
+carries a `confidence` field instead of just paths: `agy` was missing entirely
+until 2026-08-21 (so the "just install globally" advice in § 0.1 would have
+produced an empty listing), and Codex was recorded as reading *no* project root
+(so the report called it blind right after an install it reads fine). If your
+tool is not on this list, or reads no skill directory at all, **nothing is
+broken.** The catalogue is machine-readable and installation is a command you
+can run yourself:
 
 ```bash
 tuyaopen skills list --json           # id, group, name, summary, whenToUse, tags, defaultEnabled
@@ -448,6 +506,11 @@ Pick by `whenToUse` from `skills list`, install what the task needs, read that
   never a path: `skills install --ids tuyaopen-debug-helper` works and creates
   `.agents/skills/tuyaopen-embedded-diagnose/`. Always read the installed
   result back with `list-installed` rather than assuming the path.
+
+- **Reading a `SKILL.md` off disk is always available**, and it does not care
+  where your tool was launched. If `/skills` (or your tool's equivalent) does
+  not list them but `list-installed` says they are there, you have hit § 0.1 —
+  `cat` the files and carry on, rather than concluding they failed to install.
 
 If `skills list` returns `no_manifest_cache`, this machine has no catalogue at
 all yet — run `manifests sync` first (see the cold-start note above).

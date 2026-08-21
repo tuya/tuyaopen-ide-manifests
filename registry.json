@@ -21,8 +21,8 @@
     },
     "skills": {
       "url": "skills/TuyaOpen/index.json",
-      "version": "1.6.0",
-      "summary": "AI agent skills for TuyaOpen (Cursor, Claude Code, Codex …)"
+      "version": "1.7.0",
+      "summary": "AI agent skills for TuyaOpen (Cursor, Claude Code, Codex, Antigravity …)"
     }
   }
 }

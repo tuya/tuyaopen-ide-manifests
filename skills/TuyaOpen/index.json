@@ -6,7 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.5.0",
+      "version": "1.7.0",
       "group": "core",
       "order": 0,
       "name": {
@@ -266,7 +266,7 @@
     },
     {
       "id": "tuyaopen-cloud",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "group": "cloud",
       "order": 9,
       "name": {
@@ -321,7 +321,7 @@
     },
     {
       "id": "tuyaopen-workflow-product-dev",
-      "version": "1.2.1",
+      "version": "1.3.0",
       "group": "cloud",
       "order": 10,
       "name": {
@@ -613,7 +613,7 @@
     },
     {
       "id": "tuyaopen-embedded-code-check",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "embedded",
       "order": 22,
       "name": {
@@ -712,7 +712,7 @@
     },
     {
       "id": "tuyaopen-embedded-device-auth",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "group": "cloud",
       "order": 24,
       "name": {
@@ -813,7 +813,7 @@
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "1.1.0",
+      "version": "1.3.0",
       "group": "miniapp",
       "order": 98,
       "name": {

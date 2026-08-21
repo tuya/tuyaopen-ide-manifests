@@ -692,6 +692,128 @@ def check_cli_declaration(items: list) -> None:
         run_shortcuts_check(item, groups)
 
 
+# --------------------------------------------------------------------------- #
+# Frontmatter must actually PARSE as YAML                                      #
+# --------------------------------------------------------------------------- #
+# Added 2026-08-21 after a measured, silent, six-week-old catalogue defect.
+#
+# `tuyaopen-embedded-code-check`'s frontmatter carried:
+#
+#     compatibility:
+#       - clang-format installed (Linux: `apt install clang-format`; …)
+#
+# A backtick cannot start a YAML plain scalar, so the whole document failed to
+# parse. Every gate in this repo stayed green — none of them read the
+# frontmatter — and the consequence only showed up in an agent tool: `agy`
+# listed 16 of 17 globally-installed skills and said nothing about the 17th,
+# and Claude Code fell back to the body's H1 in place of the description. A
+# skill that does not parse is a skill that does not exist, and nothing
+# anywhere reported it.
+#
+# Two oracles, deliberately:
+#
+#   * PyYAML when importable — the real parser, so no guessing about what is
+#     legal. This is what CI gets.
+#   * A narrow textual floor otherwise, so a machine without PyYAML still
+#     catches THIS class rather than silently skipping the check. It only
+#     inspects unquoted inline values and sequence items (never block-scalar
+#     continuation lines, which is where all our prose lives) and only flags
+#     the two things that actually broke: a leading YAML indicator character,
+#     and an embedded ": " that turns a scalar into a nested mapping.
+#
+# The floor is a floor, not an equivalent: it is allowed to miss things PyYAML
+# would catch. It is not allowed to report something PyYAML accepts, which is
+# why it stays this narrow.
+
+_FRONTMATTER_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n", re.S)
+# Characters that genuinely cannot open a plain scalar *and* are not a legal
+# flow-collection opener. Deliberately NOT the full YAML indicator set: `[` and
+# `{` open flow sequences/mappings, which this catalogue really does use
+# (`tags: [a, b]`, `surfaces: [embedded]`), and the first draft of this floor
+# flagged three of those as errors — i.e. it reported things PyYAML accepts,
+# which is the one thing the note above says a floor may not do.
+_YAML_INDICATORS = "`@%*&!"
+
+
+def _yaml_floor_errors(text: str) -> "list[str]":
+    """Textual fallback — see the module note above for its exact remit."""
+    problems: "list[str]" = []
+    in_block_scalar = False
+    block_indent = 0
+    for lineno, raw in enumerate(text.splitlines(), start=1):
+        if not raw.strip():
+            continue
+        indent = len(raw) - len(raw.lstrip(" "))
+        if in_block_scalar:
+            # Still inside a `>-` / `|` body while more-indented than its key.
+            if indent > block_indent:
+                continue
+            in_block_scalar = False
+        m = re.match(r"^\s*([A-Za-z_][\w-]*):\s*(.*)$", raw)
+        if m:
+            value = m.group(2)
+            if value[:1] in (">", "|"):
+                in_block_scalar, block_indent = True, indent
+                continue
+            if value == "":
+                continue  # key introducing a nested block/sequence
+        else:
+            seq = re.match(r"^\s*-\s+(.*)$", raw)
+            if not seq:
+                continue
+            value = seq.group(1)
+        value = value.strip()
+        if not value or value[0] in "\"'":
+            continue  # quoted — whatever is inside is the parser's business
+        if value[0] in _YAML_INDICATORS:
+            problems.append(
+                f"line {lineno}: plain scalar starts with the reserved character "
+                f"{value[0]!r} — quote the whole value: {raw.strip()[:90]}"
+            )
+        elif ": " in value:
+            problems.append(
+                f"line {lineno}: plain scalar contains ': ', which YAML reads as a "
+                f"nested mapping — quote the whole value: {raw.strip()[:90]}"
+            )
+    return problems
+
+
+def check_frontmatter_parses(items: list) -> None:
+    """Every referenced SKILL.md must have frontmatter a YAML parser accepts."""
+    try:
+        import yaml  # type: ignore
+    except ImportError:
+        yaml = None  # noqa: N806 — fall through to the textual floor
+
+    for item in items:
+        local_path = (item.get("source") or {}).get("localPath")
+        if not is_str(local_path):
+            continue
+        md = REPO_ROOT / local_path / "SKILL.md"
+        if not md.is_file():
+            continue
+        label = f"item {item.get('id', '?')!r}"
+        text = md.read_text(encoding="utf-8")
+        m = _FRONTMATTER_RE.match(text)
+        if not m:
+            err(f"{label}: {local_path}/SKILL.md has no YAML frontmatter block")
+            continue
+        body = m.group(1)
+        if yaml is not None:
+            try:
+                parsed = yaml.safe_load(body)
+            except Exception as e:  # noqa: BLE001 — any parse failure is the finding
+                first = str(e).splitlines()[0]
+                err(f"{label}: {local_path}/SKILL.md frontmatter is not valid YAML: {first}")
+                continue
+            if not isinstance(parsed, dict):
+                err(f"{label}: {local_path}/SKILL.md frontmatter parsed to "
+                    f"{type(parsed).__name__}, expected a mapping")
+            continue
+        for p in _yaml_floor_errors(body):
+            err(f"{label}: {local_path}/SKILL.md frontmatter {p}")
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "TuyaOpen" / "index.json"
     if not index_path.is_file():
@@ -721,6 +843,7 @@ def main() -> int:
     check_orphan_skill_dirs(items)
     check_agent_skill_paths(seen_ids)
     check_cli_declaration(items)
+    check_frontmatter_parses(items)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)

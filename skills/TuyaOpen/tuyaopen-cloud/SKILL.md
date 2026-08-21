@@ -76,6 +76,21 @@ Anything a `tuyaopen` command already covers should go through `tuyaopen`
 instead — that one wraps the same call with a typed error envelope, a local
 snapshot and a fallback cache, none of which the raw response has.
 
+**The reverse mistake is the one that actually happened.** `tuyaopen` has no
+command for creating a panel miniapp, submitting it for review, publishing it,
+or binding it to a product — and skill `tuyaopen-miniapp` concluded from that
+that those four steps "have no CLI command at all and can only be done in a
+browser", and told the agent not to look. `tuya-devplat-cli`'s `panel` group
+carries all of them: `create-miniapp`, `miniapp-next-version`,
+`miniapp-submit-version-review`, `miniapp-task-poll`, `miniapp-version-status`,
+`miniapp-release`, `miniapp-release-wait`, `bind`, `save-standard-relation`
+(plus `product release-ui`). Corrected 2026-08-21; the full chain now lives in
+`tuyaopen-miniapp` § 0.2.
+
+Generalise it: **`tuyaopen schema list` is the authority for `tuyaopen`, and for
+nothing else.** "Absent from `tuyaopen`" is not evidence about this CLI, and —
+per Trap 1 below — absence from *this* CLI's `--help` is not evidence either.
+
 ```bash
 tuya-devplat-cli --help                 # groups you are authorized for
 tuya-devplat-cli <group> --help         # subcommands you are authorized for

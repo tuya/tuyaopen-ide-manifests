@@ -10,7 +10,7 @@ description: >-
   仅靠本 skill 自带脚本。
 license: Apache-2.0
 compatibility:
-  - clang-format installed (Linux: `apt install clang-format`; macOS: `brew install clang-format`; Windows: `choco install llvm` or LLVM release)
+  - "clang-format installed (Linux: `apt install clang-format`; macOS: `brew install clang-format`; Windows: `choco install llvm` or an LLVM release)"
   - Python 3 (venv active)
 ---
 

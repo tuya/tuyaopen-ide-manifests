@@ -6,7 +6,9 @@ description: >-
   remove` (a local CLI-only license store) and `tuyaopen firmware authorize`
   (writes the code to the device over serial, P2). Use when the user mentions
   device auth, authorization, UUID, AuthKey, tuya_config.h, provisioning,
-  pairing, or cloud connection.
+  pairing, or cloud connection. A late-stage skill: the code is needed only
+  after the firmware builds and is about to be flashed — read its §0 before
+  asking the user for a code.
   设备授权、授权码、配网、UUID、AuthKey、云连接、tuyaopen license、
   tuyaopen firmware authorize。
 license: Apache-2.0
@@ -19,6 +21,48 @@ compatibility:
 # TuyaOpen Device Authorization & Provisioning
 
 Docs: <https://tuyaopen.ai/docs/quick-start/equipment-authorization>
+
+## §0 什么时候才该问用户要授权码 —— 先看这一节
+
+<code data-type="tag" style="color:#ff4d4f">内测第二轮实测的错误形态：问得太早</code>
+
+这是一个**收尾阶段**的技能。授权码在整条开发链里的位置是固定的：
+
+```
+需求 → 建产品/DP → 绑 PID → 硬件确认 → 写代码 → 编译通过
+                                                  ↓
+                                        ★ 这里才开始需要授权码 ★
+                                                  ↓
+                            烧固件 → 写授权码 → 读回核对 → 用户手机配网
+```
+
+**在「编译通过」之前，不要向用户索要授权码。** 判据只有一条，而且是可执行的：
+
+```bash
+tuyaopen firmware build --project-root <项目>   # 先让它 exit 0
+```
+
+在它成功之前，问了也没用 —— 没有固件可烧，没有设备可写，用户只能把答案搁在那儿。
+
+第二轮实测就是这样：agent 在**会话最开头**就问了「你有授权码吗」，此时项目目录还没建、
+一行代码都没写。用户把这个问题挂了半小时，而到了真正该写码的节点，agent **又问了一遍**
+（那一次是对的）。代价不只是问两遍：早问会诱导用户去「先弄一个码」，而一个码同一时间只能
+绑一台设备（见下一节规则二），在设备还没准备好的时候就占掉它，是纯粹的浪费。
+
+**唯一的例外**：用户自己先提起授权/配网/`client no active`，或者项目已经处在编译通过之后
+的状态。这时按用户的节奏走，不要反过来把他推回前面的步骤。
+
+### 配网是用户的动作，不是你的
+
+写完码之后还有一步，**没有任何 CLI 能替用户做**：
+
+1. 用户在手机上装 **智能生活 / Smart Life** App（应用商店搜这个名字）。
+2. 在 App 里注册/登录，账号所在的**国家/区域要和产品的区域一致**，否则设备连上了也搜不到。
+3. 设备上电进入配网态（多数 demo 是长按按键或首次上电自动进入），在 App 里「添加设备」搜索并配网。
+
+到了这一步要**明确告诉用户「接下来这三步需要你在手机上做」**，并说清设备此刻应该处于什么状态。
+不要写成「已完成配网」——你无法验证它，能验证的是 `firmware auth-status` 和串口日志里
+`client no active` 是否消失。
 
 ## 为什么会走到这一步：`client no active`
 
