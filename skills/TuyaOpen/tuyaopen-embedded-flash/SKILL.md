@@ -25,6 +25,26 @@ list-ports`. For everything about `tuyaopen`'s envelope, exit codes, and the
 P0/P2 risk-gate mechanics referenced below, see skill `tuyaopen-shared` — this
 skill only covers what's specific to flashing and serial ports.
 
+## §0 先确认「哪个口是目标板」，再烧任何东西
+
+<code data-type="tag" style="color:#ff4d4f">不要从任务提示词里拿串口号</code>
+
+提示词可能写着「板子在 `/dev/ttyACM0`」。**那是一句可能过时、可能写错、也可能指向另一块板的话。**
+自己查，然后**让用户确认**：
+
+```bash
+tuyaopen device list-ports --json      # >1 个口时它会返回 hint 说明怎么区分
+```
+
+- **只有一个口** → 直接用，但在 P2 确认里把口号说出来。
+- **多个口** → **列出来问用户哪个是目标板**。同一块板的多个口按 `usbSerial` 分组
+  （见下文 § Serial port discovery）；不同 `usbSerial` 就是**不同的板子**，猜错就是烧到别人的设备上。
+- **一个口都没有** → 别往下走。告诉用户「没有检测到串口设备」，让他确认板子插好、
+  以及（Linux）当前用户在 `dialout` 组里。
+
+烧录是 P2，`firmware authorize` 会往设备写东西 —— **这两个动作的目标口都必须是用户确认过的**。
+其余环境事实（SDK 在哪、有没有登录、有没有授权码）见 skill `tuyaopen-shared` § 0.0。
+
 ## Shortcuts — `tuyaopen firmware` / `tuyaopen device`
 
 | Intent | Command |

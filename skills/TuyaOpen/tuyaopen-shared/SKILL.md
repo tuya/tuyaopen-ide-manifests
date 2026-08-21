@@ -61,6 +61,43 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
 #    (data.reachability; `tuyaopen diag doctor --json` → agentSkills says the same)
 ```
 
+### 0.0 Establish the machine's facts — don't take them from the task brief
+
+<code data-type="tag" style="color:#faad14">前两轮这些事实是写在任务提示词里的。那是错的位置。</code>
+
+一个任务书会告诉你「板子接在 `/dev/ttyACM0`」「SDK 在 `~/TuyaOpenIDE/TuyaOpenSDK`」
+「登录要用户点浏览器」。**这些不该由提示词提供** —— 提示词换一个人写就会漏、会过时、会写错，
+而这些都是**可以自己查**的。你的第一批动作就是把它们查清楚：
+
+| 你需要知道的 | 自己怎么查 | 查不到时问用户什么 |
+|---|---|---|
+| CLI 在哪、是哪一份 | § 1（`tuyaopen` 通常**不在** `PATH` 上） | — |
+| 环境/SDK 是否就绪、SDK 根在哪 | `tuyaopen diag doctor --json` → `sdk` 块；skill `tuyaopen-embedded-env-setup` | 没有 SDK 时**不要**擅自克隆 12 GB —— 先说要下什么、多大 |
+| 目录/技能目录状态 | 同上 → `manifests`、`agentSkills` 块（§ 0.1） | — |
+| 登录状态 | 同上 → `credential` 块；`tuyaopen credential status` | 未登录 → §「需要人做的四件事」 |
+| **有哪些串口、哪个是哪个** | `tuyaopen device list-ports --json`（>1 个口时它会给 `hint`） | 列出来**让用户确认哪个是目标板**，不要挑一个就烧 |
+| 项目状态 | `tuyaopen project info --json` | — |
+| 本机有没有授权码 | `tuyaopen diag doctor --json` → `deviceAuth.localLicenses` | skill `tuyaopen-embedded-device-auth` § 0（**编译通过之后**才问） |
+
+**规则：能查的就查，查不到就问，不要假设，也不要相信提示词里关于本机的说法胜过 `diag doctor`。**
+提示词是需求的来源，不是环境的来源。
+
+### 0.0a 需要人做的四件事 —— 这些你做不了，早点说清楚
+
+有四类动作**没有任何 CLI 能替用户完成**。走到它们时，**明确说「这一步需要你做」**，
+说清楚要点什么、以及做完之后设备/页面应该是什么状态。不要卡在那里等，也不要假装做完了。
+
+| 动作 | 你能做的 | 用户必须做的 |
+|---|---|---|
+| **平台登录** | `tuyaopen credential login --emit-url` —— 它把 URL 打到 stdout 一行 JSON 并**等待** | 在浏览器里打开那个 URL 完成授权。**把 URL 给他**，不要只说"请登录" |
+| **申领 appid / 网页步骤** | 把带好参数的 URL 拼出来（skill `tuyaopen-miniapp` § 0.2 ③） | 在网页上操作 |
+| **授权码** | 说明为什么需要、怎么取（skill `tuyaopen-embedded-device-auth`） | 提供码，并确认它当前没被别的设备占用 |
+| **手机配网** | 说清前置状态（已写码、设备处于配网态） | 装智能生活 / Smart Life，账号区域与产品一致，App 里添加设备 |
+
+**`--emit-url` 是这里唯一的机器通道。** 第一轮的测试者拿不到登录链接，把登录这一项打了 1/5 分 ——
+不是因为 CLI 没打印，而是因为它打在 stderr 上而调用方的采集层把它缓冲了。stdout 那一行 JSON
+是为你准备的。
+
 ### 0.1 A green install is not proof your tool can see the skills
 
 Round 2 installed 19 skills, exit 0, both project mirrors populated — and the

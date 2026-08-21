@@ -21,6 +21,22 @@ compatibility:
 
 Docs: <https://tuyaopen.ai/docs/quick-start/enviroment-setup>
 
+## §0 别假设 SDK 在哪 —— 问 `diag doctor`
+
+默认位置是 `~/TuyaOpenIDE/TuyaOpenSDK`，但**默认不等于事实**：用户可能改过
+`tuyaopen.workspaceRoot`、可能已经有一份、也可能一份都没有。任务提示词里写的路径同样只是一句话。
+
+```bash
+tuyaopen diag doctor --json     # → .data.sdk （根路径、是否就绪、env 是否冷启动）
+```
+
+- **已存在且就绪** → 直接用，别重新克隆。
+- **已存在但环境没初始化** → `tuyaopen sdk env-init`。
+- **不存在** → 克隆是**十几 GB、几十分钟**的动作。**先告诉用户要下什么、多大、大概多久**，
+  得到确认再 `tuyaopen sdk clone`。不要静默开始一个会占满磁盘的下载。
+
+其余环境事实（串口、登录、授权码）见 skill `tuyaopen-shared` § 0.0 的表。
+
 ## Shortcuts — `tuyaopen sdk` / `tuyaopen manifests` (headless, no shell activation needed)
 
 | Intent | Command |
