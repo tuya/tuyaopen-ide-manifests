@@ -121,10 +121,44 @@ The wrapper resolves the real entry itself, highest priority first:
 activation (so it survives extension upgrades) → the path baked in at write
 time. You never need to know which one it picked.
 
-> **`@tuya/tuyaopen-cli` is not published yet.** The npm package is the
+> **`@tuya/tuyaopen-cli` is not on public npm yet.** The npm package is the
 > intended standalone distribution and the `bin` entry is already `tuyaopen`,
-> but `npm install -g @tuya/tuyaopen-cli` returns 404 today. Until it ships,
-> "on `PATH`" in practice means "an IDE integrated terminal".
+> but `npm install -g @tuya/tuyaopen-cli` returns 404 on the public registry
+> (re-measured 2026-08-20). The internal beta is distributed as a tarball
+> instead — `npm i -g ./tuyaopen-cli-<version>.tgz` — and *that* install does
+> put `tuyaopen` on `PATH` globally, in which case the search above short-
+> circuits at `command -v` and nothing else here applies. Without such an
+> install, "on `PATH`" in practice means "an IDE integrated terminal".
+
+### 1.1a A wrapper can exist and still be dead — check before you trust it
+
+Resolving a wrapper is not the same as having a working CLI. The wrapper bakes
+in a path to the IDE's `cli.js`; a plugin upgrade deletes the directory that
+path names, and a wrapper written before the stable pointer file existed has no
+way to recover — it dies with Node's `Cannot find module`, which names neither
+the wrapper nor the upgrade that broke it. Measured 2026-08-20 across 20 local
+projects: 11 carried a wrapper, **all 11** predated the pointer file, and **2**
+pointed at a `cli.js` that no longer existed.
+
+One command tells you which case you are in:
+
+```bash
+tuyaopen diag doctor --json     # read .data.cli.wrapper
+```
+
+| What you see | What it means | What to do |
+|---|---|---|
+| `bakedEntryAlive: false` | This wrapper is dead — every command through it fails. | Tell the user to **reopen the project in TuyaOpen IDE once** (that rewrites it), or set `TUYAOPEN_CLI_PATH` to a `cli.js` that exists. |
+| `outdated: true` with `usesPointerFile: false` | Works now, but the next plugin upgrade breaks it silently. | Worth mentioning; reopening the project in the IDE fixes it. |
+| `present: false` | This project was never opened in the IDE. | Expected — you resolved via `PATH` or `TUYAOPEN_CLI_PATH` instead, which is fine. |
+
+`diag doctor` needs no login and writes nothing, so it is always safe to run
+first. If it cannot run at all, you have not actually resolved the CLI — go
+back to § 1.1.
+
+**Never repair a wrapper by editing it.** It is IDE-managed and rewritten on
+every project open, so the edit is lost and, worse, it hides the real state
+from whoever reads next.
 
 ### 1.2 Then identify what you resolved
 
@@ -302,6 +336,31 @@ reports `external: 0`, exits 0, and changes nothing — running it in place of
 `manifests sync` leaves you exactly where you started. `tuyaopen diag doctor`
 reports the catalogue state under `manifests` if you want to check first.
 
+**A catalogue that is present can still be stale, and staleness is silent.** An
+old cache resolves fine, and `skills install` **succeeds** — against ids that
+have since been renamed or retired. Measured 2026-08-21 on a machine whose cache
+was 8 days old: `skills install --default` wrote **13 retired ids** and exited 0,
+with nothing in any output suggesting a problem. So before trusting a catalogue
+you did not just download, ask:
+
+```bash
+tuyaopen manifests status --json                    # offline; read `layout`
+tuyaopen manifests status --check-update --json     # network; read `update.updateAvailable`
+```
+
+Two independent signals, and either one alone is enough to act on:
+
+| Signal | Meaning |
+|---|---|
+| `layout: "legacy"` | The cache predates the 2026-08-17 product-line split. **Deterministic proof**, not a date guess — that path only exists in a pre-split cache. Its skill ids are the pre-rename ones. |
+| `update.domains[].outdated: true` | That domain's declared version is behind the published release. |
+
+Either one → `TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes`, then
+re-read `skills list`. If the check could not reach the release it says so
+(`update.checked: false`, `reason: "release-unreachable"`) — treat that as
+"unknown", never as "up to date". `diag doctor` reports the same `layout` plus
+the catalogue's `publishedAt` / `skillsVersion`, offline.
+
 - **Project scope** (default) installs a real, editable copy at
   `<project>/.agents/skills/<id>/` (and mirrors it, regenerated on every
   install, to `<project>/.claude/skills/<id>/` — that mirror is IDE-managed;
@@ -320,6 +379,42 @@ reports the catalogue state under `manifests` if you want to check first.
   project-scope copy is *shadowing* a global one (or vice versa): same-id
   project copies always win over the global hub, so a hub update alone does
   not reach a project that already has its own copy.
+
+### 6.1 Your tool's skill directory isn't one of the four? Install them yourself
+
+Global scope writes the hub plus links into `~/.claude/`, `~/.codex/` and
+`~/.cursor/` — and that is the complete list. If you are an agent tool that
+reads none of those (or reads no skill directory at all), **nothing is missing
+and nothing needs to be added on our side.** The catalogue is machine-readable
+and installation is a command you can run yourself:
+
+```bash
+tuyaopen skills list --json           # id, group, name, summary, whenToUse, tags, defaultEnabled
+tuyaopen skills groups --json         # core | embedded | cloud | miniapp | category
+tuyaopen skills list-installed --json --project-root .
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <a,b> --yes    # project scope
+```
+
+Then read the bodies straight off disk — they are plain Markdown with YAML
+frontmatter, no tool-specific packaging:
+
+```
+<project>/.agents/skills/<id>/SKILL.md      # canonical copy (project scope)
+~/.agents/skills/<id>/SKILL.md              # canonical copy (global hub)
+```
+
+Pick by `whenToUse` from `skills list`, install what the task needs, read that
+`SKILL.md` **before** starting. Two things to get right:
+
+- **Use the canonical `.agents/` copy**, not the `.claude/` mirror — the mirror
+  is regenerated on every install and its directory name is flattened.
+- **The id in `skills list` is the directory name.** Aliases resolve a lookup,
+  never a path: `skills install --ids tuyaopen-debug-helper` works and creates
+  `.agents/skills/tuyaopen-embedded-diagnose/`. Always read the installed
+  result back with `list-installed` rather than assuming the path.
+
+If `skills list` returns `no_manifest_cache`, this machine has no catalogue at
+all yet — run `manifests sync` first (see the cold-start note above).
 
 ## 7. `tos.py` ↔ `tuyaopen` — what's covered, what still needs `tos.py`
 

@@ -243,6 +243,14 @@ $ADDR2LINE -e <debug.elf> -f -C -i 0x021d8e96 0x021d5863
 | `scripts/monitor_helper.py` | `tuyaopen-debug-helper` | Non-blocking background serial log capture (§ 3) |
 | `scripts/cli_debug.py` (+ `requirements.txt`) | `tuyaopen-cli-debug` | Send commands to the device's `tal_cli` over UART (§ 4) |
 
+> The "Absorbed from" ids are **retired**. They survive only as aliases in the
+> catalogue, so `skills install --ids tuyaopen-debug-helper` still resolves —
+> but nothing is ever installed *under* those names. The scripts live at
+> `.agents/skills/tuyaopen-embedded-diagnose/scripts/…`, and a path built from
+> a retired id points at nothing. (That is not hypothetical: the downstream
+> project template shipped `…/tuyaopen-debug-helper/scripts/monitor_helper.py`
+> to every new project until 2026-08-20.)
+
 ## References
 
 - [references/CLI_DEBUG.md](references/CLI_DEBUG.md) — full `tal_cli` command reference, absorbed from `tuyaopen-cli-debug`.

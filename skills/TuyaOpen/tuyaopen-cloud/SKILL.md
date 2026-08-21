@@ -68,6 +68,48 @@ The Python helper scripts (`scripts/product.py`, `scripts/manage_dp.py`) auto-de
 this binary by searching upward from the current working directory. You can also override
 the path via the `TUYA_DEVPLAT_CLI` environment variable.
 
+### Discovering what `tuya-devplat-cli` can do — and the two traps
+
+Its scope is the **raw platform API surface**: `product`, `panel`, `project`,
+`product-agent`, `miniapp`, `auth`, `workflow`, `role`, `database` and more.
+Anything a `tuyaopen` command already covers should go through `tuyaopen`
+instead — that one wraps the same call with a typed error envelope, a local
+snapshot and a fallback cache, none of which the raw response has.
+
+```bash
+tuya-devplat-cli --help                 # groups you are authorized for
+tuya-devplat-cli <group> --help         # subcommands you are authorized for
+tuya-devplat-cli auth status --format json
+```
+
+**Trap 1 — `--help` is filtered by your authorization set, so a missing
+command is not an absent command.** `panel --help` lists 7 subcommands and
+omits `bind` and `delete`; both exist. Asking for one you lack access to
+returns:
+
+```json
+{"ok":false,"code":"API_NOT_AUTHORIZED","error":"Not authorized: 'panel bind' is not in your authorized API set. …"}
+```
+
+Read that as **"ask the developer for access to this API"** — never as "this
+command does not exist", and never retry it. It also means you cannot enumerate
+the full surface from `--help` alone; when you need to know whether a capability
+exists at all, ask the developer rather than concluding from a help listing.
+
+**Trap 2 — the `suggestion` field names the wrong config path in an
+IDE-managed project.** It says the permissions file lives at
+`~/.config/tuya-devplat-cli/api_permissions.json`. In a project opened by
+TuyaOpen IDE the wrapper sets `TUYA_DEVPLAT_CONFIG_PATH`, and *that* is where
+the file actually is:
+
+```bash
+tuya-devplat-cli auth refresh --format json    # rewrites api_permissions.json after a login
+echo "$TUYA_DEVPLAT_CONFIG_PATH"               # inside the wrapper's env; the real location
+```
+
+Looking in `~/.config/…` on such a machine finds nothing, which reads like "the
+refresh silently failed" when it succeeded somewhere else.
+
 ### Auth
 
 Check sign-in state first:
@@ -137,6 +179,70 @@ tuya-devplat-cli <group> <command> --help            # flags for a specific comm
 
 `--help` output shows required vs optional flags, types, defaults, and usage examples.
 Use it whenever an error says "unknown flag", "missing parameter", or the schema alone is insufficient.
+
+### ⚠ Its command list is filtered by your authorization — absence is not proof
+
+**`tuya-devplat-cli`'s self-discovery surface only shows what your account is
+authorized for.** This applies to `--help` *and* `schema list` alike — they are
+the same filtered view, so cross-checking one against the other proves nothing.
+
+Measured 2026-08-20 against the vendored CLI on an unauthorized account:
+
+```
+$ tuya-devplat-cli panel --help
+… lists 7 commands: config dp-list publish product-list ui-list save-relation save-standard-relation
+$ tuya-devplat-cli schema list --format json | jq '.data[]|select(.group=="panel").commands[].command'
+… the same 7
+$ tuya-devplat-cli panel bind --help
+{"ok":false,"code":"API_NOT_AUTHORIZED",
+ "error":"Not authorized: 'panel bind' is not in your authorized API set. Do NOT retry…"}
+```
+
+`panel bind` and `panel delete` exist — the IDE calls both in production — they
+were simply invisible to every discovery command. Likewise the top level lists
+**28** groups where the CLI's source carries **37**.
+
+So:
+
+- **Never conclude "this CLI cannot do X" from `--help` or `schema list`.** Try
+  the command; a real absence answers `unknown command`, an authorization gap
+  answers `API_NOT_AUTHORIZED`. Those are different failures and only the
+  second one is fixable by asking a human.
+- **`API_NOT_AUTHORIZED` means "ask the developer for access", never "retry"**
+  and never "pick a different command". The error says so itself.
+- **Its `suggestion` names the wrong path in an IDE-managed project.** It points
+  at `~/.config/tuya-devplat-cli/api_permissions.json`; TuyaOpen IDE injects
+  `TUYA_DEVPLAT_CONFIG_PATH` and the file lives *there* (typically under the
+  plugin's private storage). Read the env var, don't trust the suggestion:
+
+  ```bash
+  echo "${TUYA_DEVPLAT_CONFIG_PATH:-~/.config/tuya-devplat-cli}/api_permissions.json"
+  ```
+
+  Refreshing it is an IDE action (login → `auth refresh`), not something to
+  hand-edit.
+
+### Scope: what this CLI is for, and what it is not
+
+`tuya-devplat-cli` is the **raw platform API surface** — product, panel, project,
+product-agent, workflow, device, firmware, database, knowledge, …. It returns the
+platform's response as-is.
+
+**Prefer `tuyaopen` whenever it covers the job.** Where both can answer,
+`tuyaopen` wraps the same call with a typed error envelope (`type`/`subtype`/
+`hint`), a local snapshot under `.tuyaopen/platform/`, and a fallback cache —
+the raw devplat response has none of those. Concretely:
+
+| Want | Prefer | Not |
+|---|---|---|
+| Product detail / DP schema for the bound PID | `tuyaopen product sync`, `tuyaopen dp list` | `product detail`, `product dp-schema` |
+| Bind a product to this project | `tuyaopen project bind-product` | hand-editing `project.tuya.json` |
+| Anything with no `tuyaopen` equivalent (panel admin, workflow, agent, database) | `tuya-devplat-cli` | — |
+
+The two do **not** share a confirmation mechanism: `tuyaopen` gates by
+`riskLevel` (P0 derived token / P2 `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` / P3
+ungated), `tuya-devplat-cli` uses its own `--dry-run` → `--confirm <token>` pair
+documented above. Don't carry one CLI's confirmation habit into the other.
 
 ---
 
