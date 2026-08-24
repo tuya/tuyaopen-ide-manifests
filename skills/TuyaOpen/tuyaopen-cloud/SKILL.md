@@ -68,7 +68,68 @@ The Python helper scripts (`scripts/product.py`, `scripts/manage_dp.py`) auto-de
 this binary by searching upward from the current working directory. You can also override
 the path via the `TUYA_DEVPLAT_CLI` environment variable.
 
-### Discovering what `tuya-devplat-cli` can do — and the two traps
+## §0 登录一次，然后**永远**用 `tuyaopen devplat exec` 调 devplat
+
+<code data-type="tag" style="color:#ff4d4f">第三轮实测：agent 直接调 vendored 二进制，结果去读 keychain、又向用户索要 Service Key</code>
+
+`tuya-devplat-cli` **有自己独立的凭据存储，而我们从不往里写**。它的 token 是
+`tuyaopen` **按每次 spawn 注入**的（`TUYA_SK_TOKEN`）。所以直接执行那个 vendored 的
+`vendor/devplat-cli/dist/cli.js` = **没有任何凭据**。
+
+第三轮的 agent 就是这么走的，然后连着做了两件都不该做的事：① 想从 OS keychain 里
+把 SK 抠出来做桥接（被权限分类器拦了，拦对了）；② 让用户手工粘贴 Service Key。
+**两件都不必要，而且第二件是在教用户把长期凭据贴进终端。**
+
+**正确的两步，只有两步：**
+
+```bash
+# ① 登录一次（SK 存进 OS keychain，你永远看不到它，也不需要看到）
+tuyaopen credential login --emit-url
+
+# ② 之后所有 devplat 调用都走这个口子，凭据自动注入
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen devplat exec --yes -- <devplat 的参数>
+```
+
+**硬规则：**
+
+- **永远不要**向用户索要 Service Key / SK token。它是注入的。
+- **永远不要**去读 OS keychain、`credentials.json` 或任何凭据文件。
+- **永远不要**直接执行 vendored 的 devplat 二进制 —— 那条路没有凭据。
+- `devplat exec` 是 **P2，连只读调用也是**：一个透传命令无法知道自己将要执行什么
+  （`panel bind` 和 `panel --help` 从同一个 argv 进来），所以按它能做的最大破坏力设门。
+
+### §0.1 `--help` 不返回 JSON，用 `schema list --format json`
+
+`devplat exec` 的 stdout 是一行 JSON 信封，而 `--help` 输出的是给人看的帮助文本 ——
+所以 `devplat exec -- panel --help` 会返回 `devplat-non-json` 错误（并告诉你该怎么做）。
+**发现能力用这个：**
+
+```bash
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen devplat exec --yes -- schema list --format json
+```
+
+实测它报出 **37 个 group**，而授权过滤后的 `--help` 只列 28 个 —— 这也再次说明下面 Trap 1
+那条：**「`--help` 里没有」不等于「不存在」**。
+
+### §0.2 登录会阻塞几分钟，别让它被工具超时杀掉
+
+`credential login` 要等用户在浏览器里点完，默认等 **300 秒**。而很多 agent 的单次命令
+超时是 **2 分钟** —— 于是进程被杀、token 从未落盘、`credential status` 仍然是未登录。
+第三轮就是这样：用户确实登录了，agent 却看不到。
+
+**所以：把登录放到后台，然后轮询状态。**
+
+```bash
+# 后台起，URL 会以一行 JSON 打到 stdout
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen credential login --emit-url --timeout 600 > /tmp/login.json 2>/tmp/login.err &
+# 把 URL 交给用户，然后每 10 秒问一次状态
+tuyaopen credential status --json
+```
+
+`credential status --json` 的 `loggedIn` 变成 `true` 就成了。**判据是它，不是登录命令的退出码**
+（那个进程可能还在跑）。
+
+## Discovering what `tuya-devplat-cli` can do — and the two traps
 
 Its scope is the **raw platform API surface**: `product`, `panel`, `project`,
 `product-agent`, `miniapp`, `auth`, `workflow`, `role`, `database` and more.
