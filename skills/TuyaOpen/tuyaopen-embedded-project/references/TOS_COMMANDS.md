@@ -26,9 +26,9 @@ Rows marked **†** exist only on newer SDKs. Confirm with `tos.py config -h` (i
 | `tos.py build -v` | No | Build with verbose output |
 | `tos.py clean` | No | Clean build artifacts (ninja clean) |
 | `tos.py clean -f` | No | Full clean (delete `.build/`) |
-| `tos.py flash -p <port>` | No | Flash firmware non-interactively (see skill `tuyaopen-embedded-dev-loop`) |
+| `tos.py flash -p <port>` | No | Flash firmware non-interactively (see skill `tuyaopen-workflow-embedded-dev`) |
 | `tos.py flash` | **Yes** | Flash firmware (prompts for port if not specified) |
-| `tos.py monitor -p <port>` | No | View serial logs non-interactively (see skill `tuyaopen-embedded-dev-loop`) |
+| `tos.py monitor -p <port>` | No | View serial logs non-interactively (see skill `tuyaopen-workflow-embedded-dev`) |
 | `tos.py monitor` | **Yes** | View serial logs (prompts for port if not specified) |
 | `tos.py update` | No | Sync platform dependencies to pinned commits |
 | `tos.py dev bac` | No | Build all configs (testing) |

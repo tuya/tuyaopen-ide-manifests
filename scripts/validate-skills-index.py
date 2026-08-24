@@ -61,7 +61,7 @@ SURFACES = {"embedded", "cloud", "miniapp"}
 # no group-install can ever reach. Two items were legitimately ungrouped while
 # a second product line lived here; that line moved out on 2026-08-17, so the
 # field is now unconditionally required.
-GROUPS = {"core", "embedded", "cloud", "miniapp", "category"}
+GROUPS = {"core", "embedded", "product", "miniapp", "scenario"}
 # Top level under skills/. Since the 2026-08-14 reorg this is NOT the surface:
 # a `tuyaopen-miniapp-*` skill has surface "miniapp" but still lives under
 # TuyaOpen/, because placement and capability surface are orthogonal. See
@@ -75,10 +75,14 @@ SDKS = {"tuyaopen"}
 # `tuyaopen` CLI 的命令组。权威来源是 CLI 自己的 `tuyaopen schema list`，这里是一份
 # 手工镜像 —— manifests 仓不能依赖 IDE 仓的产物，所以只能镜像。CLI 改组名时两边一起改，
 # 而这份镜像过期正是我们想让它红的时刻（技能会声明一个不存在的组）。
+# 2026-08-24: `device`, `ecosystem` and `library` were removed from the CLI
+# outright — no aliases. A skill still declaring one of them now fails here,
+# which is the point: the catalogue and the CLI ship together, so a stale
+# declaration must be loud rather than quietly pointing at a dead command.
 CLI_GROUPS = {
-    "boards", "config", "credential", "demos", "dependency", "device", "diag",
-    "dp", "ecosystem", "firmware", "hardware", "library", "license", "manifests",
-    "miniapp", "product", "project", "schema", "sdk", "skills",
+    "boards", "config", "credential", "demos", "dependency", "devplat",
+    "diag", "dp", "firmware", "hardware", "license",
+    "manifests", "miniapp", "product", "project", "schema", "sdk", "skills",
 }
 BILINGUAL_FIELDS = ("name", "summary", "whenToUse")
 LANGS = ("en", "zh-CN")
@@ -814,6 +818,52 @@ def check_frontmatter_parses(items: list) -> None:
             err(f"{label}: {local_path}/SKILL.md frontmatter {p}")
 
 
+# The routing table's own path, relative to REPO_ROOT. `tuyaopen-shared` owns the
+# single intent→skill map; every other skill points here instead of naming
+# siblings, so a skill missing from it is only reachable by someone who already
+# knows its id.
+ROUTING_TABLE = "skills/TuyaOpen/tuyaopen-shared/references/ROUTING.md"
+
+
+def check_routing_covers_opt_in(items: list) -> None:
+    """Every `defaultEnabled: false` skill must be named in the routing table.
+
+    Why only the opt-in half: a default-enabled skill is installed, so an agent
+    tool loads it and can match its own `whenToUse` — it is discoverable whether
+    or not the table mentions it. A skill that is NOT installed is invisible to
+    passive discovery (the agent binds its skill roots at launch and never sees
+    a directory that was never written), so the table is the only thing that can
+    put its name in front of an agent that is not going to run
+    `tuyaopen skills list --json` on its own.
+
+    This gate exists because it had already failed silently:
+    `tuyaopen-embedded-lvgl-simulator` was `defaultEnabled: false` and absent
+    from ROUTING.md, which made it effectively offline — the catalogue held 29
+    skills while the table listed 28, and nothing compared the two. The 2026-08
+    regroup moves 9 skills into `scenario` (all opt-in), which multiplies that
+    failure mode by nine, so it gets a gate rather than a habit.
+    """
+    table = REPO_ROOT / ROUTING_TABLE
+    if not table.is_file():
+        err(f"routing table not found at {ROUTING_TABLE} — `tuyaopen-shared` owns "
+            f"the intent→skill map; this gate cannot verify opt-in skills without it")
+        return
+    text = table.read_text(encoding="utf-8")
+    for item in items:
+        if item.get("defaultEnabled"):
+            continue
+        sid = item.get("id")
+        if not is_str(sid):
+            continue
+        # Backticked id is how every row spells it; require that exact form so a
+        # passing mention inside prose does not count as a routing entry.
+        if f"`{sid}`" not in text:
+            err(f"item {sid!r}: defaultEnabled is false but the id is not in "
+                f"{ROUTING_TABLE} — an opt-in skill absent from the routing table "
+                f"is unreachable by passive discovery. Add a row, or make it "
+                f"default-enabled.")
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "TuyaOpen" / "index.json"
     if not index_path.is_file():
@@ -844,6 +894,7 @@ def main() -> int:
     check_agent_skill_paths(seen_ids)
     check_cli_declaration(items)
     check_frontmatter_parses(items)
+    check_routing_covers_opt_in(items)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)

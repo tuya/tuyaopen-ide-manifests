@@ -23,7 +23,7 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 
 > **Communication type:** This skill only targets **Wi-Fi + Bluetooth (`wf_ble_*`)** dual-mode solutions.
 
-## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp`
+## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp` / `tuyaopen devplat`
 
 | Intent | Command |
 |---|---|
@@ -33,6 +33,7 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 | List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
 | Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
 | Generate code from DPs | `tuyaopen dp generate` · `dp sync` (P2) |
+| Reach any `tuya-devplat-cli` command the groups above don't cover | `tuyaopen devplat exec -- <args…>` (P2) — credentials are injected for you; never ask the user for a raw Service Key |
 
 Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
 for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is

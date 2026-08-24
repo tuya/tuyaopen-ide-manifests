@@ -24,12 +24,12 @@ skills/
 │   ├── tuyaopen-shared/  tuyaopen-skill-maker/       #   foundation, not task skills
 │   ├── tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/  tuyaopen-embedded-device-auth/
 │   ├── tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/  tuyaopen-embedded-project/
-│   ├── tuyaopen-embedded-diagnose/  tuyaopen-embedded-flash/
-│   ├── tuyaopen-embedded-dev-loop/  tuyaopen-workflow-product-dev/
+│   ├── tuyaopen-embedded-cli-debug/  tuyaopen-embedded-flash/
+│   ├── tuyaopen-workflow-embedded-dev/  tuyaopen-workflow-product-dev/
 │   ├── tuyaopen-embedded-hardware/              #   bundles sub-skills under peripheral-drivers/
 │   ├── tuyaopen-embedded-dependency/
 │   ├── tuyaopen-cloud/
-│   └── tuyaopen-miniapp/  tuyaopen-miniapp-panel-dev/  tuyaopen-miniapp-ray-common/
+│   └── tuyaopen-miniapp/  tuyaopen-workflow-miniapp-dev/  tuyaopen-miniapp-ray-common/
 │       tuyaopen-miniapp-smart-ui/  tuyaopen-miniapp-lamp-panel/
 │       tuyaopen-miniapp-socket-panel/  tuyaopen-miniapp-robot-vacuum/
 │       tuyaopen-miniapp-ipc-panel/  tuyaopen-miniapp-charts-library/
@@ -72,7 +72,7 @@ Nothing in the TuyaOS payload was edited in either move; see
 The 2026-08-14 CLI-coverage pass merged five former standalone skills into
 three renamed ones — `tuyaopen-tyutool-cli` into `tuyaopen-embedded-flash`;
 `tuyaopen-cli-debug` + `tuyaopen-crash-decode` + `tuyaopen-debug-helper` into
-`tuyaopen-embedded-diagnose`; `tuyaopen-project-config` into `tuyaopen-embedded-project` — and
+`tuyaopen-embedded-cli-debug`; `tuyaopen-project-config` into `tuyaopen-embedded-project` — and
 added `tuyaopen-miniapp` as a brand-new skill covering the `miniapp` CLI
 command group. See [History: TuyaOpen-dev-skills](#history-tuyaopen-dev-skills)
 and each merged skill's own `references/` for what moved where.
@@ -113,7 +113,7 @@ kept only as a migration target, not something new content should produce.
 So when a `SKILL.md` refers to its own scripts, write the **installed** form:
 
 ```bash
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-dev-loop/scripts/build_run.py
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-workflow-embedded-dev/scripts/build_run.py
 ```
 
 CI enforces this: `validate-skills-index.py` rejects any `.agents/skills/…`
@@ -310,14 +310,14 @@ had to be looked up separately because it wasn't derivable from the directory
 name; `skills/miniapp/smart-panel-dev` installed as `smart-panel-dev`, for
 example. That indirection is gone: every directory name under `TuyaOpen/` is
 already the installed name — and `smart-panel-dev` itself became
-`tuyaopen-miniapp-panel-dev`, keeping the old name as an `aliases` entry.)
+`tuyaopen-workflow-miniapp-dev`, keeping the old name as an `aliases` entry.)
 
 ## History: TuyaOpen-dev-skills
 
 The skills now under `TuyaOpen/tuyaopen-embedded-build/`, `TuyaOpen/tuyaopen-embedded-env-setup/`,
 `TuyaOpen/tuyaopen-embedded-device-auth/`, `TuyaOpen/tuyaopen-embedded-add-board/`,
 `TuyaOpen/tuyaopen-embedded-code-check/`, `TuyaOpen/tuyaopen-embedded-project/` (as
-`tuyaopen-project-config`), and `TuyaOpen/tuyaopen-embedded-diagnose/` (as
+`tuyaopen-project-config`), and `TuyaOpen/tuyaopen-embedded-cli-debug/` (as
 `tuyaopen-debug-helper` + `tuyaopen-cli-debug` + `tuyaopen-crash-decode`) came
 from `tuya/TuyaOpen-dev-skills`, which the IDE used to download as a
 **second** tarball resolved through the `devSkillsRelease` field in
@@ -327,7 +327,7 @@ originally under `skills/embedded/tuyaopen/` — at upstream `d0655d46`
 nine skills to its own `TuyaOpen/<id>/` directory, and a same-day
 CLI-coverage pass (see the note under [Layout](#layout)) merged three of
 those nine (`tuyaopen-debug-helper`, `tuyaopen-cli-debug`,
-`tuyaopen-crash-decode`) into `tuyaopen-embedded-diagnose` and renamed
+`tuyaopen-crash-decode`) into `tuyaopen-embedded-cli-debug` and renamed
 `tuyaopen-project-config` to `tuyaopen-embedded-project`.
 
 `devSkillsRelease` and `source.devSkills` are **gone**, and the validator now

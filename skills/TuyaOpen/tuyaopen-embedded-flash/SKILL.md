@@ -3,7 +3,7 @@ name: tuyaopen-embedded-flash
 description: >-
   Flash firmware, monitor serial output, and pick the right serial port for a
   TuyaOpen device via the `tuyaopen` CLI (`firmware flash`, `firmware
-  monitor`, `device list-ports`). Covers single-serial vs dual-serial board
+  monitor`, `firmware list-ports`). Covers single-serial vs dual-serial board
   identification, the P2 flash confirmation ritual, and when to fall back to
   the SDK's own `tyutool_cli` directly (reading flash back out, a bare
   DTR/RTS hardware reset, or disambiguating a port the CLI's own listing
@@ -33,7 +33,7 @@ skill only covers what's specific to flashing and serial ports.
 自己查，然后**让用户确认**：
 
 ```bash
-tuyaopen device list-ports --json      # >1 个口时它会返回 hint 说明怎么区分
+tuyaopen firmware list-ports --json      # >1 个口时它会返回 hint 说明怎么区分
 ```
 
 - **只有一个口** → 直接用，但在 P2 确认里把口号说出来。
@@ -49,7 +49,7 @@ tuyaopen device list-ports --json      # >1 个口时它会返回 hint 说明怎
 
 | Intent | Command |
 |---|---|
-| List serial ports (with per-chip baud when `--chip` is given) | `tuyaopen device list-ports --chip <chip>` |
+| List serial ports (with per-chip baud when `--chip` is given) | `tuyaopen firmware list-ports --chip <chip>` |
 | Flash firmware to the device | `tuyaopen firmware flash --port <port>` (P2) |
 | Foreground serial monitor | `tuyaopen firmware monitor --port <port>` |
 
@@ -59,7 +59,7 @@ tuyaopen device list-ports --json      # >1 个口时它会返回 hint 说明怎
 ACM0 上只看到开机 banner、看不到任何 `PR_*`，一度以为是自己 Kconfig 的日志等级配错了，
 试了四档波特率才对上。
 
-所以：`tuyaopen device list-ports --json` 报出多于一个口时，它会附一条 `hint` 提醒这件事。
+所以：`tuyaopen firmware list-ports --json` 报出多于一个口时，它会附一条 `hint` 提醒这件事。
 **看不到应用日志时，先换口、再换波特率，最后才怀疑日志等级。**
 
 Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
@@ -73,8 +73,8 @@ for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
 ## 1. Choose a port
 
 ```bash
-tuyaopen device list-ports --json
-tuyaopen device list-ports --chip t5 --json   # also returns recommended flash/monitor baud for that chip
+tuyaopen firmware list-ports --json
+tuyaopen firmware list-ports --chip t5 --json   # also returns recommended flash/monitor baud for that chip
 ```
 
 Each entry is `{ "port": "...", "description": "..." }` (plus `flash` /
@@ -164,7 +164,7 @@ The `firmware` CLI group covers flash and monitor; it does **not** wrap every
 - **Read flash back out** to a file (`tyutool_cli read`) — no CLI equivalent.
 - **Hardware-reset** a board via a bare DTR/RTS pulse (`tyutool_cli reset`)
   without flashing or monitoring — no CLI equivalent.
-- **Disambiguate a dual-serial board** that `tuyaopen device list-ports`
+- **Disambiguate a dual-serial board** that `tuyaopen firmware list-ports`
   couldn't — `tyutool_cli list-ports --json` returns `usbSerial` /
   `usbInterface` per port, which is what actually decides the flash-vs-log
   mapping (see [references/TYUTOOL_CLI.md](references/TYUTOOL_CLI.md) § *Port
@@ -176,9 +176,9 @@ The `firmware` CLI group covers flash and monitor; it does **not** wrap every
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `firmware flash`/`monitor` fails with `--port is required` | No `--port` given | Run `tuyaopen device list-ports` first and pass one explicitly |
+| `firmware flash`/`monitor` fails with `--port is required` | No `--port` given | Run `tuyaopen firmware list-ports` first and pass one explicitly |
 | Flash fails with a port-busy error (`PermissionError 13` / `Access is denied` / `Device or resource busy`) | A `firmware monitor` (or any other process) still holds the port — single-serial boards share flash and log on one OS resource | Stop the monitor session, retry the flash, reopen the monitor after |
-| `tuyaopen device list-ports` returns two ports with the same or no `description` and you can't tell which is which | Thin port listing can't disambiguate | Fall back to `tyutool_cli list-ports --json` (§ 4) and group by `usbSerial`/`usbInterface` |
+| `tuyaopen firmware list-ports` returns two ports with the same or no `description` and you can't tell which is which | Thin port listing can't disambiguate | Fall back to `tyutool_cli list-ports --json` (§ 4) and group by `usbSerial`/`usbInterface` |
 | Flash unstable / drops mid-transfer | Baud too high for the physical link | Retry with a lower `--baud` (the per-chip default is usually right; only override on developer instruction) |
 | `firmware flash` rejected as `confirmation:needs_yes` | Missing `--yes` and/or `TUYAOPEN_AUTOCONFIRM_P2=1` | Pass both, or `--dry-run` to preview first — see skill `tuyaopen-shared` § 4 |
 | Need to read flash contents, hard-reset without flashing, or disambiguate a dual-serial pair | Not covered by the `firmware` CLI group | § 4 fallback — `tyutool_cli` directly |

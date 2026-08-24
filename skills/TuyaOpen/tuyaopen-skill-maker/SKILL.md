@@ -85,7 +85,7 @@ compatibility:
   install hub (`~/.cursor/skills/`, see skill `tuyaopen-shared` § 6) is the
   same directory the community `npx skills` tool (vercel-labs/skills) installs
   into. An unprefixed name (the pre-reorg `smart-panel-dev` is the example on
-  record — it became `tuyaopen-miniapp-panel-dev` for exactly this reason, with
+  record — it became `tuyaopen-workflow-miniapp-dev` for exactly this reason, with
   `smart-panel-dev` kept as an `aliases` entry) can collide with, and be
   silently overwritten by, an unrelated third-party skill of the same name. The
   prefix is the whole defense.
@@ -96,6 +96,53 @@ compatibility:
   `tuyaopen/<slug>` namespace form under `peripheral-drivers/` — measured
   2026-08-17, when `peripheral-sd` was still announcing itself as
   `SD Card Storage`.
+
+## 2a. The three layers, and which one you are writing
+
+Every skill in this catalogue sits on exactly one of three layers. Deciding
+which **before** you write is what keeps two skills from describing the same
+thing differently — the failure mode this section exists for is real: for
+months `tuyaopen-workflow-product-dev` and `tuyaopen-cloud` declared the same
+three CLI groups and both described creating a product, and nothing said which
+one was authoritative.
+
+| Layer | Named | Owns | One-line test |
+|---|---|---|---|
+| Mechanism | `tuyaopen-shared` | CLI identity, the `--json` envelope, exit codes, the risk gate, command and skill self-discovery, the routing table, environment triage | True regardless of what you are building |
+| **Phase** | `tuyaopen-workflow-<domain>-dev` | Step order, the state machine, each step's deliverable, **which steps only a human can do**, what is handed to the next phase | Delete it and the agent no longer knows *what to do next* |
+| **Capability** | `tuyaopen-<domain>` | Which command groups the domain has, how a single command is invoked, what it requires first, domain concepts and traps, reference data | Delete it and the agent no longer knows *how to execute this step* |
+
+Task skills (`tuyaopen-embedded-build`, `tuyaopen-miniapp-smart-ui`, …) hang
+off the capability layer: one job, done one way.
+
+### The two prohibitions that keep phase and capability apart
+
+> **A workflow names commands but never explains them.**
+> Write "Step 4 — create the product: follow `tuyaopen-cloud`'s create path".
+> Do **not** copy that skill's invocation details, its reference tables, or its
+> traps into the workflow.
+>
+> **A capability skill states preconditions but never order.**
+> Write "`sync-schema` requires a bound product". Do **not** write "first bind
+> the product, then sync-schema, then build".
+
+The same fact can be phrased either way, which is exactly why the rule needs a
+test rather than a feeling:
+
+**Does the sentence still hold if someone arrives at this command out of
+order?** If yes it is a precondition and belongs to the capability layer. If it
+only holds while walking the sequence, it is order and belongs to the workflow.
+
+### Workflows may name each other — the one exception
+
+Section 8's rule ("out of scope → point at `tuyaopen-shared`'s routing table,
+never name a sibling") is about **out-of-scope handoffs**, and it exists to
+avoid an O(n²) web of cross-references. A workflow's **next phase** is not out
+of scope; it is the content. `tuyaopen-workflow-product-dev` must say, by name,
+that the firmware phase continues in `tuyaopen-workflow-embedded-dev` — a
+pipeline whose segments cannot name their successor is not a pipeline.
+
+This exception is exactly three skills wide. Do not generalise it.
 
 ## 3. Where the payload goes
 

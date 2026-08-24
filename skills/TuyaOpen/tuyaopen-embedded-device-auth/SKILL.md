@@ -210,7 +210,7 @@ Full flags (baud, `--sdk-root`, `--product-id`, `--label`): `tuyaopen license
 § 5).
 
 **Serial port discovery still needs the SDK's own tool, not the `tuyaopen`
-CLI** — `tuyaopen device list-ports` (skill `tuyaopen-embedded-flash`) doesn't expose
+CLI** — `tuyaopen firmware list-ports` (skill `tuyaopen-embedded-flash`) doesn't expose
 the `usbSerial`/`usbInterface` grouping a dual-serial board needs to
 disambiguate flash vs. auth vs. log ports. See § *Serial port discovery*
 below, which uses `tyutool_cli list-ports --json` directly.
@@ -270,8 +270,8 @@ Optional for AP provisioning with QR code:
 
 > **This section is the catalogue's single home for "how do I get an
 > authorization code".** Other skills that mention UUID/AuthKey (
-> `tuyaopen-embedded-flash`, `tuyaopen-embedded-dev-loop`,
-> `tuyaopen-miniapp-panel-dev`, `tuyaopen-shared`) point here rather than
+> `tuyaopen-embedded-flash`, `tuyaopen-workflow-embedded-dev`,
+> `tuyaopen-workflow-miniapp-dev`, `tuyaopen-shared`) point here rather than
 > repeating the routes — do not copy the two URLs below into them.
 
 TuyaOpen-specific authorization codes come in three ways:
@@ -327,7 +327,7 @@ return. An in-tree example of the same pairing is
 straight into `tuya_iot_dp_obj_report()`.
 
 > Panel developers get this same pair, stated compactly, in skill
-> `tuyaopen-miniapp-panel-dev`. That is a deliberate duplication rather than a
+> `tuyaopen-workflow-miniapp-dev`. That is a deliberate duplication rather than a
 > pointer: a panel developer often does not own the firmware, and forcing them
 > through an embedded skill to learn a two-step app lookup is worse than
 > repeating five lines.
@@ -366,13 +366,13 @@ Before writing auth credentials over UART, identify the correct port:
    `Device or resource busy`. Stop the monitor, authorize at 115200, then reopen
    it at the log baud. On dual-serial boards you can leave the monitor running.
 
-4. On dual-serial boards, use skill `tuyaopen-embedded-diagnose` to capture logs in the
+4. On dual-serial boards, use skill `tuyaopen-embedded-cli-debug` to capture logs in the
    background while the auth flow runs on the other port:
    ```bash
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py start -p <monitor-port>
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py start -p <monitor-port>
    # ... run auth on auth port ...
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py tail -n 100
-   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-diagnose/scripts/monitor_helper.py stop
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py tail -n 100
+   $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py stop
    ```
 
 ## IDE Ledger — Reporting Auth Back to the IDE

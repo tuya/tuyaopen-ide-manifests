@@ -16,7 +16,7 @@
 Windows 10 1803+ 内置 curl）。
 
 **脚本调用路径**：从项目根目录或 `source/miniapp/` 均可用相对路径
-`.agents/skills/tuyaopen-miniapp-panel-dev/scripts/`；技能内部引用用 `scripts/` 简写。
+`.agents/skills/tuyaopen-workflow-miniapp-dev/scripts/`；技能内部引用用 `scripts/` 简写。
 
 ## 禁止凭记忆回答的 5 类问题
 
@@ -31,13 +31,13 @@ Windows 10 1803+ 内置 curl）。
 ## 1. 跑 `validate.mjs` 做上线自检
 
 ```bash
-node .agents/skills/tuyaopen-miniapp-panel-dev/scripts/validate.mjs
+node .agents/skills/tuyaopen-workflow-miniapp-dev/scripts/validate.mjs
 ```
 
 输出形如：
 
 ```
-[tuyaopen-miniapp-panel-dev] validating: /home/.../source/miniapp
+[tuyaopen-workflow-miniapp-dev] validating: /home/.../source/miniapp
 
  ✓ project.tuya.json present and parseable
  ✓ appVersion 1.0.0 (semver)

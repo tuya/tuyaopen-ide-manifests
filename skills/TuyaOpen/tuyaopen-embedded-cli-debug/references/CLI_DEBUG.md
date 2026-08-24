@@ -3,7 +3,7 @@
 > Absorbed from the former standalone `tuyaopen-cli-debug` skill (merged
 > 2026-08-14, see `../SKILL.md` § *Send commands to the device CLI*). Full
 > detail for `scripts/cli_debug.py`, installed at
-> `.agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py`.
+> `.agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py`.
 
 Sends commands to the TuyaOpen device CLI over UART and returns the response.
 Useful for inspecting device state (heap, KV, filesystem, threads) without
@@ -38,19 +38,19 @@ holding a foreground terminal open.
 
 ```bash
 # Discover available CLI commands (auto-detects port; baud is always 115200)
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py help
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py help
 
 # Send a single command
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py send "sys_version"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py send "sys_version"
 
 # Force a specific port (useful if auto-pick chooses the wrong ACM port)
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py -p /dev/ttyACM0 send "kv_dump"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py -p /dev/ttyACM0 send "kv_dump"
 
 # List candidate serial ports (no connection)
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py list-ports
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py list-ports
 
 # JSON output for agent callers
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json help
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json help
 ```
 
 ## Sub-commands
@@ -121,16 +121,16 @@ Run `help` first to discover what's available.
 
 ```bash
 # 1. Discover ports
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json list-ports
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json list-ports
 
 # 2. Check what commands are available
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json help
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json help
 
 # 3. Send a debug command
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json send "heap_stats"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "heap_stats"
 
 # 4. Reset the device remotely
-python .agents/skills/tuyaopen-embedded-diagnose/scripts/cli_debug.py --json send "sys_reset"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reset"
 ```
 
 ## CLI not enabled: firmware config
@@ -204,7 +204,7 @@ using `cli_debug.py`.
 ## See also
 
 - Background log capture and crash-dump decoding are covered in `../SKILL.md`
-  (this same skill, `tuyaopen-embedded-diagnose`).
+  (this same skill, `tuyaopen-embedded-cli-debug`).
 - The full build → flash → monitor → analyze loop, and rebuilding firmware
   with the CLI enabled, are out of scope here — see skill `tuyaopen-shared`'s
   routing table.

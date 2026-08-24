@@ -145,7 +145,7 @@ Tuya 平台「网络请求白名单」里登记。审核时随机抽查请求 ho
 
 ```bash
 cd source/miniapp
-node .agents/skills/tuyaopen-miniapp-panel-dev/scripts/validate.mjs
+node .agents/skills/tuyaopen-workflow-miniapp-dev/scripts/validate.mjs
 ```
 
 退出码：

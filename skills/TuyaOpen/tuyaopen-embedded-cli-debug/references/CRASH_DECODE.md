@@ -202,7 +202,7 @@ $OBJDUMP -d --start-address=0x021d8e80 --stop-address=0x021d8ec0 $ELF
 
 - Background log capture (to grab the dump hands-off) and sending CLI commands
   once the device is responsive again are covered in `../SKILL.md` (this same
-  skill, `tuyaopen-embedded-diagnose`).
+  skill, `tuyaopen-embedded-cli-debug`).
 - Rebuilding firmware with debug info enabled, and the full build → flash →
   monitor loop, are out of scope here — see skill `tuyaopen-shared`'s routing
   table.

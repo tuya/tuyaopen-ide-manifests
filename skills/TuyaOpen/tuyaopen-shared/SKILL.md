@@ -75,7 +75,7 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
 | 环境/SDK 是否就绪、SDK 根在哪 | `tuyaopen diag doctor --json` → `sdk` 块；skill `tuyaopen-embedded-env-setup` | 没有 SDK 时**不要**擅自克隆 12 GB —— 先说要下什么、多大 |
 | 目录/技能目录状态 | 同上 → `manifests`、`agentSkills` 块（§ 0.1） | — |
 | 登录状态 | 同上 → `credential` 块；`tuyaopen credential status` | 未登录 → §「需要人做的四件事」 |
-| **有哪些串口、哪个是哪个** | `tuyaopen device list-ports --json`（>1 个口时它会给 `hint`） | 列出来**让用户确认哪个是目标板**，不要挑一个就烧 |
+| **有哪些串口、哪个是哪个** | `tuyaopen firmware list-ports --json`（>1 个口时它会给 `hint`） | 列出来**让用户确认哪个是目标板**，不要挑一个就烧 |
 | 项目状态 | `tuyaopen project info --json` | — |
 | 本机有没有授权码 | `tuyaopen diag doctor --json` → `deviceAuth.localLicenses` | skill `tuyaopen-embedded-device-auth` § 0（**编译通过之后**才问） |
 
@@ -359,12 +359,77 @@ a stable interface**. Categories can be added or re-mapped over time.
 `type` / `subtype` / `code` from the parsed `--json` envelope instead — that
 is the add-only machine contract this CLI actually promises to keep stable.
 
+## 3. Environment and diagnostics
+
+Two commands answer "is this machine set up, and which CLI am I actually
+running". They belong here rather than in a device skill: what they diagnose is
+the **CLI and the host**, not the board — and every skill needs that answer, not
+just the one that was holding them until 2026-08-24.
+
+### 3.1 `tuyaopen diag doctor` — environment triage
+
+```bash
+tuyaopen diag doctor --json
+```
+
+One round-trip covering: which CLI binary is actually running (`cli.entryPath`
+/ `version` / `contractVersion` / `packaging: bundled|standalone|unknown` /
+`cacheRoot` / `devplatSpawnNode` — see skill `tuyaopen-shared` § 1 for the
+full shape and how to read `packaging`), `node`/`git`/`uv`/`python` toolchain
+status, `sdk.{installed,tosPresent,envReady}`, `devplatCli.{present,path}`,
+and `credential.{loggedIn,source}`. Real example (fields vary by machine):
+
+```json
+{
+  "ok": true,
+  "data": {
+    "cli": { "entryPath": "/…/out/cli/cli.js", "version": "0.1.0", "contractVersion": 1,
+              "processNodeVersion": "v22.22.0", "packaging": "bundled",
+              "cacheRoot": { "path": "/home/<user>/TuyaOpenIDE/.tuyaopen/cache", "source": "default" },
+              "devplatSpawnNode": "/…/bin/node" },
+    "node": { "status": "ok", "version": "v22.22.0" },
+    "git": { "status": "ok", "version": "2.43.0" },
+    "uv": { "status": "ok", "version": "0.11.3" },
+    "python": { "status": "ok", "version": "3.12.3" },
+    "sdk": { "installed": true, "tosPresent": true, "envReady": true },
+    "devplatCli": { "present": true, "path": "/…/tuya-devplat-cli/packages/tuya-devplat-cli/dist/cli.js" },
+    "credential": { "loggedIn": false, "source": "none" }
+  }
+}
+```
+
+Read `sdk.envReady` before assuming `tos.py` commands will work — `installed`
+and `tosPresent` can both be `true` while the env is still cold. Each tool's
+`status` is `ok` / `warn` / `fail`; `node.status: "warn"` means Node is usable
+but below the required major version.
+
+### 3.2 `tuyaopen diag export` — diagnostics bundle for a bug report
+
+```bash
+tuyaopen diag export [--out <path>] [--force]
+```
+
+Writes a JSON file (default `./tuyaopen-diag-<yyyymmdd-hhmmss>.json`)
+combining the same `cli` identity block as `doctor`, system info, tool
+versions, SDK diagnostics, and — when run inside a project — project
+diagnostics. Refuses to overwrite an existing `--out` path unless `--force`
+is given. This is a **local file write** (P3, not gated), not a network
+upload — hand the resulting file to whoever is helping debug.
+
+### 3.3 When `diag doctor` says the SDK is the problem
+
+`diag doctor` reports `sdk.{installed,tosPresent,envReady}` but does not fix
+anything. A narrower SDK-only probe and every repair path — installing,
+cloning, warming the environment — belong to skill
+`tuyaopen-embedded-env-setup`. Read the field, then go there; do not try to
+reconstruct the setup steps from this section.
+
 ## 4. Risk gate — P0 needs a **derived** `--confirm` token, P2 needs `--yes` + env
 
 | Tier | Gate | What's here today |
 |---|---|---|
 | **P0** | `--confirm <token>`, and the token must be the one **this exact operation's** `--dry-run` handed back | Only `license remove` |
-| **P2** | `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1` | Most mutating commands — `firmware flash` / `authorize`, `skills install` / `uninstall`, `dependency add` / `remove`, `dp add` / `sync`, `project *`, `config set`, `license add` / `import`, `manifests sync`, `product sync`, `miniapp upload` / `install` / `sync-schema`, `library install`, `ecosystem install`, `hardware set-used` / `intellisense`, `credential logout` |
+| **P2** | `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1` | Most mutating commands — `firmware flash` / `authorize`, `skills install` / `uninstall`, `dependency add` / `remove`, `dp add` / `sync`, `project *`, `config set`, `license add` / `import`, `manifests sync`, `product sync`, `miniapp upload` / `install` / `sync-schema`, `dependency install`, `dependency install`, `hardware set-used` / `intellisense`, `credential logout` |
 | **P3** | **No gate at all** — not even `--yes` | Mostly long-running reads, but the writers among them are ungated too: `sdk clone` / `update` / `env-init` / `env-pull`, `firmware build` / `clean`, `skills sync`, `miniapp build` / `meta` / `template`, `credential login`, `diag export`. Each guards itself on its own preconditions instead — `diag export` refuses an existing `--out` without `--force`; `sdk clone` refuses a non-empty target. **So do not read "it is not P2" as "it does not write."** |
 | Read-only | No gate | — |
 
@@ -541,7 +606,7 @@ Pick by `whenToUse` from `skills list`, install what the task needs, read that
   is regenerated on every install and its directory name is flattened.
 - **The id in `skills list` is the directory name.** Aliases resolve a lookup,
   never a path: `skills install --ids tuyaopen-debug-helper` works and creates
-  `.agents/skills/tuyaopen-embedded-diagnose/`. Always read the installed
+  `.agents/skills/tuyaopen-embedded-cli-debug/`. Always read the installed
   result back with `list-installed` rather than assuming the path.
 
 - **Reading a `SKILL.md` off disk is always available**, and it does not care

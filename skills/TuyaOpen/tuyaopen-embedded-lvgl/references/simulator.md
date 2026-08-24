@@ -1,37 +1,7 @@
----
-name: tuyaopen-embedded-lvgl-simulator
-description: >-
-  Run and iterate a TuyaOpen LVGL UI on the host machine in an SDL2 window
-  instead of flashing a board, via the SDK's built-in LVGL_PC_SIMULATOR
-  Kconfig option. Covers selecting the LINUX platform, the required SDL2
-  package, the `ui_init` entry contract, screen size and window title
-  options, adapting an app that has no simulator config yet, and why the
-  simulator is Linux-only today. Use when the user mentions the LVGL
-  simulator, an SDL window, previewing UI on a PC, iterating a layout
-  without reflashing, or asks whether it runs on macOS or Windows.
-  LVGL 模拟器、SDL 窗口、电脑上预览界面、不烧板改 UI、模拟器支持哪些系统。
-license: Apache-2.0
-compatibility:
-  - TuyaOpen SDK with `src/liblvgl/simulator/` present (added 2025-04-30)
-  - Linux host with SDL2 development files (`pkg-config --exists sdl2`)
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for context only; this flow is pure tos.py)
----
-
 # LVGL PC Simulator
 
-Build the app's **display code only** into a host x86-64 executable that opens
-an SDL2 window, so a layout change costs a rebuild instead of a reflash.
-
-Everything below was verified against a real SDK checkout on 2026-08-19 —
-including a full build and a headless run. Where something is **not** verified
-it says so.
-
-## No `tuyaopen` CLI coverage
-
-`tuyaopen firmware build` targets the configured **device** platform; the
-simulator is a LINUX-platform **host** build, and there is no CLI command for
-it. Everything below is `tos.py`. Per `tuyaopen-shared` § 4 that makes this an
-unavoidable fallback flow, not a gap worth working around.
+Depth for skill `tuyaopen-embedded-lvgl`. Read its SKILL.md first — the LVGL
+version question and the `.config` rule are there, and both apply here.
 
 ## Shortcuts
 
@@ -252,6 +222,11 @@ the ELF, no `libSDL2` in `ldd`). Don't diagnose a missing-window problem by
 looking for a shared SDL2 dependency that was never there.
 
 ## Not in scope
+
+Writing the UI itself — widgets, fonts, Chinese text, images →
+[development.md](development.md).
+
+### Also out of scope
 
 Panel/board bring-up, real-device display drivers, LVGL widget APIs, and
 anything to do with flashing. This skill is only the host simulator loop.

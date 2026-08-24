@@ -41,7 +41,7 @@ tuyaopen diag doctor --json     # → .data.sdk （根路径、是否就绪、en
 
 | Intent | Command |
 |---|---|
-| Diagnose: is the SDK installed? Is the Python env bootstrapped? Is `tos.py` present? | `tuyaopen sdk doctor --sdk-root <path>` |
+| Diagnose: is the SDK installed? Is the Python env bootstrapped? Is `tos.py` present? | `tuyaopen diag doctor --sdk-root <path>` |
 | Clone the SDK | `tuyaopen sdk clone --sdk-root <path>` |
 | Bootstrap the SDK's Python venv | `tuyaopen sdk env-init --sdk-root <path>` |
 | Fast-forward the on-disk SDK clone (`git pull --ff-only`) | `tuyaopen sdk update --sdk-root <path>` |
@@ -75,7 +75,7 @@ Two things worth knowing before you reach for these, verified against
 
 `tuyaopen firmware build/clean` (skill `tuyaopen-embedded-build`) self-bootstraps the
 SDK env via the same path as `sdk env-init` — you don't need to run any of the
-above before it. Reach for `sdk doctor`/`sdk clone`/`sdk env-init` directly
+above before it. Reach for `diag doctor`/`sdk clone`/`sdk env-init` directly
 when you're setting up headlessly (CI, an agent with no shell activation) or
 diagnosing why the self-bootstrap isn't finding an SDK. Full flags (`--mirror`,
 `--stream`): `tuyaopen sdk --help` / `tuyaopen schema get --group sdk
@@ -175,7 +175,7 @@ tos.py check      # validates tool versions + runs git submodule update --init
 | `tos.py: command not found` | Re-run `. ./export.sh` |
 | Submodule download fails | `git submodule update --init` |
 | `[Unknown version]` | No git tags — harmless |
-| `tuyaopen sdk doctor` reports `envReady: false` | Python venv not bootstrapped | `tuyaopen sdk env-init --sdk-root <path>` |
+| `tuyaopen diag doctor` reports `envReady: false` | Python venv not bootstrapped | `tuyaopen sdk env-init --sdk-root <path>` |
 | `tuyaopen sdk clone` fails with `env_exists` | An SDK is already at that `--sdk-root` | Remove it first, or pass a different `--sdk-root` |
 | `tuyaopen manifests status`/`demos list`/`boards list` fail with `config:no_manifest_cache` | Local manifest cache never synced | `tuyaopen manifests sync` |
 

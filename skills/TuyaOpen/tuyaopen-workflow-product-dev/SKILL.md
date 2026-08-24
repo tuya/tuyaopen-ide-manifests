@@ -9,7 +9,7 @@ when_to_use: >-
   Use when the developer says "I want to make a [device]", "帮我做一个XX",
   "what's next?", "下一步该干什么", or describes product features and expects
   end-to-end guidance. Do NOT use for pure platform ops (→ tuyaopen-cloud),
-  pure build/debug (→ tuyaopen-embedded-dev-loop), or project creation only
+  pure build/debug (→ tuyaopen-workflow-embedded-dev), or project creation only
   (→ tuyaopen-embedded-project).
 id: tuyaopen-workflow-product-dev
 surface: embedded
@@ -18,7 +18,7 @@ license: Apache-2.0
 defaultEnabled: true
 related:
   - tuyaopen-cloud
-  - tuyaopen-embedded-dev-loop
+  - tuyaopen-workflow-embedded-dev
   - tuyaopen-embedded-project
   - tuyaopen-embedded-env-setup
 command: tuyaopen.skill.smartProductDev
@@ -30,7 +30,7 @@ End-to-end orchestration: requirements → Tuya Platform product/DP → embedded
 
 **Disambiguation:** If only doing one sub-task, use the dedicated skill:
 - Platform operations only → `tuyaopen-cloud`
-- Build/debug only → `tuyaopen-embedded-dev-loop`
+- Build/debug only → `tuyaopen-workflow-embedded-dev`
 - Project creation only → `tuyaopen-embedded-project`
 - "Add a DP to my existing product" → `tuyaopen-cloud`
 
@@ -256,202 +256,49 @@ After any fix: ask developer to click **Update (更新)** in Project Details, re
 
 ---
 
-## State: has-dps
+## Hand off to the embedded workflow — states `has-dps`, `in-progress`, `built`
 
-**Goal:** Hardware wiring + complete firmware generation.
+**Everything from "the platform has a product with DPs" onward is the
+firmware phase, and it lives in skill `tuyaopen-workflow-embedded-dev`.**
 
-### Step 1 — Reserved Pin Set
+This is the one place in the catalogue where a skill names a sibling on
+purpose. The rule everywhere else — "out of scope, see `tuyaopen-shared`'s
+routing table", never naming a sibling — is about *out-of-scope* handoffs. A
+workflow's **next phase** is not out of scope; it is the content. Reaching
+`has-dps` without being told where to go next is how the pipeline breaks.
 
-Collect from ALL sources:
-- `board.json peripheralPatterns[*].pins[*][*].gpio`
-- `platform.json flashAndDebug.flash.pins`
-- `platform.json flashAndDebug.debug` port → look up TX/RX via `pinout[]`
-- `platform.json peripherals.uart[*]` where `role === "log"` → look up TX/RX via `pinout[]`
+| Reached state | Go to |
+|---|---|
+| `has-dps` | `tuyaopen-workflow-embedded-dev` § *State: has-dps* — pin budget → hardware inquiry → Kconfig → code generation → build |
+| `in-progress` | same skill, § *State: in-progress* — gap analysis → complete the code → build |
+| `built` | same skill, § *State: built* — flash → authorization code → provisioning |
 
-Available after subtracting reserved:
-- **PWM:** `peripherals.pwm.spec.channels[]` — each channel lists valid pin options; exclude options whose GPIO is reserved
-- **I2C:** `peripherals.i2c.spec.buses[]` — each bus needs SDA + SCL (2 GPIO); exclude buses with no free pin pair
-- **GPIO:** `peripherals.gpio.spec.pins[]` minus all reserved numbers
+What you hand over: the PID, the unwrapped `selectedDps`, `ai.expectedDps`,
+and the generated C header from `tuyaopen dp generate`. The embedded workflow
+re-reads the same context files rather than trusting anything passed in prose,
+so a handoff cannot go stale.
 
-Read `architecture.json surfaces.embedded.peripherals` — skip Step 3 inquiry for peripherals already wired there.
-
-### Step 2 — Pin Budget
-
-GPIO demand per interface:
-
-| Interface | GPIO pins |
-|-----------|-----------|
-| PWM channel | 1 |
-| I2C bus | 2 (SDA + SCL) |
-| SPI bus | 4 (MOSI + MISO + CLK + CS) |
-| GPIO output/input | 1 |
-
-If demand > available: tell developer. Suggest alternatives (different board, I2C expander, fewer channels). Do not continue until resolved.
-
-### Step 3 — Hardware Inquiry
-
-For each DP needing hardware (not already in `architecture.json`), present available options then ask:
-
-```
-Brightness control (warm + cool LED) via PWM:
-  PWM0 → valid pins: 6, 18  (pin 4 reserved: board STATUS_LED)
-  PWM1 → valid pins: 7, 19
-  PWM2 → valid pins: 8, 20
-
-Which channel + pin for warm-white LED?
-Which channel + pin for cool-white LED?
-Active-high or active-low?
-```
-
-**Never assume a pin.** If developer picks a reserved GPIO: "GPIO X is already used by [board.json component]. Please choose from the options above."
-
-### Step 4 — Plan Confirmation
-
-Present plan including Kconfig changes. Wait for approval.
-
-```
-Implementation plan:
-  Warm LED: PWM0 / pin 6 / active-high
-  Cool LED: PWM1 / pin 7 / active-high
-  DP handlers: switch_led (id 1), bright_value (id 2), temp_value (id 3)
-  Kconfig: CONFIG_ENABLE_PWM
-  Headers: tuya_iot_dp.h, tal_pwm.h
-  Cloud: solution type from product snapshot
-
-Does this look right?
-```
-
-### Step 5 — Kconfig Update
-
-Update `source/embedded/app_default.config`:
-- `peripherals.<name>.enableMacro` (skip if `null`)
-- `connectivity.<radio>.enableMacro` (skip if `null`)
-
-Run `tos.py check`. If it fails, fix Kconfig and re-check. **Do not generate code until `tos.py check` passes.**
-
-### Step 6 — Code Generation
-
-Use TAL APIs (`tal_*`). Do not call `tkl_*` (platform layer) directly.
-
-Look up from `platform.json`:
-- `peripherals.<name>.tklHeader` → `#include` header path
-- `peripherals.<name>.idPrefix` → prefix for port/pin C enums
-
-Generate:
-- Hardware init (TAL calls with correct headers and enum IDs)
-- DP receive handler for all `selectedDps` IDs
-- Hardware → DP feedback after each command
-- Cloud connection setup — solution type from:
-  ```
-  (snapshot.detail?.data ?? snapshot.detail)?.protocolType
-  ```
-  If field absent, ask developer.
-
-Entry point: `tuya_app_main()` in `source/embedded/src/tuya_app_main.c`.
-Debug output: `PR_DEBUG(fmt, ...)`.
-
-### Step 7 — Update architecture.json
-
-Write new peripherals and modules to `architecture.json surfaces.embedded`. **This is the authoritative in-progress signal.** Write only after Step 6 completes.
-
-### Step 8 — Build
-
-Delegate to `tuyaopen-embedded-dev-loop`. If build fails, diagnose and fix in place. If Kconfig is root cause, go to Step 5 and rebuild.
+**The panel phase is independent of this one.** A miniapp panel needs the same
+PID and DP schema but not the firmware, so `tuyaopen-workflow-miniapp-dev` can
+start as soon as this skill reaches `has-dps` — it does not wait for a build.
 
 ---
 
-## State: in-progress
-
-**Goal:** Gap analysis → complete code.
-
-### Step 1 — Gap Analysis
-
-Cross-reference source files, `architecture.json`, `ai.expectedDps`, and `selectedDps`:
-- DPs in `ai.expectedDps` with no handler in source → missing
-- Peripherals in `architecture.json surfaces.embedded.peripherals` not initialized in code → missing init
-- DPs in `selectedDps` not in `ai.expectedDps` → ask developer if they should be handled
-
-### Step 2 — Surface Gap
-
-```
-Reading existing code...
-Handled: switch_led ✓
-Missing: bright_value — no PWM init or handler
-Missing: temp_value — no PWM handler
-Completing now...
-```
-
-### Step 3 — Complete Code
-
-Run `has-dps` Step 3 hardware inquiry **only for missing parts**. Read `architecture.json` first — do not re-ask for already-wired peripherals.
-
-After completing, update `architecture.json` (`has-dps` Step 7).
-
-### Step 4 — Build
-
-Delegate to `tuyaopen-embedded-dev-loop`.
-
----
-
-## State: built — bring the device online
-
-**Goal:** a device the user can control from their phone. This state existed
-implicitly and that was the bug: the state machine above ended at "it
-compiles", so nothing owned the question "when do we get the device onto the
-cloud", and beta round 2's agent asked for an authorization code in its very
-first turn — before the project directory existed. Everything below happens
-**after** `firmware build` exits 0, in this order, and not before.
-
-### Step 1 — Flash
-
-Delegate to `tuyaopen-embedded-flash`. Pick the port via `tuyaopen device
-list-ports` (multi-port boards: that command's `hint` tells you how to
-disambiguate). Note the default baud can be slow enough to hit the build/flash
-timeout on a large image — `--baud 921600` is the usual fix, and
-`--timeout <ms>` raises the ceiling.
-
-### Step 2 — Authorization code (the FIRST time it is legitimate to ask)
-
-Delegate to `tuyaopen-embedded-device-auth` and read its **§0** before opening
-your mouth: a code is needed here and nowhere earlier, one code may only be in
-use on **one** device at a time, and you must ask the user to confirm the code
-is free before writing it. If the user has no code, that skill's *没有授权码怎么办*
-section is the answer — do not stall the build waiting for one.
-
-```bash
-tuyaopen diag doctor --json          # deviceAuth.localLicenses — 0 means "none stored here"
-```
-
-### Step 3 — Write it, then read it back
-
-`tuyaopen firmware authorize` (P2 — needs `--yes`), then **verify** with
-`tuyaopen firmware auth-status --port <port>`. A write you did not read back is
-not a completed step.
-
-### Step 4 — Hand provisioning to the user
-
-Provisioning is a **phone** action; no CLI can do it. Tell the user, explicitly,
-that the next three steps are theirs: install **智能生活 / Smart Life**, sign in
-with an account in the **same region as the product**, then "Add device" and pair
-while the device sits in provisioning mode.
-
-Your own success criterion is not "paired" — you cannot observe that. It is
-`auth-status` reporting a code on the device and the serial log no longer
-printing `client no active`.
-
----
 
 ## Reverse Transitions
+
+Only the platform-phase transitions live here. The firmware-phase ones (build
+failures, missing Kconfig, a device that never appears in the App) are in
+`tuyaopen-workflow-embedded-dev` — same table, split at the same phase
+boundary as the states.
 
 | Trigger | Action |
 |---------|--------|
 | DP found missing vs `ai.expectedDps` | → `has-pid` (add DP), return to current state |
-| Developer adds new feature | Update `ai.expectedDps`. → `has-pid` (add DP). Return to `in-progress`. |
-| Build fails: missing Kconfig | → `has-dps` Step 5 |
+| Developer adds new feature | Update `ai.expectedDps`. → `has-pid` (add DP). Then return to whichever firmware state you came from |
 | Developer wants different PID | Clear `[product] pid` from ini. Delete `product-<old-pid>.json`. Keep `ai.*`. → bare Step 3 (persist intent) then Step 6 (bind the new PID). Skip Steps 4–5 — the product already exists on the platform. |
 | Change product category | Clear `ai.productCategory` + `ai.expectedDps` from `project.json`. → bare Step 1. |
-| Device never appears in the App, log says `client no active` | → `built` Step 2. This is missing authorization, not a code bug — see `tuyaopen-embedded-device-auth`. |
-| User asks for an auth code before the firmware builds | Say what it is for and that it is not needed yet; finish `has-dps` Step 8 first. Do **not** collect a code early — a code in hand is a code occupied. |
+| User asks for an auth code at any point in this phase | Say what it is for and that it is not needed yet — it belongs to the firmware phase, after the build succeeds. Do **not** collect a code early: a code in hand is a code occupied, and one code may only be in use on one device at a time. |
 
 ---
 
@@ -461,7 +308,6 @@ printing `client no active`.
 - Show dry-run `preview` + `riskLevel` before any `--confirm`
 - Require explicit developer approval for every platform mutation
 - Read `ai.intent` / `ai.expectedDps` before re-asking requirements
-- Show available peripheral options before asking developer to choose pins
 - Re-read all context files on every entry
 - Trust snapshot files — not the developer's oral "done" confirmation
 - Apply dpSchema unwrap before any DP access
@@ -469,11 +315,9 @@ printing `client no active`.
 **Never:**
 - Run `tuya-devplat-cli auth login` — use `tuyaopen credential login` instead
 - Invent a PID or DP code
-- Assume a GPIO pin without developer confirmation
-- Re-ask hardware questions already in `architecture.json`
 - Proceed past dry-run without approval
 - Skip pre-flight checks
-- Call `tkl_*` APIs in generated code
+- Ask for a device authorization code during this phase
 
 ---
 
@@ -484,6 +328,4 @@ printing `client no active`.
 | Product created, write ini fails | Report PID. Ask developer to add `[product] pid = <pid>` manually. |
 | DP creation partially fails | Report which failed. Re-enter `has-pid` on next run — `ai.expectedDps` comparison catches the gap. |
 | Update (更新) not clicked | Re-run state detection after each "done" claim. Trust the file. |
-| Kconfig / `tos.py check` fails | Fix before generating code. |
-| Build fails | Stay in `in-progress`. Debug via `dev-loop`. |
 | Wi-Fi-only board | Run Steps 1–3, ask developer to create product manually, continue from Step 6. |
