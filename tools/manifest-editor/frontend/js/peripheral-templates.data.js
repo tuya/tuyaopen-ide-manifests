@@ -978,7 +978,14 @@ export default {
           "key": "lineSeq",
           "labelKey": "periPixelLineSeq",
           "type": "select",
-          "options": ["RGB","RBG","GRB","GBR","BRG","BGR"]
+          "options": [
+            "RGB",
+            "RBG",
+            "GRB",
+            "GBR",
+            "BRG",
+            "BGR"
+          ]
         }
       ]
     },
