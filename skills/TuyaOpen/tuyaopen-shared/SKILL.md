@@ -325,7 +325,7 @@ default in a TTY). Never parse human-mode output.
 > 要验证，就显式重定向，别靠眼睛：
 >
 > ```bash
-> tuyaopen <cmd> --json >out.txt 2>err.txt
+> tuyaopen-cli <cmd> --json >out.txt 2>err.txt
 > wc -l out.txt            # 契约要求：1
 > ```
 >
@@ -497,7 +497,7 @@ switch to `tos.py` because of it.
 ```bash
 tuyaopen-cli schema list [--group <g>]                     # every command's contract
 tuyaopen-cli schema get --group <g> --command <c>           # one command's flags/mutating/riskLevel
-tuyaopen <group> --help                                 # human-readable, same info
+tuyaopen-cli <group> --help                                 # human-readable, same info
 ```
 
 **Never copy a flag list into a skill's prose.** The CLI's own schema is the

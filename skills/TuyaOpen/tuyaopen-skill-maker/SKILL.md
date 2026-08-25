@@ -213,11 +213,11 @@ carries every other machine field (`group`, `surface`, `tags`,
 ### The `## Shortcuts` section template
 
 ```markdown
-## Shortcuts — `tuyaopen <group1>` / `tuyaopen <group2>`
+## Shortcuts — `tuyaopen-cli <group1>` / `tuyaopen-cli <group2>`
 
 | Intent | Command |
 |---|---|
-| <what it does> | `tuyaopen <group> <command>` |
+| <what it does> | `tuyaopen-cli <group> <command>` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
 for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
@@ -278,7 +278,7 @@ their flags in prose. Point the reader at:
 
 ```bash
 tos.py <group> -h
-tuyaopen <group> --help
+tuyaopen-cli <group> --help
 tuyaopen-cli schema get --group <g> --command <c>
 ```
 
