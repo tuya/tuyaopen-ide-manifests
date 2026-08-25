@@ -45,7 +45,7 @@ tuyaopen firmware list-ports --json      # >1 个口时它会返回 hint 说明�
 烧录是 P2，`firmware authorize` 会往设备写东西 —— **这两个动作的目标口都必须是用户确认过的**。
 其余环境事实（SDK 在哪、有没有登录、有没有授权码）见 skill `tuyaopen-shared` § 0.0。
 
-## Shortcuts — `tuyaopen firmware` / `tuyaopen device`
+## Shortcuts — `tuyaopen firmware`
 
 | Intent | Command |
 |---|---|

@@ -93,7 +93,7 @@ for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
 
 | 阶段 / 场景 | 在本 skill 内 | 跳子技能 |
 |---|---|---|
-| **0. 创建小程序，拿到 appid** | [只能在网页上做 —— 见下节第 1 步](#提审发布与绑定只能在网页上做)。拿到后 `tuyaopen miniapp meta set-appid <appid>` 抄回项目 | — |
+| **0. 创建小程序，拿到 appid** | **先问用户**（见下面《第 0 步是一次提问》），再按回答走网页或 `devplat exec -- panel create-miniapp`。拿到后 `tuyaopen miniapp meta set-appid <appid>` 抄回项目 | — |
 | 1. 需求 / PRD | — | `tuyaopen-miniapp-requirement-guide` |
 | 2. 架构理解 / 项目结构 / DP 模型 | [references/architecture.md](references/architecture.md) | — |
 | 2.5 项目本地缓存（`.tuyaopen/platform/`，读 PID / 绑定 / DP）| [references/platform-cache.md](references/platform-cache.md) | — |
@@ -117,7 +117,7 @@ skill 直接进品类 skill；也**不能**跳过 conventions 直接写代码。
 
 ### 品类 skill 默认没装 —— 这是本节存在的原因
 
-上表第 3 步派给的六个品类 skill 属于 `category` 安装组，**`tuyaopen skills
+上表第 3 步派给的六个品类 skill 属于 `scenario` 安装组，**`tuyaopen skills
 install --all` 不会装它们**。它们互斥：做灯的人同时装上扫地机、IPC、插座的
 手册，不会多出三项能力，只会给 agent 多出三个不相干的候选去挑。
 
@@ -134,7 +134,7 @@ tuyaopen skills install --ids tuyaopen-miniapp-robot-vacuum   # 扫地机
 tuyaopen skills install --ids tuyaopen-miniapp-ipc-panel      # 摄像头 / IPC
 tuyaopen skills install --ids tuyaopen-miniapp-electrician-timing  # 电工定时
 tuyaopen skills install --ids tuyaopen-miniapp-energy-stats   # 能耗统计
-tuyaopen skills install --group category                      # 六个全装（少见：一次只做一个品类）
+tuyaopen skills install --group scenario                      # 六个全装（少见：一次只做一个品类）
 ```
 
 （命令写作裸 `tuyaopen`；若这台机器上它不在 `PATH`，先按 skill
@@ -147,6 +147,65 @@ tuyaopen skills install --group category                      # 六个全装（�
 skill，就留在本 skill + `tuyaopen-miniapp-ray-common` +
 `tuyaopen-miniapp-smart-ui` 里做，**不要**挑一个"最像的"品类 skill 套用 ——
 品类手册里的 DP 语义、组件选型和状态机是按那个品类写死的，套错比没有更糟。
+
+## 第 0 步是一次提问，不是一格表
+
+<code data-type="tag" style="color:#ff4d4f">内测第四轮：agent 从没问过，于是 appid 一直是空的，⑤⑧⑨ⓐ–ⓔ 全部走不了</code>
+
+appid **只能由平台签发**，`tuyaopen` 侧没有任何命令能创建它，`meta set-appid`
+只是把一个已有的 appid 抄进项目。所以在写第一行面板代码之前，**停下来问用户**：
+
+> 这个项目要配一个手机面板。两条路：
+> 1. **新建面板小程序**（新项目的默认选择）—— 你去开发者平台建一个，我给你链接和步骤，建完把 appid 给我
+> 2. **复用已有小程序** —— 直接把 appid 给我
+>
+> 选哪个？
+
+**默认路径是新建。** 一个新产品需要属于它自己的面板小程序；复用是例外，只在
+用户明确说"用现有那个"时才走。
+
+拿到 appid 之后立刻记下来，否则 ⑨ `upload` 会失败：
+
+```bash
+tuyaopen miniapp meta set-appid <appid>
+```
+
+**没拿到 appid 也不要停止编码** —— ①–⑦（建模板、写代码、build）都不需要它。
+但也**不要假装它不存在**：在最终交付里明确写出"面板尚未创建 / 未上传"，
+而不是报告"面板已完成"。
+
+## 状态机 —— 你现在在哪一步，以及到哪一步才算完
+
+嵌入式工作流有三态和进入检测；这条链以前只有一张**有序命令表**。表是对的，
+但表是说明书，**说明书可以在任意一行合法地停下来** —— 第四轮的 agent 就停在 ⑦，
+然后写了一份"面板已完成构建"的报告。
+
+进入时先判断状态（都从项目里读，别信任何转述）：
+
+| 状态 | 判定 | 下一步 |
+|---|---|---|
+| `no-panel` | `source/miniapp/` 不存在 | 第 0 步提问 → ①② |
+| `scaffolded` | 有 `source/miniapp/`，`src/pages/` 还是模板原样 | ③–⑥ |
+| `coded` | 页面已按需求改写，`dist/` 不存在或过期 | ⑦ build |
+| `built` | `dist/tuya/app.js` 存在 | ⑧ preview → **交链接给用户，等他看** |
+| `reviewed` | 用户看过预览并认可 | ⑨ upload |
+| `uploaded` | `upload` 成功 | ⓒ 提审 → ⓓ 发布 → ⓔ 绑定 |
+| `bound` | `panel bind` 完成 | 完 |
+
+`appid` 是否已 `meta set-appid`，从 `.tuyaopen/` 读，与上面的状态正交 ——
+没有它，`built` 之后一步都走不了。
+
+### Definition of Done —— 报告"完成"之前逐条核对
+
+- [ ] 用户被**问过**新建还是复用面板小程序
+- [ ] appid 已 `meta set-appid` 写进项目
+- [ ] `build` 成功
+- [ ] **用户拿到过一个能打开的渲染链接，并且看过**（拿不到时见 ⑧ 的降级方案）
+- [ ] `upload` 成功
+- [ ] 提审 / 发布 / 绑定三个链接（或三条 `devplat` 命令的结果）已交给用户
+
+**卡住是合法结局，沉默不是。** 任何一条为假，就说清是哪一条、卡在哪里，
+并把已完成的部分连同证据一起交付 —— 不要写成"全流程完成"。
 
 ## 命令级顺序 —— 七条命令都在这条链上，不是只有 build
 
@@ -208,6 +267,19 @@ tuyaopen miniapp preview --emit-url
 
 > **别只报告"编译成功"。** 一个用户看不见的面板，对他等于没做。`miniapp build` 成功时的
 > 信封里已经带了 `nextStep`，直接照它做。
+
+> **`preview` 目前只在 IDE 里可用（2026-08-25 实测）。** 用 npm 装的
+> `tuyaopen` 跑它会拿到
+> `{"ok":false,"error":"MiniApp runtime not ready: miniapp.runtime.error.vendorMissing"}`
+> —— 共享运行时随 `.vsix` 分发，独立 CLI 手上没有。`miniapp install` 同理，
+> 它要 `--extension-path`。
+>
+> **撞到这堵墙时不要放弃整条链**（第四轮就是这么丢掉 ⑨ 和 ⓐ–ⓔ 的）。降级方案：
+> 1. 在 TuyaOpen IDE 里打开这个工程跑预览；或
+> 2. 跳过 ⑧，直接 ⑨ `upload`，让用户用手机扫**内测版二维码**在真机上看 ——
+>    真机预览本来就比 mock bridge 更接近真实；
+> 3. 无论走哪条，**都要明确告诉用户"面板你还没看过"**，别让"build 成功"
+>    冒充"面板做好了"。
 
 **预览里看到的设备是模拟的**：它注入一个 mock bridge，DP 来自已绑定产品（有 pid 时）或
 模板自己的 `src/devices/schema.ts`。stderr 上会写清这次用的是哪一种、几个 DP ——

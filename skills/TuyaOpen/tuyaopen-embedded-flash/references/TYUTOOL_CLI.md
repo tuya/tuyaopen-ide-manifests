@@ -3,7 +3,7 @@
 > Absorbed from the former standalone `tuyaopen-tyutool-cli` skill (merged
 > 2026-08-14, see `../SKILL.md` § *Fallback*). Read this when the CLI-first
 > path in the parent skill can't do what you need: reading flash back out,
-> a bare DTR/RTS hardware reset, or a dual-serial board `tuyaopen device
+> a bare DTR/RTS hardware reset, or a dual-serial board `tuyaopen firmware
 > list-ports` can't disambiguate. `tyutool_cli` is the SDK's own tool, not a
 > `tuyaopen` CLI command — it ships at `$OPEN_SDK_ROOT/tools/tyutool/`, so
 > every invocation below is direct, no `tuyaopen` prefix.

@@ -671,8 +671,10 @@ treat them as opaque.
 
 ## 9. Routing table — which skill for which intent
 
-28 skills exist in this catalogue (`tuyaopen skills list --json` is the live
-count). Rather than every skill naming every sibling it might hand off to —
+`tuyaopen skills list --json` is the live, authoritative listing of this
+catalogue — it returns every item with its `whenToUse` whether or not that item
+is installed. **No count is written here**: every attempt to state one went
+stale (this line said 28 while the catalogue held 30). Rather than every skill naming every sibling it might hand off to —
 an O(n²) maintenance burden where adding one skill means editing many others'
 prose — **the rule is one-way**: a task-specific skill that hits something out
 of its scope says "not in scope, see skill `tuyaopen-shared`'s routing table"

@@ -42,7 +42,7 @@ the section that matches the symptom:
 For the CLI's envelope, exit codes, and self-discovery (`schema get`), see
 skill `tuyaopen-shared` — not repeated here.
 
-## Shortcuts — `tuyaopen device` / `tuyaopen firmware`
+## Shortcuts — `tuyaopen firmware`
 
 | Intent | Command |
 |---|---|
@@ -211,6 +211,42 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
 Add `--json` before the subcommand for machine-readable output. No extra
 dependencies — Python stdlib only.
 
+### 从头抓启动日志 —— 先起监控，再复位
+
+<code data-type="tag" style="color:#faad14">内测第四轮：日志从中间抓起，启动阶段全在可见窗口之外</code>
+
+A monitor attached to an already-running device **joins mid-stream**. Everything
+that decides whether the firmware is healthy has already scrolled past: the
+board banner, peripheral registration (`tdl_button_create` / `tdl_led_find_dev`
+succeeding or not), and the first `client no active`. Tailing more lines does
+not help — the device is not reprinting them.
+
+So make the log start where you want it to. **Attach first, then reset:**
+
+```bash
+# 1. background monitor on the log port — does not hold your terminal
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py start -p /dev/ttyACM1
+
+# 2. reset over the device CLI (§ 3) — the log now begins at the boot banner
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reset"
+
+# 3. read from the reset line down
+$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py --json tail -n 400
+```
+
+**Two ports, two roles** — `sys_reset` goes to the **CLI port at 115200**, the
+monitor sits on the **log port at the platform's own baud**. On a dual-serial
+board (T5AI: `ttyACM0` + `ttyACM1`) both can be open at once, which is the whole
+point. On a single-serial board they contend: reset by power-cycling instead,
+or `stop` the monitor, send the reset, and restart it — accepting that you lose
+the first few lines.
+
+**No serial CLI in this firmware?** `sys_reset` needs
+`CONFIG_ENABLE_SERIAL_CLI_CMD=y` plus `tal_cli_init()` — see § 0. Until then,
+power-cycle the board by hand and say in your report that the log starts at a
+power-on rather than a software reset. Turning the CLI on is usually worth it:
+it is also what lets you *drive* a peripheral instead of only watching it boot.
+
 **Log location**: `<project_dir>/.target_logging/` (found by searching upward
 from the cwd for `app_default.config`), gitignored by the SDK's unanchored
 `.target_logging` rule regardless of project depth:
@@ -227,7 +263,7 @@ Only one session runs at a time — starting a new one stops the previous.
 output the same way as skill `tuyaopen-embedded-flash`: a single-serial board's one
 port carries flash, auth, and log together (so `stop` this session before a
 flash on that board); a dual-serial board (e.g. T5AI) can keep this monitor
-running on the log port while flashing the other. `tuyaopen device
+running on the log port while flashing the other. `tuyaopen firmware
 list-ports` output is coarser than the raw `tyutool_cli list-ports --json`
 (no `usbSerial`/`usbInterface`) — see skill `tuyaopen-embedded-flash` § 1 / § 4 when
 you need the authoritative grouping.
@@ -241,7 +277,7 @@ you need the authoritative grouping.
 | `feed watchdog` | Heartbeat (~10s) | **Normal** — device is alive |
 | `OPRT_` + negative number | SDK operation failed | Cross-reference the code (device firmware source) |
 | `mqtt connected` | Cloud connected | **Success** |
-| No output after start | Wrong port or wrong baud | Swap ports; check the chip's monitor baud (§ 1 `list-ports --chip`) |
+| No output after start | Wrong port or wrong baud | Swap ports; check the chip's monitor baud (§ 2.3 `list-ports --chip`) |
 
 ## 3. Send commands to the device CLI (`tal_cli` over UART)
 
@@ -258,8 +294,8 @@ python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json se
 ```
 
 **Baud is always 115200** — `tal_cli` hardcodes it on every platform,
-independent of the platform-specific log/monitor baud used in § 3. If the
-port is busy, stop the § 3 monitor session (or any foreground `tos.py
+independent of the platform-specific log/monitor baud used in § 2. If the
+port is busy, stop the § 2 monitor session (or any foreground `tos.py
 monitor`) first — see [references/CLI_DEBUG.md](references/CLI_DEBUG.md) for
 the full port-busy / port-selection detail.
 
