@@ -167,15 +167,19 @@ not on `PATH`).
 ### 1.1 Resolve it first — `tuyaopen-cli` is usually NOT on `PATH`
 
 **Do this once, before the first `tuyaopen-cli` command in a session.** Every
-example in every TuyaOpen skill is written as bare `tuyaopen …`. This defines a
-shell function of that name, so all of them then work verbatim — you never edit
+example in every TuyaOpen skill is written as bare `tuyaopen-cli …`. This defines
+a shell function of that name, so all of them then work verbatim — you never edit
 a command line to add a path.
+
+Run it in **bash or zsh**. A hyphen is legal in a function name there but not in
+strict POSIX `sh` (`dash` answers `Bad function name`); under `sh`, export
+`TUYAOPEN_CLI_PATH` and call `node "$TUYAOPEN_CLI_PATH" …` directly instead.
 
 ```bash
 # Define `tuyaopen-cli` for this shell. Run once; then use the skills' examples as written.
 if [ -n "$TUYAOPEN_CLI_PATH" ] && [ -f "$TUYAOPEN_CLI_PATH" ]; then
   _tuyaopen_entry="$TUYAOPEN_CLI_PATH"             # explicit override wins
-  tuyaopen() { node "$_tuyaopen_entry" "$@"; }
+  tuyaopen-cli() { node "$_tuyaopen_entry" "$@"; }
 elif command -v tuyaopen-cli >/dev/null 2>&1; then
   :                                                # already on PATH — nothing to do
 else                                               # search upward for the IDE-written wrapper
@@ -183,7 +187,7 @@ else                                               # search upward for the IDE-w
   while [ "$_d" != "/" ]; do
     if [ -x "$_d/.tuyaopen/ide/bin/tuyaopen-cli" ]; then
       _tuyaopen_bin="$_d/.tuyaopen/ide/bin/tuyaopen-cli"
-      tuyaopen() { "$_tuyaopen_bin" "$@"; }
+      tuyaopen-cli() { "$_tuyaopen_bin" "$@"; }
       break
     fi
     _d=$(dirname "$_d")

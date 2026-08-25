@@ -56,11 +56,11 @@ def _resolve_tuyaopen():
     if cli_path and os.path.isfile(cli_path):
         return ["node", cli_path]
 
-    on_path = shutil.which("tuyaopen")
+    on_path = shutil.which("tuyaopen-cli")
     if on_path:
         return [on_path]
 
-    wrapper_name = "tuyaopen-cli.cmd" if os.name == "nt" else "tuyaopen"
+    wrapper_name = "tuyaopen-cli.cmd" if os.name == "nt" else "tuyaopen-cli"
     current = os.getcwd()
     while True:
         candidate = os.path.join(current, ".tuyaopen", "ide", "bin", wrapper_name)

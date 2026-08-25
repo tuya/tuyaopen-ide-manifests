@@ -61,7 +61,7 @@ not, verified against `src/cli/commands/firmware.ts`:
   `.cache/.dont_prompt_update_platform` workaround is a `tos.py`-direct-only
   concern.
 
-Full flags (baud, `--sdk-root`, `--stream` for ndjson progress): `tuyaopen
+Full flags (baud, `--sdk-root`, `--stream` for ndjson progress): `tuyaopen-cli
 firmware --help` / `tuyaopen-cli schema get --group firmware --command build` —
 don't hardcode the flag list here, it drifts (see skill `tuyaopen-shared` § 5).
 
