@@ -5,10 +5,16 @@ Manages `tos.py monitor -l` as a background subprocess so agents can
 capture device logs without blocking the terminal.
 
 Commands:
-  start -p <port> [-l <logfile>]   Start background monitor
+  start -p <port> [-l <logfile>]   Start background monitor. Blocks until the
+                                   monitor is up (or died), so the caller never
+                                   has to guess a `sleep`. Reports `ready` +
+                                   `reason`; exits 1 with `startup_tail` if the
+                                   monitor exited immediately.
   tail  [-n N]                     Read last N lines from log file
   stop                             Stop the monitor process
-  status                           Check if monitor is running
+  status                           Check if monitor is running, and why not:
+                                   running / stopped / exited-before-logging /
+                                   exited / no-session.
 
 Options:
   --json     Machine-readable JSON output
@@ -23,6 +29,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 
 
 def _sdk_root():
@@ -87,10 +94,41 @@ def _load_session():
         return None
 
 
-def _save_session(pid, log_file):
+def _save_session(pid, log_file, startup_log=None, stopped=False):
     os.makedirs(SESSION_DIR, exist_ok=True)
     with open(SESSION_FILE, "w") as f:
-        json.dump({"pid": pid, "log_file": log_file}, f)
+        json.dump(
+            {
+                "pid": pid,
+                "log_file": log_file,
+                "startup_log": startup_log,
+                # Set by `stop`. Without it `status` cannot tell a monitor the
+                # caller shut down on purpose from one that died on its own,
+                # and a bare `running: false` made those look identical.
+                "stopped": stopped,
+            },
+            f,
+        )
+
+
+STARTUP_LOG = os.path.join(SESSION_DIR, "startup.log")
+"""Where the child's own stdout/stderr goes.
+
+`tos.py monitor` used to be spawned with both streams on DEVNULL, so when it
+exited immediately — wrong cwd, port already held, missing venv — every word it
+said about why was discarded, `start` still reported `ok: true` with a PID that
+was already dead, and the only symptom left was an empty `.target_logging/`.
+Keeping the output is what makes that case diagnosable at all.
+"""
+
+
+def _tail_file(path, limit=2000):
+    """Last `limit` characters of `path`, or '' — best effort, never raises."""
+    try:
+        with open(path, errors="replace") as f:
+            return f.read()[-limit:]
+    except OSError:
+        return ""
 
 
 def _clear_session():
@@ -180,7 +218,7 @@ def _stop_pid(pid):
         pass
 
 
-def cmd_start(port, log_file, as_json):
+def cmd_start(port, log_file, as_json, ready_timeout=8.0):
     session = _load_session()
     if session and _is_running(session["pid"]):
         _stop_pid(session["pid"])
@@ -205,14 +243,67 @@ def cmd_start(port, log_file, as_json):
     else:
         kwargs["start_new_session"] = True
 
-    proc = subprocess.Popen(
-        cmd,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.DEVNULL,
-        **kwargs,
+    # Both streams go to a file, never DEVNULL — see STARTUP_LOG.
+    with open(STARTUP_LOG, "w") as startup:
+        proc = subprocess.Popen(cmd, stdout=startup, stderr=subprocess.STDOUT, **kwargs)
+    _save_session(proc.pid, log_file, startup_log=STARTUP_LOG)
+
+    # Wait for the monitor to actually be up before answering. The caller used
+    # to get `ok: true` the instant Popen returned, which says nothing about
+    # whether the serial port opened — so every caller invented its own
+    # `sleep`, guessed low, and read an empty log. Readiness here is "the
+    # process is still alive AND the log file it was told to write exists":
+    # both are cheap, and together they rule out the two failures that were
+    # actually observed (immediate exit, and a log that never appears).
+    #
+    # Liveness here is `proc.poll()`, NOT `_is_running(pid)`. This process is
+    # the child's parent, so a child that has exited stays a zombie until it is
+    # reaped, and `_is_running` — which asks whether the PID exists — answers
+    # `True` for a zombie. Measured: with a `tos.py` that exits 2 immediately,
+    # the `_is_running` version reported `ok: true`, i.e. reproduced the exact
+    # bug this wait was added to fix. `poll()` reaps and returns the real code.
+    deadline = time.time() + ready_timeout
+    ready = False
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            break
+        if os.path.isfile(log_file):
+            ready = True
+            break
+        time.sleep(0.2)
+
+    rc = proc.poll()
+    if rc is not None:
+        # Do NOT report success. This is the case that used to be invisible.
+        _clear_session()
+        _out(
+            {
+                "ok": False,
+                "error": f"monitor exited immediately (code {rc})",
+                "reason": "exited",
+                "exit_code": rc,
+                "pid": proc.pid,
+                "startup_log": STARTUP_LOG,
+                "startup_tail": _tail_file(STARTUP_LOG),
+            },
+            as_json,
+        )
+        sys.exit(1)
+
+    _out(
+        {
+            "ok": True,
+            "pid": proc.pid,
+            "log_file": log_file,
+            # `ready: false` means alive but no log file yet within the window.
+            # Reported rather than treated as failure: a device that is simply
+            # silent is a legitimate state, and the caller can poll `tail`.
+            "ready": ready,
+            "reason": "ready" if ready else "log-not-created-yet",
+            "startup_log": STARTUP_LOG,
+        },
+        as_json,
     )
-    _save_session(proc.pid, log_file)
-    _out({"ok": True, "pid": proc.pid, "log_file": log_file}, as_json)
 
 
 def cmd_stop(as_json):
@@ -221,8 +312,12 @@ def cmd_stop(as_json):
         _out({"ok": True, "message": "no active session"}, as_json)
         return
     _stop_pid(session["pid"])
-    _clear_session()
-    _out({"ok": True, "message": "stopped"}, as_json)
+    # Record the intent instead of erasing the session: `status` has to be able
+    # to say "you stopped it" rather than fall back to "not running", which
+    # reads identically to a crash.
+    _save_session(session["pid"], session["log_file"],
+                  startup_log=session.get("startup_log"), stopped=True)
+    _out({"ok": True, "message": "stopped", "reason": "stopped"}, as_json)
 
 
 def cmd_tail(n, as_json):
@@ -241,15 +336,40 @@ def cmd_tail(n, as_json):
 
 
 def cmd_status(as_json):
+    """Report whether the monitor is up, and — when it is not — WHY.
+
+    A bare `running: false` cannot distinguish "the caller stopped it" from
+    "it died on startup" from "it ran and then crashed", and the caller was
+    left reverse-engineering the answer from whether a log file happened to
+    exist. Four states, each with something the caller can do about it.
+    """
     session = _load_session()
     if not session:
-        _out({"ok": True, "running": False, "message": "no session"}, as_json)
+        _out({"ok": True, "running": False, "reason": "no-session", "message": "no session"}, as_json)
         return
     running = _is_running(session["pid"])
-    _out(
-        {"ok": True, "running": running, "pid": session["pid"], "log_file": session["log_file"]},
-        as_json,
-    )
+    log_file = session["log_file"]
+    if running:
+        reason = "running"
+    elif session.get("stopped"):
+        reason = "stopped"
+    elif not os.path.isfile(log_file):
+        # Never produced a byte: it did not get as far as opening the port.
+        reason = "exited-before-logging"
+    else:
+        reason = "exited"
+    out = {
+        "ok": True,
+        "running": running,
+        "reason": reason,
+        "pid": session["pid"],
+        "log_file": log_file,
+    }
+    if not running and reason != "stopped":
+        startup_log = session.get("startup_log") or STARTUP_LOG
+        out["startup_log"] = startup_log
+        out["startup_tail"] = _tail_file(startup_log)
+    _out(out, as_json)
 
 
 def main():
@@ -260,6 +380,8 @@ def main():
     p_start = sub.add_parser("start", help="Start background monitor")
     p_start.add_argument("-p", "--port", required=True, help="Serial port")
     p_start.add_argument("-l", "--log", default=None, dest="log_file", help="Log file path")
+    p_start.add_argument("--ready-timeout", type=float, default=8.0, dest="ready_timeout",
+                         help="Seconds to wait for the monitor to come up (default: 8)")
 
     p_tail = sub.add_parser("tail", help="Tail log file")
     p_tail.add_argument("-n", type=int, default=200, help="Number of lines")
@@ -270,7 +392,7 @@ def main():
     args = parser.parse_args()
 
     if args.command == "start":
-        cmd_start(args.port, args.log_file, args.as_json)
+        cmd_start(args.port, args.log_file, args.as_json, args.ready_timeout)
     elif args.command == "stop":
         cmd_stop(args.as_json)
     elif args.command == "tail":

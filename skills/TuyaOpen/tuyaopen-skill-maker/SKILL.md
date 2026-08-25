@@ -340,6 +340,26 @@ and add your own row to `tuyaopen-shared/references/ROUTING.md` in the same
 change (that file is the one place allowed to name every skill, precisely
 because it is the only thing that has to change when the catalogue grows).
 
+### The `description` is the exception — say what you do NOT cover
+
+This rule governs the **body**. The `index.json` `description` (`summary` +
+`whenToUse`) works the other way round: it is the only text a model sees
+*before* it decides which skill to open, so a boundary written there prunes the
+wrong candidate at zero cost, while the same boundary in the routing table is
+only reachable after the model has already opened something.
+
+So a description **should** name the sibling it hands off to, and several
+already do — `tuyaopen-workflow-product-dev` ("Do NOT use for pure platform ops
+(→ `tuyaopen-cloud`)…"), `tuyaopen-embedded-cli-debug` ("Environment triage is
+not here — `diag doctor` / `diag export` live in skill `tuyaopen-shared`"),
+`tuyaopen-miniapp` ("the command-line surface only — panel architecture and
+category UI conventions are a different skill"). Copy that shape.
+
+There is no O(n²) problem here because a description names only the **one or
+two** skills its own traffic is most often misrouted to, not every skill that
+might hand off to it. Write the boundary you have actually seen a model get
+wrong; leave it out if you have not seen one.
+
 ## 9. Registering in `skills/index.json`
 
 Preferred: the generator keeps the JSON well-formed and fills in the

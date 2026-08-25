@@ -111,7 +111,7 @@ def _run_build():
     """
     argv = _resolve_tuyaopen()
     if argv is None:
-        print("[tuyaopen CLI not found — falling back to tos.py build]")
+        print("[tuyaopen-cli not found — falling back to tos.py build]")
         ret = subprocess.run([_python_exe(), _tos_py(), "build"], check=False)
         return ret.returncode == 0
 

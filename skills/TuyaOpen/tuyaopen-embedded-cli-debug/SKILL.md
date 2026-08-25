@@ -211,6 +211,32 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
 Add `--json` before the subcommand for machine-readable output. No extra
 dependencies — Python stdlib only.
 
+**`start` blocks until the monitor is actually up — never follow it with a
+`sleep`.** It returns only once the process is alive *and* the log file it was
+told to write exists (up to `--ready-timeout`, default 8 s), and reports:
+
+| field | meaning |
+|---|---|
+| `ready: true`, `reason: "ready"` | logging has begun — go straight to `tail` |
+| `ready: false`, `reason: "log-not-created-yet"` | alive, nothing written yet. A silent device is legitimate; poll `tail` |
+| `ok: false`, `reason: "exited"` | it died on startup. `exit_code` + `startup_tail` carry the reason, and no session is left behind |
+
+`status` answers the same question after the fact, with `reason` one of
+`running` / `stopped` / `exited-before-logging` / `exited` / `no-session` —
+so a monitor **you** stopped is distinguishable from one that crashed, which a
+bare `running: false` never was. When it is not running and you did not stop
+it, `startup_tail` is included.
+
+<code data-type="tag" style="color:#faad14">内测第五轮：`start` 报成功，`.target_logging/` 里什么都没有</code>
+
+This is why. `start` used to answer the instant the process was spawned, with
+the child's stdout and stderr on `DEVNULL` — so a monitor that died immediately
+(wrong cwd, port already held) reported `ok: true` with an already-dead PID and
+threw away every word explaining why, while `status` kept serving the stale PID.
+Callers compensated with `sleep 8`, which is a guess that fails in both
+directions: too short and you read an empty log, too long and you wait for
+nothing.
+
 ### 从头抓启动日志 —— 先起监控，再复位
 
 <code data-type="tag" style="color:#faad14">内测第四轮：日志从中间抓起，启动阶段全在可见窗口之外</code>
