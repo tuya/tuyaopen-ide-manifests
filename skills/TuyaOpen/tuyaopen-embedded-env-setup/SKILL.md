@@ -35,7 +35,26 @@ tuyaopen-cli diag doctor --json     # → .data.sdk （根路径、是否就绪�
 - **不存在** → 克隆是**十几 GB、几十分钟**的动作。**先告诉用户要下什么、多大、大概多久**，
   得到确认再 `tuyaopen-cli sdk clone`。不要静默开始一个会占满磁盘的下载。
 
-其余环境事实（串口、登录、授权码）见 skill `tuyaopen-shared` § 0.0 的表。
+### §0.1 `sdk` 就绪 ≠ 你的目标平台就绪 —— 看 `platforms` 块
+
+同一条 `diag doctor` 还有一个 `.data.platforms`，它回答的是**另一个问题**：
+
+```json
+{ "status": "partial", "declared": ["T2","T3","LINUX","T5AI","ESP32","LN882H","BK7231X","GD32"],
+  "installed": ["LINUX","T5AI"], "missing": ["T2","T3","ESP32","LN882H","BK7231X","GD32"],
+  "toolchains": ["gcc-arm-none-eabi-10.3-2021.10"] }
+```
+
+`sdk` 的三个布尔说的是**核心 clone**；平台子 SDK 和它的交叉工具链是分开下载的。上面这台机器
+`sdk` 三项全绿，却有 6 个平台没 checkout —— 去编 ESP32 会先克隆子 SDK、再下一份工具链
+（T5AI 那份实测 149.8 MB）。
+
+**所以在 `firmware build` 之前**：如果目标板在 `missing` 里，跟克隆 SDK 一样的规矩 ——
+**先说要下什么、多大**，再动手。别让"环境检查全绿"变成用户眼里的一次静默长下载。
+逐平台的详细状态（含 commit 是否对得上）用 `tuyaopen-cli sdk platform --json`。
+
+其余环境事实（串口、登录、授权码）见 skill `tuyaopen-shared` § 0.0 的表；
+什么时候该加 `--network` 见同一节。
 
 ## Shortcuts — `tuyaopen-cli sdk` / `tuyaopen-cli manifests` (headless, no shell activation needed)
 

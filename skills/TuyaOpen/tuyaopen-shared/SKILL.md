@@ -78,6 +78,17 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --ids <ids> --yes
 | **有哪些串口、哪个是哪个** | `tuyaopen-cli firmware list-ports --json`（>1 个口时它会给 `hint`） | 列出来**让用户确认哪个是目标板**，不要挑一个就烧 |
 | 项目状态 | `tuyaopen-cli project info --json` | — |
 | 本机有没有授权码 | `tuyaopen-cli diag doctor --json` → `deviceAuth.localLicenses` | skill `tuyaopen-embedded-device-auth` § 0（**编译通过之后**才问） |
+| **目标平台是否就绪**（不是"SDK 是否就绪"） | 同上 → `platforms` 块：`installed` / `missing` | `missing` 里有你的目标板 → 首次编译要先克隆子 SDK 并下载交叉工具链（T5AI 那份约 150 MB），**先告诉用户要下多少**再动手 |
+
+`sdk` 块的三个布尔说的是**核心 clone**，三个全绿 ≠ 你的目标平台能编。实测过一台
+`sdk` 全绿、而 8 个平台里 6 个没有 checkout 的机器 —— 照着绿灯去编 ESP32，等来的是一次
+没人预告过的下载。要判断"这块板能不能编"，看 `platforms`，不是 `sdk`。
+
+**`--network` 默认不开。** `diag doctor` 其余每一项都是离线且瞬时的，网络探测会真的发请求
+（13 个域名，各 ~5s 超时），所以它是显式 opt-in。**该加的三种情况**：克隆 / `sdk env-pull` /
+工具链下载失败时；云命令报网络错时；以及第一次排查"为什么卡住"时 ——
+`tuyaopen-cli diag doctor --network --json` 的 `network.brokenCategories` 直接告诉你断的是哪一类
+（`tuya` / `miniapp` / `git` / `npm`），比逐个 curl 快。平时不要加。
 
 **规则：能查的就查，查不到就问，不要假设，也不要相信提示词里关于本机的说法胜过 `diag doctor`。**
 提示词是需求的来源，不是环境的来源。

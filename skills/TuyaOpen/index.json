@@ -6,7 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.10.0",
+      "version": "1.11.0",
       "group": "core",
       "order": 0,
       "name": {
@@ -814,7 +814,7 @@
     },
     {
       "id": "tuyaopen-embedded-env-setup",
-      "version": "1.2.1",
+      "version": "1.3.0",
       "group": "embedded",
       "order": 25,
       "name": {
