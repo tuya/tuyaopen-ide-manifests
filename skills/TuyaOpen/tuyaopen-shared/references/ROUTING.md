@@ -1,6 +1,6 @@
 # Intent → skill routing table
 
-Built from `tuyaopen skills list --json`, which is the **authoritative and
+Built from `tuyaopen-cli skills list --json`, which is the **authoritative and
 always-current** listing — it returns every catalogued item with its
 `whenToUse`, **regardless of whether that item is installed**. This file
 deliberately carries **no skill count**: every previous attempt to state one
@@ -107,7 +107,7 @@ independent of each other; both need the platform phase first.
 
 ## Opt-in — the `scenario` group (**not** installed by `--all`)
 
-Narrow-scope playbooks for a specific situation. `tuyaopen skills install
+Narrow-scope playbooks for a specific situation. `tuyaopen-cli skills install
 --all` deliberately skips this whole group: the cost of installing a skill is
 not disk, it is the routing decision its description takes part in, and a
 project doing one of these is not doing the other eight.
@@ -115,14 +115,14 @@ project doing one of these is not doing the other eight.
 **This section is the reason they are reachable at all.** An agent tool binds
 its skill roots when it launches, so a skill that was never installed does not
 exist as far as passive discovery is concerned — no name, no description,
-nothing to stumble on. (An agent that runs `tuyaopen skills list --json`
+nothing to stumble on. (An agent that runs `tuyaopen-cli skills list --json`
 *does* see them all, installed or not; this table is what covers the agent
 that never thinks to run it.) Decide from the rows below, then install just
 the one you need:
 
 ```bash
-tuyaopen skills install --ids <id>          # one playbook
-tuyaopen skills install --group scenario    # all of them (rare)
+tuyaopen-cli skills install --ids <id>          # one playbook
+tuyaopen-cli skills install --group scenario    # all of them (rare)
 ```
 
 Newly installed skills are **not** in the current session's context — reload

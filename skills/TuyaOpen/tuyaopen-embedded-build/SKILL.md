@@ -1,19 +1,19 @@
 ---
 name: tuyaopen-embedded-build
 description: >-
-  Build and compile TuyaOpen projects via the `tuyaopen firmware build/clean`
+  Build and compile TuyaOpen projects via the `tuyaopen-cli firmware build/clean`
   CLI (IDE-scaffolded projects) or `tos.py build`/`tos.py clean` (raw SDK
   checkouts), select build configurations, edit Kconfig options, and run
-  Linux ELF binaries. Covers the `tuyaopen config` vs `tos.py config` naming
+  Linux ELF binaries. Covers the `tuyaopen-cli config` vs `tos.py config` naming
   trap. Use when the user mentions compiling, building, tos.py build,
-  tuyaopen firmware build, config choice, menuconfig, Kconfig, build error,
+  tuyaopen-cli firmware build, config choice, menuconfig, Kconfig, build error,
   or running a project.
-  项目编译、构建、tuyaopen firmware build/clean、编译配置、清理编译、编译错误、
-  menuconfig、Kconfig，以及 tuyaopen config 与 tos.py config 的同名陷阱。
+  项目编译、构建、tuyaopen-cli firmware build/clean、编译配置、清理编译、编译错误、
+  menuconfig、Kconfig，以及 tuyaopen-cli config 与 tos.py config 的同名陷阱。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen firmware build/clean`)
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — only needed for the `tos.py`-direct path; `tuyaopen firmware build/clean` self-activates
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli firmware build/clean`)
+  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — only needed for the `tos.py`-direct path; `tuyaopen-cli firmware build/clean` self-activates
   - cmake >= 3.28, ninja >= 1.6
 ---
 
@@ -21,20 +21,20 @@ compatibility:
 
 Docs: <https://tuyaopen.ai/docs/quick-start/project-compilation>
 
-## Shortcuts — `tuyaopen firmware` (IDE-scaffolded projects)
+## Shortcuts — `tuyaopen-cli firmware` (IDE-scaffolded projects)
 
 | Intent | Command |
 |---|---|
-| Compile | `tuyaopen firmware build --project-root <project>` |
-| Remove build artifacts | `tuyaopen firmware clean --project-root <project>` |
-| Full clean (deletes `.build/` entirely, `tos.py clean -f`) | `tuyaopen firmware clean --project-root <project> --force` |
+| Compile | `tuyaopen-cli firmware build --project-root <project>` |
+| Remove build artifacts | `tuyaopen-cli firmware clean --project-root <project>` |
+| Full clean (deletes `.build/` entirely, `tos.py clean -f`) | `tuyaopen-cli firmware clean --project-root <project> --force` |
 
 **首次全量编译要放宽超时。** `firmware build` 默认 300 s，而**第一次**编译还要下载平台与
 工具链，正常就会超过 —— 内测第一轮就撞上了，然后被迫放弃包装层直接跑 `tos.py build`，同时
 丢掉了日志捕获和类型化信封。改成：
 
 ```bash
-tuyaopen firmware build --timeout 1800     # 首次全量；0 = 完全不设超时
+tuyaopen-cli firmware build --timeout 1800     # 首次全量；0 = 完全不设超时
 ```
 
 超时的报错现在会点名这个 flag。增量编译用默认值就够（实测约 40 s）。
@@ -50,10 +50,10 @@ SDK `apps/`/`examples/` directory. It defaults to the current directory, so
 skill `tuyaopen-shared` § 4 — P3 is a real tier, distinct from P0/P2, for
 commands the framework doesn't consider destructive).
 
-Two things `tuyaopen firmware build`/`clean` do that raw `tos.py build` does
+Two things `tuyaopen-cli firmware build`/`clean` do that raw `tos.py build` does
 not, verified against `src/cli/commands/firmware.ts`:
 
-- **Self-activates the SDK env** — it calls the same bootstrap `tuyaopen sdk
+- **Self-activates the SDK env** — it calls the same bootstrap `tuyaopen-cli sdk
   env-init` would, so you don't need `. ./export.sh` first.
 - **Pre-syncs the platform submodule to its pinned commit** before building,
   so the `y/n/d` "platform commit mismatch" prompt that raw `tos.py build`
@@ -62,21 +62,21 @@ not, verified against `src/cli/commands/firmware.ts`:
   concern.
 
 Full flags (baud, `--sdk-root`, `--stream` for ndjson progress): `tuyaopen
-firmware --help` / `tuyaopen schema get --group firmware --command build` —
+firmware --help` / `tuyaopen-cli schema get --group firmware --command build` —
 don't hardcode the flag list here, it drifts (see skill `tuyaopen-shared` § 5).
 
 **Everything below this point — Kconfig, `tos.py config`/`menu`/`choice`, and
 building inside a raw SDK checkout's `apps/`/`examples/` tree — has no
-`tuyaopen` CLI equivalent.** `tuyaopen config` is a different, unrelated
+`tuyaopen-cli` CLI equivalent.** `tuyaopen-cli config` is a different, unrelated
 command (see the warning immediately below); use `tos.py` directly for all of
 it.
 
-## ⚠ `tuyaopen config` is not Kconfig — read before touching either `config`
+## ⚠ `tuyaopen-cli config` is not Kconfig — read before touching either `config`
 
 `tos.py config` (Kconfig/menuconfig — everything in this skill) and
-`tuyaopen config` (`get`/`set`/`list` over exactly three **IDE settings**:
+`tuyaopen-cli config` (`get`/`set`/`list` over exactly three **IDE settings**:
 `language`, `gitMirror`, `manifestsSource`) are two unrelated commands that
-share a word. Typing `tuyaopen config set` to change a build option is the
+share a word. Typing `tuyaopen-cli config set` to change a build option is the
 intuitive guess and the **wrong** one — it silently rejects the key instead of
 touching Kconfig, since none of the three IDE settings match. Full detail:
 skill `tuyaopen-shared` § 7.
@@ -222,7 +222,7 @@ tos.py build -v     # verbose (shows full compiler commands)
 > ```bash
 > mkdir -p .cache && touch .cache/.dont_prompt_update_platform
 > ```
-> Create this file once after activating the environment. Without it, `tos.py build` may hang waiting for a `y/n/d` prompt when the platform commit has changed. `tuyaopen firmware build` (§ *Shortcuts* above) pre-syncs the platform commit itself and never hits this prompt — this workaround is only needed on the `tos.py`-direct path.
+> Create this file once after activating the environment. Without it, `tos.py build` may hang waiting for a `y/n/d` prompt when the platform commit has changed. `tuyaopen-cli firmware build` (§ *Shortcuts* above) pre-syncs the platform commit itself and never hits this prompt — this workaround is only needed on the `tos.py`-direct path.
 
 ### Build All Configs (testing)
 
@@ -272,7 +272,7 @@ Example (for a project named `hello_world_linux` version 1.0.0):
 | `Error: No such command 'set'` | This SDK does not have `tos.py config set` | Probe with `tos.py config -h` first; hand-edit `app_default.config`, then `tos.py clean -f` |
 | `FATAL_ERROR ... using.config` | No config selected yet | Run `tos.py config choice -c <name>` (non-interactive) or `tos.py config choice` (interactive) |
 | Build succeeds but ELF not in `dist/` | Platform linker did not produce expected binary name | Check `.build/bin/` for the raw output; verify project name matches directory name |
-| `tuyaopen firmware build` fails with `embedded directory not found` | `--project-root` doesn't point at an IDE-scaffolded project (no `source/embedded/`) | Run inside the project root, pass the correct `--project-root`, or use `tos.py build` directly for a raw SDK `apps/`/`examples/` layout |
+| `tuyaopen-cli firmware build` fails with `embedded directory not found` | `--project-root` doesn't point at an IDE-scaffolded project (no `source/embedded/`) | Run inside the project root, pass the correct `--project-root`, or use `tos.py build` directly for a raw SDK `apps/`/`examples/` layout |
 
 ## Not in scope
 

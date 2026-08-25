@@ -7,7 +7,7 @@ description: >-
   preview (dev server / screenshot), scaffold from a template, and upload a
   version to the Tuya platform. This is the command-line surface only — panel
   architecture, DP hooks, and category UI conventions are a different skill.
-  Use when the user wants to run `tuyaopen miniapp ...`, build/upload the
+  Use when the user wants to run `tuyaopen-cli miniapp ...`, build/upload the
   miniapp, create it from a template, or sync its DP schema.
   MiniApp 命令行操作：构建、安装运行时、设置/读取元数据（appid）、从已绑定产品
   同步 DP schema、预览（开发服务器/截图）、从模板创建、上传版本到涂鸦平台。
@@ -63,33 +63,33 @@ find ~/.vscode/extensions ~/.cursor/extensions ~/.trae/extensions \
 一个都找不到时，`preview` 这一步的降级方案见
 skill `tuyaopen-workflow-miniapp-dev` 的 ⑧（真机扫码看，或去真 IDE 里跑）。
 
-## Shortcuts — `tuyaopen miniapp`
+## Shortcuts — `tuyaopen-cli miniapp`
 
 | Intent | Command |
 |---|---|
-| Build the miniapp (wraps `miniapp.runBuild` via the local npm runtime) | `tuyaopen miniapp build` |
-| Ensure the MiniApp runtime is installed in the shared TuyaOpenIDE cache | `tuyaopen miniapp install` (P2) |
-| Write the miniapp's appid into project metadata | `tuyaopen miniapp meta set-appid <appid>` (mutating, but P3 — not gated) |
-| Read the local DP cache and regenerate `source/miniapp/src/devices/schema.ts` | `tuyaopen miniapp sync-schema` (P2) |
-| Start the dev server and hand the user a URL to open in a browser | `tuyaopen miniapp preview` — see § 0.1, this is how a built panel becomes something anyone can look at |
-| Browse / apply the template gallery | `tuyaopen miniapp template list` · `template create` (P2) |
-| Build, sign, and upload to the Tuya platform | `tuyaopen miniapp upload` (P2) |
+| Build the miniapp (wraps `miniapp.runBuild` via the local npm runtime) | `tuyaopen-cli miniapp build` |
+| Ensure the MiniApp runtime is installed in the shared TuyaOpenIDE cache | `tuyaopen-cli miniapp install` (P2) |
+| Write the miniapp's appid into project metadata | `tuyaopen-cli miniapp meta set-appid <appid>` (mutating, but P3 — not gated) |
+| Read the local DP cache and regenerate `source/miniapp/src/devices/schema.ts` | `tuyaopen-cli miniapp sync-schema` (P2) |
+| Start the dev server and hand the user a URL to open in a browser | `tuyaopen-cli miniapp preview` — see § 0.1, this is how a built panel becomes something anyone can look at |
+| Browse / apply the template gallery | `tuyaopen-cli miniapp template list` · `template create` (P2) |
+| Build, sign, and upload to the Tuya platform | `tuyaopen-cli miniapp upload` (P2) |
 
-Flags aren't listed here — run `tuyaopen schema get --group miniapp --command
-<c>` for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared`
+Flags aren't listed here — run `tuyaopen-cli schema get --group miniapp --command
+<c>` for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared`
 § 1 (it is usually not on `PATH`).
 
 Example invocations:
 
 ```bash
-tuyaopen miniapp build --project-root <dir>
-tuyaopen miniapp install --extension-path <ext-path>
-tuyaopen miniapp meta set-appid <appid>
-tuyaopen miniapp sync-schema --pid <pid>          # default: read pid from tuyaopen.project.ini
-tuyaopen miniapp preview --screenshot preview.png --width 375 --height 812
-tuyaopen miniapp template list --json
-tuyaopen miniapp template create --id <template-id> --dry-run
-tuyaopen miniapp upload --version 1.0.0 --description "..." --extension-path <ext-path>
+tuyaopen-cli miniapp build --project-root <dir>
+tuyaopen-cli miniapp install --extension-path <ext-path>
+tuyaopen-cli miniapp meta set-appid <appid>
+tuyaopen-cli miniapp sync-schema --pid <pid>          # default: read pid from tuyaopen.project.ini
+tuyaopen-cli miniapp preview --screenshot preview.png --width 375 --height 812
+tuyaopen-cli miniapp template list --json
+tuyaopen-cli miniapp template create --id <template-id> --dry-run
+tuyaopen-cli miniapp upload --version 1.0.0 --description "..." --extension-path <ext-path>
 ```
 
 ## The order these commands go in is **not** here
@@ -109,7 +109,7 @@ arrive in — which is exactly why they stay here and the sequence does not.
 
 ### `appid` / `projectId` — read them from the workflow skill
 
-`tuyaopen miniapp meta set-appid <appid>` **records** an appid; it never mints
+`tuyaopen-cli miniapp meta set-appid <appid>` **records** an appid; it never mints
 one, and no command in this group takes a `projectId`. Both values exist to
 build the platform URLs for the web-only steps, which is a workflow concern —
 skill `tuyaopen-workflow-miniapp-dev` § *两个参数分别是什么、从哪读* is the
@@ -156,7 +156,7 @@ device".
 | `sync-schema` fails `config:no_pid_bound` | No product bound and no `--pid` given | Bind a product first, or pass `--pid <pid>` explicitly |
 | `sync-schema` fails `config:no_product_cache` | Product bound, but no local DP snapshot cached yet | Refresh/bind the product from the TuyaOpen IDE, then retry |
 | `template create` rejected as `confirmation:needs_yes` | P2 gate — missing `--yes` / `TUYAOPEN_AUTOCONFIRM_P2` | Add both, or use `--dry-run` to preview first |
-| `template create` fails `config:manifest_item_missing` (unknown template id) | Wrong or stale `--id` | Run `tuyaopen miniapp template list` for current ids |
+| `template create` fails `config:manifest_item_missing` (unknown template id) | Wrong or stale `--id` | Run `tuyaopen-cli miniapp template list` for current ids |
 | `upload` succeeded but end users still don't see the miniapp | Expected — `upload` registers a version for internal testing only | Publish it in the browser at `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>`, **then** bind it to the product at `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE`. Both web-only; see § *Web-only steps* |
 | Miniapp is published, review passed, but the panel still doesn't appear on the device | Publishing ≠ binding — the published MiniApp is not attached to the product yet | Bind it: `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` (`<projectId>` = the **product PID** from `project.tuya.json`, keep `&tab=operation#PRIVATE` verbatim) |
-| `upload` fails `config:no_pid_bound` — *"No appid in project.tuya.json"* | No appid recorded; often because the miniapp was never created on the platform. Note this is the **same** subtype `sync-schema` uses for a missing *product* pid — read the message, not just the code | Create the miniapp at <https://platform.tuya.com/miniapp/> if it doesn't exist, then `tuyaopen miniapp meta set-appid <appid>` (or use the IDE binding flow) |
+| `upload` fails `config:no_pid_bound` — *"No appid in project.tuya.json"* | No appid recorded; often because the miniapp was never created on the platform. Note this is the **same** subtype `sync-schema` uses for a missing *product* pid — read the message, not just the code | Create the miniapp at <https://platform.tuya.com/miniapp/> if it doesn't exist, then `tuyaopen-cli miniapp meta set-appid <appid>` (or use the IDE binding flow) |

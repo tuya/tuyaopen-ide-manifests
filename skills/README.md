@@ -61,7 +61,7 @@ mechanism to forget:
 | The validator does not judge it | `GOVERNED_SUBTREE` in `scripts/validate-skills-index.py` scopes every scan to `TuyaOpen/` |
 
 The validator scoping is **not an exemption**. Every rule in that script describes
-a relationship with the `tuyaopen` CLI — the `cli` declaration, the single-valued
+a relationship with the `tuyaopen-cli` CLI — the `cli` declaration, the single-valued
 `sdks`, the Shortcuts agreement — so applying them to TuyaOS skills would assert
 things that are meaningless there. Before this change the scans walked all of
 `skills/`, which was correct only while `skills/` held exactly one product line.

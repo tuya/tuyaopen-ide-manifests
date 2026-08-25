@@ -15,7 +15,7 @@ description: >-
   index.json 条目时使用。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen schema get`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli schema get`)
   - Python 3 (for scripts/validate-skills-index.py, scripts/check-skill-version-bumps.py)
   - Node.js (for tools/manifest-gen/bin/manifest-gen.js)
 ---
@@ -28,15 +28,15 @@ validators before opening a PR against `tuya/tuyaopen-ide-manifests`. It does
 not cover any one skill's subject matter — for that, see the routing table in
 skill `tuyaopen-shared` (§ *Routing table*).
 
-## Shortcuts — `tuyaopen schema`
+## Shortcuts — `tuyaopen-cli schema`
 
 | Intent | Command |
 |---|---|
-| List every command's contract (use this to find which group/command your new skill should point at) | `tuyaopen schema list [--group <g>]` |
-| One command's flags/mutating/riskLevel | `tuyaopen schema get --group <g> --command <c>` |
+| List every command's contract (use this to find which group/command your new skill should point at) | `tuyaopen-cli schema list [--group <g>]` |
+| One command's flags/mutating/riskLevel | `tuyaopen-cli schema get --group <g> --command <c>` |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
 usually not on `PATH`).
 
 ## 1. Frontmatter contract
@@ -168,7 +168,7 @@ set the field by hand today; omit it.
 
 ## 4. The relationship with the CLI must be declared
 
-Every skill states how it relates to the `tuyaopen` CLI in **two** places, and
+Every skill states how it relates to the `tuyaopen-cli` CLI in **two** places, and
 they must agree: the machine-checkable `cli` field in `skills/index.json`,
 and the human/agent-facing `## Shortcuts` section in the body (its exact
 shape is § 6 below). This section covers the `index.json` half and why the
@@ -219,8 +219,8 @@ carries every other machine field (`group`, `surface`, `tags`,
 |---|---|
 | <what it does> | `tuyaopen <group> <command>` |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
 usually not on `PATH`).
 ```
 
@@ -231,7 +231,7 @@ lists command names only, never flags (§ 6).
 When a skill's `cli.groups` is `"none"`, the body does not get this table at
 all — it gets the sentence the validator looks for instead, verbatim:
 
-> No `tuyaopen` CLI coverage
+> No `tuyaopen-cli` CLI coverage
 
 (followed by the reason, in prose). `tuyaopen-embedded-add-board` and
 `tuyaopen-embedded-code-check` already use this heading; match their wording rather
@@ -249,7 +249,7 @@ blockquote under it, naming the fallback command and nothing else:
 
 **The blockquote gives a command name, never a semantic explanation.**
 Anything that needs explaining — `tos.py update` is not `sdk update`; `tos.py
-config` and `tuyaopen config` collide in name but edit unrelated things — is
+config` and `tuyaopen-cli config` collide in name but edit unrelated things — is
 written **once**, in `tuyaopen-shared` § 7. If every skill restated the
 semantic differences for its own fallback command, sixteen copies would
 exist and drift is the only possible outcome; a reader who needs the nuance
@@ -263,7 +263,7 @@ nothing, the command/flag doesn't exist (an old CLI build), or the envelope's
 rest of the exhaustive, default-deny table in `tuyaopen-shared` § 4 — means
 the CLI ran, is working correctly, and is declining on purpose. Reaching for
 the fallback tool at that point is not "trying another way" — it is going
-around the CLI's risk gate. Concretely: `tuyaopen firmware flash` sits
+around the CLI's risk gate. Concretely: `tuyaopen-cli firmware flash` sits
 behind a P2 gate (`--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`); `tos.py flash` /
 `tyutool_cli flash` gate nothing at all. A skill body that says "if flash
 asks for confirmation, just use `tos.py flash`" has handed an agent exactly
@@ -273,16 +273,16 @@ the bypass this catalogue exists to prevent.
 
 **This section is a hard requirement, not a style preference — read the
 second paragraph before skipping it.** A skill's body may name commands
-(`tos.py config set`, `tuyaopen firmware flash`) but **must not** enumerate
+(`tos.py config set`, `tuyaopen-cli firmware flash`) but **must not** enumerate
 their flags in prose. Point the reader at:
 
 ```bash
 tos.py <group> -h
 tuyaopen <group> --help
-tuyaopen schema get --group <g> --command <c>
+tuyaopen-cli schema get --group <g> --command <c>
 ```
 
-**Why this is a hard rule, not a style preference:** the `tuyaopen` CLI's flag
+**Why this is a hard rule, not a style preference:** the `tuyaopen-cli` CLI's flag
 set is protected by an add-only contract snapshot (`cliSchemaDrift.test.ts` in
 the IDE repo) specifically so it can grow safely — a flag list copied into a
 skill's Markdown has no such protection and silently goes stale the moment the

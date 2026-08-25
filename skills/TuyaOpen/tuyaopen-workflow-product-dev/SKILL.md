@@ -36,24 +36,24 @@ End-to-end orchestration: requirements → Tuya Platform product/DP → embedded
 
 ---
 
-## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp` / `tuyaopen project`
+## Shortcuts — `tuyaopen-cli credential` / `tuyaopen-cli product` / `tuyaopen-cli dp` / `tuyaopen-cli project`
 
 | Intent | Command |
 |---|---|
-| Check sign-in state / sign in / sign out | `tuyaopen credential status` · `credential login` · `credential logout` (P2) |
-| Sync / view the bound product | `tuyaopen product sync` (P2) · `product info` |
-| List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
-| Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
-| Bind a product PID to this project | `tuyaopen project bind-product` (P2) |
+| Check sign-in state / sign in / sign out | `tuyaopen-cli credential status` · `credential login` · `credential logout` (P2) |
+| Sync / view the bound product | `tuyaopen-cli product sync` (P2) · `product info` |
+| List DPs (**reads the local snapshot**) | `tuyaopen-cli dp list` |
+| Add a custom DP (101–199) | `tuyaopen-cli dp add` (P2) |
+| Bind a product PID to this project | `tuyaopen-cli project bind-product` (P2) |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
 usually not on `PATH`).
 
 **Still routed through `tuya-devplat-cli` / `tuyaopen-cloud`'s Python
-helpers, no `tuyaopen` coverage:** product search and creation, and the
+helpers, no `tuyaopen-cli` coverage:** product search and creation, and the
 standard DP catalog (browse/add/remove/validate) — see skill `tuyaopen-cloud`.
-**Still `tos.py`-only, no `tuyaopen` coverage:** Kconfig validation
+**Still `tos.py`-only, no `tuyaopen-cli` coverage:** Kconfig validation
 (`tos.py check`, used in State: has-dps Step 5 and the Failure & Rollback
 table below).
 
@@ -79,7 +79,7 @@ Run in order. Stop on first failure.
 
 | Check | How | If failing |
 |-------|-----|------------|
-| Platform auth | `tuyaopen credential status --json` → `loggedIn: true` | Not signed in → `tuyaopen credential login` (see skill `tuyaopen-cloud`). **No CLI?** Fall back to `.tuyaopen/ide/bin/tuya-devplat-cli auth status --format json` → exit 0 AND `authenticated: true`; if still not signed in, "Please sign in via **TuyaOpen IDE → Developer Platform** sidebar." **Never run `tuya-devplat-cli auth login` directly** — use `tuyaopen credential login` instead (see the Never list below). Timeout >10 s → report network issue. |
+| Platform auth | `tuyaopen-cli credential status --json` → `loggedIn: true` | Not signed in → `tuyaopen-cli credential login` (see skill `tuyaopen-cloud`). **No CLI?** Fall back to `.tuyaopen/ide/bin/tuya-devplat-cli auth status --format json` → exit 0 AND `authenticated: true`; if still not signed in, "Please sign in via **TuyaOpen IDE → Developer Platform** sidebar." **Never run `tuya-devplat-cli auth login` directly** — use `tuyaopen-cli credential login` instead (see the Never list below). Timeout >10 s → report network issue. |
 | SDK env | `$OPEN_SDK_ROOT` set and dir contains `export.sh`/`export.bat`/`export.ps1` | SDK present but not activated → delegate to `tuyaopen-embedded-env-setup`. SDK absent → "Please clone the SDK via TuyaOpen IDE → Library." |
 
 ---
@@ -132,7 +132,7 @@ in-progress   pid non-empty
                 · source/embedded/src/ has non-scaffold .c files
 
 built         everything `in-progress` requires
-              AND `tuyaopen firmware build` has exited 0 for the current source
+              AND `tuyaopen-cli firmware build` has exited 0 for the current source
               (there is no on-disk flag for this — it is the state you are in
                after has-dps Step 8 / in-progress Step 4 succeeds, and you fall
                back out of it the moment a later edit breaks the build)
@@ -216,7 +216,7 @@ Delegate to `tuyaopen-cloud` → `ops/manage-dp.md`. Dry-run → developer appro
 Bind the PID:
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen project bind-product --pid <pid> --yes --json
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli project bind-product --pid <pid> --yes --json
 ```
 
 (P2 — needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`.) The env var **prefixes this one invocation**; do not `export` it, or every later P2 command in that shell — `skills uninstall`, `dependency remove`, `dp add` — is one `--yes` away. This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
@@ -274,7 +274,7 @@ workflow's **next phase** is not out of scope; it is the content. Reaching
 | `built` | same skill, § *State: built* — flash → authorization code → provisioning |
 
 What you hand over: the PID, the unwrapped `selectedDps`, `ai.expectedDps`,
-and the generated C header from `tuyaopen dp generate`. The embedded workflow
+and the generated C header from `tuyaopen-cli dp generate`. The embedded workflow
 re-reads the same context files rather than trusting anything passed in prose,
 so a handoff cannot go stale.
 
@@ -313,7 +313,7 @@ boundary as the states.
 - Apply dpSchema unwrap before any DP access
 
 **Never:**
-- Run `tuya-devplat-cli auth login` — use `tuyaopen credential login` instead
+- Run `tuya-devplat-cli auth login` — use `tuyaopen-cli credential login` instead
 - Invent a PID or DP code
 - Proceed past dry-run without approval
 - Skip pre-flight checks

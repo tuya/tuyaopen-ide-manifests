@@ -179,14 +179,14 @@ find cdn -size +500k          # 找超过 500KB 的单个资源
 
 ### 步骤 5：上传
 
-走 IDE 的 MiniApp 页面「上传」按钮，或命令行 `tuyaopen miniapp upload`
+走 IDE 的 MiniApp 页面「上传」按钮，或命令行 `tuyaopen-cli miniapp upload`
 （P2，参数与报错见 skill `tuyaopen-miniapp`）。**不要**在审核中心绕过 IDE
 上传未签名包。
 
 ### 步骤 6：提审 → 发布上线（**只能在网页上做**，IDE 的 STEP 1）
 
 **上传 ≠ 发布。** 步骤 5 只是把签名包交付到平台供内测，终端用户看不到。
-提审、灰度、上线、回滚在 IDE 和 `tuyaopen` CLI 里**都没有入口**，只能开浏览器
+提审、灰度、上线、回滚在 IDE 和 `tuyaopen-cli` CLI 里**都没有入口**，只能开浏览器
 去这个**拼好参数**的地址（别只丢首页过去）：
 
 ```
@@ -196,7 +196,7 @@ https://platform.tuya.com/miniapp/version?miniProgramId=<appid>
 `<appid>` = **小程序 id**，取 `source/miniapp/project.tuya.json` 的 `appid`
 字段（取不到再看 `<project>/project.tuya.json`），需要 URL 编码。
 为空说明平台上还没创建这个小程序：先去 <https://platform.tuya.com/miniapp/>
-创建，再 `tuyaopen miniapp meta set-appid <appid>` 抄回项目。
+创建，再 `tuyaopen-cli miniapp meta set-appid <appid>` 抄回项目。
 
 在这一页提交审核；审核通过后再在同一页上线。
 

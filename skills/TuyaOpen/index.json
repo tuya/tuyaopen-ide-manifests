@@ -67,7 +67,7 @@
         "embedded"
       ],
       "summary": {
-        "en": "Which tuyaopen command group covers an embedded-side intent, plus the preconditions every embedded command shares. A map, not a manual: no task steps, no flag lists.",
+        "en": "Which tuyaopen-cli command group covers an embedded-side intent, plus the preconditions every embedded command shares. A map, not a manual: no task steps, no flag lists.",
         "zh-CN": "嵌入式意图对应哪个 tuyaopen 命令组，以及所有嵌入式命令共享的前提条件。只是地图不是手册：不含任务步骤，不含 flag 清单。"
       },
       "whenToUse": {
@@ -221,8 +221,8 @@
       },
       "surface": "embedded",
       "summary": {
-        "en": "Read/write the .tuyaopen/ project descriptor and tuyaopen.project.ini (tuyaopen project *), browse the local demo catalogue (tuyaopen demos *), and manage the three IDE settings (tuyaopen config *) — plus the underlying tos.py new / tos.py config Kconfig tooling.",
-        "zh-CN": "读写 .tuyaopen/ 项目描述符与 tuyaopen.project.ini（tuyaopen project *）、浏览本地 demo 目录（tuyaopen demos *）、管理三项 IDE 设置（tuyaopen config *），以及底层的 tos.py new / tos.py config Kconfig 工具链。"
+        "en": "Read/write the .tuyaopen/ project descriptor and tuyaopen.project.ini (tuyaopen-cli project *), browse the local demo catalogue (tuyaopen-cli demos *), and manage the three IDE settings (tuyaopen-cli config *) — plus the underlying tos.py new / tos.py config Kconfig tooling.",
+        "zh-CN": "读写 .tuyaopen/ 项目描述符与 tuyaopen.project.ini（tuyaopen-cli project *）、浏览本地 demo 目录（tuyaopen-cli demos *）、管理三项 IDE 设置（tuyaopen-cli config *），以及底层的 tos.py new / tos.py config Kconfig 工具链。"
       },
       "whenToUse": {
         "en": "Use when the user wants to change platform, rename, or edit project settings, create a project, bind a product, browse demos, or read/write an IDE setting (language/gitMirror/manifestsSource).",

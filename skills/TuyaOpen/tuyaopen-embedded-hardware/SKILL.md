@@ -2,15 +2,15 @@
 name: tuyaopen-embedded-hardware
 description: >-
   Hardware-aware code generation for TuyaOpen embedded projects. Reads the
-  project's confirmed hardware via `tuyaopen hardware list-used`/`board-context`
+  project's confirmed hardware via `tuyaopen-cli hardware list-used`/`board-context`
   (backed by .tuyaopen/used-peripherals.json + .tuyaopen/board-context.md),
   confirms the selection with the user, records it BEFORE writing code via
-  `tuyaopen hardware set-used`, then delegates to the matching peripheral
+  `tuyaopen-cli hardware set-used`, then delegates to the matching peripheral
   sub-skill.
   外设初始化、硬件驱动、Vibe Coding、使用外设、硬件相关代码、点灯、点亮 LED、按键、
   屏幕、显示、摄像头、音频、录音、播放、触摸、打印、红外、摇杆、灯带、串口、UART、
   GPIO、PWM、I2C、SPI、ADC、传感器、引脚、片上外设、发送数据、读取传感器、
-  tuyaopen hardware set-used/list-used/board-context。
+  tuyaopen-cli hardware set-used/list-used/board-context。
 when_to_use: >-
   Use for ANY hardware / peripheral / pin request on a TuyaOpen board — using or
   initializing a peripheral, serial / UART, GPIO, PWM, I2C, SPI, ADC, display,
@@ -22,27 +22,27 @@ when_to_use: >-
 id: tuyaopen-embedded-hardware
 surfaces: [embedded]
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen hardware`/`boards`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli hardware`/`boards`)
 tags: [hardware, peripheral, vibe-coding, routing]
 ---
 
 # TuyaOpen Hardware Vibe Coding
 
-## Shortcuts — `tuyaopen hardware` / `tuyaopen boards`
+## Shortcuts — `tuyaopen-cli hardware` / `tuyaopen-cli boards`
 
-The `tuyaopen hardware` group covers exactly the file reads/writes Steps
+The `tuyaopen-cli hardware` group covers exactly the file reads/writes Steps
 1–4 below describe — use it instead of reading/writing the JSON by hand where
 it applies:
 
 | Intent | Command |
 |---|---|
-| Read the confirmed hardware (Step 1 input) | `tuyaopen hardware list-used --project-root <project>` |
-| Render the board catalog index (Step 1's `board-context.md`) | `tuyaopen hardware board-context --project-root <project>` (add `--write` to persist it) |
-| Render the compact confirmed-hardware context block (what the host inlines into vibe prompts) | `tuyaopen hardware confirmed-context --project-root <project>` |
-| Record the confirmed selection (Step 3) — **device peripherals and plain-string on-chip ids only** | `tuyaopen hardware set-used --project-root <project> --ids <id1,id2,...> --source vibe` |
-| Reverse-derive used peripherals from already-authored source (code written outside vibe coding) | `tuyaopen hardware scan-used --project-root <project>` |
-| (Re)write `.vscode/c_cpp_properties.json` for the project's platform/SDK | `tuyaopen hardware intellisense --project-root <project>` |
-| Browse the **published board catalog** (used by `project create --board`, not this project's board) | `tuyaopen boards list` / `tuyaopen boards detail --id <id>` |
+| Read the confirmed hardware (Step 1 input) | `tuyaopen-cli hardware list-used --project-root <project>` |
+| Render the board catalog index (Step 1's `board-context.md`) | `tuyaopen-cli hardware board-context --project-root <project>` (add `--write` to persist it) |
+| Render the compact confirmed-hardware context block (what the host inlines into vibe prompts) | `tuyaopen-cli hardware confirmed-context --project-root <project>` |
+| Record the confirmed selection (Step 3) — **device peripherals and plain-string on-chip ids only** | `tuyaopen-cli hardware set-used --project-root <project> --ids <id1,id2,...> --source vibe` |
+| Reverse-derive used peripherals from already-authored source (code written outside vibe coding) | `tuyaopen-cli hardware scan-used --project-root <project>` |
+| (Re)write `.vscode/c_cpp_properties.json` for the project's platform/SDK | `tuyaopen-cli hardware intellisense --project-root <project>` |
+| Browse the **published board catalog** (used by `project create --board`, not this project's board) | `tuyaopen-cli boards list` / `tuyaopen-cli boards detail --id <id>` |
 
 > **No CLI?** No `tos.py` equivalent for `hardware`/`boards` — hand-read /
 > hand-write `.tuyaopen/used-peripherals.json` and `.tuyaopen/board-context.md`
@@ -66,13 +66,13 @@ set is a bare device/on-chip id with no pins to record.
 
 `hardware board-context`/`confirmed-context` read `.tuyaopen/ide/board.json`
 for **this project's already-selected board** — they are unrelated to
-`tuyaopen boards list/detail`, which reads the **published manifest
-catalog** (the same one `tuyaopen project create --board <id>` picks from).
+`tuyaopen-cli boards list/detail`, which reads the **published manifest
+catalog** (the same one `tuyaopen-cli project create --board <id>` picks from).
 Don't confuse the two: a custom board you add via skill `tuyaopen-embedded-add-board`
-will never show up in `tuyaopen boards list` — that command doesn't read the
+will never show up in `tuyaopen-cli boards list` — that command doesn't read the
 SDK's `boards/` source tree at all.
 
-Full flags: `tuyaopen hardware --help` / `tuyaopen schema get --group
+Full flags: `tuyaopen-cli hardware --help` / `tuyaopen-cli schema get --group
 hardware --command <cmd>` — don't hardcode the flag list here (skill
 `tuyaopen-shared` § 5).
 
@@ -156,7 +156,7 @@ This skill is the authority. Read these yourself before doing anything:
 
 ## Step 1: Read the hardware context
 
-Read the files above (`tuyaopen hardware list-used`/`board-context`/
+Read the files above (`tuyaopen-cli hardware list-used`/`board-context`/
 `confirmed-context` from the Shortcuts table read the same data without a raw
 file read). `board-context.md` is the slim **index**; its fields:
 
@@ -202,7 +202,7 @@ The confirmed selection is the **input** to code generation, not an afterthought
 code — full-overwrite** `.tuyaopen/used-peripherals.json` with the confirmed set.
 Steps 4–5 then generate code for exactly those instances.
 
-`tuyaopen hardware set-used --ids <comma-list> --source vibe` does this
+`tuyaopen-cli hardware set-used --ids <comma-list> --source vibe` does this
 overwrite when every confirmed id is a bare device/on-chip id with no pins to
 record. The moment any on-chip entry needs its `pins` recorded (see the
 bullet below), fall back to a direct file write — the CLI shortcut cannot

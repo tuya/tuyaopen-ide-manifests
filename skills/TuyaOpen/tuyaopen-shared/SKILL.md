@@ -2,9 +2,9 @@
 name: tuyaopen-shared
 description: >-
   Foundation conventions shared by every other TuyaOpen skill: how to find and
-  identify the `tuyaopen` CLI, the `--json` envelope contract, the exit-code
+  identify the `tuyaopen-cli` CLI, the `--json` envelope contract, the exit-code
   promise, the P0/P2 confirmation-gate mechanics (including the derived
-  `--confirm` token), command/skill self-discovery, the `tos.py` ↔ `tuyaopen`
+  `--confirm` token), command/skill self-discovery, the `tos.py` ↔ `tuyaopen-cli`
   fallback map, the `.tuyaopen/` project layout, and the master intent→skill
   routing table. Read this first, or when another skill says "not in scope,
   see tuyaopen-shared". Not a task skill by itself — it has no action of its
@@ -17,14 +17,14 @@ license: Apache-2.0
 compatibility:
   - tuyaopen CLI, either form — bundled with the IDE (out/cli/cli.js inside the
     extension install) or the standalone npm package (@tuya/tuyaopen-cli,
-    `tuyaopen` binary on PATH)
+    `tuyaopen-cli` binary on PATH)
   - Node.js (whatever version the CLI you found reports via `diag doctor --json`)
 ---
 
 # TuyaOpen Shared Conventions
 
 This skill carries no action of its own. It is the one place the load-bearing
-facts about the `tuyaopen` CLI and the skill catalogue are written **once** —
+facts about the `tuyaopen-cli` CLI and the skill catalogue are written **once** —
 every other TuyaOpen skill should link here instead of restating them, and
 should say "not in scope, see skill `tuyaopen-shared`" rather than naming
 sibling skills by name (see § *Routing table* for why).
@@ -52,13 +52,13 @@ end-to-end orchestrator; for anything shaped like "build me a device", read it
 
 ```bash
 # 1. catalogue (once per machine)
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli manifests sync --yes
 # 2. what exists, and which one covers this task — match on whenToUse, not the id
-tuyaopen skills list --json
+tuyaopen-cli skills list --json
 # 3. install the ones that do, then READ their SKILL.md before the first action
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --ids <ids> --yes
 # 4. confirm your own tool can SEE them — `install` reports this now
-#    (data.reachability; `tuyaopen diag doctor --json` → agentSkills says the same)
+#    (data.reachability; `tuyaopen-cli diag doctor --json` → agentSkills says the same)
 ```
 
 ### 0.0 Establish the machine's facts — don't take them from the task brief
@@ -71,13 +71,13 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
 
 | 你需要知道的 | 自己怎么查 | 查不到时问用户什么 |
 |---|---|---|
-| CLI 在哪、是哪一份 | § 1（`tuyaopen` 通常**不在** `PATH` 上） | — |
-| 环境/SDK 是否就绪、SDK 根在哪 | `tuyaopen diag doctor --json` → `sdk` 块；skill `tuyaopen-embedded-env-setup` | 没有 SDK 时**不要**擅自克隆 12 GB —— 先说要下什么、多大 |
+| CLI 在哪、是哪一份 | § 1（`tuyaopen-cli` 通常**不在** `PATH` 上） | — |
+| 环境/SDK 是否就绪、SDK 根在哪 | `tuyaopen-cli diag doctor --json` → `sdk` 块；skill `tuyaopen-embedded-env-setup` | 没有 SDK 时**不要**擅自克隆 12 GB —— 先说要下什么、多大 |
 | 目录/技能目录状态 | 同上 → `manifests`、`agentSkills` 块（§ 0.1） | — |
-| 登录状态 | 同上 → `credential` 块；`tuyaopen credential status` | 未登录 → §「需要人做的四件事」 |
-| **有哪些串口、哪个是哪个** | `tuyaopen firmware list-ports --json`（>1 个口时它会给 `hint`） | 列出来**让用户确认哪个是目标板**，不要挑一个就烧 |
-| 项目状态 | `tuyaopen project info --json` | — |
-| 本机有没有授权码 | `tuyaopen diag doctor --json` → `deviceAuth.localLicenses` | skill `tuyaopen-embedded-device-auth` § 0（**编译通过之后**才问） |
+| 登录状态 | 同上 → `credential` 块；`tuyaopen-cli credential status` | 未登录 → §「需要人做的四件事」 |
+| **有哪些串口、哪个是哪个** | `tuyaopen-cli firmware list-ports --json`（>1 个口时它会给 `hint`） | 列出来**让用户确认哪个是目标板**，不要挑一个就烧 |
+| 项目状态 | `tuyaopen-cli project info --json` | — |
+| 本机有没有授权码 | `tuyaopen-cli diag doctor --json` → `deviceAuth.localLicenses` | skill `tuyaopen-embedded-device-auth` § 0（**编译通过之后**才问） |
 
 **规则：能查的就查，查不到就问，不要假设，也不要相信提示词里关于本机的说法胜过 `diag doctor`。**
 提示词是需求的来源，不是环境的来源。
@@ -89,7 +89,7 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <ids> --yes
 
 | 动作 | 你能做的 | 用户必须做的 |
 |---|---|---|
-| **平台登录** | `tuyaopen credential login --emit-url` —— 它把 URL 打到 stdout 一行 JSON 并**等待** | 在浏览器里打开那个 URL 完成授权。**把 URL 给他**，不要只说"请登录" |
+| **平台登录** | `tuyaopen-cli credential login --emit-url` —— 它把 URL 打到 stdout 一行 JSON 并**等待** | 在浏览器里打开那个 URL 完成授权。**把 URL 给他**，不要只说"请登录" |
 | **申领 appid / 网页步骤** | 把带好参数的 URL 拼出来（skill `tuyaopen-miniapp` § 0.2 ③） | 在网页上操作 |
 | **授权码** | 说明为什么需要、怎么取（skill `tuyaopen-embedded-device-auth`） | 提供码，并确认它当前没被别的设备占用 |
 | **手机配网** | 说清前置状态（已写码、设备处于配网态） | 装智能生活 / Smart Life，账号区域与产品一致，App 里添加设备 |
@@ -117,7 +117,7 @@ is on disk and it is *correct*. What you check instead is reachability, which
 reports standalone:
 
 ```bash
-tuyaopen diag doctor --json     # → .data.agentSkills.blind  (tools that see nothing)
+tuyaopen-cli diag doctor --json     # → .data.agentSkills.blind  (tools that see nothing)
                                 #   .data.agentSkills.hint   (what to do about it)
 ```
 
@@ -128,7 +128,7 @@ just created the project directory it is standing in:
 2. Install where launch order cannot matter — the global roots exist before any
    project does:
    ```bash
-   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --default --scope global --yes
+   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --default --scope global --yes
    ```
 
 **Read the bodies off disk regardless.** Whether or not your tool's own skill
@@ -137,23 +137,23 @@ works, and § 6.1 is the fallback path for exactly that.
 
 **Also ask the CLI before assuming a capability is missing.** `<group> --help`
 lists a group's whole surface in one round trip. Round 1 reported "there should
-be a logout command that clears the local SK token" — `tuyaopen credential
+be a logout command that clears the local SK token" — `tuyaopen-cli credential
 logout` already existed, and `credential --help` lists it on the third line.
 `schema list --json` is the same answer for the entire CLI.
 
-## Shortcuts — `tuyaopen schema` / `tuyaopen skills` / `tuyaopen config` / `tuyaopen diag`
+## Shortcuts — `tuyaopen-cli schema` / `tuyaopen-cli skills` / `tuyaopen-cli config` / `tuyaopen-cli diag`
 
 | Intent | Command |
 |---|---|
-| Every command's contract / one command's flags | `tuyaopen schema list` · `schema get --group <g> --command <c>` |
-| Environment/CLI-identity triage (one round trip) | `tuyaopen diag doctor` |
-| Diagnostics bundle for a bug report | `tuyaopen diag export` |
-| Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — not Kconfig) | `tuyaopen config get` · `config list` · `config set` (P2) |
-| Skill catalogue / installed-skill queries | `tuyaopen skills list` · `skills list-installed` · `skills groups` |
-| Install / uninstall a skill, or sync the local skill cache | `tuyaopen skills install` (P2) · `skills uninstall` (P2) · `skills sync` |
+| Every command's contract / one command's flags | `tuyaopen-cli schema list` · `schema get --group <g> --command <c>` |
+| Environment/CLI-identity triage (one round trip) | `tuyaopen-cli diag doctor` |
+| Diagnostics bundle for a bug report | `tuyaopen-cli diag export` |
+| Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — not Kconfig) | `tuyaopen-cli config get` · `config list` · `config set` (P2) |
+| Skill catalogue / installed-skill queries | `tuyaopen-cli skills list` · `skills list-installed` · `skills groups` |
+| Install / uninstall a skill, or sync the local skill cache | `tuyaopen-cli skills install` (P2) · `skills uninstall` (P2) · `skills sync` |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per § 1 above (it is usually
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per § 1 above (it is usually
 not on `PATH`).
 
 > **No CLI?** None of `schema`/`skills`/`config`/`diag` have a `tos.py`
@@ -164,32 +164,32 @@ not on `PATH`).
 
 ## 1. Finding the CLI, and knowing which one you found
 
-### 1.1 Resolve it first — `tuyaopen` is usually NOT on `PATH`
+### 1.1 Resolve it first — `tuyaopen-cli` is usually NOT on `PATH`
 
-**Do this once, before the first `tuyaopen` command in a session.** Every
+**Do this once, before the first `tuyaopen-cli` command in a session.** Every
 example in every TuyaOpen skill is written as bare `tuyaopen …`. This defines a
 shell function of that name, so all of them then work verbatim — you never edit
 a command line to add a path.
 
 ```bash
-# Define `tuyaopen` for this shell. Run once; then use the skills' examples as written.
+# Define `tuyaopen-cli` for this shell. Run once; then use the skills' examples as written.
 if [ -n "$TUYAOPEN_CLI_PATH" ] && [ -f "$TUYAOPEN_CLI_PATH" ]; then
   _tuyaopen_entry="$TUYAOPEN_CLI_PATH"             # explicit override wins
   tuyaopen() { node "$_tuyaopen_entry" "$@"; }
-elif command -v tuyaopen >/dev/null 2>&1; then
+elif command -v tuyaopen-cli >/dev/null 2>&1; then
   :                                                # already on PATH — nothing to do
 else                                               # search upward for the IDE-written wrapper
   _d="$PWD"
   while [ "$_d" != "/" ]; do
-    if [ -x "$_d/.tuyaopen/ide/bin/tuyaopen" ]; then
-      _tuyaopen_bin="$_d/.tuyaopen/ide/bin/tuyaopen"
+    if [ -x "$_d/.tuyaopen/ide/bin/tuyaopen-cli" ]; then
+      _tuyaopen_bin="$_d/.tuyaopen/ide/bin/tuyaopen-cli"
       tuyaopen() { "$_tuyaopen_bin" "$@"; }
       break
     fi
     _d=$(dirname "$_d")
   done
 fi
-command -v tuyaopen >/dev/null 2>&1 || echo "TuyaOpen CLI not found — see below" >&2
+command -v tuyaopen-cli >/dev/null 2>&1 || echo "TuyaOpen CLI not found — see below" >&2
 ```
 
 Two properties this shape buys, both of which the obvious
@@ -206,7 +206,7 @@ A shell function lives in **one shell**. If you run each command in a fresh
 shell, re-run this block first, or export `TUYAOPEN_CLI_PATH` once and use
 `node "$TUYAOPEN_CLI_PATH" …` directly.
 
-On Windows the wrapper is `.tuyaopen\ide\bin\tuyaopen.cmd`.
+On Windows the wrapper is `.tuyaopen\ide\bin\tuyaopen-cli.cmd`.
 
 **When the search finds nothing, stop and tell the user** — do not improvise a
 path, and do not fall back to `tos.py` for something the CLI was supposed to
@@ -226,7 +226,7 @@ the search succeeds:
   fresh clone and a CI checkout have no wrapper and no CLI. That is expected,
   not a misconfiguration.
 - Inside the IDE's integrated terminal it is also on `PATH`, which is why bare
-  `tuyaopen` works there and nowhere else.
+  `tuyaopen-cli` works there and nowhere else.
 
 The wrapper resolves the real entry itself, highest priority first:
 `TUYAOPEN_CLI_PATH` → a stable pointer file the IDE rewrites on every
@@ -234,11 +234,11 @@ activation (so it survives extension upgrades) → the path baked in at write
 time. You never need to know which one it picked.
 
 > **`@tuya/tuyaopen-cli` is not on public npm yet.** The npm package is the
-> intended standalone distribution and the `bin` entry is already `tuyaopen`,
+> intended standalone distribution and the `bin` entry is already `tuyaopen-cli`,
 > but `npm install -g @tuya/tuyaopen-cli` returns 404 on the public registry
 > (re-measured 2026-08-20). The internal beta is distributed as a tarball
 > instead — `npm i -g ./tuyaopen-cli-<version>.tgz` — and *that* install does
-> put `tuyaopen` on `PATH` globally, in which case the search above short-
+> put `tuyaopen-cli` on `PATH` globally, in which case the search above short-
 > circuits at `command -v` and nothing else here applies. Without such an
 > install, "on `PATH`" in practice means "an IDE integrated terminal".
 
@@ -255,7 +255,7 @@ pointed at a `cli.js` that no longer existed.
 One command tells you which case you are in:
 
 ```bash
-tuyaopen diag doctor --json     # read .data.cli.wrapper
+tuyaopen-cli diag doctor --json     # read .data.cli.wrapper
 ```
 
 | What you see | What it means | What to do |
@@ -274,7 +274,7 @@ from whoever reads next.
 
 ### 1.2 Then identify what you resolved
 
-Two independent builds can answer to the name `tuyaopen`: the **bundled** one
+Two independent builds can answer to the name `tuyaopen-cli`: the **bundled** one
 inside a TuyaOpen IDE install (`<extension>/out/cli/cli.js`), and the
 **standalone** npm package (`dist/cli/cli.js`). They share this contract but
 not necessarily a version. Don't guess which one a shell has — ask it:
@@ -383,10 +383,10 @@ running". They belong here rather than in a device skill: what they diagnose is
 the **CLI and the host**, not the board — and every skill needs that answer, not
 just the one that was holding them until 2026-08-24.
 
-### 3.1 `tuyaopen diag doctor` — environment triage
+### 3.1 `tuyaopen-cli diag doctor` — environment triage
 
 ```bash
-tuyaopen diag doctor --json
+tuyaopen-cli diag doctor --json
 ```
 
 One round-trip covering: which CLI binary is actually running (`cli.entryPath`
@@ -420,10 +420,10 @@ and `tosPresent` can both be `true` while the env is still cold. Each tool's
 `status` is `ok` / `warn` / `fail`; `node.status: "warn"` means Node is usable
 but below the required major version.
 
-### 3.2 `tuyaopen diag export` — diagnostics bundle for a bug report
+### 3.2 `tuyaopen-cli diag export` — diagnostics bundle for a bug report
 
 ```bash
-tuyaopen diag export [--out <path>] [--force]
+tuyaopen-cli diag export [--out <path>] [--force]
 ```
 
 Writes a JSON file (default `./tuyaopen-diag-<yyyymmdd-hhmmss>.json`)
@@ -450,13 +450,13 @@ reconstruct the setup steps from this section.
 | **P3** | **No gate at all** — not even `--yes` | Mostly long-running reads, but the writers among them are ungated too: `sdk clone` / `update` / `env-init` / `env-pull`, `firmware build` / `clean`, `skills sync`, `miniapp build` / `meta` / `template`, `credential login`, `diag export`. Each guards itself on its own preconditions instead — `diag export` refuses an existing `--out` without `--force`; `sdk clone` refuses a non-empty target. **So do not read "it is not P2" as "it does not write."** |
 | Read-only | No gate | — |
 
-Ask `tuyaopen schema list --json` for a command's `riskLevel` rather than
+Ask `tuyaopen-cli schema list --json` for a command's `riskLevel` rather than
 inferring it: the table above is a snapshot, `schema list` is the contract.
 
 **`TUYAOPEN_AUTOCONFIRM_P2=1` belongs on the invocation, not in the shell.**
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port <port> --yes   # do this
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port <port> --yes   # do this
 export TUYAOPEN_AUTOCONFIRM_P2=1                                        # NOT this
 ```
 
@@ -495,8 +495,8 @@ switch to `tos.py` because of it.
 ## 5. Command self-discovery — don't hardcode flags here or anywhere
 
 ```bash
-tuyaopen schema list [--group <g>]                     # every command's contract
-tuyaopen schema get --group <g> --command <c>           # one command's flags/mutating/riskLevel
+tuyaopen-cli schema list [--group <g>]                     # every command's contract
+tuyaopen-cli schema get --group <g> --command <c>           # one command's flags/mutating/riskLevel
 tuyaopen <group> --help                                 # human-readable, same info
 ```
 
@@ -508,11 +508,11 @@ instead.
 ## 6. Skill self-discovery
 
 ```bash
-tuyaopen skills list [--json]                 # catalog: id/name/summary/whenToUse/surfaces/tags/commands/defaultEnabled
-tuyaopen skills list-installed --project-root <dir> [--scope project|global]
-tuyaopen skills install --scope project|global [--ids <id1,id2>] [--default] [--force]
-tuyaopen skills uninstall --scope project|global --id <id>
-tuyaopen skills sync [--stream]                # fetch payloads for catalogue items that declare source.repo
+tuyaopen-cli skills list [--json]                 # catalog: id/name/summary/whenToUse/surfaces/tags/commands/defaultEnabled
+tuyaopen-cli skills list-installed --project-root <dir> [--scope project|global]
+tuyaopen-cli skills install --scope project|global [--ids <id1,id2>] [--default] [--force]
+tuyaopen-cli skills uninstall --scope project|global --id <id>
+tuyaopen-cli skills sync [--stream]                # fetch payloads for catalogue items that declare source.repo
 ```
 
 **Cold start — `skills list` came back `no_manifest_cache`?** Then this machine
@@ -520,14 +520,14 @@ has no catalogue yet (typical right after `npm i -g @tuya/tuyaopen-cli`; the IDE
 does this for you). The fix is `manifests sync`, **not** `skills sync`:
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes    # downloads the catalogue + skill bodies
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --default --yes
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli manifests sync --yes    # downloads the catalogue + skill bodies
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --default --yes
 ```
 
 `skills sync` only fetches items whose manifest entry carries a `source.repo`.
 Every item in this catalogue ships inside the manifest release instead, so it
 reports `external: 0`, exits 0, and changes nothing — running it in place of
-`manifests sync` leaves you exactly where you started. `tuyaopen diag doctor`
+`manifests sync` leaves you exactly where you started. `tuyaopen-cli diag doctor`
 reports the catalogue state under `manifests` if you want to check first.
 
 **A catalogue that is present can still be stale, and staleness is silent.** An
@@ -538,8 +538,8 @@ with nothing in any output suggesting a problem. So before trusting a catalogue
 you did not just download, ask:
 
 ```bash
-tuyaopen manifests status --json                    # offline; read `layout`
-tuyaopen manifests status --check-update --json     # network; read `update.updateAvailable`
+tuyaopen-cli manifests status --json                    # offline; read `layout`
+tuyaopen-cli manifests status --check-update --json     # network; read `update.updateAvailable`
 ```
 
 Two independent signals, and either one alone is enough to act on:
@@ -549,7 +549,7 @@ Two independent signals, and either one alone is enough to act on:
 | `layout: "legacy"` | The cache predates the 2026-08-17 product-line split. **Deterministic proof**, not a date guess — that path only exists in a pre-split cache. Its skill ids are the pre-rename ones. |
 | `update.domains[].outdated: true` | That domain's declared version is behind the published release. |
 
-Either one → `TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen manifests sync --yes`, then
+Either one → `TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli manifests sync --yes`, then
 re-read `skills list`. If the check could not reach the release it says so
 (`update.checked: false`, `reason: "release-unreachable"`) — treat that as
 "unknown", never as "up to date". `diag doctor` reports the same `layout` plus
@@ -577,7 +577,7 @@ the catalogue's `publishedAt` / `skillsVersion`, offline.
 ### 6.1 Your tool's skill directory isn't one of the four? Install them yourself
 
 **Which tool reads what** (measured 2026-08-21 against shipped builds; the
-`tuyaopen skills install` result and `diag doctor` both report this per tool,
+`tuyaopen-cli skills install` result and `diag doctor` both report this per tool,
 with a `confidence` field saying whether the row was probed or assumed):
 
 | Tool | project scope | global scope |
@@ -602,10 +602,10 @@ broken.** The catalogue is machine-readable and installation is a command you
 can run yourself:
 
 ```bash
-tuyaopen skills list --json           # id, group, name, summary, whenToUse, tags, defaultEnabled
-tuyaopen skills groups --json         # core | embedded | cloud | miniapp | category
-tuyaopen skills list-installed --json --project-root .
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen skills install --ids <a,b> --yes    # project scope
+tuyaopen-cli skills list --json           # id, group, name, summary, whenToUse, tags, defaultEnabled
+tuyaopen-cli skills groups --json         # core | embedded | cloud | miniapp | category
+tuyaopen-cli skills list-installed --json --project-root .
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --ids <a,b> --yes    # project scope
 ```
 
 Then read the bodies straight off disk — they are plain Markdown with YAML
@@ -634,33 +634,33 @@ Pick by `whenToUse` from `skills list`, install what the task needs, read that
 If `skills list` returns `no_manifest_cache`, this machine has no catalogue at
 all yet — run `manifests sync` first (see the cold-start note above).
 
-## 7. `tos.py` ↔ `tuyaopen` — what's covered, what still needs `tos.py`
+## 7. `tos.py` ↔ `tuyaopen-cli` — what's covered, what still needs `tos.py`
 
 `tos.py` (the TuyaOpen SDK's own build tool, 13 verbs: `build` `clean` `flash`
 `monitor` `new` `update` `config` `dev` `idf` `prepare` `hello` `check`
 `version`) predates this CLI and is still required for anything the table
 below doesn't cover.
 
-| `tos.py` verb | `tuyaopen` CLI equivalent | Note |
+| `tos.py` verb | `tuyaopen-cli` CLI equivalent | Note |
 |---|---|---|
 | `build` / `clean` / `flash` / `monitor` | `firmware build` / `firmware clean` / `firmware flash` / `firmware monitor` | Directly wrapped |
 | `new` (project) | `project create` | Non-interactive equivalent of the interactive `tos.py new project` |
-| `update` | `sdk update` | **Not the same operation** — `tuyaopen sdk update` is `git pull --ff-only` on the SDK clone (`pullSdk`), while `tos.py update` pins the platform sub-SDK. Use whichever you actually mean; neither replaces the other |
-| `config` (Kconfig / menuconfig) | — | **See the warning below — do not confuse with `tuyaopen config`** |
-| `dev` / `idf` / `prepare` / `hello` / `check` / `version` | — | No `tuyaopen` equivalent; use `tos.py` |
+| `update` | `sdk update` | **Not the same operation** — `tuyaopen-cli sdk update` is `git pull --ff-only` on the SDK clone (`pullSdk`), while `tos.py update` pins the platform sub-SDK. Use whichever you actually mean; neither replaces the other |
+| `config` (Kconfig / menuconfig) | — | **See the warning below — do not confuse with `tuyaopen-cli config`** |
+| `dev` / `idf` / `prepare` / `hello` / `check` / `version` | — | No `tuyaopen-cli` equivalent; use `tos.py` |
 | `tyutool_cli authorize` | `firmware authorize` | Wrapped (writes UUID/AuthKey over UART) |
 
-> **⚠ `tos.py config` and `tuyaopen config` are two unrelated commands that
+> **⚠ `tos.py config` and `tuyaopen-cli config` are two unrelated commands that
 > happen to share a name.**
 >
 > - `tos.py config` (`choice`/`menu`/`save`/`set`/`get`/`list`/`diff`) edits the
 >   **project's Kconfig build configuration** — `app_default.config`,
 >   `.build/cache/using.config`. See skill `tuyaopen-embedded-build`.
-> - `tuyaopen config` (`get`/`set`/`list`) edits **IDE settings**, and only
+> - `tuyaopen-cli config` (`get`/`set`/`list`) edits **IDE settings**, and only
 >   three keys exist: `language`, `gitMirror`, `manifestsSource`. It has
 >   **nothing to do with Kconfig.**
 >
-> The intuitive guess for "set a build config option" is `tuyaopen config
+> The intuitive guess for "set a build config option" is `tuyaopen-cli config
 > set` — that is the wrong command and will silently do nothing to the
 > project's Kconfig (it will just reject the key, since it isn't one of the
 > three above). Use `tos.py config set` (or hand-edit `app_default.config`,
@@ -688,7 +688,7 @@ treat them as opaque.
 
 ## 9. Routing table — which skill for which intent
 
-`tuyaopen skills list --json` is the live, authoritative listing of this
+`tuyaopen-cli skills list --json` is the live, authoritative listing of this
 catalogue — it returns every item with its `whenToUse` whether or not that item
 is installed. **No count is written here**: every attempt to state one went
 stale (this line said 28 while the catalogue held 30). Rather than every skill naming every sibling it might hand off to —
@@ -731,6 +731,6 @@ Windows) rather than independent copies. That means:
   next install of that skill.
 
 **If you need to tweak a skill's instructions, install (or re-install) it at
-project scope instead** (`tuyaopen skills install --scope project --ids
+project scope instead** (`tuyaopen-cli skills install --scope project --ids
 <id>`, landing at `<project>/.agents/skills/<id>/`) — that copy is
 unambiguously yours to edit, on every platform, with no read-only surprise.

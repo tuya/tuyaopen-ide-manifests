@@ -5,7 +5,7 @@ Usage: python build_run.py [timeout_seconds]
   timeout_seconds: default 30. Pass 0 for no timeout.
 
 Split of responsibility (2026-08-18): the *build* half now goes through the
-`tuyaopen` CLI (`firmware build --stream`) when it can be resolved, falling
+`tuyaopen-cli` CLI (`firmware build --stream`) when it can be resolved, falling
 back to `tos.py build` only when the CLI is not reachable — never because it
 failed. `--stream` (rather than `--json`) is deliberate: a `--json` build
 buffers the whole build's output into one envelope printed only at the end
@@ -20,7 +20,7 @@ scanning its stdout for error/warning/watchdog patterns) is unchanged and
 stays on `subprocess` directly: the CLI has no command that runs a built
 LINUX binary, only one that builds it. See skill `tuyaopen-shared` § 4 for
 the unavailable-vs-refused fallback rule this file follows, and § 7 for the
-`tos.py` <-> `tuyaopen` command mapping.
+`tos.py` <-> `tuyaopen-cli` command mapping.
 """
 import datetime
 import glob
@@ -41,7 +41,7 @@ def _tos_py():
 
 
 def _resolve_tuyaopen():
-    """Return an argv prefix that invokes the `tuyaopen` CLI, or None if it
+    """Return an argv prefix that invokes the `tuyaopen-cli` CLI, or None if it
     cannot be resolved. Mirrors the resolve-once recipe in skill
     `tuyaopen-shared` § 1 (explicit override -> PATH -> the IDE-written
     per-project wrapper found by walking up from the current directory),
@@ -60,7 +60,7 @@ def _resolve_tuyaopen():
     if on_path:
         return [on_path]
 
-    wrapper_name = "tuyaopen.cmd" if os.name == "nt" else "tuyaopen"
+    wrapper_name = "tuyaopen-cli.cmd" if os.name == "nt" else "tuyaopen"
     current = os.getcwd()
     while True:
         candidate = os.path.join(current, ".tuyaopen", "ide", "bin", wrapper_name)
@@ -96,13 +96,13 @@ def _stream_line_message(line):
 def _run_build():
     """Build the firmware. Returns True on success, False on failure.
 
-    Runs `tuyaopen firmware build --stream` and relays each progress line's
+    Runs `tuyaopen-cli firmware build --stream` and relays each progress line's
     `msg` to stdout as it arrives — live output, not a single envelope
     printed after the fact (see the module docstring for why `--stream`
     replaces `--json` here). Success is read from the process exit code,
     which stays a faithful signal in `--stream` mode (see module docstring).
 
-    Falls back to `tos.py build` only when `tuyaopen` cannot be resolved at
+    Falls back to `tos.py build` only when `tuyaopen-cli` cannot be resolved at
     all — never on a CLI-reported failure (see the unavailable-vs-refused
     rule in skill `tuyaopen-shared` § 4). That fallback, immediately below,
     already decides success the same way: a plain exit-code check, no output

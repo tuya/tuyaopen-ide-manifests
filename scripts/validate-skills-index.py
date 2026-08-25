@@ -500,7 +500,7 @@ GROUPS_EXEMPT_FROM_REVERSE_CHECK = {"schema"}
 
 _SHORTCUTS_HEADING = re.compile(r"^##\s+Shortcuts\b", re.MULTILINE)
 _NEXT_H2 = re.compile(r"^##\s+", re.MULTILINE)
-_CLI_INVOCATION = re.compile(r"`?tuyaopen\s+([a-z][a-z0-9-]*)")
+_CLI_INVOCATION = re.compile(r"`?tuyaopen-cli\s+([a-z][a-z0-9-]*)")
 
 
 def extract_shortcuts_section(body: str) -> "str | None":
@@ -587,10 +587,10 @@ def check_shortcuts_agreement(skill_id: str, groups, body: str) -> list:
     """
     out = []
     if groups == "none":
-        if "No `tuyaopen` CLI coverage" not in body:
+        if "No `tuyaopen-cli` CLI coverage" not in body:
             out.append(
                 f"item {skill_id!r}: cli.groups is \"none\" but the body never says "
-                f"``No `tuyaopen` CLI coverage`` — the reader needs to see it too"
+                f"``No `tuyaopen-cli` CLI coverage`` — the reader needs to see it too"
             )
         return out
 

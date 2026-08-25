@@ -4,9 +4,9 @@ id: tuyaopen-miniapp-electrician-timing
 description: 将 @ray-js/electrician-timing-sdk 接入业务代码位于 src/* 的 Ray 小程序 / 面板宿主工程。覆盖 app onLaunch 一次性 init、设备或群组切换时按需 changeConfig、页面级 ConflictPopup 与 useDefaultModal 联动，以及六类定时——云定时、循环、随机、点动（延时关 / 点动定时 / inching）、倒计时、天文（天文**不**属于本 SDK）。当用户提到「电工定时 SDK 接入」「Ray 面板小程序定时接入」「supportCloud / supportCycle / supportRandom / supportInching」「changeConfig 设备或群组切换」「conflictModallId」「electri.cycle / electri.random / electri.inching」「addCloudTimer」「createCountdown」时使用本 skill。
 ---
 
-## No `tuyaopen` CLI coverage
+## No `tuyaopen-cli` CLI coverage
 
-`tuyaopen` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen` CLI。
+`tuyaopen-cli` CLI 有 `miniapp` 命令组，但只覆盖构建 / 安装运行时 / 元数据 / DP schema 同步 / 预览 / 模板 / 上传等命令行操作（详见 skill `tuyaopen-miniapp`）——具体的页面、组件、DP 交互编码不在其列。本技能的开发知识完全来自 `references/` 与项目内文档，不经 `tuyaopen-cli` CLI。
 
 ## 概述 {#description}
 

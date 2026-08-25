@@ -22,18 +22,18 @@ compatibility:
 
 # TuyaOpen Embedded Development Workflow
 
-## Shortcuts — `tuyaopen firmware` / `tuyaopen diag`
+## Shortcuts — `tuyaopen-cli firmware` / `tuyaopen-cli diag`
 
 | Intent | Command |
 |---|---|
-| Build / clean | `tuyaopen firmware build` · `tuyaopen firmware clean` |
-| Flash | `tuyaopen firmware flash` (P2: `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`) |
-| Serial monitor | `tuyaopen firmware monitor` |
-| List ports | `tuyaopen firmware list-ports` |
-| Environment check-up / diagnostic bundle | `tuyaopen diag doctor` · `tuyaopen diag export` |
+| Build / clean | `tuyaopen-cli firmware build` · `tuyaopen-cli firmware clean` |
+| Flash | `tuyaopen-cli firmware flash` (P2: `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`) |
+| Serial monitor | `tuyaopen-cli firmware monitor` |
+| List ports | `tuyaopen-cli firmware list-ports` |
+| Environment check-up / diagnostic bundle | `tuyaopen-cli diag doctor` · `tuyaopen-cli diag export` |
 
-Flags aren't listed here — run `tuyaopen schema get --group firmware --command
-flash` for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1
+Flags aren't listed here — run `tuyaopen-cli schema get --group firmware --command
+flash` for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1
 (it is usually not on `PATH`).
 
 ## Where this sits in the three-phase pipeline
@@ -121,7 +121,7 @@ Active-high or active-low?
 <code data-type="tag" style="color:#ff4d4f">内测第四轮：整轮写了 LVGL 中文 UI，从没看过 `tuyaopen-embedded-lvgl`</code>
 
 Two skills this phase regularly needs are in the `scenario` group, which
-`tuyaopen skills install --all` deliberately **skips**. A skill that was never
+`tuyaopen-cli skills install --all` deliberately **skips**. A skill that was never
 installed does not exist as far as your context is concerned — no name, no
 description, nothing to stumble on. **This table is their only visible entry
 point**, which is why it sits here rather than in a reference file:
@@ -132,7 +132,7 @@ point**, which is why it sits here rather than in a reference file:
 | A third-party (PlatformIO) library — wiring it into CMakeLists.txt / Kconfig | `tuyaopen-embedded-dependency` |
 
 ```bash
-tuyaopen skills install --ids tuyaopen-embedded-lvgl
+tuyaopen-cli skills install --ids tuyaopen-embedded-lvgl
 ```
 
 > **中文显示是本条存在的直接原因。** `LV_FONT_SIMSUN_16_CJK` **不是**中文字体 ——
@@ -173,7 +173,7 @@ this order:
 **a. Board-device macros — from the CLI, never guessed.**
 
 ```bash
-tuyaopen hardware board-context --project-root <dir> --write --json
+tuyaopen-cli hardware board-context --project-root <dir> --write --json
 ```
 
 Every device it prints carries its own `Kconfig:` line (e.g. the 3.5" LCD on
@@ -341,7 +341,7 @@ Step  6     hand over provisioning + the evidence                       ← need
 
 **No authorization code is required to flash.** Do it now.
 
-Delegate to `tuyaopen-embedded-flash`. Pick the port via `tuyaopen firmware
+Delegate to `tuyaopen-embedded-flash`. Pick the port via `tuyaopen-cli firmware
 list-ports` (multi-port boards: that command's `hint` tells you how to
 disambiguate). Note the default baud can be slow enough to hit the build/flash
 timeout on a large image — `--baud 921600` is the usual fix, and
@@ -395,8 +395,8 @@ a working device. **Ask now.** Do not defer it into a final report for the
 user to act on alone.
 
 ```bash
-tuyaopen diag doctor --json          # deviceAuth.localLicenses — 0 means "none stored here"
-tuyaopen license list --json
+tuyaopen-cli diag doctor --json          # deviceAuth.localLicenses — 0 means "none stored here"
+tuyaopen-cli license list --json
 ```
 
 If `localLicenses` is 0, ask — and make the ask self-contained, because the
@@ -406,11 +406,11 @@ user should not have to go read a skill to answer you. Say all of this:
 > 还差一组授权码（UUID + AuthKey）。三条路任选：
 > 1. **TuyaOpen IDE** 侧边栏 *Developer Tools → Licenses*，按已绑定的 PID 申领（最省事，需要项目已绑 PID）
 > 2. **开发者平台网页** 的产品「设备授权」页申领，导出 xlsx
-> 3. 团队已有一批码 → `tuyaopen license import --xlsx <path>`
+> 3. 团队已有一批码 → `tuyaopen-cli license import --xlsx <path>`
 >
 > 一组码同一时间**只能用在一台设备上**，请确认这组码当前没有被别的设备占用。
 
-Then **stop and wait**. `tuyaopen` has no command that issues codes — `license`
+Then **stop and wait**. `tuyaopen-cli` has no command that issues codes — `license`
 only manages the local store. If the user cannot get one, say exactly where it
 is stuck (no PID bound / no IDE / no quota on the platform) and stop there.
 Never invent a UUID, and never leave the device sitting at `client no active`
@@ -423,8 +423,8 @@ before you ask, and never put an AuthKey on argv where it can be — it goes via
 ### Step 5 — Write it, then read it back
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware authorize --port <port> --yes
-tuyaopen firmware auth-status --port <port>
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware authorize --port <port> --yes
+tuyaopen-cli firmware auth-status --port <port>
 ```
 
 **A write you did not read back is not a completed step.** Then re-run Step 2's
@@ -505,7 +505,7 @@ The standard development iteration cycle for TuyaOpen hardware:
 1. **Build**:
 
    ```bash
-   tuyaopen firmware build --json
+   tuyaopen-cli firmware build --json
    ```
 
    Read `.ok`. On failure, `.type` / `.subtype` classify the error — no need
@@ -517,7 +517,7 @@ The standard development iteration cycle for TuyaOpen hardware:
 2. **Flash**: flash firmware to the device from the project directory:
 
    ```bash
-   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port <port> --yes --json
+   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port <port> --yes --json
    ```
 
    The env var is a **prefix on this one invocation**, not an `export`: an
@@ -545,7 +545,7 @@ The standard development iteration cycle for TuyaOpen hardware:
 3. **Monitor / capture logs**:
 
    ```bash
-   tuyaopen firmware monitor --port <port>
+   tuyaopen-cli firmware monitor --port <port>
    ```
 
    for interactive sessions.
@@ -641,7 +641,7 @@ Built-in CLI (`tal_cli`) via debug UART (prompt: `tuya> `). Commands, registrati
 1. Read the compiler error output carefully.
 2. Identify the source file and line.
 3. Fix the code.
-4. `tuyaopen firmware build --json` again (`tos.py build` on the fallback path). Repeat until build succeeds.
+4. `tuyaopen-cli firmware build --json` again (`tos.py build` on the fallback path). Repeat until build succeeds.
 
 ### On flash failure
 
@@ -682,7 +682,7 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
 
 # 2. Flash on the other port while monitor keeps logging
 #    (env var prefixes this one command — never `export` it)
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen firmware flash --port /dev/ttyACM0 --yes --json
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port /dev/ttyACM0 --yes --json
 
 # 3. Read log after boot
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py \
@@ -698,7 +698,7 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
 
 Repeat until logs are clean:
 
-1. **Build** → **`tuyaopen firmware flash --port <port> --yes --json`**
+1. **Build** → **`tuyaopen-cli firmware flash --port <port> --yes --json`**
    (prefix that one invocation with `TUYAOPEN_AUTOCONFIRM_P2=1` — never
    `export` it, or every later P2 command in the shell is one `--yes` away;
    no CLI? `tos.py flash -p <port>` — see `tuyaopen-shared` § 7)

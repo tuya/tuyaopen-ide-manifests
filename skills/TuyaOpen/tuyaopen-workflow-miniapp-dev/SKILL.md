@@ -32,7 +32,7 @@ related:
 
 # 智能面板开发（Smart Panel Development）
 
-## Shortcuts — `tuyaopen miniapp` / `tuyaopen project` / `tuyaopen devplat`
+## Shortcuts — `tuyaopen-cli miniapp` / `tuyaopen-cli project` / `tuyaopen-cli devplat`
 
 本技能负责**阶段顺序**：哪一步该跑哪条命令、每步交付什么、哪几步只能人做。
 每条命令的参数、门禁与报错在 skill `tuyaopen-miniapp`；平台侧凭据与
@@ -40,22 +40,22 @@ related:
 
 | 阶段 | Command |
 |---|---|
-| 看模板 → 建工程 → 装运行时 | `tuyaopen miniapp template` · `tuyaopen miniapp install` (P2) |
-| 本地记下 PID（`sync-schema` 的前置） | `tuyaopen project bind-product` (P2) |
-| 记下平台签发的 appid | `tuyaopen miniapp meta` |
-| 从已绑产品同步 DP schema | `tuyaopen miniapp sync-schema` |
-| 构建 | `tuyaopen miniapp build` |
-| **跑起来，把渲染链接交给用户** | `tuyaopen miniapp preview` |
-| 上传版本 | `tuyaopen miniapp upload` (P2) |
-| 平台侧：建小程序 / 提审 / 发布 / 绑面板 | `tuyaopen devplat exec` (P2) — 转发给 `tuya-devplat-cli panel …` |
+| 看模板 → 建工程 → 装运行时 | `tuyaopen-cli miniapp template` · `tuyaopen-cli miniapp install` (P2) |
+| 本地记下 PID（`sync-schema` 的前置） | `tuyaopen-cli project bind-product` (P2) |
+| 记下平台签发的 appid | `tuyaopen-cli miniapp meta` |
+| 从已绑产品同步 DP schema | `tuyaopen-cli miniapp sync-schema` |
+| 构建 | `tuyaopen-cli miniapp build` |
+| **跑起来，把渲染链接交给用户** | `tuyaopen-cli miniapp preview` |
+| 上传版本 | `tuyaopen-cli miniapp upload` (P2) |
+| 平台侧：建小程序 / 提审 / 发布 / 绑面板 | `tuyaopen-cli devplat exec` (P2) — 转发给 `tuya-devplat-cli panel …` |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
 (it is usually not on `PATH`).
 
 > 面板架构、UI 结构、DP 编排这些**本技能自己**承担的工作确实没有 CLI 命令 ——
 > 那部分是读 `references/` 和做判断，不是跑命令。下文出现的
-> `tuyaopen skills install` 是子技能目录的 bootstrap 安装，不属于面板开发本身，
+> `tuyaopen-cli skills install` 是子技能目录的 bootstrap 安装，不属于面板开发本身，
 > 所以不在上表里。
 
 
@@ -93,7 +93,7 @@ for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
 
 | 阶段 / 场景 | 在本 skill 内 | 跳子技能 |
 |---|---|---|
-| **0. 创建小程序，拿到 appid** | **先问用户**（见下面《第 0 步是一次提问》），再按回答走网页或 `devplat exec -- panel create-miniapp`。拿到后 `tuyaopen miniapp meta set-appid <appid>` 抄回项目 | — |
+| **0. 创建小程序，拿到 appid** | **先问用户**（见下面《第 0 步是一次提问》），再按回答走网页或 `devplat exec -- panel create-miniapp`。拿到后 `tuyaopen-cli miniapp meta set-appid <appid>` 抄回项目 | — |
 | 1. 需求 / PRD | — | `tuyaopen-miniapp-requirement-guide` |
 | 2. 架构理解 / 项目结构 / DP 模型 | [references/architecture.md](references/architecture.md) | — |
 | 2.5 项目本地缓存（`.tuyaopen/platform/`，读 PID / 绑定 / DP）| [references/platform-cache.md](references/platform-cache.md) | — |
@@ -104,10 +104,10 @@ for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
 | 4. 编码 — 图表 / 用电 / 温湿度 / 能耗曲线 | — | `tuyaopen-miniapp-charts-library` |
 | 4. 编码铁律 / DP hook 选型 | [references/conventions.md](references/conventions.md) | — |
 | 4. Kit 类型定义缺失 / 添加 MediaKit/MapKit/P2PKit | [references/kit-acquisition.md](references/kit-acquisition.md) | — |
-| **5. 跑起来，把渲染链接交给用户** | `tuyaopen miniapp preview --emit-url` 打出一行 `{"event":"preview_url","url":…}`，**把那个 URL 交给用户**并等他看过再往下走 | `tuyaopen-miniapp`（命令参数与门禁） |
+| **5. 跑起来，把渲染链接交给用户** | `tuyaopen-cli miniapp preview --emit-url` 打出一行 `{"event":"preview_url","url":…}`，**把那个 URL 交给用户**并等他看过再往下走 | `tuyaopen-miniapp`（命令参数与门禁） |
 | 6. 上线前 review（性能 / UX / release gate） | — | `tuyaopen-miniapp-performance-ux-guard` |
 | 7. 上传自检 | [references/upload-checklist.md](references/upload-checklist.md) + `scripts/validate.mjs` | — |
-| 8. 上传（内测包） | — | `tuyaopen-miniapp`（`tuyaopen miniapp upload`，命令行可做） |
+| 8. 上传（内测包） | — | `tuyaopen-miniapp`（`tuyaopen-cli miniapp upload`，命令行可做） |
 | 9. 提审 / 发布 / 上线 | [只能在网页上做 —— 见下节](#提审发布与绑定只能在网页上做) | — |
 | 10. 绑定面板小程序到产品 | [只能在网页上做，且必须在第 8 步之后 —— 见下节](#提审发布与绑定只能在网页上做) | — |
 | —— 找文档 / 查 API / 查报错 | [references/info-lookup.md](references/info-lookup.md)（`search_help.py` / `fetch_doc.py` / `validate.mjs`） | — |
@@ -117,7 +117,7 @@ skill 直接进品类 skill；也**不能**跳过 conventions 直接写代码。
 
 ### 品类 skill 默认没装 —— 这是本节存在的原因
 
-上表第 3 步派给的六个品类 skill 属于 `scenario` 安装组，**`tuyaopen skills
+上表第 3 步派给的六个品类 skill 属于 `scenario` 安装组，**`tuyaopen-cli skills
 install --all` 不会装它们**。它们互斥：做灯的人同时装上扫地机、IPC、插座的
 手册，不会多出三项能力，只会给 agent 多出三个不相干的候选去挑。
 
@@ -128,16 +128,16 @@ install --all` 不会装它们**。它们互斥：做灯的人同时装上扫地
 判断品类后，先装再用：
 
 ```bash
-tuyaopen skills install --ids tuyaopen-miniapp-lamp-panel     # 照明
-tuyaopen skills install --ids tuyaopen-miniapp-socket-panel   # 插座 / 电工
-tuyaopen skills install --ids tuyaopen-miniapp-robot-vacuum   # 扫地机
-tuyaopen skills install --ids tuyaopen-miniapp-ipc-panel      # 摄像头 / IPC
-tuyaopen skills install --ids tuyaopen-miniapp-electrician-timing  # 电工定时
-tuyaopen skills install --ids tuyaopen-miniapp-energy-stats   # 能耗统计
-tuyaopen skills install --group scenario                      # 六个全装（少见：一次只做一个品类）
+tuyaopen-cli skills install --ids tuyaopen-miniapp-lamp-panel     # 照明
+tuyaopen-cli skills install --ids tuyaopen-miniapp-socket-panel   # 插座 / 电工
+tuyaopen-cli skills install --ids tuyaopen-miniapp-robot-vacuum   # 扫地机
+tuyaopen-cli skills install --ids tuyaopen-miniapp-ipc-panel      # 摄像头 / IPC
+tuyaopen-cli skills install --ids tuyaopen-miniapp-electrician-timing  # 电工定时
+tuyaopen-cli skills install --ids tuyaopen-miniapp-energy-stats   # 能耗统计
+tuyaopen-cli skills install --group scenario                      # 六个全装（少见：一次只做一个品类）
 ```
 
-（命令写作裸 `tuyaopen`；若这台机器上它不在 `PATH`，先按 skill
+（命令写作裸 `tuyaopen-cli`；若这台机器上它不在 `PATH`，先按 skill
 `tuyaopen-shared` § 1 解析一次。）
 
 **装完要让 agent 真正读到它**：新装的 skill 不会进入当前会话的上下文，
@@ -152,7 +152,7 @@ skill，就留在本 skill + `tuyaopen-miniapp-ray-common` +
 
 <code data-type="tag" style="color:#ff4d4f">内测第四轮：agent 从没问过，于是 appid 一直是空的，⑤⑧⑨ⓐ–ⓔ 全部走不了</code>
 
-appid **只能由平台签发**，`tuyaopen` 侧没有任何命令能创建它，`meta set-appid`
+appid **只能由平台签发**，`tuyaopen-cli` 侧没有任何命令能创建它，`meta set-appid`
 只是把一个已有的 appid 抄进项目。所以在写第一行面板代码之前，**停下来问用户**：
 
 > 这个项目要配一个手机面板。两条路：
@@ -167,7 +167,7 @@ appid **只能由平台签发**，`tuyaopen` 侧没有任何命令能创建它�
 拿到 appid 之后立刻记下来，否则 ⑨ `upload` 会失败：
 
 ```bash
-tuyaopen miniapp meta set-appid <appid>
+tuyaopen-cli miniapp meta set-appid <appid>
 ```
 
 **没拿到 appid 也不要停止编码** —— ①–⑦（建模板、写代码、build）都不需要它。
@@ -216,7 +216,7 @@ tuyaopen miniapp meta set-appid <appid>
 是同一个原因。这不是缺命令，是**没按顺序走**。所以顺序写在这里，写在最前面：
 
 ```
-本地（tuyaopen miniapp）                          平台（tuya-devplat-cli / 网页）
+本地（tuyaopen-cli miniapp）                          平台（tuya-devplat-cli / 网页）
 ──────────────────────────────────────────────   ─────────────────────────────────
 ① template list   ← 先看有哪些模板，别猜 --id
 ② template create --id X            (P2)
@@ -248,7 +248,7 @@ tuyaopen miniapp meta set-appid <appid>
 `build` 产出的是一个 `dist/`，**没有人能看**。把它变成能看的东西是 `preview`：
 
 ```bash
-tuyaopen miniapp preview --emit-url
+tuyaopen-cli miniapp preview --emit-url
 ```
 
 它会在 dev server 就绪的那一刻，往 **stdout** 打一行
@@ -269,7 +269,7 @@ tuyaopen miniapp preview --emit-url
 > 信封里已经带了 `nextStep`，直接照它做。
 
 > **`preview` 目前只在 IDE 里可用（2026-08-25 实测）。** 用 npm 装的
-> `tuyaopen` 跑它会拿到
+> `tuyaopen-cli` 跑它会拿到
 > `{"ok":false,"error":"MiniApp runtime not ready: miniapp.runtime.error.vendorMissing"}`
 > —— 共享运行时随 `.vsix` 分发，独立 CLI 手上没有。`miniapp install` 同理，
 > 它要 `--extension-path`。
@@ -289,7 +289,7 @@ tuyaopen miniapp preview --emit-url
 ## 创建 → 绑定 PID 的完整链路 —— 有三层，别只看第一层
 
 涂鸦平台侧的创建 / 提审 / 发布 / 绑定，**并不是"只能在网页上做"** ——
-`tuyaopen` CLI 没有这些命令，但 `tuya-devplat-cli` 的 `panel` 组里有一整套
+`tuyaopen-cli` CLI 没有这些命令，但 `tuya-devplat-cli` 的 `panel` 组里有一整套
 （实测 2026-08-21，读的是随插件分发的那份源码）：
 
 ```
@@ -304,16 +304,16 @@ panel save-standard-relation             ← 绑完登记进沙箱产物列表
 product release-ui                       ← 公版面板可选
 ```
 
-**`tuyaopen schema list` 是 `tuyaopen` 的权威，不是另一个 CLI 的权威。**
-用它证明 `tuyaopen miniapp publish` 不存在是对的；用它推断"平台侧没有命令行
+**`tuyaopen-cli schema list` 是 `tuyaopen-cli` 的权威，不是另一个 CLI 的权威。**
+用它证明 `tuyaopen-cli miniapp publish` 不存在是对的；用它推断"平台侧没有命令行
 办法"就错了 —— 内测第二轮完全没走到 create→bind，一半原因就是旧文案叫 agent
-别去找。走 `tuyaopen devplat exec -- panel …`（见 skill `tuyaopen-cloud`）。
+别去找。走 `tuyaopen-cli devplat exec -- panel …`（见 skill `tuyaopen-cloud`）。
 
 **所以完整链路是三层，从上往下试：**
 
 | 层 | 谁做 | 覆盖什么 |
 |---|---|---|
-| ① `tuyaopen miniapp *` | 本地 | 模板、运行时、appid 记录、DP schema、构建、预览、上传包体（§0） |
+| ① `tuyaopen-cli miniapp *` | 本地 | 模板、运行时、appid 记录、DP schema、构建、预览、上传包体（§0） |
 | ② `tuya-devplat-cli panel *` | 平台 API | 建小程序、版本、提审、发布、**绑面板到产品** |
 | ③ 网页 | 人 | ② 不可用时的兜底（下面的 URL 表） |
 
@@ -332,7 +332,7 @@ product release-ui                       ← 公版面板可选
 
 这是这条链上最容易错的一步：
 
-| | `tuyaopen project bind-product --pid <pid>` | `tuya-devplat-cli panel bind --ui-id <uiId> --product-id <pid>` |
+| | `tuyaopen-cli project bind-product --pid <pid>` | `tuya-devplat-cli panel bind --ui-id <uiId> --product-id <pid>` |
 |---|---|---|
 | 改的是 | **本地**：`tuyaopen.project.ini` 的 `[product]` | **平台**：产品上挂哪个面板 |
 | 谁需要它 | `miniapp sync-schema`、DP 代码生成 | 手机 App 打开这个产品时显示哪个面板 |
@@ -358,12 +358,12 @@ product release-ui                       ← 公版面板可选
 
 ## ③ 兜底：网页步骤与要拼好的 URL
 
-上一节的 ② 层不可用时走这里。这四个步骤既不在本 skill、也不在 `tuyaopen` CLI、
+上一节的 ② 层不可用时走这里。这四个步骤既不在本 skill、也不在 `tuyaopen-cli` CLI、
 也不在 IDE 内——开浏览器去涂鸦开发者平台做。AI 走到这四步时必须**明确
 告诉用户"这一步要去网页"并给出拼好参数的网址**，不要停在这里干等，更不要编一条
-`tuyaopen miniapp publish` / `submit` / `review` / `bind` 之类的命令——
-`tuyaopen` 的 `miniapp` 组只有 `build` / `install` / `meta` / `preview` /
-`sync-schema` / `template` / `upload` 七条，跑 `tuyaopen schema list --json`
+`tuyaopen-cli miniapp publish` / `submit` / `review` / `bind` 之类的命令——
+`tuyaopen-cli` 的 `miniapp` 组只有 `build` / `install` / `meta` / `preview` /
+`sync-schema` / `template` / `upload` 七条，跑 `tuyaopen-cli schema list --json`
 可以自己核实。
 
 **网址要带参数拼好，不要丢一个光秃秃的首页过去。** IDE 就是在点击时把参数拼
@@ -372,7 +372,7 @@ product release-ui                       ← 公版面板可选
 
 | # | 步骤 | 为什么命令行做不了 | 打开哪个 URL |
 |---|---|---|---|
-| 1 | **创建小程序**（拿到 appid） | appid 由平台签发。`tuyaopen miniapp meta set-appid <appid>` 只是把一个**已有的** appid 写进项目元数据，它不会创建小程序；`upload` 也要求 appid 已存在 | `https://platform.tuya.com/miniapp/` —— 唯一不带参数的一步，因为参数要指的那个东西还不存在。创建完把 id 抄回来：`tuyaopen miniapp meta set-appid <appid>` |
+| 1 | **创建小程序**（拿到 appid） | appid 由平台签发。`tuyaopen-cli miniapp meta set-appid <appid>` 只是把一个**已有的** appid 写进项目元数据，它不会创建小程序；`upload` 也要求 appid 已存在 | `https://platform.tuya.com/miniapp/` —— 唯一不带参数的一步，因为参数要指的那个东西还不存在。创建完把 id 抄回来：`tuyaopen-cli miniapp meta set-appid <appid>` |
 | 2 | **提审** | 审核是平台上有真人审核员的工作流，CLI 里没有对应接口 | `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>` |
 | 3 | **发布 / 灰度 / 上线 / 回滚** | 影响这款产品线上**所有**终端用户，刻意不放到命令行 | 同第 2 步的版本管理页 |
 | 4 | **把面板小程序绑定到产品** | 绑定关系挂在产品上，不在项目里，本地任何东西都断言不了 | `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` |
@@ -385,7 +385,7 @@ URL 编码（IDE 用的是 `encodeURIComponent`）：
 
 | 占位符 | JSON 字段 | 实际装的是什么 | 为空说明什么 |
 |---|---|---|---|
-| `<appid>` | `appid` | **小程序 id**，就是 `tuyaopen miniapp meta set-appid` 写进去的值 | 平台上还没创建这个小程序 → 先做第 **1** 步。此时没有任何东西可提审、可发布 |
+| `<appid>` | `appid` | **小程序 id**，就是 `tuyaopen-cli miniapp meta set-appid` 写进去的值 | 平台上还没创建这个小程序 → 先做第 **1** 步。此时没有任何东西可提审、可发布 |
 | `<projectId>` | `projectId` | ⚠ **云端产品 PID** —— 尽管字段名叫 projectId，它**不是**小程序 id | 这个项目还没绑产品（或被解绑了）→ 先绑产品；没有 PID 就没有产品页可开 |
 
 > **⚠ `projectId` 装的是产品 PID。** 看字段名想当然把它当小程序 id，是这里
@@ -409,7 +409,7 @@ hash 才是选中"小程序绑定"所在的那一栏。少任何一半，用户�
 
 三件事按顺序发生，而且**只有第一件有命令行入口**：
 
-1. **上传（upload）** —— `tuyaopen miniapp upload`（或 IDE MiniApp 页面的
+1. **上传（upload）** —— `tuyaopen-cli miniapp upload`（或 IDE MiniApp 页面的
    「上传」按钮）在平台上登记一个**版本**。**只有这一步有 CLI 命令。**
    包只是给你和团队内测用，终端用户看不到。
 2. **发布（提审 → 上线）** —— 第 2、3 步，把那个版本放出去。只能在网页做。

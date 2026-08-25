@@ -42,15 +42,15 @@ the section that matches the symptom:
 For the CLI's envelope, exit codes, and self-discovery (`schema get`), see
 skill `tuyaopen-shared` — not repeated here.
 
-## Shortcuts — `tuyaopen firmware`
+## Shortcuts — `tuyaopen-cli firmware`
 
 | Intent | Command |
 |---|---|
-| List serial ports (for § 2/§ 3 port selection) | `tuyaopen firmware list-ports --chip <chip>` |
-| Foreground serial monitor | `tuyaopen firmware monitor --port <port>` |
+| List serial ports (for § 2/§ 3 port selection) | `tuyaopen-cli firmware list-ports --chip <chip>` |
+| Foreground serial monitor | `tuyaopen-cli firmware monitor --port <port>` |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
 (it is usually not on `PATH`).
 
 > **Looking for `diag doctor` / `diag export` / `diag doctor`?** They moved to
@@ -79,7 +79,7 @@ CONFIG_CLI_CMD_KV=y                # kv_*  命令组（kv_dump 等），默认 y
 那一组被单独关了 —— 先看总开关。
 
 写进工程的 `app_default.config`（或 `config/<BOARD>.config`），**不要**去改 SDK 里的
-`Kconfig`：那是 vendored 文件，`tuyaopen sdk update` 会把你的改动冲掉。
+`Kconfig`：那是 vendored 文件，`tuyaopen-cli sdk update` 会把你的改动冲掉。
 
 ### 0.2 初始化：Kconfig 只负责编进去，还得有人调它
 
@@ -153,7 +153,7 @@ tal_cli_cmd_register(s_app_cmds, sizeof(s_app_cmds) / sizeof(s_app_cmds[0]));
 
 ## 1. Environment triage is **not** here
 
-`tuyaopen diag doctor` and `diag export` diagnose the **CLI and the host** —
+`tuyaopen-cli diag doctor` and `diag export` diagnose the **CLI and the host** —
 which binary is running, whether the SDK env is warm, whether credentials
 exist. That is not device debugging, and it is needed by every skill rather
 than by this one, so it lives in skill `tuyaopen-shared` § *Environment and
@@ -167,7 +167,7 @@ to see or steer what it is doing.**
 ### Foreground (interactive)
 
 ```bash
-tuyaopen firmware monitor --port <port> [--baud <rate>] [--log]
+tuyaopen-cli firmware monitor --port <port> [--baud <rate>] [--log]
 ```
 
 Blocking — it inherits your terminal's stdin, Ctrl+C to exit. Pass `--log`
@@ -259,11 +259,11 @@ from the cwd for `app_default.config`), gitignored by the SDK's unanchored
 
 Only one session runs at a time — starting a new one stops the previous.
 
-**Port selection** — group `tuyaopen firmware list-ports --chip <chip> --json`
+**Port selection** — group `tuyaopen-cli firmware list-ports --chip <chip> --json`
 output the same way as skill `tuyaopen-embedded-flash`: a single-serial board's one
 port carries flash, auth, and log together (so `stop` this session before a
 flash on that board); a dual-serial board (e.g. T5AI) can keep this monitor
-running on the log port while flashing the other. `tuyaopen firmware
+running on the log port while flashing the other. `tuyaopen-cli firmware
 list-ports` output is coarser than the raw `tyutool_cli list-ports --json`
 (no `usbSerial`/`usbInterface`) — see skill `tuyaopen-embedded-flash` § 1 / § 4 when
 you need the authoritative grouping.

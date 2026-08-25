@@ -26,14 +26,14 @@ compatibility:
 
 # LVGL on TuyaOpen
 
-## No `tuyaopen` CLI coverage
+## No `tuyaopen-cli` CLI coverage
 
-Writing LVGL code, choosing fonts and driving the simulator have no `tuyaopen`
+Writing LVGL code, choosing fonts and driving the simulator have no `tuyaopen-cli`
 command. The knobs are Kconfig, reached through `tos.py config` / `menuconfig`;
-compiling is `tuyaopen firmware build`, which belongs to skill
+compiling is `tuyaopen-cli firmware build`, which belongs to skill
 `tuyaopen-embedded-build`.
 
-> **Naming trap**: `tuyaopen config` is **not** Kconfig — it reads and writes
+> **Naming trap**: `tuyaopen-cli config` is **not** Kconfig — it reads and writes
 > three IDE settings (language / gitMirror / manifestsSource). Kconfig is
 > `tos.py config`. See `tuyaopen-embedded-project`.
 
@@ -89,7 +89,7 @@ Kconfig 出来的值是以编译器 `-D` 进来的，**先于**这个头文件�
 
 - 一个**有** Kconfig 选项的宏，你在 `lv_conf.h` 里改它 —— `#ifndef` 已经不成立，你的
   改动**静默无效**。查半天查不出来，因为文件里白纸黑字写着你要的值。
-- 而且 `lv_conf.h` 是 vendored 的 SDK 文件，`tuyaopen sdk update` 会把改动冲掉。
+- 而且 `lv_conf.h` 是 vendored 的 SDK 文件，`tuyaopen-cli sdk update` 会把改动冲掉。
 
 **规则**：先在 `Fonts_Kconfig` / `src/liblvgl/Kconfig` 里找有没有对应的 `CONFIG_*`；
 有就写进工程的 `app_default.config` 或 `config/<BOARD>.config`。只有在**确认没有** Kconfig

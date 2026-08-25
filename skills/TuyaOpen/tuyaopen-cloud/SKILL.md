@@ -23,24 +23,24 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 
 > **Communication type:** This skill only targets **Wi-Fi + Bluetooth (`wf_ble_*`)** dual-mode solutions.
 
-## Shortcuts — `tuyaopen credential` / `tuyaopen product` / `tuyaopen dp` / `tuyaopen devplat`
+## Shortcuts — `tuyaopen-cli credential` / `tuyaopen-cli product` / `tuyaopen-cli dp` / `tuyaopen-cli devplat`
 
 | Intent | Command |
 |---|---|
-| Sign in / check sign-in state / sign out | `tuyaopen credential login` · `credential status` · `credential logout` (P2) |
-| Sync the bound product's snapshot | `tuyaopen product sync` (P2) |
-| View the bound product | `tuyaopen product info` |
-| List DPs (**reads the local snapshot**) | `tuyaopen dp list` |
-| Add a custom DP (101–199) | `tuyaopen dp add` (P2) |
-| Generate code from DPs | `tuyaopen dp generate` · `dp sync` (P2) |
-| Reach any `tuya-devplat-cli` command the groups above don't cover | `tuyaopen devplat exec -- <args…>` (P2) — credentials are injected for you; never ask the user for a raw Service Key |
+| Sign in / check sign-in state / sign out | `tuyaopen-cli credential login` · `credential status` · `credential logout` (P2) |
+| Sync the bound product's snapshot | `tuyaopen-cli product sync` (P2) |
+| View the bound product | `tuyaopen-cli product info` |
+| List DPs (**reads the local snapshot**) | `tuyaopen-cli dp list` |
+| Add a custom DP (101–199) | `tuyaopen-cli dp add` (P2) |
+| Generate code from DPs | `tuyaopen-cli dp generate` · `dp sync` (P2) |
+| Reach any `tuya-devplat-cli` command the groups above don't cover | `tuyaopen-cli devplat exec -- <args…>` (P2) — credentials are injected for you; never ask the user for a raw Service Key |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per `tuyaopen-shared` § 1 (it is
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
 usually not on `PATH`).
 
 **Still routed through `tuya-devplat-cli` + this skill's Python helpers, no
-`tuyaopen` coverage:** product search and creation, and browsing / adding /
+`tuyaopen-cli` coverage:** product search and creation, and browsing / adding /
 removing / validating the standard DP catalog. See
 [ops/product.md](ops/product.md) and [ops/manage-dp.md](ops/manage-dp.md).
 
@@ -69,12 +69,12 @@ The Python helper scripts (`scripts/product.py`, `scripts/manage_dp.py`) auto-de
 this binary by searching upward from the current working directory. You can also override
 the path via the `TUYA_DEVPLAT_CLI` environment variable.
 
-## §0 登录一次，然后**永远**用 `tuyaopen devplat exec` 调 devplat
+## §0 登录一次，然后**永远**用 `tuyaopen-cli devplat exec` 调 devplat
 
 <code data-type="tag" style="color:#ff4d4f">第三轮实测：agent 直接调 vendored 二进制，结果去读 keychain、又向用户索要 Service Key</code>
 
 `tuya-devplat-cli` **有自己独立的凭据存储，而我们从不往里写**。它的 token 是
-`tuyaopen` **按每次 spawn 注入**的（`TUYA_SK_TOKEN`）。所以直接执行那个 vendored 的
+`tuyaopen-cli` **按每次 spawn 注入**的（`TUYA_SK_TOKEN`）。所以直接执行那个 vendored 的
 `vendor/devplat-cli/dist/cli.js` = **没有任何凭据**。
 
 第三轮的 agent 就是这么走的，然后连着做了两件都不该做的事：① 想从 OS keychain 里
@@ -85,10 +85,10 @@ the path via the `TUYA_DEVPLAT_CLI` environment variable.
 
 ```bash
 # ① 登录一次（SK 存进 OS keychain，你永远看不到它，也不需要看到）
-tuyaopen credential login --emit-url
+tuyaopen-cli credential login --emit-url
 
 # ② 之后所有 devplat 调用都走这个口子，凭据自动注入
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen devplat exec --yes -- <devplat 的参数>
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli devplat exec --yes -- <devplat 的参数>
 ```
 
 **硬规则：**
@@ -106,7 +106,7 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen devplat exec --yes -- <devplat 的参数>
 **发现能力用这个：**
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen devplat exec --yes -- schema list --format json
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli devplat exec --yes -- schema list --format json
 ```
 
 实测它报出 **37 个 group**，而授权过滤后的 `--help` 只列 28 个 —— 这也再次说明下面 Trap 1
@@ -122,9 +122,9 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen devplat exec --yes -- schema list --format js
 
 ```bash
 # 后台起，URL 会以一行 JSON 打到 stdout
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen credential login --emit-url --timeout 600 > /tmp/login.json 2>/tmp/login.err &
+TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli credential login --emit-url --timeout 600 > /tmp/login.json 2>/tmp/login.err &
 # 把 URL 交给用户，然后每 10 秒问一次状态
-tuyaopen credential status --json
+tuyaopen-cli credential status --json
 ```
 
 `credential status --json` 的 `loggedIn` 变成 `true` 就成了。**判据是它，不是登录命令的退出码**
@@ -134,11 +134,11 @@ tuyaopen credential status --json
 
 Its scope is the **raw platform API surface**: `product`, `panel`, `project`,
 `product-agent`, `miniapp`, `auth`, `workflow`, `role`, `database` and more.
-Anything a `tuyaopen` command already covers should go through `tuyaopen`
+Anything a `tuyaopen-cli` command already covers should go through `tuyaopen-cli`
 instead — that one wraps the same call with a typed error envelope, a local
 snapshot and a fallback cache, none of which the raw response has.
 
-**The reverse mistake is the one that actually happened.** `tuyaopen` has no
+**The reverse mistake is the one that actually happened.** `tuyaopen-cli` has no
 command for creating a panel miniapp, submitting it for review, publishing it,
 or binding it to a product — and skill `tuyaopen-miniapp` concluded from that
 that those four steps "have no CLI command at all and can only be done in a
@@ -149,8 +149,8 @@ carries all of them: `create-miniapp`, `miniapp-next-version`,
 (plus `product release-ui`). Corrected 2026-08-21; the full chain now lives in
 `tuyaopen-miniapp` § 0.2.
 
-Generalise it: **`tuyaopen schema list` is the authority for `tuyaopen`, and for
-nothing else.** "Absent from `tuyaopen`" is not evidence about this CLI, and —
+Generalise it: **`tuyaopen-cli schema list` is the authority for `tuyaopen-cli`, and for
+nothing else.** "Absent from `tuyaopen-cli`" is not evidence about this CLI, and —
 per Trap 1 below — absence from *this* CLI's `--help` is not evidence either.
 
 ```bash
@@ -192,16 +192,16 @@ refresh silently failed" when it succeeded somewhere else.
 Check sign-in state first:
 
 ```bash
-tuyaopen credential status --json
+tuyaopen-cli credential status --json
 ```
 
 If not signed in, **sign in directly** — don't send the developer to click
 around the IDE:
 
 ```bash
-tuyaopen credential login              # opens a browser; --timeout defaults to 300s
-tuyaopen credential login --port 7788  # fixed port on a remote machine, for port-forwarding
-tuyaopen credential login --emit-url   # ALSO print the URL to stdout as one JSON line
+tuyaopen-cli credential login              # opens a browser; --timeout defaults to 300s
+tuyaopen-cli credential login --port 7788  # fixed port on a remote machine, for port-forwarding
+tuyaopen-cli credential login --emit-url   # ALSO print the URL to stdout as one JSON line
 ```
 
 **If you are an agent, use `--emit-url`.** The URL normally goes to **stderr**
@@ -217,7 +217,7 @@ already printed.
 the final envelope, so it arrives as data:
 
 ```bash
-tuyaopen credential login --emit-url --json
+tuyaopen-cli credential login --emit-url --json
 # {"event":"login_url","url":"http://127.0.0.1:39355/?deviceId=ide&..."}   <- hand this to the human
 # {"ok":true,"data":{...},"contractVersion":1}                            <- after they finish
 ```
@@ -231,7 +231,7 @@ Hand the URL to the developer and **wait** — do not kill the process. Killing 
 > Check with `tuya-devplat-cli auth status` (must show `"authenticated"`).
 
 `dp list` reads the **local snapshot** (`.tuyaopen/platform/product-<pid>.json`),
-not the cloud. Run `tuyaopen product sync` first if you need the latest.
+not the cloud. Run `tuyaopen-cli product sync` first if you need the latest.
 
 ### Output format
 
@@ -327,18 +327,18 @@ So:
 product-agent, workflow, device, firmware, database, knowledge, …. It returns the
 platform's response as-is.
 
-**Prefer `tuyaopen` whenever it covers the job.** Where both can answer,
-`tuyaopen` wraps the same call with a typed error envelope (`type`/`subtype`/
+**Prefer `tuyaopen-cli` whenever it covers the job.** Where both can answer,
+`tuyaopen-cli` wraps the same call with a typed error envelope (`type`/`subtype`/
 `hint`), a local snapshot under `.tuyaopen/platform/`, and a fallback cache —
 the raw devplat response has none of those. Concretely:
 
 | Want | Prefer | Not |
 |---|---|---|
-| Product detail / DP schema for the bound PID | `tuyaopen product sync`, `tuyaopen dp list` | `product detail`, `product dp-schema` |
-| Bind a product to this project | `tuyaopen project bind-product` | hand-editing `project.tuya.json` |
-| Anything with no `tuyaopen` equivalent (panel admin, workflow, agent, database) | `tuya-devplat-cli` | — |
+| Product detail / DP schema for the bound PID | `tuyaopen-cli product sync`, `tuyaopen-cli dp list` | `product detail`, `product dp-schema` |
+| Bind a product to this project | `tuyaopen-cli project bind-product` | hand-editing `project.tuya.json` |
+| Anything with no `tuyaopen-cli` equivalent (panel admin, workflow, agent, database) | `tuya-devplat-cli` | — |
 
-The two do **not** share a confirmation mechanism: `tuyaopen` gates by
+The two do **not** share a confirmation mechanism: `tuyaopen-cli` gates by
 `riskLevel` (P0 derived token / P2 `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` / P3
 ungated), `tuya-devplat-cli` uses its own `--dry-run` → `--confirm <token>` pair
 documented above. Don't carry one CLI's confirmation habit into the other.

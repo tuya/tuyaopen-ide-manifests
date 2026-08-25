@@ -1,7 +1,7 @@
 ---
 name: tuyaopen-embedded-project
 description: >-
-  Read and mutate the `.tuyaopen/` project descriptor via the `tuyaopen`
+  Read and mutate the `.tuyaopen/` project descriptor via the `tuyaopen-cli`
   CLI (`project info/create/set-platform/set-board/set-status/set-intent/
   bind-product`), browse the local demo/example catalogue (`demos
   list/detail`), and read or write the three IDE settings (`config
@@ -24,24 +24,24 @@ compatibility:
 
 # TuyaOpen Project, Demos & Config
 
-> **SDK root:** `tos.py`-side paths and commands in this skill are relative to the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell, `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see skill `tuyaopen-embedded-env-setup`. The `tuyaopen project` / `demos` / `config` CLI commands below don't need SDK-env activation — they read/write `.tuyaopen/` and IDE settings directly.
+> **SDK root:** `tos.py`-side paths and commands in this skill are relative to the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell, `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see skill `tuyaopen-embedded-env-setup`. The `tuyaopen-cli project` / `demos` / `config` CLI commands below don't need SDK-env activation — they read/write `.tuyaopen/` and IDE settings directly.
 
 Docs: <https://tuyaopen.ai/docs/tos-tools/tos-guide>
 
-## Shortcuts — `tuyaopen project` / `tuyaopen config` / `tuyaopen demos` / `tuyaopen manifests`
+## Shortcuts — `tuyaopen-cli project` / `tuyaopen-cli config` / `tuyaopen-cli demos` / `tuyaopen-cli manifests`
 
 | Intent | Command |
 |---|---|
-| Read the `.tuyaopen/` project descriptor | `tuyaopen project info` |
-| Create a project non-interactively | `tuyaopen project create` (P2) |
-| Set platform / board / lifecycle status / AI intent | `tuyaopen project set-platform` · `set-board` · `set-status` · `set-intent` (all P2) |
-| Bind a product PID to this project | `tuyaopen project bind-product` (P2) |
-| Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — **not** Kconfig, see the warning below) | `tuyaopen config get` · `config list` · `config set` (P2) |
-| Browse the local demo/example catalogue | `tuyaopen demos list` · `demos detail` |
-| Local manifest cache status / sync | `tuyaopen manifests status` · `manifests sync` (P2) |
+| Read the `.tuyaopen/` project descriptor | `tuyaopen-cli project info` |
+| Create a project non-interactively | `tuyaopen-cli project create` (P2) |
+| Set platform / board / lifecycle status / AI intent | `tuyaopen-cli project set-platform` · `set-board` · `set-status` · `set-intent` (all P2) |
+| Bind a product PID to this project | `tuyaopen-cli project bind-product` (P2) |
+| Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — **not** Kconfig, see the warning below) | `tuyaopen-cli config get` · `config list` · `config set` (P2) |
+| Browse the local demo/example catalogue | `tuyaopen-cli demos list` · `demos detail` |
+| Local manifest cache status / sync | `tuyaopen-cli manifests status` · `manifests sync` (P2) |
 
-Flags aren't listed here — run `tuyaopen schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
+Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
 (it is usually not on `PATH`).
 
 > **No CLI?** `project create` → `tos.py new project` (interactive; see
@@ -50,16 +50,16 @@ for the current set. Resolve `tuyaopen` first per skill `tuyaopen-shared` § 1
 
 ## ⚠ Two commands named `config` — read this before touching either
 
-`tos.py config` and `tuyaopen config` are **two unrelated commands that
+`tos.py config` and `tuyaopen-cli config` are **two unrelated commands that
 happen to share a word**, and guessing wrong silently no-ops instead of
 erroring loudly:
 
 | | Edits | Keys |
 |---|---|---|
 | `tos.py config` (`choice`/`menu`/`save`/`set`/`get`/`list`/`diff`) | The project's **Kconfig build configuration** — `app_default.config`, `.build/cache/using.config` | Hundreds of `CONFIG_*` Kconfig symbols — see § *Configuration Management* below |
-| `tuyaopen config` (`get`/`set`/`list`) | **IDE settings** — nothing to do with Kconfig | Exactly three: `language`, `gitMirror`, `manifestsSource` (verified against `ALLOWED_CONFIG_KEYS` in the IDE's `src/cli/cliConfig.ts`) |
+| `tuyaopen-cli config` (`get`/`set`/`list`) | **IDE settings** — nothing to do with Kconfig | Exactly three: `language`, `gitMirror`, `manifestsSource` (verified against `ALLOWED_CONFIG_KEYS` in the IDE's `src/cli/cliConfig.ts`) |
 
-The intuitive guess for "set a build config option" is `tuyaopen config
+The intuitive guess for "set a build config option" is `tuyaopen-cli config
 set` — that is the **wrong** command: it will reject any Kconfig-style key
 since it isn't one of the three IDE settings, and do nothing to the project.
 Use `tos.py config set` (§ *Configuration Management*) for Kconfig. This same
@@ -67,19 +67,19 @@ trap is called out once already in skill `tuyaopen-shared` § 7 — it's worth
 repeating here because this is the skill someone lands on when they type
 "config" for either intent.
 
-## `tuyaopen config` — IDE settings
+## `tuyaopen-cli config` — IDE settings
 
 ```bash
-tuyaopen config list                          # all three keys (empty object = all defaults)
-tuyaopen config get --key language
-tuyaopen config set --key gitMirror --value <value>   # P2 — needs --yes + TUYAOPEN_AUTOCONFIRM_P2=1, or --dry-run
+tuyaopen-cli config list                          # all three keys (empty object = all defaults)
+tuyaopen-cli config get --key language
+tuyaopen-cli config set --key gitMirror --value <value>   # P2 — needs --yes + TUYAOPEN_AUTOCONFIRM_P2=1, or --dry-run
 ```
 
-Flags: `tuyaopen config --help` / `tuyaopen schema get --group config
+Flags: `tuyaopen-cli config --help` / `tuyaopen-cli schema get --group config
 --command set`. `set` is mutating (P2, see skill `tuyaopen-shared` § 4);
 `get`/`list` are read-only.
 
-## `tuyaopen project` — read/write the `.tuyaopen/` descriptor
+## `tuyaopen-cli project` — read/write the `.tuyaopen/` descriptor
 
 Seven subcommands over the `.tuyaopen/` layout described in skill
 `tuyaopen-shared` § 8:
@@ -95,15 +95,15 @@ Seven subcommands over the `.tuyaopen/` layout described in skill
 | `bind-product` | Bind a Tuya product PID (writes `[product] pid`) | P2 |
 
 ```bash
-tuyaopen project info --json
-tuyaopen project create --name my-app --demo peripherals-led --board tuya-t5-e1
-tuyaopen project bind-product --pid <pid>
+tuyaopen-cli project info --json
+tuyaopen-cli project create --name my-app --demo peripherals-led --board tuya-t5-e1
+tuyaopen-cli project bind-product --pid <pid>
 ```
 
 `create` needs either `--extension-path` (IDE-injected media templates) or
 `--sdk-root` (SDK's own `tools/app_template/`); an SDK-subpath demo (most of
-them) additionally needs the SDK installed. Full flags: `tuyaopen project
---help` / `tuyaopen schema get --group project --command create` — don't
+them) additionally needs the SDK installed. Full flags: `tuyaopen-cli project
+--help` / `tuyaopen-cli schema get --group project --command create` — don't
 memorize the flag list, it evolves under the CLI's own contract snapshot (see
 skill `tuyaopen-shared` § 5).
 
@@ -112,17 +112,17 @@ New Project* below for the interactive/manual path, still needed for TTY
 scaffolding or when neither `--extension-path` nor `--sdk-root` is
 available).
 
-## `tuyaopen demos` — browse the local manifest catalogue
+## `tuyaopen-cli demos` — browse the local manifest catalogue
 
 Read-only queries against the same local manifest cache `project create
 --demo`/`--board` reads from — no network, no cloud:
 
 ```bash
-tuyaopen demos list --json                    # id, name, type, summary, compatibility
-tuyaopen demos detail --id peripherals-led --json    # source, build configs, cloud/PID spec
+tuyaopen-cli demos list --json                    # id, name, type, summary, compatibility
+tuyaopen-cli demos detail --id peripherals-led --json    # source, build configs, cloud/PID spec
 ```
 
-Needs a synced local manifests cache (`tuyaopen manifests sync`) or
+Needs a synced local manifests cache (`tuyaopen-cli manifests sync`) or
 `TUYAOPEN_MANIFESTS_PATH` pointed at one — otherwise both return
 `config:no_manifest_cache`.
 
