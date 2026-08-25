@@ -40,6 +40,29 @@ the IDE, pass `--extension-path <path>` explicitly or set
 `TUYAOPEN_EXTENSION_PATH`. Without it, these commands fail with a clear
 `config:project_not_open` hint rather than doing partial work.
 
+### 没装 IDE 时从哪弄到一个 `--extension-path`
+
+<code data-type="tag" style="color:#52c41a">内测第五轮实测可行</code>
+
+**任何**装过 TuyaOpen IDE 扩展的编辑器都行 —— 不必是 VS Code。第五轮的测试机上
+恰好装过 Cursor 和 Trae 版，直接借用它们的扩展目录就绕过了这堵墙。找法：
+
+```bash
+# Windows
+dir /s /b "%USERPROFILE%\.vscode\extensions\*tuyaopen*"  "%USERPROFILE%\.cursor\extensions\*tuyaopen*"
+# macOS / Linux
+find ~/.vscode/extensions ~/.cursor/extensions ~/.trae/extensions \
+     -maxdepth 1 -iname '*tuyaopen*' 2>/dev/null
+```
+
+挑一个**里面有 `vendor/miniapp-runtime/` 的**，把那个目录当 `--extension-path`。
+
+> **多记一个备用路径。** 第五轮里借用的那个目录**在会话中途消失了**（前一刻还在，
+> 后一刻就没了，疑似扩展自动更新/清理），第二次调用才失败。找到两个就都记下来。
+
+一个都找不到时，`preview` 这一步的降级方案见
+skill `tuyaopen-workflow-miniapp-dev` 的 ⑧（真机扫码看，或去真 IDE 里跑）。
+
 ## Shortcuts — `tuyaopen miniapp`
 
 | Intent | Command |

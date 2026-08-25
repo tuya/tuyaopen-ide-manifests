@@ -315,6 +315,23 @@ Every command returns one JSON object on a single stdout line under
 `--json` / `--format json` (default when stdout is piped; `human` is the
 default in a TTY). Never parse human-mode output.
 
+> **你多半看不到 stdout 和 stderr 的区别 —— 不要凭观感断言这条契约被违反了。**
+>
+> 几乎每个 agent 工具的 shell 都把两个流**合并**后展示给你（Claude Code 的 Bash
+> 工具就是这样）。于是你会看到日志行和那一行 JSON 交错在一起，看起来像是日志
+> 混进了 stdout。**内测第五轮就有人据此报了一个不存在的 bug** —— 复核时严格分离
+> 两个流，stdout 恰好一行 JSON，日志一行不差全在 stderr。
+>
+> 要验证，就显式重定向，别靠眼睛：
+>
+> ```bash
+> tuyaopen <cmd> --json >out.txt 2>err.txt
+> wc -l out.txt            # 契约要求：1
+> ```
+>
+> 顺带解释了为什么日志走 stderr：**不是藏起来，是为了不污染载荷**。你要读日志，
+> 看 stderr；你要解析结果，读 stdout —— 前提是你把它们分开。
+
 ```ts
 interface CommandResult {
   ok: boolean;

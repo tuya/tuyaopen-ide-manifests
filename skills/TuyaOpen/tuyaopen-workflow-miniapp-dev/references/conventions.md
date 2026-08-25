@@ -33,13 +33,28 @@ DP 分两类——**先翻 `src/devices/schema.ts` 看 `type`**，再按下表�
 
 | DP 类型 | schema `type` | 读 | 写（首选） | 写（特殊） | 备注 |
 |---|---|---|---|---|---|
-| **Basic** | `bool` / `value` / `enum` / `string` | `useProps(p => p.code)` | `publishDpOutTime(code, value)` | `useActions().code.set(v)` 用于连续手势（PTZ / 滑条） | `publishDpOutTime` 自带 Loading + 超时 + 失败 toast |
+| **Basic** | `bool` / `value` / `enum` / `string` | `useProps(p => p.code)` | `useActions().code.set(v)` | — | 见下方「不要用 `publishDpOutTime`」 |
 | **Complex** | `raw` / `string`（实际是 JSON）| `useStructuredProps` | `useStructuredActions` | — | **必须**在 `protocols/index.ts` 注册 Transformer；典型场景：`colour_data` / `control_data` / `scene_data` / `music_data` / `ipc_mobile_path` 等 |
 
-**`publishDpOutTime` 优先**：除非是滑条 / PTZ 这种需要每几百毫秒持续下
-发的场景（用 `useActions().code.set()` 配 `setInterval`），Basic DP 一律
-首选 `publishDpOutTime` —— 它把 Loading + 超时（默认 10s）+ 失败 toast
-都封装好了，`useActions().code.set()` 没这些。
+**Basic DP 一律用 `useActions().code.set(v)`**，连续手势（滑条 / PTZ）
+同样用它配 `setInterval`。
+
+> ### ⛔ 不要用 `publishDpOutTime`
+>
+> <code data-type="tag" style="color:#ff4d4f">本文件此前把它写成「首选」，那是错的</code>
+>
+> **这个符号在 `@ray-js/panel-sdk` 里不存在。** 2026-08-25 对着 1.13.1 与
+> 1.13.7 两个完整包核过：整包 0 命中。此前本节推荐它，还描述了它
+> 「自带 Loading + 超时 + 失败 toast」并给了 import 示例 —— 照抄会写出
+> **编译期就报「符号不存在」**的代码。
+>
+> 内测第五轮的 agent 没上当，因为它全文搜遍了所有已装 miniapp skill 的
+> `references/` 一次都没搜到，于是改用了本节现在推荐的写法。**那是靠它多疑，
+> 不是靠我们写对。**
+>
+> Loading / 超时 / 失败提示要自己做：`useActions().code.set()` 之后
+> 用 `ToastInstance(...)` 反馈（注意 Toast 需要挂载 `<Toast id="..." />`
+> 节点，用法见 smart-ui 的 `Toast.md`）。
 
 **`useStructuredProps` 是 Complex DP 的唯一正确读法**：用 `useProps`
 拿到的是**未解析的 JSON 字符串**，你得到的不是对象，编解码也没接通
@@ -69,18 +84,18 @@ function PowerSwitch() {
 }
 ```
 
-### ✅ 正确——Basic DP（首选 publishDpOutTime）
+### ✅ 正确——Basic DP
 
 ```tsx
-import { useProps } from '@ray-js/panel-sdk';
-import { publishDpOutTime } from '@ray-js/panel-sdk';
+import { useProps, useActions } from '@ray-js/panel-sdk';
 
 function PowerSwitch() {
   const isOn = useProps(p => p.switch as boolean);   // 响应式读
+  const actions = useActions();
 
   return <Switch
     checked={isOn}
-    onChange={(e) => publishDpOutTime('switch', !!e?.detail?.value)}
+    onChange={(e) => actions.switch.set(!!e?.detail?.value)}
   />;
 }
 ```
@@ -441,9 +456,9 @@ export default App;
 
 | AI 写的 | 你应该立刻看出问题 | 修复 |
 |---|---|---|
-| `const [dpVal, setDpVal] = useState(...)` 用于 DP | 违 Rule 1 | Basic DP 用 `useProps` 读 + `publishDpOutTime` 写；Complex DP 用 `useStructuredProps` / `useStructuredActions` |
+| `const [dpVal, setDpVal] = useState(...)` 用于 DP | 违 Rule 1 | Basic DP 用 `useProps` 读 + `useActions().code.set()` 写；Complex DP 用 `useStructuredProps` / `useStructuredActions` |
 | `const raw = useProps(p => p.colour_data); JSON.parse(raw)` | 违 Rule 1（Complex DP 用错 hook）| 改 `useStructuredProps` + 在 `protocols/index.ts` 注册 Transformer |
-| `actions.code.set(v)` 用于单次手动操作 | Rule 1 提醒 | 改 `publishDpOutTime(code, v)`，自带 Loading + 超时 + 失败 toast |
+| `import { publishDpOutTime } from '@ray-js/panel-sdk'` | **这个符号不存在**（整包 0 命中，2026-08-25 核） | 改 `useActions().code.set(v)`，Loading / 超时 / 失败提示自己用 `ToastInstance` 做 |
 | `fetch('https://api.tuya.com/...')` | 违 Rule 2 | 换 cloud-api |
 | `<View style={{...}}>` 用了 30 行 inline 样式 | 违 Rule 3+4 | 抽到 `.module.less` + 用 smart-ui |
 | 直接修改 `src/devices/schema.ts` 添 DP | 违 Rule 6 | 去 Tuya 平台改 → 同步 |

@@ -115,14 +115,45 @@ def _is_running(pid):
             return False
 
 
+def _win_cmdline(pid):
+    """Command line of a PID on Windows, or None when it cannot be determined.
+
+    `wmic` was the original implementation and is **removed from Windows 11
+    24H2**, where it raised a raw FileNotFoundError traceback out of `stop`
+    (measured 2026-08-25). CIM via PowerShell is the documented replacement;
+    `wmic` stays only as a fallback for older machines that lack PowerShell 5+.
+    """
+    try:
+        r = subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command",
+             f"(Get-CimInstance Win32_Process -Filter 'ProcessId={int(pid)}').CommandLine"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    try:
+        r = subprocess.run(
+            ["wmic", "process", "where", f"ProcessId={int(pid)}", "get", "CommandLine"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if r.returncode == 0:
+            return r.stdout
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    return None
+
+
 def _is_monitor_process(pid):
     """Verify PID belongs to a tos.py monitor process to avoid killing unrelated processes."""
     if sys.platform == "win32":
-        result = subprocess.run(
-            ["wmic", "process", "where", f"ProcessId={pid}", "get", "CommandLine"],
-            capture_output=True, text=True,
-        )
-        cmdline = result.stdout
+        cmdline = _win_cmdline(pid)
+        if cmdline is None:
+            # Could not read the command line at all. Fail CLOSED: refusing to
+            # stop is recoverable (the user kills it by hand), killing the wrong
+            # PID is not.
+            return False
         return "tos.py" in cmdline and "monitor" in cmdline
     try:
         with open(f"/proc/{pid}/cmdline", "rb") as f:
