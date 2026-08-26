@@ -163,7 +163,7 @@
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "group": "core",
       "order": 2,
       "name": {
@@ -439,7 +439,7 @@
     },
     {
       "id": "tuyaopen-embedded-hardware",
-      "version": "1.0.4",
+      "version": "2.0.0",
       "group": "embedded",
       "order": 11,
       "name": {

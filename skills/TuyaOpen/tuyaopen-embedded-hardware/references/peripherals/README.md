@@ -1,19 +1,15 @@
----
-name: tuyaopen/peripheral-drivers
-description: >-
-  TDL peripheral driver usage collection for TuyaOpen. Includes skills for
-  display (LVGL/raw framebuffer), camera (YUV422/JPEG/H264), button events,
-  and LED indicator control. Board-agnostic — covers TDL API usage only.
-  显示屏驱动、摄像头、按键、指示灯、TDL、外设API。
-when_to_use: >-
-  Use when writing code to control a specific peripheral using the TDL
-  layer. This collection is board-agnostic — for board-specific GPIO/Kconfig
-  lookup, use tuyaopen-embedded-hardware first.
+# 外设文档索引
 
-id: peripheral-drivers
-surfaces: [embedded]
-tags: [peripheral, display, camera, button, led, tdl, driver]
----
+TuyaOpen 的 TDL 外设用法集合：显示屏（LVGL / 裸帧缓冲）、摄像头（YUV422 / JPEG / H264）、
+按键事件、指示灯，以及片上外设（UART / GPIO / I2C / SPI / PWM / ADC …）。板级无关，只讲 TDL API。
+
+这些文件**不是独立技能**，是 `tuyaopen-embedded-hardware` 的渐进披露载荷
+（`tuyaopen-skill-maker` § 7）。它们曾经叫 `peripheral-drivers/<x>/SKILL.md`，
+于是递归扫描的 agent 工具把每一个都注册成了独立技能——一个已安装技能显示成 27 个。
+2026-08-26 改名到这里，文件名不再是 `SKILL.md`，问题从根上消失。
+
+按需读取：父技能 `SKILL.md` 的委派表给出路径，或
+`tuyaopen-cli skills read --id tuyaopen-embedded-hardware --path references/peripherals/<name>.md`。
 
 # TuyaOpen Peripheral Drivers Collection
 

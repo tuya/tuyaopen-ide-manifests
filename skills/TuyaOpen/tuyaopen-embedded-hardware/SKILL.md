@@ -267,22 +267,22 @@ Never write platform-level macros (`CONFIG_ENABLE_SPI`, `CONFIG_ENABLE_I2C`,
 
 | Type | Skill file |
 |------|-----------|
-| `display` | `peripheral-drivers/peripheral-display/SKILL.md` |
-| `camera`  | `peripheral-drivers/peripheral-camera/SKILL.md`  |
-| `button`  | `peripheral-drivers/peripheral-button/SKILL.md`  |
-| `led`     | `peripheral-drivers/peripheral-led/SKILL.md`     |
-| `audio`   | `peripheral-drivers/peripheral-audio/SKILL.md`   |
-| `touchpad` / `touch` | `peripheral-drivers/peripheral-touch/SKILL.md` |
-| `printer` | `peripheral-drivers/peripheral-printer/SKILL.md` |
-| `ir` / infrared / remote | `peripheral-drivers/peripheral-ir/SKILL.md` |
-| `joystick` / rocker | `peripheral-drivers/peripheral-joystick/SKILL.md` |
-| `leds-pixel` / WS2812 / addressable strip | `peripheral-drivers/peripheral-leds-pixel/SKILL.md` |
+| `display` | `references/peripherals/peripheral-display.md` |
+| `camera`  | `references/peripherals/peripheral-camera.md`  |
+| `button`  | `references/peripherals/peripheral-button.md`  |
+| `led`     | `references/peripherals/peripheral-led.md`     |
+| `audio`   | `references/peripherals/peripheral-audio.md`   |
+| `touchpad` / `touch` | `references/peripherals/peripheral-touch.md` |
+| `printer` | `references/peripherals/peripheral-printer.md` |
+| `ir` / infrared / remote | `references/peripherals/peripheral-ir.md` |
+| `joystick` / rocker | `references/peripherals/peripheral-joystick.md` |
+| `leds-pixel` / WS2812 / addressable strip | `references/peripherals/peripheral-leds-pixel.md` |
 
 The last three (ir / joystick / leds-pixel) are commonly **custom peripherals**
 not present in board-context.md — register them via the `usr-board` flow and
 add the matching `CONFIG_ENABLE_*` macro to `app_default.config`.
 
-Not in board-context.md → `peripheral-drivers/usr-board/SKILL.md`.
+Not in board-context.md → `references/peripherals/usr-board.md`.
 
 ### On-chip peripherals (SoC buses/pins — not catalogued device parts)
 
@@ -293,19 +293,19 @@ These call `tal_*` / `tkl_*` directly — **no** `board_register_hardware()`, **
 
 | Type | Skill file |
 |------|-----------|
-| `uart` / serial (user serial, **not** PR_* logging) | `peripheral-drivers/onchip-uart/SKILL.md` |
-| `gpio` / pin level / edge IRQ | `peripheral-drivers/onchip-gpio/SKILL.md` |
-| `pwm` / dimming / buzzer / servo | `peripheral-drivers/onchip-pwm/SKILL.md` |
-| `i2c` / `iic` / sensor bus | `peripheral-drivers/onchip-i2c/SKILL.md` |
-| `spi` bus master | `peripheral-drivers/onchip-spi/SKILL.md` |
-| `qspi` / quad-SPI (raw; catalogued QSPI LCD → display skill) | `peripheral-drivers/onchip-qspi/SKILL.md` |
-| `adc` / analog read / voltage | `peripheral-drivers/onchip-adc/SKILL.md` |
-| `timer` / hardware timer / periodic callback | `peripheral-drivers/onchip-timer/SKILL.md` |
-| `watchdog` / `wdt` / feed dog | `peripheral-drivers/onchip-watchdog/SKILL.md` |
-| `rtc` / real-time clock | `peripheral-drivers/onchip-rtc/SKILL.md` |
-| `dma2d` / pixel-format convert / fast blit | `peripheral-drivers/onchip-dma2d/SKILL.md` |
-| `vad` / voice activity (speech vs silence) | `peripheral-drivers/onchip-vad/SKILL.md` |
-| `kws` / wake word / keyword spotting | `peripheral-drivers/onchip-kws/SKILL.md` |
+| `uart` / serial (user serial, **not** PR_* logging) | `references/peripherals/onchip-uart.md` |
+| `gpio` / pin level / edge IRQ | `references/peripherals/onchip-gpio.md` |
+| `pwm` / dimming / buzzer / servo | `references/peripherals/onchip-pwm.md` |
+| `i2c` / `iic` / sensor bus | `references/peripherals/onchip-i2c.md` |
+| `spi` bus master | `references/peripherals/onchip-spi.md` |
+| `qspi` / quad-SPI (raw; catalogued QSPI LCD → display skill) | `references/peripherals/onchip-qspi.md` |
+| `adc` / analog read / voltage | `references/peripherals/onchip-adc.md` |
+| `timer` / hardware timer / periodic callback | `references/peripherals/onchip-timer.md` |
+| `watchdog` / `wdt` / feed dog | `references/peripherals/onchip-watchdog.md` |
+| `rtc` / real-time clock | `references/peripherals/onchip-rtc.md` |
+| `dma2d` / pixel-format convert / fast blit | `references/peripherals/onchip-dma2d.md` |
+| `vad` / voice activity (speech vs silence) | `references/peripherals/onchip-vad.md` |
+| `kws` / wake word / keyword spotting | `references/peripherals/onchip-kws.md` |
 
 **Serial "hello world" is ambiguous — ask first, don't auto-pick.** "用串口发 X" can
 mean the debug/log console (`PR_*`, often a USB-serial the PC already sees — no

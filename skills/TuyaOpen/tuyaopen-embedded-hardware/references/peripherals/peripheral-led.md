@@ -165,7 +165,7 @@ Pins: led=GPIO1(high)
 
 ### Extra GPIO LED → `usr_board`
 
-Read skill **`tuyaopen-embedded-hardware/peripheral-drivers/usr-board/SKILL.md`** for CMake wiring.
+Read skill **`tuyaopen-embedded-hardware/references/peripherals/usr-board.md`** for CMake wiring.
 
 Register the **second** device name (`LED_NAME_2`), not `LED_NAME`:
 

@@ -75,7 +75,7 @@ compatibility:
 
 - The `id` **is** the second path segment: `skills/TuyaOpen/<id>/SKILL.md`.
   No nesting deeper than that — a sub-skill bundled inside a parent (e.g.
-  `tuyaopen-embedded-hardware/peripheral-drivers/onchip-gpio/`) is fine, but it is not
+  `tuyaopen-embedded-hardware/references/peripherals/onchip-gpio/`) is fine, but it is not
   separately indexed and does not get its own top-level `<id>` directory.
 - **No slashes in the id.** `.claude/skills/` (Claude Code's loader) walks
   exactly one level deep and silently skips anything nested further — a
@@ -93,7 +93,7 @@ compatibility:
   some hosts do not stop at the top level: Codex scans `$HOME/.agents/skills`
   recursively and registers every nested `SKILL.md` as an independent skill, so
   a sub-skill's `name` is a globally visible identifier there too. Hence the
-  `tuyaopen/<slug>` namespace form under `peripheral-drivers/` — measured
+  `tuyaopen/<slug>` namespace form under `references/peripherals/` — measured
   2026-08-17, when `peripheral-sd` was still announcing itself as
   `SD Card Storage`.
 

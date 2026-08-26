@@ -44,7 +44,9 @@ boards/T5AI/<某板>/...                                   ← 真实 board 怎�
 
 ## 2. skill 文件模板
 
-放在 `peripheral-drivers/peripheral-<x>/SKILL.md`。结构（照抄现有的 button/audio）：
+放在 `references/peripherals/peripheral-<x>.md`。**文件名不能叫 `SKILL.md`** ——
+递归扫描的 agent 工具（Codex 等）会把任何 `SKILL.md` 注册成独立技能，
+2026-08-26 之前正是这样让一个技能显示成 27 个的。结构（照抄现有的 button/audio）：
 
 ```markdown
 ---
@@ -117,7 +119,7 @@ skill 文件放好后，要让 vibe coding 在用户 prompt 命中关键词时�
 2. **`scripts/vibe-test-runner.mjs`** 的 `SUB_SKILL_MATCH` —— 镜像同样的关键词。
 3. **`scripts/vibe-test-llm.mjs`** 的 `SUB_SKILL_MATCH` —— 镜像同样的关键词。
 4. **主 `tuyaopen-embedded-hardware/SKILL.md`** Step 4 的委派表 —— 加一行类型→skill 路径。
-5. **`peripheral-drivers/SKILL.md`** 的索引表 —— 加一行外设→skill+关键 API。
+5. **`references/peripherals/README.md`** 的索引表 —— 加一行外设→skill+关键 API。
 
 关键词设计：
 - 中英文都要（`红外|infrared|遥控`）。

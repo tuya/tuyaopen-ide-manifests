@@ -26,7 +26,7 @@ skills/
 │   ├── tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/  tuyaopen-embedded-project/
 │   ├── tuyaopen-embedded-cli-debug/  tuyaopen-embedded-flash/
 │   ├── tuyaopen-workflow-embedded-dev/  tuyaopen-workflow-product-dev/
-│   ├── tuyaopen-embedded-hardware/              #   bundles sub-skills under peripheral-drivers/
+│   ├── tuyaopen-embedded-hardware/              #   per-peripheral docs under references/peripherals/
 │   ├── tuyaopen-embedded-dependency/
 │   ├── tuyaopen-cloud/
 │   └── tuyaopen-miniapp/  tuyaopen-workflow-miniapp-dev/  tuyaopen-miniapp-ray-common/
@@ -119,10 +119,17 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-workflow-embedded-dev/scripts/build_run
 CI enforces this: `validate-skills-index.py` rejects any `.agents/skills/…`
 path in a skill's markdown whose leading segment is not a known item `id`.
 
-Sub-skills bundled inside a parent skill (e.g.
-`TuyaOpen/tuyaopen-embedded-hardware/peripheral-drivers/onchip-gpio/SKILL.md`) are
+Documents bundled inside a parent skill (e.g.
+`TuyaOpen/tuyaopen-embedded-hardware/references/peripherals/onchip-gpio.md`) are
 **not** indexed separately — they ship with the parent and the validator
 exempts them.
+
+**They must never be named `SKILL.md`.** Agent loaders that scan recursively
+(Codex, and anything else walking `~/.agents/skills` for `SKILL.md`) register
+every one they find as an independent skill. Until 2026-08-26 the hardware
+skill's 26 peripheral documents were named that way, so one installed skill
+presented as 27 and a machine with the 17-skill default set showed 43 choices.
+Bundle payload goes under `references/`, per `tuyaopen-skill-maker` § 7.
 
 ## `version` — per-skill payload version
 
