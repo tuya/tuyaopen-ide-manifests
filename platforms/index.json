@@ -83,15 +83,15 @@
       "published": true
     },
     {
-      "id": "t1",
+      "id": "t1-chl",
       "platformId": "t1",
       "name": {
-        "en": "Tuya T1",
-        "zh-CN": "涂鸦 T1"
+        "en": "Tuya T1-CHL",
+        "zh-CN": "涂鸦 T1-CHL"
       },
       "summary": {
-        "en": "Tuya T1 platform — ARM Cortex-M4 with Wi-Fi 802.11b/g/n and BLE 4.2 for general-purpose IoT.",
-        "zh-CN": "涂鸦 T1 平台 — ARM Cortex-M4，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2，面向通用 IoT 应用。"
+        "en": "Tuya T1-CHL platform — ARM Cortex-M4 with Wi-Fi 802.11b/g/n and BLE 4.2 for general-purpose IoT.",
+        "zh-CN": "涂鸦 T1-CHL 平台 — ARM Cortex-M4，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2，面向通用 IoT 应用。"
       },
       "image": {
         "url": "images/t1/t1-hero.png"
