@@ -22,6 +22,7 @@ related:
   - tuyaopen-embedded-project
   - tuyaopen-embedded-env-setup
 command: tuyaopen.skill.smartProductDev
+  涂鸦开发者平台（platform.tuya.com）上的建产品、查 PID、定义 DP 也从这里进。
 ---
 
 # TuyaOpen Smart Product Development
@@ -329,3 +330,26 @@ boundary as the states.
 | DP creation partially fails | Report which failed. Re-enter `has-pid` on next run — `ai.expectedDps` comparison catches the gap. |
 | Update (更新) not clicked | Re-run state detection after each "done" claim. Trust the file. |
 | Wi-Fi-only board | Run Steps 1–3, ask developer to create product manually, continue from Step 6. |
+
+## 深层技能：默认不安装，按需取回
+
+本目录 30 个技能里**只有 4 个默认安装**（本技能 + 三个阶段 workflow）。其余 26 个仍在
+目录里、内容完整，但**不在你的上下文里** —— 它们靠这一条命令取回：
+
+```bash
+tuyaopen-cli skills read --id <id>                       # 正文
+tuyaopen-cli skills read --id <id> --path references/x.md # 某个附件
+tuyaopen-cli skills read --id <id> --files                # 它带了哪些文件
+```
+
+它读的是 `manifests sync` 落下来的目录缓存，**不经过任何 agent 工具的安装根** ——
+所以某个工具的安装视图坏掉（链接悬空、目录被删）也不影响它。
+
+**不知道该取哪个**：`tuyaopen-cli skills list --json` 列出全部 30 条（含 `whenToUse`），
+或查 skill `tuyaopen-shared` 的 `references/ROUTING.md` 路由表。
+
+**取不到**（`config` / `no_manifest_cache`）：跑 `tuyaopen-cli manifests sync` 把目录拉下来，
+再重试。这是它唯一的失败模式。
+
+需要长期固定在项目里（跟 git 走、可 review）时才装：
+`tuyaopen-cli skills install --ids <id>`。平时不需要。

@@ -10,9 +10,14 @@ description: >-
   performance-ux-guard, requirement-guide) for depth. Entered for any panel
   miniapp task, or handed over from `tuyaopen-workflow-product-dev` once a PID
   and DPs exist. Per-command flags and gating are in skill `tuyaopen-miniapp`.
+  Covers every panel category the catalogue has a playbook for — lamp /
+  lighting, socket, robot vacuum, IPC camera, electrician timing, energy and
+  power statistics — plus charts, performance and UX review.
   面板小程序阶段的完整工作流：创建小程序拿 appid → 选品类 → 写代码 →
   把渲染链接交给用户 review → 上传 → 提审 / 发布 / 绑定产品（后三步只能在
   网页做，含拼好参数的 URL）。同时承载面板架构与编码铁律，并按需分派到子技能。
+  覆盖目录里有品类剧本的每一类面板 —— 灯、照明、插座、扫地机、扫地机器人、
+  IPC 摄像头、电工定时、能耗与电量统计 —— 以及图表、UI 组件库、性能与 UX 走查。
   单条命令的参数与门禁见 skill tuyaopen-miniapp。
 license: Apache-2.0
 defaultEnabled: true
@@ -509,3 +514,26 @@ skill，比重复五行更糟。
 
 调用路径：从项目根或 `source/miniapp/` 均可用相对路径
 `.agents/skills/tuyaopen-workflow-miniapp-dev/scripts/`。
+
+## 深层技能：默认不安装，按需取回
+
+本目录 30 个技能里**只有 4 个默认安装**（本技能 + 三个阶段 workflow）。其余 26 个仍在
+目录里、内容完整，但**不在你的上下文里** —— 它们靠这一条命令取回：
+
+```bash
+tuyaopen-cli skills read --id <id>                       # 正文
+tuyaopen-cli skills read --id <id> --path references/x.md # 某个附件
+tuyaopen-cli skills read --id <id> --files                # 它带了哪些文件
+```
+
+它读的是 `manifests sync` 落下来的目录缓存，**不经过任何 agent 工具的安装根** ——
+所以某个工具的安装视图坏掉（链接悬空、目录被删）也不影响它。
+
+**不知道该取哪个**：`tuyaopen-cli skills list --json` 列出全部 30 条（含 `whenToUse`），
+或查 skill `tuyaopen-shared` 的 `references/ROUTING.md` 路由表。
+
+**取不到**（`config` / `no_manifest_cache`）：跑 `tuyaopen-cli manifests sync` 把目录拉下来，
+再重试。这是它唯一的失败模式。
+
+需要长期固定在项目里（跟 git 走、可 review）时才装：
+`tuyaopen-cli skills install --ids <id>`。平时不需要。

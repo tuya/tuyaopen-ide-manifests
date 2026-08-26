@@ -864,6 +864,84 @@ def check_routing_covers_opt_in(items: list) -> None:
                 f"default-enabled.")
 
 
+
+def check_resident_descriptions_cover_triggers(items: list) -> None:
+    """Every opt-in skill's `triggers` must appear in some INSTALLED skill's
+    frontmatter description.
+
+    The routing table above answers "can an agent that already opened
+    `tuyaopen-shared` find this skill". This answers the earlier question:
+    **will anything be selected at all** when the user's first sentence arrives.
+
+    An agent tool loads only the installed skills' frontmatter. If a cold intent
+    matches none of them, there is no first hop — the routing table is never
+    read, `skills read` is never called, and the whole pull-on-demand design
+    never starts. So the resident descriptions have to cover the intent space,
+    and "cover" has to be checkable rather than asserted.
+
+    Mechanism, and why it is shaped this way:
+
+    * `triggers` lives in `index.json` (machine data, like `cli`), but is
+      checked against the payload **frontmatter**, because that is the only text
+      a loader reads. `index.json`'s own `summary`/`whenToUse` are separately
+      maintained prose that no agent tool ever sees — an earlier draft of this
+      gate checked those and would have passed while the real descriptions
+      covered nothing.
+    * Substring match, deliberately: Chinese has no word boundaries, so a
+      tokenizing check would be less reliable, not more.
+
+    Known limitation, stated rather than hidden: a trigger also counts when it
+    appears in a steering-*away* sentence ("屏幕不在本技能范围"). That makes this
+    gate a floor, not a proof. It still catches the failure that matters — a
+    keyword surface that is nowhere in the resident set at all.
+    """
+    resident = [i for i in items if i.get("defaultEnabled") and is_str(i.get("id"))]
+    if not resident:
+        err("no defaultEnabled skills — nothing would be loaded by any agent tool")
+        return
+
+    blob = ""
+    for item in resident:
+        payload = item.get("installPayload")
+        if not is_str(payload):
+            continue
+        body = REPO_ROOT / "skills" / payload / "SKILL.md"
+        if not body.is_file():
+            err(f"item {item['id']!r}: defaultEnabled but {payload}/SKILL.md is missing")
+            continue
+        text = body.read_text(encoding="utf-8")
+        m = re.match(r"---\n(.*?)\n---", text, re.S)
+        if not m:
+            err(f"item {item['id']!r}: {payload}/SKILL.md has no frontmatter — "
+                f"an agent tool would load nothing for it")
+            continue
+        blob += m.group(1).lower() + "\n"
+
+    for item in items:
+        if item.get("defaultEnabled"):
+            continue
+        sid, triggers = item.get("id"), item.get("triggers")
+        if not is_str(sid):
+            continue
+        if triggers is None:
+            err(f"item {sid!r}: defaultEnabled is false but declares no 'triggers'. "
+                f"List the words a user's first sentence would contain for this "
+                f"skill; they must appear in some installed skill's description, "
+                f"or nothing will be selected and this skill is unreachable.")
+            continue
+        if not isinstance(triggers, list) or not triggers:
+            err(f"item {sid!r}: 'triggers' must be a non-empty array")
+            continue
+        missing = [t for t in triggers
+                   if not is_str(t) or t.strip().lower() not in blob]
+        if missing:
+            err(f"item {sid!r}: trigger(s) {missing} appear in NO installed skill's "
+                f"frontmatter. A user opening with one of those words matches "
+                f"nothing, so the routing table is never reached. Widen a resident "
+                f"description, or drop the trigger.")
+
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "TuyaOpen" / "index.json"
     if not index_path.is_file():
@@ -895,6 +973,7 @@ def main() -> int:
     check_cli_declaration(items)
     check_frontmatter_parses(items)
     check_routing_covers_opt_in(items)
+    check_resident_descriptions_cover_triggers(items)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)

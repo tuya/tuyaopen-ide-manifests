@@ -10,10 +10,21 @@ description: >-
   from `tuyaopen-workflow-product-dev` once the platform has a PID and DPs.
   Use when the user wants to write, build, flash or debug device firmware,
   asks what to do next on the device side, or mentions the dev loop, log
-  analysis, or an iterative debug cycle.
-  嵌入式开发阶段的完整工作流：从产品 DP 到可运行固件，再让设备上线。含硬件选型
+  analysis, or an iterative debug cycle. **Also the entry point for any
+  peripheral request** — display / screen / LCD, button, LED, camera, audio,
+  touch, sensor, UART, GPIO, I2C, SPI, PWM, ADC: it takes the hardware step
+  first, then delegates to the peripheral doc. On-screen UI work — LVGL
+  widgets, fonts, images, blank-box CJK problems, the host SDL2 preview — comes
+  in here too. Also covers code formatting and clang-format checks on the
+  firmware sources.
+  嵌入式开发阶段的完整工作流：从产品 DP 到可运行固件（工程/项目结构在内），再让设备上线。含硬件选型
   与引脚预算、Kconfig、代码生成、编译、烧录、授权码、配网的状态机，以及
-  编译—烧录—监控—分析闭环与日志/错误码分析。
+  编译—烧录—监控—分析闭环与日志/错误码分析。**任何外设需求也从这里进** ——
+  屏幕、显示、LCD、按键、LED、指示灯、摄像头、音频、录音、触摸、传感器、
+  串口、UART、GPIO、I2C、SPI、PWM、ADC、引脚：先走硬件确认这一步，
+  再分派到对应的外设文档。加第三方库 / 组件依赖也在这一步。调试与崩溃分析、
+  设备授权（UUID / AuthKey）也在本工作流内。屏幕上的 UI —— LVGL 控件、字体、图片、中文显示成方块、
+  在电脑上用 SDL2 预览 —— 也从这里进。也覆盖固件源码的代码格式检查（clang-format）。
 license: Apache-2.0
 compatibility:
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
@@ -739,3 +750,26 @@ different PID, a different category) belong to
 - Enter `built` Step 2 on the strength of a guess that the build succeeded — `built` has no on-disk signature on purpose
 - Write an authorization code to a device without the user confirming the code is free
 - Claim the device is provisioned — you cannot observe that. Your criterion is `auth-status` reporting a code and the log no longer printing `client no active`
+
+## 深层技能：默认不安装，按需取回
+
+本目录 30 个技能里**只有 4 个默认安装**（本技能 + 三个阶段 workflow）。其余 26 个仍在
+目录里、内容完整，但**不在你的上下文里** —— 它们靠这一条命令取回：
+
+```bash
+tuyaopen-cli skills read --id <id>                       # 正文
+tuyaopen-cli skills read --id <id> --path references/x.md # 某个附件
+tuyaopen-cli skills read --id <id> --files                # 它带了哪些文件
+```
+
+它读的是 `manifests sync` 落下来的目录缓存，**不经过任何 agent 工具的安装根** ——
+所以某个工具的安装视图坏掉（链接悬空、目录被删）也不影响它。
+
+**不知道该取哪个**：`tuyaopen-cli skills list --json` 列出全部 30 条（含 `whenToUse`），
+或查 skill `tuyaopen-shared` 的 `references/ROUTING.md` 路由表。
+
+**取不到**（`config` / `no_manifest_cache`）：跑 `tuyaopen-cli manifests sync` 把目录拉下来，
+再重试。这是它唯一的失败模式。
+
+需要长期固定在项目里（跟 git 走、可 review）时才装：
+`tuyaopen-cli skills install --ids <id>`。平时不需要。

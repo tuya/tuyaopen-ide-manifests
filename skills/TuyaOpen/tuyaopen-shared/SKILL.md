@@ -8,11 +8,20 @@ description: >-
   fallback map, the `.tuyaopen/` project layout, and the master intent→skill
   routing table. Read this first, or when another skill says "not in scope,
   see tuyaopen-shared". Not a task skill by itself — it has no action of its
-  own.
-  基础约定与总路由：如何定位并识别 tuyaopen CLI、--json 信封契约、退出码承诺、
-  P0/P2 确认门（含派生 --confirm token）、命令/技能自发现、tos.py 与 tuyaopen
+  own. **Also the catch-all**: come here for any TuyaOpen / 涂鸦 / T5AI task
+  when none of the phase workflows obviously fits — environment setup and SDK
+  install, adding a new development board or BSP, code formatting, or simply
+  "which skill do I need". Most skills are NOT installed; this skill's routing
+  table names all of them and `tuyaopen-cli skills read --id <id>` fetches any
+  one on demand.
+  基础约定与总路由：如何定位并识别 tuyaopen-cli、--json 信封契约、退出码承诺、
+  P0/P2 确认门（含派生 --confirm token）、命令/技能自发现、tos.py 与 tuyaopen-cli
   的能力映射表、.tuyaopen/ 项目布局，以及意图到技能的总路由表。任何技能标注
   "超出本技能范围，见 tuyaopen-shared" 时来这里查。本身不是任务技能，没有独立动作。
+  **同时是兜底入口**：任何 TuyaOpen / 涂鸦 / T5AI 相关任务，只要三个阶段
+  workflow 都不明显合适就来这里 —— 环境搭建、装 SDK、加开发板 / 板级支持 / BSP、
+  代码格式、或者单纯"我该用哪个技能"。**大部分技能默认不安装**：本技能的路由表
+  列出全部，`tuyaopen-cli skills read --id <id>` 按需取回正文。
 license: Apache-2.0
 compatibility:
   - tuyaopen CLI, either form — bundled with the IDE (out/cli/cli.js inside the
