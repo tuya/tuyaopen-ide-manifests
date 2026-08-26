@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "wbr3-pro",
+      "name": {
+        "en": "WBR3-PRO",
+        "zh-CN": "WBR3-PRO"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/WBR3-PRO-Moudule-Datasheet?id=Kffor158lh3ba"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/WBR3-PRO-Moudule-Datasheet?id=Kffor158lh3ba",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/WBR3-PRO-Moudule-Datasheet?id=Kffor158lh3ba"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 2,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "SPI0_CSN",
+        "I2C0_SCL",
+        "PWM2"
+      ],
+      "caps": [
+        "JTDO"
+      ]
+    },
+    {
+      "gpio": 3,
+      "functions": [
+        "GPIO",
+        "UART1_TX",
+        "SPI0_SCK",
+        "I2C0_SDA",
+        "PWM3"
+      ],
+      "caps": [
+        "JTDI"
+      ]
+    },
+    {
+      "gpio": 4,
+      "functions": [
+        "GPIO",
+        "UART1_CTS",
+        "SPI0_MOSI",
+        "PWM4"
+      ],
+      "caps": [
+        "JTRST"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "SPI0_CSN"
+      ],
+      "caps": [
+        "SPIC_CS"
+      ]
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "UART0_TX",
+        "I2C0_SCL",
+        "PWM0"
+      ],
+      "caps": [
+        "SPIC_IO0"
+      ]
+    },
+    {
+      "gpio": 12,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "I2C0_SDA",
+        "PWM1"
+      ],
+      "caps": [
+        "SPIC_IO3"
+      ]
+    },
+    {
+      "gpio": 16,
+      "functions": [
+        "GPIO",
+        "UART2_TX",
+        "SPI0_SCK",
+        "I2C0_SDA",
+        "PWM4",
+        "SDIO_DATA3"
+      ],
+      "caps": [
+        "SPIC_SCK"
+      ]
+    },
+    {
+      "gpio": 17,
+      "functions": [
+        "GPIO",
+        "PWM5",
+        "SDIO_CMD"
+      ],
+      "caps": [
+        "SPIC_IO2"
+      ]
+    },
+    {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "PWM6",
+        "SDIO_CLK"
+      ],
+      "caps": [
+        "SPIC_IO3"
+      ]
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "UART2_CTS",
+        "SPI0_MOSI",
+        "I2C0_SCL",
+        "PWM7",
+        "SDIO_DATA0"
+      ],
+      "caps": [
+        "SPIC_IO0"
+      ]
+    }
+  ],
+  "boardSymbol": "WBR3_PRO_MODULE"
+}

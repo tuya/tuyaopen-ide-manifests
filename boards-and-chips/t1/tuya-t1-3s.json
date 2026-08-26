@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "memory": {
+    "flashBytes": 2097152
+  },
+  "packages": [
+    {
+      "id": "t1-3s",
+      "name": {
+        "en": "T1-3S",
+        "zh-CN": "T1-3S"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/T1-3S-Module-Datasheet?id=Keesax53r0r2d"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/T1-3S-Module-Datasheet?id=Keesax53r0r2d",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/T1-3S-Module-Datasheet?id=Keesax53r0r2d"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART1_TX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "ADC0_CH5"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "PWM0"
+      ],
+      "caps": [
+        "CLK_OUT",
+        "JTCK",
+        "ANT"
+      ]
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO",
+        "PWM2"
+      ],
+      "caps": [
+        "JTDI",
+        "ANT",
+        "CLK_OUT"
+      ]
+    },
+    {
+      "gpio": 9,
+      "functions": [
+        "GPIO",
+        "PWM3"
+      ],
+      "caps": [
+        "JTDO",
+        "ANT"
+      ]
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "ADC0_CH6"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "UART0_TX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 24,
+      "functions": [
+        "GPIO",
+        "PWM4",
+        "ADC0_CH2"
+      ],
+      "caps": [
+        "CLK_OUT",
+        "ANT"
+      ]
+    }
+  ],
+  "boardSymbol": "T1_3S_MODULE"
+}

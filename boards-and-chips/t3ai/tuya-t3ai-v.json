@@ -1,0 +1,301 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "t3ai-v",
+      "name": {
+        "en": "T3AI-V",
+        "zh-CN": "T3AI-V"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/T3AI-V-module-datasheet?id=Kf65inz5yvkm7"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/T3AI-V-module-datasheet?id=Kf65inz5yvkm7",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/T3AI-V-module-datasheet?id=Kf65inz5yvkm7"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART1_TX",
+        "I2C1_SCL",
+        "ADC0_CH12",
+        "SC_IO",
+        "LIN_TXD"
+      ],
+      "caps": [
+        "SWCLK"
+      ]
+    },
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "I2C1_SDA",
+        "ADC0_CH13",
+        "SC_CLK",
+        "LIN_RXD"
+      ],
+      "caps": [
+        "SWDIO"
+      ]
+    },
+    {
+      "gpio": 2,
+      "functions": [
+        "GPIO",
+        "SPI1_SCK",
+        "QSPI1_SCK",
+        "SDIO_CLK",
+        "SC_RSTN",
+        "LIN_SLEEP"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 3,
+      "functions": [
+        "GPIO",
+        "SPI1_CSN",
+        "QSPI1_CS",
+        "SDIO_CMD",
+        "SC_VCC"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 4,
+      "functions": [
+        "GPIO",
+        "SPI1_MOSI",
+        "QSPI1_IO0",
+        "SDIO_DATA0"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 5,
+      "functions": [
+        "GPIO",
+        "SPI1_MISO",
+        "QSPI1_IO1",
+        "SDIO_DATA1"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "PWM0",
+        "QSPI1_IO2"
+      ],
+      "caps": [
+        "CLK_OUT"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "PWM1",
+        "QSPI1_IO3"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 14,
+      "functions": [
+        "GPIO",
+        "SPI0_SCK",
+        "I2C1_SCL",
+        "SDIO_CLK"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 15,
+      "functions": [
+        "GPIO",
+        "SPI0_CSN",
+        "I2C1_SDA",
+        "SDIO_CMD"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 16,
+      "functions": [
+        "GPIO",
+        "SPI0_MOSI",
+        "SDIO_DATA0"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 17,
+      "functions": [
+        "GPIO",
+        "SPI0_MISO",
+        "SDIO_DATA1"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "PWM0",
+        "SDIO_DATA2"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "PWM1",
+        "SDIO_DATA3"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 20,
+      "functions": [
+        "GPIO",
+        "I2C0_SCL"
+      ],
+      "caps": [
+        "SWCLK"
+      ]
+    },
+    {
+      "gpio": 21,
+      "functions": [
+        "GPIO",
+        "I2C0_SDA",
+        "ADC0_CH6"
+      ],
+      "caps": [
+        "SWDIO"
+      ]
+    },
+    {
+      "gpio": 22,
+      "functions": [
+        "GPIO",
+        "PWM2",
+        "QSPI0_SCK",
+        "ADC0_CH5"
+      ],
+      "caps": [
+        "CLK_OUT"
+      ]
+    },
+    {
+      "gpio": 23,
+      "functions": [
+        "GPIO",
+        "PWM3",
+        "QSPI0_CS",
+        "ADC0_CH3"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 24,
+      "functions": [
+        "GPIO",
+        "PWM4",
+        "QSPI0_IO0",
+        "ADC0_CH2"
+      ],
+      "caps": [
+        "LPO_CLK"
+      ]
+    },
+    {
+      "gpio": 25,
+      "functions": [
+        "GPIO",
+        "PWM5",
+        "QSPI0_IO1",
+        "ADC0_CH1",
+        "IRDA"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 26,
+      "functions": [
+        "GPIO",
+        "QSPI0_IO2"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 27,
+      "functions": [
+        "GPIO",
+        "QSPI0_IO3",
+        "CIS_MCLK",
+        "CIS_AUXCLK"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 40,
+      "functions": [
+        "GPIO",
+        "UART2_RX",
+        "I2S1_SCK",
+        "LIN_RXD",
+        "SC_CLK"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 41,
+      "functions": [
+        "GPIO",
+        "UART2_TX",
+        "I2S1_SYNC",
+        "LIN_TXD",
+        "SC_IO"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 42,
+      "functions": [
+        "GPIO",
+        "I2C1_SCL",
+        "I2S1_DIN",
+        "LIN_SLEEP",
+        "SC_RSTN"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 43,
+      "functions": [
+        "GPIO",
+        "I2C1_SDA",
+        "I2S1_DOUT",
+        "SC_VCC"
+      ],
+      "caps": []
+    }
+  ],
+  "boardSymbol": "T3AI_V_MODULE"
+}

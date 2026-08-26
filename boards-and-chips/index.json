@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-08-13T00:00:00Z",
+  "publishedAt": "2026-08-26T08:43:31Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -1035,6 +1035,689 @@
       "image": {
         "url": "images/sparkleiot-t5ai-dev/sparkleiot-t5ai-dev.jpg"
       }
+    },
+    {
+      "id": "tuya-cb2l",
+      "name": {
+        "en": "Tuya CB2L Module",
+        "zh-CN": "涂鸦 CB2L 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CB2L Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CB2L 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cb2l.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cb2s",
+      "name": {
+        "en": "Tuya CB2S Module",
+        "zh-CN": "涂鸦 CB2S 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CB2S Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CB2S 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cb2s.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cb2s-j",
+      "name": {
+        "en": "Tuya CB2S-J Module",
+        "zh-CN": "涂鸦 CB2S-J 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CB2S-J Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CB2S-J 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cb2s-j.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cb3l",
+      "name": {
+        "en": "Tuya CB3L Module",
+        "zh-CN": "涂鸦 CB3L 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CB3L Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CB3L 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cb3l.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cb3se",
+      "name": {
+        "en": "Tuya CB3SE Module",
+        "zh-CN": "涂鸦 CB3SE 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CB3SE Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CB3SE 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cb3se.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cb8p",
+      "name": {
+        "en": "Tuya CB8P Module",
+        "zh-CN": "涂鸦 CB8P 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CB8P Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CB8P 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cb8p.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cblc5",
+      "name": {
+        "en": "Tuya CBLC5 Module",
+        "zh-CN": "涂鸦 CBLC5 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CBLC5 Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CBLC5 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cblc5.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cblc9",
+      "name": {
+        "en": "Tuya CBLC9 Module",
+        "zh-CN": "涂鸦 CBLC9 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CBLC9 Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CBLC9 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cblc9.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-cbu",
+      "name": {
+        "en": "Tuya CBU Module",
+        "zh-CN": "涂鸦 CBU 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "bk7231n",
+      "variantId": "bk7231n",
+      "summary": {
+        "en": "Tuya CBU Wi-Fi & Bluetooth module based on the BK7231N chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 CBU 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/bk7231n/tuya-cbu.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuya-t1-2s-nl",
+      "name": {
+        "en": "Tuya T1-2S-NL Module",
+        "zh-CN": "涂鸦 T1-2S-NL 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t1",
+      "variantId": "t1-chl",
+      "summary": {
+        "en": "Tuya T1-2S-NL Wi-Fi & Bluetooth module based on the T1 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T1-2S-NL 模组，基于 T1 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t1/tuya-t1-2s-nl.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t1-3s",
+      "name": {
+        "en": "Tuya T1-3S Module",
+        "zh-CN": "涂鸦 T1-3S 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t1",
+      "variantId": "t1-chl",
+      "summary": {
+        "en": "Tuya T1-3S Wi-Fi & Bluetooth module based on the T1 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T1-3S 模组，基于 T1 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t1/tuya-t1-3s.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t1-lc5-hl",
+      "name": {
+        "en": "Tuya T1-LC5-HL Module",
+        "zh-CN": "涂鸦 T1-LC5-HL 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t1",
+      "variantId": "t1-chl",
+      "summary": {
+        "en": "Tuya T1-LC5-HL Wi-Fi & Bluetooth module based on the T1 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T1-LC5-HL 模组，基于 T1 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t1/tuya-t1-lc5-hl.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t1-m",
+      "name": {
+        "en": "Tuya T1-M Module",
+        "zh-CN": "涂鸦 T1-M 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t1",
+      "variantId": "t1-chl",
+      "summary": {
+        "en": "Tuya T1-M Wi-Fi & Bluetooth module based on the T1 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T1-M 模组，基于 T1 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t1/tuya-t1-m.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t1-u-hl",
+      "name": {
+        "en": "Tuya T1-U-HL Module",
+        "zh-CN": "涂鸦 T1-U-HL 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t1",
+      "variantId": "t1-chl",
+      "summary": {
+        "en": "Tuya T1-U-HL Wi-Fi & Bluetooth module based on the T1 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T1-U-HL 模组，基于 T1 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t1/tuya-t1-u-hl.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t2-u",
+      "name": {
+        "en": "Tuya T2-U Module",
+        "zh-CN": "涂鸦 T2-U 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t2",
+      "variantId": "t2",
+      "summary": {
+        "en": "Tuya T2-U Wi-Fi & Bluetooth module based on the T2 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T2-U 模组，基于 T2 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t2/tuya-t2-u.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3-2s",
+      "name": {
+        "en": "Tuya T3-2S Module",
+        "zh-CN": "涂鸦 T3-2S 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3",
+      "variantId": "t3",
+      "summary": {
+        "en": "Tuya T3-2S Wi-Fi & Bluetooth module based on the T3 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3-2S 模组，基于 T3 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3/tuya-t3-2s.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3-3s",
+      "name": {
+        "en": "Tuya T3-3S Module",
+        "zh-CN": "涂鸦 T3-3S 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3",
+      "variantId": "t3",
+      "summary": {
+        "en": "Tuya T3-3S Wi-Fi & Bluetooth module based on the T3 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3-3S 模组，基于 T3 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3/tuya-t3-3s.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3-e2",
+      "name": {
+        "en": "Tuya T3-E2 Module",
+        "zh-CN": "涂鸦 T3-E2 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3",
+      "variantId": "t3",
+      "summary": {
+        "en": "Tuya T3-E2 Wi-Fi & Bluetooth module based on the T3 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3-E2 模组，基于 T3 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3/tuya-t3-e2.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3-m",
+      "name": {
+        "en": "Tuya T3-M Module",
+        "zh-CN": "涂鸦 T3-M 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3",
+      "variantId": "t3",
+      "summary": {
+        "en": "Tuya T3-M Wi-Fi & Bluetooth module based on the T3 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3-M 模组，基于 T3 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3/tuya-t3-m.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3-u",
+      "name": {
+        "en": "Tuya T3-U Module",
+        "zh-CN": "涂鸦 T3-U 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3",
+      "variantId": "t3",
+      "summary": {
+        "en": "Tuya T3-U Wi-Fi & Bluetooth module based on the T3 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3-U 模组，基于 T3 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3/tuya-t3-u.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3-v-pro",
+      "name": {
+        "en": "Tuya T3-V-PRO Module",
+        "zh-CN": "涂鸦 T3-V-PRO 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3",
+      "variantId": "t3",
+      "summary": {
+        "en": "Tuya T3-V-PRO Wi-Fi & Bluetooth module based on the T3 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3-V-PRO 模组，基于 T3 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3/tuya-t3-v-pro.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-t3ai-v",
+      "name": {
+        "en": "Tuya T3AI-V Module",
+        "zh-CN": "涂鸦 T3AI-V 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t3ai",
+      "variantId": "t3ai",
+      "summary": {
+        "en": "Tuya T3AI-V Wi-Fi & Bluetooth module based on the T3AI chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 T3AI-V 模组，基于 T3AI 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t3ai/tuya-t3ai-v.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-wbr3-pro",
+      "name": {
+        "en": "Tuya WBR3-PRO Module",
+        "zh-CN": "涂鸦 WBR3-PRO 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "rtl8720cf-vu2",
+      "variantId": "rtl8720cf-vu2",
+      "summary": {
+        "en": "Tuya WBR3-PRO Wi-Fi & Bluetooth module based on the RTL8720CF-VU2 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 WBR3-PRO 模组，基于 RTL8720CF-VU2 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/rtl8720cf-vu2/tuya-wbr3-pro.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-wbrv",
+      "name": {
+        "en": "Tuya WBRV Module",
+        "zh-CN": "涂鸦 WBRV 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "rtl8720cf-vu2",
+      "variantId": "rtl8720cf-vu2",
+      "summary": {
+        "en": "Tuya WBRV Wi-Fi & Bluetooth module based on the RTL8720CF-VU2+CI1302 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 WBRV 模组，基于 RTL8720CF-VU2+CI1302 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/rtl8720cf-vu2/tuya-wbrv.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuya-wt3",
+      "name": {
+        "en": "Tuya WT3 Module",
+        "zh-CN": "涂鸦 WT3 模组"
+      },
+      "manufacturer": {
+        "en": "Tuya",
+        "zh-CN": "涂鸦智能"
+      },
+      "platformId": "t2",
+      "variantId": "t2",
+      "summary": {
+        "en": "Tuya WT3 Wi-Fi & Bluetooth module based on the T2 chip (onboard antenna package). Pin config generated from the official datasheet.",
+        "zh-CN": "涂鸦 WT3 模组，基于 T2 芯片（板载天线）。管脚配置按官方规格书生成。"
+      },
+      "detailUrl": "boards-and-chips/t2/tuya-wt3.json",
+      "published": true,
+      "tags": [
+        "wifi",
+        "module",
+        "ble"
+      ],
+      "sdks": [
+        "tuyaopen",
+        "tuyaos"
+      ]
     }
   ]
 }

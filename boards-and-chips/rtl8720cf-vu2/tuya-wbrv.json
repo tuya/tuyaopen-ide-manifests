@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "wbrv",
+      "name": {
+        "en": "WBRV",
+        "zh-CN": "WBRV"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/wbrv-module-datasheet?id=Kf7gdlfmcxycc"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/wbrv-module-datasheet?id=Kf7gdlfmcxycc",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/wbrv-module-datasheet?id=Kf7gdlfmcxycc"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "PWM0"
+      ],
+      "caps": [
+        "JTCK",
+        "EXT_32K"
+      ]
+    },
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "UART1_TX",
+        "PWM1"
+      ],
+      "caps": [
+        "JTMS"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "SPI0_CSN"
+      ],
+      "caps": [
+        "SPIC_CS"
+      ]
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO",
+        "SPI0_SCK"
+      ],
+      "caps": [
+        "SPIC_SCK"
+      ]
+    },
+    {
+      "gpio": 9,
+      "functions": [
+        "GPIO",
+        "UART0_RTS",
+        "SPI0_MOSI"
+      ],
+      "caps": [
+        "SPIC_IO2"
+      ]
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "UART0_CTS",
+        "SPI0_MISO"
+      ],
+      "caps": [
+        "SPIC_IO1"
+      ]
+    },
+    {
+      "gpio": 12,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "I2C0_SDA",
+        "PWM1"
+      ],
+      "caps": [
+        "SPIC_IO3"
+      ]
+    },
+    {
+      "gpio": 17,
+      "functions": [
+        "GPIO",
+        "PWM5",
+        "SDIO_CMD"
+      ],
+      "caps": [
+        "SPIC_IO2"
+      ]
+    },
+    {
+      "gpio": 18,
+      "functions": [
+        "GPIO",
+        "PWM6",
+        "SDIO_CLK"
+      ],
+      "caps": [
+        "SPIC_IO3"
+      ]
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "UART2_CTS",
+        "SPI0_MOSI",
+        "I2C0_SCL",
+        "PWM7",
+        "SDIO_DATA0"
+      ],
+      "caps": [
+        "SPIC_IO0"
+      ]
+    },
+    {
+      "gpio": 20,
+      "functions": [
+        "GPIO",
+        "UART2_RTS",
+        "SPI0_MISO",
+        "I2C0_SDA",
+        "PWM0",
+        "SDIO_DATA1"
+      ],
+      "caps": [
+        "SPIC_IO1"
+      ]
+    }
+  ],
+  "boardSymbol": "WBRV_MODULE"
+}

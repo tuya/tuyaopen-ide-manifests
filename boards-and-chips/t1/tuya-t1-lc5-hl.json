@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "t1-lc5-hl",
+      "name": {
+        "en": "T1-LC5-HL",
+        "zh-CN": "T1-LC5-HL"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/T1-LC5-HL-module-datasheet?id=Ke07jbizi4xfx"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/T1-LC5-HL-module-datasheet?id=Ke07jbizi4xfx",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/T1-LC5-HL-module-datasheet?id=Ke07jbizi4xfx"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART1_TX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "ADC0_CH6"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "UART0_TX"
+      ],
+      "caps": []
+    }
+  ],
+  "boardSymbol": "T1_LC5_HL_MODULE"
+}

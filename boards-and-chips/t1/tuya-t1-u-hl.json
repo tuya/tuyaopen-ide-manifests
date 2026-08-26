@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "t1-u-hl",
+      "name": {
+        "en": "T1-U-HL",
+        "zh-CN": "T1-U-HL"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/T1-U-HL-Module-Datasheet?id=Kdfp5j893qwxg"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/T1-U-HL-Module-Datasheet?id=Kdfp5j893qwxg",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/T1-U-HL-Module-Datasheet?id=Kdfp5j893qwxg"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART1_TX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "ADC0_CH5"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "PWM0"
+      ],
+      "caps": [
+        "CLK_OUT",
+        "JTCK",
+        "ANT"
+      ]
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO",
+        "PWM2"
+      ],
+      "caps": [
+        "JTDI",
+        "ANT",
+        "CLK_OUT"
+      ]
+    },
+    {
+      "gpio": 9,
+      "functions": [
+        "GPIO",
+        "PWM3"
+      ],
+      "caps": [
+        "JTDO",
+        "ANT"
+      ]
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "ADC0_CH6"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "UART0_TX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 24,
+      "functions": [
+        "GPIO",
+        "PWM4",
+        "ADC0_CH2"
+      ],
+      "caps": [
+        "CLK_OUT",
+        "ANT"
+      ]
+    }
+  ],
+  "boardSymbol": "T1_U_HL_MODULE"
+}

@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "cb2s-j",
+      "name": {
+        "en": "CB2S-J",
+        "zh-CN": "CB2S-J"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/CB2S-J-module-datasheet?id=Kcu3241gzkpbh"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/CB2S-J-module-datasheet?id=Kcu3241gzkpbh",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/CB2S-J-module-datasheet?id=Kcu3241gzkpbh"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "PWM0"
+      ],
+      "caps": [
+        "CLK_OUT"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "PWM1"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO",
+        "PWM2"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "DL_UART_RX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "UART0_TX",
+        "DL_UART_TX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 23,
+      "functions": [
+        "GPIO",
+        "ADC0_CH3"
+      ],
+      "caps": [
+        "JTDO"
+      ]
+    },
+    {
+      "gpio": 24,
+      "functions": [
+        "GPIO",
+        "PWM4",
+        "ADC0_CH2"
+      ],
+      "caps": [
+        "LPO_CLK"
+      ]
+    },
+    {
+      "gpio": 26,
+      "functions": [
+        "GPIO",
+        "PWM5",
+        "ADC0_CH1",
+        "IRDA"
+      ],
+      "caps": []
+    }
+  ],
+  "boardSymbol": "CB2S_J_MODULE"
+}

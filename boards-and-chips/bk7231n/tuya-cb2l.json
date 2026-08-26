@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "cb2l",
+      "name": {
+        "en": "CB2L",
+        "zh-CN": "CB2L"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/cb2l-module-datasheet?id=Kai2eku1m3pyl"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/cb2l-module-datasheet?id=Kai2eku1m3pyl",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/cb2l-module-datasheet?id=Kai2eku1m3pyl"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "PWM0"
+      ],
+      "caps": [
+        "CLK_OUT"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "PWM1"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO",
+        "PWM2"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 24,
+      "functions": [
+        "GPIO",
+        "PWM4",
+        "ADC0_CH2"
+      ],
+      "caps": [
+        "LPO_CLK"
+      ]
+    },
+    {
+      "gpio": 26,
+      "functions": [
+        "GPIO",
+        "PWM5",
+        "ADC0_CH1",
+        "IRDA"
+      ],
+      "caps": []
+    }
+  ],
+  "boardSymbol": "CB2L_MODULE"
+}

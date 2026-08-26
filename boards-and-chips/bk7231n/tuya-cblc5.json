@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 1,
+  "memory": {},
+  "packages": [
+    {
+      "id": "cblc5",
+      "name": {
+        "en": "CBLC5",
+        "zh-CN": "CBLC5"
+      },
+      "antenna": "onboard",
+      "datasheet": "https://developer.tuya.com/cn/docs/iot/cblc5-module-datasheet?id=Ka07iqyusq1wm"
+    }
+  ],
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://developer.tuya.com/cn/docs/iot/cblc5-module-datasheet?id=Ka07iqyusq1wm",
+      "zh-CN": "https://developer.tuya.com/cn/docs/iot/cblc5-module-datasheet?id=Ka07iqyusq1wm"
+    },
+    "productPage": null
+  },
+  "expansionPins": [
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "UART1_TX",
+        "I2C1_SCL"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "UART1_RX",
+        "I2C1_SDA"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "UART0_RX",
+        "DL_UART_RX"
+      ],
+      "caps": []
+    },
+    {
+      "gpio": 11,
+      "functions": [
+        "GPIO",
+        "UART0_TX",
+        "DL_UART_TX"
+      ],
+      "caps": []
+    }
+  ],
+  "boardSymbol": "CBLC5_MODULE"
+}
