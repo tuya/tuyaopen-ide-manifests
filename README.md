@@ -156,6 +156,37 @@ group — `manufacturer` wins whenever both are present.
   So a group id that no platform item uses as its `id` (`gd32`) is fine in
   `platformId` — `variantId: "gd32vw553"` is what does the resolving.
 
+  **What the IDE actually reads today** — `BoardManifestItem`
+  (`src/manifests/manifestsTypes.ts`) declares only `platformId`; there is no
+  `variantId` on it, so every IDE-side board → platform join goes through
+  `platformId`, two-step: `items.find(p => p.id === pid) || items.find(p =>
+  p.platformId === pid)` (`src/extension.ts`, and `boardOnPlatform` in
+  `media/webview/main.js`). `variantId` is still required by the rule above and
+  is what `tools/manifest-editor` resolves on, but do not assume it steers the
+  IDE.
+
+  **Known exception — the five T1 modules carry `platformId: "t1-chl"`, the
+  variant id, not the group id `"t1"`.** The T1 platform item is
+  `id: "t1-chl"` / `platformId: "t1"`, split so that both the `T1-CHL` chip
+  token TuyaOS reports and the family token `T1` resolve. The TuyaOS board list
+  filters with `b.platformId === plat.id` (`media/webview-tuyaos/main.js`, three
+  sites) — it has not picked up the `boardOnPlatform` fix that
+  `media/webview/main.js` already carries — so a board holding the group id
+  `"t1"` never matches the `t1-chl` platform item: it falls into the ungrouped
+  bucket at the bottom of the list, and the T1-CHL tab renders "no boards".
+  These modules are `sdks: ["tuyaos"]`, so that view is the only surface they
+  appear on. Putting the variant id in `platformId` is a deliberate deviation
+  from the rule above, taken because the fix belongs to the IDE repo and not to
+  this one. **Revert it to `"t1"` once `webview-tuyaos` matches on the group id
+  too.**
+
+  Two things to know while it stands. `tools/manifest-editor` recomputes
+  `platformId` from the chip dropdown's `data-group` on save
+  (`board-editor.js`), so editing one of these five boards there silently
+  restores `"t1"` and re-breaks the grouping. And a project scaffolded from one
+  of them gets `platform.target: "t1-chl"`. `platformKconfigId` is unaffected:
+  it is overwritten from `platformSymbol: "T1"` in `platforms/t1/t1.json`.
+
 ## How the IDE consumes this repo
 
 ```
