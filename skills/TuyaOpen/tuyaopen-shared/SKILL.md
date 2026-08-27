@@ -118,6 +118,25 @@ tuyaopen-cli skills install --ids <ids> --yes
 不是因为 CLI 没打印，而是因为它打在 stderr 上而调用方的采集层把它缓冲了。stdout 那一行 JSON
 是为你准备的。
 
+#### 怎么把「需要人做」这件事**说出来** —— 拿到 URL 只是一半
+
+拿到了链接，还会在最后一步丢掉。2026-08-27 实测：agent 正确拿到了登录 URL，然后把它
+**复述成了回复中间的一段散文**（"Please open this URL and sign in with your Tuya
+account…"）。用户的原话是**容易忽略** —— 链接在对话里滚过去了，登录就停在那儿，而且
+没有任何东西说明为什么停住。CLI 那侧已经加了边框和 ACTION REQUIRED 标记，但**决定这
+东西长什么样的是你，不是 CLI**。
+
+所以遇到上表四类动作中的任何一类：
+
+- **单独成块，放在回复最前面。** 不要夹在解释、进度汇报或下一步计划中间。
+- **URL / 授权码逐字照抄，独占一行。** 不要缩短、不要加 markdown 链接语法把它藏进文字里、
+  不要"（链接见上）"。用户要能一眼选中它。
+- **说清楚在等什么**：哪个进程在等、等多久超时、他做完之后你会怎么确认。
+- **然后停下来。** 不要接着跑后面的步骤假装它已经完成了 —— 后面每一步都会以一种和根因
+  无关的方式失败。
+
+判据很简单：**用户扫一眼你的回复，能不能在一秒内找到他要点的那个东西。**
+
 ### 0.1 A green install is not proof your tool can see the skills
 
 Round 2 installed 19 skills, exit 0, both project mirrors populated — and the

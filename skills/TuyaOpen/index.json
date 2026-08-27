@@ -6,7 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.13.0",
+      "version": "1.14.0",
       "group": "core",
       "order": 0,
       "name": {
