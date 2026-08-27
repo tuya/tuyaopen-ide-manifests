@@ -50,7 +50,7 @@ it applies:
 > § 7.
 
 All `hardware` subcommands are read-only except `set-used` and `intellisense`
-(both **P2** — need `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`, or `--dry-run` to
+(both **P2** — need `--yes`, or `--dry-run` to
 preview; see skill `tuyaopen-shared` § 4).
 
 **⚠ `hardware set-used --ids` cannot record on-chip pin occupancy.** Verified

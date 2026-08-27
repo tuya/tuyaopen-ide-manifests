@@ -61,11 +61,11 @@ end-to-end orchestrator; for anything shaped like "build me a device", read it
 
 ```bash
 # 1. catalogue (once per machine)
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli manifests sync --yes
+tuyaopen-cli manifests sync --yes
 # 2. what exists, and which one covers this task — match on whenToUse, not the id
 tuyaopen-cli skills list --json
 # 3. install the ones that do, then READ their SKILL.md before the first action
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --ids <ids> --yes
+tuyaopen-cli skills install --ids <ids> --yes
 # 4. confirm your own tool can SEE them — `install` reports this now
 #    (data.reachability; `tuyaopen-cli diag doctor --json` → agentSkills says the same)
 ```
@@ -148,7 +148,7 @@ just created the project directory it is standing in:
 2. Install where launch order cannot matter — the global roots exist before any
    project does:
    ```bash
-   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --default --scope global --yes
+   tuyaopen-cli skills install --default --scope global --yes
    ```
 
 **Read the bodies off disk regardless.** Whether or not your tool's own skill
@@ -260,11 +260,16 @@ time. You never need to know which one it picked.
 > **`@tuya/tuyaopen-cli` is not on public npm yet.** The npm package is the
 > intended standalone distribution and the `bin` entry is already `tuyaopen-cli`,
 > but `npm install -g @tuya/tuyaopen-cli` returns 404 on the public registry
-> (re-measured 2026-08-20). The internal beta is distributed as a tarball
-> instead — `npm i -g ./tuyaopen-cli-<version>.tgz` — and *that* install does
-> put `tuyaopen-cli` on `PATH` globally, in which case the search above short-
-> circuits at `command -v` and nothing else here applies. Without such an
-> install, "on `PATH`" in practice means "an IDE integrated terminal".
+> (re-measured 2026-08-27). The internal beta ships on the company registry
+> instead, and **the `@beta` tag is not optional** — without it npm resolves
+> `latest`, which is pinned four versions back (measured 2026-08-27):
+>
+>     npm i -g @tuya/tuyaopen-cli@beta --registry https://registry-npm.tuya-inc.top/
+>
+> An offline tarball (`npm i -g ./tuyaopen-cli-<version>.tgz`) works too. Either
+> install puts `tuyaopen-cli` on `PATH` globally, in which case the search above
+> short-circuits at `command -v` and nothing else here applies. Without one,
+> "on `PATH`" in practice means "an IDE integrated terminal".
 
 ### 1.1a A wrapper can exist and still be dead — check before you trust it
 
@@ -465,32 +470,37 @@ cloning, warming the environment — belong to skill
 `tuyaopen-embedded-env-setup`. Read the field, then go there; do not try to
 reconstruct the setup steps from this section.
 
-## 4. Risk gate — P0 needs a **derived** `--confirm` token, P2 needs `--yes` + env
+## 4. Risk gate — P0 needs a **derived** `--confirm` token, P2 needs `--yes`
 
 | Tier | Gate | What's here today |
 |---|---|---|
 | **P0** | `--confirm <token>`, and the token must be the one **this exact operation's** `--dry-run` handed back | Only `license remove` |
-| **P2** | `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1` | Most mutating commands — `firmware flash` / `authorize`, `skills install` / `uninstall`, `dependency add` / `remove`, `dp add` / `sync`, `project *`, `config set`, `license add` / `import`, `manifests sync`, `product sync`, `miniapp upload` / `install` / `sync-schema`, `dependency install`, `dependency install`, `hardware set-used` / `intellisense`, `credential logout` |
-| **P3** | **No gate at all** — not even `--yes` | Mostly long-running reads, but the writers among them are ungated too: `sdk clone` / `update` / `env-init` / `env-pull`, `firmware build` / `clean`, `skills sync`, `miniapp build` / `meta` / `template`, `credential login`, `diag export`. Each guards itself on its own preconditions instead — `diag export` refuses an existing `--out` without `--force`; `sdk clone` refuses a non-empty target. **So do not read "it is not P2" as "it does not write."** |
+| **P2** | `--yes` | Most mutating commands — `firmware flash` / `authorize`, `skills install` / `uninstall`, `dependency add` / `remove`, `dp add`, `project *`, `config set`, `license add` / `import`, `manifests sync`, `product sync`, `miniapp upload` / `install` / `sync-schema`, `dependency install`, `dependency install`, `hardware set-used` / `intellisense`, `credential logout` |
+| **P3** | **No gate at all** — not even `--yes` | Mostly long-running reads, but the writers among them are ungated too: `sdk clone` / `update` / `env-init` / `env-pull`, `firmware build` / `clean`, `skills sync`, `miniapp build` / `meta` / `template`, `credential login`, `diag export`, `dp generate` / `dp sync`, `hardware board-context`, `miniapp preview`. Each guards itself on its own preconditions instead — `diag export` refuses an existing `--out` without `--force`; `sdk clone` refuses a non-empty target. **So do not read "it is not P2" as "it does not write."** |
 | Read-only | No gate | — |
 
 Ask `tuyaopen-cli schema list --json` for a command's `riskLevel` rather than
 inferring it: the table above is a snapshot, `schema list` is the contract.
 
-**`TUYAOPEN_AUTOCONFIRM_P2=1` belongs on the invocation, not in the shell.**
+> **This table is an inventory, not a route.** A command named here and nowhere
+> else is effectively undiscoverable: beta round 6 never ran
+> `hardware intellisense`, and the only place it appeared was this risk table —
+> which answers "what does it cost to run" and never "when would I want it".
+> When adding a command, name it at the task moment it belongs to, in a workflow
+> step. Leave this table a risk lookup.
+
+**P2 is `--yes` and nothing else.**
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port <port> --yes   # do this
-export TUYAOPEN_AUTOCONFIRM_P2=1                                        # NOT this
+tuyaopen-cli firmware flash --port <port> --yes
 ```
 
-Both forms satisfy the gate, but `export` disarms it for the **rest of the
-session**: after it, every P2 command in that shell is a single `--yes` away,
-including ones you never meant to enable — `firmware authorize`,
-`skills uninstall`, `dependency remove`, `dp add`. The prefix costs the same
-keystrokes and its scope ends when the command does. The env var exists
-precisely so that `--yes` alone cannot carry a mutation; exporting it hands
-that protection back.
+Until 2026-08-26 P2 also demanded `TUYAOPEN_AUTOCONFIRM_P2=1` in the
+environment, and this section told you to prefix it per-invocation rather than
+`export` it. That is gone — do not add it back, and treat any older transcript
+that shows the prefix as stale rather than as a second requirement you are
+missing. A P2 command that still reports `confirmation:needs_yes` is missing
+`--yes` itself.
 
 P0 is judged by **consequence**, not verb: no reverse command exists, **and**
 running it destroys state the caller cannot reconstruct. `firmware flash` /
@@ -544,8 +554,8 @@ has no catalogue yet (typical right after `npm i -g @tuya/tuyaopen-cli`; the IDE
 does this for you). The fix is `manifests sync`, **not** `skills sync`:
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli manifests sync --yes    # downloads the catalogue + skill bodies
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --default --yes
+tuyaopen-cli manifests sync --yes    # downloads the catalogue + skill bodies
+tuyaopen-cli skills install --default --yes
 ```
 
 `skills sync` only fetches items whose manifest entry carries a `source.repo`.
@@ -573,7 +583,7 @@ Two independent signals, and either one alone is enough to act on:
 | `layout: "legacy"` | The cache predates the 2026-08-17 product-line split. **Deterministic proof**, not a date guess — that path only exists in a pre-split cache. Its skill ids are the pre-rename ones. |
 | `update.domains[].outdated: true` | That domain's declared version is behind the published release. |
 
-Either one → `TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli manifests sync --yes`, then
+Either one → `tuyaopen-cli manifests sync --yes`, then
 re-read `skills list`. If the check could not reach the release it says so
 (`update.checked: false`, `reason: "release-unreachable"`) — treat that as
 "unknown", never as "up to date". `diag doctor` reports the same `layout` plus
@@ -629,7 +639,7 @@ can run yourself:
 tuyaopen-cli skills list --json           # id, group, name, summary, whenToUse, tags, defaultEnabled
 tuyaopen-cli skills groups --json         # core | embedded | cloud | miniapp | category
 tuyaopen-cli skills list-installed --json --project-root .
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli skills install --ids <a,b> --yes    # project scope
+tuyaopen-cli skills install --ids <a,b> --yes    # project scope
 ```
 
 Then read the bodies straight off disk — they are plain Markdown with YAML

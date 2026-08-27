@@ -13,6 +13,11 @@ description: >-
   Covers every panel category the catalogue has a playbook for — lamp /
   lighting, socket, robot vacuum, IPC camera, electrician timing, energy and
   power statistics — plus charts, performance and UX review.
+  **触发词**：手机、手机上、手机面板、手机 App、面板、面板小程序、小程序、
+  panel、mini-app、miniapp、phone、app —— 用户提到用手机控制设备、在手机上看/设、
+  或者直接说面板/小程序，都是本阶段。**「手机面板」最容易被误读**成涂鸦按 DP
+  自动生成的通用面板而整个跳过（实测：第六轮定义了六个 DP、从没建过面板、
+  全程没有一步提示缺了什么）——定义 DP 不产生面板，面板是独立的一个阶段。
   面板小程序阶段的完整工作流：创建小程序拿 appid → 选品类 → 写代码 →
   把渲染链接交给用户 review → 上传 → 提审 / 发布 / 绑定产品（后三步只能在
   网页做，含拼好参数的 URL）。同时承载面板架构与编码铁律，并按需分派到子技能。

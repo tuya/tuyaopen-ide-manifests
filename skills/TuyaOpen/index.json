@@ -6,7 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.12.0",
+      "version": "1.13.0",
       "group": "core",
       "order": 0,
       "name": {
@@ -20,8 +20,8 @@
         "miniapp"
       ],
       "summary": {
-        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI discovery, the --json/exit-code contract, the confirmation gate (P0 = dry-run token, license remove only; P2 = --yes + env flag; P3 ungated), skill self-discovery, and the routing table.",
-        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位识别、--json 与退出码契约、确认门（P0 = dry-run 派生令牌，仅 license remove 属于 P0；P2 = --yes 加环境变量；P3 无需确认）、技能自发现，以及总路由表。"
+        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI discovery, the --json/exit-code contract, the confirmation gate (P0 = dry-run token, license remove only; P2 = --yes; P3 ungated), skill self-discovery, and the routing table.",
+        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位识别、--json 与退出码契约、确认门（P0 = dry-run 派生令牌，仅 license remove 属于 P0；P2 = --yes；P3 无需确认）、技能自发现，以及总路由表。"
       },
       "whenToUse": {
         "en": "Read first, or whenever another skill says its task is out of scope and points here for the routing table. Not a task skill by itself.",
@@ -171,7 +171,7 @@
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "group": "core",
       "order": 2,
       "name": {
@@ -223,7 +223,7 @@
     },
     {
       "id": "tuyaopen-embedded-project",
-      "version": "1.2.1",
+      "version": "1.3.0",
       "group": "embedded",
       "order": 6,
       "name": {
@@ -284,7 +284,7 @@
     },
     {
       "id": "tuyaopen-embedded-dependency",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "group": "scenario",
       "order": 8,
       "name": {
@@ -340,7 +340,7 @@
     },
     {
       "id": "tuyaopen-cloud",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "group": "product",
       "order": 9,
       "name": {
@@ -401,7 +401,7 @@
     },
     {
       "id": "tuyaopen-workflow-product-dev",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "group": "product",
       "order": 10,
       "name": {
@@ -463,7 +463,7 @@
     },
     {
       "id": "tuyaopen-embedded-hardware",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "group": "embedded",
       "order": 11,
       "name": {
@@ -528,7 +528,7 @@
     },
     {
       "id": "tuyaopen-embedded-flash",
-      "version": "1.4.1",
+      "version": "1.5.0",
       "group": "embedded",
       "order": 15,
       "name": {
@@ -591,7 +591,7 @@
     },
     {
       "id": "tuyaopen-embedded-cli-debug",
-      "version": "2.2.0",
+      "version": "2.3.0",
       "group": "embedded",
       "order": 20,
       "name": {
@@ -760,7 +760,7 @@
     },
     {
       "id": "tuyaopen-workflow-embedded-dev",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "group": "embedded",
       "order": 23,
       "name": {
@@ -813,7 +813,7 @@
     },
     {
       "id": "tuyaopen-embedded-device-auth",
-      "version": "1.5.2",
+      "version": "1.6.0",
       "group": "embedded",
       "order": 24,
       "name": {
@@ -869,7 +869,7 @@
     },
     {
       "id": "tuyaopen-embedded-env-setup",
-      "version": "1.3.0",
+      "version": "1.4.0",
       "group": "embedded",
       "order": 25,
       "name": {
@@ -924,7 +924,7 @@
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "group": "miniapp",
       "order": 98,
       "name": {
@@ -975,7 +975,7 @@
     },
     {
       "id": "tuyaopen-workflow-miniapp-dev",
-      "version": "2.1.0",
+      "version": "2.2.0",
       "group": "miniapp",
       "order": 99,
       "name": {

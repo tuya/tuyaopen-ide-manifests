@@ -64,19 +64,58 @@ for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` §
 设备端的串口 CLI **默认是关的**，而且"编进固件"和"跑起来"是两件事 —— 两件都做了它才应答。
 本节是这个技能所有内容的前置。
 
-### 0.1 Kconfig：三层开关，改的是**工程的 `.config`**
+### 0.1 两道独立的门，别只看一道
+
+设备上有没有 CLI，取决于**两件互不相干的事**。调试时"没反应"先分清是哪一道没过。
+
+#### 门 1：应用得调 `tal_cli_init()` —— 决定有没有 `tuya> ` 提示符
+
+CLI 子系统**不会自动起来**。应用的 main 里必须有：
+
+```c
+#include "tal_cli.h"
+...
+tal_cli_init();          // 默认 UART0；或 tal_cli_init_with_uart(n)
+```
+
+没有这一句，串口上**一个提示符都不会有**，跟 Kconfig 怎么配没有关系。
+`apps/tuya_cloud/switch_demo` 的骨架里带了这句，所以从它抄来的工程会"莫名其妙就有
+CLI"；从零写的 main 则没有。
+
+#### 门 2：`CONFIG_ENABLE_SERIAL_CLI_CMD` —— 决定有多少条命令
+
+过了门 1 之后，**默认只有八条**：
 
 ```
-CONFIG_ENABLE_SERIAL_CLI_CMD=y     # 总开关，SDK 里 default n —— 不开就没有 CLI
+help  cmd  hello  version  sys_log_enable  sys_reboot  auth  read_mac
+```
+
+`sys_log_enable` 和 `sys_reboot` 在 `cli_cmd.c` 命令表里位于
+`#if defined(CLI_CMD_SYS)` **之上**，所以这两条不受 Kconfig 影响；`auth` /
+`auth-read` / `read_mac` 来自 `tuya_authorize.c`，同样无条件注册。ESP32-S3 实测：
+`# CONFIG_ENABLE_SERIAL_CLI_CMD is not set` 的固件上 `help` 回的正是这八条，固件自己
+还打了一句
+`if you want to see more commands(sys_*, fs_*, kv_*), please turn on ENABLE_SERIAL_CLI_CMD in Kconfig`。
+
+打开总开关才有另外三组：
+
+```
+CONFIG_ENABLE_SERIAL_CLI_CMD=y     # 总开关，SDK 里 default n
 CONFIG_SERIAL_CLI_STACK_SIZE=3072  # CLI 线程栈，默认 3072
-CONFIG_CLI_CMD_SYS=y               # sys_* 命令组（sys_reset 等），默认 y
-CONFIG_CLI_CMD_FS=y                # fs_*  命令组（fs_ls 等），默认 y
-CONFIG_CLI_CMD_KV=y                # kv_*  命令组（kv_dump 等），默认 y
+CONFIG_CLI_CMD_SYS=y               # sys_* 组：状态/堆/线程/版本/IoT/WiFi，默认 y
+CONFIG_CLI_CMD_FS=y                # fs_*  组：ls/cat/write/rm…，默认 y
+CONFIG_CLI_CMD_KV=y                # kv_*  组：get/set/del/list，默认 y
 ```
 
 三个 `CLI_CMD_*` 都 `default y`，但**只在总开关打开时才存在**（Kconfig 里它们包在
-`if (ENABLE_SERIAL_CLI_CMD)` 内）。所以"`sys_reset` 找不到"有两种成因：总开关没开，或者
-那一组被单独关了 —— 先看总开关。
+`if (ENABLE_SERIAL_CLI_CMD)` 内）。所以某条 `sys_*` 找不到有三种成因，按这个顺序查：
+应用没调 `tal_cli_init()` → 总开关没开 → 那一组被单独关了。完整命令清单见
+[references/CLI_DEBUG.md](references/CLI_DEBUG.md)。
+
+**开发期两道门都打开。** 打开之后 agent 可以直接驱动设备验证功能，而不是只能
+"编译→烧录→读日志猜"：`sys_iot_report_dp` 上报一个 DP 看面板反应、`sys_wifi_info`
+看设备眼里的 AP、`sys_heap` / `sys_thread` 查内存和栈、`kv_list` 看持久化。量产前
+关掉总开关（`tal_cli_init()` 是否保留另行决定）。
 
 写进工程的 `app_default.config`（或 `config/<BOARD>.config`），**不要**去改 SDK 里的
 `Kconfig`：那是 vendored 文件，`tuyaopen-cli sdk update` 会把你的改动冲掉。
@@ -164,7 +203,10 @@ to see or steer what it is doing.**
 
 ## 2. Monitor / capture device serial logs
 
-### Foreground (interactive)
+`tuyaopen-cli firmware monitor` behaves differently depending on whether it has
+a terminal, and the difference is the whole point of this section.
+
+### With a terminal (a human at a shell)
 
 ```bash
 tuyaopen-cli firmware monitor --port <port> [--baud <rate>] [--log]
@@ -172,23 +214,67 @@ tuyaopen-cli firmware monitor --port <port> [--baud <rate>] [--log]
 
 Blocking — it inherits your terminal's stdin, Ctrl+C to exit. Pass `--log`
 to also tee output to `source/embedded/monitor.log` (or `--log-file <path>`).
-There is no confirmation gate — `monitor` is read-only from the device's
-perspective. It is also **exempt from the CLI's task kill-timer** (the
-timeout its `firmware` siblings `build`/`clean`/`flash` get) because it is
-meant to run indefinitely in the foreground — don't treat it as a bounded
-command that will eventually return on its own.
+No gate for a plain capture; `--reset` needs `--yes`, because it restarts the
+device. It is also **exempt from the CLI's task kill-timer** (the timeout its
+`firmware` siblings `build`/`clean`/`flash` get) because it is meant to run
+indefinitely in the foreground — don't treat it as a bounded command that will
+eventually return on its own.
 
-> **No CLI?** `tos.py monitor -p <port>`. See skill `tuyaopen-shared` § 7.
+### Without a terminal (you, in almost every case)
+
+**The same command.** With no terminal — or whenever you pass `--log-file`,
+`--reset`, `--duration` or `--stream`, or pipe stdout — it does not spawn
+`tos.py monitor` at all; it captures the port directly instead:
+
+```bash
+tuyaopen-cli firmware monitor --port <port> \
+    --log-file boot.log --reset --yes --duration 20 --json
+```
+
+`--reset` needs `--yes` (it restarts the device) and `--duration` bounds the
+capture — without it the command runs until something kills it, and a caller
+reaching for `timeout` gets exit 124 and no result envelope.
+
+- `--reset` restarts the device first, so the log starts at boot rather than
+  mid-session. It sends **`sys_reboot` over the device's own CLI** — the soft
+  path, which keeps the serial port open all the way through the restart. Only
+  if no CLI answers does it fall back to pulsing DTR/RTS.
+- `--log-file` is what you read afterwards; stdout stays a single JSON envelope.
+
+**Why this exists.** `tos.py monitor` is pyserial's `miniterm`, whose
+`Console()` constructor calls `termios.tcgetattr(stdin)`. With no controlling
+terminal that raises `termios.error: (25, 'Inappropriate ioctl for device')`
+before a single line is printed — and inheriting a *non*-TTY stdin reproduces
+the crash rather than avoiding it. Beta round 6 hit exactly this, found the
+`monitor_helper.py` fallback below had the same dependency, and ended up
+hand-writing a pyserial capture script. Don't repeat that: the CLI does it now.
+
+**Why `--reset` prefers the soft path.** On a USB-JTAG board (ESP32-S3 and
+friends) a DTR/RTS reset re-enumerates the USB device — the port disappears and
+comes back, and roughly the first 300 ms of the boot log is gone with it.
+Measured: three consecutive hard-reset captures all opened at
+`I (310) esp_image`, byte-identical, with no `ESP-ROM:` banner. The same
+captures via `sys_reboot` include the banner. See § 0.1: `sys_reboot` needs no
+Kconfig option, but it does need the application to have called
+`tal_cli_init()` — when that call is missing there is no console to answer and
+the DTR/RTS fallback is what actually runs. That is the practical argument for
+putting `tal_cli_init()` in your main during bring-up.
 
 ### Background / non-blocking
 
-For the actual use case below — capturing logs while doing something else,
-e.g. flashing on another port — **neither the CLI nor `tos.py` has a
-built-in detached/background monitor mode**; this is a genuine coverage gap,
-not a case of the CLI being merely unavailable. A helper script wraps
-`tos.py monitor -l` as a detached background process so an agent can flash
-on one port while a monitor keeps logging on another, without holding a
-foreground terminal open. Installed at:
+
+For capturing logs while doing something else — e.g. flashing on another port —
+neither the CLI nor `tos.py` has a detached/background monitor mode. A helper
+script wraps `tos.py monitor -l` as a detached background process so an agent
+can flash on one port while a monitor keeps logging on another.
+
+> **Prefer the headless `firmware monitor` above when you only need a capture.**
+> `monitor_helper.py` wraps `tos.py monitor`, so it inherits the termios
+> requirement described above and dies the same way in a sandbox with no TTY.
+> Reach for it only for the genuinely-concurrent case (two ports at once), and
+> expect to check that it actually started.
+
+Installed at:
 
 ```
 .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py
@@ -254,20 +340,20 @@ So make the log start where you want it to. **Attach first, then reset:**
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py start -p /dev/ttyACM1
 
 # 2. reset over the device CLI (§ 3) — the log now begins at the boot banner
-python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reset"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reboot"
 
 # 3. read from the reset line down
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py --json tail -n 400
 ```
 
-**Two ports, two roles** — `sys_reset` goes to the **CLI port at 115200**, the
+**Two ports, two roles** — `sys_reboot` goes to the **CLI port at 115200**, the
 monitor sits on the **log port at the platform's own baud**. On a dual-serial
 board (T5AI: `ttyACM0` + `ttyACM1`) both can be open at once, which is the whole
 point. On a single-serial board they contend: reset by power-cycling instead,
 or `stop` the monitor, send the reset, and restart it — accepting that you lose
 the first few lines.
 
-**No serial CLI in this firmware?** `sys_reset` needs
+**No serial CLI in this firmware?** `sys_reboot` needs
 `CONFIG_ENABLE_SERIAL_CLI_CMD=y` plus `tal_cli_init()` — see § 0. Until then,
 power-cycle the board by hand and say in your report that the log starts at a
 power-on rather than a software reset. Turning the CLI on is usually worth it:
@@ -308,7 +394,7 @@ you need the authoritative grouping.
 ## 3. Send commands to the device CLI (`tal_cli` over UART)
 
 For inspecting live device state (heap, KV store, filesystem, threads) without
-opening a foreground monitor — `sys_reset`, `kv_dump`, `fs_ls`, or any custom
+opening a foreground monitor — `sys_reboot`, `kv_list`, `fs_ls`, or any custom
 command the firmware registers. Full reference, options, and troubleshooting:
 [references/CLI_DEBUG.md](references/CLI_DEBUG.md). Script installed at
 `.agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py` (needs `pip install
@@ -316,7 +402,7 @@ pyserial`; requires firmware built with `CONFIG_ENABLE_SERIAL_CLI_CMD=y`).
 
 ```bash
 python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json help
-python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "heap_stats"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_heap"
 ```
 
 **Baud is always 115200** — `tal_cli` hardcodes it on every platform,

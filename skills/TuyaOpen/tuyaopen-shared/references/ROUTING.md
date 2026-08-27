@@ -88,10 +88,16 @@ one place in this catalogue where a skill may name a sibling skill directly:
 |---|---|
 | `tuyaopen-workflow-product-dev` | **Start here for "I want to build a product".** Platform phase — requirements → product/PID → DPs → `dp generate`. A state machine that resumes from wherever the project stands. Hands the PID + DPs + generated header to the next two |
 | `tuyaopen-workflow-embedded-dev` | Firmware phase — write code → build → flash → write the auth code → provision → read logs / drive the device's serial CLI. Includes the full automated build–flash–monitor–analyze loop |
-| `tuyaopen-workflow-miniapp-dev` | Panel phase — create the miniapp (appid) → code → `preview` and hand the render URL to the user → review → build + upload → submit/publish → bind to the PID. Also owns panel architecture and the coding conventions |
+| `tuyaopen-workflow-miniapp-dev` | Panel phase — create the miniapp (appid) → code → `preview` and hand the render URL to the user → review → build + upload → submit/publish → bind to the PID. Also owns panel architecture and the coding conventions. **Any mention of 手机 / 手机上 / 手机面板 / 手机 App / 面板 / 小程序 / panel / phone app comes here** — including "手机上能控制/能设/能看", which is the phrasing that got the whole phase skipped in beta round 6 |
 
 **Pipeline**: `product-dev` → (`embedded-dev` ‖ `miniapp-dev`). The last two are
 independent of each other; both need the platform phase first.
+
+> **A product with firmware and no panel is half finished** — and the missing
+> half is the one the user touches. Defining DPs does not produce a panel; the
+> panel is its own phase with its own creation step. `tuyaopen-cli project info`
+> reports `miniapp.scaffolded`, and `diag doctor` says so too — if it is
+> `false`, this phase has not been started, whatever the DP list looks like.
 
 ## Panel miniapp — command line & cross-cutting
 

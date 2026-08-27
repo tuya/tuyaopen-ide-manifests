@@ -107,13 +107,13 @@ directly — § 4.
 Flashing overwrites the device's current firmware, but it has a reverse
 command (re-flash), so it dropped from P0 to P2 on 2026-08-18 (`license
 remove` is the only P0 command left in the CLI — see skill `tuyaopen-shared`
-§ 4). It is gated by `--yes` **and** `TUYAOPEN_AUTOCONFIRM_P2=1`, not a
+§ 4). It is gated by `--yes`, not a
 derived `--confirm` token:
 
 ```bash
 tuyaopen-cli firmware flash --port <port> --dry-run
 # → preview only — a P2 dry-run does not hand back a confirm token
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port <port> --yes
+tuyaopen-cli firmware flash --port <port> --yes
 ```
 
 **Prefix the invocation; do not `export`.** An `export` disarms the P2 gate for
@@ -180,7 +180,7 @@ The `firmware` CLI group covers flash and monitor; it does **not** wrap every
 | Flash fails with a port-busy error (`PermissionError 13` / `Access is denied` / `Device or resource busy`) | A `firmware monitor` (or any other process) still holds the port — single-serial boards share flash and log on one OS resource | Stop the monitor session, retry the flash, reopen the monitor after |
 | `tuyaopen-cli firmware list-ports` returns two ports with the same or no `description` and you can't tell which is which | Thin port listing can't disambiguate | Fall back to `tyutool_cli list-ports --json` (§ 4) and group by `usbSerial`/`usbInterface` |
 | Flash unstable / drops mid-transfer | Baud too high for the physical link | Retry with a lower `--baud` (the per-chip default is usually right; only override on developer instruction) |
-| `firmware flash` rejected as `confirmation:needs_yes` | Missing `--yes` and/or `TUYAOPEN_AUTOCONFIRM_P2=1` | Pass both, or `--dry-run` to preview first — see skill `tuyaopen-shared` § 4 |
+| `firmware flash` rejected as `confirmation:needs_yes` | Missing `--yes` | Pass it, or `--dry-run` to preview first — see skill `tuyaopen-shared` § 4 |
 | Need to read flash contents, hard-reset without flashing, or disambiguate a dual-serial pair | Not covered by the `firmware` CLI group | § 4 fallback — `tyutool_cli` directly |
 
 ## References

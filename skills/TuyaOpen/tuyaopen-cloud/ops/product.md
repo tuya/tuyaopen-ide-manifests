@@ -163,3 +163,18 @@ Confirm `communicationCodes` contains both `"wifi"` and `"bluetooth"`.
 | `confirm_token` rejected (`INVALID_CONFIRMATION`) | Re-run `--dry-run` to get a new token |
 | `API_OR_API_VERSION_WRONG` | Check auth: `tuya-devplat-cli auth status` |
 | `CREATE_PRODUCT_DEVELOPING_LINE` | The account's **Developing**-product cap is full (measured ceiling: 10). Finish or delete a Developing product at <https://platform.tuya.com/pmg/list>, or upgrade the account. Deleting a *released* product does **not** help — see the account-cap note above |
+
+---
+
+## Next: a product is not a project
+
+Creating the product gives you a PID on the platform. Bind it and pull the
+snapshot down, or nothing local knows about it:
+
+```bash
+tuyaopen-cli project bind-product --pid <pid> --yes   # writes tuyaopen.project.ini
+tuyaopen-cli product sync --yes                       # pulls product detail + DP schema
+```
+
+Then define the DPs ([ops/manage-dp.md](manage-dp.md)), which has its own
+"next" section — `dp generate` and the panel check both live there.

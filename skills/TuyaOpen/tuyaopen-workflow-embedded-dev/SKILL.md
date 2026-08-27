@@ -38,7 +38,7 @@ compatibility:
 | Intent | Command |
 |---|---|
 | Build / clean | `tuyaopen-cli firmware build` · `tuyaopen-cli firmware clean` |
-| Flash | `tuyaopen-cli firmware flash` (P2: `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`) |
+| Flash | `tuyaopen-cli firmware flash` (P2: `--yes`) |
 | Serial monitor | `tuyaopen-cli firmware monitor` |
 | List ports | `tuyaopen-cli firmware list-ports` |
 | Environment check-up / diagnostic bundle | `tuyaopen-cli diag doctor` · `tuyaopen-cli diag export` |
@@ -112,7 +112,22 @@ If demand > available: tell developer. Suggest alternatives (different board, I2
 
 ### Step 3 — Hardware Inquiry
 
-For each DP needing hardware (not already in `architecture.json`), present available options then ask:
+**First, find out what is already wired up** — an existing project usually has
+some of this done, and asking about a peripheral the code already registers
+wastes the developer's turn:
+
+```bash
+tuyaopen-cli hardware list-used   # what a previous pass CONFIRMED (.tuyaopen/used-peripherals.json)
+tuyaopen-cli hardware scan-used   # what source/embedded ACTUALLY registers today
+```
+
+The two answer different questions and disagreeing is informative: `list-used`
+is the recorded decision, `scan-used` reads the source. A peripheral in the scan
+but not the list was added without being recorded; one in the list but not the
+scan was planned and never written.
+
+Then, for each DP needing hardware (not already in `architecture.json`), present
+available options and ask:
 
 ```
 Brightness control (warm + cool LED) via PWM:
@@ -249,6 +264,27 @@ grep -rn 'tdl_button_create' $OPEN_SDK_ROOT/examples/  # a real call site
 `$OPEN_SDK_ROOT/examples/peripherals/<name>/` has a working example for most
 of them — read that before writing your own.
 
+**Board-specific Kconfig is not guessable — read this board's own configs.**
+`tuyaopen-cli hardware board-context` ends with a *Reference configuration in
+the SDK* section listing this board's `Kconfig` and every
+`examples/**/config/<BOARD>.config`. Those are the SDK's working settings for
+this exact board. The one that bites: **LVGL major version.** Some boards pin
+v8; writing v9 API (`lv_screen_active()`) against a v8 board fails at compile
+time after the whole build. Check the board's `lvgl_demo` config before the
+first line of UI code.
+
+**Editor showing `xxx.h: file not found` / `unknown type name` while the build
+is fine?** That is IntelliSense with no include paths, not your code. Fix it
+once and stop reading around it:
+
+```bash
+tuyaopen-cli hardware intellisense --yes   # writes .vscode/c_cpp_properties.json
+```
+
+Round 6 spent the whole session treating those as noise. They are, but they are
+also two seconds from being gone, and living with them means a real diagnostic
+is indistinguishable from the background.
+
 Look up from `platform.json`:
 - `peripherals.<name>.tklHeader` → `#include` header path
 - `peripherals.<name>.idPrefix` → prefix for port/pin C enums
@@ -257,7 +293,27 @@ Generate:
 - Hardware init (TAL calls with correct headers and enum IDs)
 - DP receive handler for all `selectedDps` IDs
 - Hardware → DP feedback after each command
-- Cloud connection setup — solution type from:
+- Cloud connection setup
+
+**Regenerate the DP header before you reference it.** `tuyaopen-cli dp generate`
+writes `include/tuya_dp_id.h` from the product's DPs; do not hand-write it.
+
+> `dp generate` and `dp sync` are the **same operation** — both regenerate the
+> embedded header and the miniapp schema from the local DP cache, and since
+> 2026-08-27 both are ungated (P3). Use either; `generate` is the one this
+> workflow's `next_steps` names. They used to differ — `sync` demanded `--yes`
+> while `generate` did the identical write with no gate — which made the
+> confirmation one command name away from being skipped.
+
+**The cloud half has a reference — use it: [references/CLOUD_DP.md](references/CLOUD_DP.md).**
+`dp generate` writes the DP id macros; wiring those ids to `tuya_iot_init` /
+`TUYA_EVENT_DP_RECEIVE_OBJ` / `tuya_iot_dp_obj_report` is application code that
+nothing generates. That file has the init→start→yield skeleton, the
+type→union table for reading a `dp_obj_t`, the report path, and the
+`reset_netcfg.h` trap that costs a full toolchain download to discover
+(it is app-local to `switch_demo`, not an SDK header).
+
+Solution type from:
   ```
   (snapshot.detail?.data ?? snapshot.detail)?.protocolType
   ```
@@ -266,9 +322,23 @@ Generate:
 Entry point: `tuya_app_main()` in `source/embedded/src/tuya_app_main.c`.
 Debug output: `PR_DEBUG(fmt, ...)`.
 
-### Step 7 — Update architecture.json
+### Step 7 — Update architecture.json and advance the lifecycle
 
 Write new peripherals and modules to `architecture.json surfaces.embedded`. **This is the authoritative in-progress signal.** Write only after Step 6 completes.
+
+Then move the project's recorded phase forward — **with the command, not by
+hand-editing the file**:
+
+```bash
+tuyaopen-cli project set-status --lifecycle configured --yes
+#                     scaffolded → configured → built → flashed
+```
+
+`status.json` is what `project info` and `diag doctor` report and what the next
+session picks up from, so an unadvanced lifecycle makes a finished step look
+unstarted. Beta round 6 hand-wrote both `status.json` and `architecture.json`
+while this command existed — hand-editing is how the two drift out of the schema
+the readers expect.
 
 ### Step 8 — Build, then format-check what you wrote
 
@@ -365,20 +435,23 @@ everything that matters — board init, peripheral registration, the first
 `client no active` — has already scrolled past. So: **attach first, then reset
 the device**, and read from the reset line down.
 
-Delegate to `tuyaopen-embedded-cli-debug` § 2 (*从头抓启动日志*). The shape is:
+One command does attach-then-reset in the right order for you:
 
 ```bash
-# 1. background monitor on the log port (does not hold your terminal)
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py start -p <log-port>
-# 2. reset the device so the log starts at the beginning
-python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reset"
-# 3. read from the reset banner down
-$OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py --json tail -n 400
+tuyaopen-cli firmware monitor --port <log-port> \
+    --reset --yes --duration 30 --log-file boot.log --json
 ```
 
-If the firmware has no serial CLI (`CONFIG_ENABLE_SERIAL_CLI_CMD` not set),
-power-cycle instead and say so — but consider turning it on: that skill's § 0
-covers it, and it is what makes Step 3 cheap.
+It opens the port first, restarts the device, and keeps reading — so the log
+starts at boot rather than wherever the device happened to be. Read `boot.log`
+afterwards; stdout is a single JSON envelope.
+
+The restart is a `sys_reboot` over the device's own CLI, which needs
+`tal_cli_init()` in the app (**not** `CONFIG_ENABLE_SERIAL_CLI_CMD` — that
+option adds *more* commands; `sys_reboot` ships without it). If no CLI answers,
+it falls back to a DTR/RTS pulse and says so on stderr; on a USB-JTAG board that
+fallback costs the first ~300 ms of the log. Details and the full command list:
+skill `tuyaopen-embedded-cli-debug` § 0.1.
 
 ### Step 3 — Verify each peripheral you claimed
 
@@ -393,11 +466,63 @@ boot log. A **warning is a failure**, not noise:
 | Nothing at all after the banner | Wrong port or wrong baud — try the other port and 115200 / 460800 / 921600 |
 | `client no active` | **Expected here.** It means "no authorization code yet", not a fault. Steps 4-5 fix it |
 
-Where a peripheral can be driven, drive it: register a temporary command with
-the device CLI and call it (that is exactly what
-`tuyaopen-embedded-cli-debug` is for), or ask the user to press the button and
-tell you what the screen and the LED did. **A peripheral you did not observe
-is not verified**, and you must say so rather than implying it works.
+Where a peripheral can be driven, **drive it over the device's own console
+instead of reflashing**:
+
+```bash
+tuyaopen-cli firmware cli --port <port> --command help --quiet --yes
+tuyaopen-cli firmware cli --port <port> --command sys_heap --quiet --yes
+```
+
+Ask `help` first — it prints what *this* firmware actually registered, which is
+the only authoritative list. Measured: 2.2 s for a reply, against 121 s for a
+reflash on the same board.
+
+Or ask the user to press the button and tell you what the screen and the LED
+did. **A peripheral you did not observe is not verified**, and you must say so
+rather than implying it works.
+
+### Flash once, then interrogate — this is a rule, not a suggestion
+
+Beta round 6 spent **38 % of its wall clock in build + flash**: seven flash
+cycles at ~121 s each. Most of what those cycles proved could have been asked
+of the device that was already running.
+
+**Before you rebuild, ask whether the running device can answer the question.**
+The console is chip-independent — `tal_cli` is TuyaOpen's, not the vendor's —
+so this works the same on every board.
+
+| Instead of reflashing to check… | Ask the device |
+|---|---|
+| does the DP path work end to end | `--command "sys_iot_report_dp 101 bool true"` — then watch the panel |
+| is there enough heap / did something leak | `--command sys_heap` |
+| which thread is near its stack limit | `--command sys_thread` |
+| what does it think of the AP | `--command sys_wifi_info` · `sys_wifi_scan` |
+| did the setting persist | `--command kv_list` · `kv_get <key>` |
+| what firmware is on it right now | `--command version` · `sys_version` |
+| is it activated | `--command auth-read` |
+| restart it to re-read the boot log | `firmware monitor --reset --yes --duration <s> --log-file boot.log` |
+
+**Two prerequisites, and neither is guessable from a failure** — the console
+answers nothing at all rather than erroring:
+
+1. The app must call `tal_cli_init()`. `apps/tuya_cloud/switch_demo`'s skeleton
+   does, so a project copied from it has a console; one written from scratch
+   does not.
+2. Everything past the base eight commands (`help` `cmd` `hello` `version`
+   `sys_log_enable` `sys_reboot` `auth` `read_mac`) needs
+   `CONFIG_ENABLE_SERIAL_CLI_CMD=y` — that is what adds the whole `sys_*` /
+   `fs_*` / `kv_*` set above.
+
+**Turn both on during bring-up**, in the same first build. It costs one Kconfig
+line and a call, and it buys back most of the flash cycles for the rest of the
+project. Turn the Kconfig off before production. Details: skill
+`tuyaopen-embedded-cli-debug` § 0.1.
+
+> `firmware cli` is P2 because it sends an **arbitrary** string — `sys_reboot`,
+> `sys_iot_reset`, `kv_del` and `fs_rm` are all reachable through it. `--yes` is
+> the whole gate. Use `--quiet` for anything whose reply you need to read, or it
+> arrives interleaved with the device's own log flood.
 
 ### Step 4 — Authorization code (the FIRST time it is legitimate to ask, and you MUST ask)
 
@@ -434,7 +559,7 @@ before you ask, and never put an AuthKey on argv where it can be — it goes via
 ### Step 5 — Write it, then read it back
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware authorize --port <port> --yes
+tuyaopen-cli firmware authorize --port <port> --yes
 tuyaopen-cli firmware auth-status --port <port>
 ```
 
@@ -488,6 +613,23 @@ which one and why, and do **not** call the work finished.
 - [ ] `firmware auth-status` read the code back off the device
 - [ ] `client no active` is gone from the log
 - [ ] The user received provisioning instructions **and** the evidence artefact
+- [ ] `project set-status --lifecycle flashed --yes` recorded the phase, so the
+      next session (and `project info`) sees where this one got to
+- [ ] `project info` reports `miniapp.scaffolded: true`, **or** you said in the
+      report that the phone panel does not exist yet. A product with firmware
+      and no panel is not finished — it is half finished, and the half that is
+      missing is the half the user touches
+
+**Writing the report.** Do not hand-assemble the environment facts:
+
+```bash
+tuyaopen-cli diag export --out handover.json
+```
+
+That is one file with the SDK, toolchain, board, platform, serial and project
+state already in it — the same bundle a bug report would carry, and equally the
+right attachment for "here is what I built and on what". Round 6 hand-wrote its
+own summary of exactly this while the command existed.
 
 **Blocked is a legitimate outcome; silent is not.** If you stop at the code,
 report Steps 1-3 as done with their evidence, name the blocker, and stop —
@@ -498,18 +640,32 @@ that is a complete answer. What is never acceptable is a report that reads as
 
 ## Loop Workflow
 
-The standard development iteration cycle for TuyaOpen hardware:
+The development iteration cycle. **Note which loop is the inner one:**
 
 ```
 ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐
 │  Build  │────>│  Flash  │────>│ Monitor │────>│ Analyze │────>│ Decide  │
-│         │     │         │     │  Logs   │     │ Results │     │         │
-└─────────┘     └─────────┘     └─────────┘     └─────────┘     └────┬────┘
-     ^                                                               │
-     │                         ┌──────────┐                          │
-     └─────────────────────────│ Fix Code │<─────── if error ────────┘
-                               └──────────┘         if ok → done
+│  ~40 s  │     │ ~121 s  │     │  Logs   │     │ Results │     │         │
+└─────────┘     └────┬────┘     └─────────┘     └─────────┘     └────┬────┘
+     ^               │                                               │
+     │               v                                               │
+     │        ┌──────────────────────────────┐                       │
+     │        │   firmware cli  ~2 s/probe   │  ◀── inner loop:      │
+     │        │  help · sys_heap · kv_list   │      ask the running  │
+     │        │  sys_wifi_info · report_dp   │      device instead    │
+     │        └──────────────┬───────────────┘                       │
+     │                       │ only when the answer needs new CODE   │
+     │                       v                                       │
+     │                ┌──────────┐                                   │
+     └────────────────│ Fix Code │<────────── if error ──────────────┘
+                      └──────────┘            if ok → done
 ```
+
+**The outer loop costs ~161 s per turn; the inner one costs ~2 s.** Beta round 6
+ran the outer loop seven times and the inner one zero times, and spent 38 % of
+its wall clock doing it. Before every rebuild, ask: *can the device that is
+already running answer this?* See § *Flash once, then interrogate* above for
+the probe-to-question table.
 
 ### Step-by-step
 
@@ -528,7 +684,7 @@ The standard development iteration cycle for TuyaOpen hardware:
 2. **Flash**: flash firmware to the device from the project directory:
 
    ```bash
-   TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port <port> --yes --json
+   tuyaopen-cli firmware flash --port <port> --yes --json
    ```
 
    The env var is a **prefix on this one invocation**, not an `export`: an
@@ -553,20 +709,44 @@ The standard development iteration cycle for TuyaOpen hardware:
    resource busy`) and `start` it again after. Dual-serial boards can keep the log
    port open across a flash.
 
-3. **Monitor / capture logs**:
+3. **Monitor / capture logs** — one command, and it adapts:
 
    ```bash
+   # You (an agent, CI, a background task): a bounded capture that returns.
+   tuyaopen-cli firmware monitor --port <port> \
+       --reset --yes --duration 20 --log-file boot.log --json
+
+   # A human at a terminal: the interactive session.
    tuyaopen-cli firmware monitor --port <port>
    ```
 
-   for interactive sessions.
+   With no terminal — or whenever you pass `--log-file`, `--reset`,
+   `--duration` or `--stream` — it does **not** run `tos.py monitor`. It reads
+   the port directly, because `tos.py monitor` is pyserial's `miniterm` and its
+   `Console()` needs `termios.tcgetattr(stdin)`; with no controlling terminal
+   that raises `termios.error: (25, 'Inappropriate ioctl for device')` before a
+   single line is printed.
+
+   | Flag | Why you want it |
+   |---|---|
+   | `--duration <s>` | **Give it one.** Without a bound the capture runs until killed, and a caller reaching for `timeout` gets exit 124 and no result envelope. |
+   | `--reset --yes` | Starts the log at boot instead of mid-session. Sends `sys_reboot` over the device's own CLI (port stays open, `ESP-ROM:` banner included); falls back to a DTR/RTS pulse if no CLI answers. Needs `--yes` because it restarts the board. |
+   | `--log-file <p>` | Where you read the capture afterwards. stdout stays one JSON line; the envelope's `data.logFile` echoes the path. |
+
+   Budget ~11 s of startup (`export.sh` env sourcing) on top of `--duration`
+   before the port opens.
+
+   > **`--reset` needs `tal_cli_init()` in the app** for the soft path — see
+   > skill `tuyaopen-embedded-cli-debug` § 0.1. Without it the DTR/RTS fallback
+   > runs, which on a USB-JTAG board re-enumerates USB and costs the first
+   > ~300 ms of the log.
 
    > **No CLI?** `tos.py monitor -p <port>`. See `tuyaopen-shared` § 7.
 
-   For **hands-off** background logging (capture while doing something
-   else), use `tuyaopen-embedded-cli-debug` (`monitor_helper.py start -p <port>` →
-   `tail` → `stop`) regardless of which of the above you used — neither the
-   CLI nor `tos.py` has a background/detached monitor mode.
+   Only for **genuinely concurrent** capture — logging one port while flashing
+   another — reach for `tuyaopen-embedded-cli-debug`'s `monitor_helper.py`. It
+   wraps `tos.py monitor`, so it carries the same termios requirement and dies
+   the same way in a sandbox; check that it actually started.
 4. **Analyze**: read the log file under **`<project_dir>/.target_logging/`** for errors, warnings, crash indicators (patterns below)
 5. **Decide**: pass (device healthy) or fail (fix code and restart loop)
 
@@ -678,6 +858,12 @@ Built-in CLI (`tal_cli`) via debug UART (prompt: `tuya> `). Commands, registrati
 
 ## AI agent helper: `tuyaopen-embedded-cli-debug` (`monitor_helper.py`)
 
+> **For a plain capture, use `tuyaopen-cli firmware monitor` instead** (Step 3
+> above). `monitor_helper.py` wraps `tos.py monitor`, so it needs a controlling
+> terminal and dies with `termios.error` in a sandbox that has none — the exact
+> failure beta round 6 hit before hand-writing its own pyserial script. What it
+> still buys you is *concurrency*: logging one port while you flash another.
+
 Full reference: skill **`tuyaopen-embedded-cli-debug`**. Script path (relative to SDK root):
 
 `.agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py`
@@ -692,8 +878,7 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
     --json start -p /dev/ttyACM1
 
 # 2. Flash on the other port while monitor keeps logging
-#    (env var prefixes this one command — never `export` it)
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware flash --port /dev/ttyACM0 --yes --json
+tuyaopen-cli firmware flash --port /dev/ttyACM0 --yes --json
 
 # 3. Read log after boot
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py \
@@ -710,10 +895,10 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
 Repeat until logs are clean:
 
 1. **Build** → **`tuyaopen-cli firmware flash --port <port> --yes --json`**
-   (prefix that one invocation with `TUYAOPEN_AUTOCONFIRM_P2=1` — never
-   `export` it, or every later P2 command in the shell is one `--yes` away;
-   no CLI? `tos.py flash -p <port>` — see `tuyaopen-shared` § 7)
-2. **`monitor_helper.py start -p <monitor-port>`** — capture boot + runtime trace
+   (no CLI? `tos.py flash -p <port>` — see `tuyaopen-shared` § 7)
+2. **`tuyaopen-cli firmware monitor --port <port> --reset --yes --duration <s> --log-file boot.log --json`**
+   — capture boot + runtime trace. Use `monitor_helper.py` only when you need
+   to log one port *while* flashing another.
 3. **`monitor_helper.py tail -n 200`** → search `ty E`, `OPRT_`, watchdog, MQTT
 4. Edit code → go to step 1
 5. **`monitor_helper.py stop`** when done so the port is free for the next flash

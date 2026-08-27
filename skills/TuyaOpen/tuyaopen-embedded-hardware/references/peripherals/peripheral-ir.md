@@ -159,3 +159,24 @@ No Kconfig NAME macro — pass your chosen name to both
 ## Reference Example
 
 `examples/peripherals/ir/`
+
+---
+
+## Next
+
+You have this peripheral's API. Getting back to the workflow:
+
+1. **Is it actually on this board?** `tuyaopen-cli hardware board-context` lists
+   what the board declares, ending with the board's own reference configs.
+   A device that is not in there is not fitted — do **not** write TDD
+   registration code for it. (Adding a board is a different job:
+   [usr-board.md](usr-board.md).)
+2. **Did it reach TDL?** See [README.md](README.md) § *When a board does not
+   register the TDL layer*. Some boards initialise a chip directly and never
+   call the matching `tdd_*_register()`, and then the `tdl_*` call above fails
+   at runtime with nothing at compile time to warn you.
+3. **Record the confirmed set** — `hardware set-used` **overwrites**, so pass
+   every id you are keeping, not just this one:
+   `tuyaopen-cli hardware set-used --ids <id1>,<id2>,… --yes`
+4. **Kconfig → code → build** — back to skill
+   `tuyaopen-workflow-embedded-dev`, Step 5 onward.

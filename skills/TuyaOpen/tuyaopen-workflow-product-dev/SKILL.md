@@ -3,12 +3,19 @@ name: tuyaopen-workflow-product-dev
 description: >-
   End-to-end IoT product development orchestration for TuyaOpen projects.
   Guides from requirements gathering → Tuya Platform product/DP creation →
-  complete embedded firmware generation. State-machine: detects project
-  state and picks up from wherever development currently stands.
+  DP code generation → embedded firmware → **the phone panel (panel
+  mini-app)**, which is what the Tuya app actually shows and is not produced
+  by defining DPs. State-machine: detects project state and picks up from
+  wherever development currently stands. A product is finished when both
+  surfaces exist — firmware AND panel.
 when_to_use: >-
   Use when the developer says "I want to make a [device]", "帮我做一个XX",
   "what's next?", "下一步该干什么", or describes product features and expects
-  end-to-end guidance. Do NOT use for pure platform ops (→ tuyaopen-cloud),
+  end-to-end guidance. Also when the requirement mentions controlling the
+  device **from a phone** — "手机面板"、"手机上能设/能看"、"remote control",
+  "app" — that is the panel mini-app phase, and it is easy to mistake for a
+  cloud/DP task and drop entirely (measured: beta round 6 defined six DPs,
+  never created a panel, and no step in the run said anything was missing). Do NOT use for pure platform ops (→ tuyaopen-cloud),
   pure build/debug (→ tuyaopen-workflow-embedded-dev), or project creation only
   (→ tuyaopen-embedded-project).
 id: tuyaopen-workflow-product-dev
@@ -217,10 +224,10 @@ Delegate to `tuyaopen-cloud` → `ops/manage-dp.md`. Dry-run → developer appro
 Bind the PID:
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli project bind-product --pid <pid> --yes --json
+tuyaopen-cli project bind-product --pid <pid> --yes --json
 ```
 
-(P2 — needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`.) The env var **prefixes this one invocation**; do not `export` it, or every later P2 command in that shell — `skills uninstall`, `dependency remove`, `dp add` — is one `--yes` away. This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
+(P2 — needs `--yes`.) This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
 
 > **No CLI?** Hand-edit `tuyaopen.project.ini` → `[product] pid = <pid>` directly. See `tuyaopen-shared` § 7.
 

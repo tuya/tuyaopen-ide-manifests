@@ -44,7 +44,7 @@ python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py help
 python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py send "sys_version"
 
 # Force a specific port (useful if auto-pick chooses the wrong ACM port)
-python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py -p /dev/ttyACM0 send "kv_dump"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py -p /dev/ttyACM0 send "kv_list"
 
 # List candidate serial ports (no connection)
 python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py list-ports
@@ -97,25 +97,85 @@ output is garbled or empty (some custom boards may swap the ports).
 
 ## Common CLI commands
 
-The exact set depends on what your firmware registers. Typical built-in commands:
+Two tiers, and the distinction matters: **eight commands are compiled in
+unconditionally**, and everything else needs a Kconfig option. An agent that
+assumes "no `CONFIG_ENABLE_SERIAL_CLI_CMD` → no CLI" will skip a console that is
+sitting right there — including the one command worth having on day one,
+`sys_reboot`.
 
-| Command | Description |
-|---------|-------------|
-| `help` | List all available commands |
-| `sys_version` | Print firmware version string |
-| `sys_reset` | Software reset the device |
-| `kv_dump` | Dump all KV storage key-value pairs |
-| `fs_ls /` | List files in the root filesystem |
-| `fs_cat <path>` | Print file contents |
-| `thread_list` | List running threads and stack usage |
-| `heap_stats` | Print heap usage (free/total/peak) |
-| `wifi_info` | Print WiFi connection status |
+### Available once `tal_cli_init()` is called (no Kconfig needed)
 
-The actual commands your firmware exposes depend on:
-- Which `CONFIG_CLI_CMD_*` options are enabled
-- Which custom commands your app registers via `tal_cli_register_cmd()`
+**Two independent gates.** `tal_cli_init()` in the application's main decides
+whether there is a `tuya> ` prompt at all; `CONFIG_ENABLE_SERIAL_CLI_CMD`
+decides how many commands it has. A firmware that never calls
+`tal_cli_init()` has no console regardless of Kconfig — see SKILL.md § 0.1.
 
-Run `help` first to discover what's available.
+With that call in place, these eight are compiled in unconditionally:
+
+| Command | Description | Registered in |
+|---------|-------------|---------------|
+| `help` | List all available commands | `src/tal_cli/src/tal_cli.c` |
+| `cmd` | Alias of `help` | `src/tal_cli/src/tal_cli.c` |
+| `hello` | Print hello world (liveness probe) | `src/tal_cli/src/tal_cli.c` |
+| `version` | Print version information | `src/tal_cli/src/tal_cli.c` |
+| `sys_log_enable on\|off` | Enable/disable log output | `src/tal_cli/src/cli_cmd.c` |
+| `sys_reboot` | Reboot the device | `src/tal_cli/src/cli_cmd.c` |
+| `auth <uuid> <authkey>` | Write a device authorization code | `src/tuya_cloud_service/authorize/tuya_authorize.c` |
+| `auth-read` / `read_mac` | Read authorization info / MAC | `src/tuya_cloud_service/authorize/tuya_authorize.c` |
+
+`sys_log_enable` and `sys_reboot` sit **above** the `#if defined(CLI_CMD_SYS)`
+line in `cli_cmd.c`'s command table — that placement is why they survive with
+the option off. Verified live on an ESP32-S3 whose app calls `tal_cli_init()`
+and whose config says `# CONFIG_ENABLE_SERIAL_CLI_CMD is not set`: `help`
+listed exactly the eight rows above, and the firmware printed
+`if you want to see more commands(sys_*, fs_*, kv_*), please turn on ENABLE_SERIAL_CLI_CMD in Kconfig`.
+
+**Two of these are worth reaching for immediately:**
+
+- `sys_reboot` — a *soft* restart that does not touch DTR/RTS. On a USB-JTAG
+  board (ESP32-S3 and friends) a hardware reset re-enumerates USB and the first
+  ~300 ms of the boot log is unrecoverable; a soft reboot keeps the port open
+  and the capture runs straight through, `ESP-ROM:` banner included. This is
+  what `tuyaopen-cli firmware monitor --reset` does first, falling back to
+  DTR/RTS only when no CLI answers.
+- `sys_log_enable off` — silences the log flood before you drive the device, so
+  a `help` or a status reply is not buried under DP-report chatter.
+
+### Needs `CONFIG_ENABLE_SERIAL_CLI_CMD=y`
+
+Turning that option on adds three groups, each with its own sub-option
+(`CLI_CMD_SYS` / `CLI_CMD_FS` / `CLI_CMD_KV`, all `default y` once the parent is
+on). Enable it during bring-up and turn it off for production:
+
+```
+CONFIG_ENABLE_SERIAL_CLI_CMD=y
+```
+
+| Group | Commands |
+|-------|----------|
+| `sys_*` (`CLI_CMD_SYS`) | `sys_status`, `sys_heap`, `sys_thread`, `sys_tick`, `sys_version`, `sys_set_log_level`, `sys_timer_count`, `sys_iot_stop`, `sys_iot_restart`, `sys_iot_reset`, `sys_iot_get_devid`, `sys_iot_report_dp`, `sys_netmgr`, `sys_exec`, `sys_wifi_info`, `sys_wifi_scan` |
+| `fs_*` (`CLI_CMD_FS`) | `fs_ls`, `fs_stat`, `fs_cat`, `fs_hexdump`, `fs_write`, `fs_append`, `fs_rm`, `fs_mkdir`, `fs_mv` |
+| `kv_*` (`CLI_CMD_KV`) | `kv_get`, `kv_set`, `kv_del`, `kv_list` |
+
+`sys_iot_report_dp` and `sys_wifi_*` are the two that change how bring-up feels:
+you can report a DP and watch the panel react, or check what the device thinks
+of the AP, without rebuilding anything.
+
+**Names to not guess.** Until 2026-08-26 this table listed five commands that
+do not exist, next to a claim that they were "typical built-ins":
+
+| Was written | Actually |
+|---|---|
+| `sys_reset` | `sys_reboot` |
+| `thread_list` | `sys_thread` |
+| `heap_stats` | `sys_heap` |
+| `wifi_info` | `sys_wifi_info` |
+| `kv_dump` | `kv_list` |
+
+Run `help` and read the answer. The tables above are a snapshot of
+`src/tal_cli/src/cli_cmd.c`; that file is the authority.
+
+Beyond these, your app can register its own with `tal_cli_register_cmd()`.
 
 ## Agent workflow example
 
@@ -127,10 +187,10 @@ python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json li
 python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json help
 
 # 3. Send a debug command
-python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "heap_stats"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_heap"
 
 # 4. Reset the device remotely
-python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reset"
+python .agents/skills/tuyaopen-embedded-cli-debug/scripts/cli_debug.py --json send "sys_reboot"
 ```
 
 ## CLI not enabled: firmware config

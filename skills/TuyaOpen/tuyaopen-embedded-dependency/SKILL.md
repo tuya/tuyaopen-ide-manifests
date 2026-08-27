@@ -44,7 +44,7 @@ own job (CMake wiring, which none of these commands touch):
 | Download + extract + record a library (writes the lockfile) | `tuyaopen-cli dependency install --owner <o> --name <n> --tarball-url <url>` |
 | Record a library **already** on disk (no download) | `tuyaopen-cli dependency add --owner <o> --name <n> --version <v> --path <dir>` |
 | List recorded project dependencies (`.tuyaopen/dependencies.lock.json`) | `tuyaopen-cli dependency list` |
-| Remove a recorded dependency | `tuyaopen-cli dependency remove --id <owner>/<name>` — **P2**, needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` |
+| Remove a recorded dependency | `tuyaopen-cli dependency remove --id <owner>/<name>` — **P2**, needs `--yes` |
 | List the SDK's own bundled platform sub-SDKs (a *different* layer — see below) | `tuyaopen-cli sdk platform` |
 
 > **No CLI?** `ecosystem`/`dependency`/`library` have no `tos.py` equivalent
@@ -72,7 +72,7 @@ this project has pulled in, `tuyaopen-cli dependency list`.
 > were removed rather than aliased.
 
 `dependency search`/`dependency list` are read-only. `dependency install` and `dependency add` are **P2** (need `--yes` +
-`TUYAOPEN_AUTOCONFIRM_P2=1`, or `--dry-run` to preview). None of these five
+or `--dry-run` to preview). None of these five
 commands write a single line of `CMakeLists.txt` or Kconfig — that gap is
 this skill's entire remaining job, below. Full flags: `tuyaopen-cli dependency --help` /
 `tuyaopen-cli schema get --group dependency --command <cmd>` — don't hardcode the flag list here (skill

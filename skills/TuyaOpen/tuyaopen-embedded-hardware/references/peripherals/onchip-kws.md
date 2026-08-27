@@ -81,3 +81,19 @@ void app_kws_stop(void)
 
 SDK: `src/ai_components/ai_mode/src/ai_mode_wakeup.c`
 (`tkl_kws_reg_wakeup_cb` + `tkl_kws_enable`/`disable`, callback receives the wake word).
+
+---
+
+## Next
+
+An on-chip peripheral needs no board fitting — but its **pins** do. Getting back
+to the workflow:
+
+1. **Is the pin free?** `tuyaopen-cli hardware board-context` lists what the
+   board already claims. Never assume a GPIO: a pin the board reserved for a
+   display or a PMIC will fail in a way that looks like a driver bug.
+2. **Record the confirmed set** — `hardware set-used` **overwrites**, so pass
+   every id you are keeping, not just this one:
+   `tuyaopen-cli hardware set-used --ids <id1>,<id2>,… --yes`
+3. **Kconfig → code → build** — back to skill
+   `tuyaopen-workflow-embedded-dev`, Step 5 onward.

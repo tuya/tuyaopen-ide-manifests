@@ -59,3 +59,41 @@ the instance + pins and record as `onchip:<type><n>` in `used-peripherals.json`.
 3. For per-device pins and Kconfig, look the device up by its `ID:` (from
    `.tuyaopen/board-context.md`) in `.tuyaopen/ide/board.json`
    (handled by the `tuyaopen-embedded-hardware` skill)
+
+---
+
+## When a board does not register the TDL layer
+
+The peripheral docs here describe the **TDL** API — `tdl_display_*`,
+`tdl_audio_*`, `tdl_button_*`, `tdl_power_*`. That layer exists only if the
+board's own registration code registers a driver into it. Some boards
+initialise a chip's low-level driver directly and never call the matching
+`tdd_*_register()`, and then the TDL call you were about to write returns
+"no such device" at runtime with nothing at compile time to warn you.
+
+**Measured case — battery level on
+`WAVESHARE_ESP32S3_Touch_AMOLED_1.8`.** The board fits an AXP2101 PMIC, and
+`boards/ESP32/WAVESHARE_ESP32S3_Touch_AMOLED_1.8/Waveshare_ESP32_S3_Touch_AMOLED_1_8.c`
+calls the axp2101 driver's own init but **never** `tdd_power_axp2101_register()`.
+So `tdl_power_*` has nothing registered, and reading the battery means calling
+the low-level driver directly:
+
+```c
+#include "axp2101_driver.h"
+uint8_t pct = axp2101_getBatteryPercent();
+```
+
+Beta round 6 lost time here: it knew it needed a battery percentage, tried the
+standard TDL path, and only got out by reading the board's registration file.
+
+**Check before writing a TDL call**, whichever peripheral you are on:
+
+```bash
+grep -n "_register" $OPEN_SDK_ROOT/boards/<PLATFORM>/<BOARD>/*.c
+```
+
+Every `tdd_*_register()` in that file is a peripheral you may drive through TDL.
+Anything the board only initialises — no register call — you drive through its
+own driver header, and **that is board-specific**: do not generalise either
+answer to another board. `tuyaopen-cli hardware board-context` lists which
+devices this board declares; this grep tells you which of them reached TDL.

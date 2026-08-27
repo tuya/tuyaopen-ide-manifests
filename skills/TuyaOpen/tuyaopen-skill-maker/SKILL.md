@@ -264,7 +264,7 @@ rest of the exhaustive, default-deny table in `tuyaopen-shared` § 4 — means
 the CLI ran, is working correctly, and is declining on purpose. Reaching for
 the fallback tool at that point is not "trying another way" — it is going
 around the CLI's risk gate. Concretely: `tuyaopen-cli firmware flash` sits
-behind a P2 gate (`--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`); `tos.py flash` /
+behind a P2 gate (`--yes`); `tos.py flash` /
 `tyutool_cli flash` gate nothing at all. A skill body that says "if flash
 asks for confirmation, just use `tos.py flash`" has handed an agent exactly
 the bypass this catalogue exists to prevent.

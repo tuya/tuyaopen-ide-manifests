@@ -131,7 +131,7 @@ tuyaopen-cli license list --json     # 本地存了哪些（AuthKey 默认打码
 
 ```bash
 tuyaopen-cli license add --uuid <uuid>          # AuthKey 走 TUYA_LICENSE_AUTHKEY 或 stdin，绝不上 argv
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli firmware authorize --port <port> --uuid <u> --authkey <k> --yes
+tuyaopen-cli firmware authorize --port <port> --uuid <u> --authkey <k> --yes
 tuyaopen-cli firmware auth-status --port <port> # 读回来核对
 ```
 
@@ -147,7 +147,7 @@ UUID 试试看。
 | Save a UUID/AuthKey pair to the local CLI store | `tuyaopen-cli license add --uuid <u>` — AuthKey via `TUYA_LICENSE_AUTHKEY` env var or stdin, **never** as a flag |
 | Bulk-import from an Excel file | `tuyaopen-cli license import --xlsx <path>` |
 | Delete a saved license | `tuyaopen-cli license remove --uuid <u>` — **P0**, needs `--dry-run` → `--confirm <token>` |
-| Write a UUID+AuthKey code to the device over serial | `tuyaopen-cli firmware authorize --port <port> --uuid <u> --authkey <k>` — **P2**, needs `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` |
+| Write a UUID+AuthKey code to the device over serial | `tuyaopen-cli firmware authorize --port <port> --uuid <u> --authkey <k>` — **P2**, needs `--yes` |
 
 **⚠ `license remove` and `firmware authorize` are gated differently — don't
 carry one's ritual over to the other.** `license remove` is **P0**: never
@@ -158,7 +158,7 @@ confirm a different one, and there is no shortcut around running `--dry-run`
 first and copying the value it hands back. `firmware authorize` dropped from
 P0 to **P2** on 2026-08-18 (the KV it writes is rewritable and `firmware
 auth-status` reads it back, so it fails the P0 criterion) — it takes `--yes`
-+ `TUYAOPEN_AUTOCONFIRM_P2=1` instead, and its `--dry-run` does not hand back
+instead, and its `--dry-run` does not hand back
 a confirm token at all. Full mechanics: skill `tuyaopen-shared` § 4.
 
 > **No CLI?** `firmware authorize` → `tyutool_cli authorize` directly (see

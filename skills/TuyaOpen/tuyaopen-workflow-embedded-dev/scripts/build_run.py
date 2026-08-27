@@ -7,15 +7,13 @@ Usage: python build_run.py [timeout_seconds]
 Split of responsibility (2026-08-18): the *build* half now goes through the
 `tuyaopen-cli` CLI (`firmware build --stream`) when it can be resolved, falling
 back to `tos.py build` only when the CLI is not reachable — never because it
-failed. `--stream` (rather than `--json`) is deliberate: a `--json` build
-buffers the whole build's output into one envelope printed only at the end
-(the CLI's `bufferedOut` path fires whenever its own stdout is not a TTY,
-which a piped subprocess always is), so a human watching this script would
-see nothing until the build was already over. `--stream` emits one ndjson
-line per line of build output as it happens, and the exit code is still a
-faithful success signal in that mode: `cli.ts` computes it from `result.ok`/
-`result.type` before it checks whether to skip printing the envelope for a
-streamed command. The *run + analyze* half (executing the LINUX ELF and
+failed. `--stream` (rather than plain `--json`) is deliberate: without it the whole
+build's output is buffered into one envelope printed only at the end, so a
+human watching this script would see nothing until the build was already over.
+`--stream` emits one ndjson line per line of build output as it happens —
+**on stderr** since 2026-08-27, with stdout carrying the single result
+envelope exactly as any other command. The exit code is a faithful success
+signal either way. The *run + analyze* half (executing the LINUX ELF and
 scanning its stdout for error/warning/watchdog patterns) is unchanged and
 stays on `subprocess` directly: the CLI has no command that runs a built
 LINUX binary, only one that builds it. See skill `tuyaopen-shared` § 4 for
@@ -115,18 +113,27 @@ def _run_build():
         ret = subprocess.run([_python_exe(), _tos_py(), "build"], check=False)
         return ret.returncode == 0
 
+    # Frames come off **stderr**, the envelope off stdout. They shared stdout
+    # until 2026-08-27; reading frames from stdout now yields one JSON envelope
+    # at the very end and nothing live, while the frames go straight to the
+    # terminal as raw ndjson.
     proc = subprocess.Popen(
         argv + ["firmware", "build", "--stream"],
         stdout=subprocess.PIPE,
-        stderr=None,  # the CLI's own logs already go to stderr — let them hit the terminal live
+        stderr=subprocess.PIPE,
         text=True,
         bufsize=1,
     )
-    for line in proc.stdout:
+    for line in proc.stderr:
         line = line.rstrip("\n")
         if line:
             print(_stream_line_message(line))
+    envelope = proc.stdout.read() if proc.stdout else ""
     proc.wait()
+    # The exit code is the verdict; the envelope is only worth printing when it
+    # says something the frames did not (i.e. the build failed).
+    if proc.returncode != 0 and envelope.strip():
+        print(envelope.strip())
     return proc.returncode == 0
 
 

@@ -196,4 +196,28 @@ node scripts/vibe-compile-check.mjs tcN <example>     # 复用 example flags 跑
 - [ ] `node scripts/vibe-test-runner.mjs` 全绿
 - [ ] 真编译验证：子 agent 生成的代码 `vibe-compile-check.mjs` 全过
 - [ ] 踩坑表里的 7 条都规避了
+- [ ] **文末有 `## Next` 出口段**（见下）
 ```
+
+---
+
+## 9. 每份外设文档都必须有出口
+
+`embedded-dev` 把「任何外设需求」分派到这里，所以这些文件是 agent 的**叶子节点**：
+它读完就停。2026-08-26 实测，27 份里有 24 份读完之后没有任何去向 —— agent 拿到了
+API，却不知道下一步是确认板子有没有这个器件、还是直接写代码。
+
+所以文末固定一段 `## Next`，把它送回工作流。两种模板，按类型选：
+
+**板载器件（`peripheral-*.md`）** —— 四步：`hardware board-context` 确认板子真有它
+→ 查是否注册进 TDL（README.md 那一节）→ `hardware set-used` 记录 → 回
+`tuyaopen-workflow-embedded-dev` Step 5。
+
+**片上外设（`onchip-*.md`）** —— 三步：`hardware board-context` 确认引脚没被占用
+→ `hardware set-used` 记录 → 回 Step 5。
+
+照抄任意一份同类文件的结尾即可，**不要重写措辞**：这一段的价值在于每份都一样，
+agent 读第二份时不用重新理解。
+
+> `set-used` 是**整体覆盖**不是追加。模板里那句「pass every id you are keeping」
+> 必须保留 —— 漏掉它，agent 会把之前确认过的外设集合冲掉。

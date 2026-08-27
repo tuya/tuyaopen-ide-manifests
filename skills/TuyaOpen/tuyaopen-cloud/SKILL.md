@@ -32,7 +32,7 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 | View the bound product | `tuyaopen-cli product info` |
 | List DPs (**reads the local snapshot**) | `tuyaopen-cli dp list` |
 | Add a custom DP (101–199) | `tuyaopen-cli dp add` (P2) |
-| Generate code from DPs | `tuyaopen-cli dp generate` · `dp sync` (P2) |
+| Generate code from DPs | `tuyaopen-cli dp generate` · `dp sync` — same operation, both ungated |
 | Reach any `tuya-devplat-cli` command the groups above don't cover | `tuyaopen-cli devplat exec -- <args…>` (P2) — credentials are injected for you; never ask the user for a raw Service Key |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
@@ -88,7 +88,7 @@ the path via the `TUYA_DEVPLAT_CLI` environment variable.
 tuyaopen-cli credential login --emit-url
 
 # ② 之后所有 devplat 调用都走这个口子，凭据自动注入
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli devplat exec --yes -- <devplat 的参数>
+tuyaopen-cli devplat exec --yes -- <devplat 的参数>
 ```
 
 **硬规则：**
@@ -106,7 +106,7 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli devplat exec --yes -- <devplat 的参数>
 **发现能力用这个：**
 
 ```bash
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli devplat exec --yes -- schema list --format json
+tuyaopen-cli devplat exec --yes -- schema list --format json
 ```
 
 实测它报出 **37 个 group**，而授权过滤后的 `--help` 只列 28 个 —— 这也再次说明下面 Trap 1
@@ -122,7 +122,7 @@ TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli devplat exec --yes -- schema list --forma
 
 ```bash
 # 后台起，URL 会以一行 JSON 打到 stdout
-TUYAOPEN_AUTOCONFIRM_P2=1 tuyaopen-cli credential login --emit-url --timeout 600 > /tmp/login.json 2>/tmp/login.err &
+tuyaopen-cli credential login --emit-url --timeout 600 > /tmp/login.json 2>/tmp/login.err &
 # 把 URL 交给用户，然后每 10 秒问一次状态
 tuyaopen-cli credential status --json
 ```
@@ -339,7 +339,7 @@ the raw devplat response has none of those. Concretely:
 | Anything with no `tuyaopen-cli` equivalent (panel admin, workflow, agent, database) | `tuya-devplat-cli` | — |
 
 The two do **not** share a confirmation mechanism: `tuyaopen-cli` gates by
-`riskLevel` (P0 derived token / P2 `--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` / P3
+`riskLevel` (P0 derived token / P2 `--yes` / P3
 ungated), `tuya-devplat-cli` uses its own `--dry-run` → `--confirm <token>` pair
 documented above. Don't carry one CLI's confirmation habit into the other.
 

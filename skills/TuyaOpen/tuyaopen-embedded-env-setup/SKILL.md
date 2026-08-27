@@ -76,7 +76,7 @@ tuyaopen-cli diag doctor --json     # → .data.sdk （根路径、是否就绪�
 All five `sdk` subcommands are risk tier **P3** — mutating (`clone`,
 `env-init`, `env-pull`, `update`), but no `--dry-run`/`--confirm`/`--yes` gate
 applies (see skill `tuyaopen-shared` § 4). `manifests sync` is **P2** — needs
-`--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1`, or `--dry-run` to preview.
+`--yes`, or `--dry-run` to preview.
 
 Two things worth knowing before you reach for these, verified against
 `src/cli/commands/sdk.ts`:

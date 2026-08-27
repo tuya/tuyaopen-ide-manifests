@@ -72,7 +72,7 @@ repeating here because this is the skill someone lands on when they type
 ```bash
 tuyaopen-cli config list                          # all three keys (empty object = all defaults)
 tuyaopen-cli config get --key language
-tuyaopen-cli config set --key gitMirror --value <value>   # P2 — needs --yes + TUYAOPEN_AUTOCONFIRM_P2=1, or --dry-run
+tuyaopen-cli config set --key gitMirror --value <value>   # P2 — needs --yes, or --dry-run
 ```
 
 Flags: `tuyaopen-cli config --help` / `tuyaopen-cli schema get --group config

@@ -182,3 +182,27 @@ tuya-devplat-cli product dp-valid --product-id <pid> --format json
 | `dp-list` returns empty array | Product has no DPs attached yet — use `dp-standard-catalog` to find available IDs |
 | `confirm_token` rejected (`INVALID_CONFIRMATION`) | Token is one-time — re-run `--dry-run` to get a new one |
 | DP ID not found in catalog | Use `dp-standard-catalog` to confirm the ID exists for this product's category; for `qt`, any ID from 1 up is valid |
+
+---
+
+## Next: the DPs exist in the cloud and nowhere else
+
+Creating a DP changes the product on the platform. It does **not** touch this
+project. Two things follow, and beta round 6 shipped a whole product having done
+neither:
+
+| Do this | Why |
+|---|---|
+| `tuyaopen-cli dp generate` | Writes `source/embedded/include/tuya_dp_id.h` (the DP id macros) and `source/miniapp/src/devices/schema.ts`. Without it the firmware has no ids to reference and you will hand-write that header — which round 6 did |
+| `tuyaopen-cli project info` — check `miniapp.scaffolded` | The phone panel is a separate surface with its own creation step. DPs alone produce no panel. If it reports `false`, the product is not finished: `tuyaopen-cli miniapp template list` |
+
+Firmware side after that: skill `tuyaopen-workflow-embedded-dev`, whose
+`references/CLOUD_DP.md` covers wiring those ids to the cloud
+(`TUYA_EVENT_DP_RECEIVE_OBJ`, `tuya_iot_dp_obj_report`).
+Panel side: skill `tuyaopen-workflow-miniapp-dev`.
+
+> This section exists because both routes into DP creation have to end the same
+> way. An agent that arrives here via `tuyaopen-cloud` never loads
+> `tuyaopen-workflow-product-dev`, where those two steps used to be named — so
+> for that agent they did not exist. Attachments are leaf nodes; a leaf with no
+> exit is where a workflow stops.

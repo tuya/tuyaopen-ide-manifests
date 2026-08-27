@@ -94,3 +94,19 @@ tkl_io_pinmux_config(TUYA_IO_PIN_16, TUYA_IIC0_SDA);
 ## Reference example
 
 SDK: `examples/peripherals/i2c/` (i2c_scan; sht3x_4x_sensor — pin mux, master send/receive).
+
+---
+
+## Next
+
+An on-chip peripheral needs no board fitting — but its **pins** do. Getting back
+to the workflow:
+
+1. **Is the pin free?** `tuyaopen-cli hardware board-context` lists what the
+   board already claims. Never assume a GPIO: a pin the board reserved for a
+   display or a PMIC will fail in a way that looks like a driver bug.
+2. **Record the confirmed set** — `hardware set-used` **overwrites**, so pass
+   every id you are keeping, not just this one:
+   `tuyaopen-cli hardware set-used --ids <id1>,<id2>,… --yes`
+3. **Kconfig → code → build** — back to skill
+   `tuyaopen-workflow-embedded-dev`, Step 5 onward.

@@ -35,7 +35,7 @@ CONFIG NOTE:
         CONFIG_ENABLE_SERIAL_CLI_CMD=y
 
     Optional per-feature gates:
-        CONFIG_CLI_CMD_SYS=y      (sys_* commands: sys_reset, sys_version, ...)
+        CONFIG_CLI_CMD_SYS=y      (sys_* commands: sys_reboot, sys_version, ...)
         CONFIG_CLI_CMD_FS=y       (fs_* filesystem commands)
         CONFIG_CLI_CMD_KV=y       (kv_* key-value store commands)
 
@@ -421,7 +421,7 @@ def main() -> int:
         # ---- send ----
         elif args.subcommand == 'send':
             if not args.command_args:
-                print('ERROR: send requires a command argument, e.g.: send "sys_reset"',
+                print('ERROR: send requires a command argument, e.g.: send "sys_reboot"',
                       file=sys.stderr)
                 return 1
             command = ' '.join(args.command_args)

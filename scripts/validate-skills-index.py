@@ -942,6 +942,64 @@ def check_resident_descriptions_cover_triggers(items: list) -> None:
 
 
 
+
+# --------------------------------------------------------------------------
+# Attachments must have an exit
+# --------------------------------------------------------------------------
+
+#: Markdown headings that count as "this file tells you where to go next".
+#: Matched case-insensitively against the whole file, not just headings, so a
+#: bolded lead-in works as well as a `##`.
+_EXIT_MARKERS = (
+    "next:",
+    "## next",
+    "下一步",
+    "next step",
+)
+
+
+def check_attachments_have_exit(items: list) -> None:
+    """Every `ops/*.md` attachment must say where the workflow goes next.
+
+    An agent that reaches a skill through an attachment reads that file and
+    stops there: attachments are leaves, and a leaf with no exit is where a
+    workflow silently ends.
+
+    Measured, beta round 6: the agent fetched `tuyaopen-cloud/ops/manage-dp.md`
+    to create DPs, and that file ended with a Troubleshooting table. The two
+    steps that had to follow — `dp generate`, and creating the phone panel —
+    were named in `tuyaopen-workflow-product-dev`, a skill that agent never
+    loaded, because the routing table correctly sent "create product / DPs" to
+    `tuyaopen-cloud`. Two doors into the same room; only one had exit signs.
+    The product shipped with a hand-written DP header and no panel at all.
+
+    Scope is deliberately narrow — `ops/` only. Those are the
+    do-a-platform-operation attachments, i.e. exactly the ones an agent lands on
+    mid-workflow. A `references/` file is lookup material and may legitimately
+    just end.
+    """
+    for item in items:
+        local_path = (item.get("source") or {}).get("localPath")
+        if not is_str(local_path):
+            continue
+        ops_dir = REPO_ROOT / local_path / "ops"
+        if not ops_dir.is_dir():
+            continue
+        for md in sorted(ops_dir.glob("*.md")):
+            try:
+                body = md.read_text(encoding="utf-8").lower()
+            except OSError as e:
+                errors.append(f"{item.get('id')}: cannot read {md.name}: {e}")
+                continue
+            if not any(marker in body for marker in _EXIT_MARKERS):
+                errors.append(
+                    f"{item.get('id')}: ops/{md.name} has no next-step section. "
+                    f"An agent that arrives here reads this file and stops. "
+                    f"End it with a 'Next:' / '下一步' section naming the "
+                    f"command(s) or skill that follow."
+                )
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "TuyaOpen" / "index.json"
     if not index_path.is_file():
@@ -974,6 +1032,7 @@ def main() -> int:
     check_frontmatter_parses(items)
     check_routing_covers_opt_in(items)
     check_resident_descriptions_cover_triggers(items)
+    check_attachments_have_exit(items)
 
     if errors:
         print(f"✗ {index_path}: {len(errors)} problem(s) found:", file=sys.stderr)

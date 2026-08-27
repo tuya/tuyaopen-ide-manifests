@@ -131,7 +131,7 @@ skill's `related` entry).
 `template create` isn't dispatched through the framework's automatic P2 gate
 (because `template list` must stay ungated and both share one command), but
 it enforces the identical envelope by hand: `--dry-run` to preview, or
-`--yes` + `TUYAOPEN_AUTOCONFIRM_P2=1` to apply. Treat it exactly like any
+`--yes` to apply. Treat it exactly like any
 other P2 command from skill `tuyaopen-shared` § 4.
 
 ### `upload` — P2, and the heaviest command in this group
@@ -155,7 +155,7 @@ device".
 | `config:project_not_open` on `build`/`meta`/`sync-schema`/`preview` | No `source/miniapp` directory under the project root | Run inside a TuyaOpen project that has a miniapp, or pass `--project-root` |
 | `sync-schema` fails `config:no_pid_bound` | No product bound and no `--pid` given | Bind a product first, or pass `--pid <pid>` explicitly |
 | `sync-schema` fails `config:no_product_cache` | Product bound, but no local DP snapshot cached yet | Refresh/bind the product from the TuyaOpen IDE, then retry |
-| `template create` rejected as `confirmation:needs_yes` | P2 gate — missing `--yes` / `TUYAOPEN_AUTOCONFIRM_P2` | Add both, or use `--dry-run` to preview first |
+| `template create` rejected as `confirmation:needs_yes` | P2 gate — missing `--yes` | Add it, or use `--dry-run` to preview first |
 | `template create` fails `config:manifest_item_missing` (unknown template id) | Wrong or stale `--id` | Run `tuyaopen-cli miniapp template list` for current ids |
 | `upload` succeeded but end users still don't see the miniapp | Expected — `upload` registers a version for internal testing only | Publish it in the browser at `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>`, **then** bind it to the product at `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE`. Both web-only; see § *Web-only steps* |
 | Miniapp is published, review passed, but the panel still doesn't appear on the device | Publishing ≠ binding — the published MiniApp is not attached to the product yet | Bind it: `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` (`<projectId>` = the **product PID** from `project.tuya.json`, keep `&tab=operation#PRIVATE` verbatim) |
