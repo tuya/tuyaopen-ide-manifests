@@ -295,10 +295,11 @@ time. You never need to know which one it picked.
 > intended standalone distribution and the `bin` entry is already `tuyaopen-cli`,
 > but `npm install -g @tuya/tuyaopen-cli` returns 404 on the public registry
 > (re-measured 2026-08-27). The internal beta ships on the company registry
-> instead, and **the `@beta` tag is not optional** — without it npm resolves
-> `latest`, which is pinned four versions back (measured 2026-08-27):
+> instead, and **the command takes no dist-tag suffix** — tnpm cannot move a
+> dist-tag after the fact, so `latest` is the only channel that advances and
+> `@beta` is frozen at `0.1.0-beta.14` (2026-08-28):
 >
->     npm i -g @tuya/tuyaopen-cli@beta --registry https://registry-npm.tuya-inc.top/
+>     npm i -g @tuya/tuyaopen-cli --registry https://registry-npm.tuya-inc.top/
 >
 > An offline tarball (`npm i -g ./tuyaopen-cli-<version>.tgz`) works too. Either
 > install puts `tuyaopen-cli` on `PATH` globally, in which case the search above

@@ -53,7 +53,7 @@ tuyaopen-cli miniapp install --dry-run --json   # 看 data.runtimeVendorPresent
 `false` 时命令会以 `config` / `runtime_vendor_missing` 失败，并**打印它查过的绝对路径**。
 两条出路：
 
-1. 升级 CLI —— `npm i -g @tuya/tuyaopen-cli@beta --registry https://registry-npm.tuya-inc.top/`；
+1. 升级 CLI —— `npm i -g @tuya/tuyaopen-cli --registry https://registry-npm.tuya-inc.top/`；
 2. 借一份装好的扩展目录（beta.14 之前唯一的办法，现在只是退路）：
 
 ```bash

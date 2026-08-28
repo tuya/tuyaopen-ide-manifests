@@ -291,7 +291,7 @@ tuyaopen-cli miniapp preview --emit-url
 > `config:runtime_vendor_missing` 并会**打印它查过的路径**。
 >
 > **撞到这堵墙时不要放弃整条链**（第四轮就是这么丢掉 ⑨ 和 ⓐ–ⓔ 的）。降级方案：
-> 1. 升级 CLI：`npm i -g @tuya/tuyaopen-cli@beta --registry https://registry-npm.tuya-inc.top/`；或
+> 1. 升级 CLI：`npm i -g @tuya/tuyaopen-cli --registry https://registry-npm.tuya-inc.top/`；或
 > 2. 在 TuyaOpen IDE 里打开这个工程跑预览；或
 > 3. 跳过 ⑧，直接 ⑨ `upload`，让用户用手机扫**内测版二维码**在真机上看 ——
 >    真机预览本来就比 mock bridge 更接近真实；
