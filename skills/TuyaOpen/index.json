@@ -813,7 +813,7 @@
     },
     {
       "id": "tuyaopen-embedded-device-auth",
-      "version": "1.6.0",
+      "version": "1.7.0",
       "group": "embedded",
       "order": 24,
       "name": {
@@ -924,7 +924,7 @@
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "2.3.0",
+      "version": "2.4.0",
       "group": "miniapp",
       "order": 98,
       "name": {
@@ -975,7 +975,7 @@
     },
     {
       "id": "tuyaopen-workflow-miniapp-dev",
-      "version": "2.5.0",
+      "version": "2.6.0",
       "group": "miniapp",
       "order": 99,
       "name": {

@@ -131,9 +131,21 @@ tuyaopen-cli license list --json     # 本地存了哪些（AuthKey 默认打码
 
 ```bash
 tuyaopen-cli license add --uuid <uuid>          # AuthKey 走 TUYA_LICENSE_AUTHKEY 或 stdin，绝不上 argv
-tuyaopen-cli firmware authorize --port <port> --uuid <u> --authkey <k> --yes
+tuyaopen-cli firmware authorize --port <port> --yes   # 不传 uuid/authkey：从本地库取那一对
 tuyaopen-cli firmware auth-status --port <port> # 读回来核对
 ```
+
+**`authorize` 不传 `--uuid` / `--authkey` 是首选写法。** 0.1.0-beta.16 起它会从
+`license add` / `license import` 存下的本地库解析：**库里恰好一条就用它；多条则拒绝并
+列出 UUID 让你指定**（授权码同一时刻只能用于一个设备，烧哪一个不该由工具替你猜）。
+这样 AuthKey 不出现在你的命令行里，也不出现在对话里。
+
+要指定就只传 `--uuid`，让 AuthKey 仍从库里配对取：**两半永远同源**，
+不会出现「你的 UUID + 库里的 key」这种烧进去必然激活失败的组合。
+
+> **别把授权码贴进对话。** 拿到 xlsx 就用 `license import --xlsx`；只有一对就用
+> `echo <authkey> | tuyaopen-cli license add --uuid <uuid> --yes`。argv 是全机可读的
+> （`ps` / `/proc/<pid>/cmdline` / Process Explorer），而聊天记录会被转发和归档。
 
 **如果一个码都拿不到**：停下来告诉用户，并说清卡在哪一步 —— 是没绑 PID、没装 IDE、还是
 平台侧没有可申领的额度。**不要**继续往下做然后让设备卡在 `client no active`，也不要编一个
@@ -147,7 +159,7 @@ UUID 试试看。
 | Save a UUID/AuthKey pair to the local CLI store | `tuyaopen-cli license add --uuid <u>` — AuthKey via `TUYA_LICENSE_AUTHKEY` env var or stdin, **never** as a flag |
 | Bulk-import from an Excel file | `tuyaopen-cli license import --xlsx <path>` |
 | Delete a saved license | `tuyaopen-cli license remove --uuid <u>` — **P0**, needs `--dry-run` → `--confirm <token>` |
-| Write a UUID+AuthKey code to the device over serial | `tuyaopen-cli firmware authorize --port <port> --uuid <u> --authkey <k>` — **P2**, needs `--yes` |
+| Write a UUID+AuthKey code to the device over serial | `tuyaopen-cli firmware authorize --port <port>` — **P2**, needs `--yes`. Omit the credential flags and the pair comes from the local store (one saved → used; several → refused, listing UUIDs). `--uuid` alone also works; `--authkey` alone is refused, because the two halves must share a source |
 
 **⚠ `license remove` and `firmware authorize` are gated differently — don't
 carry one's ritual over to the other.** `license remove` is **P0**: never

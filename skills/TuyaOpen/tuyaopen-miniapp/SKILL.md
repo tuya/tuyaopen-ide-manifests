@@ -160,6 +160,8 @@ device".
 |---|---|---|
 | `config:runtime_vendor_missing` on `install`/`upload`/`preview`/`template create` | 这份 CLI 安装缺 `vendor/miniapp-runtime/`（beta.14 之前的包都不带）。错误里会打印它查过的路径 | 升级到 `@beta`，或 `--extension-path <一份装好的扩展目录>` |
 | `config:no_appid` on `upload` | 项目里没有 appid，或有的那个不属于当前账号 | 信封的 `data.candidates` 就是候选清单（`appId`+`name`）。挑一个 `miniapp meta set-appid <appid>`；要新建去 `https://platform.tuya.com/miniapp/`。`candidates: null` 表示**没查到**（多半是没登录），不是「账号里没有」 |
+| `config:bad_ini` on `build`/`preview`/`upload` | `project.tuya.json` 掉了后续步骤要用的东西（多半是被手工覆写过）。`data.problems` 逐条给出键名和**症状** | 按 `media/miniapp-template/project.tuya.json` 补回来。除 `miniapp meta set-appid` 外不要手改这个文件 |
+| `config:runtime_vendor_missing` on `preview` | 这份 CLI 安装缺 `media/miniapp-shims/`。以前是**静默**的：服务照起、报成功、发白屏 | 重装 CLI，或 `--extension-path` 指向装好的扩展 |
 | `config:project_not_open` on `build`/`meta`/`sync-schema`/`preview` | No `source/miniapp` directory under the project root | Run inside a TuyaOpen project that has a miniapp, or pass `--project-root` |
 | `sync-schema` fails `config:no_pid_bound` | No product bound and no `--pid` given | Bind a product first, or pass `--pid <pid>` explicitly |
 | `sync-schema` fails `config:no_product_cache` | Product bound, but no local DP snapshot cached yet | Refresh/bind the product from the TuyaOpen IDE, then retry |
