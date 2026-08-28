@@ -125,6 +125,37 @@
         "id": "touchpad"
       }
     ],
+    "imu": [
+      {
+        "model": "QMI8658",
+        "name": {
+          "en": "6-Axis IMU",
+          "zh-CN": "六轴 IMU"
+        },
+        "axes": 6,
+        "interface": "I2C",
+        "pins": {
+          "I2C": [
+            {
+              "role": "scl",
+              "gpio": 20
+            },
+            {
+              "role": "sda",
+              "gpio": 21
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "I2C0 at 100 kHz, 7-bit address 0x6B, sharing the bus with the capacitive touch controller. Registered during board bring-up and treated as optional — an absent or unresponsive IMU is logged and skipped so the rest of the board still comes up. The driver ships with the board: boards/T5AI/WAVESHARE_T5AI_TOUCH_AMOLED_1_75/qmi8658.{c,h}.",
+          "zh-CN": "I2C0，100 kHz，7 位地址 0x6B，与电容触控共用总线。板级初始化时注册，且按可选外设处理——IMU 不在或无应答只会打日志跳过，不影响其余外设启动。驱动随板提供：boards/T5AI/WAVESHARE_T5AI_TOUCH_AMOLED_1_75/qmi8658.{c,h}。"
+        },
+        "mounting": "onboard",
+        "pinLocked": true,
+        "id": "imu"
+      }
+    ],
     "led": [
       {
         "model": null,
