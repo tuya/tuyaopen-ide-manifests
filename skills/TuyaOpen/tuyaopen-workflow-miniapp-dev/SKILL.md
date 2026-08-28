@@ -278,17 +278,24 @@ tuyaopen-cli miniapp preview --emit-url
 > **别只报告"编译成功"。** 一个用户看不见的面板，对他等于没做。`miniapp build` 成功时的
 > 信封里已经带了 `nextStep`，直接照它做。
 
-> **`preview` 目前只在 IDE 里可用（2026-08-25 实测）。** 用 npm 装的
-> `tuyaopen-cli` 跑它会拿到
-> `{"ok":false,"error":"MiniApp runtime not ready: miniapp.runtime.error.vendorMissing"}`
-> —— 共享运行时随 `.vsix` 分发，独立 CLI 手上没有。`miniapp install` 同理，
-> 它要 `--extension-path`。
+> **`preview` / `install` 在独立 CLI 上也能跑了（0.1.0-beta.14 起）。**
+> 此前不行：npm 包不带共享运行时，`preview` 会拿到
+> `{"ok":false,"error":"MiniApp runtime not ready: miniapp.runtime.error.vendorMissing"}`，
+> `install` 会要 `--extension-path`。**现在包里带了**，CLI 默认就从自己的安装目录找。
+>
+> 首次 `miniapp install --yes` 约 30s（铺开内置 tarball + 拉公网传递依赖），之后走缓存。
+>
+> **版本低于 beta.14 时**才需要下面的降级方案。判据是跑一句
+> `tuyaopen-cli miniapp install --dry-run --json` 看 `runtimeVendorPresent`：
+> `true` 就直接往下走；`false` 说明这份安装缺 payload，报的是
+> `config:runtime_vendor_missing` 并会**打印它查过的路径**。
 >
 > **撞到这堵墙时不要放弃整条链**（第四轮就是这么丢掉 ⑨ 和 ⓐ–ⓔ 的）。降级方案：
-> 1. 在 TuyaOpen IDE 里打开这个工程跑预览；或
-> 2. 跳过 ⑧，直接 ⑨ `upload`，让用户用手机扫**内测版二维码**在真机上看 ——
+> 1. 升级 CLI：`npm i -g @tuya/tuyaopen-cli@beta --registry https://registry-npm.tuya-inc.top/`；或
+> 2. 在 TuyaOpen IDE 里打开这个工程跑预览；或
+> 3. 跳过 ⑧，直接 ⑨ `upload`，让用户用手机扫**内测版二维码**在真机上看 ——
 >    真机预览本来就比 mock bridge 更接近真实；
-> 3. 无论走哪条，**都要明确告诉用户"面板你还没看过"**，别让"build 成功"
+> 4. 无论走哪条，**都要明确告诉用户"面板你还没看过"**，别让"build 成功"
 >    冒充"面板做好了"。
 
 **预览里看到的设备是模拟的**：它注入一个 mock bridge，DP 来自已绑定产品（有 pid 时）或
@@ -380,12 +387,32 @@ product release-ui                       ← 公版面板可选
 进 URL 的（`src/host/externalLinkHandlers.ts`），一点直达那一页那一个 tab；
 只给基础域名等于让用户自己去几十个产品、几十个小程序里翻。
 
+> **`upload` 成功的信封现在自己带着这三步。** `data.webSteps` 里是拼好参数的
+> `versionPageUrl`（提审 + 发布）与 `bindProductUrl`（绑产品），`next_steps` 是同两条
+> URL，`hint` 一句话说清「平台上有个版本 ≠ 面板上线了」。
+>
+> 参数取不到时**不给链接**，只在 `webSteps.blocked` 里说缺哪个前置 —— 和 IDE 一样，
+> 绝不拿占位符或光秃秃的域名去凑。所以你不必自己拼 URL，照信封念即可。
+
 | # | 步骤 | 为什么命令行做不了 | 打开哪个 URL |
 |---|---|---|---|
-| 1 | **创建小程序**（拿到 appid） | appid 由平台签发。`tuyaopen-cli miniapp meta set-appid <appid>` 只是把一个**已有的** appid 写进项目元数据，它不会创建小程序；`upload` 也要求 appid 已存在 | `https://platform.tuya.com/miniapp/` —— 唯一不带参数的一步，因为参数要指的那个东西还不存在。创建完把 id 抄回来：`tuyaopen-cli miniapp meta set-appid <appid>` |
+| 1 | **拿到 appid**（选已有 or 新建） | 新建只能在平台做：devplat 的 `miniapp` 组只有 `list` / `debug-token` / `upload-version`，**没有 create**。`tuyaopen-cli miniapp meta set-appid <appid>` 只是把一个**已有的** appid 写进项目元数据 | **先看账号里已有的**（多数情况这一步就够了，不用开浏览器）：`tuyaopen-cli devplat exec --yes -- miniapp list --format json` → 拿 `miniProgramId` / `miniProgramName`，**把这份清单摆给用户挑**。要新建才开 `https://platform.tuya.com/miniapp/` —— 唯一不带参数的一步，因为参数要指的那个东西还不存在。两条路的收尾一样：`tuyaopen-cli miniapp meta set-appid <appid>` |
 | 2 | **提审** | 审核是平台上有真人审核员的工作流，CLI 里没有对应接口 | `https://platform.tuya.com/miniapp/version?miniProgramId=<appid>` |
 | 3 | **发布 / 灰度 / 上线 / 回滚** | 影响这款产品线上**所有**终端用户，刻意不放到命令行 | 同第 2 步的版本管理页 |
 | 4 | **把面板小程序绑定到产品** | 绑定关系挂在产品上，不在项目里，本地任何东西都断言不了 | `https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE` |
+
+> **别一上来就把用户推去建新的。** 绝大多数测试账号里已经有小程序了，
+> `miniapp list` 一条命令就能拿到。正确的顺序是：**先列，摆给用户挑，
+> 挑不到再建**。
+>
+> **忘了设也不会让你瞎猜**：`miniapp upload` 在 appid 缺失（或不属于本账号）时
+> 返回 `config` / `no_appid`，信封的 `data.candidates` 里**直接带着这个账号的
+> 候选清单**（`appId` + `name`，不含私钥），`hint` 同时给出「挑一个」和
+> 「去平台建一个」两条路。
+>
+> 注意 `data.candidates` 的两种空：`null` 是**没查到**（没登录 / 断网），
+> `[]` 才是**查到了、账号里确实没有**。`candidatesKnown` 是同一件事的布尔形式。
+> 不要把前者读成后者 —— 那会让你去建一个其实早就存在的小程序。
 
 ### 两个参数分别是什么、从哪读
 

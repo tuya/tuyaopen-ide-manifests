@@ -6,7 +6,7 @@
   "items": [
     {
       "id": "tuyaopen-shared",
-      "version": "1.14.0",
+      "version": "1.15.0",
       "group": "core",
       "order": 0,
       "name": {
@@ -924,7 +924,7 @@
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "2.1.0",
+      "version": "2.3.0",
       "group": "miniapp",
       "order": 98,
       "name": {
@@ -975,7 +975,7 @@
     },
     {
       "id": "tuyaopen-workflow-miniapp-dev",
-      "version": "2.2.0",
+      "version": "2.5.0",
       "group": "miniapp",
       "order": 99,
       "name": {

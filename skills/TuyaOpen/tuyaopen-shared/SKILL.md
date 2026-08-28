@@ -180,11 +180,26 @@ be a logout command that clears the local SK token" — `tuyaopen-cli credential
 logout` already existed, and `credential --help` lists it on the third line.
 `schema list --json` is the same answer for the entire CLI.
 
+**`schema list` only answers half the contract** — how to phrase a call. What
+comes *back* is `tuyaopen-cli schema envelope`: the envelope's fields, the
+error categories with their declared subtypes, and the exit code each maps to.
+Its content is derived from the same tables the CLI validates against at
+runtime, so it cannot drift from what you will actually receive.
+
+**Read `next_steps` before deciding what to do next.** Commands that change
+what the caller should do next carry it on **success**, derived from the state
+they just left behind — `project create` names `sdk clone` on a machine with no
+SDK and `firmware build` on one that has it. In human mode it prints under
+`next:` on stderr; under `--json` it is the `next_steps` array. It is not
+decoration: it is the route, and it is correct for the machine you are on in a
+way no document can be.
+
 ## Shortcuts — `tuyaopen-cli schema` / `tuyaopen-cli skills` / `tuyaopen-cli config` / `tuyaopen-cli diag`
 
 | Intent | Command |
 |---|---|
 | Every command's contract / one command's flags | `tuyaopen-cli schema list` · `schema get --group <g> --command <c>` |
+| **What comes back** — envelope fields, error categories + subtypes, exit codes | `tuyaopen-cli schema envelope` |
 | Environment/CLI-identity triage (one round trip) | `tuyaopen-cli diag doctor` |
 | Diagnostics bundle for a bug report | `tuyaopen-cli diag export` |
 | Read / write IDE settings (`language`/`gitMirror`/`manifestsSource` — not Kconfig) | `tuyaopen-cli config get` · `config list` · `config set` (P2) |

@@ -15,7 +15,7 @@ description: >-
 license: Apache-2.0
 compatibility:
   - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
-  - "--extension-path (or TUYAOPEN_EXTENSION_PATH) for install/upload/preview/template create's real runtime work — IDE-injected automatically inside the IDE's terminal"
+  - "install/upload/preview/template create carry their own vendor/miniapp-runtime since 0.1.0-beta.14; --extension-path (or TUYAOPEN_EXTENSION_PATH) only overrides it"
   - A TuyaOpen project with a source/miniapp directory
 ---
 
@@ -31,21 +31,30 @@ related skill focused on *how to build the panel*, where this one is about
 For the CLI's envelope, exit codes, and P0/P2 risk-gate mechanics, see
 skill `tuyaopen-shared` — not repeated here.
 
-## Runtime prerequisite: `--extension-path`
+## Runtime: 默认自带，不用再找 `--extension-path`
 
-`install`, `upload`, `preview`, and `template create` all need the VSIX's
-bundled `vendor/miniapp-runtime/` to do real work. Inside the IDE's own
-terminal this is injected automatically; running the standalone CLI outside
-the IDE, pass `--extension-path <path>` explicitly or set
-`TUYAOPEN_EXTENSION_PATH`. Without it, these commands fail with a clear
-`config:project_not_open` hint rather than doing partial work.
+`install` / `upload` / `preview` / `template create` 都需要 `vendor/miniapp-runtime/`
+才能做真正的活。**从 `0.1.0-beta.14` 起，npm 包自己带着它**（与 `.vsix` 同一份字节），
+CLI 默认从自己的安装目录去找，独立形态与 IDE 内一样能跑。
 
-### 没装 IDE 时从哪弄到一个 `--extension-path`
+    tuyaopen-cli miniapp install --yes      # 首次约 30s，之后走缓存
 
-<code data-type="tag" style="color:#52c41a">内测第五轮实测可行</code>
+`--extension-path`（或 `TUYAOPEN_EXTENSION_PATH`）仍然有效且优先级最高，用途只剩一个：
+指向**另一份**扩展安装。IDE 会自动注入。
 
-**任何**装过 TuyaOpen IDE 扩展的编辑器都行 —— 不必是 VS Code。第五轮的测试机上
-恰好装过 Cursor 和 Trae 版，直接借用它们的扩展目录就绕过了这堵墙。找法：
+### 真缺 payload 时
+
+判据跑一句就有：
+
+```bash
+tuyaopen-cli miniapp install --dry-run --json   # 看 data.runtimeVendorPresent
+```
+
+`false` 时命令会以 `config` / `runtime_vendor_missing` 失败，并**打印它查过的绝对路径**。
+两条出路：
+
+1. 升级 CLI —— `npm i -g @tuya/tuyaopen-cli@beta --registry https://registry-npm.tuya-inc.top/`；
+2. 借一份装好的扩展目录（beta.14 之前唯一的办法，现在只是退路）：
 
 ```bash
 # Windows
@@ -55,10 +64,8 @@ find ~/.vscode/extensions ~/.cursor/extensions ~/.trae/extensions \
      -maxdepth 1 -iname '*tuyaopen*' 2>/dev/null
 ```
 
-挑一个**里面有 `vendor/miniapp-runtime/` 的**，把那个目录当 `--extension-path`。
-
-> **多记一个备用路径。** 第五轮里借用的那个目录**在会话中途消失了**（前一刻还在，
-> 后一刻就没了，疑似扩展自动更新/清理），第二次调用才失败。找到两个就都记下来。
+挑一个**里面有 `vendor/miniapp-runtime/` 的**当 `--extension-path`。**多记一个备用路径**
+—— 内测第五轮里借用的那个目录**在会话中途消失了**（疑似扩展自动更新/清理）。
 
 一个都找不到时，`preview` 这一步的降级方案见
 skill `tuyaopen-workflow-miniapp-dev` 的 ⑧（真机扫码看，或去真 IDE 里跑）。
@@ -83,13 +90,13 @@ Example invocations:
 
 ```bash
 tuyaopen-cli miniapp build --project-root <dir>
-tuyaopen-cli miniapp install --extension-path <ext-path>
+tuyaopen-cli miniapp install --yes
 tuyaopen-cli miniapp meta set-appid <appid>
 tuyaopen-cli miniapp sync-schema --pid <pid>          # default: read pid from tuyaopen.project.ini
 tuyaopen-cli miniapp preview --screenshot preview.png --width 375 --height 812
 tuyaopen-cli miniapp template list --json
 tuyaopen-cli miniapp template create --id <template-id> --dry-run
-tuyaopen-cli miniapp upload --version 1.0.0 --description "..." --extension-path <ext-path>
+tuyaopen-cli miniapp upload --version 1.0.0 --description "..." --yes
 ```
 
 ## The order these commands go in is **not** here
@@ -151,7 +158,8 @@ device".
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| `config:project_not_open` on `install`/`upload`/`preview`/`template create` | No `--extension-path` and not running inside the IDE | Pass `--extension-path <path>` or set `TUYAOPEN_EXTENSION_PATH` |
+| `config:runtime_vendor_missing` on `install`/`upload`/`preview`/`template create` | 这份 CLI 安装缺 `vendor/miniapp-runtime/`（beta.14 之前的包都不带）。错误里会打印它查过的路径 | 升级到 `@beta`，或 `--extension-path <一份装好的扩展目录>` |
+| `config:no_appid` on `upload` | 项目里没有 appid，或有的那个不属于当前账号 | 信封的 `data.candidates` 就是候选清单（`appId`+`name`）。挑一个 `miniapp meta set-appid <appid>`；要新建去 `https://platform.tuya.com/miniapp/`。`candidates: null` 表示**没查到**（多半是没登录），不是「账号里没有」 |
 | `config:project_not_open` on `build`/`meta`/`sync-schema`/`preview` | No `source/miniapp` directory under the project root | Run inside a TuyaOpen project that has a miniapp, or pass `--project-root` |
 | `sync-schema` fails `config:no_pid_bound` | No product bound and no `--pid` given | Bind a product first, or pass `--pid <pid>` explicitly |
 | `sync-schema` fails `config:no_product_cache` | Product bound, but no local DP snapshot cached yet | Refresh/bind the product from the TuyaOpen IDE, then retry |
