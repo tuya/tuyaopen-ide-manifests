@@ -20,7 +20,7 @@ description: >-
 license: Apache-2.0
 compatibility:
   - TuyaOpen SDK with `src/liblvgl` (vendors LVGL v8 and v9)
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
   - The simulator additionally needs Linux + SDL2 — see references/simulator.md
 ---
 
@@ -100,4 +100,4 @@ Kconfig 出来的值是以编译器 `-D` 进来的，**先于**这个头文件�
 Display/touch **driver** bring-up and pin mapping → `tuyaopen-embedded-hardware`.
 Compiling and Kconfig mechanics → `tuyaopen-embedded-build`. Adding a whole new
 board → `tuyaopen-embedded-add-board`. Anything else: see the routing table in
-skill `tuyaopen-shared`.
+skill `tuyaopen-start`.

@@ -5,13 +5,13 @@
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
-      "id": "tuyaopen-shared",
-      "version": "1.15.0",
+      "id": "tuyaopen-start",
+      "version": "2.0.0",
       "group": "core",
       "order": 0,
       "name": {
-        "en": "TuyaOpen Shared Conventions",
-        "zh-CN": "TuyaOpen 共享约定"
+        "en": "TuyaOpen — Start Here",
+        "zh-CN": "TuyaOpen 起步（必读）"
       },
       "surface": "embedded",
       "surfaces": [
@@ -20,12 +20,12 @@
         "miniapp"
       ],
       "summary": {
-        "en": "Foundation conventions shared by every other TuyaOpen skill: CLI discovery, the --json/exit-code contract, the confirmation gate (P0 = dry-run token, license remove only; P2 = --yes; P3 ungated), skill self-discovery, and the routing table.",
-        "zh-CN": "所有 TuyaOpen 技能共用的基础约定：CLI 定位识别、--json 与退出码契约、确认门（P0 = dry-run 派生令牌，仅 license remove 属于 P0；P2 = --yes；P3 无需确认）、技能自发现，以及总路由表。"
+        "en": "Start here. The foundation every other TuyaOpen skill builds on: finding and identifying the tuyaopen-cli CLI, the --json/exit-code contract, the confirmation gate (P0 = dry-run token, license remove only; P2 = --yes; P3 ungated), skill self-discovery, and the master intent-to-skill routing table.",
+        "zh-CN": "从这里开始。所有 TuyaOpen 技能共用的基础约定：CLI 定位识别、--json 与退出码契约、确认门（P0 = dry-run 派生令牌，仅 license remove 属于 P0；P2 = --yes；P3 无需确认）、技能自发现，以及总路由表。"
       },
       "whenToUse": {
-        "en": "Read first, or whenever another skill says its task is out of scope and points here for the routing table. Not a task skill by itself.",
-        "zh-CN": "作为其他技能的前置阅读，或当某技能提示超出范围并指向本技能的路由表时使用。本身不是任务技能。"
+        "en": "Read first, before any other TuyaOpen skill — and whenever another skill says its task is out of scope and points here for the routing table. Not a task skill by itself.",
+        "zh-CN": "任何 TuyaOpen 任务的第一份读物；也用于其他技能提示「超出范围、见路由表」时。本身不是任务技能。"
       },
       "tags": [
         "foundation",
@@ -42,12 +42,12 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-shared",
+      "installPayload": "TuyaOpen/tuyaopen-start",
       "related": [
         "tuyaopen-skill-maker"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-shared"
+        "localPath": "skills/TuyaOpen/tuyaopen-start"
       },
       "sdks": [
         "tuyaopen"
@@ -95,10 +95,10 @@
       },
       "installPayload": "TuyaOpen/tuyaopen-embedded",
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "related": [
-        "tuyaopen-shared",
+        "tuyaopen-start",
         "tuyaopen-workflow-embedded-dev"
       ],
       "source": {
@@ -152,7 +152,7 @@
         "tuyaopen-embedded-project"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-embedded-build"
@@ -205,10 +205,10 @@
       },
       "installPayload": "TuyaOpen/tuyaopen-skill-maker",
       "related": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-skill-maker"
@@ -264,7 +264,7 @@
         "tuyaopen-embedded-build"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-project",
@@ -321,7 +321,7 @@
         "tuyaopen-embedded-project"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-dependency",
@@ -381,7 +381,7 @@
         "tuyaopen-embedded-device-auth"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuya-iot-platform"
@@ -449,7 +449,7 @@
         "tuyaopen-embedded-project"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "smart-product-dev"
@@ -505,7 +505,7 @@
         "tuyaopen-embedded-project"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-hardware",
@@ -537,8 +537,8 @@
       },
       "surface": "embedded",
       "summary": {
-        "en": "Flash firmware, monitor serial output, and pick the right serial port via the tuyaopen CLI (firmware flash / firmware monitor / device list-ports), with a documented tyutool_cli fallback for reading flash, a bare hardware reset, or disambiguating a dual-serial port.",
-        "zh-CN": "通过 tuyaopen CLI（firmware flash / firmware monitor / device list-ports）烧录固件、监控串口输出、选择正确的串口；并提供 tyutool_cli 直连兜底，覆盖读取 Flash、纯硬件复位、双串口歧义排查等场景。"
+        "en": "Flash firmware, monitor serial output, and pick the right serial port via the tuyaopen CLI (firmware flash / firmware monitor / firmware list-ports), with a documented tyutool_cli fallback for reading flash, a bare hardware reset, or disambiguating a dual-serial port.",
+        "zh-CN": "通过 tuyaopen CLI（firmware flash / firmware monitor / firmware list-ports）烧录固件、监控串口输出、选择正确的串口；并提供 tyutool_cli 直连兜底，覆盖读取 Flash、纯硬件复位、双串口歧义排查等场景。"
       },
       "whenToUse": {
         "en": "Use when the agent needs to flash firmware, choose a serial port, monitor serial output, hardware-reset a device, read flash memory, or write UUID/AuthKey credentials over UART directly via tyutool_cli.",
@@ -569,7 +569,7 @@
         "tuyaopen-embedded-cli-debug"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-flash",
@@ -600,8 +600,8 @@
       },
       "surface": "embedded",
       "summary": {
-        "en": "Debug a running device: register firmware features as device CLI commands and drive them over the serial shell, capture serial logs non-blocking, and decode a crash dump to source file:line. Environment triage lives in tuyaopen-shared.",
-        "zh-CN": "调试正在运行的设备：把固件功能注册成设备 CLI 命令并通过串口驱动、非阻塞抓串口日志、把崩溃转储还原成源码文件与行号。环境诊断在 tuyaopen-shared。"
+        "en": "Debug a running device: register firmware features as device CLI commands and drive them over the serial shell, capture serial logs non-blocking, and decode a crash dump to source file:line. Environment triage lives in tuyaopen-start.",
+        "zh-CN": "调试正在运行的设备：把固件功能注册成设备 CLI 命令并通过串口驱动、非阻塞抓串口日志、把崩溃转储还原成源码文件与行号。环境诊断在 tuyaopen-start。"
       },
       "whenToUse": {
         "en": "Use when the firmware builds and runs but behaves wrongly, when you want to exercise a feature on the device without reflashing, or when a panic dump needs decoding.",
@@ -634,7 +634,7 @@
         "tuyaopen-embedded-build"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-embedded-diagnose",
@@ -691,7 +691,7 @@
         "tuyaopen-embedded-project"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-embedded-add-board"
@@ -741,7 +741,7 @@
         "tuyaopen-embedded-build"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-embedded-code-check"
@@ -798,7 +798,7 @@
         "tuyaopen-embedded-cli-debug"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-embedded-dev-loop",
@@ -849,7 +849,7 @@
         "tuyaopen-embedded-project"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-embedded-device-auth"
@@ -905,7 +905,7 @@
         "tuyaopen-embedded-build"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-embedded-env-setup"
@@ -958,7 +958,7 @@
         "tuyaopen-workflow-miniapp-dev"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "source": {
         "localPath": "skills/TuyaOpen/tuyaopen-miniapp"
@@ -1024,7 +1024,7 @@
         "tuyaopen-miniapp-requirement-guide"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "tuyaopen-miniapp-panel-dev",
@@ -1067,7 +1067,7 @@
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-ray-common",
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-ray-common"
@@ -1118,7 +1118,7 @@
         "tuyaopen-miniapp-ray-common"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-smart-ui"
@@ -1171,7 +1171,7 @@
         "tuyaopen-miniapp-smart-ui"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-lamp-panel"
@@ -1224,7 +1224,7 @@
         "tuyaopen-miniapp-energy-stats"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-socket-panel"
@@ -1275,7 +1275,7 @@
         "tuyaopen-miniapp-ray-common"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-robot-vacuum"
@@ -1326,7 +1326,7 @@
         "tuyaopen-miniapp-ray-common"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-ipc-panel"
@@ -1377,7 +1377,7 @@
         "tuyaopen-miniapp-energy-stats"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-charts-library"
@@ -1427,7 +1427,7 @@
         "tuyaopen-miniapp-socket-panel"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-electrician-timing"
@@ -1478,7 +1478,7 @@
         "tuyaopen-miniapp-socket-panel"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-energy-stats"
@@ -1530,7 +1530,7 @@
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-miniapp-requirement-guide",
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-requirement-guide"
@@ -1580,7 +1580,7 @@
         "tuyaopen-miniapp-ray-common"
       ],
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "aliases": [
         "miniapp-performance-ux-guard"
@@ -1634,7 +1634,7 @@
       "defaultEnabled": false,
       "installPayload": "TuyaOpen/tuyaopen-embedded-lvgl",
       "requires": [
-        "tuyaopen-shared"
+        "tuyaopen-start"
       ],
       "related": [
         "tuyaopen-embedded-hardware",

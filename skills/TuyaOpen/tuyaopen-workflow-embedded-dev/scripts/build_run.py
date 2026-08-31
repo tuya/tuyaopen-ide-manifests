@@ -16,7 +16,7 @@ envelope exactly as any other command. The exit code is a faithful success
 signal either way. The *run + analyze* half (executing the LINUX ELF and
 scanning its stdout for error/warning/watchdog patterns) is unchanged and
 stays on `subprocess` directly: the CLI has no command that runs a built
-LINUX binary, only one that builds it. See skill `tuyaopen-shared` § 4 for
+LINUX binary, only one that builds it. See skill `tuyaopen-start` § 4 for
 the unavailable-vs-refused fallback rule this file follows, and § 7 for the
 `tos.py` <-> `tuyaopen-cli` command mapping.
 """
@@ -41,7 +41,7 @@ def _tos_py():
 def _resolve_tuyaopen():
     """Return an argv prefix that invokes the `tuyaopen-cli` CLI, or None if it
     cannot be resolved. Mirrors the resolve-once recipe in skill
-    `tuyaopen-shared` § 1 (explicit override -> PATH -> the IDE-written
+    `tuyaopen-start` § 1 (explicit override -> PATH -> the IDE-written
     per-project wrapper found by walking up from the current directory),
     reimplemented in stdlib Python since that skill's shell-function version
     only works from a shell. Deliberately does not shell out to `node
@@ -102,7 +102,7 @@ def _run_build():
 
     Falls back to `tos.py build` only when `tuyaopen-cli` cannot be resolved at
     all — never on a CLI-reported failure (see the unavailable-vs-refused
-    rule in skill `tuyaopen-shared` § 4). That fallback, immediately below,
+    rule in skill `tuyaopen-start` § 4). That fallback, immediately below,
     already decides success the same way: a plain exit-code check, no output
     parsing — the `--stream` path above just applies the identical test to
     the CLI's exit code instead of `tos.py`'s.

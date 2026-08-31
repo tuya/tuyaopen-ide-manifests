@@ -16,7 +16,7 @@ description: >-
   更新依赖。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the tos.py-side commands
   - TTY terminal required for interactive tos.py commands (tos.py new, config choice/menu/save)
   - "tos.py config set/get/list/diff: newer SDKs only — detect with `tos.py config -h`, never from a version number"
@@ -41,12 +41,12 @@ Docs: <https://tuyaopen.ai/docs/tos-tools/tos-guide>
 | Local manifest cache status / sync | `tuyaopen-cli manifests status` · `manifests sync` (P2) |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-start` § 1
 (it is usually not on `PATH`).
 
 > **No CLI?** `project create` → `tos.py new project` (interactive; see
 > § *Creating a New Project* below). No older-tool equivalent for the rest
-> of this table — see skill `tuyaopen-shared` § 7.
+> of this table — see skill `tuyaopen-start` § 7.
 
 ## ⚠ Two commands named `config` — read this before touching either
 
@@ -63,7 +63,7 @@ The intuitive guess for "set a build config option" is `tuyaopen-cli config
 set` — that is the **wrong** command: it will reject any Kconfig-style key
 since it isn't one of the three IDE settings, and do nothing to the project.
 Use `tos.py config set` (§ *Configuration Management*) for Kconfig. This same
-trap is called out once already in skill `tuyaopen-shared` § 7 — it's worth
+trap is called out once already in skill `tuyaopen-start` § 7 — it's worth
 repeating here because this is the skill someone lands on when they type
 "config" for either intent.
 
@@ -76,13 +76,13 @@ tuyaopen-cli config set --key gitMirror --value <value>   # P2 — needs --yes, 
 ```
 
 Flags: `tuyaopen-cli config --help` / `tuyaopen-cli schema get --group config
---command set`. `set` is mutating (P2, see skill `tuyaopen-shared` § 4);
+--command set`. `set` is mutating (P2, see skill `tuyaopen-start` § 4);
 `get`/`list` are read-only.
 
 ## `tuyaopen-cli project` — read/write the `.tuyaopen/` descriptor
 
 Seven subcommands over the `.tuyaopen/` layout described in skill
-`tuyaopen-shared` § 8:
+`tuyaopen-start` § 8:
 
 | Subcommand | Purpose | Risk |
 |---|---|---|
@@ -105,7 +105,7 @@ tuyaopen-cli project bind-product --pid <pid>
 them) additionally needs the SDK installed. Full flags: `tuyaopen-cli project
 --help` / `tuyaopen-cli schema get --group project --command create` — don't
 memorize the flag list, it evolves under the CLI's own contract snapshot (see
-skill `tuyaopen-shared` § 5).
+skill `tuyaopen-start` § 5).
 
 This is the CLI-first equivalent of `tos.py new project` (see § *Creating a
 New Project* below for the interactive/manual path, still needed for TTY

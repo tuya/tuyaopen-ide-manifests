@@ -70,7 +70,7 @@ def test_every_real_cli_group_is_in_the_constant():
     # and (via the exact count) against it growing a group nobody *uses* — see
     # the task-12 report for how 20 was derived.
     assert "firmware" in validator.CLI_GROUPS
-    assert len(validator.CLI_GROUPS) == 20
+    assert len(validator.CLI_GROUPS) == 18
 
 
 # Real skill bodies use an English "Intent | Command" header (verified against
@@ -83,15 +83,15 @@ name: tuyaopen-x
 
 # X
 
-## Shortcuts — `tuyaopen firmware`
+## Shortcuts — `tuyaopen-cli firmware`
 
 | Intent | Command |
 |---|---|
-| Compile | `tuyaopen firmware build` |
+| Compile | `tuyaopen-cli firmware build` |
 
 ## Other
 
-这里提到 `tuyaopen dp list` 但它在 Shortcuts 之外，不该被算进声明。
+这里提到 `tuyaopen-cli dp list` 但它在 Shortcuts 之外，不该被算进声明。
 """
 
 
@@ -107,8 +107,8 @@ def test_declared_groups_all_present_passes(tmp_path):
 
 
 def test_group_mentioned_only_outside_shortcuts_does_not_count(tmp_path):
-    # `tuyaopen dp list` appears under `## Other`. Scoping to the Shortcuts
-    # section is what keeps tuyaopen-shared's §7 mapping table from forcing it to
+    # `tuyaopen-cli dp list` appears under `## Other`. Scoping to the Shortcuts
+    # section is what keeps tuyaopen-start's §7 mapping table from forcing it to
     # declare seven groups it does not own.
     errs = validator.check_shortcuts_agreement("tuyaopen-x", ["dp"], SHORTCUTS_BODY)
     assert any("dp" in e for e in errs)
@@ -120,18 +120,18 @@ def test_undeclared_group_in_shortcuts_is_an_error():
 
 
 def test_shared_is_exempt_from_the_reverse_direction():
-    errs = validator.check_shortcuts_agreement("tuyaopen-shared", [], SHORTCUTS_BODY)
+    errs = validator.check_shortcuts_agreement("tuyaopen-start", [], SHORTCUTS_BODY)
     assert errs == []
 
 
 def test_none_requires_the_no_coverage_sentence():
     body = "---\nname: x\n---\n\n# X\n\n随便写点什么。\n"
     errs = validator.check_shortcuts_agreement("tuyaopen-x", "none", body)
-    assert any("No `tuyaopen` CLI coverage" in e for e in errs)
+    assert any("No `tuyaopen-cli` CLI coverage" in e for e in errs)
 
 
 def test_none_with_the_sentence_passes():
-    body = "---\nname: x\n---\n\n# X\n\n## No `tuyaopen` CLI coverage\n\n手工流程。\n"
+    body = "---\nname: x\n---\n\n# X\n\n## No `tuyaopen-cli` CLI coverage\n\n手工流程。\n"
     assert validator.check_shortcuts_agreement("tuyaopen-x", "none", body) == []
 
 
@@ -171,7 +171,7 @@ def test_shortcuts_section_with_empty_table_is_an_error():
 
 def test_section_boundary_stops_at_next_heading():
     # The extractor must stop at the next `##` heading, not run to EOF — proven
-    # by the `## Other` section's `tuyaopen dp` mention not counting.
+    # by the `## Other` section's `tuyaopen-cli dp` mention not counting.
     section = validator.extract_shortcuts_section(SHORTCUTS_BODY)
     assert "dp" not in section
     assert "firmware" in section
@@ -184,8 +184,8 @@ def test_section_boundary_stops_at_next_heading():
 # steering-away prose — around ONE real table row that must still count. One
 # fixture, both directions: this is what stops a later "just scan the section"
 # simplification from reintroducing the false positives found in the real
-# 28-skill run (schema-discovery lines, `tuyaopen config` "is a different,
-# unrelated command", `tuyaopen device list-ports` "doesn't expose the
+# 28-skill run (schema-discovery lines, `tuyaopen-cli config` "is a different,
+# unrelated command", `tuyaopen-cli firmware list-ports` "doesn't expose the
 # grouping…").
 TABLE_SCOPE_BODY = """---
 name: tuyaopen-x
@@ -193,18 +193,18 @@ name: tuyaopen-x
 
 # X
 
-## Shortcuts — `tuyaopen firmware`
+## Shortcuts — `tuyaopen-cli firmware`
 
 | Intent | Command |
 |---|---|
-| Compile | `tuyaopen firmware build` |
-| Look up flags | `tuyaopen diag doctor` |
+| Compile | `tuyaopen-cli firmware build` |
+| Look up flags | `tuyaopen-cli diag doctor` |
 
-Flags aren't listed here — run `tuyaopen schema get --group firmware --command build`
-for the current set; `tuyaopen sdk env-init` runs automatically as part of the
+Flags aren't listed here — run `tuyaopen-cli schema get --group firmware --command build`
+for the current set; `tuyaopen-cli sdk env-init` runs automatically as part of the
 build, it is not something you invoke here.
 
-> **No CLI?** `tos.py build`. A related tool also offers `tuyaopen dependency
+> **No CLI?** `tos.py build`. A related tool also offers `tuyaopen-cli dependency
 > check` for context, but that's not this skill's job.
 """
 
@@ -218,7 +218,7 @@ def test_prose_and_fallback_blockquote_mentions_do_not_count_only_table_rows_do(
     # absence here proves nothing about column-scoping specifically.
     errs = validator.check_shortcuts_agreement("tuyaopen-x", ["firmware"], TABLE_SCOPE_BODY)
     assert errs == [
-        "item 'tuyaopen-x': Shortcuts Command column invokes `tuyaopen diag …` "
+        "item 'tuyaopen-x': Shortcuts Command column invokes `tuyaopen-cli diag …` "
         "but 'diag' is not in cli.groups — used but undeclared"
     ]
 
@@ -228,10 +228,10 @@ def test_schema_is_exempt_from_the_reverse_direction_even_in_a_table_row():
     # reverse ("used but undeclared") direction regardless of whether it shows
     # up in prose or in an actual Command-column row.
     body = (
-        "---\nname: x\n---\n\n# X\n\n## Shortcuts — `tuyaopen firmware`\n\n"
+        "---\nname: x\n---\n\n# X\n\n## Shortcuts — `tuyaopen-cli firmware`\n\n"
         "| Intent | Command |\n|---|---|\n"
-        "| Compile | `tuyaopen firmware build` |\n"
-        "| Inspect | `tuyaopen schema get --group firmware --command build` |\n"
+        "| Compile | `tuyaopen-cli firmware build` |\n"
+        "| Inspect | `tuyaopen-cli schema get --group firmware --command build` |\n"
     )
     errs = validator.check_shortcuts_agreement("tuyaopen-x", ["firmware"], body)
     assert errs == []
@@ -239,7 +239,7 @@ def test_schema_is_exempt_from_the_reverse_direction_even_in_a_table_row():
 
 def test_schema_forward_check_still_applies_when_genuinely_declared():
     # The exemption only silences the reverse direction. A skill whose actual
-    # subject IS schema introspection (tuyaopen-skill-maker, tuyaopen-shared)
+    # subject IS schema introspection (tuyaopen-skill-maker, tuyaopen-start)
     # must still be flagged if it declares `schema` but never has a
     # Command-column row that invokes it.
     errs = validator.check_shortcuts_agreement("tuyaopen-x", ["schema"], SHORTCUTS_BODY)

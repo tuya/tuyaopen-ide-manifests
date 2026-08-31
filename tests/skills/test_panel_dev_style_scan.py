@@ -1,4 +1,4 @@
-"""Regression test for tuyaopen-miniapp-panel-dev's rpx style-scale scanner.
+"""Regression test for tuyaopen-workflow-miniapp-dev's rpx style-scale scanner.
 
 WHAT WENT WRONG. `scripts/validate.mjs`'s scale scan read one declaration per
 source line, because it used a non-global `line.match(...)`. A rule written on
@@ -26,7 +26,7 @@ import pytest
 VALIDATE = os.path.normpath(
     os.path.join(
         os.path.dirname(__file__), "..", "..",
-        "skills", "TuyaOpen", "tuyaopen-miniapp-panel-dev", "scripts", "validate.mjs",
+        "skills", "TuyaOpen", "tuyaopen-workflow-miniapp-dev", "scripts", "validate.mjs",
     )
 )
 

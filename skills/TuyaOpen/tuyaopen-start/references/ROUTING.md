@@ -13,13 +13,13 @@ vice versa.
 
 This table is the **single** place skill-to-skill handoff is spelled out.
 Every other skill points here instead of naming siblings directly — see
-`tuyaopen-shared`'s SKILL.md § *Routing table* for why.
+`tuyaopen-start`'s SKILL.md § *Routing table* for why.
 
 ## Foundation
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-shared` | Always available background — CLI identity, envelope contract, risk gate, self-discovery, this table |
+| `tuyaopen-start` | Always available background — CLI identity, envelope contract, risk gate, self-discovery, this table |
 | `tuyaopen-skill-maker` | Authoring or editing a skill in this catalogue |
 
 ## Embedded — which command group
@@ -76,7 +76,7 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-embedded-cli-debug` | Registering firmware features as device CLI commands and driving them over serial after flashing; non-blocking background serial log capture; decoding a crash dump to `file:line`. **Environment triage (`diag doctor` / `diag export`) is not here** — it is in `tuyaopen-shared`, because it diagnoses the CLI and the host, not the device |
+| `tuyaopen-embedded-cli-debug` | Registering firmware features as device CLI commands and driving them over serial after flashing; non-blocking background serial log capture; decoding a crash dump to `file:line`. **Environment triage (`diag doctor` / `diag export`) is not here** — it is in `tuyaopen-start`, because it diagnoses the CLI and the host, not the device |
 
 ## The three development workflows
 

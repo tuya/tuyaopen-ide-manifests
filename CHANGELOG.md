@@ -7,6 +7,41 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### `tuyaopen-shared` 改名 `tuyaopen-start`，没有别名 (2026-08-31)
+
+skills 域 3.3.0 → **4.0.0**（破坏性：技能 id 变了）。`tuyaopen-start` 版本 2.0.0，目录、
+`installPayload`、`source.localPath`、以及另外 29 条的 `requires` 一并改。
+
+**为什么改名。** 这份技能是"任何 TuyaOpen 任务的第一份读物"，但 `shared` 这个词读起来
+像一个公共库 —— 没人觉得自己必须先打开它。`start` 说的就是它要求的那件事。id 保留
+`tuyaopen-` 前缀是硬规则：全局 hub 与社区 `npx skills` 注册表共用命名空间，不带前缀的
+名字可能被第三方覆盖。
+
+**为什么不给别名。** 加 `aliases: ["tuyaopen-shared"]` 会让老 id 继续"解析得到"，而
+安装器的 `pruneRetiredInstalls` 正是**按"解析不到才算退役"**判断的 —— 于是已装机器上
+那份 40 KiB 的旧 `SKILL.md` 会永久留在新副本旁边，两份内容互相矛盾，agent 两份都读。
+不给别名，下一次 `skills install` / `bootstrap` 会把旧目录删掉并在 `pruned` 里报出。
+这与 2026-08-24 那批命令改名的处置一致：**旧拼法直接失效，没有别名。**
+
+### 两处仍在教已退役命令的写法 (2026-08-31)
+
+`device list-ports` 2026-08-24 就已并入 `firmware list-ports`，但两处还在教它：
+`tuyaopen-embedded-flash` 的 en/zh summary（agent 拿来做路由匹配的文本），以及
+`tuyaopen-embedded-cli-debug` 排障表里的 `device list-ports --chip <chip>` 一行。
+
+### `skills-tests` CI 自 2026-08-24 起一直是红的，现在修好了 (2026-08-31)
+
+`be87daa` 给嵌入式技能 id 加了 surface 前缀，但 `tests/` 里三个 `sys.path` / 脚本路径
+指向的仍是旧目录名（`tuyaopen-embedded-diagnose`、`tuyaopen-embedded-dev-loop`、
+`tuyaopen-miniapp-panel-dev`）。前两个让 pytest 在**收集阶段**就 ImportError，于是整个
+job 红着、而底下 15 个真实断言失败一个都看不见。
+
+修好路径后暴露出来的 15 条，全部是同一批改名的余波：`CLI_GROUPS` 的硬编码条数还写着
+20（实际 18）、校验器的 fixture 与两条报错文案还在用改名前的 `tuyaopen` 而不是
+`tuyaopen-cli`、`_FakePopen` 还在模拟 2026-08-27 之前"帧和信封共用 stdout"的形状
+（于是每条用到它的测试都是 `AttributeError` 而不是在验证什么）。现在 103 条全绿。
+
+
 ### 授权码的两条硬规则,和「没有码怎么办」(2026-08-21)
 
 `tuyaopen-embedded-device-auth` 1.3.0 → **1.4.0**。此前这份技能只讲了怎么**写**码,两件更前置

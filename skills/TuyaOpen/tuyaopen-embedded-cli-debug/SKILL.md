@@ -8,14 +8,14 @@ description: >-
   builds and runs but does the wrong thing, when you want to exercise a
   feature on the device without reflashing, or when a panic dump needs
   decoding. **Environment triage is not here** — `diag doctor` / `diag export`
-  diagnose the CLI and the host, and live in skill `tuyaopen-shared`.
+  diagnose the CLI and the host, and live in skill `tuyaopen-start`.
   调试正在运行的设备：把固件功能注册成设备 CLI 命令并通过串口驱动它们、
   非阻塞后台抓串口日志、把崩溃转储的 PC/LR/栈地址用 addr2line 还原成
   源码文件与行号。环境诊断（diag doctor / diag export）不在这里，在
-  tuyaopen-shared。
+  tuyaopen-start。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the device-side tools
   - Python 3 (stdlib only for background log capture; pyserial for the CLI-debug script — `pip install pyserial`)
   - Device connected via USB serial, for the device-facing sections
@@ -40,7 +40,7 @@ the section that matches the symptom:
 | "The device pasted a panic/hard-fault dump with hex addresses" | § 5 Decode a crash dump |
 
 For the CLI's envelope, exit codes, and self-discovery (`schema get`), see
-skill `tuyaopen-shared` — not repeated here.
+skill `tuyaopen-start` — not repeated here.
 
 ## Shortcuts — `tuyaopen-cli firmware`
 
@@ -50,14 +50,14 @@ skill `tuyaopen-shared` — not repeated here.
 | Foreground serial monitor | `tuyaopen-cli firmware monitor --port <port>` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-start` § 1
 (it is usually not on `PATH`).
 
 > **Looking for `diag doctor` / `diag export` / `diag doctor`?** They moved to
-> skill `tuyaopen-shared` — they diagnose the CLI and the host, not the device.
+> skill `tuyaopen-start` — they diagnose the CLI and the host, not the device.
 >
 > **No CLI?** `tos.py monitor -p <port>` covers the foreground monitor. See
-> skill `tuyaopen-shared` § 7 for the rest of the coverage map.
+> skill `tuyaopen-start` § 7 for the rest of the coverage map.
 
 ## 0. 先把设备 CLI 打开、初始化，再谈调试
 
@@ -195,7 +195,7 @@ tal_cli_cmd_register(s_app_cmds, sizeof(s_app_cmds) / sizeof(s_app_cmds[0]));
 `tuyaopen-cli diag doctor` and `diag export` diagnose the **CLI and the host** —
 which binary is running, whether the SDK env is warm, whether credentials
 exist. That is not device debugging, and it is needed by every skill rather
-than by this one, so it lives in skill `tuyaopen-shared` § *Environment and
+than by this one, so it lives in skill `tuyaopen-start` § *Environment and
 diagnostics*. Go there when the question is "why is my setup wrong".
 
 This skill starts one step later: **the firmware builds and runs, and you need
@@ -431,7 +431,7 @@ $ADDR2LINE -e <debug.elf> -f -C -i 0x021d8e96 0x021d5863
 
 | Symptom | Cause | Fix |
 |---|---|---|
-| Background monitor shows no output | Wrong port or baud | Check with `device list-ports --chip <chip>`; swap ports on a dual-serial board |
+| Background monitor shows no output | Wrong port or baud | Check with `firmware list-ports --chip <chip>`; swap ports on a dual-serial board |
 | **No response to any command** | Three distinct causes, in the order to check them: (1) `CONFIG_ENABLE_SERIAL_CLI_CMD=y` missing from the project `.config`; (2) **`tal_cli_init()` never called** in `tuya_main.c` — compiled in but never started, identical symptom; (3) wrong port/baud | § 0.1, § 0.2, then `firmware list-ports` |
 | A specific group is missing (`sys_*` / `fs_*` / `kv_*`) but others answer | That group's own switch is off — `CONFIG_CLI_CMD_SYS` / `_FS` / `_KV` | § 0.1 |
 | CLI works, then the app's own serial output garbles it | Two things on the same UART | `tal_cli_init_with_uart(<other>)` — see the `your_serial_chat_bot` counter-example in § 0.2 |

@@ -13,7 +13,7 @@ description: >-
   单串口与双串口开发板识别、烧录确认流程。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the tyutool_cli fallback
   - Device connected via USB serial
 ---
@@ -22,7 +22,7 @@ compatibility:
 
 Covers the CLI groups `firmware flash`, `firmware monitor`, and `device
 list-ports`. For everything about `tuyaopen-cli`'s envelope, exit codes, and the
-P0/P2 risk-gate mechanics referenced below, see skill `tuyaopen-shared` — this
+P0/P2 risk-gate mechanics referenced below, see skill `tuyaopen-start` — this
 skill only covers what's specific to flashing and serial ports.
 
 ## §0 先确认「哪个口是目标板」，再烧任何东西
@@ -43,7 +43,7 @@ tuyaopen-cli firmware list-ports --json      # >1 个口时它会返回 hint 说
   以及（Linux）当前用户在 `dialout` 组里。
 
 烧录是 P2，`firmware authorize` 会往设备写东西 —— **这两个动作的目标口都必须是用户确认过的**。
-其余环境事实（SDK 在哪、有没有登录、有没有授权码）见 skill `tuyaopen-shared` § 0.0。
+其余环境事实（SDK 在哪、有没有登录、有没有授权码）见 skill `tuyaopen-start` § 0.0。
 
 ## Shortcuts — `tuyaopen-cli firmware`
 
@@ -63,12 +63,12 @@ ACM0 上只看到开机 banner、看不到任何 `PR_*`，一度以为是自己 
 **看不到应用日志时，先换口、再换波特率，最后才怀疑日志等级。**
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-start` § 1
 (it is usually not on `PATH`).
 
 > **No CLI?** `tos.py flash -p <port>` / `tos.py monitor -p <port>`; for
 > port disambiguation the raw `tyutool_cli list-ports --json` (§ 4) is the
-> fallback, not `tos.py`. See skill `tuyaopen-shared` § 7.
+> fallback, not `tos.py`. See skill `tuyaopen-start` § 7.
 
 ## 1. Choose a port
 
@@ -106,7 +106,7 @@ directly — § 4.
 
 Flashing overwrites the device's current firmware, but it has a reverse
 command (re-flash), so it dropped from P0 to P2 on 2026-08-18 (`license
-remove` is the only P0 command left in the CLI — see skill `tuyaopen-shared`
+remove` is the only P0 command left in the CLI — see skill `tuyaopen-start`
 § 4). It is gated by `--yes`, not a
 derived `--confirm` token:
 
@@ -120,12 +120,12 @@ tuyaopen-cli firmware flash --port <port> --yes
 the rest of the shell, so *every* later P2 command — `firmware authorize`,
 `skills uninstall`, `dependency remove`, `dp add` — becomes one `--yes` away.
 The prefix form is the same keystrokes and its scope ends with this one
-command, which is the whole point of the env var (see skill `tuyaopen-shared`
+command, which is the whole point of the env var (see skill `tuyaopen-start`
 § 4).
 
 Flag reference (baud, project/SDK root overrides): `tuyaopen-cli firmware --help`
 or `tuyaopen-cli schema get --group firmware --command flash` — do not hardcode a
-flag list here, it drifts (see skill `tuyaopen-shared` § 5).
+flag list here, it drifts (see skill `tuyaopen-start` § 5).
 
 Before it flashes, the CLI best-effort kills a lingering `tyutool_cli`/`tos.py`
 process from a **previous flash** of its own so the port is free. It does
@@ -136,7 +136,7 @@ you stop it yourself.
 
 Device authorization (writing a UUID/AuthKey credential) is a related but
 separate P2 command, `firmware authorize` — not in scope here, see skill
-`tuyaopen-shared`'s routing table.
+`tuyaopen-start`'s routing table.
 
 ## 3. Monitor serial output — `firmware monitor`
 
@@ -153,7 +153,7 @@ perspective.
 **Non-blocking / background log capture** (so an agent can flash on one port
 while tailing logs from another, or keep a session alive across multiple
 tool calls) is a different tool with its own session/log-file protocol — not
-in scope here, see skill `tuyaopen-shared`'s routing table.
+in scope here, see skill `tuyaopen-start`'s routing table.
 
 ## 4. Fallback — `tyutool_cli` directly
 
@@ -180,7 +180,7 @@ The `firmware` CLI group covers flash and monitor; it does **not** wrap every
 | Flash fails with a port-busy error (`PermissionError 13` / `Access is denied` / `Device or resource busy`) | A `firmware monitor` (or any other process) still holds the port — single-serial boards share flash and log on one OS resource | Stop the monitor session, retry the flash, reopen the monitor after |
 | `tuyaopen-cli firmware list-ports` returns two ports with the same or no `description` and you can't tell which is which | Thin port listing can't disambiguate | Fall back to `tyutool_cli list-ports --json` (§ 4) and group by `usbSerial`/`usbInterface` |
 | Flash unstable / drops mid-transfer | Baud too high for the physical link | Retry with a lower `--baud` (the per-chip default is usually right; only override on developer instruction) |
-| `firmware flash` rejected as `confirmation:needs_yes` | Missing `--yes` | Pass it, or `--dry-run` to preview first — see skill `tuyaopen-shared` § 4 |
+| `firmware flash` rejected as `confirmation:needs_yes` | Missing `--yes` | Pass it, or `--dry-run` to preview first — see skill `tuyaopen-start` § 4 |
 | Need to read flash contents, hard-reset without flashing, or disambiguate a dual-serial pair | Not covered by the `firmware` CLI group | § 4 fallback — `tyutool_cli` directly |
 
 ## References

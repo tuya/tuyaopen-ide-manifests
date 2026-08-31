@@ -13,7 +13,7 @@ description: >-
   查这里；也用于快速了解嵌入式 CLI 的全貌。不含任务步骤，不含 flag 清单。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
 ---
 
 # TuyaOpen Embedded CLI Map
@@ -32,8 +32,8 @@ group to open.
 |---|---|---|
 | Flags, defaults, argument shapes | `tuyaopen-cli schema get --group <g> --command <c>` | A hand-written flag list rots. This catalogue has been burned by transcribed numbers four separate times; `schema get` is generated from the command definitions and cannot drift |
 | How to actually do the job | the task skill each row points at | One place per job, or the two copies disagree and the reader believes whichever they hit first |
-| The `--json` envelope, exit codes, the P0/P2 confirmation gate | `tuyaopen-shared` | Those are CLI-wide, not embedded-specific |
-| Which *skill* handles an intent | `tuyaopen-shared`'s `references/ROUTING.md` | That table maps intent → **skill**. This one maps intent → **command group**. Different questions, and mixing them produces two half-tables |
+| The `--json` envelope, exit codes, the P0/P2 confirmation gate | `tuyaopen-start` | Those are CLI-wide, not embedded-specific |
+| Which *skill* handles an intent | `tuyaopen-start`'s `references/ROUTING.md` | That table maps intent → **skill**. This one maps intent → **command group**. Different questions, and mixing them produces two half-tables |
 
 ## Shortcuts — the decision table
 
@@ -52,11 +52,11 @@ right for how.
 | Get an authorization code onto the device (UUID / AuthKey / PID) | `tuyaopen-cli license list` · `license add` · `license import` · `tuyaopen-cli firmware authorize` · `firmware auth-status` | `tuyaopen-embedded-device-auth` |
 | See what the **SDK itself** is made of — core + platform sub-SDKs, installed? current? | `tuyaopen-cli sdk platform` | `tuyaopen-embedded-env-setup` |
 | Get a **third-party** library into the project — find it, install it, record it | `tuyaopen-cli dependency search` · `dependency install` · `dependency add` · `dependency list` · `dependency remove` | `tuyaopen-embedded-dependency` (opt-in — see below) |
-| Find out why the environment or the CLI itself is wrong; produce a bug-report bundle | `tuyaopen-cli diag doctor` · `diag export` | `tuyaopen-shared` |
+| Find out why the environment or the CLI itself is wrong; produce a bug-report bundle | `tuyaopen-cli diag doctor` · `diag export` | `tuyaopen-start` |
 | Drive the device over its serial CLI; capture logs in the background; decode a crash dump | `tuyaopen-cli firmware monitor` · `tuyaopen-cli firmware list-ports` | `tuyaopen-embedded-cli-debug` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1: it is
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-start` § 1: it is
 usually **not** on `PATH`.
 
 ### 第三方库那一行,和 SDK 自己那一行,是两件事
@@ -111,7 +111,7 @@ than repeated in each task skill.
 Some embedded work still has no `tuyaopen-cli` command and goes through the SDK's
 own `tos.py`: adding a board / BSP, interactive Kconfig (`menuconfig`), and the
 LVGL host simulator's build configuration. Those are called out by the task
-skill that owns them. `tuyaopen-shared` § 7 holds the full coverage map — do
+skill that owns them. `tuyaopen-start` § 7 holds the full coverage map — do
 not reconstruct it here, and do not assume a missing command means a missing
 capability.
 
@@ -119,4 +119,4 @@ capability.
 
 Platform-side work (products, DPs, credentials) → `tuyaopen-cloud`. Panel
 miniapp work → `tuyaopen-miniapp`. Anything else, or an intent no row above
-matches: see the routing table in skill `tuyaopen-shared`.
+matches: see the routing table in skill `tuyaopen-start`.

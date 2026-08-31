@@ -29,7 +29,7 @@ Checks (all local / deterministic, no network):
     {"groups": "none", "reason": "..."} when the CLI does not cover it
   - That declaration agrees with the SKILL.md body's '## Shortcuts' section in
     both directions: every declared group is actually invoked there, and every
-    group the section invokes is declared (tuyaopen-shared is exempt from the
+    group the section invokes is declared (tuyaopen-start is exempt from the
     second direction — see check_shortcuts_agreement)
 
 Usage: python3 scripts/validate-skills-index.py [path/to/index.json]
@@ -475,24 +475,24 @@ def check_agent_skill_paths(ids: set) -> None:
 # Rule 3 support: the declaration (skills/index.json's cli.groups) and the
 # body's `## Shortcuts` section must name the same groups, in both directions.
 #
-# `tuyaopen-shared` is the tos.py <-> tuyaopen mapping table itself (its §7),
+# `tuyaopen-start` is the tos.py <-> tuyaopen mapping table itself (its §7),
 # which by design points out nearly every command group, so the reverse
 # direction (body mentions a group it did not declare) is exempted for it by
 # name. The forward direction (declared but unused) still applies.
-SHORTCUTS_REVERSE_EXEMPT = {"tuyaopen-shared"}
+SHORTCUTS_REVERSE_EXEMPT = {"tuyaopen-start"}
 
 # `schema` is the catalogue-wide self-discovery idiom — nearly every skill's
 # Shortcuts section has a "flags aren't listed here, run `tuyaopen schema get
 # --group <g> --command <c>`" row or line, because that is how an agent looks
 # up a command's flags without this doc hardcoding them (see the "don't
-# hardcode the flag list" rule referenced from every skill: `tuyaopen-shared`
+# hardcode the flag list" rule referenced from every skill: `tuyaopen-start`
 # § 5). That is advice about *finding* commands, not the skill's own task
 # using the `schema` group as a dependency. Counting it would force ~27 of 28
 # skills to declare `schema`, which would sit on nearly everything and stop
 # distinguishing anything — the whole information value of the declaration is
 # that it differs between skills. So `schema` is exempted from the *reverse*
 # ("used but undeclared") direction only. Skills whose actual subject matter
-# is schema introspection (`tuyaopen-skill-maker`, `tuyaopen-shared`) still
+# is schema introspection (`tuyaopen-skill-maker`, `tuyaopen-start`) still
 # get the *forward* check — if they declare `schema` but their Command column
 # never has a `tuyaopen schema …` row, that still fires, because forward
 # checking is untouched by this set.
@@ -506,7 +506,7 @@ _CLI_INVOCATION = re.compile(r"`?tuyaopen-cli\s+([a-z][a-z0-9-]*)")
 def extract_shortcuts_section(body: str) -> "str | None":
     """Return the text of the `## Shortcuts` section, or None when absent.
 
-    Scoped on purpose: a whole-body scan would force `tuyaopen-shared` to
+    Scoped on purpose: a whole-body scan would force `tuyaopen-start` to
     declare the seven-plus groups its §7 mapping table names, and would trip
     on every fallback blockquote or piece of prose that quotes an example
     command only to say not to use it (e.g. tuyaopen-embedded-build calling
@@ -617,12 +617,12 @@ def check_shortcuts_agreement(skill_id: str, groups, body: str) -> list:
     for g in sorted(declared - mentioned):
         out.append(
             f"item {skill_id!r}: declares cli group {g!r} but no Shortcuts Command-column "
-            f"row invokes `tuyaopen {g} …` — declared but unused"
+            f"row invokes `tuyaopen-cli {g} …` — declared but unused"
         )
     if skill_id not in SHORTCUTS_REVERSE_EXEMPT:
         for g in sorted((mentioned & CLI_GROUPS) - declared - GROUPS_EXEMPT_FROM_REVERSE_CHECK):
             out.append(
-                f"item {skill_id!r}: Shortcuts Command column invokes `tuyaopen {g} …` but "
+                f"item {skill_id!r}: Shortcuts Command column invokes `tuyaopen-cli {g} …` but "
                 f"{g!r} is not in cli.groups — used but undeclared"
             )
     return out
@@ -818,11 +818,11 @@ def check_frontmatter_parses(items: list) -> None:
             err(f"{label}: {local_path}/SKILL.md frontmatter {p}")
 
 
-# The routing table's own path, relative to REPO_ROOT. `tuyaopen-shared` owns the
+# The routing table's own path, relative to REPO_ROOT. `tuyaopen-start` owns the
 # single intent→skill map; every other skill points here instead of naming
 # siblings, so a skill missing from it is only reachable by someone who already
 # knows its id.
-ROUTING_TABLE = "skills/TuyaOpen/tuyaopen-shared/references/ROUTING.md"
+ROUTING_TABLE = "skills/TuyaOpen/tuyaopen-start/references/ROUTING.md"
 
 
 def check_routing_covers_opt_in(items: list) -> None:
@@ -845,7 +845,7 @@ def check_routing_covers_opt_in(items: list) -> None:
     """
     table = REPO_ROOT / ROUTING_TABLE
     if not table.is_file():
-        err(f"routing table not found at {ROUTING_TABLE} — `tuyaopen-shared` owns "
+        err(f"routing table not found at {ROUTING_TABLE} — `tuyaopen-start` owns "
             f"the intent→skill map; this gate cannot verify opt-in skills without it")
         return
     text = table.read_text(encoding="utf-8")
@@ -870,7 +870,7 @@ def check_resident_descriptions_cover_triggers(items: list) -> None:
     frontmatter description.
 
     The routing table above answers "can an agent that already opened
-    `tuyaopen-shared` find this skill". This answers the earlier question:
+    `tuyaopen-start` find this skill". This answers the earlier question:
     **will anything be selected at all** when the user's first sentence arrives.
 
     An agent tool loads only the installed skills' frontmatter. If a cold intent

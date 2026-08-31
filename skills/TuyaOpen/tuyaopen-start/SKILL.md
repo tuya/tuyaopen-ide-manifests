@@ -1,5 +1,5 @@
 ---
-name: tuyaopen-shared
+name: tuyaopen-start
 description: >-
   Foundation conventions shared by every other TuyaOpen skill: how to find and
   identify the `tuyaopen-cli` CLI, the `--json` envelope contract, the exit-code
@@ -7,7 +7,7 @@ description: >-
   `--confirm` token), command/skill self-discovery, the `tos.py` ↔ `tuyaopen-cli`
   fallback map, the `.tuyaopen/` project layout, and the master intent→skill
   routing table. Read this first, or when another skill says "not in scope,
-  see tuyaopen-shared". Not a task skill by itself — it has no action of its
+  see tuyaopen-start". Not a task skill by itself — it has no action of its
   own. **Also the catch-all**: come here for any TuyaOpen / 涂鸦 / T5AI task
   when none of the phase workflows obviously fits — environment setup and SDK
   install, adding a new development board or BSP, code formatting, or simply
@@ -17,7 +17,7 @@ description: >-
   基础约定与总路由：如何定位并识别 tuyaopen-cli、--json 信封契约、退出码承诺、
   P0/P2 确认门（含派生 --confirm token）、命令/技能自发现、tos.py 与 tuyaopen-cli
   的能力映射表、.tuyaopen/ 项目布局，以及意图到技能的总路由表。任何技能标注
-  "超出本技能范围，见 tuyaopen-shared" 时来这里查。本身不是任务技能，没有独立动作。
+  "超出本技能范围，见 tuyaopen-start" 时来这里查。本身不是任务技能，没有独立动作。
   **同时是兜底入口**：任何 TuyaOpen / 涂鸦 / T5AI 相关任务，只要三个阶段
   workflow 都不明显合适就来这里 —— 环境搭建、装 SDK、加开发板 / 板级支持 / BSP、
   代码格式、或者单纯"我该用哪个技能"。**大部分技能默认不安装**：本技能的路由表
@@ -30,12 +30,20 @@ compatibility:
   - Node.js (whatever version the CLI you found reports via `diag doctor --json`)
 ---
 
-# TuyaOpen Shared Conventions
+# TuyaOpen — Start Here
+
+> **Renamed 2026-08-31: `tuyaopen-shared` → `tuyaopen-start`.** The old id was
+> removed outright, with no alias — the same rule the retired CLI spellings
+> follow, and for the same reason: an alias would keep a stale copy of this
+> file installed next to the current one, because `pruneRetiredInstalls` treats
+> an alias-resolvable id as still live. `tuyaopen-cli skills install` deletes
+> the old directory on its next run. The name is the point: this is the file to
+> read **first**, and "shared" read like a library nobody had to open.
 
 This skill carries no action of its own. It is the one place the load-bearing
 facts about the `tuyaopen-cli` CLI and the skill catalogue are written **once** —
 every other TuyaOpen skill should link here instead of restating them, and
-should say "not in scope, see skill `tuyaopen-shared`" rather than naming
+should say "not in scope, see skill `tuyaopen-start`" rather than naming
 sibling skills by name (see § *Routing table* for why).
 
 ## 0. Order of operations — install and read the skills BEFORE you act
@@ -51,7 +59,7 @@ Two concrete costs from that one run:
   empty and that you must use `custom-list`, and that devplat writes take
   `--dry-run` → `--confirm <token>` rather than `--yes`. The wrong recipe —
   `solution-list` + `--yes` — had already been sent when that was read.
-- `tuyaopen-shared` § 8 draws the project layout (`.tuyaopen/` +
+- `tuyaopen-start` § 8 draws the project layout (`.tuyaopen/` +
   `source/embedded/`). It was instead re-derived from a `firmware build` error
   and rebuilt by hand.
 
@@ -455,7 +463,7 @@ tuyaopen-cli diag doctor --json
 
 One round-trip covering: which CLI binary is actually running (`cli.entryPath`
 / `version` / `contractVersion` / `packaging: bundled|standalone|unknown` /
-`cacheRoot` / `devplatSpawnNode` — see skill `tuyaopen-shared` § 1 for the
+`cacheRoot` / `devplatSpawnNode` — see skill `tuyaopen-start` § 1 for the
 full shape and how to read `packaging`), `node`/`git`/`uv`/`python` toolchain
 status, `sdk.{installed,tosPresent,envReady}`, `devplatCli.{present,path}`,
 and `credential.{loggedIn,source}`. Real example (fields vary by machine):
@@ -763,7 +771,7 @@ is installed. **No count is written here**: every attempt to state one went
 stale (this line said 28 while the catalogue held 30). Rather than every skill naming every sibling it might hand off to —
 an O(n²) maintenance burden where adding one skill means editing many others'
 prose — **the rule is one-way**: a task-specific skill that hits something out
-of its scope says "not in scope, see skill `tuyaopen-shared`'s routing table"
+of its scope says "not in scope, see skill `tuyaopen-start`'s routing table"
 and stops there; it does not name which sibling skill picks it up. This file
 is the only place that maps intent → skill, in `references/ROUTING.md`.
 

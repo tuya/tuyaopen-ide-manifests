@@ -13,7 +13,7 @@ description: >-
   tuyaopen-cli firmware authorize。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli license`/`firmware authorize`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli license`/`firmware authorize`)
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — needed for the `tyutool_cli`-direct fallback, not for the CLI commands above
   - Tuya IoT Platform account (platform.tuya.com) for credentials
 ---
@@ -171,12 +171,12 @@ first and copying the value it hands back. `firmware authorize` dropped from
 P0 to **P2** on 2026-08-18 (the KV it writes is rewritable and `firmware
 auth-status` reads it back, so it fails the P0 criterion) — it takes `--yes`
 instead, and its `--dry-run` does not hand back
-a confirm token at all. Full mechanics: skill `tuyaopen-shared` § 4.
+a confirm token at all. Full mechanics: skill `tuyaopen-start` § 4.
 
 > **No CLI?** `firmware authorize` → `tyutool_cli authorize` directly (see
 > § *Serial port discovery* below). `license *` has no older-tool
 > equivalent — it's a new, CLI-only local store; there is nothing to fall
-> back to for it. See skill `tuyaopen-shared` § 7.
+> back to for it. See skill `tuyaopen-start` § 7.
 
 **⚠ `tuyaopen-cli license *` is a *third*, independent record — not the device,
 and not the IDE panel.** Verified against `src/cli/commands/license.ts` +
@@ -218,7 +218,7 @@ don't "fix" it by trying to route the AuthKey through an env var instead,
 
 Full flags (baud, `--sdk-root`, `--product-id`, `--label`): `tuyaopen-cli license
 --help` / `tuyaopen-cli firmware --help`, or `tuyaopen-cli schema get --group license
---command <cmd>` — don't hardcode the flag list here (skill `tuyaopen-shared`
+--command <cmd>` — don't hardcode the flag list here (skill `tuyaopen-start`
 § 5).
 
 **Serial port discovery still needs the SDK's own tool, not the `tuyaopen-cli`
@@ -283,7 +283,7 @@ Optional for AP provisioning with QR code:
 > **This section is the catalogue's single home for "how do I get an
 > authorization code".** Other skills that mention UUID/AuthKey (
 > `tuyaopen-embedded-flash`, `tuyaopen-workflow-embedded-dev`,
-> `tuyaopen-workflow-miniapp-dev`, `tuyaopen-shared`) point here rather than
+> `tuyaopen-workflow-miniapp-dev`, `tuyaopen-start`) point here rather than
 > repeating the routes — do not copy the two URLs below into them.
 
 TuyaOpen-specific authorization codes come in three ways:
@@ -478,5 +478,5 @@ Placeholder patterns to check: values containing `your_`, `xxx`, `here`, empty s
 
 Flashing firmware or choosing a serial port for reasons unrelated to
 authorization, and network-provisioning protocol details beyond writing the
-credential — not in scope here, see skill `tuyaopen-shared`'s routing table
+credential — not in scope here, see skill `tuyaopen-start`'s routing table
 (`references/ROUTING.md`).

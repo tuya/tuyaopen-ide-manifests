@@ -60,7 +60,7 @@ related:
 | 平台侧：建小程序 / 提审 / 发布 / 绑面板 | `tuyaopen-cli devplat exec` (P2) — 转发给 `tuya-devplat-cli panel …` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared` § 1
+for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-start` § 1
 (it is usually not on `PATH`).
 
 > 面板架构、UI 结构、DP 编排这些**本技能自己**承担的工作确实没有 CLI 命令 ——
@@ -148,7 +148,7 @@ tuyaopen-cli skills install --group scenario                      # 六个全装
 ```
 
 （命令写作裸 `tuyaopen-cli`；若这台机器上它不在 `PATH`，先按 skill
-`tuyaopen-shared` § 1 解析一次。）
+`tuyaopen-start` § 1 解析一次。）
 
 **装完要让 agent 真正读到它**：新装的 skill 不会进入当前会话的上下文，
 需要重新加载 skill 列表或开一个新会话，再按品类 skill 的内容继续。
@@ -593,7 +593,7 @@ tuyaopen-cli skills read --id <id> --files                # 它带了哪些文�
 所以某个工具的安装视图坏掉（链接悬空、目录被删）也不影响它。
 
 **不知道该取哪个**：`tuyaopen-cli skills list --json` 列出全部 30 条（含 `whenToUse`），
-或查 skill `tuyaopen-shared` 的 `references/ROUTING.md` 路由表。
+或查 skill `tuyaopen-start` 的 `references/ROUTING.md` 路由表。
 
 **取不到**（`config` / `no_manifest_cache`）：跑 `tuyaopen-cli manifests sync` 把目录拉下来，
 再重试。这是它唯一的失败模式。

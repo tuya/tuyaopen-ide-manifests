@@ -266,7 +266,7 @@ using `cli_debug.py`.
 - Background log capture and crash-dump decoding are covered in `../SKILL.md`
   (this same skill, `tuyaopen-embedded-cli-debug`).
 - The full build → flash → monitor → analyze loop, and rebuilding firmware
-  with the CLI enabled, are out of scope here — see skill `tuyaopen-shared`'s
+  with the CLI enabled, are out of scope here — see skill `tuyaopen-start`'s
   routing table.
 
 ## Test result (connected T5AI board, 2025-06-25)

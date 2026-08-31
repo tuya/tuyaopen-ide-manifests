@@ -15,7 +15,7 @@ description: >-
   index.json 条目时使用。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli schema get`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli schema get`)
   - Python 3 (for scripts/validate-skills-index.py, scripts/check-skill-version-bumps.py)
   - Node.js (for tools/manifest-gen/bin/manifest-gen.js)
 ---
@@ -26,7 +26,7 @@ This skill teaches the catalogue how to grow itself: writing a new
 `SKILL.md`, registering it in `skills/index.json`, and passing the local
 validators before opening a PR against `tuya/tuyaopen-ide-manifests`. It does
 not cover any one skill's subject matter — for that, see the routing table in
-skill `tuyaopen-shared` (§ *Routing table*).
+skill `tuyaopen-start` (§ *Routing table*).
 
 ## Shortcuts — `tuyaopen-cli schema`
 
@@ -36,7 +36,7 @@ skill `tuyaopen-shared` (§ *Routing table*).
 | One command's flags/mutating/riskLevel | `tuyaopen-cli schema get --group <g> --command <c>` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-start` § 1 (it is
 usually not on `PATH`).
 
 ## 1. Frontmatter contract
@@ -82,7 +82,7 @@ compatibility:
   slash-bearing id like the pre-reorg `miniapp/ray-common` would install
   invisibly there.
 - **Must be `tuyaopen-` prefixed.** This is not cosmetic: the **global**
-  install hub (`~/.cursor/skills/`, see skill `tuyaopen-shared` § 6) is the
+  install hub (`~/.cursor/skills/`, see skill `tuyaopen-start` § 6) is the
   same directory the community `npx skills` tool (vercel-labs/skills) installs
   into. An unprefixed name (the pre-reorg `smart-panel-dev` is the example on
   record — it became `tuyaopen-workflow-miniapp-dev` for exactly this reason, with
@@ -108,7 +108,7 @@ one was authoritative.
 
 | Layer | Named | Owns | One-line test |
 |---|---|---|---|
-| Mechanism | `tuyaopen-shared` | CLI identity, the `--json` envelope, exit codes, the risk gate, command and skill self-discovery, the routing table, environment triage | True regardless of what you are building |
+| Mechanism | `tuyaopen-start` | CLI identity, the `--json` envelope, exit codes, the risk gate, command and skill self-discovery, the routing table, environment triage | True regardless of what you are building |
 | **Phase** | `tuyaopen-workflow-<domain>-dev` | Step order, the state machine, each step's deliverable, **which steps only a human can do**, what is handed to the next phase | Delete it and the agent no longer knows *what to do next* |
 | **Capability** | `tuyaopen-<domain>` | Which command groups the domain has, how a single command is invoked, what it requires first, domain concepts and traps, reference data | Delete it and the agent no longer knows *how to execute this step* |
 
@@ -135,7 +135,7 @@ only holds while walking the sequence, it is order and belongs to the workflow.
 
 ### Workflows may name each other — the one exception
 
-Section 8's rule ("out of scope → point at `tuyaopen-shared`'s routing table,
+Section 8's rule ("out of scope → point at `tuyaopen-start`'s routing table,
 never name a sibling") is about **out-of-scope handoffs**, and it exists to
 avoid an O(n²) web of cross-references. A workflow's **next phase** is not out
 of scope; it is the content. `tuyaopen-workflow-product-dev` must say, by name,
@@ -220,7 +220,7 @@ carries every other machine field (`group`, `surface`, `tags`,
 | <what it does> | `tuyaopen-cli <group> <command>` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-start` § 1 (it is
 usually not on `PATH`).
 ```
 
@@ -244,23 +244,23 @@ blockquote under it, naming the fallback command and nothing else:
 
 ```markdown
 > **No CLI?** Equivalent: `tos.py build`, but you parse its output yourself.
-> Full mapping: `tuyaopen-shared` § 7.
+> Full mapping: `tuyaopen-start` § 7.
 ```
 
 **The blockquote gives a command name, never a semantic explanation.**
 Anything that needs explaining — `tos.py update` is not `sdk update`; `tos.py
 config` and `tuyaopen-cli config` collide in name but edit unrelated things — is
-written **once**, in `tuyaopen-shared` § 7. If every skill restated the
+written **once**, in `tuyaopen-start` § 7. If every skill restated the
 semantic differences for its own fallback command, sixteen copies would
 exist and drift is the only possible outcome; a reader who needs the nuance
 follows the link instead.
 
 **Fall back only when the CLI is unavailable — never because it refused
-you.** "Unavailable" means: `tuyaopen-shared` § 1's resolve step found
+you.** "Unavailable" means: `tuyaopen-start` § 1's resolve step found
 nothing, the command/flag doesn't exist (an old CLI build), or the envelope's
 `type` is `tooling` with subtype `tool_missing`. Every other typed error —
 `confirmation`, `policy`, `authentication`, `validation`, `config`, and the
-rest of the exhaustive, default-deny table in `tuyaopen-shared` § 4 — means
+rest of the exhaustive, default-deny table in `tuyaopen-start` § 4 — means
 the CLI ran, is working correctly, and is declining on purpose. Reaching for
 the fallback tool at that point is not "trying another way" — it is going
 around the CLI's risk gate. Concretely: `tuyaopen-cli firmware flash` sits
@@ -310,7 +310,7 @@ Move anything that is "read this only if you're doing the deep version" into
   Kconfig dependencies.
 - `tuyaopen-embedded-project/references/{TOS_COMMANDS.md,CONFIG_CLI.md}` — the
   full `tos.py` command table and non-interactive config CLI semantics.
-- `tuyaopen-shared/references/ROUTING.md` — the intent→skill routing table
+- `tuyaopen-start/references/ROUTING.md` — the intent→skill routing table
   this skill's § 8 tells you to link to instead of copying.
 
 A helper script goes in `scripts/` (see `tuyaopen-embedded-env-setup/scripts/` for a
@@ -334,9 +334,9 @@ Do not name a sibling skill directly from inside your skill's prose (e.g.
 maintenance surface — every new skill would need edits to every existing
 skill that might hand off to it. Instead write:
 
-> Not in scope — see skill `tuyaopen-shared`'s routing table.
+> Not in scope — see skill `tuyaopen-start`'s routing table.
 
-and add your own row to `tuyaopen-shared/references/ROUTING.md` in the same
+and add your own row to `tuyaopen-start/references/ROUTING.md` in the same
 change (that file is the one place allowed to name every skill, precisely
 because it is the only thing that has to change when the catalogue grows).
 
@@ -351,7 +351,7 @@ only reachable after the model has already opened something.
 So a description **should** name the sibling it hands off to, and several
 already do — `tuyaopen-workflow-product-dev` ("Do NOT use for pure platform ops
 (→ `tuyaopen-cloud`)…"), `tuyaopen-embedded-cli-debug` ("Environment triage is
-not here — `diag doctor` / `diag export` live in skill `tuyaopen-shared`"),
+not here — `diag doctor` / `diag export` live in skill `tuyaopen-start`"),
 `tuyaopen-miniapp` ("the command-line surface only — panel architecture and
 category UI conventions are a different skill"). Copy that shape.
 

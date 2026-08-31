@@ -204,5 +204,5 @@ $OBJDUMP -d --start-address=0x021d8e80 --stop-address=0x021d8ec0 $ELF
   once the device is responsive again are covered in `../SKILL.md` (this same
   skill, `tuyaopen-embedded-cli-debug`).
 - Rebuilding firmware with debug info enabled, and the full build → flash →
-  monitor loop, are out of scope here — see skill `tuyaopen-shared`'s routing
+  monitor loop, are out of scope here — see skill `tuyaopen-start`'s routing
   table.

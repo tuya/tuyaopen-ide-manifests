@@ -14,7 +14,7 @@ description: >-
   仅覆盖命令行操作本身，不涉及面板架构或品类 UI 编码规范。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
   - "install/upload/preview/template create carry their own vendor/miniapp-runtime since 0.1.0-beta.14; --extension-path (or TUYAOPEN_EXTENSION_PATH) only overrides it"
   - A TuyaOpen project with a source/miniapp directory
 ---
@@ -29,7 +29,7 @@ related skill focused on *how to build the panel*, where this one is about
 *running the CLI commands*. See `related` in this skill's catalogue entry.
 
 For the CLI's envelope, exit codes, and P0/P2 risk-gate mechanics, see
-skill `tuyaopen-shared` — not repeated here.
+skill `tuyaopen-start` — not repeated here.
 
 ## Runtime: 默认自带，不用再找 `--extension-path`
 
@@ -83,7 +83,7 @@ skill `tuyaopen-workflow-miniapp-dev` 的 ⑧（真机扫码看，或去真 IDE 
 | Build, sign, and upload to the Tuya platform | `tuyaopen-cli miniapp upload` (P2) |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group miniapp --command
-<c>` for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-shared`
+<c>` for the current set. Resolve `tuyaopen-cli` first per skill `tuyaopen-start`
 § 1 (it is usually not on `PATH`).
 
 Example invocations:
@@ -139,7 +139,7 @@ skill's `related` entry).
 (because `template list` must stay ungated and both share one command), but
 it enforces the identical envelope by hand: `--dry-run` to preview, or
 `--yes` to apply. Treat it exactly like any
-other P2 command from skill `tuyaopen-shared` § 4.
+other P2 command from skill `tuyaopen-start` § 4.
 
 ### `upload` — P2, and the heaviest command in this group
 

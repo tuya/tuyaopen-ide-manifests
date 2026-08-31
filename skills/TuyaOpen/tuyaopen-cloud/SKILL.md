@@ -36,7 +36,7 @@ Operate the Tuya Developer Platform via `tuya-devplat-cli`.
 | Reach any `tuya-devplat-cli` command the groups above don't cover | `tuyaopen-cli devplat exec -- <args…>` (P2) — credentials are injected for you; never ask the user for a raw Service Key |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-start` § 1 (it is
 usually not on `PATH`).
 
 **Still routed through `tuya-devplat-cli` + this skill's Python helpers, no

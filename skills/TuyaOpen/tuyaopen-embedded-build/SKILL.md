@@ -12,7 +12,7 @@ description: >-
   menuconfig、Kconfig，以及 tuyaopen-cli config 与 tos.py config 的同名陷阱。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli firmware build/clean`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli firmware build/clean`)
   - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — only needed for the `tos.py`-direct path; `tuyaopen-cli firmware build/clean` self-activates
   - cmake >= 3.28, ninja >= 1.6
 ---
@@ -40,14 +40,14 @@ tuyaopen-cli firmware build --timeout 1800     # 首次全量；0 = 完全不设
 超时的报错现在会点名这个 flag。增量编译用默认值就够（实测约 40 s）。
 
 > **No CLI?** `tos.py build` / `tos.py clean` (`-f` for full clean). See
-> skill `tuyaopen-shared` § 7.
+> skill `tuyaopen-start` § 7.
 
 `--project-root` is the **IDE project root** — the directory holding
-`.tuyaopen/` and `source/embedded/` (see skill `tuyaopen-shared` § 8) — not an
+`.tuyaopen/` and `source/embedded/` (see skill `tuyaopen-start` § 8) — not an
 SDK `apps/`/`examples/` directory. It defaults to the current directory, so
 `cd <project>` then omit the flag works too. Both commands are risk tier
 **P3**: mutating, but **no** `--dry-run`/`--confirm`/`--yes` gate applies (see
-skill `tuyaopen-shared` § 4 — P3 is a real tier, distinct from P0/P2, for
+skill `tuyaopen-start` § 4 — P3 is a real tier, distinct from P0/P2, for
 commands the framework doesn't consider destructive).
 
 Two things `tuyaopen-cli firmware build`/`clean` do that raw `tos.py build` does
@@ -63,7 +63,7 @@ not, verified against `src/cli/commands/firmware.ts`:
 
 Full flags (baud, `--sdk-root`, `--stream` for ndjson progress): `tuyaopen-cli
 firmware --help` / `tuyaopen-cli schema get --group firmware --command build` —
-don't hardcode the flag list here, it drifts (see skill `tuyaopen-shared` § 5).
+don't hardcode the flag list here, it drifts (see skill `tuyaopen-start` § 5).
 
 **Everything below this point — Kconfig, `tos.py config`/`menu`/`choice`, and
 building inside a raw SDK checkout's `apps/`/`examples/` tree — has no
@@ -79,7 +79,7 @@ it.
 share a word. Typing `tuyaopen-cli config set` to change a build option is the
 intuitive guess and the **wrong** one — it silently rejects the key instead of
 touching Kconfig, since none of the three IDE settings match. Full detail:
-skill `tuyaopen-shared` § 7.
+skill `tuyaopen-start` § 7.
 
 > **SDK root:** All `tos.py`-direct paths and commands below are relative to
 > the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell,
@@ -277,5 +277,5 @@ Example (for a project named `hello_world_linux` version 1.0.0):
 ## Not in scope
 
 Anything outside compiling / cleaning / Kconfig for a TuyaOpen project — not
-in scope here, see skill `tuyaopen-shared`'s routing table
+in scope here, see skill `tuyaopen-start`'s routing table
 (`references/ROUTING.md`).

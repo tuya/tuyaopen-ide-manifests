@@ -133,4 +133,4 @@ For the dependency layer diagram (platform → src → boards/common → boards/
 
 Peripheral/pin code generation on an already-adapted board, and Kconfig
 option semantics beyond selecting the new board — not in scope here, see
-skill `tuyaopen-shared`'s routing table (`references/ROUTING.md`).
+skill `tuyaopen-start`'s routing table (`references/ROUTING.md`).

@@ -166,7 +166,7 @@ $OPEN_SDK_ROOT/tools/tyutool/tyutool_cli --plain authorize \
 
 Obtaining a UUID/AuthKey, the placeholder-credential convention, and syncing
 the IDE's own license ledger after a command-line `authorize` are all out of
-scope here — see skill `tuyaopen-shared`'s routing table.
+scope here — see skill `tuyaopen-start`'s routing table.
 
 > **Credential safety** — when handling UUID/AuthKey:
 > - Use placeholder values (`your_uuid_here`, `your_authkey_here`) in all code examples and documentation.
@@ -177,7 +177,7 @@ scope here — see skill `tuyaopen-shared`'s routing table.
 > **After authorizing, report it to the IDE.** `authorize` writes the chip only.
 > The TuyaOpen IDE keeps a separate 授权码 ledger that CLI writes do not touch, so
 > its panel will still read `未使用` even though the device is authorized. Not in
-> scope here — see skill `tuyaopen-shared`'s routing table for the
+> scope here — see skill `tuyaopen-start`'s routing table for the
 > `pending-auth.json` handback. The same applies to `write`: flashing firmware
 > never updates that panel.
 
@@ -193,7 +193,7 @@ scope here — see skill `tuyaopen-shared`'s routing table.
 | Garbled output during `authorize` | Ask developer for firmware's UART auth baud rate |
 | Garbled serial monitor output | Ask developer for firmware's UART log baud rate |
 | Interactive port prompt appears | Always pass `-p <port>` explicitly |
-| IDE 授权码 panel still shows `未使用` after a successful `authorize` | Expected — CLI writes do not touch the IDE ledger. Not in scope here — see skill `tuyaopen-shared`'s routing table for the `pending-auth.json` handback |
+| IDE 授权码 panel still shows `未使用` after a successful `authorize` | Expected — CLI writes do not touch the IDE ledger. Not in scope here — see skill `tuyaopen-start`'s routing table for the `pending-auth.json` handback |
 
 ## Diagnostic Logs
 

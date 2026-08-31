@@ -163,5 +163,5 @@ Do not modify these third-party files for formatting. If you add new third-party
 ## Not in scope
 
 Building, flashing, or anything beyond formatting/header/Chinese-character
-checks — not in scope here, see skill `tuyaopen-shared`'s routing table
+checks — not in scope here, see skill `tuyaopen-start`'s routing table
 (`references/ROUTING.md`).

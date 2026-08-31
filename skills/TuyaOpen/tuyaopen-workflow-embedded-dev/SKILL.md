@@ -44,7 +44,7 @@ compatibility:
 | Environment check-up / diagnostic bundle | `tuyaopen-cli diag doctor` · `tuyaopen-cli diag export` |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group firmware --command
-flash` for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1
+flash` for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-start` § 1
 (it is usually not on `PATH`).
 
 ## Where this sits in the three-phase pipeline
@@ -679,7 +679,7 @@ the probe-to-question table.
    to parse stdout.
 
    > **No CLI?** Equivalent: `tos.py build`, but you parse its output
-   > yourself. Full mapping: `tuyaopen-shared` § 7.
+   > yourself. Full mapping: `tuyaopen-start` § 7.
 
 2. **Flash**: flash firmware to the device from the project directory:
 
@@ -689,9 +689,9 @@ the probe-to-question table.
 
    The env var is a **prefix on this one invocation**, not an `export`: an
    export leaves every later P2 command in the shell one `--yes` away. Same
-   keystrokes, scope ends with the command (skill `tuyaopen-shared` § 4).
+   keystrokes, scope ends with the command (skill `tuyaopen-start` § 4).
 
-   > **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-shared` § 7.
+   > **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-start` § 7.
 
    **Which port?** Run `tyutool_cli list-ports --json` and group on `usbSerial`
    — one physical board is one `usbSerial`:
@@ -741,7 +741,7 @@ the probe-to-question table.
    > runs, which on a USB-JTAG board re-enumerates USB and costs the first
    > ~300 ms of the log.
 
-   > **No CLI?** `tos.py monitor -p <port>`. See `tuyaopen-shared` § 7.
+   > **No CLI?** `tos.py monitor -p <port>`. See `tuyaopen-start` § 7.
 
    Only for **genuinely concurrent** capture — logging one port while flashing
    another — reach for `tuyaopen-embedded-cli-debug`'s `monitor_helper.py`. It
@@ -888,14 +888,14 @@ $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_help
 $OPEN_SDK_PYTHON .agents/skills/tuyaopen-embedded-cli-debug/scripts/monitor_helper.py stop
 ```
 
-> **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-shared` § 7.
+> **No CLI?** `tos.py flash -p <port>`. See `tuyaopen-start` § 7.
 
 ### Iteration loop (analyze → fix → re-run)
 
 Repeat until logs are clean:
 
 1. **Build** → **`tuyaopen-cli firmware flash --port <port> --yes --json`**
-   (no CLI? `tos.py flash -p <port>` — see `tuyaopen-shared` § 7)
+   (no CLI? `tos.py flash -p <port>` — see `tuyaopen-start` § 7)
 2. **`tuyaopen-cli firmware monitor --port <port> --reset --yes --duration <s> --log-file boot.log --json`**
    — capture boot + runtime trace. Use `monitor_helper.py` only when you need
    to log one port *while* flashing another.
@@ -951,7 +951,7 @@ tuyaopen-cli skills read --id <id> --files                # 它带了哪些文�
 所以某个工具的安装视图坏掉（链接悬空、目录被删）也不影响它。
 
 **不知道该取哪个**：`tuyaopen-cli skills list --json` 列出全部 30 条（含 `whenToUse`），
-或查 skill `tuyaopen-shared` 的 `references/ROUTING.md` 路由表。
+或查 skill `tuyaopen-start` 的 `references/ROUTING.md` 路由表。
 
 **取不到**（`config` / `no_manifest_cache`）：跑 `tuyaopen-cli manifests sync` 把目录拉下来，
 再重试。这是它唯一的失败模式。

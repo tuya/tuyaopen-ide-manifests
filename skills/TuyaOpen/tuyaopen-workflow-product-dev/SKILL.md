@@ -55,7 +55,7 @@ End-to-end orchestration: requirements → Tuya Platform product/DP → embedded
 | Bind a product PID to this project | `tuyaopen-cli project bind-product` (P2) |
 
 Flags aren't listed here — run `tuyaopen-cli schema get --group <g> --command <c>`
-for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-shared` § 1 (it is
+for the current set. Resolve `tuyaopen-cli` first per `tuyaopen-start` § 1 (it is
 usually not on `PATH`).
 
 **Still routed through `tuya-devplat-cli` / `tuyaopen-cloud`'s Python
@@ -229,7 +229,7 @@ tuyaopen-cli project bind-product --pid <pid> --yes --json
 
 (P2 — needs `--yes`.) This writes `tuyaopen.project.ini` → `[product] pid = <pid>` — the only file this step writes.
 
-> **No CLI?** Hand-edit `tuyaopen.project.ini` → `[product] pid = <pid>` directly. See `tuyaopen-shared` § 7.
+> **No CLI?** Hand-edit `tuyaopen.project.ini` → `[product] pid = <pid>` directly. See `tuyaopen-start` § 7.
 
 **Do NOT hand-edit the firmware PID** (the Kconfig `CONFIG_TUYA_PRODUCT_ID` in `source/embedded/app_default.config` / `config/*.config`, or a `TUYA_PRODUCT_ID` macro). The IDE owns the firmware rewrite: it reads the demo's PID-location spec from `.tuyaopen/ide/demo.json` (`cloud.pid.via` / `kconfigKey` / `macro` / `file`) and writes the PID to the exact location that demo declares — which is often NOT the default symbol. Editing it yourself will likely target the wrong key/macro/file and bind the wrong PID.
 
@@ -270,7 +270,7 @@ After any fix: ask developer to click **Update (更新)** in Project Details, re
 firmware phase, and it lives in skill `tuyaopen-workflow-embedded-dev`.**
 
 This is the one place in the catalogue where a skill names a sibling on
-purpose. The rule everywhere else — "out of scope, see `tuyaopen-shared`'s
+purpose. The rule everywhere else — "out of scope, see `tuyaopen-start`'s
 routing table", never naming a sibling — is about *out-of-scope* handoffs. A
 workflow's **next phase** is not out of scope; it is the content. Reaching
 `has-dps` without being told where to go next is how the pipeline breaks.
@@ -353,7 +353,7 @@ tuyaopen-cli skills read --id <id> --files                # 它带了哪些文�
 所以某个工具的安装视图坏掉（链接悬空、目录被删）也不影响它。
 
 **不知道该取哪个**：`tuyaopen-cli skills list --json` 列出全部 30 条（含 `whenToUse`），
-或查 skill `tuyaopen-shared` 的 `references/ROUTING.md` 路由表。
+或查 skill `tuyaopen-start` 的 `references/ROUTING.md` 路由表。
 
 **取不到**（`config` / `no_manifest_cache`）：跑 `tuyaopen-cli manifests sync` 把目录拉下来，
 再重试。这是它唯一的失败模式。

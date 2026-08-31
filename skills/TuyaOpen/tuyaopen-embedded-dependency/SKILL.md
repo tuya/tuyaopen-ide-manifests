@@ -17,7 +17,7 @@ when_to_use: Triggered automatically after the IDE (or an agent via `tuyaopen-cl
 id: tuyaopen-embedded-dependency
 surfaces: [embedded]
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli dependency`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli dependency`)
 tags: [cmake, dependencies, vibeCode]
 command: tuyaopen.skill.wireCmake
 fallback_commands: []
@@ -53,7 +53,7 @@ own job (CMake wiring, which none of these commands touch):
 > lockfile entry. This is exactly the manual work these commands exist to
 > replace, and it's still what the CMake/Kconfig wiring step below needs
 > regardless of which path got the library onto disk. See skill
-> `tuyaopen-shared` § 7.
+> `tuyaopen-start` § 7.
 
 **⚠ `tuyaopen-cli sdk platform` is not this.** It lists the **TuyaOpen SDK's own
 composition** — the core repo plus its per-chip platform repos (`TuyaOpen-T2`,
@@ -76,7 +76,7 @@ or `--dry-run` to preview). None of these five
 commands write a single line of `CMakeLists.txt` or Kconfig — that gap is
 this skill's entire remaining job, below. Full flags: `tuyaopen-cli dependency --help` /
 `tuyaopen-cli schema get --group dependency --command <cmd>` — don't hardcode the flag list here (skill
-`tuyaopen-shared` § 5).
+`tuyaopen-start` § 5).
 
 ## When to use
 
@@ -116,7 +116,7 @@ The project's main `CMakeLists.txt` references the new directory via `add_subdir
 
 ## Not in scope
 
-Building or flashing the project once the library is wired, and downloading/recording a library that isn't already on disk — not in scope here, see skill `tuyaopen-shared`'s routing table (`references/ROUTING.md`).
+Building or flashing the project once the library is wired, and downloading/recording a library that isn't already on disk — not in scope here, see skill `tuyaopen-start`'s routing table (`references/ROUTING.md`).
 
 ## Related skills
 

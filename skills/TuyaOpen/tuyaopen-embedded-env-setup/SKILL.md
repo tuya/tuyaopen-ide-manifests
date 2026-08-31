@@ -11,7 +11,7 @@ description: >-
   env-init/update、manifests sync、克隆 SDK。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli sdk`/`manifests`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli sdk`/`manifests`)
   - Ubuntu/Debian with apt-get (or macOS/Windows equivalent)
   - Python >= 3.6
   - git >= 2.0, cmake >= 3.28, make >= 3.0, ninja >= 1.6
@@ -53,7 +53,7 @@ tuyaopen-cli diag doctor --json     # → .data.sdk （根路径、是否就绪�
 **先说要下什么、多大**，再动手。别让"环境检查全绿"变成用户眼里的一次静默长下载。
 逐平台的详细状态（含 commit 是否对得上）用 `tuyaopen-cli sdk platform --json`。
 
-其余环境事实（串口、登录、授权码）见 skill `tuyaopen-shared` § 0.0 的表；
+其余环境事实（串口、登录、授权码）见 skill `tuyaopen-start` § 0.0 的表；
 什么时候该加 `--network` 见同一节。
 
 ## Shortcuts — `tuyaopen-cli sdk` / `tuyaopen-cli manifests` (headless, no shell activation needed)
@@ -71,11 +71,11 @@ tuyaopen-cli diag doctor --json     # → .data.sdk （根路径、是否就绪�
 > the shell-activation path below (`export.sh`/`.ps1`/`.bat`) bootstraps the
 > same venv; `sdk update` → `git pull --ff-only` in the SDK clone. `manifests
 > status`/`sync` have no older-tool equivalent — there was no local manifest
-> cache before this CLI. See skill `tuyaopen-shared` § 7.
+> cache before this CLI. See skill `tuyaopen-start` § 7.
 
 All five `sdk` subcommands are risk tier **P3** — mutating (`clone`,
 `env-init`, `env-pull`, `update`), but no `--dry-run`/`--confirm`/`--yes` gate
-applies (see skill `tuyaopen-shared` § 4). `manifests sync` is **P2** — needs
+applies (see skill `tuyaopen-start` § 4). `manifests sync` is **P2** — needs
 `--yes`, or `--dry-run` to preview.
 
 Two things worth knowing before you reach for these, verified against
@@ -84,7 +84,7 @@ Two things worth knowing before you reach for these, verified against
 - **`sdk env-pull` and `sdk env-init` run the identical bootstrap** (both call
   the same `initializeSdkEnv()`) — `env-init` additionally supports
   `--stream` for ndjson progress. Prefer `env-init`; `env-pull` is kept only
-  because the CLI's command schema is add-only (skill `tuyaopen-shared` § 5).
+  because the CLI's command schema is add-only (skill `tuyaopen-start` § 5).
 - **`sdk update` is not the same operation as `tos.py update`.** `sdk update`
   runs `git pull --ff-only` on the SDK clone itself; `tos.py update`
   fast-forwards each **platform submodule** to the commit pinned in
@@ -98,7 +98,7 @@ above before it. Reach for `diag doctor`/`sdk clone`/`sdk env-init` directly
 when you're setting up headlessly (CI, an agent with no shell activation) or
 diagnosing why the self-bootstrap isn't finding an SDK. Full flags (`--mirror`,
 `--stream`): `tuyaopen-cli sdk --help` / `tuyaopen-cli schema get --group sdk
---command <cmd>` — don't hardcode the flag list here (skill `tuyaopen-shared`
+--command <cmd>` — don't hardcode the flag list here (skill `tuyaopen-start`
 § 5).
 
 **Everything below this point is the shell-activation path** (`export.sh` +
@@ -201,5 +201,5 @@ tos.py check      # validates tool versions + runs git submodule update --init
 ## Not in scope
 
 Anything past environment activation / SDK bootstrap / manifest sync — not
-in scope here, see skill `tuyaopen-shared`'s routing table
+in scope here, see skill `tuyaopen-start`'s routing table
 (`references/ROUTING.md`).

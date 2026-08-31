@@ -230,5 +230,5 @@ Writing the UI itself — widgets, fonts, Chinese text, images →
 
 Panel/board bring-up, real-device display drivers, LVGL widget APIs, and
 anything to do with flashing. This skill is only the host simulator loop.
-For the routing table to the rest, see skill `tuyaopen-shared`'s
+For the routing table to the rest, see skill `tuyaopen-start`'s
 `references/ROUTING.md`.

@@ -21,7 +21,7 @@ skills/
 │   └── tuyaos-build/  tuyaos-hardware-vibe-coding/
 └── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
     ├── index.json                      #   THE registry the IDE and CLI read
-│   ├── tuyaopen-shared/  tuyaopen-skill-maker/       #   foundation, not task skills
+│   ├── tuyaopen-start/  tuyaopen-skill-maker/       #   foundation, not task skills
 │   ├── tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/  tuyaopen-embedded-device-auth/
 │   ├── tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/  tuyaopen-embedded-project/
 │   ├── tuyaopen-embedded-cli-debug/  tuyaopen-embedded-flash/

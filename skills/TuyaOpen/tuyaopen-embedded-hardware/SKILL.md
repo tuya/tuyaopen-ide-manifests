@@ -22,7 +22,7 @@ when_to_use: >-
 id: tuyaopen-embedded-hardware
 surfaces: [embedded]
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-shared` § 1 (for `tuyaopen-cli hardware`/`boards`)
+  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli hardware`/`boards`)
 tags: [hardware, peripheral, vibe-coding, routing]
 ---
 
@@ -46,12 +46,12 @@ it applies:
 
 > **No CLI?** No `tos.py` equivalent for `hardware`/`boards` — hand-read /
 > hand-write `.tuyaopen/used-peripherals.json` and `.tuyaopen/board-context.md`
-> directly, exactly as Steps 1–4 below describe. See skill `tuyaopen-shared`
+> directly, exactly as Steps 1–4 below describe. See skill `tuyaopen-start`
 > § 7.
 
 All `hardware` subcommands are read-only except `set-used` and `intellisense`
 (both **P2** — need `--yes`, or `--dry-run` to
-preview; see skill `tuyaopen-shared` § 4).
+preview; see skill `tuyaopen-start` § 4).
 
 **⚠ `hardware set-used --ids` cannot record on-chip pin occupancy.** Verified
 against `src/cli/commands/hardware.ts` + `src/core/hardware/usedPeripherals.ts`:
@@ -74,7 +74,7 @@ SDK's `boards/` source tree at all.
 
 Full flags: `tuyaopen-cli hardware --help` / `tuyaopen-cli schema get --group
 hardware --command <cmd>` — don't hardcode the flag list here (skill
-`tuyaopen-shared` § 5).
+`tuyaopen-start` § 5).
 
 ## Architecture
 
@@ -352,4 +352,4 @@ SDK typedefs in uppercase are fine (`OPERATE_RET`, `TDL_LED_HANDLE_T`).
 
 Adding a new board (BSP), building/flashing, and anything not about
 peripheral/pin code generation on an already-selected board — not in scope
-here, see skill `tuyaopen-shared`'s routing table (`references/ROUTING.md`).
+here, see skill `tuyaopen-start`'s routing table (`references/ROUTING.md`).
