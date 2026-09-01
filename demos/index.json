@@ -1541,7 +1541,8 @@
         "xingzhi-esp32s3-cube-0-96-oled-wifi",
         "sparkleiot-t5ai-dev",
         "brd2605a",
-        "siwx917-ai-dev-kit"
+        "siwx917-ai-dev-kit",
+        "seeed-xiao-esp32s3-sense"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-chat-bot.json",

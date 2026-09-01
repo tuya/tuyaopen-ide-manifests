@@ -277,6 +277,24 @@
           ]
         }
       ]
+    },
+    {
+      "board": "seeed-xiao-esp32s3-sense",
+      "options": [
+        {
+          "file": "SEEED_ESP32S3_XIAO_SENSE.config",
+          "name": {
+            "en": "Seeed Studio XIAO ESP32-S3 Sense",
+            "zh-CN": "矽递 XIAO ESP32-S3 Sense"
+          },
+          "peripherals": [
+            "audio",
+            "camera",
+            "button",
+            "sd-card"
+          ]
+        }
+      ]
     }
   ],
   "documentation": {
