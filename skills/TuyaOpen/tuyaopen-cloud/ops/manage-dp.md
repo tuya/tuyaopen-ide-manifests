@@ -19,10 +19,18 @@ All commands require `--product-id <pid>`.
 1. Check `dp-standard-catalog` — if a standard DP (1–100) covers the function, use it.
 2. Only create a custom DP (101+) when standard DPs cannot satisfy the requirement.
 
-> **`qt` (其他) category:** The standard catalog is empty — no predefined standard DPs exist.
-> All DPs are custom and can start from ID 1, with no range restrictions.
-> This is why `qt` is the preferred category: it gives full freedom over DP definition
-> without needing to check or conform to any standard DP catalog.
+> **`qt` (其他) category:** The standard catalog is empty — no predefined standard DPs
+> exist, so every DP you attach is a custom one. That is why `qt` is the preferred
+> category: nothing to look up, nothing to conform to.
+>
+> **The 101–199 range still applies.** This paragraph used to say custom DPs "can
+> start from ID 1, with no range restrictions" — that is wrong, and it was wrong in
+> the one direction that costs a step: the platform API rejects an out-of-range id
+> with `INVALID_DP_ID`, and the claim was worded as a *reason to choose* `qt`, so it
+> steered the reader into the error rather than merely failing to prevent it.
+> Measured 2026-09-01: `dp-add-custom` with `"id": 1` on a `qt` product returns
+> `INVALID_DP_ID`; the same call with `"id": 101` succeeds. The empty standard
+> catalog frees you from the catalog, not from the id range.
 
 ---
 
@@ -64,6 +72,14 @@ Use the manual steps below only when you need to inspect intermediate results.
 | Validate current DP config | `product dp-valid` | No |
 | Add standard DPs | `product dp-add-standard` | Yes |
 | Remove one standard DP | `product dp-remove-standard` | Yes |
+| **Add a custom DP** (101–199; the only way for `qt`) | `tuyaopen-cli dp add`, or `product dp-add-custom` through `devplat exec` | Yes |
+
+> **`dp-add-custom` was missing from this table until 2026-09-02**, and for a `qt`
+> product it is the *only* command that can attach anything — the standard-DP rows
+> above have no catalog to draw from. A tester looking for it here found nothing,
+> went and dumped `schema list` for the whole `product` group to discover it, and
+> never tried `tuyaopen-cli dp add`, which is the first-party command for the same
+> job and is listed in this skill's own Shortcuts table.
 
 ---
 

@@ -7,6 +7,24 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### `qt` 类目那段把 DP id 范围说反了 (2026-09-02)
+
+`tuyaopen-cloud` 1.7.0 → **1.8.0**，skills 域 4.0.0 → **4.1.0**。
+
+`ops/manage-dp.md` 里 `qt` 类目的那段 blockquote 写着「所有 DP 都是自定义的，可以从 id 1
+开始，没有范围限制」，而同一个文件上方两处、以及 `SKILL.md` 的 Shortcuts 表都写着 101+。
+**服务端强制 101–199**，越界返回 `INVALID_DP_ID`。
+
+错的方向尤其糟：这句话是当作「**所以 qt 是首选类目**」的论据写的，等于主动把读者推进错误里，
+而不只是没拦住。第十一轮实测一次就撞上。已改成：空的标准目录让你不用查目录，不等于不受 id 范围
+约束。
+
+同一张表里补上了 `dp-add-custom` —— 对 `qt` 产品它是**唯一**能挂上 DP 的命令（上面那几行标准 DP
+操作没有目录可取），而表里一直没有它。那位测试者在这里找不到，改去 dump 整个 `product` 组的
+`schema list` 才发现，全程没试过 `tuyaopen-cli dp add` —— 干同一件事的第一方命令，就写在本技能
+自己的 Shortcuts 表里。
+
+
 ### `tuyaopen-shared` 改名 `tuyaopen-start`，没有别名 (2026-08-31)
 
 skills 域 3.3.0 → **4.0.0**（破坏性：技能 id 变了）。`tuyaopen-start` 版本 2.0.0，目录、
