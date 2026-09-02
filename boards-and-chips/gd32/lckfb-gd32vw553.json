@@ -63,9 +63,9 @@
       "zh-CN": "https://lckfb.com/project/detail/lckfb-gd32vw553-hmq6?param=baseInfo"
     }
   },
-  "boardSymbol": "LCKFB_GD32VM553",
+  "boardSymbol": "LCKFB_GD32VW553",
   "source": {
-    "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/GD32/LCKFB_GD32VM553"
+    "repo": "https://github.com/tuya/TuyaOpen/tree/master/boards/GD32/LCKFB_GD32VW553"
   },
   "expansionPins": [
     {

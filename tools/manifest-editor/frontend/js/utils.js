@@ -67,6 +67,28 @@ export function getLocalizedString(value) {
   return '';
 }
 
+/**
+ * The `en` side of an i18n field, NEVER localized.
+ *
+ * `getLocalizedString()` resolves against the current UI language, which makes
+ * it wrong for pre-filling an *English* input: with the editor switched to
+ * zh-CN it hands back the Chinese text, and the next save writes that into
+ * `.en`. That is how several boards ended up with Chinese names in `name.en`.
+ * Accepts a bare string too, since some manifests still carry
+ * `"manufacturer": "Seeed Studio"` rather than an {en, zh-CN} object.
+ */
+export function getEnString(value) {
+  if (typeof value === 'string') return value;
+  if (typeof value === 'object' && value !== null) return value.en || '';
+  return '';
+}
+
+/** The `zh-CN` side of an i18n field; a bare string has no Chinese side. */
+export function getZhString(value) {
+  if (typeof value === 'object' && value !== null) return value['zh-CN'] || '';
+  return '';
+}
+
 export function setLocalizedString(value) {
   if (typeof value === 'string') {
     return { en: value, 'zh-CN': value };

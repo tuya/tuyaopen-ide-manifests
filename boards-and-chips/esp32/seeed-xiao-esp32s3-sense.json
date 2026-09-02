@@ -179,7 +179,7 @@
       "zh-CN": "https://www.seeedstudio.com/Seeed-XIAO-ESP32S3-Sense-p-5639.html"
     }
   },
-  "boardSymbol": "SEEED_XIAO_ESP32S3_SENSE",
+  "boardSymbol": "SEEED_ESP32S3_XIAO_SENSE",
   "source": {
     "repo": null
   },

@@ -567,7 +567,7 @@
     {
       "id": "seeed-xiao-esp32s3-sense",
       "name": {
-        "en": "矽递 XIAO ESP32-S3 Sense",
+        "en": "Seeed Studio XIAO ESP32-S3 Sense",
         "zh-CN": "矽递 XIAO ESP32-S3 Sense"
       },
       "manufacturer": "Seeed Studio",
@@ -794,7 +794,7 @@
     {
       "id": "waveshare-esp32p4c6-touch-lcd-4-3",
       "name": {
-        "en": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸",
+        "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3\"",
         "zh-CN": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸"
       },
       "manufacturer": {
@@ -826,7 +826,10 @@
         "en": "Xingzhi ESP32-S3 Cube 0.96\" OLED (Wi-Fi)",
         "zh-CN": "虾哥 ESP32-S3 立方体 0.96 寸 OLED (Wi-Fi)"
       },
-      "manufacturer": "虾哥",
+      "manufacturer": {
+        "en": "Xiaozhi",
+        "zh-CN": "虾哥"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -1039,7 +1042,7 @@
     {
       "id": "sparkleiot-t5ai-dev",
       "name": {
-        "en": "星火思创 T5AI 开发板",
+        "en": "SparkleIoT T5AI Dev Board",
         "zh-CN": "星火思创 T5AI 开发板"
       },
       "manufacturer": "SparkleIoT",
@@ -1092,7 +1095,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1119,7 +1122,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1146,7 +1149,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1173,7 +1176,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1200,7 +1203,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1227,7 +1230,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1254,7 +1257,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1281,7 +1284,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1308,7 +1311,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
