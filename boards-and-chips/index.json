@@ -1053,7 +1053,7 @@
         "zh-CN": "基于 T5-E1 的开发板：240×320 ST7789 SPI 彩屏 + CST816X 电容触摸、GC2145 摄像头、内置 codec 音频、按键与 microSD 卡。"
       },
       "detailUrl": "boards-and-chips/t5ai/sparkleiot-t5ai-dev.json",
-      "published": false,
+      "published": true,
       "tags": [
         "wifi",
         "ble",
