@@ -539,16 +539,21 @@ If `localLicenses` is 0, ask — and make the ask self-contained, because the
 user should not have to go read a skill to answer you. Say all of this:
 
 > 设备已经烧录并跑起来了（附启动日志要点）。要让它连上涂鸦云、能用手机控制，
-> 还差一组授权码（UUID + AuthKey）。三条路任选：
-> 1. **TuyaOpen IDE** 侧边栏 *Developer Tools → Licenses*，按已绑定的 PID 申领（最省事，需要项目已绑 PID）
-> 2. **开发者平台网页** 的产品「设备授权」页申领，导出 xlsx
-> 3. 团队已有一批码 → `tuyaopen-cli license import --xlsx <path>`
+> 还差一组授权码（UUID + AuthKey）。**这一步只能你来拿**，两条路任选：
+> 1. **开发者平台网页** 的产品「设备授权」页申领，导出 xlsx，把文件给我
+> 2. 团队已有一批码 → 把那份 xlsx 给我
+>
+> 拿到文件我用 `tuyaopen-cli license import --xlsx <path>` 导入。只有一对码、
+> 没有文件时也可以，走 stdin，不要贴进对话。
 >
 > 一组码同一时间**只能用在一台设备上**，请确认这组码当前没有被别的设备占用。
 
-Then **stop and wait**. `tuyaopen-cli` has no command that issues codes — `license`
-only manages the local store. If the user cannot get one, say exactly where it
-is stuck (no PID bound / no IDE / no quota on the platform) and stop there.
+Then **stop and wait**. **Nothing issues codes from a command line** — not
+`tuyaopen-cli` (whose `license` group only manages the local store) and not the
+vendored `tuya-devplat-cli` either. Do not go looking for one, and do not read a
+plausible-sounding command name as evidence that the path exists; it does not.
+If the user cannot get a code, say exactly where it is stuck (no quota on the
+platform / no xlsx to hand) and stop there.
 Never invent a UUID, and never leave the device sitting at `client no active`
 while reporting success.
 

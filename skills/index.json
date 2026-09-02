@@ -760,7 +760,7 @@
     },
     {
       "id": "tuyaopen-workflow-embedded-dev",
-      "version": "2.2.1",
+      "version": "2.3.0",
       "group": "embedded",
       "order": 23,
       "name": {
@@ -813,7 +813,7 @@
     },
     {
       "id": "tuyaopen-embedded-device-auth",
-      "version": "1.8.0",
+      "version": "1.9.0",
       "group": "embedded",
       "order": 24,
       "name": {

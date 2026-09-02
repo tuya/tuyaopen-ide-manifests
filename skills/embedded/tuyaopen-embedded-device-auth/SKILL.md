@@ -72,10 +72,12 @@ tuyaopen-cli firmware build --project-root <项目>   # 先让它 exit 0
 2. 查到有 → 直接进下面《授权码的两条硬规则》，问的是"这个码现在空不空闲"，
    不是"你有没有"。
 3. 查到 `localLicenses: 0` → **在同一条消息里**把下面《没有授权码怎么办》那张表
-   的三条路**原样摆给用户**（每条是什么、什么时候用它），再问他走哪条。
-   不要只丢一句"你需要一个授权码"就停住，也不要只报其中一条 ——
-   用户装没装 IDE、绑没绑 PID、手里有没有同事给的 xlsx，你并不知道，
-   摆全了他自己一眼就能挑。
+   的**两条路原样摆给用户**（每条是什么、什么时候用它），再问他走哪条。
+   不要只丢一句"你需要一个授权码"就停住，也不要只报其中一条 —— 用户手里有没有
+   同事给的 xlsx，你并不知道，摆全了他自己一眼就能挑。
+
+   **两条路都以"用户交给你一份文件或一对码"结束。** 没有第三条：任何"我去帮你
+   申领一下"的想法都是错的，对应的命令不存在。
 
 **衡量标准**：用户读完你这条消息，应该已经知道"我下一步点哪里"，
 而不是还要反问一句"那怎么弄一个"。
@@ -146,14 +148,25 @@ tuyaopen-cli diag doctor --json      # deviceAuth.localLicenses
 tuyaopen-cli license list --json     # 本地存了哪些（AuthKey 默认打码）
 ```
 
-`localLicenses: 0` 时，**`tuyaopen-cli` 侧没有申领命令** —— `license` 组只有
-`list` / `add` / `import` / `remove`，都是本地库操作。码必须先从云端拿到，三条路：
+`localLicenses: 0` 时，**授权码只能由用户提供 —— 没有任何命令能替他申领。**
 
-| 路径 | 怎么做 | 什么时候用 |
-|---|---|---|
-| **TuyaOpen IDE** | 侧边栏 *Developer Tools → Licenses*，按已绑定的 PID 申领（内部走 `tuya-devplat-cli auth-code fetch --pid <pid>`），拿到后会写进本地库 | 装了 IDE 时最省事；**需要项目已绑定 PID** |
-| **开发者平台网页** | 在产品的「设备授权」/ 授权码页面申领，导出 Excel | 没装 IDE，或要批量 |
-| **别人给你一个 xlsx** | `tuyaopen-cli license import --xlsx <path>` | 团队里已有一批码 |
+`license` 组只有 `list` / `add` / `import` / `remove`，四条全是本地库操作。
+**这不是"我们还没做"，是这条路不存在**：不要去找、不要去猜、更不要去调
+`tuya-devplat-cli` 里某个看起来像申领的命令。你的工作到"把两条路说清楚"为止，
+拿码这一步由人完成。
+
+两条路，都是用户去拿、你来接收：
+
+| 路径 | 用户做什么 | 你做什么 | 什么时候用 |
+|---|---|---|---|
+| **开发者平台网页申领** | 在产品的「设备授权」/ 授权码页面申领，导出 Excel | 拿到文件后 `tuyaopen-cli license import --xlsx <path>` | 手上还没有码 |
+| **已有的 xlsx** | 把同事/上一批的 xlsx 给你 | 同上 | 团队里已经有一批码 |
+
+只有一对码、没有文件时，走 stdin，别让它上命令行：
+
+```bash
+echo <authkey> | tuyaopen-cli license add --uuid <uuid> --yes
+```
 
 拿到之后：
 
