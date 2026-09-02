@@ -826,7 +826,10 @@
         "en": "Xingzhi ESP32-S3 Cube 0.96\" OLED (Wi-Fi)",
         "zh-CN": "虾哥 ESP32-S3 立方体 0.96 寸 OLED (Wi-Fi)"
       },
-      "manufacturer": "虾哥",
+      "manufacturer": {
+        "en": "Xiaozhi",
+        "zh-CN": "虾哥"
+      },
       "platformId": "esp32",
       "variantId": "esp32s3",
       "summary": {
@@ -1039,7 +1042,7 @@
     {
       "id": "sparkleiot-t5ai-dev",
       "name": {
-        "en": "星火思创 T5AI 开发板",
+        "en": "SparkleIoT T5AI Dev Board",
         "zh-CN": "星火思创 T5AI 开发板"
       },
       "manufacturer": "SparkleIoT",
@@ -1085,7 +1088,7 @@
         "zh-CN": "涂鸦 CB2L 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
       },
       "detailUrl": "boards-and-chips/bk7231n/tuya-cb2l.json",
-      "published": false,
+      "published": true,
       "tags": [
         "wifi",
         "module",
