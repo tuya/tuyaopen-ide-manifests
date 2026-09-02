@@ -1,7 +1,7 @@
 // Board Editor module
 
 import { apiClient } from './api-client.js';
-import { escapeHtml, showNotification, showError, getLocalizedString, setLocalizedString } from './utils.js';
+import { escapeHtml, showNotification, showError, getLocalizedString, setLocalizedString, getEnString, getZhString } from './utils.js';
 import { openImageUploadModal } from './image-uploader.js';
 import i18n from './i18n.js';
 
@@ -91,7 +91,7 @@ export function renderBoardForm(board = null) {
             name="name_en"
             class="form-input"
             placeholder="${escapeHtml(i18n.t('boardNameEnPlaceholder'))}"
-            value="${board ? escapeHtml(getLocalizedString(board.name) || board.name?.en || '') : ''}"
+            value="${board ? escapeHtml(getEnString(board.name)) : ''}"
             required
           >
           <small style="color: var(--color-muted);">${i18n.t('boardNameEnHint')}</small>
@@ -208,18 +208,32 @@ export function renderBoardForm(board = null) {
         </div>
       </div>
 
-      <!-- Manufacturer -->
-      <div class="form-group">
-        <label class="form-label" for="manufacturer">${i18n.t('boardManufacturer')}</label>
-        <input
-          type="text"
-          id="manufacturer"
-          name="manufacturer"
-          class="form-input"
-          placeholder="${escapeHtml(i18n.t('boardManufacturerPlaceholder'))}"
-          value="${board ? escapeHtml(getLocalizedString(board.manufacturer) || board.manufacturer?.en || '') : ''}"
-        >
-        <small style="color: var(--color-muted);">${i18n.t('boardManufacturerHint')}</small>
+      <!-- Manufacturer (en / zh-CN, mirroring the name + summary pairs) -->
+      <div class="form-group form-row-2col">
+        <div class="form-col-half">
+          <label class="form-label" for="manufacturer">${i18n.t('boardManufacturer')}</label>
+          <input
+            type="text"
+            id="manufacturer"
+            name="manufacturer"
+            class="form-input"
+            placeholder="${escapeHtml(i18n.t('boardManufacturerPlaceholder'))}"
+            value="${board ? escapeHtml(getEnString(board.manufacturer)) : ''}"
+          >
+          <small style="color: var(--color-muted);">${i18n.t('boardManufacturerHint')}</small>
+        </div>
+        <div class="form-col-half">
+          <label class="form-label" for="manufacturerZh">${i18n.t('boardManufacturerZh')}</label>
+          <input
+            type="text"
+            id="manufacturerZh"
+            name="manufacturer_zh"
+            class="form-input"
+            placeholder="${escapeHtml(i18n.t('boardManufacturerZhPlaceholder'))}"
+            value="${board ? escapeHtml(getZhString(board.manufacturer)) : ''}"
+          >
+          <small style="color: var(--color-muted);">${i18n.t('boardManufacturerZhHint')}</small>
+        </div>
       </div>
 
       <!-- Tags Selection -->
@@ -570,6 +584,17 @@ export function renderBoardCard(board, platformUnpublished = false) {
   `;
 }
 
+/**
+ * Always an {en, zh-CN} object -- never the bare string the single-input form
+ * used to emit, which silently flattened `{en: 'Tuya', 'zh-CN': '涂鸦智能'}`
+ * down to whichever language the editor happened to be showing.
+ */
+function buildManufacturer(en, zh) {
+  const mfr = { en: en || 'Unknown' };
+  if (zh) mfr['zh-CN'] = zh;
+  return mfr;
+}
+
 export async function saveBoardForm(formElement) {
   const boardId = document.getElementById('boardId')?.value;
   const nameEn = document.getElementById('boardName')?.value;
@@ -579,7 +604,8 @@ export async function saveBoardForm(formElement) {
   const platformSelect = document.getElementById('platformId');
   const variantId = platformSelect?.value;
   const platformId = platformSelect?.selectedOptions?.[0]?.dataset?.group || variantId;
-  const manufacturer = document.getElementById('manufacturer')?.value;
+  const manufacturerEn = document.getElementById('manufacturer')?.value?.trim();
+  const manufacturerZh = document.getElementById('manufacturerZh')?.value?.trim();
   const summaryEn = document.getElementById('boardSummary')?.value;
   const summaryZh = document.getElementById('boardSummaryZh')?.value;
   const schematicLink = document.getElementById('schematicLink')?.value;
@@ -632,7 +658,7 @@ export async function saveBoardForm(formElement) {
     name: { en: nameEn },
     platformId,
     variantId,
-    manufacturer: manufacturer || { en: 'Unknown' },
+    manufacturer: buildManufacturer(manufacturerEn, manufacturerZh),
     summary: { en: summaryEn },
     tags,
     sdks,
