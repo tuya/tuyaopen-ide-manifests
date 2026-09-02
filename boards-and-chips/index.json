@@ -567,7 +567,7 @@
     {
       "id": "seeed-xiao-esp32s3-sense",
       "name": {
-        "en": "矽递 XIAO ESP32-S3 Sense",
+        "en": "Seeed Studio XIAO ESP32-S3 Sense",
         "zh-CN": "矽递 XIAO ESP32-S3 Sense"
       },
       "manufacturer": "Seeed Studio",
@@ -794,7 +794,7 @@
     {
       "id": "waveshare-esp32p4c6-touch-lcd-4-3",
       "name": {
-        "en": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸",
+        "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3\"",
         "zh-CN": "微雪 ESP32-P4-C6 Touch LCD 4.3 寸"
       },
       "manufacturer": {
@@ -1050,7 +1050,7 @@
         "zh-CN": "基于 T5-E1 的开发板：240×320 ST7789 SPI 彩屏 + CST816X 电容触摸、GC2145 摄像头、内置 codec 音频、按键与 microSD 卡。"
       },
       "detailUrl": "boards-and-chips/t5ai/sparkleiot-t5ai-dev.json",
-      "published": true,
+      "published": false,
       "tags": [
         "wifi",
         "ble",
@@ -1085,14 +1085,14 @@
         "zh-CN": "涂鸦 CB2L 模组，基于 BK7231N 芯片（板载天线）。管脚配置按官方规格书生成。"
       },
       "detailUrl": "boards-and-chips/bk7231n/tuya-cb2l.json",
-      "published": true,
+      "published": false,
       "tags": [
         "wifi",
         "module",
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1119,7 +1119,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1146,7 +1146,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1173,7 +1173,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1200,7 +1200,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1227,7 +1227,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1254,7 +1254,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1281,7 +1281,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
@@ -1308,7 +1308,7 @@
         "ble"
       ],
       "sdks": [
-        "tuyaopen"
+        "tuyaos"
       ]
     },
     {
