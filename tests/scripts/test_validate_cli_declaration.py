@@ -73,10 +73,18 @@ def test_every_real_cli_group_is_in_the_constant():
     assert len(validator.CLI_GROUPS) == 18
 
 
-# Real skill bodies use an English "Intent | Command" header (verified against
-# all 14 tables in skills/TuyaOpen/*/SKILL.md) — the fixture matches that,
-# not a placeholder, so these tests exercise the same header text production
-# actually uses.
+# Real skill bodies use an English "Intent | Command" header — the fixture
+# matches that, not a placeholder, so these tests exercise the same header text
+# production actually uses.
+#
+# No count here on purpose. This comment used to say "all 14 tables in
+# skills/TuyaOpen/*/SKILL.md" and was wrong in both halves by the time anyone
+# re-read it: the tree moved to skills/<group>/<id>/ on 2026-09-02 (the second
+# segment is the install group — core/embedded/cloud/miniapp/scenario — not the
+# surface, which is a separate field and disagrees for 11 of the 32 items), and
+# the real number is now 15. Nothing co-enforces a number written in a comment,
+# so it rots silently. To re-measure:
+#   grep -l '^| *Intent *| *Command' skills/*/*/SKILL.md | wc -l
 SHORTCUTS_BODY = """---
 name: tuyaopen-x
 ---

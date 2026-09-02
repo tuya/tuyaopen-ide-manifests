@@ -5,12 +5,31 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
+// Capability surface — drives the IDE's filter tabs. Unchanged by the
+// 2026-09-02 directory move (that redefined the payload directory as the
+// install GROUP), so this list is still the whole vocabulary. Do NOT confuse it
+// with the install groups core/embedded/cloud/miniapp/scenario, which this
+// endpoint does not edit.
 const SURFACES = ['embedded', 'cloud', 'miniapp'];
+// The whole vocabulary; `sdks` is what separates the two product lines since
+// 2026-09-02 (before that a directory did, and the validator briefly accepted
+// 'tuyaopen' alone — this list stayed correct through that narrowing).
 const SDKS = ['tuyaopen', 'tuyaos'];
 
 // Editable metadata fields. id / source / installPayload are bound to the skill
-// payload location (skills/<surface>/<id>/) and are intentionally NOT editable
-// here — they are validated against the filesystem by CI and must stay in sync.
+// payload location (skills/<group>/<id>/ — the second segment is the INSTALL
+// GROUP, not the surface) and are intentionally NOT editable here: CI validates
+// them against the filesystem and they must stay in sync.
+//
+// The field that is path-coupled is `group`, and this endpoint deliberately does
+// not expose it: validate-skills-index.py requires source.localPath's second
+// segment to equal the item's `group`, so setting `group` while localPath stays
+// immutable would produce an index that fails validation. Moving a skill between
+// groups means moving the directory and updating source/installPayload in git,
+// not a PATCH here. (An earlier version of this comment said that coupling was
+// on `surface`. It was, for a few hours on 2026-09-02, before the directory was
+// redefined as the group. `surface` is now fully orthogonal to the path and is
+// safely editable below — the two disagree for 11 of the 32 items by design.)
 const cleanLocalized = (v) => {
   if (!v || typeof v !== 'object') return undefined;
   const out = {};

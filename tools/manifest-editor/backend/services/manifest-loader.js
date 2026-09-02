@@ -78,8 +78,14 @@ class ManifestLoader {
     }
   }
 
-  // Skills index lives at skills/index.json. Item-only metadata (the SKILL.md
-  // payloads live elsewhere under skills/<surface>/<id>/ and are not edited here).
+  // Skills index lives at skills/index.json, and the SKILL.md payloads under
+  // skills/<group>/<id>/ (core/embedded/cloud/miniapp/scenario — the install
+  // group, NOT the surface) — this editor touches the index only, never a
+  // payload. The index path was false between 2026-08-19 and 2026-09-02, when it
+  // moved to skills/TuyaOpen/index.json: every skills request in this tool failed
+  // on a missing file for that whole window. Only the index path matters to this
+  // function — it never walks the payload tree — so the 2026-09-02 top-level
+  // reshuffle (product lines → surfaces → groups) changes nothing here.
   async loadSkills() {
     try {
       const filePath = path.join(config.paths.skills, 'index.json');

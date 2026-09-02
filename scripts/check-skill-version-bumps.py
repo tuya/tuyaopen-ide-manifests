@@ -19,14 +19,14 @@ and behaves exactly as it did before.
 Deliberately does no git plumbing of its own — the caller (CI) supplies the
 inputs, which keeps the whole decision testable without a repository:
 
-  --base-index      skills/TuyaOpen/index.json as of the base commit
-                    (`git show <base>:skills/TuyaOpen/index.json`); an empty/missing file
+  --base-index      skills/index.json as of the base commit
+                    (`git show <base>:skills/index.json`); an empty/missing file
                     means "no baseline", and the check passes
   --changed         newline-separated repo-relative paths changed by the PR
                     (`git diff --name-only --no-renames <base>...HEAD -- skills/`),
                     or '-' to read them from stdin
-  --released-index  optional: skills/TuyaOpen/index.json as of the last published release
-                    (`git show <release.json .tag>:skills/TuyaOpen/index.json`). Omit it —
+  --released-index  optional: skills/index.json as of the last published release
+                    (`git show <release.json .tag>:skills/index.json`). Omit it —
                     or point it at an empty file — and every base version counts
                     as published, which is the strict, pre-existing behaviour.
 
@@ -42,7 +42,7 @@ Rules, per item in the *head* index:
     shipped number is not
 
 Usage: python3 scripts/check-skill-version-bumps.py --base-index B --changed C
-       [--released-index R] [--head-index skills/TuyaOpen/index.json]
+       [--released-index R] [--head-index skills/index.json]
 Exits 0 on success, 1 on any error.
 """
 
@@ -115,7 +115,8 @@ def check(base_data, head_data, changed: list, released_data=None) -> list:
     base = items_by_id(base_data)
     if not base:
         # No baseline to compare against (first commit, or the base ref did not
-        # carry skills/TuyaOpen/index.json). Nothing this check can honestly assert.
+        # carry a skills index at any of its historical paths). Nothing this
+        # check can honestly assert.
         return errors
 
     released = items_by_id(released_data) if released_data is not None else None
@@ -195,15 +196,18 @@ def main() -> int:
     )
     parser.add_argument(
         "--head-index",
-        # `skills/TuyaOpen/index.json` since the 2026-08-19 product-line split.
-        # The help text below already said so while this default still pointed
-        # at the pre-split `skills/index.json` — so the check exited 1 with
-        # "index file not found" on every PR based on post-split main, and the
-        # one gate that makes `version` trustworthy has not actually run since.
-        # The mismatch was invisible precisely because the help string was
-        # correct: reading `--help` told you the wrong thing about the code.
-        default=str(REPO_ROOT / "skills" / "TuyaOpen" / "index.json"),
-        help="index.json under review (default: skills/TuyaOpen/index.json)",
+        # `skills/index.json` again since the 2026-09-02 sdks reorg (one index
+        # for both product lines). Between 2026-08-19 and then it was
+        # `skills/TuyaOpen/index.json` while this default still said
+        # `skills/index.json` — so the check exited 1 with "index file not found"
+        # on every PR based on post-split main, and the one gate that makes
+        # `version` trustworthy did not actually run for that whole window. The
+        # mismatch was invisible precisely because the help string matched the
+        # code: reading `--help` told you nothing was wrong. Keep the three
+        # copies of this path — default, help text, module docstring — moving
+        # together.
+        default=str(REPO_ROOT / "skills" / "index.json"),
+        help="index.json under review (default: skills/index.json)",
     )
     args = parser.parse_args()
 
@@ -223,7 +227,7 @@ def main() -> int:
         print(f"✗ {args.base_index}: invalid JSON: {e}", file=sys.stderr)
         return 1
     if base_data is None:
-        print("• no base skills/TuyaOpen/index.json to compare against — version bump check skipped")
+        print("• no base skills/index.json to compare against — version bump check skipped")
         return 0
 
     released_data = None
@@ -235,7 +239,7 @@ def main() -> int:
             return 1
         if released_data is None:
             print(
-                "• no released skills/TuyaOpen/index.json supplied — every base version "
+                "• no released skills/index.json supplied — every base version "
                 "treated as published"
             )
 

@@ -10,8 +10,9 @@ That rule had no gate, and it showed. Measured 2026-08-17: six commits sat on
 `main`'s successor branch having changed 439 files under `skills/` — a
 product-line restructure that renamed ids, five new install groups, `requires`
 / `aliases`, a sub-skill rename — while `manifests.skills.version` was still
-the `1.0.0` that shipped with tag v1.0.0, and `skills/TuyaOpen/index.json`'s
-`publishedAt` still said the v1.0.0 date. Nothing was red.
+the `1.0.0` that shipped with tag v1.0.0, and the skills index's `publishedAt`
+(then at `skills/index.json`, briefly at `skills/TuyaOpen/index.json`, and back
+at `skills/index.json` since 2026-09-02) still said the v1.0.0 date. Nothing was red.
 
 Why that matters rather than being untidy: the release workflow generates
 `release.json#domains` **from these numbers**, the IDE stores them, and they are

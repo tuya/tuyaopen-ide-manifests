@@ -16,9 +16,11 @@
 │   └── index.json                 # demo / example projects
 ├── skills/
 │   ├── index.json                 # AI agent skills registry (Cursor, Claude Code, …)
-│   ├── embedded/                  # ── the skill payloads themselves ──
-│   ├── cloud/                     #    SKILL.md + references/ + scripts/
-│   └── miniapp/                   #    see skills/README.md
+│   ├── core/                      # ── the skill payloads themselves ──
+│   ├── embedded/                  #    grouped by INSTALL GROUP: <group>/<id>/
+│   ├── cloud/                     #    (not by surface — the two disagree for
+│   ├── miniapp/                   #     11 of 32 items; see skills/README.md)
+│   └── scenario/                  #    SKILL.md + references/ + scripts/
 └── miniapp-templates/             # shipped in the tarball, but NOT a domain
     └── miniapp-template-covers.json
 ```
@@ -31,7 +33,14 @@
 | ---------------- | -------------------------------------- | --------------------------------- |
 | `boardsAndChips` | development boards and SoCs (official + ecosystem) | `boards-and-chips/index.json` |
 | `demos`          | example projects (point at git repos)  | `demos/index.json`                |
-| `skills`         | pluggable AI agent skills **+ their payload** | `skills/index.json` + `skills/<surface>/**` |
+| `skills`         | pluggable AI agent skills **+ their payload**, for both product lines (`sdks` says which) | `skills/index.json` + `skills/<group>/<id>/` |
+
+A skill's directory is its **install group** (`core` / `embedded` / `cloud` /
+`miniapp` / `scenario`) — the unit `tuyaopen-cli skills install --group <g>`
+offers — and **not** its `surface`. `surface` is a separate required field
+driving the IDE's filter tabs; the two disagree for 11 of the 32 items, so
+nothing may infer one from the other or from a path. Details:
+[`skills/README.md`](./skills/README.md#layout).
 
 ### Shipped in the tarball but *not* a domain
 
@@ -104,12 +113,24 @@ group — `manufacturer` wins whenever both are present.
 - **SDK applicability** (`sdks`) — optional array marking which SDK(s) an
   entry applies to, on `boardsAndChips` / `demos` / `skills` items.
   Values: `"tuyaopen"`, `"tuyaos"`; an entry may list one or both
-  (`["tuyaopen", "tuyaos"]`). **Omitted ⇒ `["tuyaopen"]`** — every
-  pre-existing entry is TuyaOpen-only, so existing data needs no
-  back-fill; only TuyaOS-capable entries set the field explicitly.
+  (`["tuyaopen", "tuyaos"]`, though nothing in the catalogue uses the dual
+  form today). **Omitted ⇒ `["tuyaopen"]`** — every pre-existing entry is
+  TuyaOpen-only, so existing data needs no back-fill; only TuyaOS-capable
+  entries have to set the field explicitly.
   Forward-compatible: an IDE predating the field ignores it (shows
   everything); an SDK-aware IDE filters the catalogue by the active SDK.
   `platforms` items do **not** carry this field.
+
+  On `skills` this field is **load-bearing rather than advisory** since
+  2026-09-02: it is the *only* thing separating the two product lines, which
+  used to be separated by their directory (`skills/TuyaOpen/` vs
+  `skills/TuyaOS/`). Both lines' payloads now ship in the same
+  `manifests.tar.gz` under one `skills/index.json`, so a consumer that ignores
+  `sdks` will offer TuyaOS skills to TuyaOpen users. 30 of the 32 items are
+  `["tuyaopen"]`; the two `tuyaos-*` ids are `["tuyaos"]`.
+  `scripts/validate-skills-index.py` reads the same field to decide which of
+  its rules — the ones asserting a relationship with the `tuyaopen-cli` CLI —
+  apply to a given item.
 - **Platform pinout `functions` vs `caps`** — in a platform detail file each
   `pinout[]` entry splits its labels into two arrays: `functions[]` is a
   **controlled, selection-only** vocabulary of editor-selectable *routing*

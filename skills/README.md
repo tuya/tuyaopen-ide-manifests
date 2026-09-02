@@ -10,34 +10,122 @@ always in the same commit, and the IDE gets everything from the single
 
 ## Layout
 
-Top level is a single product-line directory, not the capability surface: every
-skill lives under `TuyaOpen/`, one directory per skill, **one level deep**, and
-the directory name **is** the skill's `id`.
+One index at the root, and the payloads grouped by **install group**. Every
+skill is a single directory at `skills/<group>/<id>/` — **two levels deep**,
+where the first level equals the item's own `group` field and the second level
+**is** the skill's `id`.
+
+The group is the unit `tuyaopen-cli skills install --group <g>` offers, so
+grouping the tree the same way puts one whole install unit in one directory.
+Five groups: `core` / `embedded` / `cloud` / `miniapp` / `scenario`. The first
+four group by capability; `scenario` groups by **product category** instead —
+the lamp / socket / robot-vacuum / IPC playbooks a developer installs exactly
+one of.
 
 ```
 skills/
-├── TuyaOS/                             # the other product line — NOTHING reads it
-│   ├── index.json                      #   management only; excluded from releases
-│   └── tuyaos-build/  tuyaos-hardware-vibe-coding/
-└── TuyaOpen/                           # 28 skills — id starts with `tuyaopen-`
-    ├── index.json                      #   THE registry the IDE and CLI read
-│   ├── tuyaopen-start/  tuyaopen-skill-maker/       #   foundation, not task skills
-│   ├── tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/  tuyaopen-embedded-device-auth/
-│   ├── tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/  tuyaopen-embedded-project/
-│   ├── tuyaopen-embedded-cli-debug/  tuyaopen-embedded-flash/
-│   ├── tuyaopen-workflow-embedded-dev/  tuyaopen-workflow-product-dev/
-│   ├── tuyaopen-embedded-hardware/              #   per-peripheral docs under references/peripherals/
-│   ├── tuyaopen-embedded-dependency/
-│   ├── tuyaopen-cloud/
-│   └── tuyaopen-miniapp/  tuyaopen-workflow-miniapp-dev/  tuyaopen-miniapp-ray-common/
-│       tuyaopen-miniapp-smart-ui/  tuyaopen-miniapp-lamp-panel/
-│       tuyaopen-miniapp-socket-panel/  tuyaopen-miniapp-robot-vacuum/
-│       tuyaopen-miniapp-ipc-panel/  tuyaopen-miniapp-charts-library/
-│       tuyaopen-miniapp-electrician-timing/  tuyaopen-miniapp-energy-stats/
-        tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
+├── index.json                     # THE registry — 32 items, both product lines
+├── core/                          # 2 payloads
+│   └── tuyaopen-start/  tuyaopen-skill-maker/          # foundation, not task skills
+├── embedded/                      # 13 payloads
+│   ├── tuyaopen-embedded/  tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/
+│   ├── tuyaopen-embedded-project/  tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/
+│   ├── tuyaopen-embedded-cli-debug/  tuyaopen-embedded-flash/  tuyaopen-embedded-device-auth/
+│   ├── tuyaopen-embedded-hardware/                     # per-peripheral docs under references/peripherals/
+│   ├── tuyaopen-workflow-embedded-dev/
+│   └── tuyaos-build/  tuyaos-hardware-vibe-coding/     # sdks: ["tuyaos"] — the other product line
+├── cloud/                         # 2 payloads
+│   └── tuyaopen-cloud/  tuyaopen-workflow-product-dev/
+├── miniapp/                       # 7 payloads
+│   ├── tuyaopen-miniapp/  tuyaopen-workflow-miniapp-dev/  tuyaopen-miniapp-ray-common/
+│   ├── tuyaopen-miniapp-smart-ui/  tuyaopen-miniapp-charts-library/
+│   └── tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
+└── scenario/                      # 8 payloads
+    ├── tuyaopen-miniapp-lamp-panel/  tuyaopen-miniapp-socket-panel/
+    ├── tuyaopen-miniapp-robot-vacuum/  tuyaopen-miniapp-ipc-panel/
+    ├── tuyaopen-miniapp-electrician-timing/  tuyaopen-miniapp-energy-stats/
+    └── tuyaopen-embedded-dependency/  tuyaopen-embedded-lvgl/
 ```
 
-### Two product lines, one consumed
+Note `scenario` is **not** named after miniapp even though six of its eight
+members are panel playbooks: `tuyaopen-embedded-dependency` and
+`tuyaopen-embedded-lvgl` already sit there with `surface: "embedded"`, and more
+embedded per-category skills are expected.
+
+Those counts drift and nothing co-enforces a number written here. Measure
+instead of transcribing:
+
+```bash
+python3 -c "import json,collections;d=json.load(open('skills/index.json'));\
+print(len(d['items']),collections.Counter(i['group'] for i in d['items']))"
+```
+
+Because the group **is** the directory, `group` and the payload path can no
+longer disagree — `validate-skills-index.py`'s `check_source()` fails when they
+do. Its history: pre-2026-08-14 the top level was the capability `surface` and a
+matching rule existed; the 2026-08-14 reorg made the top level the *product
+line*, leaving that rule nothing to compare against, so it was deleted;
+2026-09-02 moved the product-line distinction into `sdks` and gave the directory
+back — first to `surface`, then, within the same unreleased change, to `group`.
+The rule is now an equality check the original never had.
+
+### `surface` is a second axis, not the path
+
+**Nothing may infer a surface from a path.** `surface` is still required on
+every item and is unchanged by the directory move — it drives the IDE's filter
+tabs ("which end of the product is this about"), while `group` drives installs
+("what am I setting out to do"). The two are fully orthogonal and disagree for
+**11 of the 32** items today: `tuyaopen-start` is `surface: "embedded"` with
+`group: "core"`; every `tuyaopen-miniapp-*-panel` playbook is
+`surface: "miniapp"` with `group: "scenario"`;
+`tuyaopen-workflow-product-dev` is `surface: "embedded"` with `group: "cloud"`.
+Surface distribution — embedded 18, miniapp 13, cloud 1 — did not change when
+the directories did.
+
+Measure the disagreement rather than trusting the number above:
+
+```bash
+python3 -c "import json;d=json.load(open('skills/index.json'));\
+print(sum(1 for i in d['items'] if i['group']!=i['surface']),'of',len(d['items']))"
+```
+
+`check_source()` compares the path's second segment to `group`, **never** to
+`surface`. A doc or tool that reads a surface out of a payload path is reading
+the wrong field, and would be wrong about a third of the catalogue.
+
+The group formerly called `product` was renamed **`cloud`** on 2026-09-02, in
+the same unreleased change. Do not confuse that rename with `cli.groups` in
+`index.json`, which names **`tuyaopen-cli` command groups**: the string
+`"product"` there is the `tuyaopen-cli product` command group and is still
+correct on the two items that declare it (`tuyaopen-cloud`,
+`tuyaopen-workflow-product-dev`). Same word, two vocabularies — only the
+install group was renamed.
+
+### Two product lines, one index
+
+**`sdks` is the only thing that separates them.** 30 items carry
+`["tuyaopen"]`; two — `tuyaos-build` and `tuyaos-hardware-vibe-coding` — carry
+`["tuyaos"]`. Omitting the field still means `["tuyaopen"]`, so a hand-written
+entry that forgets it lands in the right line; every item happens to state it
+explicitly today, but the default is what makes that safe, not something to
+lean on.
+
+**Both lines ship.** `manifests.tar.gz` carries the whole `skills/` tree and
+the one index advertises every item in it, so the filtering happens at the
+**consumer**, never at the packager: `sdkAppliesToItem()` on the IDE side, the
+matching gate in the CLI's `skills` group. Deleting a path at release time
+would now hide a payload that the shipped index still points at.
+
+The validator scopes by the same field, and that scoping is **not an
+exemption**. Rules that describe a *relationship with the `tuyaopen-cli` CLI* — the
+`cli` declaration and its Shortcuts agreement, the `tuyaopen-start` routing-table
+coverage, the `triggers` coverage — run only for items `applies_to_tuyaopen()`
+accepts, because asserting them about a TuyaOS skill would assert something
+meaningless: there is no CLI command group for it to name. Every other rule —
+frontmatter, the id/directory agreement, `.agents/skills/…` path integrity,
+`version`, orphans — applies to the whole tree, both lines included.
+
+#### What this replaced
 
 On **2026-08-17** the catalogue narrowed to TuyaOpen only: the two items of the
 second product line were dropped from the index (30 → 28) and their payload was
@@ -45,29 +133,29 @@ moved, byte-for-byte, to a repo-root `tuyaos-skills/` — outside `skills/`, whi
 satisfied the orphan check by putting the tree where no scan looked.
 
 On **2026-08-19** that placement was reversed and the separation made explicit
-instead of incidental. `skills/TuyaOpen/index.json` became **`skills/TuyaOpen/index.json`**
-and the TuyaOS payload moved back to **`skills/TuyaOS/`**, where it now carries
-its own `index.json` so those files have a listed owner rather than sitting in the
-repo unaccounted for.
+instead of incidental: the registry pointed at `skills/TuyaOpen/index.json`, the
+TuyaOS payload moved back to `skills/TuyaOS/` with an `index.json` of its own,
+and **three** independent mechanisms kept the second line out of the product —
+`registry.json`'s `manifests.skills.url`, a `rm -rf staging/skills/TuyaOS` in
+`.github/workflows/release.yml`, and a `GOVERNED_SUBTREE` constant in
+`scripts/validate-skills-index.py`. They were deliberately independent, on the
+theory that one mechanism is one mechanism to forget.
 
-Three things keep the second line out of the product, and each is enforced
-somewhere different — that is deliberate, because one mechanism would be one
-mechanism to forget:
+All three are gone as of **2026-09-02**. A path split can only answer "which
+product line is this?" while exactly one line ships; both ship now, so the
+question is asked of the field that states it. The history is kept here because
+someone reading `release.yml` and finding that it deletes nothing should be able
+to tell that from an oversight.
 
-| What | Where |
-|---|---|
-| The IDE and CLI resolve exactly one index | `registry.json`'s `manifests.skills.url` → `skills/TuyaOpen/index.json` |
-| Releases do not ship the tree | `.github/workflows/release.yml` deletes `staging/skills/TuyaOS` after staging |
-| The validator does not judge it | `GOVERNED_SUBTREE` in `scripts/validate-skills-index.py` scopes every scan to `TuyaOpen/` |
-
-The validator scoping is **not an exemption**. Every rule in that script describes
-a relationship with the `tuyaopen-cli` CLI — the `cli` declaration, the single-valued
-`sdks`, the Shortcuts agreement — so applying them to TuyaOS skills would assert
-things that are meaningless there. Before this change the scans walked all of
-`skills/`, which was correct only while `skills/` held exactly one product line.
-
-Nothing in the TuyaOS payload was edited in either move; see
-[`TuyaOS/README.md`](./TuyaOS/README.md).
+Nothing in the TuyaOS payload has been edited through any of these moves — every
+relocation was a pure `git mv`, checkable with
+`git log --follow --oneline -- skills/embedded/tuyaos-build/SKILL.md`. Its two
+items hold 16 `SKILL.md` files between them, 14 of which are sub-skills nested
+under `tuyaos-hardware-vibe-coding/peripheral-drivers/`. The orphan check exempts
+those as bundled payload, but they do contradict the never-name-a-bundled-doc
+`SKILL.md` rule under [Path rules](#path-rules); they predate it, they reach no
+TuyaOpen consumer (the `sdks` gate drops the whole line first), and they are
+deliberately left alone.
 
 The 2026-08-14 CLI-coverage pass merged five former standalone skills into
 three renamed ones — `tuyaopen-tyutool-cli` into `tuyaopen-embedded-flash`;
@@ -77,34 +165,40 @@ added `tuyaopen-miniapp` as a brand-new skill covering the `miniapp` CLI
 command group. See [History: TuyaOpen-dev-skills](#history-tuyaopen-dev-skills)
 and each merged skill's own `references/` for what moved where.
 
-Every `id` in the index carries the `tuyaopen-` prefix for a reason unrelated to
-the directory layout: the global install
-hub (`~/.agents/skills/`) is **shared with the community `npx skills`
-registry** (vercel-labs/skills), so an unprefixed name like the old
-`smart-panel-dev` could collide with and be overwritten by an unrelated
-third-party skill of the same name. `surface` (`embedded` / `cloud` /
-`miniapp`) is a separate, orthogonal field on each index item — it describes
-*what kind of work the skill does*, not where its payload sits on disk; do not
-expect it to match the top-level directory.
+Every `id` in the index is prefixed with its product line — `tuyaopen-` for the
+30 TuyaOpen skills, `tuyaos-` for the two TuyaOS ones — for a reason unrelated
+to the directory layout: the global install hub (`~/.agents/skills/`) is
+**shared with the community `npx skills` registry** (vercel-labs/skills), so an
+unprefixed name like the old `smart-panel-dev` could collide with and be
+overwritten by an unrelated third-party skill of the same name. That the prefix
+happens to name the product line is a convenience, not the mechanism — `sdks` is
+the mechanism, and nothing parses an id to decide which line an item is in.
+`surface` (`embedded` / `cloud` / `miniapp`) describes *what kind of work the
+skill does*, and is **not** the directory — see
+[`surface` is a second axis](#surface-is-a-second-axis-not-the-path).
 
 ## Path rules
 
 Three paths describe the same skill. The first two are about **where the
-source lives**; the third is **where it gets installed**. Since the
-2026-08-14 reorg the `id` **is** the second path segment, so all three are
+source lives**; the third is **where it gets installed**. The `id` **is** the
+last path segment and the `group` **is** the one before it, so all three are
 mechanically derivable from one another — getting them out of sync is still
 possible (nothing stops a typo), it's just no longer *necessary* the way it
-was when the source tree nested three and four levels deep.
+was when the source tree nested three and four levels deep. `surface` is
+derivable from none of them.
 
 | | example | who reads it |
 |---|---|---|
-| `source.localPath` | `skills/TuyaOpen/tuyaopen-embedded-build` | this repo — where the payload lives |
-| `installPayload` | `TuyaOpen/tuyaopen-embedded-build` | the IDE's cache layout — **must** equal `localPath` minus the `skills/` prefix (CI enforces this) |
-| installed dir | `.agents/skills/tuyaopen-embedded-build` | the SKILL.md text itself — **`.agents/skills/<id>`, flat.** Not the payload path |
+| `source.localPath` | `skills/core/tuyaopen-start` | this repo — where the payload lives. Second segment must equal the item's `group`, last segment must equal its `id` |
+| `installPayload` | `core/tuyaopen-start` | the IDE's cache layout — **must** equal `localPath` minus the `skills/` prefix (CI enforces this), which under today's layout makes it two segments. **At least** two is the load-bearing part: the IDE's cache prune (`skillsSync.ts`'s `pruneOrphanCacheDirs`) reads two levels and would treat every entry as an orphan — deleting the whole cache — if a payload were a single segment. Deeper payloads are tolerated; the pre-2026-08-17 catalogue had three |
+| installed dir | `.agents/skills/tuyaopen-start` | the SKILL.md text itself — **`.agents/skills/<id>`, flat.** Not the payload path |
+
+That example is deliberately a skill whose `group` (`core`) is not its
+`surface` (`embedded`): the path says `core/` and nothing about it is wrong.
 
 The installed directory is `path.join('.agents/skills', item.id)` in the IDE
-(`src/core/skill/skills.ts`), so a skill with id `tuyaopen-embedded-build` installs to
-`.agents/skills/tuyaopen-embedded-build/` regardless of how deeply its source is
+(`src/core/skill/skills.ts`), so a skill with id `tuyaopen-start` installs to
+`.agents/skills/tuyaopen-start/` regardless of how deeply its source is
 nested. A *nested* form — `tuyaopen/build/` under `.agents/skills/` — is the
 **old** layout the IDE actively repairs away from
 (`src/core/skill/skillsLegacyMigration.ts`); it predates this reorg and is
@@ -120,7 +214,7 @@ CI enforces this: `validate-skills-index.py` rejects any `.agents/skills/…`
 path in a skill's markdown whose leading segment is not a known item `id`.
 
 Documents bundled inside a parent skill (e.g.
-`TuyaOpen/tuyaopen-embedded-hardware/references/peripherals/onchip-gpio.md`) are
+`embedded/tuyaopen-embedded-hardware/references/peripherals/onchip-gpio.md`) are
 **not** indexed separately — they ship with the parent and the validator
 exempts them.
 
@@ -201,7 +295,7 @@ What this never permits is landing on or below a number that already shipped —
 that would make one version describe two different payloads.
 
 CI enforces it on pull requests: `scripts/check-skill-version-bumps.py` compares
-the PR against its base, and against `skills/TuyaOpen/index.json` as of the release tag in
+the PR against its base, and against `skills/index.json` as of the release tag in
 `release.json`, to tell shipped versions from in-flight ones. It **fails when a
 payload changed and a *published* `version` did not**, and when a version moves
 backwards onto released ground. A version nobody bumps is worse than no version —
@@ -212,7 +306,13 @@ Run it locally the way CI does:
 
 ```bash
 RELEASE_TAG="$(python3 -c 'import json;print(json.load(open("release.json"))["tag"])')"
-git show "$RELEASE_TAG:skills/TuyaOpen/index.json" > /tmp/released-index.json
+# The index has lived at two paths across three eras (`skills/index.json`, then
+# `skills/TuyaOpen/index.json` from 2026-08-19, then back again on 2026-09-02).
+# Try the current one first and fall back, the way the workflow does — naming
+# only one silently produces an empty baseline for a tag that predates it, and
+# an empty baseline never fails.
+git show "$RELEASE_TAG:skills/index.json" > /tmp/released-index.json 2>/dev/null \
+  || git show "$RELEASE_TAG:skills/TuyaOpen/index.json" > /tmp/released-index.json
 git show HEAD:skills/index.json          > /tmp/base-index.json
 git diff --name-only --no-renames HEAD -- skills/ \
   | python3 scripts/check-skill-version-bumps.py \
@@ -238,8 +338,13 @@ fields are never enumerated, so shipped builds ignore it silently.
 
 ## Adding a skill
 
-1. Create `skills/TuyaOpen/<id>/SKILL.md` (`<id>` must already carry the
-   `tuyaopen-` prefix — see the collision note under [Layout](#layout)).
+1. Create `skills/<group>/<id>/SKILL.md` — `<group>` is one of
+   `core` / `embedded` / `cloud` / `miniapp` / `scenario` and must match the
+   item's `group` field, and `<id>` must already carry its product line's
+   prefix — `tuyaopen-`, or `tuyaos-` if you are adding to the other line (see
+   the collision note under [Layout](#layout)). Pick the group by *what the
+   user sets out to install*, not by which tab the skill shows up in; the
+   `surface` field answers the second question and is chosen independently.
    Frontmatter:
    `name`, `description` — include Chinese keywords so retrieval works in both
    languages — `license`, `compatibility`. Put helper scripts in `scripts/`
@@ -249,17 +354,26 @@ fields are never enumerated, so shipped builds ignore it silently.
    ```bash
    node tools/manifest-gen/bin/manifest-gen.js skills add <id> \
      --surface embedded --order <n> \
-     --payload <ProductLine>/<id> --local-path skills/<ProductLine>/<id> \
+     --payload <group>/<id> --local-path skills/<group>/<id> \
      --name-en "…" --name-zh "…" --summary-en "…" --summary-zh "…" \
      --when-en "…" --when-zh "…" --tags a b
    ```
 
    `name` / `summary` / `whenToUse` are required in **both** `en` and `zh-CN`.
-   `--surface` is the semantic capability surface (`embedded` / `cloud` /
-   `miniapp`) — it does not need to agree with any path segment. Leave `sdks`
-   omitted; the default `["tuyaopen"]` is the only legal value and the
-   validator enforces it. `version` defaults to `1.0.0`
-   (`--skill-version` to override).
+   `--surface` is the capability surface (`embedded` / `cloud` / `miniapp`) and
+   is now **unrelated to the payload directory** — set it from what the skill
+   is about, not from where you put it. `sdks` may be omitted for a TuyaOpen
+   skill (the default is `["tuyaopen"]`); a TuyaOS skill must set `["tuyaos"]`
+   explicitly, and those two values are the whole vocabulary. `version`
+   defaults to `1.0.0` (`--skill-version` to override).
+
+   **`skills add` has no `--group` flag yet**, and `group` is required on every
+   item — so after running it, add `"group": "<group>"` to the new entry by
+   hand (matching the directory) or `validate-skills-index.py` rejects it. Also
+   add the `cli` object (`{"groups": [...]}` naming real `tuyaopen-cli` command
+   groups, or `{"groups": "none", "reason": "…"}`), which the generator does not
+   write either — and note that a `cli.groups` entry is a **CLI command group**,
+   an unrelated vocabulary that still contains `"product"`.
 3. Editing an **existing** skill's payload? Bump that item's `version` — see
    [`version`](#version--per-skill-payload-version) above. CI fails the PR
    otherwise.
@@ -297,45 +411,56 @@ Either ask the agent to install a skill for you:
 Install the skill for this project: https://github.com/tuya/tuyaopen-ide-manifests.git
 ```
 
-…or copy it in yourself. Since the reorg, **the source directory name already
-is the `id`, flat** — copy it straight across:
+…or copy it in yourself. **The source directory name already is the `id`** —
+copy it straight across, dropping the group level:
 
 ```bash
 git clone https://github.com/tuya/tuyaopen-ide-manifests.git
 mkdir -p /path/to/TuyaOpen/.agents/skills
-# skills/<ProductLine>/<id>  →  .agents/skills/<id>
-cp -r tuyaopen-ide-manifests/skills/TuyaOpen/tuyaopen-embedded-build \
+# skills/<group>/<id>  →  .agents/skills/<id>
+cp -r tuyaopen-ide-manifests/skills/core/tuyaopen-start \
+      /path/to/TuyaOpen/.agents/skills/tuyaopen-start
+cp -r tuyaopen-ide-manifests/skills/embedded/tuyaopen-embedded-build \
       /path/to/TuyaOpen/.agents/skills/tuyaopen-embedded-build
-cp -r tuyaopen-ide-manifests/skills/TuyaOpen/tuyaopen-embedded-env-setup \
-      /path/to/TuyaOpen/.agents/skills/tuyaopen-embedded-env-setup
 ```
 
+Don't guess the middle segment from what the skill is about —
+`tuyaopen-start` is embedded work but lives under `core/`, and every
+`tuyaopen-miniapp-*-panel` lives under `scenario/`. `ls skills/*/<id>` finds
+any of them; `source.localPath` in `index.json` is the authority.
+
 No lookup in `index.json` needed to find the `id` — that was the point of the
-reorg. (Before 2026-08-14, the source tree nested three or four levels deep
-under a capability surface — `skills/embedded/tuyaopen/build` — and the `id`
-had to be looked up separately because it wasn't derivable from the directory
-name; `skills/miniapp/smart-panel-dev` installed as `smart-panel-dev`, for
-example. That indirection is gone: every directory name under `TuyaOpen/` is
-already the installed name — and `smart-panel-dev` itself became
+2026-08-14 reorg and it survived the 2026-09-02 one. (Before 2026-08-14 the
+source tree nested three or four levels deep — `skills/embedded/tuyaopen/build`
+— and the `id` had to be looked up separately because it wasn't derivable from
+the directory name; `skills/miniapp/smart-panel-dev` installed as
+`smart-panel-dev`, for example. That indirection is gone: the last directory
+name is always the installed name — and `smart-panel-dev` itself became
 `tuyaopen-workflow-miniapp-dev`, keeping the old name as an `aliases` entry.)
+
+If you are not on TuyaOpen, check the item's `sdks` before copying: the two
+`tuyaos-*` payloads are for the other product line and nothing in a TuyaOpen
+project routes to them.
 
 ## History: TuyaOpen-dev-skills
 
-The skills now under `TuyaOpen/tuyaopen-embedded-build/`, `TuyaOpen/tuyaopen-embedded-env-setup/`,
-`TuyaOpen/tuyaopen-embedded-device-auth/`, `TuyaOpen/tuyaopen-embedded-add-board/`,
-`TuyaOpen/tuyaopen-embedded-code-check/`, `TuyaOpen/tuyaopen-embedded-project/` (as
-`tuyaopen-project-config`), and `TuyaOpen/tuyaopen-embedded-cli-debug/` (as
-`tuyaopen-debug-helper` + `tuyaopen-cli-debug` + `tuyaopen-crash-decode`) came
-from `tuya/TuyaOpen-dev-skills`, which the IDE used to download as a
-**second** tarball resolved through the `devSkillsRelease` field in
-`index.json`. That repo is **archived** and its content was inlined here —
-originally under `skills/embedded/tuyaopen/` — at upstream `d0655d46`
-(v0.0.10); the 2026-08-14 reorg (see [Layout](#layout)) moved each of those
-nine skills to its own `TuyaOpen/<id>/` directory, and a same-day
-CLI-coverage pass (see the note under [Layout](#layout)) merged three of
-those nine (`tuyaopen-debug-helper`, `tuyaopen-cli-debug`,
-`tuyaopen-crash-decode`) into `tuyaopen-embedded-cli-debug` and renamed
-`tuyaopen-project-config` to `tuyaopen-embedded-project`.
+The skills now under `embedded/tuyaopen-embedded-build/`,
+`embedded/tuyaopen-embedded-env-setup/`, `embedded/tuyaopen-embedded-device-auth/`,
+`embedded/tuyaopen-embedded-add-board/`, `embedded/tuyaopen-embedded-code-check/`,
+`embedded/tuyaopen-embedded-project/` (as `tuyaopen-project-config`), and
+`embedded/tuyaopen-embedded-cli-debug/` (as `tuyaopen-debug-helper` +
+`tuyaopen-cli-debug` + `tuyaopen-crash-decode`) came from
+`tuya/TuyaOpen-dev-skills`, which the IDE used to download as a **second**
+tarball resolved through the `devSkillsRelease` field in `index.json`. That repo
+is **archived** and its content was inlined here — originally under
+`skills/embedded/tuyaopen/` — at upstream `d0655d46` (v0.0.10); the 2026-08-14
+reorg moved each of those nine skills to its own one-level `<id>/` directory
+(under a product-line parent then, under its install group now — see
+[Layout](#layout)), and a same-day CLI-coverage pass (see the note under
+[Layout](#layout)) merged three of those nine (`tuyaopen-debug-helper`,
+`tuyaopen-cli-debug`, `tuyaopen-crash-decode`) into
+`tuyaopen-embedded-cli-debug` and renamed `tuyaopen-project-config` to
+`tuyaopen-embedded-project`.
 
 `devSkillsRelease` and `source.devSkills` are **gone**, and the validator now
 rejects `source.devSkills`. Verified against the IDE before removing the field:
@@ -350,10 +475,17 @@ How the payload reaches the IDE now:
 - **dev** — read straight from the `vendor/tuyaopen-ide-manifests` submodule at
   `vendor/tuyaopen-ide-manifests/<localPath>`.
 - **prod** — `manifests.tar.gz` is extracted and resolved per skill by
-  `installPayload`. Before the 2026-08-14 reorg the extraction step copied
-  `skills/{embedded,cloud,miniapp}` to `<globalStorage>/cache/skills-registry/{surface}`
-  one capability-surface directory at a time; that top-level split no longer
-  exists on disk (see [Layout](#layout)), so the IDE-side extraction step needs
-  a matching update — out of scope for this reorg, tracked as main-repo
-  follow-up. `installPayload` remains the single source of truth for where a
-  skill's payload resolves to either way.
+  `installPayload`, so the cache path is `skills-registry/<group>/<id>` today
+  purely because that is what `installPayload` says. **Nothing on the IDE side
+  names the top level.** `populateCacheDirs` (`manifestsCacheIntegrity.ts`)
+  copies the payload root — the first segment of the registry-declared index
+  url, i.e. `skills/` — into `skills-registry/` in one `cp`, and
+  `pruneOrphanCacheDirs` (`skillsSync.ts`) *discovers* the top-level
+  directories it finds there rather than iterating a list. Both were written
+  that way after being burnt: the copy step once iterated
+  `['embedded','cloud','miniapp']` as literal path segments and went silently
+  dead at the 2026-08-14 reorg, and the prune loop's hardcoded copy of the same
+  list stopped matching the tree at the same moment. This layout change was
+  therefore a no-op on both — which is exactly the property to preserve. Do not
+  re-introduce a hardcoded top level here or there, and do not describe one in
+  this file.

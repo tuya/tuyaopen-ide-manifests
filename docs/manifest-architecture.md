@@ -174,23 +174,47 @@ vendor/tuyaopen-ide-manifests/
 │   ├── wifi-sta.json
 │   └── ...
 └── skills/
-    ├── index.json                         # IDE AI Skills 注册表
-    ├── embedded/                          # 技能载荷本体（SKILL.md/references/scripts）
-    │   ├── tuyaopen/                      # 原 TuyaOpen-dev-skills（已归档并内联）
-    │   ├── hardware-vibe-coding/
+    ├── index.json                         # IDE AI Skills 注册表（32 条，两条产品线共用一份）
+    ├── core/                              # 技能载荷本体（SKILL.md/references/scripts）
+    │   └── tuyaopen-start/                # 目录名恒等于条目 id；它 surface=embedded，
+    │                                      #   却在 core/ 下 —— 目录是「安装组」不是 surface
+    ├── embedded/
+    │   ├── tuyaopen-embedded-build/
+    │   ├── tuyaos-build/                  # sdks: ["tuyaos"]，另一条产品线
     │   └── ...
-    ├── cloud/
-    └── miniapp/
+    ├── cloud/                             # tuyaopen-cloud/、tuyaopen-workflow-product-dev/
+    ├── miniapp/                           # tuyaopen-miniapp/ 等
+    └── scenario/                          # 按产品品类分：灯 / 插座 / 扫地机 / IPC 面板等
 ```
 
-> `skills` 是唯一「索引 + 载荷同仓」的 domain：每个条目的
-> `source.localPath` 指向仓内目录，`installPayload` 恒等于 `localPath` 去掉
-> `skills/` 前缀 —— 这条等式定位的是 IDE **缓存**里的位置
-> （`skills-registry/<installPayload>`）。**安装到项目里的目录另有一套规则：由
-> `id` 决定，扁平**，即 `.agents/skills/<id>`（如 `.agents/skills/tuyaopen-embedded-build`），
-> 与载荷嵌套多深无关。SKILL.md 里引用自身脚本必须写这个安装后路径。
-> 原 `tuya/TuyaOpen-dev-skills` 仓库已归档，其内容自 `skills` v0.2.0 起完整内联于
-> `skills/embedded/tuyaopen/`，IDE 不再单独下载 `TuyaOpen-dev-skills.tar.gz`。
+> `skills` 是唯一「索引 + 载荷同仓」的 domain：载荷路径恒为
+> `skills/<group>/<id>/`（`group` ∈ core / embedded / cloud / miniapp / scenario，
+> 且必须与条目的 `group` 字段一致；目录名恒等于 `id`）。`group` 是
+> `tuyaopen-cli skills install --group <g>` 的安装单位，一个组一个目录。
+> 每个条目的 `source.localPath` 指向该目录，
+> `installPayload` 恒等于 `localPath` 去掉 `skills/` 前缀 —— 于是它恰好是两段，
+> 这一点是硬约束：IDE 的缓存清理（`skillsSync.ts` 的 `pruneOrphanCacheDirs`）只读两层。
+> 这条等式定位的是 IDE **缓存**里的位置（`skills-registry/<installPayload>`）。
+> **安装到项目里的目录另有一套规则：由 `id` 决定，扁平**，即 `.agents/skills/<id>`
+> （如 `.agents/skills/tuyaopen-embedded-build`），与载荷嵌套多深无关。
+> SKILL.md 里引用自身脚本必须写这个安装后路径。
+>
+> **`surface` 与目录无关，且仍是必填字段。** 它驱动 IDE 的筛选页签，`group` 驱动安装；
+> 两者正交，32 条里有 11 条不一致（如 `tuyaopen-start` 是 surface=embedded、group=core，
+> 每个 `tuyaopen-miniapp-*-panel` 是 surface=miniapp、group=scenario）。surface 分布
+> （embedded 18 / miniapp 13 / cloud 1）没变。**任何地方都不得从路径反推 surface** ——
+> 校验器 `check_source()` 比的是 `group`，不是 `surface`。2026-09-02 这次改版里，
+> 原名 `product` 的安装组一并改名 `cloud`；注意别和 `cli.groups` 混淆，那里的
+> `"product"` 指的是 `tuyaopen-cli` 的 `product` 命令组，两个词同名不同义，没有改。
+>
+> 两条产品线共用这一份索引，区分它们的是每个条目的 `sdks` 字段（`tuyaopen` /
+> `tuyaos`，缺省为 `["tuyaopen"]`），不再是目录 —— 2026-09-02 之前是
+> `skills/TuyaOpen/` 与 `skills/TuyaOS/` 两棵树。两条线的载荷现在都进
+> `manifests.tar.gz`，由消费端按 `sdks` 过滤。详见
+> [`../skills/README.md`](../skills/README.md)。
+>
+> 原 `tuya/TuyaOpen-dev-skills` 仓库已归档，其内容自 `skills` v0.2.0 起完整内联于本仓，
+> IDE 不再单独下载 `TuyaOpen-dev-skills.tar.gz`。
 
 ### TuyaOpen SDK (构建系统实现)
 

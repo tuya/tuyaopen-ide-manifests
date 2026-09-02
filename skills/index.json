@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-08-19T07:00:00Z",
+  "publishedAt": "2026-09-02T07:07:09Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
       "id": "tuyaopen-start",
-      "version": "2.0.0",
+      "version": "2.0.1",
       "group": "core",
       "order": 0,
       "name": {
@@ -42,12 +42,12 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-start",
+      "installPayload": "core/tuyaopen-start",
       "related": [
         "tuyaopen-skill-maker"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-start"
+        "localPath": "skills/core/tuyaopen-start"
       },
       "sdks": [
         "tuyaopen"
@@ -55,7 +55,7 @@
     },
     {
       "id": "tuyaopen-embedded",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "group": "embedded",
       "order": 5,
       "name": {
@@ -80,6 +80,10 @@
         "routing",
         "map"
       ],
+      "triggers": [
+        "嵌入式",
+        "设备"
+      ],
       "cli": {
         "groups": [
           "boards",
@@ -93,7 +97,8 @@
           "sdk"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded",
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded",
       "requires": [
         "tuyaopen-start"
       ],
@@ -102,20 +107,15 @@
         "tuyaopen-workflow-embedded-dev"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded"
+        "localPath": "skills/embedded/tuyaopen-embedded"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "嵌入式",
-        "设备"
       ]
     },
     {
       "id": "tuyaopen-embedded-build",
-      "version": "1.1.1",
+      "version": "1.1.2",
       "group": "embedded",
       "order": 1,
       "name": {
@@ -135,6 +135,10 @@
         "build",
         "tos.py"
       ],
+      "triggers": [
+        "编译",
+        "build"
+      ],
       "cli": {
         "groups": [
           "firmware"
@@ -143,35 +147,31 @@
           "tos.py"
         ]
       },
-      "commands": [
-        "tuyaopen.skill.build"
-      ],
-      "installPayload": "TuyaOpen/tuyaopen-embedded-build",
-      "related": [
-        "tuyaopen-workflow-embedded-dev",
-        "tuyaopen-embedded-project"
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-build",
+      "aliases": [
+        "tuyaopen-build"
       ],
       "requires": [
         "tuyaopen-start"
       ],
+      "related": [
+        "tuyaopen-workflow-embedded-dev",
+        "tuyaopen-embedded-project"
+      ],
+      "commands": [
+        "tuyaopen.skill.build"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-build"
+        "localPath": "skills/embedded/tuyaopen-embedded-build"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "aliases": [
-        "tuyaopen-build"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "编译",
-        "build"
       ]
     },
     {
       "id": "tuyaopen-skill-maker",
-      "version": "1.7.0",
+      "version": "1.7.1",
       "group": "core",
       "order": 2,
       "name": {
@@ -198,32 +198,32 @@
         "authoring",
         "index.json"
       ],
+      "triggers": [
+        "技能"
+      ],
       "cli": {
         "groups": [
           "schema"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-skill-maker",
-      "related": [
-        "tuyaopen-start"
-      ],
+      "defaultEnabled": false,
+      "installPayload": "core/tuyaopen-skill-maker",
       "requires": [
         "tuyaopen-start"
       ],
+      "related": [
+        "tuyaopen-start"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-skill-maker"
+        "localPath": "skills/core/tuyaopen-skill-maker"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "技能"
       ]
     },
     {
       "id": "tuyaopen-embedded-project",
-      "version": "1.3.0",
+      "version": "1.3.1",
       "group": "embedded",
       "order": 6,
       "name": {
@@ -245,6 +245,10 @@
         "demos",
         "cli"
       ],
+      "triggers": [
+        "项目",
+        "工程"
+      ],
       "cli": {
         "groups": [
           "project",
@@ -256,35 +260,31 @@
           "tos.py"
         ]
       },
-      "commands": [
-        "tuyaopen.skill.editProjectConfig"
-      ],
-      "installPayload": "TuyaOpen/tuyaopen-embedded-project",
-      "related": [
-        "tuyaopen-embedded-build"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-project",
       "aliases": [
         "tuyaopen-project",
         "tuyaopen-project-config"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
+      "related": [
+        "tuyaopen-embedded-build"
+      ],
+      "commands": [
+        "tuyaopen.skill.editProjectConfig"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-project"
+        "localPath": "skills/embedded/tuyaopen-embedded-project"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "项目",
-        "工程"
       ]
     },
     {
       "id": "tuyaopen-embedded-dependency",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "group": "scenario",
       "order": 8,
       "name": {
@@ -305,43 +305,43 @@
         "dependencies",
         "vibeCode"
       ],
+      "triggers": [
+        "依赖",
+        "库"
+      ],
       "cli": {
         "groups": [
           "dependency",
           "sdk"
         ]
       },
-      "commands": [
-        "tuyaopen.skill.wireCmake"
-      ],
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-embedded-dependency",
-      "related": [
-        "tuyaopen-embedded-build",
-        "tuyaopen-embedded-project"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "installPayload": "scenario/tuyaopen-embedded-dependency",
       "aliases": [
         "tuyaopen-dependency",
         "ecosystem-wire-cmake"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
+      "related": [
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-project"
+      ],
+      "commands": [
+        "tuyaopen.skill.wireCmake"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-dependency"
+        "localPath": "skills/scenario/tuyaopen-embedded-dependency"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "依赖",
-        "库"
       ]
     },
     {
       "id": "tuyaopen-cloud",
-      "version": "1.8.0",
-      "group": "product",
+      "version": "1.8.1",
+      "group": "cloud",
       "order": 9,
       "name": {
         "en": "Tuya IoT Platform",
@@ -362,6 +362,11 @@
         "dp",
         "tuya-devplat-cli"
       ],
+      "triggers": [
+        "产品",
+        "dp",
+        "平台"
+      ],
       "cli": {
         "groups": [
           "credential",
@@ -373,36 +378,31 @@
           "tuya-devplat-cli"
         ]
       },
-      "commands": [
-        "tuyaopen.skill.tuyaIotPlatform"
-      ],
-      "installPayload": "TuyaOpen/tuyaopen-cloud",
-      "related": [
-        "tuyaopen-embedded-device-auth"
+      "defaultEnabled": false,
+      "installPayload": "cloud/tuyaopen-cloud",
+      "aliases": [
+        "tuya-iot-platform"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "tuya-iot-platform"
+      "related": [
+        "tuyaopen-embedded-device-auth"
+      ],
+      "commands": [
+        "tuyaopen.skill.tuyaIotPlatform"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-cloud"
+        "localPath": "skills/cloud/tuyaopen-cloud"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "产品",
-        "dp",
-        "平台"
       ]
     },
     {
       "id": "tuyaopen-workflow-product-dev",
-      "version": "2.2.0",
-      "group": "product",
+      "version": "2.2.1",
+      "group": "cloud",
       "order": 10,
       "name": {
         "en": "Smart Product Dev",
@@ -438,24 +438,24 @@
           "tuya-devplat-cli"
         ]
       },
-      "commands": [
-        "tuyaopen.skill.smartProductDev"
-      ],
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-workflow-product-dev",
+      "installPayload": "cloud/tuyaopen-workflow-product-dev",
+      "aliases": [
+        "smart-product-dev"
+      ],
+      "requires": [
+        "tuyaopen-start"
+      ],
       "related": [
         "tuyaopen-cloud",
         "tuyaopen-workflow-embedded-dev",
         "tuyaopen-embedded-project"
       ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "aliases": [
-        "smart-product-dev"
+      "commands": [
+        "tuyaopen.skill.smartProductDev"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-workflow-product-dev"
+        "localPath": "skills/cloud/tuyaopen-workflow-product-dev"
       },
       "sdks": [
         "tuyaopen"
@@ -463,7 +463,7 @@
     },
     {
       "id": "tuyaopen-embedded-hardware",
-      "version": "2.1.0",
+      "version": "2.1.1",
       "group": "embedded",
       "order": 11,
       "name": {
@@ -489,6 +489,13 @@
         "imu",
         "led"
       ],
+      "triggers": [
+        "外设",
+        "引脚",
+        "屏幕",
+        "按键",
+        "led"
+      ],
       "cli": {
         "groups": [
           "hardware",
@@ -498,37 +505,30 @@
           "tos.py"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-hardware",
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-hardware",
+      "aliases": [
+        "tuyaopen-hardware",
+        "hardware-vibe-coding"
+      ],
+      "requires": [
+        "tuyaopen-start"
+      ],
       "related": [
         "tuyaopen-workflow-product-dev",
         "tuyaopen-embedded-build",
         "tuyaopen-embedded-project"
       ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "aliases": [
-        "tuyaopen-hardware",
-        "hardware-vibe-coding"
-      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-hardware"
+        "localPath": "skills/embedded/tuyaopen-embedded-hardware"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "外设",
-        "引脚",
-        "屏幕",
-        "按键",
-        "led"
       ]
     },
     {
       "id": "tuyaopen-embedded-flash",
-      "version": "1.5.0",
+      "version": "1.5.1",
       "group": "embedded",
       "order": 15,
       "name": {
@@ -553,6 +553,11 @@
         "authorize",
         "reset"
       ],
+      "triggers": [
+        "烧录",
+        "串口",
+        "flash"
+      ],
       "cli": {
         "groups": [
           "firmware"
@@ -562,36 +567,31 @@
           "tyutool_cli"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-flash",
-      "related": [
-        "tuyaopen-workflow-embedded-dev",
-        "tuyaopen-embedded-device-auth",
-        "tuyaopen-embedded-cli-debug"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-flash",
       "aliases": [
         "tuyaopen-flash",
         "tyutool-cli",
         "tuyaopen-tyutool-cli"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
+      "related": [
+        "tuyaopen-workflow-embedded-dev",
+        "tuyaopen-embedded-device-auth",
+        "tuyaopen-embedded-cli-debug"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-flash"
+        "localPath": "skills/embedded/tuyaopen-embedded-flash"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "烧录",
-        "串口",
-        "flash"
       ]
     },
     {
       "id": "tuyaopen-embedded-cli-debug",
-      "version": "2.3.0",
+      "version": "2.3.1",
       "group": "embedded",
       "order": 20,
       "name": {
@@ -617,6 +617,11 @@
         "crash",
         "addr2line"
       ],
+      "triggers": [
+        "日志",
+        "调试",
+        "崩溃"
+      ],
       "cli": {
         "groups": [
           "firmware"
@@ -626,38 +631,33 @@
           "tyutool_cli"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-cli-debug",
-      "related": [
-        "tuyaopen-workflow-embedded-dev",
-        "tuyaopen-embedded-device-auth",
-        "tuyaopen-embedded-flash",
-        "tuyaopen-embedded-build"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-cli-debug",
       "aliases": [
         "tuyaopen-embedded-diagnose",
         "tuyaopen-diagnose",
         "tuyaopen-crash-decode",
         "tuyaopen-debug-helper"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
+      "related": [
+        "tuyaopen-workflow-embedded-dev",
+        "tuyaopen-embedded-device-auth",
+        "tuyaopen-embedded-flash",
+        "tuyaopen-embedded-build"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-cli-debug"
+        "localPath": "skills/embedded/tuyaopen-embedded-cli-debug"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "日志",
-        "调试",
-        "崩溃"
       ]
     },
     {
       "id": "tuyaopen-embedded-add-board",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "group": "embedded",
       "order": 21,
       "name": {
@@ -678,6 +678,11 @@
         "board",
         "hardware"
       ],
+      "triggers": [
+        "板级",
+        "bsp",
+        "开发板"
+      ],
       "cli": {
         "groups": "none",
         "reason": "加 board 是纯 tos.py / 手工流程",
@@ -685,33 +690,28 @@
           "tos.py"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-add-board",
-      "related": [
-        "tuyaopen-embedded-build",
-        "tuyaopen-embedded-project"
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-add-board",
+      "aliases": [
+        "tuyaopen-add-board"
       ],
       "requires": [
         "tuyaopen-start"
       ],
+      "related": [
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-project"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-add-board"
+        "localPath": "skills/embedded/tuyaopen-embedded-add-board"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "aliases": [
-        "tuyaopen-add-board"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "板级",
-        "bsp",
-        "开发板"
       ]
     },
     {
       "id": "tuyaopen-embedded-code-check",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "embedded",
       "order": 22,
       "name": {
@@ -732,35 +732,35 @@
         "format",
         "quality"
       ],
+      "triggers": [
+        "格式",
+        "clang-format"
+      ],
       "cli": {
         "groups": "none",
         "reason": "格式与文件头检查走 clang-format / check_files.py"
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-code-check",
-      "related": [
-        "tuyaopen-embedded-build"
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-code-check",
+      "aliases": [
+        "tuyaopen-code-check"
       ],
       "requires": [
         "tuyaopen-start"
       ],
+      "related": [
+        "tuyaopen-embedded-build"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-code-check"
+        "localPath": "skills/embedded/tuyaopen-embedded-code-check"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "aliases": [
-        "tuyaopen-code-check"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "格式",
-        "clang-format"
       ]
     },
     {
       "id": "tuyaopen-workflow-embedded-dev",
-      "version": "2.2.0",
+      "version": "2.2.1",
       "group": "embedded",
       "order": 23,
       "name": {
@@ -792,20 +792,20 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-workflow-embedded-dev",
-      "related": [
-        "tuyaopen-embedded-build",
-        "tuyaopen-embedded-cli-debug"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "installPayload": "embedded/tuyaopen-workflow-embedded-dev",
       "aliases": [
         "tuyaopen-embedded-dev-loop",
         "tuyaopen-dev-loop"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
+      "related": [
+        "tuyaopen-embedded-build",
+        "tuyaopen-embedded-cli-debug"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-workflow-embedded-dev"
+        "localPath": "skills/embedded/tuyaopen-workflow-embedded-dev"
       },
       "sdks": [
         "tuyaopen"
@@ -813,7 +813,7 @@
     },
     {
       "id": "tuyaopen-embedded-device-auth",
-      "version": "1.7.0",
+      "version": "1.8.0",
       "group": "embedded",
       "order": 24,
       "name": {
@@ -834,6 +834,11 @@
         "auth",
         "uuid"
       ],
+      "triggers": [
+        "授权",
+        "配网",
+        "uuid"
+      ],
       "cli": {
         "groups": [
           "license",
@@ -843,33 +848,28 @@
           "tyutool_cli"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-device-auth",
-      "related": [
-        "tuyaopen-workflow-embedded-dev",
-        "tuyaopen-embedded-project"
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-device-auth",
+      "aliases": [
+        "tuyaopen-device-auth"
       ],
       "requires": [
         "tuyaopen-start"
       ],
+      "related": [
+        "tuyaopen-workflow-embedded-dev",
+        "tuyaopen-embedded-project"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-device-auth"
+        "localPath": "skills/embedded/tuyaopen-embedded-device-auth"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "aliases": [
-        "tuyaopen-device-auth"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "授权",
-        "配网",
-        "uuid"
       ]
     },
     {
       "id": "tuyaopen-embedded-env-setup",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "group": "embedded",
       "order": 25,
       "name": {
@@ -890,6 +890,10 @@
         "sdk",
         "deps"
       ],
+      "triggers": [
+        "环境",
+        "sdk"
+      ],
       "cli": {
         "groups": [
           "sdk",
@@ -900,31 +904,27 @@
           "tos.py"
         ]
       },
-      "installPayload": "TuyaOpen/tuyaopen-embedded-env-setup",
-      "related": [
-        "tuyaopen-embedded-build"
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaopen-embedded-env-setup",
+      "aliases": [
+        "tuyaopen-env-setup"
       ],
       "requires": [
         "tuyaopen-start"
       ],
+      "related": [
+        "tuyaopen-embedded-build"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-env-setup"
+        "localPath": "skills/embedded/tuyaopen-embedded-env-setup"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "aliases": [
-        "tuyaopen-env-setup"
-      ],
-      "defaultEnabled": false,
-      "triggers": [
-        "环境",
-        "sdk"
       ]
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "2.4.0",
+      "version": "2.5.0",
       "group": "miniapp",
       "order": 98,
       "name": {
@@ -948,34 +948,35 @@
         "template",
         "schema"
       ],
-      "cli": {
-        "groups": [
-          "miniapp"
-        ]
-      },
-      "installPayload": "TuyaOpen/tuyaopen-miniapp",
-      "related": [
-        "tuyaopen-workflow-miniapp-dev"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp"
-      },
-      "sdks": [
-        "tuyaopen"
-      ],
-      "defaultEnabled": false,
       "triggers": [
         "小程序",
         "面板",
         "上传"
+      ],
+      "cli": {
+        "groups": [
+          "miniapp",
+          "devplat"
+        ]
+      },
+      "defaultEnabled": false,
+      "installPayload": "miniapp/tuyaopen-miniapp",
+      "requires": [
+        "tuyaopen-start"
+      ],
+      "related": [
+        "tuyaopen-workflow-miniapp-dev"
+      ],
+      "source": {
+        "localPath": "skills/miniapp/tuyaopen-miniapp"
+      },
+      "sdks": [
+        "tuyaopen"
       ]
     },
     {
       "id": "tuyaopen-workflow-miniapp-dev",
-      "version": "2.6.0",
+      "version": "2.7.0",
       "group": "miniapp",
       "order": 99,
       "name": {
@@ -988,8 +989,8 @@
         "zh-CN": "面板小程序阶段的完整工作流：创建小程序拿 appid、选品类、写代码、把渲染链接交给用户、上传，再提审 / 发布 / 绑定。同时承载面板架构与编码铁律，并按需分派子技能。"
       },
       "whenToUse": {
-        "en": "Enter here for any panel miniapp task — it owns the phase order, the three web-only steps and their URLs, and the architecture rules. Per-command flags and gating are in tuyaopen-miniapp.",
-        "zh-CN": "任何面板小程序任务都从这里进 —— 阶段顺序、三个只能在网页做的步骤及其 URL、以及架构铁律都归它。单条命令的参数与门禁在 tuyaopen-miniapp。"
+        "en": "Enter here for any panel miniapp task — it owns the phase order, the two human-only web steps (submit for review, bind to product) and their URLs, and the architecture rules. Per-command flags and gating are in tuyaopen-miniapp.",
+        "zh-CN": "任何面板小程序任务都从这里进 —— 阶段顺序、两个只能人在网页做的步骤（提审、绑产品）及其 URL、以及架构铁律都归它。单条命令的参数与门禁在 tuyaopen-miniapp。"
       },
       "tags": [
         "miniapp",
@@ -1008,7 +1009,14 @@
         ]
       },
       "defaultEnabled": true,
-      "installPayload": "TuyaOpen/tuyaopen-workflow-miniapp-dev",
+      "installPayload": "miniapp/tuyaopen-workflow-miniapp-dev",
+      "aliases": [
+        "tuyaopen-miniapp-panel-dev",
+        "smart-panel-dev"
+      ],
+      "requires": [
+        "tuyaopen-start"
+      ],
       "related": [
         "tuyaopen-miniapp",
         "tuyaopen-miniapp-ray-common",
@@ -1023,15 +1031,8 @@
         "tuyaopen-miniapp-performance-ux-guard",
         "tuyaopen-miniapp-requirement-guide"
       ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "aliases": [
-        "tuyaopen-miniapp-panel-dev",
-        "smart-panel-dev"
-      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-workflow-miniapp-dev"
+        "localPath": "skills/miniapp/tuyaopen-workflow-miniapp-dev"
       },
       "sdks": [
         "tuyaopen"
@@ -1039,7 +1040,7 @@
     },
     {
       "id": "tuyaopen-miniapp-ray-common",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "miniapp",
       "order": 100,
       "name": {
@@ -1060,33 +1061,33 @@
         "ray",
         "panel"
       ],
+      "triggers": [
+        "小程序",
+        "面板",
+        "ray"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-ray-common",
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "installPayload": "miniapp/tuyaopen-miniapp-ray-common",
       "aliases": [
         "miniapp-ray-common"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ray-common"
+        "localPath": "skills/miniapp/tuyaopen-miniapp-ray-common"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "面板",
-        "ray"
       ]
     },
     {
       "id": "tuyaopen-miniapp-smart-ui",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "miniapp",
       "order": 101,
       "name": {
@@ -1108,36 +1109,36 @@
         "smart-ui",
         "components"
       ],
+      "triggers": [
+        "小程序",
+        "组件",
+        "ui"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-smart-ui",
-      "related": [
-        "tuyaopen-miniapp-ray-common"
+      "installPayload": "miniapp/tuyaopen-miniapp-smart-ui",
+      "aliases": [
+        "miniapp-smart-ui"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-smart-ui"
+      "related": [
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-smart-ui"
+        "localPath": "skills/miniapp/tuyaopen-miniapp-smart-ui"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "组件",
-        "ui"
       ]
     },
     {
       "id": "tuyaopen-miniapp-lamp-panel",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "scenario",
       "order": 110,
       "name": {
@@ -1160,36 +1161,36 @@
         "lamp",
         "lighting"
       ],
+      "triggers": [
+        "小程序",
+        "灯"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-lamp-panel",
-      "related": [
-        "tuyaopen-miniapp-ray-common",
-        "tuyaopen-miniapp-smart-ui"
+      "installPayload": "scenario/tuyaopen-miniapp-lamp-panel",
+      "aliases": [
+        "miniapp-lamp-panel"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-lamp-panel"
+      "related": [
+        "tuyaopen-miniapp-ray-common",
+        "tuyaopen-miniapp-smart-ui"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-lamp-panel"
+        "localPath": "skills/scenario/tuyaopen-miniapp-lamp-panel"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "灯"
       ]
     },
     {
       "id": "tuyaopen-miniapp-socket-panel",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "scenario",
       "order": 111,
       "name": {
@@ -1212,37 +1213,37 @@
         "socket",
         "electrician"
       ],
+      "triggers": [
+        "小程序",
+        "插座"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-socket-panel",
+      "installPayload": "scenario/tuyaopen-miniapp-socket-panel",
+      "aliases": [
+        "miniapp-socket-panel"
+      ],
+      "requires": [
+        "tuyaopen-start"
+      ],
       "related": [
         "tuyaopen-miniapp-ray-common",
         "tuyaopen-miniapp-electrician-timing",
         "tuyaopen-miniapp-energy-stats"
       ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "aliases": [
-        "miniapp-socket-panel"
-      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-socket-panel"
+        "localPath": "skills/scenario/tuyaopen-miniapp-socket-panel"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "插座"
       ]
     },
     {
       "id": "tuyaopen-miniapp-robot-vacuum",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "scenario",
       "order": 112,
       "name": {
@@ -1265,35 +1266,35 @@
         "robot-vacuum",
         "map"
       ],
+      "triggers": [
+        "小程序",
+        "扫地"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-robot-vacuum",
-      "related": [
-        "tuyaopen-miniapp-ray-common"
+      "installPayload": "scenario/tuyaopen-miniapp-robot-vacuum",
+      "aliases": [
+        "miniapp-robot-vacuum"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-robot-vacuum"
+      "related": [
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-robot-vacuum"
+        "localPath": "skills/scenario/tuyaopen-miniapp-robot-vacuum"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "扫地"
       ]
     },
     {
       "id": "tuyaopen-miniapp-ipc-panel",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "scenario",
       "order": 113,
       "name": {
@@ -1316,35 +1317,35 @@
         "ipc",
         "camera"
       ],
+      "triggers": [
+        "小程序",
+        "摄像头"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-ipc-panel",
-      "related": [
-        "tuyaopen-miniapp-ray-common"
+      "installPayload": "scenario/tuyaopen-miniapp-ipc-panel",
+      "aliases": [
+        "miniapp-ipc-panel"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-ipc-panel"
+      "related": [
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-ipc-panel"
+        "localPath": "skills/scenario/tuyaopen-miniapp-ipc-panel"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "摄像头"
       ]
     },
     {
       "id": "tuyaopen-miniapp-charts-library",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "miniapp",
       "order": 120,
       "name": {
@@ -1366,36 +1367,36 @@
         "charts",
         "visualization"
       ],
+      "triggers": [
+        "小程序",
+        "图表"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-charts-library",
-      "related": [
-        "tuyaopen-miniapp-ray-common",
-        "tuyaopen-miniapp-energy-stats"
+      "installPayload": "miniapp/tuyaopen-miniapp-charts-library",
+      "aliases": [
+        "miniapp-charts-library"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-charts-library"
+      "related": [
+        "tuyaopen-miniapp-ray-common",
+        "tuyaopen-miniapp-energy-stats"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-charts-library"
+        "localPath": "skills/miniapp/tuyaopen-miniapp-charts-library"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "图表"
       ]
     },
     {
       "id": "tuyaopen-miniapp-electrician-timing",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "scenario",
       "order": 121,
       "name": {
@@ -1417,35 +1418,35 @@
         "electrician",
         "timing"
       ],
+      "triggers": [
+        "小程序",
+        "定时"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-electrician-timing",
-      "related": [
-        "tuyaopen-miniapp-socket-panel"
+      "installPayload": "scenario/tuyaopen-miniapp-electrician-timing",
+      "aliases": [
+        "miniapp-electrician-timing"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-electrician-timing"
+      "related": [
+        "tuyaopen-miniapp-socket-panel"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-electrician-timing"
+        "localPath": "skills/scenario/tuyaopen-miniapp-electrician-timing"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "定时"
       ]
     },
     {
       "id": "tuyaopen-miniapp-energy-stats",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "scenario",
       "order": 122,
       "name": {
@@ -1467,36 +1468,36 @@
         "energy",
         "statistics"
       ],
+      "triggers": [
+        "小程序",
+        "电量"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-energy-stats",
-      "related": [
-        "tuyaopen-miniapp-charts-library",
-        "tuyaopen-miniapp-socket-panel"
+      "installPayload": "scenario/tuyaopen-miniapp-energy-stats",
+      "aliases": [
+        "miniapp-energy-stats"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-energy-stats"
+      "related": [
+        "tuyaopen-miniapp-charts-library",
+        "tuyaopen-miniapp-socket-panel"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-energy-stats"
+        "localPath": "skills/scenario/tuyaopen-miniapp-energy-stats"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "电量"
       ]
     },
     {
       "id": "tuyaopen-miniapp-requirement-guide",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "miniapp",
       "order": 130,
       "name": {
@@ -1523,32 +1524,32 @@
         "requirement",
         "planning"
       ],
+      "triggers": [
+        "小程序",
+        "需求"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-requirement-guide",
-      "requires": [
-        "tuyaopen-start"
-      ],
+      "installPayload": "miniapp/tuyaopen-miniapp-requirement-guide",
       "aliases": [
         "miniapp-requirement-guide"
       ],
+      "requires": [
+        "tuyaopen-start"
+      ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-requirement-guide"
+        "localPath": "skills/miniapp/tuyaopen-miniapp-requirement-guide"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "需求"
       ]
     },
     {
       "id": "tuyaopen-miniapp-performance-ux-guard",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "group": "miniapp",
       "order": 131,
       "name": {
@@ -1570,35 +1571,35 @@
         "performance",
         "ux"
       ],
+      "triggers": [
+        "小程序",
+        "性能"
+      ],
       "cli": {
         "groups": "none",
         "reason": "面板开发不经 tuyaopen CLI"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-miniapp-performance-ux-guard",
-      "related": [
-        "tuyaopen-miniapp-ray-common"
+      "installPayload": "miniapp/tuyaopen-miniapp-performance-ux-guard",
+      "aliases": [
+        "miniapp-performance-ux-guard"
       ],
       "requires": [
         "tuyaopen-start"
       ],
-      "aliases": [
-        "miniapp-performance-ux-guard"
+      "related": [
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-miniapp-performance-ux-guard"
+        "localPath": "skills/miniapp/tuyaopen-miniapp-performance-ux-guard"
       },
       "sdks": [
         "tuyaopen"
-      ],
-      "triggers": [
-        "小程序",
-        "性能"
       ]
     },
     {
       "id": "tuyaopen-embedded-lvgl",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "group": "scenario",
       "order": 26,
       "name": {
@@ -1627,12 +1628,17 @@
         "simulator",
         "embedded"
       ],
+      "triggers": [
+        "lvgl",
+        "屏幕",
+        "字体"
+      ],
       "cli": {
         "groups": "none",
         "reason": "写 LVGL 代码、选字体、跑模拟器都没有 tuyaopen 命令；配置走 tos.py config / menuconfig，编译归 tuyaopen-embedded-build"
       },
       "defaultEnabled": false,
-      "installPayload": "TuyaOpen/tuyaopen-embedded-lvgl",
+      "installPayload": "scenario/tuyaopen-embedded-lvgl",
       "requires": [
         "tuyaopen-start"
       ],
@@ -1641,15 +1647,72 @@
         "tuyaopen-embedded-build"
       ],
       "source": {
-        "localPath": "skills/TuyaOpen/tuyaopen-embedded-lvgl"
+        "localPath": "skills/scenario/tuyaopen-embedded-lvgl"
       },
       "sdks": [
         "tuyaopen"
+      ]
+    },
+    {
+      "id": "tuyaos-build",
+      "version": "1.0.1",
+      "group": "embedded",
+      "order": 200,
+      "name": {
+        "en": "Tuyaos Build",
+        "zh-CN": "tuyaos-build"
+      },
+      "surface": "embedded",
+      "surfaces": [
+        "embedded"
       ],
-      "triggers": [
-        "lvgl",
-        "屏幕",
-        "字体"
+      "summary": {
+        "en": "Use when the user asks to build, compile, rebuild, or clean a TuyaOS (tuyaos-legacy) app — including Chinese prompts like「编译 tuyaos xxx 应用」 「清理编译产物」「重新编译当前 app」, or English \"build/compile/clean the TuyaOS app\". Also use when adding custom .c/.h paths to apps/*/local.mk, wiring directories under software/TuyaOS/vendor/, or fixing missing headers / undefined references after adding sources. Runs build_app.sh/bat like Project Details Build / Clean. Do NOT use for TuyaOpen (tos.py) or flash/monitor.",
+        "zh-CN": "Use when the user asks to build, compile, rebuild, or clean a TuyaOS (tuyaos-legacy) app — including Chinese prompts like「编译 tuyaos xxx 应用」 「清理编译产物」「重新编译当前 app」, or English \"build/compile/clean the TuyaOS app\". Also use when adding custom .c/.h paths to apps/*/local.mk, wiring directories under software/TuyaOS/vendor/, or fixing missing headers / undefined references after adding sources. Runs build_app.sh/bat like Project Details Build / Clean. Do NOT use for TuyaOpen (tos.py) or flash/monitor."
+      },
+      "whenToUse": {
+        "en": "Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app; 加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build.",
+        "zh-CN": "Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app; 加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build."
+      },
+      "tags": [],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaos-build",
+      "source": {
+        "localPath": "skills/embedded/tuyaos-build"
+      },
+      "sdks": [
+        "tuyaos"
+      ]
+    },
+    {
+      "id": "tuyaos-hardware-vibe-coding",
+      "version": "1.0.1",
+      "group": "embedded",
+      "order": 201,
+      "name": {
+        "en": "Tuyaos Hardware Vibe Coding",
+        "zh-CN": "tuyaos-hardware-vibe-coding"
+      },
+      "surface": "embedded",
+      "surfaces": [
+        "embedded"
+      ],
+      "summary": {
+        "en": "Hardware-aware code generation for TuyaOS (tuyaos-legacy) apps. Confirms pins/instance with the user, writes tkl_*/tal_* driver code under apps/<app>/src, and registers sources/headers in local.mk when needed. Canonical demos: software/TuyaOS/apps/tuyaos_demo_examples/src/examples/. GPIO、PWM、I2C、SPI、ADC、定时器、看门狗、麦克风、喇叭、DVP 摄像头、WiFi、BLE、 蓝牙、联网、STA、AP、扫网、广播、扫描、串口、外设初始化、硬件驱动、点灯、按键、 录音、播放、引脚、片上外设、TuyaOS 硬件。",
+        "zh-CN": "Hardware-aware code generation for TuyaOS (tuyaos-legacy) apps. Confirms pins/instance with the user, writes tkl_*/tal_* driver code under apps/<app>/src, and registers sources/headers in local.mk when needed. Canonical demos: software/TuyaOS/apps/tuyaos_demo_examples/src/examples/. GPIO、PWM、I2C、SPI、ADC、定时器、看门狗、麦克风、喇叭、DVP 摄像头、WiFi、BLE、 蓝牙、联网、STA、AP、扫网、广播、扫描、串口、外设初始化、硬件驱动、点灯、按键、 录音、播放、引脚、片上外设、TuyaOS 硬件。"
+      },
+      "whenToUse": {
+        "en": "Use for ANY hardware / peripheral / connectivity request on a TuyaOS project — GPIO, PWM, I2C, SPI, ADC, timer, watchdog, mic, speaker, DVP camera, Wi-Fi (STA/AP/scan/LP), BLE (peripheral/central/remote), or \"make the hardware do X\". Load this skill FIRST; it routes to the matching TuyaOS peripheral sub-skill. Do NOT use on TuyaOpen (tos.py / TDL) projects.",
+        "zh-CN": "Use for ANY hardware / peripheral / connectivity request on a TuyaOS project — GPIO, PWM, I2C, SPI, ADC, timer, watchdog, mic, speaker, DVP camera, Wi-Fi (STA/AP/scan/LP), BLE (peripheral/central/remote), or \"make the hardware do X\". Load this skill FIRST; it routes to the matching TuyaOS peripheral sub-skill. Do NOT use on TuyaOpen (tos.py / TDL) projects."
+      },
+      "tags": [],
+      "defaultEnabled": false,
+      "installPayload": "embedded/tuyaos-hardware-vibe-coding",
+      "source": {
+        "localPath": "skills/embedded/tuyaos-hardware-vibe-coding"
+      },
+      "sdks": [
+        "tuyaos"
       ]
     }
   ]

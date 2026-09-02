@@ -1,7 +1,7 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "skills", "TuyaOpen", "tuyaopen-workflow-embedded-dev", "scripts"))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "skills", "embedded", "tuyaopen-workflow-embedded-dev", "scripts"))
 import build_run
 
 

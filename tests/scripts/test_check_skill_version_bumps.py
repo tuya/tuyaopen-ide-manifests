@@ -68,7 +68,7 @@ def test_sibling_payload_change_does_not_implicate_this_skill():
 def test_untouched_payload_needs_no_bump():
     base = index(item(version="1.0.0"))
     head = index(item(version="1.0.0"))
-    assert checker.check(base, head, ["skills/TuyaOpen/index.json", "README.md"]) == []
+    assert checker.check(base, head, ["skills/index.json", "README.md"]) == []
 
 
 def test_new_item_needs_no_bump():
@@ -236,7 +236,7 @@ def test_real_index_items_all_carry_a_parseable_version():
     """The shipped index must be comparable by this checker, not just by eye."""
     import json
 
-    path = os.path.join(os.path.dirname(__file__), "..", "..", "skills", "TuyaOpen", "index.json")
+    path = os.path.join(os.path.dirname(__file__), "..", "..", "skills", "index.json")
     with open(path, encoding="utf-8") as fh:
         data = json.load(fh)
     for entry in data["items"]:

@@ -26,7 +26,7 @@ import pytest
 VALIDATE = os.path.normpath(
     os.path.join(
         os.path.dirname(__file__), "..", "..",
-        "skills", "TuyaOpen", "tuyaopen-workflow-miniapp-dev", "scripts", "validate.mjs",
+        "skills", "miniapp", "tuyaopen-workflow-miniapp-dev", "scripts", "validate.mjs",
     )
 )
 

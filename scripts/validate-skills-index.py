@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate skills/TuyaOpen/index.json structure and references.
+"""Validate skills/index.json structure and references.
 
 Checks (all local / deterministic, no network):
   - JSON parses and required top-level keys exist with correct types
@@ -9,7 +9,7 @@ Checks (all local / deterministic, no network):
   - Bilingual fields (name/summary/whenToUse) carry both 'en' and 'zh-CN'
   - 'id' is unique; 'surface' is one of the known surfaces
   - 'source' must be {localPath}; {devSkills + subpath} is rejected (dev-skills is archived)
-  - For local skills: source.localPath holds a SKILL.md, sits under skills/<surface>/,
+  - For local skills: source.localPath holds a SKILL.md, sits under skills/<group>/,
     and installPayload == localPath minus 'skills/'
   - No orphan skills: every top-level skills/**/SKILL.md dir is referenced by
     exactly one item's source.localPath
@@ -43,35 +43,46 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SURFACES = {"embedded", "cloud", "miniapp"}
-# Install group — the unit the `tuyaopen` CLI offers, so a user picks among five
-# groups instead of 28 individual skills. **A second axis, not a replacement for
-# `surface`**, and the two deliberately disagree: `surface` drives the IDE's
-# filter tabs (browsing, "which end of the product is this about"), `group`
-# drives CLI installs ("what am I setting out to do"). `tuyaopen-embedded-device-auth`
-# is surface=embedded but group=cloud, and that is correct on both axes.
+# Install group — the unit `tuyaopen-cli skills install --group <g>` offers, so
+# a user picks among five groups instead of 32 individual skills. **Since
+# 2026-09-02 it is also the payload directory**: `skills/<group>/<id>/`.
+#
+# **A second axis, not a replacement for `surface`**, and the two deliberately
+# disagree — measured, 11 of 32 items today. `surface` drives the IDE's filter
+# tabs ("which end of the product is this about"); `group` drives installs
+# ("what am I setting out to do"). `tuyaopen-start` is surface=embedded but
+# group=core; every `tuyaopen-miniapp-*-panel` playbook is surface=miniapp but
+# group=scenario. Because the directory is now the group, **nothing may infer a
+# surface from a path** — the rule in check_source() compares the path to
+# `group`, never to `surface`.
 #
 # - core / embedded / cloud / miniapp — grouped by capability.
-# - category — grouped by **product category** instead: the lamp / socket /
+# - scenario — grouped by **product category** instead: the lamp / socket /
 #   robot-vacuum / IPC playbooks a developer installs exactly one of. Not named
 #   after miniapp even though every member is one today, because embedded
 #   per-category skills are expected here too; when they arrive, `surface`
 #   keeps telling the IDE which tab they belong in.
-# Required on every item: `group` is the CLI's install unit
-# (`tuyaopen skills groups` / `install --group`), so an ungrouped item is one
-# no group-install can ever reach. Two items were legitimately ungrouped while
-# a second product line lived here; that line moved out on 2026-08-17, so the
-# field is now unconditionally required.
-GROUPS = {"core", "embedded", "product", "miniapp", "scenario"}
-# Top level under skills/. Since the 2026-08-14 reorg this is NOT the surface:
-# a `tuyaopen-miniapp-*` skill has surface "miniapp" but still lives under
-# TuyaOpen/, because placement and capability surface are orthogonal. See
-# skills/README.md's Layout section. Set-valued rather than a bare string
-# because the check below reports `sorted(...)` and a typo ("Tuyaopen/") must
-# name what was expected.
-PRODUCT_LINES = {"TuyaOpen"}
-# SDK applicability flag. Optional per item; omitted ⇒ ["tuyaopen"] (default),
-# which is now the only legal value — this catalogue is TuyaOpen-only.
-SDKS = {"tuyaopen"}
+#
+# `cloud` was called `product` until 2026-09-02. Do NOT confuse this rename
+# with `cli.groups`, which names **tuyaopen-cli command groups** — there, the
+# string `"product"` is the `tuyaopen-cli product` command group and is still
+# correct on the two items that declare it. Same word, two vocabularies.
+#
+# Required on every item: an ungrouped item is one no group-install can ever
+# reach, and now also one with no directory to live in.
+GROUPS = {"core", "embedded", "cloud", "miniapp", "scenario"}
+# SDK applicability. **This field, not the directory, is what separates the two
+# product lines** (2026-09-02). Optional per item; omitted ⇒ ["tuyaopen"].
+#
+# Until now the separation was a path — `skills/TuyaOpen/` vs `skills/TuyaOS/` —
+# backed by three independent mechanisms (registry.json's skills url, release.yml
+# deleting the other tree, and a GOVERNED_SUBTREE constant here). All three are
+# gone: one index covers both lines, the payloads ship together, and every
+# consumer decides what applies to it by reading `sdks`. The rules below that
+# describe a *relationship with the tuyaopen CLI* are therefore scoped by
+# `applies_to_tuyaopen()` rather than by subtree — which is the same scoping the
+# subtree used to buy, expressed against the field that actually states it.
+SDKS = {"tuyaopen", "tuyaos"}
 # `tuyaopen` CLI 的命令组。权威来源是 CLI 自己的 `tuyaopen schema list`，这里是一份
 # 手工镜像 —— manifests 仓不能依赖 IDE 仓的产物，所以只能镜像。CLI 改组名时两边一起改，
 # 而这份镜像过期正是我们想让它红的时刻（技能会声明一个不存在的组）。
@@ -263,32 +274,47 @@ def check_source(label: str, item: dict) -> None:
         # excused by the orphan check as a "bundled sub-skill".
         err(f"{label}: source.localPath has no SKILL.md directly inside: {local_path}")
 
-    # NOTE: until the 2026-08-14 reorg, this function also asserted that
-    # local_path's second segment equalled item['surface'] ("embedded" /
-    # "cloud" / "miniapp"), since the top level of skills/ used to be the
-    # capability surface and the IDE copied skills/<surface>/ trees into its
-    # cache one surface at a time. That reorg made the top level *product
-    # line* instead — see skills/README.md's Layout section
-    # — so 'surface' is now an orthogonal field with no directory it could
-    # agree with (a tuyaopen-miniapp-* skill's surface is "miniapp" but it
-    # lives under TuyaOpen/, by design). The check was removed rather than
-    # updated because there is no longer any path segment to compare against;
-    # it could only ever have been re-derived as "trivially true" or deleted.
+    # Two invariants, and the layout rests on both.
     #
-    # What replaces it are the two invariants the new layout actually rests on.
-    # Deleting the old check without adding these would have left the reorg's
-    # load-bearing rule — "id is the directory name" — with nothing enforcing
-    # it, which is the whole reason the pre-reorg tree drifted into having three
-    # different names per skill (directory, frontmatter `name`, and index `id`).
+    # History, because this file has held all three answers: pre-2026-08-14 the
+    # top level was the capability surface and rule 1 below existed; the
+    # 2026-08-14 reorg made it the *product line*, so rule 1 was deleted as
+    # having nothing to compare against; 2026-09-02 moved the product-line
+    # distinction into `sdks` and gave the directory back to the surface, so
+    # rule 1 is here again — now with the equality check the first version
+    # never had. Rule 2 has been continuous throughout, and is the one that
+    # matters most: without it the tree drifts back into three different names
+    # per skill (directory, frontmatter `name`, index `id`), which is exactly
+    # what the pre-reorg tree did.
+    #
+    # `installPayload` is not a third fact — it is `localPath` minus `skills/`,
+    # asserted below, so the two segments it carries are the same two checked
+    # here. That two-ness is load-bearing downstream: the IDE's cache prune
+    # (`skillsSync.ts`'s pruneOrphanCacheDirs) reads two levels, and would
+    # delete the whole cache if a payload were a SINGLE segment. Deeper is
+    # tolerated (it under-prunes), so the floor is two, not the exact count.
     segments = local_path.split("/")
 
-    # 1. Top level under skills/ is TuyaOpen/, and nothing else.
-    #    A typo ("Tuyaopen/") would otherwise install fine and only surface as a
-    #    missing skill much later.
-    if len(segments) > 1 and segments[1] not in PRODUCT_LINES:
+    # 1. Top level under skills/ is the install GROUP, and it must agree with
+    #    the item's own `group`. A typo ("embeded/") would otherwise install
+    #    fine and only show up as a missing skill much later.
+    #
+    #    Group, not surface: `group` is the unit a user installs
+    #    (`skills install --group <g>`), so grouping the tree the same way puts
+    #    a whole install unit in one directory. `surface` stays an orthogonal
+    #    field driving the IDE's filter tabs, and the two disagree for 11 of the
+    #    32 items today — e.g. every `tuyaopen-miniapp-*-panel` playbook is
+    #    surface=miniapp but group=scenario. Nothing may infer one from the
+    #    other, or from the path.
+    if len(segments) > 1 and segments[1] not in GROUPS:
         err(
             f"{label}: source.localPath must sit under one of "
-            f"{sorted(PRODUCT_LINES)}, got {segments[1]!r} in {local_path!r}"
+            f"{sorted(GROUPS)}, got {segments[1]!r} in {local_path!r}"
+        )
+    elif len(segments) > 1 and item.get("group") in GROUPS and segments[1] != item["group"]:
+        err(
+            f"{label}: source.localPath sits under {segments[1]!r} but 'group' "
+            f"says {item['group']!r} — the directory IS the group"
         )
 
     # 2. `id` IS the directory name — the rule that lets a human (or an agent
@@ -332,7 +358,16 @@ def check_requires(items: list, ids: set) -> None:
     docstring. Every entry must resolve, and a self-reference is always a
     mistake (the installer's cycle guard tolerates a cycle at runtime, but
     there is never a legitimate reason to author one directly here).
+
+    **It must also not cross the product line** (2026-09-02). While the two
+    lines had separate index files a cross-line `requires` was unwritable; one
+    merged index makes it expressible, and it would resolve here and then
+    silently do nothing in the product — every consumer filters on `sdks`
+    before the installer sees the list, so the dependency would be dropped and
+    the "brought in transitively" promise quietly broken with no error anywhere.
+    A prevention lock: zero such edges exist today, so a hit is always new.
     """
+    by_id = {i.get("id"): i for i in items if isinstance(i, dict) and is_str(i.get("id"))}
     for index, item in enumerate(items):
         if not isinstance(item, dict):
             continue
@@ -350,6 +385,13 @@ def check_requires(items: list, ids: set) -> None:
                 err(f"{label}: requires id {ref!r} does not resolve to a known item")
             elif is_str(item.get("id")) and ref == item["id"]:
                 err(f"{label}: 'requires' must not reference its own id")
+            elif applies_to_tuyaopen(item) != applies_to_tuyaopen(by_id.get(ref, {})):
+                err(
+                    f"{label}: requires id {ref!r}, which belongs to the other "
+                    f"product line ('sdks' differs). Consumers filter on 'sdks' "
+                    f"before the installer runs, so this edge would resolve here "
+                    f"and then be silently dropped."
+                )
 
 
 def check_aliases(items: list, ids: set) -> None:
@@ -390,19 +432,29 @@ def check_aliases(items: list, ids: set) -> None:
             seen_aliases[alias] = item_id
 
 
-# The ONLY subtree this validator governs.
-#
-# `skills/TuyaOS/` is the other product line. It carries its own
-# `index.json` purely so its payloads have an owner, and **nothing reads it** —
-# registry.json's skills domain points at skills/TuyaOpen/index.json, and
-# .github/workflows/release.yml excludes skills/TuyaOS from the package. Every
-# rule in this file describes a relationship with the `tuyaopen` CLI (the `cli`
-# declaration, the single-valued `sdks`, the Shortcuts agreement), so applying
-# them to TuyaOS skills would assert things that are meaningless there. Scoping
-# by this constant is therefore not an exemption — the rules genuinely do not
-# describe that tree. Before 2026-08-19 the scans below walked all of `skills/`,
-# which was correct only while `skills/` held exactly one product line.
-GOVERNED_SUBTREE = "TuyaOpen"
+def applies_to_tuyaopen(item: dict) -> bool:
+    """Does this item belong to the TuyaOpen product line?
+
+    The scope four rules below need, and the reason `sdks` exists. Some rules
+    here describe a *relationship with the `tuyaopen` CLI* — the `cli`
+    declaration, the Shortcuts agreement, the routing table, the trigger
+    coverage. Asserting those about a TuyaOS skill would assert something
+    meaningless: there is no `tuyaopen-cli` command group for it to name and no
+    `tuyaopen-start` routing table it belongs in.
+
+    Until 2026-09-02 the same scope was bought with a path (`GOVERNED_SUBTREE =
+    "TuyaOpen"`, two `rglob`s rooted at it). That worked only because the two
+    lines lived in separate directories and only one of them shipped. Both now
+    live in one tree and both ship, so the question "which line is this?" has to
+    be asked of the data that states it. Omitted `sdks` still means
+    `["tuyaopen"]`, matching `sdkAppliesToItem()` on the IDE side — the two
+    defaults must not drift apart, since a disagreement would make an item the
+    validator governs invisible to the product, or the reverse.
+    """
+    sdks = item.get("sdks")
+    if not isinstance(sdks, list) or not sdks:
+        return True
+    return "tuyaopen" in sdks
 
 
 def check_orphan_skill_dirs(items: list) -> None:
@@ -429,7 +481,7 @@ def check_orphan_skill_dirs(items: list) -> None:
         if len(ids) > 1:
             err(f"source.localPath {path!r} is claimed by multiple items: {', '.join(sorted(ids))}")
 
-    skills_root = REPO_ROOT / "skills" / GOVERNED_SUBTREE
+    skills_root = REPO_ROOT / "skills"
     for skill_md in sorted(skills_root.rglob("SKILL.md")):
         rel = skill_md.parent.relative_to(REPO_ROOT).as_posix()
         if rel in referenced:
@@ -455,7 +507,7 @@ def check_agent_skill_paths(ids: set) -> None:
     is the old nested layout the IDE now repairs away from, so a SKILL.md telling
     the agent to run a script there sends it to a path that does not exist.
     """
-    for md in sorted((REPO_ROOT / "skills" / GOVERNED_SUBTREE).rglob("*.md")):
+    for md in sorted((REPO_ROOT / "skills").rglob("*.md")):
         rel = md.relative_to(REPO_ROOT).as_posix()
         try:
             text = md.read_text(encoding="utf-8")
@@ -657,6 +709,8 @@ def check_cli_declaration(items: list) -> None:
             err(e)
 
     for item in items:
+        if not applies_to_tuyaopen(item):
+            continue
         label = f"item {item.get('id', '?')!r}"
         cli = item.get("cli")
         if not isinstance(cli, dict):
@@ -822,7 +876,7 @@ def check_frontmatter_parses(items: list) -> None:
 # single intent→skill map; every other skill points here instead of naming
 # siblings, so a skill missing from it is only reachable by someone who already
 # knows its id.
-ROUTING_TABLE = "skills/TuyaOpen/tuyaopen-start/references/ROUTING.md"
+ROUTING_TABLE = "skills/core/tuyaopen-start/references/ROUTING.md"
 
 
 def check_routing_covers_opt_in(items: list) -> None:
@@ -850,7 +904,7 @@ def check_routing_covers_opt_in(items: list) -> None:
         return
     text = table.read_text(encoding="utf-8")
     for item in items:
-        if item.get("defaultEnabled"):
+        if item.get("defaultEnabled") or not applies_to_tuyaopen(item):
             continue
         sid = item.get("id")
         if not is_str(sid):
@@ -895,7 +949,8 @@ def check_resident_descriptions_cover_triggers(items: list) -> None:
     gate a floor, not a proof. It still catches the failure that matters — a
     keyword surface that is nowhere in the resident set at all.
     """
-    resident = [i for i in items if i.get("defaultEnabled") and is_str(i.get("id"))]
+    resident = [i for i in items
+                if i.get("defaultEnabled") and is_str(i.get("id")) and applies_to_tuyaopen(i)]
     if not resident:
         err("no defaultEnabled skills — nothing would be loaded by any agent tool")
         return
@@ -918,7 +973,7 @@ def check_resident_descriptions_cover_triggers(items: list) -> None:
         blob += m.group(1).lower() + "\n"
 
     for item in items:
-        if item.get("defaultEnabled"):
+        if item.get("defaultEnabled") or not applies_to_tuyaopen(item):
             continue
         sid, triggers = item.get("id"), item.get("triggers")
         if not is_str(sid):
@@ -979,6 +1034,13 @@ def check_attachments_have_exit(items: list) -> None:
     just end.
     """
     for item in items:
+        # Scoped like the four CLI-relationship rules above: the exit this
+        # demands is a `tuyaopen-cli` command or a TuyaOpen skill, neither of
+        # which means anything for the other product line. No TuyaOS payload has
+        # an `ops/` dir today, so this is a latent-only correction — which is
+        # exactly when to make it, rather than after the first one does.
+        if not applies_to_tuyaopen(item):
+            continue
         local_path = (item.get("source") or {}).get("localPath")
         if not is_str(local_path):
             continue
@@ -1001,7 +1063,7 @@ def check_attachments_have_exit(items: list) -> None:
 
 
 def main() -> int:
-    index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "TuyaOpen" / "index.json"
+    index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
     if not index_path.is_file():
         print(f"✗ index file not found: {index_path}", file=sys.stderr)
         return 1

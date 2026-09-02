@@ -7,6 +7,75 @@ repo (`v<x.y.z>`), not the IDE's. Per-domain versions live in
 
 ## [Unreleased]
 
+### 一份索引、按安装组放载荷，`sdks` 成为唯一的产品线分隔 (2026-09-02)
+
+skills 域 4.1.0 → **5.0.0**（破坏性：索引路径变了）。`registry.json` 的
+`manifests.skills.url` 从 `skills/TuyaOpen/index.json` 改回 **`skills/index.json`**。
+
+**一份索引。** 32 条全在 `skills/index.json` 里，两条产品线共用。载荷路径改为
+**`skills/<group>/<id>/`**（`group` ∈ `core` / `embedded` / `cloud` / `miniapp` /
+`scenario`，第二段必须等于条目自己的 `group` 字段，最后一段仍恒等于 `id`）。分布：
+embedded 13、scenario 8、miniapp 7、core 2、cloud 2。于是
+`installPayload` = `<group>/<id>`，两段。**下限是两段，不是恰好两段**：
+IDE 的缓存清理（`skillsSync.ts` 的 `pruneOrphanCacheDirs`）读两层，单段载荷会让它把整个
+缓存判成孤儿并删光；更深的载荷只会少删，不会多删（2026-08-17 之前的目录就是三段）。
+
+**目录是「安装组」，不是「能力面」。** `group` 是
+`tuyaopen-cli skills install --group <g>` 的安装单位，把一个完整安装单位放进一个目录，
+这是选它当目录的理由。前四组按能力分，`scenario` 改按**产品品类**分 —— 灯 / 插座 /
+扫地机 / IPC 面板这类只装其中一个的剧本；它不叫 miniapp，因为
+`tuyaopen-embedded-dependency`、`tuyaopen-embedded-lvgl` 已经在里面，将来还会有别的
+嵌入式品类技能。
+
+**`surface` 没动，仍是必填，且现在与路径完全正交。** 它驱动 IDE 的筛选页签
+（`embedded` 18 / `miniapp` 13 / `cloud` 1，分布未变），`group` 驱动安装。两者对 32 条里
+的 **11 条**给出不同答案：`tuyaopen-start` 是 surface=embedded、group=core；每个
+`tuyaopen-miniapp-*-panel` 是 surface=miniapp、group=scenario；
+`tuyaopen-workflow-product-dev` 是 surface=embedded、group=cloud。**任何地方都不得再从路径
+反推 surface**，校验器 `check_source()` 比的是 `group`，不是 `surface`。
+
+**`product` 组改名 `cloud`。** 只有**安装组**改了名。`index.json` 里的 `cli.groups`
+是另一套词汇 —— 那里的 `"product"` 指 `tuyaopen-cli` 的 `product` 命令组，在
+`tuyaopen-cloud`、`tuyaopen-workflow-product-dev` 两条上依旧正确，不要跟着改。
+
+`ROUTING_TABLE` 随 `tuyaopen-start` 迁到
+`skills/core/tuyaopen-start/references/ROUTING.md`。
+
+**`sdks` 是唯一分隔两条产品线的东西。** 30 条 `["tuyaopen"]`，2 条
+（`tuyaos-build`、`tuyaos-hardware-vibe-coding`）`["tuyaos"]` —— 旧值 `["tuyaos-legacy"]`
+一并规整。缺省仍是 `["tuyaopen"]`。校验器的 `SDKS` 相应放回 `{"tuyaopen", "tuyaos"}`。
+
+**两条线现在都发。** `release.yml` 不再删任何一棵树：只有一份索引、且它把两条线的条目
+都登记在册，此时再在打包阶段删路径，删掉的就是**已发布索引仍在指的载荷**。过滤因此挪到
+消费端 —— IDE 的 `sdkAppliesToItem()`、CLI `skills` 组的同名闸门 —— 打包器不做判断。
+
+**它替掉了什么。** 2026-08-19 那套用**路径**表达的分隔，以及撑着它的三个各自独立的机制：
+`registry.json` 的 skills url、`release.yml` 里的 `rm -rf staging/skills/TuyaOS`、校验器里的
+`GOVERNED_SUBTREE`。三个都没了。路径只在"恰好只有一条线会发"时才回答得了"这是哪条线"；
+现在两条都发，这个问题就只能问那个真正陈述它的字段。校验器里凡是描述**与 `tuyaopen-cli`
+关系**的规则（`cli` 声明与 Shortcuts 一致性、`tuyaopen-start` 路由表覆盖、`triggers` 覆盖）
+改由 `applies_to_tuyaopen(item)` 限定；其余规则（frontmatter、id 与目录一致、
+`.agents/skills/…` 路径完整性、`version`、孤儿载荷）对全树生效，两条线一视同仁。文件系统
+扫描（`check_orphan_skill_dirs`、`check_agent_skill_paths`）也走遍整个 `skills/`。
+
+**顺带回来一条规则（换了个字段）。** `source.localPath` 第二段必须等于条目的 `group` ——
+这条规则的**形状**在 2026-08-14 之前存在过（当时比的是 `surface`），被那次改版删掉（顶层
+变成产品线，两者本就无关），现在回来了，并且补上了它第一次没有的等值检查：写成 `embeded/`
+这种拼错，以前要等到用户装不上技能才暴露。
+
+文档同步：`skills/README.md` 的 Layout / 产品线 / 路径规则 / 新增技能 / 脱离 IDE 使用五节
+重写；`skills/TuyaOS/README.md` 删除（那份文件通篇讲的是已经不存在的排除机制，其目录也不再
+存放任何技能，两句仍然成立的话并入 `skills/README.md`）；根 `README.md` 的仓库树、domain
+表与 `sdks` 条目；`docs/manifest-architecture.md` 的树与等式说明；`tools/` 里
+manifest-gen 与 manifest-editor 四处讲路径的注释。
+
+顺带修掉一处**本来就是错的**说明：`skills/README.md` 原先写「打包产物是按
+`skills/{embedded,cloud,miniapp}` 一个目录一个目录拷进
+`skills-registry/<surface>` 的」。IDE 侧两段代码都**不**枚举顶层 ——
+`populateCacheDirs` 一次性拷贝载荷根（索引 url 的第一段，即 `skills/`），
+`pruneOrphanCacheDirs` 遍历它在缓存里**实际看到**的顶层目录。两者都是被这类硬编码坑过之后
+才改成这样的，也正因如此，这次换目录对它们是无操作。
+
 ### `qt` 类目那段把 DP id 范围说反了 (2026-09-02)
 
 `tuyaopen-cloud` 1.7.0 → **1.8.0**，skills 域 4.0.0 → **4.1.0**。

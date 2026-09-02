@@ -62,15 +62,14 @@ jobs:
           for dir in boards-and-chips demos platforms skills miniapp-templates; do
             [ -d "$dir" ] && cp -r "$dir" staging/ && echo "  + $dir/"
           done
-          # `skills/TuyaOS/` is the other product line. registry.json's skills
-          # domain points at skills/TuyaOpen/index.json, so the IDE would never
-          # install anything from TuyaOS — shipping it would be dead weight on
-          # every user's disk, and a package whose contents nothing reads is how
-          # a stale tree survives unnoticed. Dropped AFTER the copy rather than
-          # by listing subdirectories, so a future skills/<line>/ is included by
-          # default and has to be excluded deliberately, not forgotten silently.
-          rm -rf staging/skills/TuyaOS
-          echo "  - skills/TuyaOS/ (other product line, not consumed by the IDE)"
+          # Both product lines ship (2026-09-02). Until now `skills/TuyaOS/`
+          # was deleted here, because registry.json pointed the skills domain at
+          # skills/TuyaOpen/index.json and nothing could ever have installed the
+          # other tree. There is one index now and one tree, and which line an
+          # item belongs to is stated by its `sdks` field — so the consumer
+          # filters (the IDE's sdkAppliesToItem, the CLI's loadLocalSkills…),
+          # not the packager. Deleting a path here would now hide payloads that
+          # the shipped index still advertises.
           FILE_COUNT="$(find staging -type f | wc -l)"
           echo "→ Staged $FILE_COUNT files"
 
