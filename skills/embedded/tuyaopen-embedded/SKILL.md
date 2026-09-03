@@ -1,21 +1,20 @@
 ---
 name: tuyaopen-embedded
-description: >-
-  Which `tuyaopen-cli` command group covers an embedded-side intent, and the
-  preconditions every embedded command shares. The embedded domain is spread
-  over more command groups than any other, so "which group do I even reach
-  for" is a question on its own — this skill answers only that. It contains no
-  task steps and no flag lists: flags come from `tuyaopen-cli schema get`, and how
-  to actually do a job comes from the task skill the table points at.
-  Use when you know what you want to accomplish on the device side but not
-  which command group owns it, or when you want the shape of the embedded CLI
-  as a whole. 嵌入式域的命令组决策表：知道要做什么、但不确定该用哪个命令组时
-  查这里；也用于快速了解嵌入式 CLI 的全貌。不含任务步骤，不含 flag 清单。
+description: 'Which `tuyaopen-cli` command group covers an embedded-side intent, and the preconditions every embedded command
+  shares. The embedded domain is spread over more command groups than any other, so "which group do I even reach for" is a
+  question on its own — this skill answers only that. It contains no task steps and no flag lists: flags come from `tuyaopen-cli
+  schema get`, and how to actually do a job comes from the task skill the table points at. Use when you know what you want
+  to accomplish on the device side but not which command group owns it, or when you want the shape of the embedded CLI as
+  a whole. 嵌入式域的命令组决策表：知道要做什么、但不确定该用哪个命令组时 查这里；也用于快速了解嵌入式 CLI 的全貌。不含任务步骤，不含 flag 清单。'
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+metadata:
+  version: 1.1.1
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Embedded CLI Map
 
 The embedded side of the `tuyaopen-cli` CLI is spread over more command groups

@@ -1,22 +1,22 @@
 ---
 name: tuyaopen-embedded-env-setup
-description: >-
-  Set up and activate the TuyaOpen development environment via `tuyaopen-cli sdk
-  clone/doctor/env-init/env-pull/update` (headless, self-bootstrapping) or the
-  shell-activation path (export.sh / tos.py), install system dependencies,
-  and sync the manifest cache (`tuyaopen-cli manifests status/sync`). Use when the
-  user mentions environment setup, activating the SDK, installing
-  dependencies, export.sh, cloning the SDK, or when tos.py is not found.
-  环境搭建、环境初始化、激活开发环境、安装依赖、tuyaopen-cli sdk clone/doctor/
-  env-init/update、manifests sync、克隆 SDK。
+description: Set up and activate the TuyaOpen development environment via `tuyaopen-cli sdk clone/doctor/env-init/env-pull/update`
+  (headless, self-bootstrapping) or the shell-activation path (export.sh / tos.py), install system dependencies, and sync
+  the manifest cache (`tuyaopen-cli manifests status/sync`). Use when the user mentions environment setup, activating the
+  SDK, installing dependencies, export.sh, cloning the SDK, or when tos.py is not found. 环境搭建、环境初始化、激活开发环境、安装依赖、tuyaopen-cli
+  sdk clone/doctor/ env-init/update、manifests sync、克隆 SDK。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli sdk`/`manifests`)
-  - Ubuntu/Debian with apt-get (or macOS/Windows equivalent)
-  - Python >= 3.6
-  - git >= 2.0, cmake >= 3.28, make >= 3.0, ninja >= 1.6
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli sdk`/`manifests`)
+- Ubuntu/Debian with apt-get (or macOS/Windows equivalent)
+- Python >= 3.6
+- git >= 2.0, cmake >= 3.28, make >= 3.0, ninja >= 1.6
+metadata:
+  version: 1.4.1
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Environment Setup
 
 Docs: <https://tuyaopen.ai/docs/quick-start/enviroment-setup>

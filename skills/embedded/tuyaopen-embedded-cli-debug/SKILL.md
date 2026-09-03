@@ -1,26 +1,23 @@
 ---
 name: tuyaopen-embedded-cli-debug
-description: >-
-  Debug a running TuyaOpen device: register firmware features as device CLI
-  commands and drive them over the serial shell (`tal_cli`), capture serial
-  logs in the background without blocking, and decode a crash dump's PC/LR/
-  stack addresses to source `file:line` via addr2line. Use when the firmware
-  builds and runs but does the wrong thing, when you want to exercise a
-  feature on the device without reflashing, or when a panic dump needs
-  decoding. **Environment triage is not here** — `diag doctor` / `diag export`
-  diagnose the CLI and the host, and live in skill `tuyaopen-start`.
-  调试正在运行的设备：把固件功能注册成设备 CLI 命令并通过串口驱动它们、
-  非阻塞后台抓串口日志、把崩溃转储的 PC/LR/栈地址用 addr2line 还原成
-  源码文件与行号。环境诊断（diag doctor / diag export）不在这里，在
-  tuyaopen-start。
+description: 'Debug a running TuyaOpen device: register firmware features as device CLI commands and drive them over the serial
+  shell (`tal_cli`), capture serial logs in the background without blocking, and decode a crash dump''s PC/LR/ stack addresses
+  to source `file:line` via addr2line. Use when the firmware builds and runs but does the wrong thing, when you want to exercise
+  a feature on the device without reflashing, or when a panic dump needs decoding. **Environment triage is not here** — `diag
+  doctor` / `diag export` diagnose the CLI and the host, and live in skill `tuyaopen-start`. 调试正在运行的设备：把固件功能注册成设备 CLI 命令并通过串口驱动它们、
+  非阻塞后台抓串口日志、把崩溃转储的 PC/LR/栈地址用 addr2line 还原成 源码文件与行号。环境诊断（diag doctor / diag export）不在这里，在 tuyaopen-start。'
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the device-side tools
-  - Python 3 (stdlib only for background log capture; pyserial for the CLI-debug script — `pip install pyserial`)
-  - Device connected via USB serial, for the device-facing sections
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+- TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the device-side tools
+- Python 3 (stdlib only for background log capture; pyserial for the CLI-debug script — `pip install pyserial`)
+- Device connected via USB serial, for the device-facing sections
+metadata:
+  version: 2.3.1
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Diagnose
 
 Covers the CLI groups `diag doctor` / `diag export` / `diag doctor` /

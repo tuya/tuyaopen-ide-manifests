@@ -1,22 +1,17 @@
 ---
 name: tuyaopen-cloud
-description: >-
-  Operate the Tuya Developer Platform via tuya-devplat-cli: create products,
-  search products, manage DPs, and more. Wi-Fi + Bluetooth dual-mode only.
-when_to_use: >-
-  Use when the user asks to create a Tuya product, get a PID, search products,
-  query or modify DPs (功能点), or perform any operation on the Tuya Developer
-  Platform (platform.tuya.com).
-
-id: tuyaopen-cloud
-surfaces: [cloud]
-tags: [cloud, product, dp, pid, tuya-devplat-cli]
-command: tuyaopen.skill.tuyaIotPlatform
-fallback_commands: []
-default_enabled: false
-related: [tuyaopen-embedded-device-auth]
+description: 'Operate the Tuya Developer Platform via tuya-devplat-cli: create products, search products, manage DPs, and
+  more. Wi-Fi + Bluetooth dual-mode only.'
+license: Apache-2.0
+compatibility:
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli cloud`/`dp`/`product`)
+- Tuya IoT Platform account (platform.tuya.com) with valid credentials
+metadata:
+  version: 1.8.1
+  owner: cloud-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # Tuya IoT Platform
 
 Operate the Tuya Developer Platform via `tuya-devplat-cli`.

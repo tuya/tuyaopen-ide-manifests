@@ -1,9 +1,18 @@
 ---
 name: tuyaopen-miniapp-charts-library
-id: tuyaopen-miniapp-charts-library
-description: 帮助 Agent 在 Ray 小程序中正确集成 `@ray/charts-library`，包括场景卡片（EleChartCard、TempAndHumChartCard、IlluminanceChartCard）、DataSourceProvider 涂鸦计量数据源、可组合周期控件（ChartPeriodProvider、ChartGranularityPicker、ChartPeriodNavigator、ChartSeriesPanel、useChartPeriodContext）及图表选项工具函数。适用于用户在 Ray 小程序页面中添加用电量/温湿度/照度/计量统计图表、构建周期切换图表、使用 withXAxis/withTooltip 自定义图表配置、或将自定义 UI 与库的周期上下文结合使用的场景。
+description: 帮助 Agent 在 Ray 小程序中正确集成 `@ray/charts-library`，包括场景卡片（EleChartCard、TempAndHumChartCard、IlluminanceChartCard）、DataSourceProvider
+  涂鸦计量数据源、可组合周期控件（ChartPeriodProvider、ChartGranularityPicker、ChartPeriodNavigator、ChartSeriesPanel、useChartPeriodContext）及图表选项工具函数。适用于用户在
+  Ray 小程序页面中添加用电量/温湿度/照度/计量统计图表、构建周期切换图表、使用 withXAxis/withTooltip 自定义图表配置、或将自定义 UI 与库的周期上下文结合使用的场景。
+license: Apache-2.0
+compatibility:
+- Ray framework project with @ray/charts-library or @tuya-miniapp/cloud-api
+- Node.js >= 18
+metadata:
+  version: 1.0.4
+  owner: miniapp-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # @ray/charts-library Skill
 
 ## No `tuyaopen-cli` CLI coverage

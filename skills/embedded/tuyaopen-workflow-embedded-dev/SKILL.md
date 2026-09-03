@@ -1,36 +1,27 @@
 ---
 name: tuyaopen-workflow-embedded-dev
-description: >-
-  The firmware phase of TuyaOpen product development, end to end: turn a
-  product's DPs into working firmware, then get the device online. Runs a
-  state machine — hardware inquiry and pin budget, Kconfig, code generation,
-  build, flash, authorization code, provisioning — and contains the automated
-  build-flash-monitor-analyze loop with log analysis and error-pattern
-  matching. Entered on its own for any device-side development, or handed over
-  from `tuyaopen-workflow-product-dev` once the platform has a PID and DPs.
-  Use when the user wants to write, build, flash or debug device firmware,
-  asks what to do next on the device side, or mentions the dev loop, log
-  analysis, or an iterative debug cycle. **Also the entry point for any
-  peripheral request** — display / screen / LCD, button, LED, camera, audio,
-  touch, sensor, UART, GPIO, I2C, SPI, PWM, ADC: it takes the hardware step
-  first, then delegates to the peripheral doc. On-screen UI work — LVGL
-  widgets, fonts, images, blank-box CJK problems, the host SDL2 preview — comes
-  in here too. Also covers code formatting and clang-format checks on the
-  firmware sources.
-  嵌入式开发阶段的完整工作流：从产品 DP 到可运行固件（工程/项目结构在内），再让设备上线。含硬件选型
-  与引脚预算、Kconfig、代码生成、编译、烧录、授权码、配网的状态机，以及
-  编译—烧录—监控—分析闭环与日志/错误码分析。**任何外设需求也从这里进** ——
-  屏幕、显示、LCD、按键、LED、指示灯、摄像头、音频、录音、触摸、传感器、
-  串口、UART、GPIO、I2C、SPI、PWM、ADC、引脚：先走硬件确认这一步，
-  再分派到对应的外设文档。加第三方库 / 组件依赖也在这一步。调试与崩溃分析、
-  设备授权（UUID / AuthKey）也在本工作流内。屏幕上的 UI —— LVGL 控件、字体、图片、中文显示成方块、
-  在电脑上用 SDL2 预览 —— 也从这里进。也覆盖固件源码的代码格式检查（clang-format）。
+description: 'The firmware phase of TuyaOpen product development, end to end: turn a product''s DPs into working firmware,
+  then get the device online. Runs a state machine — hardware inquiry and pin budget, Kconfig, code generation, build, flash,
+  authorization code, provisioning — and contains the automated build-flash-monitor-analyze loop with log analysis and error-pattern
+  matching. Entered on its own for any device-side development, or handed over from `tuyaopen-workflow-product-dev` once the
+  platform has a PID and DPs. Use when the user wants to write, build, flash or debug device firmware, asks what to do next
+  on the device side, or mentions the dev loop, log analysis, or an iterative debug cycle. **Also the entry point for any
+  peripheral request** — display / screen / LCD, button, LED, camera, audio, touch, sensor, UART, GPIO, I2C, SPI, PWM, ADC:
+  it takes the hardware step first, then delegates to the peripheral doc. On-screen UI work — LVGL widgets, fonts, images,
+  blank-box CJK problems, the host SDL2 preview — comes in here too. Also covers code formatting and clang-format checks on
+  the firmware sources. 嵌入式开发阶段的完整工作流：从产品 DP 到可运行固件（工程/项目结构在内），再让设备上线。含硬件选型 与引脚预算、Kconfig、代码生成、编译、烧录、授权码、配网的状态机，以及 编译—烧录—监控—分析闭环与日志/错误码分析。**任何外设需求也从这里进**
+  —— 屏幕、显示、LCD、按键、LED、指示灯、摄像头、音频、录音、触摸、传感器、 串口、UART、GPIO、I2C、SPI、PWM、ADC、引脚：先走硬件确认这一步， 再分派到对应的外设文档。加第三方库 / 组件依赖也在这一步。调试与崩溃分析、
+  设备授权（UUID / AuthKey）也在本工作流内。屏幕上的 UI —— LVGL 控件、字体、图片、中文显示成方块、 在电脑上用 SDL2 预览 —— 也从这里进。也覆盖固件源码的代码格式检查（clang-format）。'
 license: Apache-2.0
 compatibility:
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
-  - Device connected via USB (MCU targets) or native Linux host
+- TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
+- Device connected via USB (MCU targets) or native Linux host
+metadata:
+  version: 2.3.1
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Embedded Development Workflow
 
 ## Shortcuts — `tuyaopen-cli firmware` / `tuyaopen-cli diag`

@@ -1,23 +1,20 @@
 ---
 name: tuyaos-build
-description: >-
-  Use when the user asks to build, compile, rebuild, or clean a TuyaOS
-  (tuyaos-legacy) app — including Chinese prompts like「编译 tuyaos xxx 应用」
-  「清理编译产物」「重新编译当前 app」, or English "build/compile/clean the TuyaOS
-  app". Also use when adding custom .c/.h paths to apps/*/local.mk, wiring
-  directories under software/TuyaOS/vendor/, or fixing missing headers / undefined
-  references after adding sources. Runs build_app.sh/bat like Project Details
-  Build / Clean. Do NOT use for TuyaOpen (tos.py) or flash/monitor.
-when_to_use: >-
-  Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app;
-  加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build.
-id: tuyaos-build
-surfaces: [embedded]
-tags: [build, clean, build_app, tuyaos, compile, local.mk, vendor, sources, headers]
-default_enabled: true
-related: [tuyaopen-flash, tuyaopen-workflow-product-dev]
+description: Use when the user asks to build, compile, rebuild, or clean a TuyaOS (tuyaos-legacy) app — including Chinese
+  prompts like「编译 tuyaos xxx 应用」 「清理编译产物」「重新编译当前 app」, or English "build/compile/clean the TuyaOS app". Also use when adding
+  custom .c/.h paths to apps/*/local.mk, wiring directories under software/TuyaOS/vendor/, or fixing missing headers / undefined
+  references after adding sources. Runs build_app.sh/bat like Project Details Build / Clean. Do NOT use for TuyaOpen (tos.py)
+  or flash/monitor.
+license: Apache-2.0
+compatibility:
+- TuyaOS development environment configured
+- TuyaOS toolchain installed for target chip
+metadata:
+  version: 1.0.1
+  owner: tuyaos-team
+  deprecated: false
+  min-cli-version: none
 ---
-
 # TuyaOS Build / Clean
 
 Compile or clean the active **TuyaOS** app with the same command the IDE

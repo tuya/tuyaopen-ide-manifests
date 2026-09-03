@@ -1,27 +1,25 @@
 ---
 name: tuyaopen-miniapp
-description: >-
-  Operate the panel miniapp's build/runtime/upload lifecycle through the
-  tuyaopen CLI's `miniapp` command group: build, install the shared runtime,
-  set/read metadata (appid), sync the DP schema from the bound product,
-  preview (dev server / screenshot), scaffold from a template, and upload a
-  version to the Tuya platform — plus the platform-side `panel` commands reached
-  through `tuyaopen-cli devplat exec` (create the miniapp, next version number,
-  review status, release). This is the command-line surface only — panel
-  architecture, DP hooks, and category UI conventions are a different skill.
-  Use when the user wants to run `tuyaopen-cli miniapp ...`, build/upload the
-  miniapp, create it from a template, sync its DP schema, or publish a version.
-  MiniApp 命令行操作：构建、安装运行时、设置/读取元数据（appid）、从已绑定产品
-  同步 DP schema、预览（开发服务器/截图）、从模板创建、上传版本到涂鸦平台，
-  以及经 `devplat exec` 转发的平台侧 `panel` 命令（建小程序、算版本号、查审核状态、发布）。
-  仅覆盖命令行操作本身，不涉及面板架构或品类 UI 编码规范。
+description: 'Operate the panel miniapp''s build/runtime/upload lifecycle through the tuyaopen CLI''s `miniapp` command group:
+  build, install the shared runtime, set/read metadata (appid), sync the DP schema from the bound product, preview (dev server
+  / screenshot), scaffold from a template, and upload a version to the Tuya platform — plus the platform-side `panel` commands
+  reached through `tuyaopen-cli devplat exec` (create the miniapp, next version number, review status, release). This is the
+  command-line surface only — panel architecture, DP hooks, and category UI conventions are a different skill. Use when the
+  user wants to run `tuyaopen-cli miniapp ...`, build/upload the miniapp, create it from a template, sync its DP schema, or
+  publish a version. MiniApp 命令行操作：构建、安装运行时、设置/读取元数据（appid）、从已绑定产品 同步 DP schema、预览（开发服务器/截图）、从模板创建、上传版本到涂鸦平台， 以及经 `devplat
+  exec` 转发的平台侧 `panel` 命令（建小程序、算版本号、查审核状态、发布）。 仅覆盖命令行操作本身，不涉及面板架构或品类 UI 编码规范。'
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
-  - "install/upload/preview/template create carry their own vendor/miniapp-runtime since 0.1.0-beta.14; --extension-path (or TUYAOPEN_EXTENSION_PATH) only overrides it"
-  - A TuyaOpen project with a source/miniapp directory
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+- install/upload/preview/template create carry their own vendor/miniapp-runtime since 0.1.0-beta.14; --extension-path (or
+  TUYAOPEN_EXTENSION_PATH) only overrides it
+- A TuyaOpen project with a source/miniapp directory
+metadata:
+  version: 2.5.0
+  owner: miniapp-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen MiniApp CLI
 
 Covers the `miniapp` CLI group's 7 subcommands — `build`, `install`, `meta`,

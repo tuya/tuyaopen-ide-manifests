@@ -1,19 +1,19 @@
 ---
 name: tuyaopen-embedded-add-board
-description: >-
-  Add new board (BSP) support to TuyaOpen, including board directory structure,
-  Kconfig, drivers, and config files. No `tuyaopen-cli` CLI command covers this —
-  it is `tos.py new board` (interactive) or manual copy-and-edit only. Use
-  when the user mentions adding a board, new board, BSP, board support,
-  hardware adaptation, or tos.py new board.
-  添加开发板、板级适配、新增BSP、硬件适配 —— 无对应 tuyaopen CLI 命令，只能用
-  tos.py new board 或手动复制编辑。
+description: Add new board (BSP) support to TuyaOpen, including board directory structure, Kconfig, drivers, and config files.
+  No `tuyaopen-cli` CLI command covers this — it is `tos.py new board` (interactive) or manual copy-and-edit only. Use when
+  the user mentions adding a board, new board, BSP, board support, hardware adaptation, or tos.py new board. 添加开发板、板级适配、新增BSP、硬件适配
+  —— 无对应 tuyaopen CLI 命令，只能用 tos.py new board 或手动复制编辑。
 license: Apache-2.0
 compatibility:
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
-  - Supported platform (T5AI, ESP32, LINUX, T2, T3, LN882H, BK7231X)
+- TuyaOpen environment activated (export.sh / export.ps1 / export.bat)
+- Supported platform (T5AI, ESP32, LINUX, T2, T3, LN882H, BK7231X)
+metadata:
+  version: 1.0.2
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen: Adding a New Board
 
 ## No `tuyaopen-cli` CLI coverage — this is a `tos.py`/manual-only flow

@@ -1,27 +1,24 @@
 ---
 name: tuyaopen-embedded-project
-description: >-
-  Read and mutate the `.tuyaopen/` project descriptor via the `tuyaopen-cli`
-  CLI (`project info/create/set-platform/set-board/set-status/set-intent/
-  bind-product`), browse the local demo/example catalogue (`demos
-  list/detail`), and read or write the three IDE settings (`config
-  get/set/list`: language/gitMirror/manifestsSource — NOT Kconfig). Also
-  covers the underlying `tos.py new`/`tos.py config` project & build-config
-  tooling these CLI commands sit on top of. Use when the user mentions
-  creating a project, project metadata, binding a product, tos.py new, saving
-  or choosing a build config, tos.py config set/get/list/diff, tos.py update,
-  or IDE settings.
-  项目创建与元数据、项目描述符读写、demo 目录浏览、IDE 设置（language/
-  gitMirror/manifestsSource，注意不是 Kconfig）、tos.py config 构建配置管理、
-  更新依赖。
+description: 'Read and mutate the `.tuyaopen/` project descriptor via the `tuyaopen-cli` CLI (`project info/create/set-platform/set-board/set-status/set-intent/
+  bind-product`), browse the local demo/example catalogue (`demos list/detail`), and read or write the three IDE settings
+  (`config get/set/list`: language/gitMirror/manifestsSource — NOT Kconfig). Also covers the underlying `tos.py new`/`tos.py
+  config` project & build-config tooling these CLI commands sit on top of. Use when the user mentions creating a project,
+  project metadata, binding a product, tos.py new, saving or choosing a build config, tos.py config set/get/list/diff, tos.py
+  update, or IDE settings. 项目创建与元数据、项目描述符读写、demo 目录浏览、IDE 设置（language/ gitMirror/manifestsSource，注意不是 Kconfig）、tos.py config
+  构建配置管理、 更新依赖。'
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the tos.py-side commands
-  - TTY terminal required for interactive tos.py commands (tos.py new, config choice/menu/save)
-  - "tos.py config set/get/list/diff: newer SDKs only — detect with `tos.py config -h`, never from a version number"
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+- TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the tos.py-side commands
+- TTY terminal required for interactive tos.py commands (tos.py new, config choice/menu/save)
+- 'tos.py config set/get/list/diff: newer SDKs only — detect with `tos.py config -h`, never from a version number'
+metadata:
+  version: 1.3.1
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Project, Demos & Config
 
 > **SDK root:** `tos.py`-side paths and commands in this skill are relative to the TuyaOpen SDK root (`$OPEN_SDK_ROOT` on Linux/macOS/PowerShell, `%OPEN_SDK_ROOT%` on Windows CMD). Activate the environment first — see skill `tuyaopen-embedded-env-setup`. The `tuyaopen-cli project` / `demos` / `config` CLI commands below don't need SDK-env activation — they read/write `.tuyaopen/` and IDE settings directly.

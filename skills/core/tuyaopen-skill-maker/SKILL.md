@@ -1,25 +1,22 @@
 ---
 name: tuyaopen-skill-maker
-description: >-
-  How to author or edit a skill in this catalogue: frontmatter contract, id
-  naming rules (tuyaopen- prefix, no slashes), where the payload goes, the
-  Shortcuts-table rule (command names only, never flag lists), progressive
-  disclosure into references/, how to word an out-of-scope handoff,
-  index.json registration fields, version-bump rules, and local validation
-  commands. Use when adding a new skill, editing an existing SKILL.md, or
-  registering an item in skills/index.json.
-  如何在本目录新增或修改一个 skill：frontmatter 契约、id 命名规则（tuyaopen-
-  前缀、不含斜杠）、载荷放在哪里、Shortcuts 表规则（只写命令名不写 flag
-  清单）、references/ 渐进披露、"超出本技能范围"的写法、index.json 注册字段、
-  version 升号规则、本地校验命令。新增技能、修改现有 SKILL.md 或注册
-  index.json 条目时使用。
+description: 'How to author or edit a skill in this catalogue: frontmatter contract, id naming rules (tuyaopen- prefix, no
+  slashes), where the payload goes, the Shortcuts-table rule (command names only, never flag lists), progressive disclosure
+  into references/, how to word an out-of-scope handoff, index.json registration fields, version-bump rules, and local validation
+  commands. Use when adding a new skill, editing an existing SKILL.md, or registering an item in skills/index.json. 如何在本目录新增或修改一个
+  skill：frontmatter 契约、id 命名规则（tuyaopen- 前缀、不含斜杠）、载荷放在哪里、Shortcuts 表规则（只写命令名不写 flag 清单）、references/ 渐进披露、"超出本技能范围"的写法、index.json
+  注册字段、 version 升号规则、本地校验命令。新增技能、修改现有 SKILL.md 或注册 index.json 条目时使用。'
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli schema get`)
-  - Python 3 (for scripts/validate-skills-index.py, scripts/check-skill-version-bumps.py)
-  - Node.js (for tools/manifest-gen/bin/manifest-gen.js)
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli schema get`)
+- Python 3 (for scripts/validate-skills-index.py, scripts/check-skill-version-bumps.py)
+- Node.js (for tools/manifest-gen/bin/manifest-gen.js)
+metadata:
+  version: 1.7.1
+  owner: core-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Skill Maker
 
 This skill teaches the catalogue how to grow itself: writing a new

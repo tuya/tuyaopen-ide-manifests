@@ -1,26 +1,18 @@
 ---
 name: tuyaos-hardware-vibe-coding
-description: >-
-  Hardware-aware code generation for TuyaOS (tuyaos-legacy) apps. Confirms
-  pins/instance with the user, writes tkl_*/tal_* driver code under
-  apps/<app>/src, and registers sources/headers in local.mk when needed.
-  Canonical demos: software/TuyaOS/apps/tuyaos_demo_examples/src/examples/.
-  GPIO、PWM、I2C、SPI、ADC、定时器、看门狗、麦克风、喇叭、DVP 摄像头、WiFi、BLE、
-  蓝牙、联网、STA、AP、扫网、广播、扫描、串口、外设初始化、硬件驱动、点灯、按键、
-  录音、播放、引脚、片上外设、TuyaOS 硬件。
-when_to_use: >-
-  Use for ANY hardware / peripheral / connectivity request on a TuyaOS project —
-  GPIO, PWM, I2C, SPI, ADC, timer, watchdog, mic, speaker, DVP camera, Wi-Fi
-  (STA/AP/scan/LP), BLE (peripheral/central/remote), or "make the hardware do X".
-  Load this skill FIRST; it routes to the matching TuyaOS peripheral sub-skill.
-  Do NOT use on TuyaOpen (tos.py / TDL) projects.
-id: tuyaos-hardware-vibe-coding
-surfaces: [embedded]
-tags: [hardware, peripheral, vibe-coding, tuyaos, tkl, gpio, pwm, i2c, spi, adc, wifi, ble, bluetooth]
-default_enabled: true
-related: [tuyaos-build, tuyaopen-flash, tuyaopen-workflow-product-dev]
+description: 'Hardware-aware code generation for TuyaOS (tuyaos-legacy) apps. Confirms pins/instance with the user, writes
+  tkl_*/tal_* driver code under apps/<app>/src, and registers sources/headers in local.mk when needed. Canonical demos: software/TuyaOS/apps/tuyaos_demo_examples/src/examples/.
+  GPIO、PWM、I2C、SPI、ADC、定时器、看门狗、麦克风、喇叭、DVP 摄像头、WiFi、BLE、 蓝牙、联网、STA、AP、扫网、广播、扫描、串口、外设初始化、硬件驱动、点灯、按键、 录音、播放、引脚、片上外设、TuyaOS 硬件。'
+license: Apache-2.0
+compatibility:
+- TuyaOS framework project
+- TuyaOS device connected for testing
+metadata:
+  version: 1.0.1
+  owner: tuyaos-team
+  deprecated: false
+  min-cli-version: none
 ---
-
 # TuyaOS Hardware Vibe Coding
 
 **TuyaOS-only.** Separate from TuyaOpen `tuyaopen-hardware` (TDD/TDL /

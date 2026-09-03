@@ -51,7 +51,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "core-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded",
@@ -111,7 +113,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-build",
@@ -167,7 +171,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-skill-maker",
@@ -220,7 +226,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "core-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-project",
@@ -281,7 +289,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-cloud",
@@ -343,7 +353,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "cloud-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-workflow-product-dev",
@@ -406,7 +418,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "cloud-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-hardware",
@@ -471,7 +485,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-flash",
@@ -534,7 +550,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-cli-debug",
@@ -600,7 +618,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-add-board",
@@ -654,7 +674,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-code-check",
@@ -703,7 +725,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-workflow-embedded-dev",
@@ -756,7 +780,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-device-auth",
@@ -812,7 +838,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-embedded-env-setup",
@@ -867,7 +895,9 @@
       },
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "owner": "embedded-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-miniapp",
@@ -920,7 +950,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-workflow-miniapp-dev",
@@ -979,7 +1011,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-miniapp-ray-common",
@@ -1027,7 +1061,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-miniapp-smart-ui",
@@ -1079,7 +1115,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-miniapp-charts-library",
@@ -1130,7 +1168,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-miniapp-requirement-guide",
@@ -1183,7 +1223,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaopen-miniapp-performance-ux-guard",
@@ -1234,7 +1276,9 @@
       "sdks": [
         "tuyaopen",
         "tuyaos"
-      ]
+      ],
+      "owner": "miniapp-team",
+      "deprecated": false
     },
     {
       "id": "tuyaos-build",
@@ -1265,7 +1309,9 @@
       },
       "sdks": [
         "tuyaos"
-      ]
+      ],
+      "owner": "tuyaos-team",
+      "deprecated": false
     },
     {
       "id": "tuyaos-hardware-vibe-coding",
@@ -1296,7 +1342,9 @@
       },
       "sdks": [
         "tuyaos"
-      ]
+      ],
+      "owner": "tuyaos-team",
+      "deprecated": false
     }
   ]
 }

@@ -1,41 +1,28 @@
 ---
 name: tuyaopen-workflow-miniapp-dev
-description: >-
-  The panel-miniapp phase of TuyaOpen product development, end to end: create
-  the miniapp and get an appid, pick a category, write the panel, hand the
-  user a render URL to review, upload, then submit / publish / bind — create,
-  next-version, review-status and release run through the CLI; submit-for-review
-  and bind-to-product are human web steps, with their URLs constructed. Owns the phase
-  order and the panel architecture and coding rules, and dispatches to the
-  sub-skills (ray-common, smart-ui, charts-library, the category playbooks,
-  performance-ux-guard, requirement-guide) for depth. Entered for any panel
-  miniapp task, or handed over from `tuyaopen-workflow-product-dev` once a PID
-  and DPs exist. Per-command flags and gating are in skill `tuyaopen-miniapp`.
-  Covers every panel category the catalogue has a playbook for — lamp /
-  lighting, socket, robot vacuum, IPC camera, electrician timing, energy and
-  power statistics — plus charts, performance and UX review.
-  **触发词**：手机、手机上、手机面板、手机 App、面板、面板小程序、小程序、
-  panel、mini-app、miniapp、phone、app —— 用户提到用手机控制设备、在手机上看/设、
-  或者直接说面板/小程序，都是本阶段。**「手机面板」最容易被误读**成涂鸦按 DP
-  自动生成的通用面板而整个跳过（实测：第六轮定义了六个 DP、从没建过面板、
-  全程没有一步提示缺了什么）——定义 DP 不产生面板，面板是独立的一个阶段。
-  面板小程序阶段的完整工作流：创建小程序拿 appid → 选品类 → 写代码 →
-  把渲染链接交给用户 review → 上传 → 提审 / 发布 / 绑定产品（建小程序、算版本号、
-  查审核状态、发布都走命令行；提审和绑产品只能人去网页做，含拼好参数的 URL）。
-  同时承载面板架构与编码铁律，并按需分派到子技能。
-  覆盖目录里有品类剧本的每一类面板 —— 灯、照明、插座、扫地机、扫地机器人、
-  IPC 摄像头、电工定时、能耗与电量统计 —— 以及图表、UI 组件库、性能与 UX 走查。
-  单条命令的参数与门禁见 skill tuyaopen-miniapp。
+description: 'The panel-miniapp phase of TuyaOpen product development, end to end: create the miniapp and get an appid, pick
+  a category, write the panel, hand the user a render URL to review, upload, then submit / publish / bind — create, next-version,
+  review-status and release run through the CLI; submit-for-review and bind-to-product are human web steps, with their URLs
+  constructed. Owns the phase order and the panel architecture and coding rules, and dispatches to the sub-skills (ray-common,
+  smart-ui, charts-library, the category playbooks, performance-ux-guard, requirement-guide) for depth. Entered for any panel
+  miniapp task, or handed over from `tuyaopen-workflow-product-dev` once a PID and DPs exist. Per-command flags and gating
+  are in skill `tuyaopen-miniapp`. Covers every panel category the catalogue has a playbook for — lamp / lighting, socket,
+  robot vacuum, IPC camera, electrician timing, energy and power statistics — plus charts, performance and UX review. **触发词**：手机、手机上、手机面板、手机
+  App、面板、面板小程序、小程序、 panel、mini-app、miniapp、phone、app —— 用户提到用手机控制设备、在手机上看/设、 或者直接说面板/小程序，都是本阶段。**「手机面板」最容易被误读**成涂鸦按 DP 自动生成的通用面板而整个跳过（实测：第六轮定义了六个
+  DP、从没建过面板、 全程没有一步提示缺了什么）——定义 DP 不产生面板，面板是独立的一个阶段。 面板小程序阶段的完整工作流：创建小程序拿 appid → 选品类 → 写代码 → 把渲染链接交给用户 review → 上传 → 提审 /
+  发布 / 绑定产品（建小程序、算版本号、 查审核状态、发布都走命令行；提审和绑产品只能人去网页做，含拼好参数的 URL）。 同时承载面板架构与编码铁律，并按需分派到子技能。 覆盖目录里有品类剧本的每一类面板 —— 灯、照明、插座、扫地机、扫地机器人、
+  IPC 摄像头、电工定时、能耗与电量统计 —— 以及图表、UI 组件库、性能与 UX 走查。 单条命令的参数与门禁见 skill tuyaopen-miniapp。'
 license: Apache-2.0
-defaultEnabled: true
-related:
-  - tuyaopen-miniapp-ray-common
-  - tuyaopen-miniapp-smart-ui
-  - tuyaopen-miniapp-charts-library
-  - tuyaopen-miniapp-performance-ux-guard
-  - tuyaopen-miniapp-requirement-guide
+compatibility:
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli miniapp`/`panel`)
+- Node.js >= 18 and npm
+- A TuyaOpen project with MiniApp enabled
+metadata:
+  version: 2.7.1
+  owner: miniapp-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # 智能面板开发（Smart Panel Development）
 
 ## Shortcuts — `tuyaopen-cli miniapp` / `tuyaopen-cli project` / `tuyaopen-cli devplat`

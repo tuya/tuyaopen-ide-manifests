@@ -8,30 +8,18 @@ description: >-
   by defining DPs. State-machine: detects project state and picks up from
   wherever development currently stands. A product is finished when both
   surfaces exist — firmware AND panel.
-when_to_use: >-
-  Use when the developer says "I want to make a [device]", "帮我做一个XX",
-  "what's next?", "下一步该干什么", or describes product features and expects
-  end-to-end guidance. Also when the requirement mentions controlling the
-  device **from a phone** — "手机面板"、"手机上能设/能看"、"remote control",
-  "app" — that is the panel mini-app phase, and it is easy to mistake for a
-  cloud/DP task and drop entirely (measured: beta round 6 defined six DPs,
-  never created a panel, and no step in the run said anything was missing). Do NOT use for pure platform ops (→ tuyaopen-cloud),
-  pure build/debug (→ tuyaopen-workflow-embedded-dev), or project creation only
-  (→ tuyaopen-embedded-project).
-id: tuyaopen-workflow-product-dev
-surface: embedded
-tags: [product, dp, pid, embedded, iot, workflow, orchestration]
+  端到端 IoT 产品开发主工作流：涵盖从需求梳理、涂鸦开发者平台（platform.tuya.com）建产品、
+  查 PID、定义 DP，到固件生成与手机端 Ray 面板小程序全流程。平台资源与 DP 定义也从这里进。
 license: Apache-2.0
-defaultEnabled: true
-related:
-  - tuyaopen-cloud
-  - tuyaopen-workflow-embedded-dev
-  - tuyaopen-embedded-project
-  - tuyaopen-embedded-env-setup
-command: tuyaopen.skill.smartProductDev
-  涂鸦开发者平台（platform.tuya.com）上的建产品、查 PID、定义 DP 也从这里进。
+compatibility:
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+- Tuya IoT Platform account (platform.tuya.com)
+metadata:
+  version: 2.2.1
+  owner: cloud-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Smart Product Development
 
 End-to-end orchestration: requirements → Tuya Platform product/DP → embedded firmware.

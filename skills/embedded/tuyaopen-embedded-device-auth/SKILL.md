@@ -1,23 +1,23 @@
 ---
 name: tuyaopen-embedded-device-auth
-description: >-
-  Configure device authorization credentials (UUID, AuthKey, PID) and network
-  provisioning for TuyaOpen devices via `tuyaopen-cli license list/add/import/
-  remove` (a local CLI-only license store) and `tuyaopen-cli firmware authorize`
-  (writes the code to the device over serial, P2). Use when the user mentions
-  device auth, authorization, UUID, AuthKey, tuya_config.h, provisioning,
-  pairing, or cloud connection. A late-stage skill: the code is needed only
-  after the firmware builds and is about to be flashed — read its §0 before
-  asking the user for a code.
-  设备授权、授权码、配网、UUID、AuthKey、云连接、tuyaopen-cli license、
-  tuyaopen-cli firmware authorize。
+description: 'Configure device authorization credentials (UUID, AuthKey, PID) and network provisioning for TuyaOpen devices
+  via `tuyaopen-cli license list/add/import/ remove` (a local CLI-only license store) and `tuyaopen-cli firmware authorize`
+  (writes the code to the device over serial, P2). Use when the user mentions device auth, authorization, UUID, AuthKey, tuya_config.h,
+  provisioning, pairing, or cloud connection. A late-stage skill: the code is needed only after the firmware builds and is
+  about to be flashed — read its §0 before asking the user for a code. 设备授权、授权码、配网、UUID、AuthKey、云连接、tuyaopen-cli license、
+  tuyaopen-cli firmware authorize。'
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli license`/`firmware authorize`)
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — needed for the `tyutool_cli`-direct fallback, not for the CLI commands above
-  - Tuya IoT Platform account (platform.tuya.com) for credentials
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli license`/`firmware authorize`)
+- TuyaOpen environment activated (export.sh / export.ps1 / export.bat) — needed for the `tyutool_cli`-direct fallback, not
+  for the CLI commands above
+- Tuya IoT Platform account (platform.tuya.com) for credentials
+metadata:
+  version: 1.9.0
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Device Authorization & Provisioning
 
 Docs: <https://tuyaopen.ai/docs/quick-start/equipment-authorization>

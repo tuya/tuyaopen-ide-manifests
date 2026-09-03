@@ -1,31 +1,19 @@
 ---
 name: tuyaopen-embedded-hardware
-description: >-
-  Hardware-aware code generation for TuyaOpen embedded projects. Reads the
-  project's confirmed hardware via `tuyaopen-cli hardware list-used`/`board-context`
-  (backed by .tuyaopen/used-peripherals.json + .tuyaopen/board-context.md),
-  confirms the selection with the user, records it BEFORE writing code via
-  `tuyaopen-cli hardware set-used`, then delegates to the matching peripheral
-  sub-skill.
-  外设初始化、硬件驱动、Vibe Coding、使用外设、硬件相关代码、点灯、点亮 LED、按键、
-  屏幕、显示、摄像头、音频、录音、播放、触摸、打印、红外、摇杆、灯带、串口、UART、
-  GPIO、PWM、I2C、SPI、ADC、传感器、引脚、片上外设、发送数据、读取传感器、
+description: Hardware-aware code generation for TuyaOpen embedded projects. Reads the project's confirmed hardware via `tuyaopen-cli
+  hardware list-used`/`board-context` (backed by .tuyaopen/used-peripherals.json + .tuyaopen/board-context.md), confirms the
+  selection with the user, records it BEFORE writing code via `tuyaopen-cli hardware set-used`, then delegates to the matching
+  peripheral sub-skill. 外设初始化、硬件驱动、Vibe Coding、使用外设、硬件相关代码、点灯、点亮 LED、按键、 屏幕、显示、摄像头、音频、录音、播放、触摸、打印、红外、摇杆、灯带、串口、UART、 GPIO、PWM、I2C、SPI、ADC、传感器、引脚、片上外设、发送数据、读取传感器、
   tuyaopen-cli hardware set-used/list-used/board-context。
-when_to_use: >-
-  Use for ANY hardware / peripheral / pin request on a TuyaOpen board — using or
-  initializing a peripheral, serial / UART, GPIO, PWM, I2C, SPI, ADC, display,
-  camera, button, LED, audio, touch, sensor, or any "make the hardware do X" task.
-  Load this skill FIRST; it is the entry point that reads the project's confirmed
-  hardware, enforces confirm-before-code, and routes to the specific peripheral
-  sub-skill. 任何涉及硬件/外设/引脚/串口的需求都先加载本 skill。
-
-id: tuyaopen-embedded-hardware
-surfaces: [embedded]
+license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli hardware`/`boards`)
-tags: [hardware, peripheral, vibe-coding, routing]
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1 (for `tuyaopen-cli hardware`/`boards`)
+metadata:
+  version: 2.1.2
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Hardware Vibe Coding
 
 ## Shortcuts — `tuyaopen-cli hardware` / `tuyaopen-cli boards`

@@ -867,6 +867,34 @@ def check_frontmatter_parses(items: list) -> None:
             if not isinstance(parsed, dict):
                 err(f"{label}: {local_path}/SKILL.md frontmatter parsed to "
                     f"{type(parsed).__name__}, expected a mapping")
+                continue
+
+            # Standardized frontmatter lifecycle metadata checks
+            expected_id = item.get("id")
+            if parsed.get("name") != expected_id:
+                err(f"{label}: {local_path}/SKILL.md frontmatter 'name' ({parsed.get('name')!r}) "
+                    f"does not match item id ({expected_id!r})")
+
+            if not is_str(parsed.get("license")):
+                err(f"{label}: {local_path}/SKILL.md frontmatter missing non-empty 'license'")
+
+            compat = parsed.get("compatibility")
+            if not isinstance(compat, list) or not compat:
+                err(f"{label}: {local_path}/SKILL.md frontmatter 'compatibility' must be a non-empty list")
+
+            meta = parsed.get("metadata")
+            if not isinstance(meta, dict):
+                err(f"{label}: {local_path}/SKILL.md frontmatter missing 'metadata' object")
+            else:
+                expected_ver = item.get("version")
+                if meta.get("version") != expected_ver:
+                    err(f"{label}: {local_path}/SKILL.md metadata.version ({meta.get('version')!r}) "
+                        f"does not match index.json version ({expected_ver!r})")
+                if not is_str(meta.get("owner")):
+                    err(f"{label}: {local_path}/SKILL.md missing metadata.owner")
+                if not isinstance(meta.get("deprecated"), bool):
+                    err(f"{label}: {local_path}/SKILL.md metadata.deprecated must be a boolean")
+
             continue
         for p in _yaml_floor_errors(body):
             err(f"{label}: {local_path}/SKILL.md frontmatter {p}")

@@ -1,23 +1,22 @@
 ---
 name: tuyaopen-embedded-flash
-description: >-
-  Flash firmware, monitor serial output, and pick the right serial port for a
-  TuyaOpen device via the `tuyaopen-cli` CLI (`firmware flash`, `firmware
-  monitor`, `firmware list-ports`). Covers single-serial vs dual-serial board
-  identification, the P2 flash confirmation ritual, and when to fall back to
-  the SDK's own `tyutool_cli` directly (reading flash back out, a bare
-  DTR/RTS hardware reset, or disambiguating a port the CLI's own listing
-  can't). Use when the user mentions flashing, burning firmware, choosing a
-  serial port, `tos.py flash`, `tyutool_cli`, or serial monitor setup.
-  固件烧录、串口选择、tuyaopen-cli firmware flash/monitor、tyutool_cli 直连兜底、
-  单串口与双串口开发板识别、烧录确认流程。
+description: Flash firmware, monitor serial output, and pick the right serial port for a TuyaOpen device via the `tuyaopen-cli`
+  CLI (`firmware flash`, `firmware monitor`, `firmware list-ports`). Covers single-serial vs dual-serial board identification,
+  the P2 flash confirmation ritual, and when to fall back to the SDK's own `tyutool_cli` directly (reading flash back out,
+  a bare DTR/RTS hardware reset, or disambiguating a port the CLI's own listing can't). Use when the user mentions flashing,
+  burning firmware, choosing a serial port, `tos.py flash`, `tyutool_cli`, or serial monitor setup. 固件烧录、串口选择、tuyaopen-cli
+  firmware flash/monitor、tyutool_cli 直连兜底、 单串口与双串口开发板识别、烧录确认流程。
 license: Apache-2.0
 compatibility:
-  - tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
-  - TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the tyutool_cli fallback
-  - Device connected via USB serial
+- tuyaopen CLI, either form — see skill `tuyaopen-start` § 1
+- TuyaOpen environment activated (export.sh / export.ps1 / export.bat) for the tyutool_cli fallback
+- Device connected via USB serial
+metadata:
+  version: 1.5.1
+  owner: embedded-team
+  deprecated: false
+  min-cli-version: 0.1.0-beta.17
 ---
-
 # TuyaOpen Flash & Serial
 
 Covers the CLI groups `firmware flash`, `firmware monitor`, and `device
