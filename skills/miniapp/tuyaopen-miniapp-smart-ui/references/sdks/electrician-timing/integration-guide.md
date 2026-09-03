@@ -4,7 +4,7 @@
 
 ## 0. 本 skill 内置的可移植片段
 
-跨工程通用的复制粘贴模板见 [../references/snippets.md](../references/snippets.md)。实现某能力前，先打开对应锚点。
+跨工程通用的复制粘贴模板见 [./snippets.md](./snippets.md)。实现某能力前，先打开对应锚点。
 
 ## 1. 宿主 URL query
 
@@ -58,7 +58,7 @@
 - 倒计时：`createCountdown`、`cancelCountdown`
 - 自定义 DP 定时（非三种标准电工类型）：`addDpTimer` 系列
 - 在线提示：`isLANOnline`、`isLocalOnline`
-- **天文（不在 SDK 中）**：`addAstronomical`、`getAstronomicalList`、`updateAstronomical`、`updateAstronomicalStatus`、`removeAstronomical` —— 来自 `@ray-js/ray`；完整参数语义与可移植助手见 [../references/astronomical.md](../references/astronomical.md)。
+- **天文（不在 SDK 中）**：`addAstronomical`、`getAstronomicalList`、`updateAstronomical`、`updateAstronomicalStatus`、`removeAstronomical` —— 来自 `@ray-js/ray`；完整参数语义与可移植助手见 [./astronomical.md](./astronomical.md)。
 
 <a id="api-best-practices"></a>
 
@@ -122,7 +122,7 @@
 
 ### 天文（通过 `@ray-js/ray`，不在本 SDK 中）
 
-完整参数表、响应特性与可移植 TS 助手见 [../references/astronomical.md](../references/astronomical.md)。需记住的规则：
+完整参数表、响应特性与可移植 TS 助手见 [./astronomical.md](./astronomical.md)。需记住的规则：
 
 | 模块 | 最佳实践 |
 |------|----------|

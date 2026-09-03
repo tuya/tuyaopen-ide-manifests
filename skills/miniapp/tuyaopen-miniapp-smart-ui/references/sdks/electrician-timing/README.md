@@ -27,7 +27,7 @@
 | 随机 | SDK | `electri.random.*` |
 | 点动（延时关） | SDK | `electri.inching.*` |
 | 倒计时 | SDK | `createCountdown`、`cancelCountdown` |
-| 天文 | **不在 SDK 中** | 使用 `@ray-js/ray` 的 `addAstronomical`、`getAstronomicalList`、`updateAstronomical`、`updateAstronomicalStatus`、`removeAstronomical`，详见 [references/astronomical.md](references/astronomical.md)。**勿**使用 `electri.astronomical`（无此命名空间）或 `addDpTimer`（无法解析日出日落）。 |
+| 天文 | **不在 SDK 中** | 使用 `@ray-js/ray` 的 `addAstronomical`、`getAstronomicalList`、`updateAstronomical`、`updateAstronomicalStatus`、`removeAstronomical`，详见 [references/astronomical.md](astronomical.md)。**勿**使用 `electri.astronomical`（无此命名空间）或 `addDpTimer`（无法解析日出日落）。 |
 
 落地目录由 AI 按工程现状判断（典型放在 `src/pages/<feature>/`，无强制命名）。
 
@@ -46,14 +46,14 @@
 
 ### 可复制片段（跨工程通用）
 
-代码片段集中在 [references/snippets.md](references/snippets.md)，按锚点访问：
+代码片段集中在 [references/snippets.md](snippets.md)，按锚点访问：
 
-- [入口 `init`](references/snippets.md#on-launch-init)
-- [最小页面 `ConflictPopup`](references/snippets.md#conflict-modal-minimal)
-- [五类 SDK 内定时的写入示例](references/snippets.md#timer-api-samples)
-- [退出 `destroy`](references/snippets.md#on-unload-destroy)
+- [入口 `init`](snippets.md#on-launch-init)
+- [最小页面 `ConflictPopup`](snippets.md#conflict-modal-minimal)
+- [五类 SDK 内定时的写入示例](snippets.md#timer-api-samples)
+- [退出 `destroy`](snippets.md#on-unload-destroy)
 
-生成或迁移代码时：先读对应锚点，再按目标工程补齐类型与 i18n。天文定时**不在**本 SDK 中，不要从这些片段推断，请使用 [references/astronomical.md](references/astronomical.md)。
+生成或迁移代码时：先读对应锚点，再按目标工程补齐类型与 i18n。天文定时**不在**本 SDK 中，不要从这些片段推断，请使用 [references/astronomical.md](astronomical.md)。
 
 ### `init`（必读）
 
@@ -81,14 +81,14 @@
 
 ### 延伸阅读
 
-- [references/integration-guide.md](references/integration-guide.md)：URL query 表、README ↔ 工程映射、页面路径索引、以及 **[§5 API 注意事项与最佳实践](references/integration-guide.md#api-best-practices)**。
-- [references/astronomical.md](references/astronomical.md)：`@ray-js/ray` 的五个天文 API（add / list / update / updateStatus / remove）、参数语义（`loops`、`offsetType`、`time` 偏移、`bizType`）以及可移植的 TS 辅助函数。用户问到「天文定时 / 日出 / 日落」时阅读。
+- [references/integration-guide.md](integration-guide.md)：URL query 表、README ↔ 工程映射、页面路径索引、以及 **[§5 API 注意事项与最佳实践](integration-guide.md#api-best-practices)**。
+- [references/astronomical.md](astronomical.md)：`@ray-js/ray` 的五个天文 API（add / list / update / updateStatus / remove）、参数语义（`loops`、`offsetType`、`time` 偏移、`bizType`）以及可移植的 TS 辅助函数。用户问到「天文定时 / 日出 / 日落」时阅读。
 
 ## 注意事项 {#tip}
 
 ### API 注意事项与最佳实践
 
-完整表格见 [references/integration-guide.md §5](references/integration-guide.md#api-best-practices)。
+完整表格见 [references/integration-guide.md §5](integration-guide.md#api-best-practices)。
 
 - **铁律**：所有定时读写**必须**在 `init` 成功之后。统一处理返回结构：`success` / `cancel` / `pass` / `{ conflict, validateData }`。启用路径会跑冲突校验。
 - **`electri.*` / 云 / 倒计时**：要使用默认冲突 UI，须传 **`useDefaultModal: true`**，且当前页面挂载了 `id` 与 `conflictModallId` 匹配的 **`ConflictPopup`**。
@@ -104,4 +104,4 @@
 - [ ] `src/app.tsx` 是否在任何首屏定时逻辑前调用了 `init`，并且**没有**在常规启动流程里无谓地调用 `changeConfig`？
 - [ ] 所有使用 `useDefaultModal: true` 的页面，是否在**页面根节点**挂载了 `id === conflictModallId` 的冲突组件？
 - [ ] 是否把 **SDK 字段**与**工程 query 字段**分开（尤其倒计时）？
-- [ ] 天文功能是否避开了 `electri.*` / `addDpTimer`，并改用 [references/astronomical.md](references/astronomical.md) 列出的五个 `@ray-js/ray` 天文 API？
+- [ ] 天文功能是否避开了 `electri.*` / `addDpTimer`，并改用 [references/astronomical.md](astronomical.md) 列出的五个 `@ray-js/ray` 天文 API？

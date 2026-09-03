@@ -11,7 +11,7 @@
 1. **云能力授权**：打开 [小程序开发者平台](https://platform.tuya.com/miniapp/) → `开发设置` → `云能力`，启用智慧能源 API 分组。
 2. **产品激活**：打开 [涂鸦 IoT 开发平台](https://iot.tuya.com/)，为产品开启**电量统计**高级能力。
 
-详细步骤见 [references/integration-guide.md](references/integration-guide.md)。
+详细步骤见 [references/integration-guide.md](integration-guide.md)。
 
 ### 核心原则
 
@@ -27,12 +27,12 @@
 
 | 功能 | 页面 | 核心 API | 代码片段 |
 |------|------|----------|---------|
-| 统计图表 | `energyStatistic/` | `getDeviceData`, `IndicatorCode`, `DateType` | [#statistic-chart](references/snippets.md#statistic-chart) |
-| 峰谷电价 | `energyPrice/` | `getPeakValleyPrice`, `savePeakValleyPrice` | [#peak-valley-price](references/snippets.md#peak-valley-price) |
-| 货币设置 | `energyCurrency/` | `getCurrencyList`, `getDeviceCurrency`, `saveDeviceCurrency` | [#currency-settings](references/snippets.md#currency-settings) |
-| 费用预算 | `energyCostWarn/` | `getDeviceCostBudget`, `batchSaveCostBudget`, `BudgetDataType` | [#budget-warnings](references/snippets.md#budget-warnings) |
-| 用量预算 | `energyUsageWarn/` | `getDeviceConsumeBudget`, `batchSaveConsumeBudget`, `BudgetDataType` | [#budget-warnings](references/snippets.md#budget-warnings) |
-| 数据管理 | （工具类） | `cleanDeviceData`, `exportDeviceData` | [#data-management](references/snippets.md#data-management) |
+| 统计图表 | `energyStatistic/` | `getDeviceData`, `IndicatorCode`, `DateType` | [#statistic-chart](snippets.md#statistic-chart) |
+| 峰谷电价 | `energyPrice/` | `getPeakValleyPrice`, `savePeakValleyPrice` | [#peak-valley-price](snippets.md#peak-valley-price) |
+| 货币设置 | `energyCurrency/` | `getCurrencyList`, `getDeviceCurrency`, `saveDeviceCurrency` | [#currency-settings](snippets.md#currency-settings) |
+| 费用预算 | `energyCostWarn/` | `getDeviceCostBudget`, `batchSaveCostBudget`, `BudgetDataType` | [#budget-warnings](snippets.md#budget-warnings) |
+| 用量预算 | `energyUsageWarn/` | `getDeviceConsumeBudget`, `batchSaveConsumeBudget`, `BudgetDataType` | [#budget-warnings](snippets.md#budget-warnings) |
+| 数据管理 | （工具类） | `cleanDeviceData`, `exportDeviceData` | [#data-management](snippets.md#data-management) |
 | 设置入口 | `energyMain/` | 仅页面导航 | — |
 
 ### 适用情况
@@ -61,7 +61,7 @@
 
 ## API Reference {#api-ref}
 
-所有函数均从 `@tuya-miniapp/cloud-api` 导入，完整示例见 [references/snippets.md](references/snippets.md)。
+所有函数均从 `@tuya-miniapp/cloud-api` 导入，完整示例见 [references/snippets.md](snippets.md)。
 
 ### 函数说明
 
@@ -105,13 +105,13 @@ import { getDeviceProperty, setDeviceProperty } from '@ray-js/ray';
 
 1. 两个 Tab：`IndicatorCode.EleUsage` 和 `IndicatorCode.EleCost`
 2. 日期类型选择器（API 使用 Day/Week/Month，UI 可用 Month + 全年范围表示"年"）
-3. 日期前后导航 — 参见 [#date-navigation](references/snippets.md#date-navigation)
+3. 日期前后导航 — 参见 [#date-navigation](snippets.md#date-navigation)
 4. Tab/日期切换时通过 `useAsyncEffect` 调用 `getDeviceData` 获取数据
 5. 使用 `@ray-js/common-charts` 渲染：默认导入 `CommonCharts`，传入 `unit` 和兼容 ECharts 的 `option`（`xAxis` / `yAxis` / `series`，`type` 为 `'line'` 或 `'bar'`）
 6. 图表上方显示总量和单位
 7. 可选：从设备 DP Schema 读取实时 DP 值（功率、电压、电流）
 
-组件骨架见 [#statistic-chart](references/snippets.md#statistic-chart)。
+组件骨架见 [#statistic-chart](snippets.md#statistic-chart)。
 
 ### 峰谷电价页
 
@@ -122,7 +122,7 @@ import { getDeviceProperty, setDeviceProperty } from '@ray-js/ray';
 5. 通过 `savePeakValleyPrice` 保存全部配置
 6. 校验：时段不得重叠，小时字符串须为两位数 `"00"`~`"24"`
 
-参见 [#peak-valley-price](references/snippets.md#peak-valley-price)。
+参见 [#peak-valley-price](snippets.md#peak-valley-price)。
 
 ### 货币设置页
 
@@ -132,7 +132,7 @@ import { getDeviceProperty, setDeviceProperty } from '@ray-js/ray';
 4. 自定义单位区域：通过 `getDeviceProperty`/`setDeviceProperty` 以 `custom_currency_unit` 为 key 读写
 5. 自定义单位输入框需防抖处理
 
-参见 [#currency-settings](references/snippets.md#currency-settings)。
+参见 [#currency-settings](snippets.md#currency-settings)。
 
 ### 预算提醒页（费用 + 用量）
 
@@ -142,7 +142,7 @@ import { getDeviceProperty, setDeviceProperty } from '@ray-js/ray';
 4. 通过 `batchSaveCostBudget` 或 `batchSaveConsumeBudget` 保存
 5. 输入框使用 `useDebounceFn` 防抖
 
-参见 [#budget-warnings](references/snippets.md#budget-warnings)。
+参见 [#budget-warnings](snippets.md#budget-warnings)。
 
 ### 数据管理工具
 
@@ -150,7 +150,7 @@ import { getDeviceProperty, setDeviceProperty } from '@ray-js/ray';
 2. `exportDeviceData` — 通过设备属性存储邮箱，操作后显示"任务已提交" toast
 3. 建议在 `cleanDeviceData` 前先调用 `exportDeviceData`
 
-参见 [#data-management](references/snippets.md#data-management)。
+参见 [#data-management](snippets.md#data-management)。
 
 ---
 

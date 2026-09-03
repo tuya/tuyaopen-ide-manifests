@@ -1,6 +1,6 @@
 # 示例（Recipes）
 
-六个端到端示例，挑最接近的一个改造即可。字段语义见 [../references/](../references/)，整体流程见 [../README.md](../README.md)。
+六个端到端示例，挑最接近的一个改造即可。字段语义见 [./](./)，整体流程见 [./README.md](./README.md)。
 
 > 所有片段都假设你的文件里已经有这些 import：
 >

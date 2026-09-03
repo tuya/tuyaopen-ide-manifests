@@ -30,8 +30,8 @@
   - 平台准备：涂鸦 IoT 平台已创建摄像机产品，并在小程序开发者平台「开发设置 → 已授权云能力」手动授权 **IPC 标准能力**。
   - 包管理：Node ≥ 16 + Yarn；命令为 `yarn install` / `yarn start` / `yarn build`。
 - **延伸阅读**：
-  - 字段速查与组件签名：[references/](./references/)
-  - 端到端示例：[references/recipes.md](./references/recipes.md)
+  - 字段速查与组件签名：[references/]()
+  - 端到端示例：[references/recipes.md](recipes.md)
   - 评估用例：[evals/evals.json](./evals/evals.json)
   - 官方文档：[Codelab](https://developer.tuya.com/cn/miniapp-codelabs/codelabs/panel-ipc/index.html#0) · [Ray](https://developer.tuya.com/cn/miniapp/develop/ray) · [SDM](https://developer.tuya.com/cn/miniapp/develop/ray/sdm/overview)
 - **搭配技能**：通用「TypeScript 重构」「Cursor 项目导览」类技能可叠加；路径巡航开发时建议同时让 agent 索引 `src/features/path-point/` 让 hooks 命中更准。
@@ -204,10 +204,10 @@ isIntercomSupported boolean        对讲是否支持
 
 ## Critical Rules
 
-- **Must**: 修改 `FeatureMenu` / `TabBar` 配置项前先读 [references/component/layout-feature.md](./references/component/layout-feature.md)。
-- **Must**: 使用任何 DP 工具前先读 [references/api/dp-utils.md](./references/api/dp-utils.md)。
-- **Must**: 跳转 native 页或外部小程序、接 VAS 运营 Banner 前先读 [references/api/service-hall-and-routes.md](./references/api/service-hall-and-routes.md)。
-- **Must**: 路径巡航相关开发先读 [references/api/path-point-hooks.md](./references/api/path-point-hooks.md)。
+- **Must**: 修改 `FeatureMenu` / `TabBar` 配置项前先读 [references/component/layout-feature.md](component/layout-feature.md)。
+- **Must**: 使用任何 DP 工具前先读 [references/api/dp-utils.md](api/dp-utils.md)。
+- **Must**: 跳转 native 页或外部小程序、接 VAS 运营 Banner 前先读 [references/api/service-hall-and-routes.md](api/service-hall-and-routes.md)。
+- **Must**: 路径巡航相关开发先读 [references/api/path-point-hooks.md](api/path-point-hooks.md)。
 - **Must**: bool 型功能用 `publishDpOutTime` 下发，并在 `dpListenCallback` 里 `currentItem.hasClick && clearPublishDpOutTime()`。
 - **Must**: 枚举型功能 `onClick` 只负责 `changePanelInfoState('showSmartActionSheet', ...)`；**不要**自己 publish DP（home 已自动处理）。
 - **Must**: popup 型功能除了写组件，**必须**在 `src/config/componentMap.ts` 注册 `componentKey`，否则点击无响应。
@@ -227,17 +227,17 @@ isIntercomSupported boolean        对讲是否支持
 
 ### Component（组件）
 
-- [layout-feature](./references/component/layout-feature.md) — 主页功能宫格 + FeatureMenu 字段全表 + 按 type 写 onClick
-- [layout-footer](./references/component/layout-footer.md) — 底部 TabBar 字段全表 + 中心大按钮 + 对讲特殊项
-- [ipc-player-integration](./references/component/ipc-player-integration.md) — 融合播放器 useCtx / initPlayerWidgets / 横屏行为
-- [path-manager](./references/component/path-manager.md) — 路径巡航场景栈 UI + Scene 枚举 + 注册到 componentMap
+- [layout-feature](component/layout-feature.md) — 主页功能宫格 + FeatureMenu 字段全表 + 按 type 写 onClick
+- [layout-footer](component/layout-footer.md) — 底部 TabBar 字段全表 + 中心大按钮 + 对讲特殊项
+- [ipc-player-integration](component/ipc-player-integration.md) — 融合播放器 useCtx / initPlayerWidgets / 横屏行为
+- [path-manager](component/path-manager.md) — 路径巡航场景栈 UI + Scene 枚举 + 注册到 componentMap
 
 ### API
 
-- [dp-utils](./references/api/dp-utils.md) — `publishDpOutTime` / `getDpCodeIsExist` / `getTargetEnumDpActionSheetData` 等 DP 工具
-- [path-point-hooks](./references/api/path-point-hooks.md) — `useCreatePath` / `usePlayPath` / `useCurrentPlayPoint` 等路径巡航 hooks
-- [service-hall-and-routes](./references/api/service-hall-and-routes.md) — VAS pageType 6 种跳转规则 + nativePageRoute / miniIdLabs
+- [dp-utils](api/dp-utils.md) — `publishDpOutTime` / `getDpCodeIsExist` / `getTargetEnumDpActionSheetData` 等 DP 工具
+- [path-point-hooks](api/path-point-hooks.md) — `useCreatePath` / `usePlayPath` / `useCurrentPlayPoint` 等路径巡航 hooks
+- [service-hall-and-routes](api/service-hall-and-routes.md) — VAS pageType 6 种跳转规则 + nativePageRoute / miniIdLabs
 
 ### Redux
 
-- [panel-info](./references/redux/panel-info.md) — panelInfo slice 全部 keys + EventName 跨组件信令
+- [panel-info](redux/panel-info.md) — panelInfo slice 全部 keys + EventName 跨组件信令

@@ -1090,6 +1090,70 @@ def check_attachments_have_exit(items: list) -> None:
                 )
 
 
+SKILL_NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
+FENCED_CODE_RE = re.compile(r"```[\s\S]*?```", re.MULTILINE)
+LINK_RE = re.compile(r"\[([^\]]+)\]\(([^)]+)\)")
+
+
+def check_skill_naming_contract(items: list) -> None:
+    """Every skill ID and frontmatter name must adhere to the Agent Skills standard:
+    lowercase alphanumeric with single hyphens, <= 64 chars, no double hyphens."""
+    for item in items:
+        sid = item.get("id")
+        if not is_str(sid):
+            continue
+        label = f"item '{sid}'"
+        if len(sid) > 64:
+            err(f"{label}: id length ({len(sid)}) exceeds Agent Skills 64-char limit")
+        if not SKILL_NAME_RE.match(sid):
+            err(f"{label}: id must match ^[a-z0-9]+(-[a-z0-9]+)*$ (no uppercase, underscores, or double hyphens)")
+
+
+def check_progressive_disclosure(items: list) -> None:
+    """Enforces clean progressive disclosure: no deeply nested references/references/ directories."""
+    for item in items:
+        local_path = (item.get("source") or {}).get("localPath")
+        if not is_str(local_path):
+            continue
+        p = REPO_ROOT / local_path
+        bad_nest = list(p.glob("**/references/**/references"))
+        for bn in bad_nest:
+            err(f"item '{item.get('id')}': nested references directory found: {bn.relative_to(REPO_ROOT)}")
+
+
+def check_markdown_relative_links(items: list) -> None:
+    """Verifies that all internal relative markdown links in all skill files point to existing files."""
+    for item in items:
+        local_path = (item.get("source") or {}).get("localPath")
+        if not is_str(local_path):
+            continue
+        skill_dir = REPO_ROOT / local_path
+        if not skill_dir.is_dir():
+            continue
+        for md_file in skill_dir.rglob("*.md"):
+            try:
+                content = md_file.read_text(encoding="utf-8")
+            except OSError as e:
+                err(f"item '{item.get('id')}': failed to read {md_file.relative_to(REPO_ROOT)}: {e}")
+                continue
+            # Strip code blocks to avoid checking code snippet examples
+            clean_content = FENCED_CODE_RE.sub("", content)
+            for match in LINK_RE.finditer(clean_content):
+                target = match.group(2).strip()
+                # Ignore web URLs, anchors, mailto, scheme links
+                if target.startswith(("http://", "https://", "mailto:", "#", "javascript:", "/", "<")):
+                    continue
+                target_file = target.split("#")[0].strip()
+                if not target_file:
+                    continue
+                resolved = (md_file.parent / target_file).resolve()
+                if not resolved.exists():
+                    err(
+                        f"item '{item.get('id')}': broken markdown link in "
+                        f"{md_file.relative_to(REPO_ROOT)}: target {target!r} does not exist"
+                    )
+
+
 def main() -> int:
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
     if not index_path.is_file():
@@ -1120,6 +1184,9 @@ def main() -> int:
     check_agent_skill_paths(seen_ids)
     check_cli_declaration(items)
     check_frontmatter_parses(items)
+    check_skill_naming_contract(items)
+    check_progressive_disclosure(items)
+    check_markdown_relative_links(items)
     check_routing_covers_opt_in(items)
     check_resident_descriptions_cover_triggers(items)
     check_attachments_have_exit(items)

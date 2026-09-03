@@ -3746,8 +3746,8 @@ function PageSdmAlarm() {
 
 ###### 涉及 API
 
-- 获取设备告警配置列表：[getBuiltInAlarmList](./getBuiltInAlarmList)
-- 启用/禁用告警：[setBuiltInAlarmStatus](./setBuiltInAlarmStatus)
+- 获取设备告警配置列表：`getBuiltInAlarmList`
+- 启用/禁用告警：`setBuiltInAlarmStatus`
 - Hooks：[useBuiltInAlarm](/cn/miniapp/solution-panel/ability/common/sdm/hooks/useBuiltInAlarm)
 
 ###### 业务流程
@@ -3768,10 +3768,10 @@ function PageSdmAlarm() {
 
 ###### 涉及 API
 
-- 查询自定义告警规则列表：[getCustomAlarmList](./getCustomAlarmList)
-- 新增/修改自定义告警规则：[addCustomAlarm](./addCustomAlarm)
-- 启用/禁用自定义告警规则：[setCustomAlarmStatus](./setCustomAlarmStatus)
-- 删除自定义告警规则：[deleteCustomAlarm](./deleteCustomAlarm)
+- 查询自定义告警规则列表：`getCustomAlarmList`
+- 新增/修改自定义告警规则：`addCustomAlarm`
+- 启用/禁用自定义告警规则：`setCustomAlarmStatus`
+- 删除自定义告警规则：`deleteCustomAlarm`
 - Hooks：[useCustomAlarm](/cn/miniapp/solution-panel/ability/common/sdm/hooks/useCustomAlarm)
 
 ###### 业务流程

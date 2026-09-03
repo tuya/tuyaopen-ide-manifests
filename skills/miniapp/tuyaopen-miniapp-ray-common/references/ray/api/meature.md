@@ -321,7 +321,7 @@ _**<font color="red">目前云能力在 `开发者工具`环境无法使用，�
 |    title     |     string      | 邮件标题                                                                   |    否    |
 | dpExcelQuery | array \| string | 查询条件，DpExcelQuery 数组对象 或 转成 json 字符串，详见下文              |    是    |
 |     date     |     string      | 要查询的日期，yyyyMMdd 格式                                                |    是    |
-|     type     |     string      | 统计类型，详见 [统计类型说明](../meature#统计类型说明)。可选值：'sum' \| 'avg' \| 'minux' \| 'max' \| 'min' \| 'count' \| 'recent'；默认 sum |    否    |
+|     type     |     string      | 统计类型，详见 [统计类型说明](#统计类型说明)。可选值：'sum' \| 'avg' \| 'minux' \| 'max' \| 'min' \| 'count' \| 'recent'；默认 sum |    否    |
 |     lang     |     string      | 多语言格式 'cn' \| 'en' \| ...                                             |    否    |
 
 **DpExcelQuery 对象**

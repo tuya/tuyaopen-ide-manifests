@@ -485,33 +485,33 @@ actions.switch_led.toggle(); // 切换开关
 
 ### 功能页
 
-- [fp-lamp-schedule](./references/functionPage/fp-lamp-schedule.md) — 照明定时页（含生物节律 / 入睡 / 唤醒 / 循环 / 随机定时）
-- [fp-lamp-dnd](./references/functionPage/fp-lamp-dnd.md) — 停电勿扰 / 遥控开关（复用）
-- [fp-lamp-power-memory](./references/functionPage/fp-lamp-power-memory.md) — 断电记忆页
-- [fp-lamp-gradient](./references/functionPage/fp-lamp-gradient.md) — 灯光渐变页
+- [fp-lamp-schedule](functionPage/fp-lamp-schedule.md) — 照明定时页（含生物节律 / 入睡 / 唤醒 / 循环 / 随机定时）
+- [fp-lamp-dnd](functionPage/fp-lamp-dnd.md) — 停电勿扰 / 遥控开关（复用）
+- [fp-lamp-power-memory](functionPage/fp-lamp-power-memory.md) — 断电记忆页
+- [fp-lamp-gradient](functionPage/fp-lamp-gradient.md) — 灯光渐变页
 
 ### API
 
-- [cloud-config](./references/api/cloud-config.md) — 云端设备属性存储（颜色预设等）**含 devProperty 底层封装**
-- [color-utils](./references/api/color-utils.md) — HSV / RGB / 色温颜色转换工具
-- [music-sdk](./references/api/music-sdk.md) — 音乐律动 SDK
-- [scene-recommend](./references/api/scene-recommend.md) — 系统推荐场景
+- [cloud-config](api/cloud-config.md) — 云端设备属性存储（颜色预设等）**含 devProperty 底层封装**
+- [color-utils](api/color-utils.md) — HSV / RGB / 色温颜色转换工具
+- [music-sdk](api/music-sdk.md) — 音乐律动 SDK
+- [scene-recommend](api/scene-recommend.md) — 系统推荐场景
 
 ### Component
 
-- [lamp-color-wheel](./references/component/lamp-color-wheel.md) — 圆形点选色环
-- [lamp-hue-picker](./references/component/lamp-hue-picker.md) — 环形色相拖拽色盘
-- [lamp-circle-picker](./references/component/lamp-circle-picker.md) — 圆环通用色盘
-- [lamp-circle-picker-color](./references/component/lamp-circle-picker-color.md) — 圆形彩光色盘
-- [lamp-circle-picker-white](./references/component/lamp-circle-picker-white.md) — 圆形白光色温色盘
-- [lamp-rect-picker-color](./references/component/lamp-rect-picker-color.md) — 矩形彩光色盘
-- [lamp-rect-white-picker](./references/component/lamp-rect-white-picker.md) — 矩形色温色盘
-- [lamp-bright-slider](./references/component/lamp-bright-slider.md) — 亮度滑条
-- [lamp-temp-slider](./references/component/lamp-temp-slider.md) — 色温滑条
-- [lamp-color-slider](./references/component/lamp-color-slider.md) — 色相滑条
-- [lamp-saturation-slider](./references/component/lamp-saturation-slider.md) — 饱和度滑条
-- [lamp-color-card](./references/component/lamp-color-card.md) — 预设色卡
-- [lamp-percent-slider](./references/component/lamp-percent-slider.md) — 水平百分比滑条
-- [lamp-vertical-percent-slider](./references/component/lamp-vertical-percent-slider.md) — 竖向百分比滑条
-- [lamp-music-card](./references/component/lamp-music-card.md) — 音乐律动卡片
-- [tab-bar](./references/component/tab-bar.md) — 底部固定 Tab 栏
+- [lamp-color-wheel](component/lamp-color-wheel.md) — 圆形点选色环
+- [lamp-hue-picker](component/lamp-hue-picker.md) — 环形色相拖拽色盘
+- [lamp-circle-picker](component/lamp-circle-picker.md) — 圆环通用色盘
+- [lamp-circle-picker-color](component/lamp-circle-picker-color.md) — 圆形彩光色盘
+- [lamp-circle-picker-white](component/lamp-circle-picker-white.md) — 圆形白光色温色盘
+- [lamp-rect-picker-color](component/lamp-rect-picker-color.md) — 矩形彩光色盘
+- [lamp-rect-white-picker](component/lamp-rect-white-picker.md) — 矩形色温色盘
+- [lamp-bright-slider](component/lamp-bright-slider.md) — 亮度滑条
+- [lamp-temp-slider](component/lamp-temp-slider.md) — 色温滑条
+- [lamp-color-slider](component/lamp-color-slider.md) — 色相滑条
+- [lamp-saturation-slider](component/lamp-saturation-slider.md) — 饱和度滑条
+- [lamp-color-card](component/lamp-color-card.md) — 预设色卡
+- [lamp-percent-slider](component/lamp-percent-slider.md) — 水平百分比滑条
+- [lamp-vertical-percent-slider](component/lamp-vertical-percent-slider.md) — 竖向百分比滑条
+- [lamp-music-card](component/lamp-music-card.md) — 音乐律动卡片
+- [tab-bar](component/tab-bar.md) — 底部固定 Tab 栏
