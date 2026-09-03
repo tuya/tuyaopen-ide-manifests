@@ -220,14 +220,18 @@ not on `PATH`).
 
 ### 1.1 Resolve it first — `tuyaopen-cli` is usually NOT on `PATH`
 
-**Do this once, before the first `tuyaopen-cli` command in a session.** Every
-example in every TuyaOpen skill is written as bare `tuyaopen-cli …`. This defines
-a shell function of that name, so all of them then work verbatim — you never edit
-a command line to add a path.
+**Deterministic Python runner (recommended)**: use the self-contained resolver script in this skill.
+It auto-probes `TUYAOPEN_CLI_PATH` → `PATH` → project wrapper (`.tuyaopen/ide/bin/`) → IDE extensions → global npm packages, and runs transparently across Linux/macOS/Windows without brittle shell-function state:
 
-Run it in **bash or zsh**. A hyphen is legal in a function name there but not in
-strict POSIX `sh` (`dash` answers `Bad function name`); under `sh`, export
-`TUYAOPEN_CLI_PATH` and call `node "$TUYAOPEN_CLI_PATH" …` directly instead.
+```bash
+# Check resolution & CLI version
+python3 .agents/skills/tuyaopen-start/scripts/resolve_cli.py --info
+
+# Or run any command directly through it:
+python3 .agents/skills/tuyaopen-start/scripts/resolve_cli.py firmware list-ports --json
+```
+
+**Shell function alternative**: if running directly in **bash or zsh**, define `tuyaopen-cli` once for this shell:
 
 ```bash
 # Define `tuyaopen-cli` for this shell. Run once; then use the skills' examples as written.
