@@ -38,7 +38,7 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-embedded-build` | Compiling a TuyaOpen (embedded) project, Kconfig/menuconfig, build errors, running the LINUX ELF output |
+| `tuyaopen-embedded-build` | Compiling a TuyaOpen project, Kconfig/menuconfig, build errors, running LINUX ELF, and wiring third-party libraries into CMakeLists.txt (`references/cmake-dependencies.md`) |
 
 ## Flash / serial tooling
 
@@ -70,7 +70,7 @@ Every other skill points here instead of naming siblings directly — see
 
 | Skill id | Use when |
 |---|---|
-| `tuyaopen-embedded-hardware` | TuyaOpen (TDL-layer) peripheral code generation — display, camera, IMU, LED, button, joystick, PMIC, any board hardware; "vibe coding" requests |
+| `tuyaopen-embedded-hardware` | TuyaOpen (TDL-layer) peripheral code generation — display, camera, IMU, LED, button, joystick, PMIC, board hardware; LVGL screen UI and SDL2 simulator (`references/lvgl/`) |
 
 ## Device debugging
 
@@ -107,47 +107,8 @@ independent of each other; both need the platform phase first.
 |---|---|
 | `tuyaopen-miniapp` | Running the MiniApp CLI: build · install · preview · upload · template · sync-schema · meta |
 | `tuyaopen-miniapp-ray-common` | Ray API/component/lifecycle/routing questions not specific to one category |
-| `tuyaopen-miniapp-smart-ui` | Scaffolding or modifying pages/components with the Ray `smart-ui` library |
+| `tuyaopen-miniapp-smart-ui` | Scaffolding or modifying pages/components with Ray `smart-ui` library; category business playbooks (lighting, socket, robot vacuum, IPC camera under `references/categories/`) and electrician timing SDK |
+| `tuyaopen-miniapp-charts-library` | Integrating `@ray/charts-library` — electricity/temperature/humidity charts and energy statistics (`references/energy-stats/`) |
 | `tuyaopen-miniapp-requirement-guide` | Project kick-off — capturing user stories, page flows, DP usage plans before implementation |
 | `tuyaopen-miniapp-performance-ux-guard` | Code review / optimization pass against panel performance & UX guardrails |
 
-## Opt-in — the `scenario` group (**not** installed by `--all`)
-
-Narrow-scope playbooks for a specific situation. `tuyaopen-cli skills install
---all` deliberately skips this whole group: the cost of installing a skill is
-not disk, it is the routing decision its description takes part in, and a
-project doing one of these is not doing the other eight.
-
-**This section is the reason they are reachable at all.** An agent tool binds
-its skill roots when it launches, so a skill that was never installed does not
-exist as far as passive discovery is concerned — no name, no description,
-nothing to stumble on. (An agent that runs `tuyaopen-cli skills list --json`
-*does* see them all, installed or not; this table is what covers the agent
-that never thinks to run it.) Decide from the rows below, then install just
-the one you need:
-
-```bash
-tuyaopen-cli skills install --ids <id>          # one playbook
-tuyaopen-cli skills install --group scenario    # all of them (rare)
-```
-
-Newly installed skills are **not** in the current session's context — reload
-the skill list or start a new session before relying on one.
-
-| Skill id | Use when |
-|---|---|
-| `tuyaopen-embedded-lvgl` | Anything LVGL: writing the UI (widgets, Kconfig, **Chinese text** — `LV_FONT_SIMSUN_16_CJK` is not a Chinese font — images, GIFs, fonts that fit in flash), and running it on the host in an SDL2 window instead of reflashing (**Linux only**). Two references split the two halves |
-| `tuyaopen-embedded-dependency` | Wiring a freshly-downloaded PlatformIO ecosystem library into CMakeLists.txt / Kconfig, right after the IDE's Library → Ecosystem download. The IDE also installs this one automatically at that moment |
-| `tuyaopen-miniapp-lamp-panel` | Lighting category panel — bright/temp/colour/scene/music DPs, `lamp-*` components, `work_mode` FSM |
-| `tuyaopen-miniapp-socket-panel` | Socket / power-strip / smart-switch panel — multi-channel switches, countdowns, energy DPs |
-| `tuyaopen-miniapp-robot-vacuum` | Robot vacuum panel — map component, sweep DPs, `@ray-js/robot-*` SDKs |
-| `tuyaopen-miniapp-ipc-panel` | IPC camera panel template — grid layout, integrated player, PTZ, path cruise |
-| `tuyaopen-miniapp-charts-library` | Integrating `@ray/charts-library` — electricity/temperature/humidity charts |
-| `tuyaopen-miniapp-electrician-timing` | Integrating `@ray-js/electrician-timing-sdk` — cloud/cycle/random/inching/countdown timers |
-| `tuyaopen-miniapp-energy-stats` | Energy/electricity-cost statistics via `@tuya-miniapp/cloud-api` — peak-valley pricing, budgets |
-
-> A product category with no playbook here (thermostat, lock, sensor …) stays
-> on `tuyaopen-workflow-miniapp-dev` + `tuyaopen-miniapp-ray-common` +
-> `tuyaopen-miniapp-smart-ui`. **Do not** pick the "closest-looking" category
-> playbook — its DP semantics, component choices and state machines are written
-> for that category, and applying the wrong one is worse than applying none.

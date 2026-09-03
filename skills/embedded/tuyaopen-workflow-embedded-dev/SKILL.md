@@ -142,32 +142,19 @@ Active-high or active-low?
 
 **Never assume a pin.** If developer picks a reserved GPIO: "GPIO X is already used by [board.json component]. Please choose from the options above."
 
-### Step 3.5 — Does this plan need an opt-in skill? (check BEFORE writing code)
+### Step 3.5 — Does this plan need specialized reference material? (check BEFORE writing code)
 
-<code data-type="tag" style="color:#ff4d4f">内测第四轮：整轮写了 LVGL 中文 UI，从没看过 `tuyaopen-embedded-lvgl`</code>
+Two areas this phase regularly needs are packaged as sub-references in existing installed skills. Read them on demand:
 
-Two skills this phase regularly needs are in the `scenario` group, which
-`tuyaopen-cli skills install --all` deliberately **skips**. A skill that was never
-installed does not exist as far as your context is concerned — no name, no
-description, nothing to stumble on. **This table is their only visible entry
-point**, which is why it sits here rather than in a reference file:
-
-| If the plan involves… | Install and read first |
+| If the plan involves… | Read first |
 |---|---|
-| **A screen** — any LVGL UI, widgets, LVGL Kconfig, images/GIFs, fonts, and above all **Chinese text** | `tuyaopen-embedded-lvgl` |
-| A third-party (PlatformIO) library — wiring it into CMakeLists.txt / Kconfig | `tuyaopen-embedded-dependency` |
-
-```bash
-tuyaopen-cli skills install --ids tuyaopen-embedded-lvgl
-```
+| **A screen** — any LVGL UI, widgets, LVGL Kconfig, images/GIFs, fonts, and above all **Chinese text** | `.agents/skills/tuyaopen-embedded-hardware/references/lvgl/README.md` (`tuyaopen-embedded-hardware`) |
+| A third-party (PlatformIO) library — wiring it into CMakeLists.txt / Kconfig | `.agents/skills/tuyaopen-embedded-build/references/cmake-dependencies.md` (`tuyaopen-embedded-build`) |
 
 > **中文显示是本条存在的直接原因。** `LV_FONT_SIMSUN_16_CJK` **不是**中文字体 ——
 > 它是 ASCII 加一份**硬编码的 1272 字符表**，表外的字直接不渲染。「温度」「取消」
 > 在表里，「设置」「开关」「连接」「亮度」「湿度」不在。你不会看到报错，只会看到
-> 空白。写任何中文界面之前先读那个 skill 的 references/development.md。
-
-Newly installed skills are **not** in the current session's context — reload the
-skill list or start a new session before relying on one.
+> 空白。写任何中文界面之前先读 `tuyaopen-embedded-hardware` 的 `references/lvgl/development.md`。
 
 ### Step 4 — Plan Confirmation
 

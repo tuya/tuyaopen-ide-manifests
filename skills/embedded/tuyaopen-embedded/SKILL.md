@@ -51,7 +51,7 @@ right for how.
 | Use a peripheral — display, camera, button, LED, I2C, UART, anything with a pin | `tuyaopen-cli hardware list-used` · `hardware board-context` · `hardware set-used` | `tuyaopen-embedded-hardware` |
 | Get an authorization code onto the device (UUID / AuthKey / PID) | `tuyaopen-cli license list` · `license add` · `license import` · `tuyaopen-cli firmware authorize` · `firmware auth-status` | `tuyaopen-embedded-device-auth` |
 | See what the **SDK itself** is made of — core + platform sub-SDKs, installed? current? | `tuyaopen-cli sdk platform` | `tuyaopen-embedded-env-setup` |
-| Get a **third-party** library into the project — find it, install it, record it | `tuyaopen-cli dependency search` · `dependency install` · `dependency add` · `dependency list` · `dependency remove` | `tuyaopen-embedded-dependency` (opt-in — see below) |
+| Get a **third-party** library into the project — find it, install it, record it | `tuyaopen-cli dependency search` · `dependency install` · `dependency add` · `dependency list` · `dependency remove` | `tuyaopen-embedded-build` (see below) |
 | Find out why the environment or the CLI itself is wrong; produce a bug-report bundle | `tuyaopen-cli diag doctor` · `diag export` | `tuyaopen-start` |
 | Drive the device over its serial CLI; capture logs in the background; decode a crash dump | `tuyaopen-cli firmware monitor` · `tuyaopen-cli firmware list-ports` | `tuyaopen-embedded-cli-debug` |
 
@@ -75,14 +75,8 @@ usually **not** on `PATH`.
 > `ecosystem install` 是同一个核心函数上的重复实现。三个组已合并,**旧拼法直接失效,没有别名**。
 
 **注意 `dependency` 的五条命令没有一条会改 `CMakeLists.txt` 或 `Kconfig`** ——
-让编译器真正看见这个库的最后一步没有命令,那是技能 `tuyaopen-embedded-dependency`
-的职责(它在 `scenario` 组,按需装):
-
-```bash
-tuyaopen-cli skills install --ids tuyaopen-embedded-dependency
-```
-
-> 新装的技能不在当前会话的上下文里 —— 重新加载技能列表或开新会话再用。
+让编译器真正看见这个库的最后一步没有命令，参见 `tuyaopen-embedded-build`
+的子参考 `references/cmake-dependencies.md`（直接查阅，无需额外安装技能）。
 
 ## Preconditions every embedded command shares
 

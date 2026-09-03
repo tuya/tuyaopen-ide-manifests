@@ -115,7 +115,7 @@
     },
     {
       "id": "tuyaopen-embedded-build",
-      "version": "1.1.2",
+      "version": "1.1.3",
       "group": "embedded",
       "order": 1,
       "name": {
@@ -218,7 +218,8 @@
         "localPath": "skills/core/tuyaopen-skill-maker"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -283,62 +284,6 @@
       ]
     },
     {
-      "id": "tuyaopen-embedded-dependency",
-      "version": "2.1.1",
-      "group": "scenario",
-      "order": 8,
-      "name": {
-        "en": "Wire ecosystem library into CMake",
-        "zh-CN": "将生态库接入 CMake"
-      },
-      "surface": "embedded",
-      "summary": {
-        "en": "Register a freshly-downloaded PlatformIO library with the active TuyaOpen project's build system. Reads the pinned version from the project lockfile, then patches CMakeLists.txt and Kconfig where applicable.",
-        "zh-CN": "把刚下载的 PlatformIO 库正式注册到当前 TuyaOpen 项目的构建系统里。版本号从项目锁文件读取，并在必要时同步修改 CMakeLists.txt 与 Kconfig。"
-      },
-      "whenToUse": {
-        "en": "Use immediately after the IDE downloads a library from the Library → Ecosystem tab.",
-        "zh-CN": "当 IDE 通过库 → 生态标签页下载新库后立即触发。"
-      },
-      "tags": [
-        "cmake",
-        "dependencies",
-        "vibeCode"
-      ],
-      "triggers": [
-        "依赖",
-        "库"
-      ],
-      "cli": {
-        "groups": [
-          "dependency",
-          "sdk"
-        ]
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-embedded-dependency",
-      "aliases": [
-        "tuyaopen-dependency",
-        "ecosystem-wire-cmake"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-embedded-build",
-        "tuyaopen-embedded-project"
-      ],
-      "commands": [
-        "tuyaopen.skill.wireCmake"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-embedded-dependency"
-      },
-      "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
       "id": "tuyaopen-cloud",
       "version": "1.8.1",
       "group": "cloud",
@@ -396,7 +341,8 @@
         "localPath": "skills/cloud/tuyaopen-cloud"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -458,12 +404,13 @@
         "localPath": "skills/cloud/tuyaopen-workflow-product-dev"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
       "id": "tuyaopen-embedded-hardware",
-      "version": "2.1.1",
+      "version": "2.1.2",
       "group": "embedded",
       "order": 11,
       "name": {
@@ -760,7 +707,7 @@
     },
     {
       "id": "tuyaopen-workflow-embedded-dev",
-      "version": "2.3.0",
+      "version": "2.3.1",
       "group": "embedded",
       "order": 23,
       "name": {
@@ -971,12 +918,13 @@
         "localPath": "skills/miniapp/tuyaopen-miniapp"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
       "id": "tuyaopen-workflow-miniapp-dev",
-      "version": "2.7.0",
+      "version": "2.7.1",
       "group": "miniapp",
       "order": 99,
       "name": {
@@ -1022,12 +970,6 @@
         "tuyaopen-miniapp-ray-common",
         "tuyaopen-miniapp-smart-ui",
         "tuyaopen-miniapp-charts-library",
-        "tuyaopen-miniapp-socket-panel",
-        "tuyaopen-miniapp-lamp-panel",
-        "tuyaopen-miniapp-robot-vacuum",
-        "tuyaopen-miniapp-ipc-panel",
-        "tuyaopen-miniapp-electrician-timing",
-        "tuyaopen-miniapp-energy-stats",
         "tuyaopen-miniapp-performance-ux-guard",
         "tuyaopen-miniapp-requirement-guide"
       ],
@@ -1035,7 +977,8 @@
         "localPath": "skills/miniapp/tuyaopen-workflow-miniapp-dev"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -1082,12 +1025,13 @@
         "localPath": "skills/miniapp/tuyaopen-miniapp-ray-common"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
       "id": "tuyaopen-miniapp-smart-ui",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "group": "miniapp",
       "order": 101,
       "name": {
@@ -1133,219 +1077,13 @@
         "localPath": "skills/miniapp/tuyaopen-miniapp-smart-ui"
       },
       "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-miniapp-lamp-panel",
-      "version": "1.0.3",
-      "group": "scenario",
-      "order": 110,
-      "name": {
-        "en": "Lighting Panel",
-        "zh-CN": "照明面板"
-      },
-      "surface": "miniapp",
-      "summary": {
-        "en": "Tuya lighting category Ray miniapp panel development — lamp DPs, lamp-* components, hooks, work_mode state machine.",
-        "zh-CN": "涂鸦照明品类 Ray 小程序面板开发，涵盖灯具 DP、lamp-* 组件、hook 选型、work_mode 状态机。"
-      },
-      "whenToUse": {
-        "en": "Use when building or modifying a lighting panel (bright/temp/colour/scene/music DPs, lamp-* components, useProps/useActions hooks, work_mode FSM).",
-        "zh-CN": "创建或修改灯具面板、读写 bright/temp/colour/scene/music 等 DP、使用 lamp-* 组件、选 useProps/useActions hook、设计 work_mode 状态机时使用。"
-      },
-      "tags": [
-        "miniapp",
-        "ray",
-        "panel",
-        "lamp",
-        "lighting"
-      ],
-      "triggers": [
-        "小程序",
-        "灯"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-miniapp-lamp-panel",
-      "aliases": [
-        "miniapp-lamp-panel"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-miniapp-ray-common",
-        "tuyaopen-miniapp-smart-ui"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-miniapp-lamp-panel"
-      },
-      "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-miniapp-socket-panel",
-      "version": "1.0.3",
-      "group": "scenario",
-      "order": 111,
-      "name": {
-        "en": "Socket / Power Strip Panel",
-        "zh-CN": "插座/排插面板"
-      },
-      "surface": "miniapp",
-      "summary": {
-        "en": "Tuya electrician socket / power-strip / smart-switch miniapp panel development.",
-        "zh-CN": "涂鸦电工插座/排插/智能开关面板小程序开发指南。"
-      },
-      "whenToUse": {
-        "en": "Use to build/modify socket panels — multi-channel switches, countdowns, energy stats DPs, function-page navigation, DP value-mapping rules.",
-        "zh-CN": "多路开关渲染、倒计时、用电量统计、功能页跳转、DP 换算规则等场景使用。"
-      },
-      "tags": [
-        "miniapp",
-        "ray",
-        "panel",
-        "socket",
-        "electrician"
-      ],
-      "triggers": [
-        "小程序",
-        "插座"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-miniapp-socket-panel",
-      "aliases": [
-        "miniapp-socket-panel"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-miniapp-ray-common",
-        "tuyaopen-miniapp-electrician-timing",
-        "tuyaopen-miniapp-energy-stats"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-miniapp-socket-panel"
-      },
-      "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-miniapp-robot-vacuum",
-      "version": "1.0.3",
-      "group": "scenario",
-      "order": 112,
-      "name": {
-        "en": "Robot Vacuum Panel",
-        "zh-CN": "扫地机面板"
-      },
-      "surface": "miniapp",
-      "summary": {
-        "en": "Tuya sweep robot / robot vacuum panel development — map, DPs, protocol, @ray-js/robot-* SDKs.",
-        "zh-CN": "涂鸦扫地机面板开发：地图、DP、协议、@ray-js/robot-* SDK 全链路。"
-      },
-      "whenToUse": {
-        "en": "Use for RobotMap component, sweep robot DPs (switch_go, mode, suction, command_trans), room/zone/spot cleaning, virtual walls, raster protocols.",
-        "zh-CN": "扫地机地图组件、DP、分区/禁区/虚拟墙、栅格协议编解码等场景使用。"
-      },
-      "tags": [
-        "miniapp",
-        "ray",
-        "panel",
-        "robot-vacuum",
-        "map"
-      ],
-      "triggers": [
-        "小程序",
-        "扫地"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-miniapp-robot-vacuum",
-      "aliases": [
-        "miniapp-robot-vacuum"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-miniapp-ray-common"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-miniapp-robot-vacuum"
-      },
-      "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-miniapp-ipc-panel",
-      "version": "1.0.3",
-      "group": "scenario",
-      "order": 113,
-      "name": {
-        "en": "IPC Camera Panel",
-        "zh-CN": "IPC 摄像机面板"
-      },
-      "surface": "miniapp",
-      "summary": {
-        "en": "Tuya IPC camera panel template (panel-ipc / PublicPanelIpc) — declarative grid, integrated player, VAS banner, PTZ, path cruise.",
-        "zh-CN": "涂鸦 IPC 摄像机面板模板，涵盖 FeatureMenu/TabBar 宫格、融合播放器、VAS 运营位、PTZ、路径巡航。"
-      },
-      "whenToUse": {
-        "en": "Use in panel-ipc / public-ipc-template / tuya-ray-materials PublicPanelIpc — LayoutFeature/Footer, configData, IPCPlayerIntegration, SDM, panel-sdk DP wiring.",
-        "zh-CN": "在 panel-ipc 仓库中开发主页宫格/底部 TabBar/弹窗/枚举 DP/PTZ/隐私模式/回放/云存/相册/对讲/品牌色等功能时使用。"
-      },
-      "tags": [
-        "miniapp",
-        "ray",
-        "panel",
-        "ipc",
-        "camera"
-      ],
-      "triggers": [
-        "小程序",
-        "摄像头"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-miniapp-ipc-panel",
-      "aliases": [
-        "miniapp-ipc-panel"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-miniapp-ray-common"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-miniapp-ipc-panel"
-      },
-      "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
       "id": "tuyaopen-miniapp-charts-library",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "group": "miniapp",
       "order": 120,
       "name": {
@@ -1384,115 +1122,14 @@
         "tuyaopen-start"
       ],
       "related": [
-        "tuyaopen-miniapp-ray-common",
-        "tuyaopen-miniapp-energy-stats"
+        "tuyaopen-miniapp-ray-common"
       ],
       "source": {
         "localPath": "skills/miniapp/tuyaopen-miniapp-charts-library"
       },
       "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-miniapp-electrician-timing",
-      "version": "1.0.3",
-      "group": "scenario",
-      "order": 121,
-      "name": {
-        "en": "Electrician Timing SDK",
-        "zh-CN": "电工定时 SDK"
-      },
-      "surface": "miniapp",
-      "summary": {
-        "en": "Integrate @ray-js/electrician-timing-sdk — cloud timer, cycle, random, inching, countdown.",
-        "zh-CN": "接入 @ray-js/electrician-timing-sdk：云定时、循环、随机、点动、倒计时五大能力。"
-      },
-      "whenToUse": {
-        "en": "Use when integrating timing SDK in a Ray miniapp panel — app onLaunch init, changeConfig on device/group switch, ConflictPopup + useDefaultModal, six timer kinds.",
-        "zh-CN": "Ray 面板小程序接入电工定时 SDK、changeConfig 设备/群组切换、ConflictPopup 联动、六类定时实现时使用。"
-      },
-      "tags": [
-        "miniapp",
-        "ray",
-        "electrician",
-        "timing"
-      ],
-      "triggers": [
-        "小程序",
-        "定时"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-miniapp-electrician-timing",
-      "aliases": [
-        "miniapp-electrician-timing"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-miniapp-socket-panel"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-miniapp-electrician-timing"
-      },
-      "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-miniapp-energy-stats",
-      "version": "1.0.3",
-      "group": "scenario",
-      "order": 122,
-      "name": {
-        "en": "Energy Statistics",
-        "zh-CN": "电量统计"
-      },
-      "surface": "miniapp",
-      "summary": {
-        "en": "Generate energy / electricity-cost statistics code using @tuya-miniapp/cloud-api — peak-valley pricing, budgets, IndicatorCode.",
-        "zh-CN": "通过 @tuya-miniapp/cloud-api 生成电量统计、电费统计、用电成本追踪代码，覆盖峰谷电价、电量/电费预算等场景。"
-      },
-      "whenToUse": {
-        "en": "Use for electricity statistics, energy billing, cost tracking, peak-valley pricing, budget warnings, getDeviceData, currency settings.",
-        "zh-CN": "电量/电费统计、用电成本追踪、峰谷电价、预算提醒、getDeviceData、币种设置等场景使用。"
-      },
-      "tags": [
-        "miniapp",
-        "ray",
-        "energy",
-        "statistics"
-      ],
-      "triggers": [
-        "小程序",
-        "电量"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "面板开发不经 tuyaopen CLI"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-miniapp-energy-stats",
-      "aliases": [
-        "miniapp-energy-stats"
-      ],
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-miniapp-charts-library",
-        "tuyaopen-miniapp-socket-panel"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-miniapp-energy-stats"
-      },
-      "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -1544,7 +1181,8 @@
         "localPath": "skills/miniapp/tuyaopen-miniapp-requirement-guide"
       },
       "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {
@@ -1594,63 +1232,8 @@
         "localPath": "skills/miniapp/tuyaopen-miniapp-performance-ux-guard"
       },
       "sdks": [
-        "tuyaopen"
-      ]
-    },
-    {
-      "id": "tuyaopen-embedded-lvgl",
-      "version": "1.0.1",
-      "group": "scenario",
-      "order": 26,
-      "name": {
-        "en": "LVGL on TuyaOpen",
-        "zh-CN": "LVGL 界面开发与模拟器"
-      },
-      "surface": "embedded",
-      "surfaces": [
-        "embedded"
-      ],
-      "summary": {
-        "en": "LVGL on a TuyaOpen board, both halves: writing the UI (widgets, Kconfig, Chinese text, images) and running it on the host in an SDL2 window instead of reflashing. Leads with the two shared traps — v8 vs v9, and .config vs lv_conf.h.",
-        "zh-CN": "TuyaOpen 开发板上的 LVGL，两半都在：写界面（控件、Kconfig、中文显示、图片）与在电脑上用 SDL2 窗口跑起来。开头两节是共用的坑：v8 与 v9 之分，以及配置改 .config 而不是 lv_conf.h。"
-      },
-      "whenToUse": {
-        "en": "Use when writing or debugging LVGL screen code, adding widgets, choosing a font, showing an image, seeing blank boxes instead of Chinese characters, when the UI does not fit in flash, or when you want to preview the UI on the computer.",
-        "zh-CN": "写或调试 LVGL 屏幕代码、加控件、选字体、显示图片、中文显示成空白方框、界面塞不进 flash、或想在电脑上预览界面时使用。"
-      },
-      "tags": [
-        "lvgl",
-        "ui",
-        "display",
-        "font",
-        "cjk",
-        "image",
-        "simulator",
-        "embedded"
-      ],
-      "triggers": [
-        "lvgl",
-        "屏幕",
-        "字体"
-      ],
-      "cli": {
-        "groups": "none",
-        "reason": "写 LVGL 代码、选字体、跑模拟器都没有 tuyaopen 命令；配置走 tos.py config / menuconfig，编译归 tuyaopen-embedded-build"
-      },
-      "defaultEnabled": false,
-      "installPayload": "scenario/tuyaopen-embedded-lvgl",
-      "requires": [
-        "tuyaopen-start"
-      ],
-      "related": [
-        "tuyaopen-embedded-hardware",
-        "tuyaopen-embedded-build"
-      ],
-      "source": {
-        "localPath": "skills/scenario/tuyaopen-embedded-lvgl"
-      },
-      "sdks": [
-        "tuyaopen"
+        "tuyaopen",
+        "tuyaos"
       ]
     },
     {

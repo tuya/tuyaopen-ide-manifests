@@ -17,40 +17,31 @@ where the first level equals the item's own `group` field and the second level
 
 The group is the unit `tuyaopen-cli skills install --group <g>` offers, so
 grouping the tree the same way puts one whole install unit in one directory.
-Five groups: `core` / `embedded` / `cloud` / `miniapp` / `scenario`. The first
-four group by capability; `scenario` groups by **product category** instead —
-the lamp / socket / robot-vacuum / IPC playbooks a developer installs exactly
-one of.
+Four groups: `core` / `embedded` / `cloud` / `miniapp`, grouped strictly by
+capability. Narrow-scope playbooks and scene SDKs are packaged as sub-references
+inside their respective capability skills (LVGL in `embedded-hardware`, CMake
+dependencies in `embedded-build`, category panel playbooks in `miniapp-smart-ui`,
+energy stats in `miniapp-charts-library`).
 
 ```
 skills/
-├── index.json                     # THE registry — 32 items, both product lines
+├── index.json                     # THE registry — 24 items, both product lines
 ├── core/                          # 2 payloads
 │   └── tuyaopen-start/  tuyaopen-skill-maker/          # foundation, not task skills
 ├── embedded/                      # 13 payloads
 │   ├── tuyaopen-embedded/  tuyaopen-embedded-build/  tuyaopen-embedded-env-setup/
 │   ├── tuyaopen-embedded-project/  tuyaopen-embedded-add-board/  tuyaopen-embedded-code-check/
 │   ├── tuyaopen-embedded-cli-debug/  tuyaopen-embedded-flash/  tuyaopen-embedded-device-auth/
-│   ├── tuyaopen-embedded-hardware/                     # per-peripheral docs under references/peripherals/
+│   ├── tuyaopen-embedded-hardware/                     # per-peripheral docs + lvgl/
 │   ├── tuyaopen-workflow-embedded-dev/
 │   └── tuyaos-build/  tuyaos-hardware-vibe-coding/     # sdks: ["tuyaos"] — the other product line
 ├── cloud/                         # 2 payloads
 │   └── tuyaopen-cloud/  tuyaopen-workflow-product-dev/
-├── miniapp/                       # 7 payloads
-│   ├── tuyaopen-miniapp/  tuyaopen-workflow-miniapp-dev/  tuyaopen-miniapp-ray-common/
-│   ├── tuyaopen-miniapp-smart-ui/  tuyaopen-miniapp-charts-library/
-│   └── tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
-└── scenario/                      # 8 payloads
-    ├── tuyaopen-miniapp-lamp-panel/  tuyaopen-miniapp-socket-panel/
-    ├── tuyaopen-miniapp-robot-vacuum/  tuyaopen-miniapp-ipc-panel/
-    ├── tuyaopen-miniapp-electrician-timing/  tuyaopen-miniapp-energy-stats/
-    └── tuyaopen-embedded-dependency/  tuyaopen-embedded-lvgl/
+└── miniapp/                       # 7 payloads
+    ├── tuyaopen-miniapp/  tuyaopen-workflow-miniapp-dev/  tuyaopen-miniapp-ray-common/
+    ├── tuyaopen-miniapp-smart-ui/  tuyaopen-miniapp-charts-library/
+    └── tuyaopen-miniapp-requirement-guide/  tuyaopen-miniapp-performance-ux-guard/
 ```
-
-Note `scenario` is **not** named after miniapp even though six of its eight
-members are panel playbooks: `tuyaopen-embedded-dependency` and
-`tuyaopen-embedded-lvgl` already sit there with `surface: "embedded"`, and more
-embedded per-category skills are expected.
 
 Those counts drift and nothing co-enforces a number written here. Measure
 instead of transcribing:
