@@ -256,6 +256,7 @@ Never write platform-level macros (`CONFIG_ENABLE_SPI`, `CONFIG_ENABLE_I2C`,
 | Type | Skill file |
 |------|-----------|
 | `display` | `references/peripherals/peripheral-display.md` |
+| `display (LVGL & Simulator)` | `references/lvgl/README.md` |
 | `camera`  | `references/peripherals/peripheral-camera.md`  |
 | `button`  | `references/peripherals/peripheral-button.md`  |
 | `led`     | `references/peripherals/peripheral-led.md`     |

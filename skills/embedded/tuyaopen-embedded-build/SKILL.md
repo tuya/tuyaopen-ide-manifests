@@ -279,3 +279,7 @@ Example (for a project named `hello_world_linux` version 1.0.0):
 Anything outside compiling / cleaning / Kconfig for a TuyaOpen project — not
 in scope here, see skill `tuyaopen-start`'s routing table
 (`references/ROUTING.md`).
+
+## Wiring third-party dependencies into CMake
+
+To wire Arduino, PlatformIO, or third-party C/C++ libraries into the project's `CMakeLists.txt`, read [references/cmake-dependencies.md](references/cmake-dependencies.md). It covers `add_subdirectory`, `target_include_directories`, `target_sources`, and Kconfig module integration.

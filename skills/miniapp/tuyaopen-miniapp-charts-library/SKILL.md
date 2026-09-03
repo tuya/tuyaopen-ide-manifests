@@ -49,6 +49,7 @@ metadata:
 - `EleChartCard`、`TempAndHumChartCard`、`IlluminanceChartCard`
 - `DataSourceProvider`、`ChartPeriodProvider`、`ChartSeriesPanel`、`ChartGranularityPicker`、`ChartPeriodNavigator`、`useChartPeriodContext`
 - "用电图表 / 温湿度图表 / 照度图表 / 计量统计图表 / 周期切换图表"
+- **用电量统计与峰谷计费**：参考 [references/energy-stats/README.md](references/energy-stats/README.md)
 - `seriesDataToOption`、`withXAxis`、`withTooltip`
 - 涂鸦统计 API：`getStatisticsConfig`、`getStatisticsRangHour`、`getStatisticsRang15min`、`getStatisticsRangDay`、`getStatisticsRangMonth`
 

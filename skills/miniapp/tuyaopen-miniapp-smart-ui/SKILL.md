@@ -30,8 +30,20 @@ metadata:
 当前**仅**处理 smart-ui，不作为通用 Ray API 或设备能力开发总入口。若用户目标超出 smart-ui，应先说明超出当前范围，再给出最小必要的外部建议。
 
 ## 搭配使用 {#usage}
-- ** requirement-creating-guide-skill **：需求生成指南 skill，配合使用可产出符合小程序面板规范的需求文档。
-- ** ray-common-develop-skill **：Ray 小程序开发 skill，配合使用可在更广泛的 Ray 开发场景中提供文档导航与实现约束，提升开发效率和代码质量。
+- **tuyaopen-miniapp-requirement-guide**：需求生成指南 skill，配合使用可产出符合小程序面板规范的需求文档。
+- **tuyaopen-miniapp-ray-common**：Ray 小程序开发 skill，配合使用可在更广泛的 Ray 开发场景中提供文档导航与实现约束，提升开发效率和代码质量。
+
+## 品类业务剧本与功能 SDK {#categories}
+
+本技能聚合了涂鸦常用硬件品类的面板最佳实践剧本与专有 SDK：
+
+| 品类 / 能力 | 文档入口 | 核心能力 |
+|---|---|---|
+| **照明 (Lamp)** | `references/categories/lamp/README.md` | `@ray-js/lamp-*` 组件、色盘/色温/亮度滑条、照明 DP 协议、`work_mode` 状态机 |
+| **插座 / 排插 (Socket)** | `references/categories/socket/README.md` | 多路开关、倒计时、用电统计集成、操作日志 |
+| **扫地机器人 (Robot Vacuum)** | `references/categories/robot-vacuum/README.md` | `@ray-js/robot-*` 地图 SDK、数据流（P2P/MQTT）、扫地机专有协议与虚拟墙 |
+| **IPC 摄像头 (Camera)** | `references/categories/ipc/README.md` | 视频流播放器集成、PTZ 云台控制、移动侦测与增值服务 Banner |
+| **电工定时 SDK** | `references/sdks/electrician-timing/README.md` | 云端定时、周期定时、随机防盗、点动、倒计时统一管理 |
 
 ## 工作流程 {#workflow}
 

@@ -1,6 +1,6 @@
 # Writing the LVGL UI
 
-Depth for skill `tuyaopen-embedded-lvgl`. Read its SKILL.md first — the LVGL
+Depth for LVGL screen UI under skill `tuyaopen-embedded-hardware`. Read its SKILL.md first — the LVGL
 version question and the `.config` rule are there, and both apply here.
 
 ## 1. Turning LVGL on
