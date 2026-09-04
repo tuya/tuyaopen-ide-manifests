@@ -69,6 +69,19 @@
             "led",
             "group-mpxn93yq"
           ]
+        },
+        {
+          "file": "TUYA_T5AI_BOARD_LCD_3.5_WITH_L511.config",
+          "name": {
+            "en": "3.5\" LCD + L511(4G)",
+            "zh-CN": "3.5寸 LCD 触摸屏 + L511(4G)"
+          },
+          "peripherals": [
+            "button",
+            "audio",
+            "led",
+            "group-mpxn93yq"
+          ]
         }
       ]
     },
