@@ -323,6 +323,23 @@
         "tuyaopen"
       ],
       "published": true
+    },
+    {
+      "id": "ec718pm",
+      "platformId": "l511g",
+      "name": {
+        "en": "L511G",
+        "zh-CN": "L511G"
+      },
+      "summary": {},
+      "detailUrl": "platforms/l511g/ec718pm.json",
+      "image": {
+        "url": "images/ec718pm/ec718pm.jpg"
+      },
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
     }
   ]
 }
