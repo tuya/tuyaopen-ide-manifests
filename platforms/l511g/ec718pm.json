@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "flashInterface": "qspi",
+  "connectivity": {
+    "wifi": false,
+    "ble": false,
+    "ethernet": false,
+    "cellular": true
+  },
+  "memory": {
+    "sramBytes": 0,
+    "romBytes": 0,
+    "flashMaxBytes": 0,
+    "psramMaxBytes": 0,
+    "efuse": false
+  },
+  "peripherals": {},
+  "pinout": [
+    {
+      "pin": 1,
+      "name": "<pad name, e.g. GPIO4 / P0 / GND>",
+      "gpio": 4,
+      "type": "<I/O | I | O | P | NC | AI | AO>",
+      "functions": [
+        "<SELECTION-ONLY controlled vocab: routing tokens ONLY — 'GPIO' (matrix-routable general IO marker) + fixed peripheral tokens the editor pin-picker matches, e.g. UART1_TX, I2C1_SCL, SPI0_MOSI, PWM3, ADC0_CH1. Do NOT put the pin's own GPIOn self-name here (identity lives in name/gpio). Reserved/system pins (flash bus, dedicated USB, power/XTAL) use []>",
+        "GPIO",
+        "ADC0_CH1"
+      ],
+      "caps": [
+        "<FREE TEXT, no vocab — datasheet display-only capability labels: RTC_GPIOn / LP_GPIOn, TOUCHn, DACn, flash signal names, USB_D±, strapping role, XTAL, JTAG, CLK_OUT, RGB/i8080/SEG, ENET_*, CAN_*, power rails, etc.>",
+        "RTC_GPIO4",
+        "TOUCH0"
+      ],
+      "note": "<non-obvious pin note, or omit>"
+    }
+  ],
+  "platformSymbol": "L511G",
+  "power": {
+    "vdd": {
+      "min": 3.3,
+      "typical": 3.8,
+      "max": 4.5,
+      "unit": "V"
+    },
+    "ioLevel": {
+      "min": 0,
+      "max": 3.3,
+      "unit": "V"
+    },
+    "deepSleepCurrent": {
+      "typical": 32,
+      "unit": "uA"
+    }
+  }
+}

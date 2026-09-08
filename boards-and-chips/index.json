@@ -1813,6 +1813,31 @@
         "width": 500,
         "height": 500
       }
+    },
+    {
+      "id": "lynq-l511g-y7",
+      "name": {
+        "en": "lynq-l511g-y7",
+        "zh-CN": "lynq-l511g-y7"
+      },
+      "platformId": "l511g",
+      "variantId": "ec718pm",
+      "manufacturer": {
+        "en": "Unknown"
+      },
+      "summary": {
+        "en": ""
+      },
+      "tags": [
+        "cellular",
+        "module"
+      ],
+      "image": null,
+      "detailUrl": "boards-and-chips/l511g/lynq-l511g-y7.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
     }
   ]
 }

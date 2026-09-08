@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "peripheralPatterns": {},
+  "links": {
+    "schematic": null,
+    "datasheet": null,
+    "productPage": null
+  },
+  "boardSymbol": "L511G"
+}
