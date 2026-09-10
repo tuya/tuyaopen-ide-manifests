@@ -1,0 +1,405 @@
+#!/usr/bin/env python3
+"""Cross-platform background monitor helper for TuyaOpen agents.
+
+Manages `tos.py monitor -l` as a background subprocess so agents can
+capture device logs without blocking the terminal.
+
+Commands:
+  start -p <port> [-l <logfile>]   Start background monitor. Blocks until the
+                                   monitor is up (or died), so the caller never
+                                   has to guess a `sleep`. Reports `ready` +
+                                   `reason`; exits 1 with `startup_tail` if the
+                                   monitor exited immediately.
+  tail  [-n N]                     Read last N lines from log file
+  stop                             Stop the monitor process
+  status                           Check if monitor is running, and why not:
+                                   running / stopped / exited-before-logging /
+                                   exited / no-session.
+
+Options:
+  --json     Machine-readable JSON output
+
+Logs and session state are stored under <project_dir>/.target_logging/,
+where <project_dir> is the directory containing app_default.config.
+The SDK .gitignore covers .target_logging at any depth (no leading slash).
+"""
+import argparse
+import datetime
+import json
+import os
+import subprocess
+import sys
+import time
+
+
+def _sdk_root():
+    """Return SDK root from $OPEN_SDK_ROOT, or search upward for tos.py."""
+    root = os.environ.get("OPEN_SDK_ROOT", "")
+    if root and os.path.isfile(os.path.join(root, "tos.py")):
+        return root
+    d = os.path.abspath(os.path.dirname(__file__))
+    while True:
+        if os.path.isfile(os.path.join(d, "tos.py")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    return os.getcwd()
+
+
+def _project_root():
+    """Return the project root (where app_default.config lives), searching upward from CWD.
+
+    Falls back to CWD if not found. Logs belong to the project, not the SDK.
+    The SDK .gitignore covers .target_logging/ at any depth (no leading slash),
+    so logs are always gitignored regardless of project location.
+    """
+    d = os.path.abspath(os.getcwd())
+    while True:
+        if os.path.isfile(os.path.join(d, "app_default.config")):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            break
+        d = parent
+    return os.getcwd()
+
+
+_ROOT = _sdk_root()
+SESSION_DIR = os.path.join(_project_root(), ".target_logging")
+SESSION_FILE = os.path.join(SESSION_DIR, "session.json")
+
+
+def _python_exe():
+    """Venv Python: $OPEN_SDK_PYTHON (set by export.sh/ps1/bat), else sys.executable."""
+    return os.environ.get("OPEN_SDK_PYTHON") or sys.executable
+
+
+def _out(data, as_json):
+    if as_json:
+        print(json.dumps(data))
+    else:
+        for k, v in data.items():
+            print(f"{k}: {v}")
+
+
+def _load_session():
+    if not os.path.isfile(SESSION_FILE):
+        return None
+    try:
+        with open(SESSION_FILE) as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def _save_session(pid, log_file, startup_log=None, stopped=False):
+    os.makedirs(SESSION_DIR, exist_ok=True)
+    with open(SESSION_FILE, "w") as f:
+        json.dump(
+            {
+                "pid": pid,
+                "log_file": log_file,
+                "startup_log": startup_log,
+                # Set by `stop`. Without it `status` cannot tell a monitor the
+                # caller shut down on purpose from one that died on its own,
+                # and a bare `running: false` made those look identical.
+                "stopped": stopped,
+            },
+            f,
+        )
+
+
+STARTUP_LOG = os.path.join(SESSION_DIR, "startup.log")
+"""Where the child's own stdout/stderr goes.
+
+`tos.py monitor` used to be spawned with both streams on DEVNULL, so when it
+exited immediately — wrong cwd, port already held, missing venv — every word it
+said about why was discarded, `start` still reported `ok: true` with a PID that
+was already dead, and the only symptom left was an empty `.target_logging/`.
+Keeping the output is what makes that case diagnosable at all.
+"""
+
+
+def _tail_file(path, limit=2000):
+    """Last `limit` characters of `path`, or '' — best effort, never raises."""
+    try:
+        with open(path, errors="replace") as f:
+            return f.read()[-limit:]
+    except OSError:
+        return ""
+
+
+def _clear_session():
+    try:
+        os.remove(SESSION_FILE)
+    except FileNotFoundError:
+        pass
+
+
+def _is_running(pid):
+    if sys.platform == "win32":
+        result = subprocess.run(
+            ["tasklist", "/FI", f"PID eq {pid}"],
+            capture_output=True, text=True,
+        )
+        return str(pid) in result.stdout
+    else:
+        try:
+            os.kill(pid, 0)
+            return True
+        except (OSError, ProcessLookupError):
+            return False
+
+
+def _win_cmdline(pid):
+    """Command line of a PID on Windows, or None when it cannot be determined.
+
+    `wmic` was the original implementation and is **removed from Windows 11
+    24H2**, where it raised a raw FileNotFoundError traceback out of `stop`
+    (measured 2026-08-25). CIM via PowerShell is the documented replacement;
+    `wmic` stays only as a fallback for older machines that lack PowerShell 5+.
+    """
+    try:
+        r = subprocess.run(
+            ["powershell", "-NoProfile", "-NonInteractive", "-Command",
+             f"(Get-CimInstance Win32_Process -Filter 'ProcessId={int(pid)}').CommandLine"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if r.returncode == 0 and r.stdout.strip():
+            return r.stdout
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    try:
+        r = subprocess.run(
+            ["wmic", "process", "where", f"ProcessId={int(pid)}", "get", "CommandLine"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if r.returncode == 0:
+            return r.stdout
+    except (OSError, subprocess.SubprocessError, ValueError):
+        pass
+    return None
+
+
+def _is_monitor_process(pid):
+    """Verify PID belongs to a tos.py monitor process to avoid killing unrelated processes."""
+    if sys.platform == "win32":
+        cmdline = _win_cmdline(pid)
+        if cmdline is None:
+            # Could not read the command line at all. Fail CLOSED: refusing to
+            # stop is recoverable (the user kills it by hand), killing the wrong
+            # PID is not.
+            return False
+        return "tos.py" in cmdline and "monitor" in cmdline
+    try:
+        with open(f"/proc/{pid}/cmdline", "rb") as f:
+            cmdline = f.read().replace(b"\x00", b" ").decode("utf-8", errors="replace")
+        return "tos.py" in cmdline and "monitor" in cmdline
+    except (FileNotFoundError, PermissionError, OSError):
+        return False
+
+
+def _stop_pid(pid):
+    if not _is_running(pid):
+        return
+    if not _is_monitor_process(pid):
+        return
+    try:
+        if sys.platform == "win32":
+            subprocess.run(
+                ["taskkill", "/F", "/PID", str(pid)],
+                capture_output=True,
+            )
+        else:
+            os.kill(pid, 15)  # SIGTERM
+    except Exception:
+        pass
+
+
+def cmd_start(port, log_file, as_json, ready_timeout=8.0):
+    session = _load_session()
+    if session and _is_running(session["pid"]):
+        _stop_pid(session["pid"])
+
+    os.makedirs(SESSION_DIR, exist_ok=True)
+    if not log_file:
+        ts = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        log_file = os.path.join(SESSION_DIR, f"{ts}.log")
+    else:
+        abs_log = os.path.realpath(os.path.abspath(log_file))
+        abs_session = os.path.realpath(os.path.abspath(SESSION_DIR))
+        if not abs_log.startswith(abs_session + os.sep):
+            _out({"ok": False, "error": "Log file must be within .target_logging/ directory"}, as_json)
+            sys.exit(1)
+
+    cmd = [_python_exe(), os.path.join(_ROOT, "tos.py"), "monitor", "-p", port, "-l", log_file]
+    kwargs = {}
+    if sys.platform == "win32":
+        kwargs["creationflags"] = (
+            subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+        )
+    else:
+        kwargs["start_new_session"] = True
+
+    # Both streams go to a file, never DEVNULL — see STARTUP_LOG.
+    with open(STARTUP_LOG, "w") as startup:
+        proc = subprocess.Popen(cmd, stdout=startup, stderr=subprocess.STDOUT, **kwargs)
+    _save_session(proc.pid, log_file, startup_log=STARTUP_LOG)
+
+    # Wait for the monitor to actually be up before answering. The caller used
+    # to get `ok: true` the instant Popen returned, which says nothing about
+    # whether the serial port opened — so every caller invented its own
+    # `sleep`, guessed low, and read an empty log. Readiness here is "the
+    # process is still alive AND the log file it was told to write exists":
+    # both are cheap, and together they rule out the two failures that were
+    # actually observed (immediate exit, and a log that never appears).
+    #
+    # Liveness here is `proc.poll()`, NOT `_is_running(pid)`. This process is
+    # the child's parent, so a child that has exited stays a zombie until it is
+    # reaped, and `_is_running` — which asks whether the PID exists — answers
+    # `True` for a zombie. Measured: with a `tos.py` that exits 2 immediately,
+    # the `_is_running` version reported `ok: true`, i.e. reproduced the exact
+    # bug this wait was added to fix. `poll()` reaps and returns the real code.
+    deadline = time.time() + ready_timeout
+    ready = False
+    while time.time() < deadline:
+        if proc.poll() is not None:
+            break
+        if os.path.isfile(log_file):
+            ready = True
+            break
+        time.sleep(0.2)
+
+    rc = proc.poll()
+    if rc is not None:
+        # Do NOT report success. This is the case that used to be invisible.
+        _clear_session()
+        _out(
+            {
+                "ok": False,
+                "error": f"monitor exited immediately (code {rc})",
+                "reason": "exited",
+                "exit_code": rc,
+                "pid": proc.pid,
+                "startup_log": STARTUP_LOG,
+                "startup_tail": _tail_file(STARTUP_LOG),
+            },
+            as_json,
+        )
+        sys.exit(1)
+
+    _out(
+        {
+            "ok": True,
+            "pid": proc.pid,
+            "log_file": log_file,
+            # `ready: false` means alive but no log file yet within the window.
+            # Reported rather than treated as failure: a device that is simply
+            # silent is a legitimate state, and the caller can poll `tail`.
+            "ready": ready,
+            "reason": "ready" if ready else "log-not-created-yet",
+            "startup_log": STARTUP_LOG,
+        },
+        as_json,
+    )
+
+
+def cmd_stop(as_json):
+    session = _load_session()
+    if not session:
+        _out({"ok": True, "message": "no active session"}, as_json)
+        return
+    _stop_pid(session["pid"])
+    # Record the intent instead of erasing the session: `status` has to be able
+    # to say "you stopped it" rather than fall back to "not running", which
+    # reads identically to a crash.
+    _save_session(session["pid"], session["log_file"],
+                  startup_log=session.get("startup_log"), stopped=True)
+    _out({"ok": True, "message": "stopped", "reason": "stopped"}, as_json)
+
+
+def cmd_tail(n, as_json):
+    session = _load_session()
+    if not session:
+        _out({"ok": False, "error": "no active session"}, as_json)
+        sys.exit(1)
+    log_file = session["log_file"]
+    if not os.path.isfile(log_file):
+        _out({"ok": False, "error": f"log file not found: {log_file}"}, as_json)
+        sys.exit(1)
+    with open(log_file, errors="replace") as f:
+        lines = f.readlines()
+    text = "".join(lines[-n:])
+    _out({"ok": True, "log_file": log_file, "text": text}, as_json)
+
+
+def cmd_status(as_json):
+    """Report whether the monitor is up, and — when it is not — WHY.
+
+    A bare `running: false` cannot distinguish "the caller stopped it" from
+    "it died on startup" from "it ran and then crashed", and the caller was
+    left reverse-engineering the answer from whether a log file happened to
+    exist. Four states, each with something the caller can do about it.
+    """
+    session = _load_session()
+    if not session:
+        _out({"ok": True, "running": False, "reason": "no-session", "message": "no session"}, as_json)
+        return
+    running = _is_running(session["pid"])
+    log_file = session["log_file"]
+    if running:
+        reason = "running"
+    elif session.get("stopped"):
+        reason = "stopped"
+    elif not os.path.isfile(log_file):
+        # Never produced a byte: it did not get as far as opening the port.
+        reason = "exited-before-logging"
+    else:
+        reason = "exited"
+    out = {
+        "ok": True,
+        "running": running,
+        "reason": reason,
+        "pid": session["pid"],
+        "log_file": log_file,
+    }
+    if not running and reason != "stopped":
+        startup_log = session.get("startup_log") or STARTUP_LOG
+        out["startup_log"] = startup_log
+        out["startup_tail"] = _tail_file(startup_log)
+    _out(out, as_json)
+
+
+def main():
+    parser = argparse.ArgumentParser(description="TuyaOpen background monitor helper")
+    parser.add_argument("--json", action="store_true", dest="as_json", help="JSON output")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    p_start = sub.add_parser("start", help="Start background monitor")
+    p_start.add_argument("-p", "--port", required=True, help="Serial port")
+    p_start.add_argument("-l", "--log", default=None, dest="log_file", help="Log file path")
+    p_start.add_argument("--ready-timeout", type=float, default=8.0, dest="ready_timeout",
+                         help="Seconds to wait for the monitor to come up (default: 8)")
+
+    p_tail = sub.add_parser("tail", help="Tail log file")
+    p_tail.add_argument("-n", type=int, default=200, help="Number of lines")
+
+    sub.add_parser("stop", help="Stop background monitor")
+    sub.add_parser("status", help="Check monitor status")
+
+    args = parser.parse_args()
+
+    if args.command == "start":
+        cmd_start(args.port, args.log_file, args.as_json, args.ready_timeout)
+    elif args.command == "stop":
+        cmd_stop(args.as_json)
+    elif args.command == "tail":
+        cmd_tail(args.n, args.as_json)
+    elif args.command == "status":
+        cmd_status(args.as_json)
+
+
+if __name__ == "__main__":
+    main()

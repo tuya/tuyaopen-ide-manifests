@@ -29,6 +29,14 @@ jobs:
         with:
           python-version: "3.11"
 
+      # tests/skills/test_panel_dev_style_scan.py drives the panel-dev
+      # validator, which is an ES module — declare node instead of relying on
+      # whatever the runner image happens to preinstall. Without this the test
+      # would skip, and a skipped test reports safety it is not providing.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
       - name: Install test deps
         run: python3 -m pip install --quiet pytest
 

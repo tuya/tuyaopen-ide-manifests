@@ -25,7 +25,7 @@ def index(*items):
     return {"schemaVersion": 1, "domain": "skills", "items": list(items)}
 
 
-def item(item_id="tuyaopen-build", version="1.0.0", local_path=None):
+def item(item_id="tuyaopen-embedded-build", version="1.0.0", local_path=None):
     return {
         "id": item_id,
         "version": version,
@@ -38,7 +38,7 @@ def item(item_id="tuyaopen-build", version="1.0.0", local_path=None):
 def test_payload_changed_without_bump_fails():
     base = index(item(version="1.0.0"))
     head = index(item(version="1.0.0"))
-    errors = checker.check(base, head, ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"])
+    errors = checker.check(base, head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"])
     assert len(errors) == 1
     assert "still 1.0.0" in errors[0]
 
@@ -46,14 +46,14 @@ def test_payload_changed_without_bump_fails():
 def test_payload_changed_with_bump_passes():
     base = index(item(version="1.0.0"))
     head = index(item(version="1.0.1"))
-    assert checker.check(base, head, ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]) == []
+    assert checker.check(base, head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"]) == []
 
 
 def test_nested_file_under_payload_counts_as_a_change():
     base = index(item(version="1.0.0"))
     head = index(item(version="1.0.0"))
     errors = checker.check(
-        base, head, ["skills/embedded/tuyaopen/tuyaopen-build/scripts/helper.py"]
+        base, head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/scripts/helper.py"]
     )
     assert len(errors) == 1
 
@@ -72,8 +72,8 @@ def test_untouched_payload_needs_no_bump():
 
 
 def test_new_item_needs_no_bump():
-    base = index(item("tuyaopen-build"))
-    head = index(item("tuyaopen-build"), item("brand-new", version="1.0.0"))
+    base = index(item("tuyaopen-embedded-build"))
+    head = index(item("tuyaopen-embedded-build"), item("brand-new", version="1.0.0"))
     assert checker.check(base, head, ["skills/embedded/tuyaopen/brand-new/SKILL.md"]) == []
 
 
@@ -96,7 +96,7 @@ def test_version_moving_backwards_fails():
 def test_version_compare_is_numeric_not_lexicographic():
     base = index(item(version="1.9.0"))
     head = index(item(version="1.10.0"))
-    assert checker.check(base, head, ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]) == []
+    assert checker.check(base, head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"]) == []
 
 
 def test_missing_head_version_is_reported():
@@ -112,25 +112,25 @@ def test_baseline_without_versions_is_skipped():
     base_item = item()
     del base_item["version"]
     head = index(item(version="1.0.0"))
-    assert checker.check(index(base_item), head, ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]) == []
+    assert checker.check(index(base_item), head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"]) == []
 
 
 def test_empty_baseline_skips_entirely():
     head = index(item(version="1.0.0"))
-    assert checker.check(None, head, ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]) == []
-    assert checker.check({}, head, ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]) == []
+    assert checker.check(None, head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"]) == []
+    assert checker.check({}, head, ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"]) == []
 
 
 def test_windows_style_changed_paths_are_normalized():
     base = index(item(version="1.0.0"))
     head = index(item(version="1.0.0"))
     errors = checker.check(
-        base, head, ["skills\\embedded\\tuyaopen\\tuyaopen-build\\SKILL.md"]
+        base, head, ["skills\\embedded\\tuyaopen\\tuyaopen-embedded-build\\SKILL.md"]
     )
     assert len(errors) == 1
 
 
-PAYLOAD = ["skills/embedded/tuyaopen/tuyaopen-build/SKILL.md"]
+PAYLOAD = ["skills/embedded/tuyaopen/tuyaopen-embedded-build/SKILL.md"]
 
 
 # --- release baseline: only published versions have to be bumped -------------

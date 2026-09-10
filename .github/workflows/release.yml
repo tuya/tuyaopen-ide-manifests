@@ -62,6 +62,14 @@ jobs:
           for dir in boards-and-chips demos platforms skills miniapp-templates; do
             [ -d "$dir" ] && cp -r "$dir" staging/ && echo "  + $dir/"
           done
+          # Both product lines ship (2026-09-02). Until now `skills/TuyaOS/`
+          # was deleted here, because registry.json pointed the skills domain at
+          # skills/TuyaOpen/index.json and nothing could ever have installed the
+          # other tree. There is one index now and one tree, and which line an
+          # item belongs to is stated by its `sdks` field — so the consumer
+          # filters (the IDE's sdkAppliesToItem, the CLI's loadLocalSkills…),
+          # not the packager. Deleting a path here would now hide payloads that
+          # the shipped index still advertises.
           FILE_COUNT="$(find staging -type f | wc -l)"
           echo "→ Staged $FILE_COUNT files"
 

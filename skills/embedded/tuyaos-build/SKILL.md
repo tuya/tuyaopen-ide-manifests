@@ -1,23 +1,20 @@
 ---
 name: tuyaos-build
-description: >-
-  Use when the user asks to build, compile, rebuild, or clean a TuyaOS
-  (tuyaos-legacy) app — including Chinese prompts like「编译 tuyaos xxx 应用」
-  「清理编译产物」「重新编译当前 app」, or English "build/compile/clean the TuyaOS
-  app". Also use when adding custom .c/.h paths to apps/*/local.mk, wiring
-  directories under software/TuyaOS/vendor/, or fixing missing headers / undefined
-  references after adding sources. Runs build_app.sh/bat like Project Details
-  Build / Clean. Do NOT use for TuyaOpen (tos.py) or flash/monitor.
-when_to_use: >-
-  Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app;
-  加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build.
-id: tuyaos-build
-surfaces: [embedded]
-tags: [build, clean, build_app, tuyaos, compile, local.mk, vendor, sources, headers]
-default_enabled: true
-related: [tyutool-cli, smart-product-dev]
+description: Use when the user asks to build, compile, rebuild, or clean a TuyaOS (tuyaos-legacy) app — including Chinese
+  prompts like「编译 tuyaos xxx 应用」 「清理编译产物」「重新编译当前 app」, or English "build/compile/clean the TuyaOS app". Also use when adding
+  custom .c/.h paths to apps/*/local.mk, wiring directories under software/TuyaOS/vendor/, or fixing missing headers / undefined
+  references after adding sources. Runs build_app.sh/bat like Project Details Build / Clean. Do NOT use for TuyaOpen (tos.py)
+  or flash/monitor.
+license: Apache-2.0
+compatibility:
+- TuyaOS development environment configured
+- TuyaOS toolchain installed for target chip
+metadata:
+  version: 1.0.1
+  owner: tuyaos-team
+  deprecated: false
+  min-cli-version: none
 ---
-
 # TuyaOS Build / Clean
 
 Compile or clean the active **TuyaOS** app with the same command the IDE
@@ -81,9 +78,9 @@ cd "<projectRoot>/software/TuyaOS" && \
 | Situation | Use instead |
 |-----------|-------------|
 | TuyaOpen project (`tos.py`, `source/embedded/`) | `tuyaopen-build` / `tos.py build` |
-| Flash firmware / serial monitor | `tyutool-cli` or Project Details Flash/Monitor |
-| Create product / DP on cloud | `tuya-iot-platform` |
-| End-to-end product orchestration | `smart-product-dev` |
+| Flash firmware / serial monitor | `tuyaopen-flash` or Project Details Flash/Monitor |
+| Create product / DP on cloud | `tuyaopen-cloud` |
+| End-to-end product orchestration | `tuyaopen-workflow-product-dev` |
 
 ## Project layout (quick check)
 
@@ -440,7 +437,7 @@ command run; do not kill it early unless the user aborts.
 
 ## Related skills
 
-- `tyutool-cli` — flash / UART after a successful build
-- `smart-product-dev` — broader product workflow (not a substitute for this command card)
+- `tuyaopen-flash` — flash / UART after a successful build
+- `tuyaopen-workflow-product-dev` — broader product workflow (not a substitute for this command card)
 
 _Maintained in the TuyaOpen IDE skills registry (`tuyaopen-ide-manifests`). Reinstall from the IDE Skills page after registry updates._

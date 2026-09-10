@@ -115,7 +115,8 @@ def check(base_data, head_data, changed: list, released_data=None) -> list:
     base = items_by_id(base_data)
     if not base:
         # No baseline to compare against (first commit, or the base ref did not
-        # carry skills/index.json). Nothing this check can honestly assert.
+        # carry a skills index at any of its historical paths). Nothing this
+        # check can honestly assert.
         return errors
 
     released = items_by_id(released_data) if released_data is not None else None
@@ -195,6 +196,16 @@ def main() -> int:
     )
     parser.add_argument(
         "--head-index",
+        # `skills/index.json` again since the 2026-09-02 sdks reorg (one index
+        # for both product lines). Between 2026-08-19 and then it was
+        # `skills/TuyaOpen/index.json` while this default still said
+        # `skills/index.json` — so the check exited 1 with "index file not found"
+        # on every PR based on post-split main, and the one gate that makes
+        # `version` trustworthy did not actually run for that whole window. The
+        # mismatch was invisible precisely because the help string matched the
+        # code: reading `--help` told you nothing was wrong. Keep the three
+        # copies of this path — default, help text, module docstring — moving
+        # together.
         default=str(REPO_ROOT / "skills" / "index.json"),
         help="index.json under review (default: skills/index.json)",
     )

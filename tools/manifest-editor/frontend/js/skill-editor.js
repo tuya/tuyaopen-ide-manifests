@@ -1,7 +1,14 @@
 // Skill Editor Module — card rendering, edit form, save logic.
-// Skills are payload-backed (SKILL.md lives under skills/<surface>/<id>/), so the
-// editor only manages the index.json metadata of EXISTING skills. id / source /
+// Skills are payload-backed (SKILL.md lives under skills/<group>/<id>/ — the
+// second segment is the install GROUP, not the surface), so the editor only
+// manages the index.json metadata of EXISTING skills. id / source /
 // installPayload are payload-bound and shown read-only.
+//
+// The surface <select> below is safe to edit: since 2026-09-02 `surface` is
+// orthogonal to the payload path (they disagree for 11 of the 32 items — e.g.
+// tuyaopen-start is surface=embedded under core/). `group` is the path-coupled
+// field and is deliberately not offered here at all; changing it means moving
+// the directory in git.
 
 import { apiClient } from './api-client.js';
 import { showNotification, showError, escapeHtml } from './utils.js';

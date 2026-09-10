@@ -16,9 +16,10 @@
 │   └── index.json                 # demo / example projects
 ├── skills/
 │   ├── index.json                 # AI agent skills registry (Cursor, Claude Code, …)
-│   ├── embedded/                  # ── the skill payloads themselves ──
-│   ├── cloud/                     #    SKILL.md + references/ + scripts/
-│   └── miniapp/                   #    see skills/README.md
+│   ├── core/                      # ── the skill payloads themselves ──
+│   ├── embedded/                  #    grouped by INSTALL GROUP: <group>/<id>/
+│   ├── cloud/                     #    grouped by install group
+│   └── miniapp/                   #    grouped by install group; see skills/README.md
 └── miniapp-templates/             # shipped in the tarball, but NOT a domain
     └── miniapp-template-covers.json
 ```
@@ -31,7 +32,14 @@
 | ---------------- | -------------------------------------- | --------------------------------- |
 | `boardsAndChips` | development boards and SoCs (official + ecosystem) | `boards-and-chips/index.json` |
 | `demos`          | example projects (point at git repos)  | `demos/index.json`                |
-| `skills`         | pluggable AI agent skills **+ their payload** | `skills/index.json` + `skills/<surface>/**` |
+| `skills`         | pluggable AI agent skills **+ their payload**, for both product lines (`sdks` says which) | `skills/index.json` + `skills/<group>/<id>/` |
+
+A skill's directory is its **install group** (`core` / `embedded` / `cloud` /
+`miniapp`) — the unit `tuyaopen-cli skills install --group <g>`
+offers — and **not** its `surface`. `surface` is a separate required field
+driving the IDE's filter tabs; the two are independent, so
+nothing may infer one from the other or from a path. Details:
+[`skills/README.md`](./skills/README.md#layout).
 
 ### Shipped in the tarball but *not* a domain
 
@@ -104,12 +112,25 @@ group — `manufacturer` wins whenever both are present.
 - **SDK applicability** (`sdks`) — optional array marking which SDK(s) an
   entry applies to, on `boardsAndChips` / `demos` / `skills` items.
   Values: `"tuyaopen"`, `"tuyaos"`; an entry may list one or both
-  (`["tuyaopen", "tuyaos"]`). **Omitted ⇒ `["tuyaopen"]`** — every
-  pre-existing entry is TuyaOpen-only, so existing data needs no
-  back-fill; only TuyaOS-capable entries set the field explicitly.
+  (`["tuyaopen", "tuyaos"]` is allowed when a skill applies to both lines).
+  **Omitted ⇒ `["tuyaopen"]`** — every pre-existing entry is
+  TuyaOpen-only, so existing data needs no back-fill; only TuyaOS-capable
+  entries have to set the field explicitly.
   Forward-compatible: an IDE predating the field ignores it (shows
   everything); an SDK-aware IDE filters the catalogue by the active SDK.
   `platforms` items do **not** carry this field.
+
+  On `skills` this field is **load-bearing rather than advisory** since
+  2026-09-02: it is the *only* thing separating the two product lines, which
+  used to be separated by their directory (`skills/TuyaOpen/` vs
+  `skills/TuyaOS/`). Both lines' payloads now ship in the same
+  `manifests.tar.gz` under one `skills/index.json`, so a consumer that ignores
+  `sdks` will offer TuyaOS skills to TuyaOpen users. The current index is the
+  authority for the item count and product-line distribution; do not hard-code
+  those counts in this README.
+  `scripts/validate-skills-index.py` reads the same field to decide which of
+  its rules — the ones asserting a relationship with the `tuyaopen-cli` CLI —
+  apply to a given item.
 - **Platform pinout `functions` vs `caps`** — in a platform detail file each
   `pinout[]` entry splits its labels into two arrays: `functions[]` is a
   **controlled, selection-only** vocabulary of editor-selectable *routing*
@@ -213,6 +234,21 @@ IDE startup
   is what lights the "this page has an update" dot in the IDE; leaving it
   untouched means an already-synced IDE never tells the user anything changed.
   Refresh that domain's `publishedAt` in the same PR.
+
+  Enforced since 2026-08-17 by `scripts/check-domain-version-bumps.py`
+  (workflow `validate-domains.yml`) — run it before opening the PR:
+
+  ```bash
+  python3 scripts/check-domain-version-bumps.py                     # structure only
+  python3 scripts/check-domain-version-bumps.py --base-ref main     # + bump rule
+  ```
+
+  It was unenforced until then, and the rule was simply not followed: six
+  commits changed 439 files under `skills/` while `manifests.skills.version`
+  stayed at the `1.0.0` that shipped with `v1.0.0`. The check also fails on a
+  registry entry whose `url` is missing or whose `domain` field disagrees with
+  its key — the IDE's `cacheIntegrity()` refuses to start on either, so those
+  are startup failures rather than tidiness.
 - **Schema bump** — bump the top-level `schemaVersion` and include a
   short migration note in the PR description.
 - **Release** — add a [`CHANGELOG.md`](./CHANGELOG.md) entry, then tag the

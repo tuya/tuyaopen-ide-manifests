@@ -77,7 +77,7 @@ export function registerSkillsCommands(program) {
     .description('新增技能条目')
     .requiredOption('--surface <surface>', 'surface (embedded|cloud|miniapp)')
     .requiredOption('--order <n>', 'display order', Number)
-    .requiredOption('--payload <path>', 'installPayload 路径')
+    .requiredOption('--payload <path>', 'installPayload 路径，形如 <group>/<id>')
     .option('--name-en <text>', '')
     .option('--name-zh <text>', '')
     .option('--summary-en <text>', '')
@@ -88,7 +88,11 @@ export function registerSkillsCommands(program) {
     .option('--commands <cmds...>', '')
     .option('--enabled', '设为 defaultEnabled=true', false)
     .option('--skill-version <semver>', '技能载荷版本 x.y.z（默认 1.0.0，内容变更时须递增）', '1.0.0')
-    .requiredOption('--local-path <path>', 'source.localPath，形如 skills/<surface>/<name>')
+    // 第二段是**安装组**（core/embedded/cloud/miniapp/scenario），不是 surface：
+    // 2026-09-02 起目录 = group，两者正交（32 条里 11 条不一致）。本命令还没有
+    // --group，而 group 是必填字段 —— 生成后要手工补上 "group"，否则
+    // scripts/validate-skills-index.py 直接报错。
+    .requiredOption('--local-path <path>', 'source.localPath，形如 skills/<group>/<name>')
     .action(async (id, opts) => {
       const data = await load()
       const items = getItems(data)

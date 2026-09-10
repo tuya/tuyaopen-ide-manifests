@@ -1,0 +1,277 @@
+# Upload Checklist — Tuya Panel MiniApp 审核验收标准
+
+> 本清单分为**必过**（不满足直接拒审）和**建议**（影响审核速度 / 上线
+> 后体验）。每条都给出**自动检测方式**（`validate.mjs` 已实现的）和
+> **人工核对**（脚本查不出来的）。
+
+---
+
+## A. 必过清单（不满足审核拒绝）
+
+### A1. `project.tuya.json` 必填字段
+
+| 字段 | 要求 | validate.mjs 检测 |
+|---|---|---|
+| `appid` | 非空，长度 ≥ 16 字符 | ✓ |
+| `appVersion` | semver 格式 `X.Y.Z` | ✓ |
+| `projectId` | 非空 | ✓ |
+| `type` | 必须 `panel-app` | ✓ |
+| `devMode` | 必须 `ray` | ✓ |
+| `compileType` | 必须 `miniprogram` | ✓ |
+| `dependencies.BaseKit` | 必须存在，semver | ✓ |
+| `dependencies.MiniKit` | 必须存在 | ✓ |
+| `dependencies.DeviceKit` | 必须存在 | ✓ |
+| `baseversion` | 非空 | ✓ |
+
+### A2. `app.config.ts` 必填字段
+
+```ts
+export const thing = {
+  window: { /* 至少有 backgroundColor / navigationBarTitleText */ },
+  pages: [/* 至少一个页面 */],
+};
+```
+
+每个 `pages[i]` 都必须在 `src/<path>/index.tsx` 真实存在。
+
+### A3. 必备页面
+
+- **首页**：`pages` 数组第一个，作为打开面板的默认页
+- **关于 / 设置入口**：通过 `ty.openFunctionalSettings()` 或自建页面调起
+- **隐私协议入口**：通常用 `ty.openOfficialPanel({ panelType: 'privacy' })`
+  或自建页面渲染 `i18n('privacy.policy.content')` 内容
+
+### A4. DP 完整性
+
+- `src/devices/schema.ts` 中的 DP **必须**与 Tuya 平台云端配置一致
+  （IDE "Sync DPs from Cloud" 保证）
+- 代码里读 / 写的 DP `code` 必须在 schema 里存在
+- DP 的 `mode` 决定可读 / 可写：`ro` 的 DP 不准 `.set()`
+
+### A5. 禁用 API 不出现
+
+代码全文 grep（validate.mjs 实现，自动跳过 `src/ty-shim.ts`）：
+
+```
+fetch\s*\(           ← 必须为 0 命中
+XMLHttpRequest       ← 必须为 0 命中
+localStorage         ← 必须为 0 命中（ty-shim.ts 除外）
+sessionStorage       ← 必须为 0 命中
+document\.cookie     ← 必须为 0 命中
+window\.open         ← 必须为 0 命中
+eval\s*\(            ← 必须为 0 命中
+new Function         ← 必须为 0 命中
+apiRequestByAtop     ← 必须为 0 命中
+```
+
+### A6. 包大小限制
+
+| 项 | 限额 | 检测 |
+|---|---|---|
+| 小程序源码包（压缩后）`dist/` | ≤ 5 MB | ✓ |
+| CDN 资源总量（账号下所有面板小程序共享） | ≤ 100 MB | ⚠ 人工（脚本只警告当前项目占用） |
+
+资源（图片 / 字体 / 视频）必须放 `cdn/` 目录，构建时上传 CDN，**不打进
+源码包**。100 MB CDN 配额由账号下**所有面板小程序共享**，开发多个面板时需
+统筹规划；`validate.mjs` 仅统计当前项目 CDN 目录大小作为参考。
+
+### A7. i18n 双语支持
+
+- `project.tuya.json.i18n` 应该为 `true`（模板默认 `false`，需手动打开）
+- 必须至少有 `en` 和 `zh` 两个 locale 的资源文件（如 `src/i18n/en.json` + `src/i18n/zh.json`）
+- 代码里**无硬编码文案**（JSX 字面值 / `ty.showToast` 的 `title`
+  等文案必须经 `t()`）—— [conventions.md Rule 5](conventions.md#rule-5)
+
+> **模板说明**：脚手架模板（`media/miniapp-template/`）默认 `i18n: false`，
+> 文案为硬编码英文（作为起始占位符）。这是**开发起点**，不是上线状态。
+> 上传前必须：① 将所有文案替换为 `t('key')` 调用；② 创建 `src/i18n/en.json` +
+> `src/i18n/zh.json`；③ 将 `project.tuya.json.i18n` 改为 `true`。
+> validate.mjs 的中文扫描只能发现中文硬编码，**无法检测硬编码英文** —— 英文
+> 硬编码同样不符合审核要求，人工检查时须一并处理。
+
+---
+
+## B. 强烈建议清单
+
+### B1. 性能门槛
+
+- 首屏渲染时间 ≤ 2s（弱网 ≤ 4s）
+- FMP（First Meaningful Paint）≤ 1.5s
+- 图片走 CDN + 适当压缩
+- 无大型 setData（一次 ≤ 100KB）
+
+### B2. 体验门槛
+
+- 所有 async 操作有 loading 态
+- 所有失败有错误提示（不要静默吞错）
+- 所有空数据有空态展示
+- 防重复提交（按钮点击后 disable 直到 promise resolve）
+
+### B3. 可访问性
+
+- 所有 `<View>` 充当按钮时加 `aria-role="button"`
+- 触摸目标 ≥ 44×44pt
+- 配色对比度 WCAG AA（小字 ≥ 4.5:1，大字 ≥ 3:1）
+- 图片有 `alt` / `aria-label`
+
+### B4. 网络请求白名单
+
+如果用了 `<Image src="https://..."/>` 或其他外部资源，对应 host 必须在
+Tuya 平台「网络请求白名单」里登记。审核时随机抽查请求 host。
+
+### B5. 隐私 / 权限说明
+
+如果用到这些 API，必须在 Tuya 平台后台勾选对应权限**并填写使用说明**：
+
+| API | 权限 |
+|---|---|
+| `ty.getLocation` | 位置 |
+| `ty.chooseImage` / `ty.chooseVideo` | 相册 |
+| `ty.scanCode` | 摄像头 |
+| `ty.getUserInfo` | 用户信息 |
+| `ty.requestPayment` | 支付 |
+| `ty.subscribeMessage` | 通知 |
+
+使用说明必须诚实，审核员会真的看。
+
+---
+
+### C. 上传前自检流程 → 上传 → 提审发布 → 绑定
+
+（步骤 1–4 是上传前自检，步骤 5 是上传，步骤 6、7 是提审发布与绑定（优先 CLI 执行，支持网页兜底）——顺序不能反，绑定要求小程序已发布。）
+
+### 步骤 1：跑自动化检查
+
+```bash
+cd source/miniapp
+node .agents/skills/tuyaopen-workflow-miniapp-dev/scripts/validate.mjs
+```
+
+退出码：
+- `0` = ready，可以上传
+- `1` = 有警告，可以上传但建议修
+- `2` = 有错误，**不能上传**
+
+### 步骤 2：跑依赖检查
+
+```bash
+node .agents/skills/tuyaopen-workflow-miniapp-dev/scripts/check_dependencies.mjs
+```
+
+### 步骤 3：跑安全检查（权限、禁用 API）
+
+```bash
+node .agents/skills/tuyaopen-workflow-miniapp-dev/scripts/security_check.mjs
+```
+
+### 步骤 4：查构建产物体积
+
+```bash
+# 构建
+yarn build
+# 看产物体积（要求压缩后 ≤ 5 MB）
+du -sh dist/
+```
+
+### 步骤 5：上传
+
+走 IDE 的 MiniApp 页面「上传」按钮，或命令行 `tuyaopen-cli miniapp upload`
+（P2，参数与报错见 skill `tuyaopen-miniapp`）。**不要**在审核中心绕过 IDE
+上传未签名包。
+
+### 步骤 6：提审 → 发布上线（优先 CLI，支持网页兜底）
+
+**上传 ≠ 发布。** 步骤 5 只是把签名包交付到平台供内测，终端用户看不到。
+
+- **CLI 路径**：
+  1. 设置 4 项属性：
+     `tuyaopen-cli devplat exec --yes -- miniapp ui-info-set --miniapp-id <appid> --type <iotUiName|iotUiEnName|iotUiPreviewPicture|iotUiEnPreviewPicture> --value <v> --format json`
+     开发期可复用产品详情返回的类目默认图托管 URL；审核预检只校验非空，正式发布前替换为真实面板截图。
+  2. 提交审核（**不可撤回，须征得用户同意**；devplat dry-run 写在 `--` 之后）：
+     `tuyaopen-cli devplat exec --yes -- miniapp submit-review --miniapp-id <appid> --version-id <versionId> --format json`
+     审核通常约 **2 分钟**；不要立即发布，先轮询状态。
+  3. 审核通过后发布（全量 100% 发布）：
+     先 `panel miniapp-version-status` 确认通过（`reviewStatus == 2`），再 `panel miniapp-release`。
+- **网页兜底**：若本地 devplat-cli 较旧缺少对应命令或前置图片未上传，开浏览器去拼好参数的地址：
+
+```
+https://platform.tuya.com/miniapp/version?miniProgramId=<appid>
+```
+
+`<appid>` = **小程序 id**，取 `source/miniapp/project.tuya.json` 的 `appid`
+字段（取不到再看 `<project>/project.tuya.json`），需要 URL 编码。
+为空说明平台上还没创建这个小程序：先去 <https://platform.tuya.com/miniapp/>
+创建，再 `tuyaopen-cli miniapp meta set-appid <appid>` 抄回项目。
+
+在这一页提交审核；审核通过后再在同一页上线。
+
+### 步骤 7：绑定面板小程序到产品（优先 CLI，支持网页兜底）
+
+发布完还差一步：**把已发布的面板小程序绑定到产品**，面板才真的会出现在这款
+产品的设备上：
+
+- **CLI 路径**：
+  1. 查询私有面板列表获取真实 `uiId`（注意：`--ui-id` 是 Panel UI ID，不是 appid）：
+     ```bash
+     tuyaopen-cli devplat exec --yes -- panel ui-list --product-id <PID> --code PRIVATE --format json
+     ```
+  2. 将面板绑定到产品（执行前向用户展示当前绑定并请求确认）：
+     ```bash
+     tuyaopen-cli devplat exec --yes -- panel bind --ui-id <uiId> --product-id <PID> --format json
+     ```
+- **网页兜底**：若未匹配到 `uiId` 或缺少对应权限，可通过网页控制台完成绑定：
+  ```
+  https://platform.tuya.com/pmg/step?id=<projectId>&tab=operation#PRIVATE
+  ```
+
+- `<projectId>` = ⚠ **云端产品 PID**，**不是**小程序 id（字段名叫 projectId，
+  装的是 PID——见 `src/miniapp/bindingManager.ts` 的 `readProjectId` /
+  `writeProjectId` 注释）。同样取 `project.tuya.json`，同样要 URL 编码。
+  为空说明这个项目还没绑产品，先绑产品。
+- **`&tab=operation#PRIVATE` 要原样照抄。** 只给 `id=` 会开到产品页默认 tab，
+  绑定入口不在那一栏。
+
+**顺序不能反：先发布（步骤 6），再绑定（步骤 7）。** 步骤 7 绑的是一个**已经
+发布**的小程序，步骤 6 没做完就没有东西可挂。
+
+> 三件事别混：`upload` 登记**版本**、发布把版本**放出去**、绑定把它**挂到产品上**。
+> **不要**声称"已发布"或"已上线"——本清单步骤 1–4 跑完只代表**可以上传**；
+> 步骤 5 跑完只是内测包；要到步骤 7 做完，面板才真的到了用户设备上。
+
+
+---
+
+## D. 常见拒审原因 Top 10
+
+| # | 原因 | 触发 | 防御 |
+|---|---|---|---|
+| 1 | 源码包（压缩后）超 5 MB | 把 PNG / 字体打进 src/ | 移到 `cdn/` |
+| 2 | 硬编码中文 | `<Text>开关</Text>` / `ty.showToast({ title: '错误' })` | 走 i18n |
+| 3 | 用了 `fetch` | 直接调 OpenAPI | 改 cloud-api |
+| 4 | 隐私权限未说明 | 用 `ty.getLocation` 没填使用说明 | 后台填说明 |
+| 5 | 网络白名单缺 | 加载外站图片 | 后台加白名单 |
+| 6 | DP 实现错位 | 读 / 写一个 schema 不存在的 code | 验证 schema |
+| 7 | 设计不一致 | 自造 Button 颜色乱用 | 用 smart-ui |
+| 8 | 真机崩溃 | 没处理离线态 / 没 dp 时白屏 | 兜底 UI |
+| 9 | 控件无障碍缺失 | 全靠颜色区分状态 | 加 aria + 文字 |
+| 10 | i18n 资源不全 | 只有中文 zh.json | 补 en.json |
+
+---
+
+## E. 自动化检查脚本对照
+
+`scripts/validate.mjs` 检查项与本清单的对应：
+
+| 检查 | 清单条目 |
+|---|---|
+| `project.tuya.json` 字段完整性 | A1 |
+| `src/app.config.{ts,js}` 解析 + `pages` 数组检查 | A2 |
+| 页面文件存在性 | A2 |
+| `src/devices/schema.ts` 存在 + `lampSchemaMap` 导出 | A4 |
+| 禁用 API grep（跳过 ty-shim.ts） | A5 |
+| `dist/` 大小 | A6 |
+| `cdn/` 单文件大小检查 | A6 + B1 |
+| `i18n` 字段 + 中文硬编码扫描 | A7 |
+| `useState` 用于 DP 嗅探 | 反模式（[Rule 1](conventions.md#rule-1)） |
+
+剩下（隐私 / 权限 / 网络白名单 / 真机测试）**必须人工**，脚本查不到。
