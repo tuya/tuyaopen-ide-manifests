@@ -1768,6 +1768,9 @@
         "zh-CN": "Silicon Labs BRD2605A 无线开发板，基于 SiWx917 单芯片 Wi-Fi 6 + BLE 5.4 SoC，集成 ARM Cortex-M4。板载 2 个用户按键、2 个 LED 与 I2S 音频接口（板上不含编解码器），均已接入 TuyaOpen，适合评估 SiWx917 平台、快速验证超低功耗联网设备。"
       },
       "detailUrl": "boards-and-chips/siwx917/brd2605a.json",
+      "sdks": [
+        "tuyaopen"
+      ],
       "published": true,
       "tags": [
         "wifi",
@@ -1799,6 +1802,9 @@
         "zh-CN": "SiWx917 AI 语音开发套件 — 基于 Wi-Fi 6 + BLE 5.4 的 AI 语音交互开发板，配有独立的 AI 对话按键，引脚布局与 BRD2605A 一致。预留显示屏接口，支持 ST7789 或自定义 LCD 驱动。"
       },
       "detailUrl": "boards-and-chips/siwx917/siwx917-ai-dev-kit.json",
+      "sdks": [
+        "tuyaopen"
+      ],
       "published": true,
       "tags": [
         "wifi",
