@@ -19,10 +19,15 @@ All commands require `--product-id <pid>`.
 1. Check `dp-standard-catalog` — if a standard DP (1–100) covers the function, use it.
 2. Only create a custom DP (101+) when standard DPs cannot satisfy the requirement.
 
-> **`qt` (其他) category:** The standard catalog is empty — no predefined standard DPs exist.
-> All DPs are custom and can start from ID 1, with no range restrictions.
-> This is why `qt` is the preferred category: it gives full freedom over DP definition
-> without needing to check or conform to any standard DP catalog.
+> **`qt` (其他) category:** The standard catalog is empty — no predefined standard DPs exist,
+> so every DP you attach is a custom one. That is why `qt` is the preferred category:
+> nothing to look up, nothing to conform to.
+>
+> **The 101–199 range still applies.** The platform API rejects an out-of-range id with
+> `INVALID_DP_ID`. Measured 2026-09-01: `dp-add-custom` with `"id": 1` on a `qt` product
+> fails; the same call with `"id": 101` succeeds. The empty standard catalog frees you
+> from the catalog, not from the id range. `tuyaopen-cli dp add` validates this locally
+> and auto-allocates a free id when `--id` is omitted.
 
 ---
 

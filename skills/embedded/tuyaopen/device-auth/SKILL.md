@@ -72,7 +72,11 @@ TuyaOpen-specific authorization codes come in three ways:
 
 1. **Pre-burned modules** — some Tuya modules ship with credentials in OTP; no manual setup needed.
 2. **Purchase from Tuya platform** — <https://platform.tuya.com/purchase/index?type=6>
-3. **Free developer codes** — Tuya periodically offers free authorization codes for developers; check the platform for current offers.
+3. **Free developer codes — two of them, claimed on the web** —
+   <https://tuyaopen.ai/zh/pricing-guide> documents the free allowance: during
+   development you can claim **2 free device authorizations** from the Tuya
+   Developer Platform. Read that page for the current claim steps — it is the
+   authoritative source, so do not reconstruct the steps from memory.
 
 > Important: only **TuyaOpen-specific** authorization codes work. Standard Tuya module authorization codes are **not compatible**.
 
