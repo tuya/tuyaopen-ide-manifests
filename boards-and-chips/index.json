@@ -592,7 +592,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/espressif-esp32-s31/espressif-esp32-s31.jpg"
+      }
     },
     {
       "id": "espressif-esp32s31-korvo-1",
