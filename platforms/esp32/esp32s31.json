@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "arch": "risc-v",
+  "flashInterface": "qspi",
+  "connectivity": {
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
+  },
+  "memory": {
+    "sramBytes": 524288,
+    "lpSramBytes": 32768,
+    "romBytes": 327680,
+    "flashMaxBytes": 33554432,
+    "psramMaxBytes": 33554432,
+    "efuse": true
+  },
+  "peripherals": {
+    "wifi": {
+      "spec": {
+        "standard": "802.11b/g/n/ax",
+        "bands": [
+          "2.4GHz"
+        ],
+        "security": [
+          "WPA",
+          "WPA2",
+          "WPA3-Personal"
+        ],
+        "modes": [
+          "STA",
+          "AP",
+          "Direct"
+        ]
+      }
+    },
+    "ble": {
+      "spec": {
+        "version": "5.4"
+      }
+    }
+  },
+  "platformSymbol": "ESP32",
+  "pinout": []
+}

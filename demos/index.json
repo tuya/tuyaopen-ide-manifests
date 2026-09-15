@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "demos",
-  "publishedAt": "2026-08-13T00:00:00Z",
+  "publishedAt": "2026-09-14T07:29:14Z",
   "items": [
     {
       "id": "ble-ble-central",
@@ -233,7 +233,8 @@
         "atk-dnesp32s3-box2-wifi",
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "zectrix-t5ai-note-4"
+        "zectrix-t5ai-note-4",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/graphics-lvgl-demo.json",
@@ -616,7 +617,8 @@
         "esp32s3-bread-compact-wifi",
         "tuya-t5ai-board",
         "tuya-t5ai-pocket",
-        "waveshare-esp32s3-touch-amoled-1-8"
+        "waveshare-esp32s3-touch-amoled-1-8",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-audio-codecs.json",
@@ -649,7 +651,8 @@
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "zectrix-t5ai-note-4"
+        "zectrix-t5ai-note-4",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-button.json",
@@ -675,7 +678,8 @@
       "boards": [
         "atk-dnesp32s3",
         "tuya-t5ai-board",
-        "tuya-t5ai-pocket"
+        "tuya-t5ai-pocket",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-camera-output-display.json",
@@ -731,7 +735,8 @@
         "tuya-t5ai-pocket",
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
-        "waveshare-t5ai-touch-amoled-175"
+        "waveshare-t5ai-touch-amoled-175",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-display-fill-color.json",
@@ -762,7 +767,8 @@
         "waveshare-esp32p4c6-touch-lcd-4-3",
         "waveshare-esp32s3-touch-amoled-1-8",
         "waveshare-t5ai-touch-amoled-175",
-        "zectrix-t5ai-note-4"
+        "zectrix-t5ai-note-4",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-display-picture.json",
@@ -975,7 +981,8 @@
         "tuya-t5ai-evb",
         "tuya-t5ai-pocket",
         "waveshare-esp32c6-dev-kit-n16",
-        "zectrix-t5ai-note-4"
+        "zectrix-t5ai-note-4",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-led.json",
@@ -1143,7 +1150,9 @@
       "tags": [
         "peripheral"
       ],
-      "boards": [],
+      "boards": [
+        "espressif-esp32s31-korvo-1"
+      ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/example/peripherals-tp.json",
       "publish": true,
@@ -1542,7 +1551,8 @@
         "sparkleiot-t5ai-dev",
         "brd2605a",
         "siwx917-ai-dev-kit",
-        "seeed-xiao-esp32s3-sense"
+        "seeed-xiao-esp32s3-sense",
+        "espressif-esp32s31-korvo-1"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-chat-bot.json",

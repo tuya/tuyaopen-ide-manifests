@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-08-26T08:43:31Z",
+  "publishedAt": "2026-09-14T07:29:14Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -563,6 +563,69 @@
       "image": {
         "url": "images/espressif-esp32-s3/espressif-esp32-s3.jpg"
       }
+    },
+    {
+      "id": "espressif-esp32-s31",
+      "name": {
+        "en": "ESP32-S31-WROOM-3",
+        "zh-CN": "ESP32-S31-WROOM-3 模组"
+      },
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
+      "platformId": "esp32",
+      "variantId": "esp32s31",
+      "summary": {
+        "en": "ESP32-S31-WROOM-3 module target — dual-core RISC-V with Wi-Fi 6, Bluetooth 5.4, and IEEE 802.15.4 (Zigbee / Thread). TuyaOpen's default target uses 16MB Flash and 16MB PSRAM.",
+        "zh-CN": "ESP32-S31-WROOM-3 模组目标 — 双核 RISC-V，支持 Wi-Fi 6、蓝牙 5.4 及 IEEE 802.15.4（Zigbee / Thread）。TuyaOpen 默认目标使用 16MB Flash 与 16MB PSRAM。"
+      },
+      "tags": [
+        "wifi",
+        "ble",
+        "zigbee",
+        "thread",
+        "ai",
+        "module"
+      ],
+      "detailUrl": "boards-and-chips/esp32/espressif-esp32-s31.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "espressif-esp32s31-korvo-1",
+      "name": {
+        "en": "ESP32-S31-Korvo-1",
+        "zh-CN": "ESP32-S31-Korvo-1 开发板"
+      },
+      "manufacturer": {
+        "en": "Espressif",
+        "zh-CN": "乐鑫"
+      },
+      "platformId": "esp32",
+      "variantId": "esp32s31",
+      "summary": {
+        "en": "ESP32-S31-Korvo-1 AIoT development board with 16MB Flash, 16MB PSRAM, ES8389 audio, 4.3-inch RGB display and touch, OV3660 camera, addressable RGB LED, buttons, and microSD.",
+        "zh-CN": "ESP32-S31-Korvo-1 AIoT 开发板，配备 16MB Flash、16MB PSRAM、ES8389 音频、4.3 寸 RGB 显示屏与触控、OV3660 摄像头、可寻址 RGB LED、按键及 microSD 卡槽。"
+      },
+      "tags": [
+        "wifi",
+        "ble",
+        "zigbee",
+        "thread",
+        "ai",
+        "audio",
+        "display",
+        "camera",
+        "development"
+      ],
+      "detailUrl": "boards-and-chips/esp32/espressif-esp32s31-korvo-1.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
     },
     {
       "id": "seeed-xiao-esp32s3-sense",

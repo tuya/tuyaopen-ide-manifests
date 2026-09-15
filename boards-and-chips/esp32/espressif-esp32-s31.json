@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "memory": {
+    "flashBytes": 16777216,
+    "psramBytes": 16777216
+  },
+  "peripheralPatterns": {},
+  "peripheralGroups": {},
+  "links": {
+    "schematic": null,
+    "datasheet": {
+      "en": "https://documentation.espressif.com/esp32-s31-wroom-3_wroom-3u_datasheet_en.html",
+      "zh-CN": "https://documentation.espressif.com/esp32-s31-wroom-3_wroom-3u_datasheet_cn.html"
+    },
+    "productPage": null
+  },
+  "boardSymbol": "ESP32_S31",
+  "source": {
+    "repo": "https://github.com/tuya/TuyaOpen/tree/develop/boards/ESP32/ESP32-S31"
+  }
+}

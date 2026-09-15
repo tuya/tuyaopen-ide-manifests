@@ -12,7 +12,6 @@ const validAnswers = {
     cellular: { enabled: false, enableMacro: 'ENABLE_CELLULAR' },
   },
   memory: { sramBytes: 655360, romBytes: 65536, flashMaxBytes: 16777216, psramMaxBytes: 16777216, efuse: true },
-  kconfigId: 'T5AI',
   selectedPeripherals: ['gpio', 'uart'],
 }
 
@@ -32,6 +31,12 @@ describe('validatePlatform()', () => {
     const data = buildPlatform(validAnswers)
     data.platformId = 123
     expect(validatePlatform(data).some(e => e.includes('platformId'))).toBe(true)
+  })
+
+  it('未注册的顶层字段时报错', () => {
+    const data = buildPlatform(validAnswers)
+    data.kconfigId = 'T5AI'
+    expect(validatePlatform(data).some(e => e.includes('未注册的 platform 顶层字段'))).toBe(true)
   })
 
   it('memory.sramBytes 为 string 时报错', () => {

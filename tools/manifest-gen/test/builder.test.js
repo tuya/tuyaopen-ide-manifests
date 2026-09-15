@@ -14,7 +14,6 @@ const minimalAnswers = {
     cellular: { enabled: false, enableMacro: 'ENABLE_CELLULAR' },
   },
   memory: { sramBytes: 1024, romBytes: 512, flashMaxBytes: 4096, psramMaxBytes: 0, efuse: false },
-  kconfigId: 'TEST_PLAT',
   selectedPeripherals: ['gpio', 'uart'],
 }
 
@@ -25,6 +24,7 @@ describe('buildPlatform()', () => {
     expect(result.platformId).toBe('test-plat')
     expect(result.id).toBe('test-v1')
     expect(result.arch).toBe('arm-cortex-m33')
+    expect(result).not.toHaveProperty('kconfigId')
   })
 
   it('只包含选中的外设', () => {

@@ -109,6 +109,21 @@
           }
         }
       ]
+    },
+    {
+      "board": "espressif-esp32s31-korvo-1",
+      "options": [
+        {
+          "file": "ESP32S31_KORVO_1.config",
+          "name": {
+            "en": "ESP32-S31-Korvo-1",
+            "zh-CN": "ESP32-S31-Korvo-1 开发板"
+          },
+          "peripherals": [
+            "led-pixel"
+          ]
+        }
+      ]
     }
   ],
   "drivers": [
