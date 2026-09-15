@@ -628,7 +628,10 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/espressif-esp32s31-korvo-1/espressif-esp32s31-korvo-1.jpg"
+      }
     },
     {
       "id": "seeed-xiao-esp32s3-sense",
