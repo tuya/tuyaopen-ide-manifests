@@ -1,0 +1,6 @@
+{
+  "ideSupport": {
+    "minVersion": "1.0.0",
+    "maxVersionExclusive": "9.9.9"
+  }
+}

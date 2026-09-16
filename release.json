@@ -10,6 +10,10 @@
     "sha256": "3f6b75eea3b2a72dc4b3955a6230f24632fcf253c7fada66dc46e25343d202b6",
     "size": 6055805
   },
+  "ideSupport": {
+    "minVersion": "1.0.0",
+    "maxVersionExclusive": "9.9.9"
+  },
   "domains": {
     "boardsAndChips": {
       "version": "1.0.2"

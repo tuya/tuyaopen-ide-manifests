@@ -10,6 +10,7 @@
 ```
 .
 ├── registry.json                  # top-level index — fetched first
+├── release-metadata.json          # release compatibility range (validated by CI)
 ├── boards-and-chips/
 │   └── index.json                 # boards + chips (Tuya official + ecosystem)
 ├── demos/
@@ -196,6 +197,15 @@ IDE startup
   → lazy-fetch only the domains the user navigates to
   → cache to globalStorage; re-validate via ETag on next cold start
 ```
+
+### IDE compatibility
+
+`release-metadata.json` is the version-controlled source for the IDE release
+gate. CI validates its strict `X.Y.Z` `minVersion` and
+`maxVersionExclusive` fields (`minVersion` is inclusive, the maximum is
+exclusive) and embeds the identical `ideSupport` object in each generated
+`release.json`. Older releases without this field remain compatible with
+historical IDE versions.
 
 ## Maintenance flow
 
