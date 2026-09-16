@@ -78,6 +78,11 @@ export function renderDemoForm(demo = null) {
   const readmeZh = d.documentation?.readme?.['zh-CN'] || '';
   const currentImageUrl = d.image?.url || '';
   const sdks = Array.isArray(d.sdks) ? d.sdks : [];
+  const sdkRequirements = Array.isArray(d.sdkRequirements) ? d.sdkRequirements : [];
+  const branchFor = (sdk) => {
+    const requirement = sdkRequirements.find((entry) => entry?.sdk === sdk);
+    return typeof requirement?.branch === 'string' ? requirement.branch : '';
+  };
 
   return `
     <form id="demoForm" class="demo-form" style="max-width: none; width: 100%; padding: 24px;">
@@ -134,6 +139,21 @@ export function renderDemoForm(demo = null) {
         <label class="form-label" data-i18n="skillSdks">Applies to SDK(s)</label>
         <div class="skill-sdks-checks">${['tuyaopen', 'tuyaos'].map((v) => `<label class="skill-sdk-check"><input type="checkbox" class="demo-sdk-cb" value="${v}" ${sdks.includes(v) ? 'checked' : ''}> ${v}</label>`).join('')}</div>
         <small style="color: var(--color-muted);" data-i18n="skillSdksHint">Leave both unchecked = TuyaOpen only (default).</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">${i18n.t('sdkBranchRequirements')}</label>
+        <div class="form-row-2col">
+          <div class="form-col-half">
+            <label class="form-label" for="demoSdkBranchTuyaopen">${i18n.t('sdkBranchTuyaopen')}</label>
+            <input type="text" id="demoSdkBranchTuyaopen" class="form-input" pattern="[A-Za-z0-9][A-Za-z0-9._/-]*" value="${escapeHtml(branchFor('tuyaopen'))}" placeholder="develop">
+          </div>
+          <div class="form-col-half">
+            <label class="form-label" for="demoSdkBranchTuyaos">${i18n.t('sdkBranchTuyaos')}</label>
+            <input type="text" id="demoSdkBranchTuyaos" class="form-input" pattern="[A-Za-z0-9][A-Za-z0-9._/-]*" value="${escapeHtml(branchFor('tuyaos'))}" placeholder="develop">
+          </div>
+        </div>
+        <small style="color: var(--color-muted);">${i18n.t('sdkBranchRequirementsHint')}</small>
       </div>
 
       <!-- EN/ZH Pair: Summary -->
@@ -437,11 +457,16 @@ export async function saveDemoForm(form, demoId = null) {
   }
 
   const sdks = [...document.querySelectorAll('.demo-sdk-cb:checked')].map((cb) => cb.value);
+  const sdkRequirements = [
+    { sdk: 'tuyaopen', branch: document.getElementById('demoSdkBranchTuyaopen')?.value?.trim() || '' },
+    { sdk: 'tuyaos', branch: document.getElementById('demoSdkBranchTuyaos')?.value?.trim() || '' },
+  ].filter((requirement) => requirement.branch);
 
   const data = {
     id,
     type,
     sdks,
+    sdkRequirements,
     publish: document.getElementById('demoPublish').checked,
     name: {
       en: document.getElementById('demoNameEn').value.trim(),

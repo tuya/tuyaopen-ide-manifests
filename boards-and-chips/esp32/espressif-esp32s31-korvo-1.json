@@ -406,6 +406,12 @@
     }
   },
   "boardSymbol": "ESP32S31_KORVO_1",
+  "sdkRequirements": [
+    {
+      "sdk": "tuyaopen",
+      "branch": "develop"
+    }
+  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/develop/boards/ESP32/ESP32S31_KORVO_1"
   }

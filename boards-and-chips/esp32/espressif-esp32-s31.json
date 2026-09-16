@@ -15,6 +15,12 @@
     "productPage": null
   },
   "boardSymbol": "ESP32_S31",
+  "sdkRequirements": [
+    {
+      "sdk": "tuyaopen",
+      "branch": "develop"
+    }
+  ],
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen/tree/develop/boards/ESP32/ESP32-S31"
   }
