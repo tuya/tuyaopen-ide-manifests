@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-05-13T00:00:00Z",
+  "publishedAt": "2026-09-16T08:10:00Z",
   "items": [
     {
       "id": "t5ai",
@@ -76,7 +76,9 @@
         "url": "images/bk7231n/bk7231n-hero.png"
       },
       "detailUrl": "platforms/bk7231n/bk7231n.json",
-      "sdks": [],
+      "sdks": [
+        "tuyaopen"
+      ],
       "published": false
     },
     {

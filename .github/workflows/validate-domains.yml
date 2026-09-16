@@ -1,0 +1,57 @@
+name: Domain Version Check
+
+# Deliberately NOT folded into validate-skills-index.yml: that workflow is
+# path-scoped to `skills/**`, and the rule this enforces applies to every
+# registered domain. Scoping this one to skills too would have left
+# platforms / boards-and-chips / demos with no gate at all — the same shape of
+# hole that let `manifests.skills.version` sit at 1.0.0 across 439 changed
+# files (see the script's docstring).
+
+on:
+  pull_request:
+    paths:
+      - "registry.json"
+      - "platforms/**"
+      - "boards-and-chips/**"
+      - "demos/**"
+      - "skills/**"
+      - "scripts/check-domain-version-bumps.py"
+      - ".github/workflows/validate-domains.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "registry.json"
+      - "platforms/**"
+      - "boards-and-chips/**"
+      - "demos/**"
+      - "skills/**"
+      - "scripts/check-domain-version-bumps.py"
+      - ".github/workflows/validate-domains.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  domains:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The bump check diffs against the PR base; at the default depth of 1
+          # that commit is not in the clone, and the script fails closed rather
+          # than assuming "unchanged".
+          fetch-depth: 0
+
+      # Runs on push-to-main too: unlike the per-skill bump check, this one has
+      # no "already checked on its PR" escape, because a merge can land two PRs
+      # that each bumped a domain to the same number without either being wrong
+      # on its own.
+      - name: Structure — every registered domain resolves
+        run: python3 scripts/check-domain-version-bumps.py
+
+      - name: Require a version + publishedAt bump for changed domains
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python3 scripts/check-domain-version-bumps.py --base-ref "$BASE_SHA"
