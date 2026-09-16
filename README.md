@@ -24,6 +24,22 @@
     └── miniapp-template-covers.json
 ```
 
+## Release contract
+
+`release-metadata.json` is the versioned source of truth for the IDE
+compatibility range. The release workflow validates it and generates the
+checked-in `release.json` from that metadata, `registry.json`, and the
+published package checksum/size. The contract is intentionally executable
+without project dependencies:
+
+```bash
+python3 scripts/release_contract.py validate
+python3 -m pytest tests/scripts/test_release_metadata.py -q
+```
+
+The standalone **Release Contract** GitHub Action runs these checks for pull
+requests touching release inputs and for matching pushes to `main`.
+
 ---
 
 ## Domains

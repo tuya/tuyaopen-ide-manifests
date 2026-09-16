@@ -24,44 +24,8 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "→ Building release $TAG (version $VERSION)"
 
-      - name: Read domain versions
-        id: domains
-        run: |
-          read_ver() {
-            python3 -c "import json; d=json.load(open('registry.json')); print(d['manifests'].get('$1',{}).get('version',''))" 2>/dev/null || echo ''
-          }
-          BOARDS="$(read_ver boardsAndChips)"
-          DEMOS="$(read_ver demos)"
-          PLATFORMS="$(read_ver platforms)"
-          SKILLS="$(read_ver skills)"
-          echo "boards=$BOARDS"       >> "$GITHUB_OUTPUT"
-          echo "demos=$DEMOS"         >> "$GITHUB_OUTPUT"
-          echo "platforms=$PLATFORMS" >> "$GITHUB_OUTPUT"
-          echo "skills=$SKILLS"       >> "$GITHUB_OUTPUT"
-          echo "→ Domain versions — boardsAndChips=$BOARDS demos=$DEMOS platforms=$PLATFORMS skills=$SKILLS"
-
-      - name: Validate IDE compatibility metadata
-        id: ide_support
-        run: |
-          python3 - <<'EOF'
-          import json, os, re, sys
-          with open('release-metadata.json', encoding='utf-8') as f:
-              data = json.load(f)
-          support = data.get('ideSupport')
-          strict = re.compile(r'^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)$')
-          if not isinstance(support, dict):
-              raise SystemExit('release-metadata.json requires ideSupport object')
-          lo = support.get('minVersion')
-          hi = support.get('maxVersionExclusive')
-          if not isinstance(lo, str) or not strict.fullmatch(lo):
-              raise SystemExit(f'invalid ideSupport.minVersion: {lo!r}')
-          if not isinstance(hi, str) or not strict.fullmatch(hi):
-              raise SystemExit(f'invalid ideSupport.maxVersionExclusive: {hi!r}')
-          if tuple(map(int, lo.split('.'))) >= tuple(map(int, hi.split('.'))):
-              raise SystemExit('ideSupport.minVersion must be less than maxVersionExclusive')
-          with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as out:
-              out.write(f'min={lo}\nmax={hi}\n')
-          print(f'→ IDE compatibility: {lo} <= IDE < {hi}')
+      - name: Validate release contract
+        run: python3 scripts/release_contract.py validate
 
       - name: Validate skills index
         run: |
@@ -99,49 +63,12 @@ jobs:
 
       - name: Generate release.json
         run: |
-          python3 - <<'EOF'
-          import json, os
-          tag     = os.environ["TAG"]
-          version = os.environ["VERSION"]
-          sha256  = os.environ["SHA256"]
-          size    = int(os.environ["SIZE"])
-          repo_gh = "tuya/tuyaopen-ide-manifests"
-          repo_ge = "tuya-open/tuyaopen-ide-manifests"
-          cdn_tuyacn = "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/tuyaopen-ide-manifests"
-          manifest = {
-            "schemaVersion": 1,
-            "version": version,
-            "tag": tag,
-            "publishedAt": __import__("datetime").datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ"),
-            "package": {
-              "github": f"https://github.com/{repo_gh}/releases/download/{tag}/manifests.tar.gz",
-              "gitee":  f"https://gitee.com/{repo_ge}/releases/download/{tag}/manifests.tar.gz",
-              "tuyacn": f"{cdn_tuyacn}/manifests-{version}.tar.gz",
-              "sha256": sha256,
-              "size":   size,
-            },
-            "ideSupport": {
-              "minVersion": os.environ["IDE_MIN"],
-              "maxVersionExclusive": os.environ["IDE_MAX"],
-            },
-            "domains": {
-              "boardsAndChips": {"version": os.environ.get("BOARDS_VER", "")},
-              "demos":          {"version": os.environ.get("DEMOS_VER", "")},
-              "platforms":      {"version": os.environ.get("PLATFORMS_VER", "")},
-              "skills":         {"version": os.environ.get("SKILLS_VER", "")},
-            },
-          }
-          json.dump(manifest, open("release.json", "w"), indent=2)
-          print("→ release.json generated")
-          print(json.dumps(manifest, indent=2))
-          EOF
-        env:
-          BOARDS_VER:    ${{ steps.domains.outputs.boards }}
-          DEMOS_VER:     ${{ steps.domains.outputs.demos }}
-          PLATFORMS_VER: ${{ steps.domains.outputs.platforms }}
-          SKILLS_VER:    ${{ steps.domains.outputs.skills }}
-          IDE_MIN:       ${{ steps.ide_support.outputs.min }}
-          IDE_MAX:       ${{ steps.ide_support.outputs.max }}
+          python3 scripts/release_contract.py generate \
+            --tag "$TAG" \
+            --version "$VERSION" \
+            --sha256 "$SHA256" \
+            --size "$SIZE" \
+            --output release.json
 
       - name: Upload GitHub Release assets
         env:

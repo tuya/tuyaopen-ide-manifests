@@ -1,0 +1,40 @@
+name: Release Contract
+
+on:
+  pull_request:
+    paths:
+      - release-metadata.json
+      - release.json
+      - registry.json
+      - scripts/release_contract.py
+      - tests/scripts/test_release_metadata.py
+      - .github/workflows/release.yml
+      - .github/workflows/release-contract.yml
+  push:
+    branches: [main]
+    paths:
+      - release-metadata.json
+      - release.json
+      - registry.json
+      - scripts/release_contract.py
+      - tests/scripts/test_release_metadata.py
+      - .github/workflows/release.yml
+      - .github/workflows/release-contract.yml
+
+permissions:
+  contents: read
+
+jobs:
+  release-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install pinned test dependency
+        run: python -m pip install --disable-pip-version-check pytest==8.3.5
+      - name: Validate release contract
+        run: python scripts/release_contract.py validate
+      - name: Test release contract
+        run: python -m pytest tests/scripts/test_release_metadata.py -q
