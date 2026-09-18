@@ -320,7 +320,7 @@
         "groups": "none",
         "reason": "Shared cloud guidance uses IDE surfaces, Broker capability IDs, and tuya-devplat-cli; direct tuyaopen-cli invocation is not part of this payload."
       },
-      "defaultEnabled": false,
+      "defaultEnabled": true,
       "installPayload": "cloud/tuyaopen-cloud",
       "aliases": [
         "tuya-iot-platform"
@@ -1293,7 +1293,7 @@
         "zh-CN": "Trigger on: 编译/构建/清理 + tuyaos/应用; build/compile/clean TuyaOS app; 加入源文件/头文件/local.mk/vendor 路径; add .c/.h to TuyaOS build."
       },
       "tags": [],
-      "defaultEnabled": false,
+      "defaultEnabled": true,
       "installPayload": "embedded/tuyaos-build",
       "source": {
         "localPath": "skills/embedded/tuyaos-build"
@@ -1326,7 +1326,7 @@
         "zh-CN": "Use for ANY hardware / peripheral / connectivity request on a TuyaOS project — GPIO, PWM, I2C, SPI, ADC, timer, watchdog, mic, speaker, DVP camera, Wi-Fi (STA/AP/scan/LP), BLE (peripheral/central/remote), or \"make the hardware do X\". Load this skill FIRST; it routes to the matching TuyaOS peripheral sub-skill. Do NOT use on TuyaOpen (tos.py / TDL) projects."
       },
       "tags": [],
-      "defaultEnabled": false,
+      "defaultEnabled": true,
       "installPayload": "embedded/tuyaos-hardware-vibe-coding",
       "source": {
         "localPath": "skills/embedded/tuyaos-hardware-vibe-coding"
