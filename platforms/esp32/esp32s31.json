@@ -1166,6 +1166,10 @@
         ]
       },
       "enabled": true
+    },
+    "vad": {
+      "count": 1,
+      "enabled": true
     }
   },
   "platformSymbol": "ESP32",
