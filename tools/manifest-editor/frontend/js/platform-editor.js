@@ -217,6 +217,20 @@ function kindOf(v) {
   return 'string';
 }
 
+// Whether a GPIO is included by a routable port's candidate declaration.
+// Candidates accept either individual GPIO numbers or inclusive [start, end]
+// ranges, so [0, 2, [8, 28]] means GPIO0, GPIO2, and GPIO8 through GPIO28.
+// Invalid entries are ignored instead of broadening the selectable pin set.
+export function isCandidateGpio(candidates, gpio) {
+  if (!Array.isArray(candidates) || !Number.isInteger(gpio)) return false;
+  return candidates.some((candidate) => {
+    if (Number.isInteger(candidate)) return candidate === gpio;
+    if (!Array.isArray(candidate) || candidate.length !== 2) return false;
+    const [start, end] = candidate;
+    return Number.isInteger(start) && Number.isInteger(end) && start <= end && start <= gpio && gpio <= end;
+  });
+}
+
 class StructEditor {
   constructor(data, { omitKeys, labels, lockStructure, enums, datalistKeys, datalistSuggest, pinout, categories, schema, flattenKeys, inlineObjects, itemTemplate } = {}) {
     this.data = data ?? {};
@@ -469,8 +483,9 @@ class StructEditor {
     return r;
   }
 
-  // Nearest enclosing port's `candidates` (GPIO numbers a routable port may use),
-  // or null when unconstrained (= any GPIO-capable pin).
+  // Nearest enclosing port's `candidates` (individual GPIO numbers and/or
+  // inclusive [start, end] ranges that a routable port may use), or null when
+  // unconstrained (= any GPIO-capable pin).
   _candidatesAt(path) {
     let cur = this.data, c = null;
     for (const seg of path) {
@@ -555,7 +570,7 @@ class StructEditor {
     if (this._routableAt(path)) {
       const cand = this._candidatesAt(path);
       const pool = Array.isArray(cand) && cand.length
-        ? all.filter(e => cand.includes(e.gpio))
+        ? all.filter(e => isCandidateGpio(cand, e.gpio))
         : all.filter(e => Array.isArray(e.functions) && e.functions.includes('GPIO'));
       const poolF = pool.length ? pool : all;
       const curEnt = poolF.find(e => String(e.gpio) === cur);

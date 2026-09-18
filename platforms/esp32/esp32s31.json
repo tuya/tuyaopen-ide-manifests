@@ -1157,6 +1157,15 @@
           }
         ]
       }
+    },
+    "kws": {
+      "count": 1,
+      "spec": {
+        "wakeupWords": [
+          "TKL_KWS_WAKEUP_NIHAO_XIAOZHI"
+        ]
+      },
+      "enabled": true
     }
   },
   "platformSymbol": "ESP32",

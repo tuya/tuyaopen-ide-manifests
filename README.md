@@ -167,8 +167,10 @@ group — `manufacturer` wins whenever both are present.
   (PWM on `spec`) carries `routable` (default `false` = fixed pinmux, pins
   locked). GPIO-matrix chips (ESP32) set `routable: true` on digital ports so
   their `pinGroups` become *defaults* and any `GPIO`-capable pin is selectable;
-  an optional `candidates: [gpio,…]` constrains the routable set (e.g. LP-domain
-  ports). ADC/analog ports stay `routable: false`.
+  an optional `candidates` constrains the routable set (e.g. LP-domain ports).
+  It accepts individual GPIOs and inclusive ranges, such as
+  `candidates: [0, 2, [8, 28], [30, 40]]`. ADC/analog ports stay
+  `routable: false`.
 - **`published` gates downstream** — a platform item and a board item each carry
   `published` (default `true` when absent). A board's **effective** publish state
   is `board.published !== false` **AND** its chip platform's `published !== false`:

@@ -120,7 +120,7 @@
             "id": 0,
             "role": "general",
             "routable": false,
-            "candidates": "<omit for fixed pinmux; for a GPIO-matrix routable port set routable:true and optionally candidates:[gpio,...] to constrain the routable set (omit candidates = any pin whose functions include \"GPIO\")>",
+            "candidates": "<omit for fixed pinmux; for a GPIO-matrix routable port set routable:true and optionally candidates:[gpio,...] (individual GPIOs and inclusive [start,end] ranges) to constrain the routable set; omit candidates = any pin whose functions include \"GPIO\">",
             "irq": {
               "rx": false,
               "tx": false
