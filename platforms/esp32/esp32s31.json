@@ -1048,25 +1048,6 @@
         }
       }
     },
-    "can": {
-      "enabled": true,
-      "count": 1,
-      "spec": {
-        "protocol": "CAN_FD",
-        "ports": [
-          {
-            "id": 0,
-            "routable": true,
-            "pinGroups": [
-              {
-                "tx": 8,
-                "rx": 9
-              }
-            ]
-          }
-        ]
-      }
-    },
     "dma2d": {
       "enabled": true,
       "count": 1,
