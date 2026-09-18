@@ -231,6 +231,15 @@ export function isCandidateGpio(candidates, gpio) {
   });
 }
 
+// A candidates list is rendered as a range editor only when every entry uses
+// the [start, end] form. Legacy lists of individual GPIOs keep their existing
+// scalar editor, so opening them never rewrites their data shape.
+export function isCandidateRangeList(candidates) {
+  return Array.isArray(candidates) && candidates.every(
+    (candidate) => Array.isArray(candidate) && candidate.length === 2,
+  );
+}
+
 class StructEditor {
   constructor(data, { omitKeys, labels, lockStructure, enums, datalistKeys, datalistSuggest, pinout, categories, schema, flattenKeys, inlineObjects, itemTemplate } = {}) {
     this.data = data ?? {};
@@ -284,6 +293,7 @@ class StructEditor {
       }
     }
     if (this.labels && this.labels[k]) return this.labels[k];
+    if (k === 'candidates') return i18n.t('pfCandidateRanges');
     // A raw HAL-constant key (e.g. a pixel-format map key) shows shortened.
     if (typeof k === 'string' && /^T(?:UYA|KL)_[A-Z0-9]+_/.test(k)) return prettyEnum(k);
     return k;
@@ -354,6 +364,7 @@ class StructEditor {
 
   // True when an array key at this path is a list of [start,end] ranges.
   _isSegments(key, path) {
+    if (key === 'candidates') return isCandidateRangeList(this._getByPath([...path, key]));
     const type = (path && path.length) ? path[0] : null;
     const sc = type && this.schema ? this.schema[type] : null;
     return !!(sc && sc.segments && sc.segments.includes(key));
