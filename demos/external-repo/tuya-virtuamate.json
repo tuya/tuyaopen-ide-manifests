@@ -22,10 +22,13 @@
     "taishanpi-3",
     "dshanpi-a1"
   ],
+  "detailUrl": "demos/external-repo/tuya-virtuamate.json",
   "source": {
+    "kind": "external-repo",
     "repo": "https://github.com/tuya/VirtuaMate",
     "ref": "master",
-    "kind": "external-repo"
+    "commit": "d6449bb01407f093966a0e1ea4bac24f46205e18",
+    "subpath": "."
   },
   "configs": [
     {
@@ -96,7 +99,7 @@
   "documentation": {
     "readme": {
       "en": "https://github.com/tuya/VirtuaMate/blob/master/README.md",
-      "zh-CN": "https://github.com/tuya/VirtuaMate/blob/master/README.md"
+      "zh-CN": "https://github.com/tuya/VirtuaMate/blob/master/README_zh.md"
     }
   },
   "image": {

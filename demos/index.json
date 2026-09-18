@@ -2031,17 +2031,18 @@
       ]
     },
     {
-      "id": "tuya-duckyclaw",
+      "id": "tclaw",
       "type": "app",
       "name": {
-        "en": "TuyaOpenClaw — Edge AI Agent",
-        "zh-CN": "TuyaOpenClaw 边缘 AI 智能体"
+        "en": "TClaw — Edge AI Agent",
+        "zh-CN": "TClaw 边缘 AI 智能体"
       },
       "summary": {
         "en": "Hardware-oriented AI agent built on the TuyaOpen C SDK. Runs a Claw-style agent loop on edge devices (Tuya T5AI, ESP32, Raspberry Pi, Linux) with IM channels (Telegram, Discord, Feishu, WeChat, QQ Bot) and on-device MCP-style tools.",
         "zh-CN": "基于 TuyaOpen C SDK 构建的硬件导向 AI Agent。在边缘设备（Tuya T5AI、ESP32、Raspberry Pi、Linux）上运行 Claw 风格 Agent 循环，通过 IM 通道（Telegram、Discord、飞书、微信、QQ 机器人）通信，并在设备端执行 MCP 风格工具调用。"
       },
       "tags": [
+        "app",
         "ai",
         "agent",
         "tuya-iot"
@@ -2056,16 +2057,16 @@
       ],
       "compatibilityType": "board-specific",
       "source": {
-        "repo": "https://github.com/tuya/TuyaOpenClaw",
+        "repo": "https://github.com/tuya/TClaw",
         "ref": "master",
         "kind": "external-repo",
-        "repoCN": "https://gitee.com/tuya-open/TuyaOpenClaw"
+        "repoCN": "https://gitee.com/tuya-open/TClaw"
       },
       "publish": true,
       "image": {
-        "url": "images/tuya-duckyclaw/banner.png"
+        "url": "images/tclaw/banner.png"
       },
-      "detailUrl": "demos/external-repo/tuya-duckyclaw.json",
+      "detailUrl": "demos/external-repo/tclaw.json",
       "sdks": [
         "tuyaopen"
       ]

@@ -1,8 +1,8 @@
 {
-  "id": "tuya-duckyclaw",
+  "id": "tclaw",
   "name": {
-    "en": "TuyaOpenClaw — Edge AI Agent",
-    "zh-CN": "TuyaOpenClaw 边缘 AI 智能体"
+    "en": "TClaw — Edge AI Agent",
+    "zh-CN": "TClaw 边缘 AI 智能体"
   },
   "summary": {
     "en": "Hardware-oriented AI agent built on the TuyaOpen C SDK. Runs a Claw-style agent loop on edge devices (Tuya T5AI, ESP32, Raspberry Pi, Linux) with IM channels (Telegram, Discord, Feishu, WeChat, QQ Bot) and on-device MCP-style tools.",
@@ -23,11 +23,14 @@
     "dshanpi-a1",
     "waveshare-t5ai-touch-amoled-175"
   ],
+  "detailUrl": "demos/external-repo/tclaw.json",
   "source": {
-    "repo": "https://github.com/tuya/TuyaOpenClaw",
-    "repoCN": "https://gitee.com/tuya-open/TuyaOpenClaw",
+    "kind": "external-repo",
+    "repo": "https://github.com/tuya/TClaw",
+    "repoCN": "https://gitee.com/tuya-open/TClaw",
     "ref": "master",
-    "kind": "external-repo"
+    "commit": "88bd37378f1d106fcc1175e61b368222cc8fabda",
+    "subpath": "."
   },
   "configs": [
     {
@@ -105,12 +108,12 @@
   ],
   "documentation": {
     "readme": {
-      "en": "https://github.com/tuya/TuyaOpenClaw/blob/master/README.md",
-      "zh-CN": "https://github.com/tuya/TuyaOpenClaw/blob/master/README_zh.md"
+      "en": "https://github.com/tuya/TClaw/blob/master/README.md",
+      "zh-CN": "https://github.com/tuya/TClaw/blob/master/README_zh.md"
     }
   },
   "image": {
-    "url": "images/tuya-duckyclaw/banner.png"
+    "url": "images/tclaw/banner.png"
   },
   "publish": true,
   "cloud": {

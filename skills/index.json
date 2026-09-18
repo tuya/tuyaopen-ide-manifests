@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-09-04T07:54:07Z",
+  "publishedAt": "2026-09-18T02:19:11Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
@@ -356,14 +356,14 @@
         "en": "IoT Product Development Workflow",
         "zh-CN": "智能产品开发工作流"
       },
-      "surface": "embedded",
+      "surface": "cloud",
       "summary": {
-        "en": "End-to-end IoT product development: requirements → Tuya Platform product/DP creation → complete embedded firmware. State-machine detects project state and picks up from wherever development stands.",
-        "zh-CN": "端到端 IoT 产品开发：需求梳理 → 涂鸦平台建产品/DP → 完整嵌入式固件生成。状态机检测项目进度，从当前阶段继续。"
+        "en": "End-to-end IoT product development: requirements → Tuya Platform product/DP creation → hand-off to the firmware and MiniApp phases. State-machine detects project state and picks up from wherever development stands.",
+        "zh-CN": "端到端 IoT 产品开发：需求梳理 → 涂鸦平台建产品/DP → 移交嵌入式固件与面板小程序阶段。状态机检测项目进度，从当前阶段继续。"
       },
       "whenToUse": {
-        "en": "Use when developer wants to build a complete IoT product from scratch, or to continue from any mid-point in the development flow.",
-        "zh-CN": "当开发者要从零开始做 IoT 产品，或从中途继续开发时使用。"
+        "en": "Use when a developer wants to build a complete IoT product from scratch, or continue from any mid-point. This is the product/DP phase entry; after the PID and DPs are ready, continue with the firmware and MiniApp workflows in parallel.",
+        "zh-CN": "当开发者要从零开始做完整 IoT 产品，或从中途继续开发时使用。这是产品/DP 阶段入口；拿到 PID 和 DP 后，继续并行进入嵌入式固件与面板小程序工作流。"
       },
       "tags": [
         "product",
@@ -397,6 +397,7 @@
       "related": [
         "tuyaopen-cloud",
         "tuyaopen-workflow-embedded-dev",
+        "miniapp-development-workflow",
         "tuyaopen-embedded-project"
       ],
       "commands": [
