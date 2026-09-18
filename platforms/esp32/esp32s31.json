@@ -955,13 +955,6 @@
       "enabled": true,
       "count": 3
     },
-    "rmt": {
-      "enabled": true,
-      "count": 8,
-      "spec": {
-        "routable": true
-      }
-    },
     "rtc": {
       "enabled": true,
       "count": 1
