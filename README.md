@@ -136,7 +136,6 @@ group — `manufacturer` wins whenever both are present.
   Forward-compatible: an IDE predating the field ignores it (shows
   everything); an SDK-aware IDE filters the catalogue by the active SDK.
   `platforms` items do **not** carry this field.
-
   On `skills` this field is **load-bearing rather than advisory** since
   2026-09-02: it is the *only* thing separating the two product lines, which
   used to be separated by their directory (`skills/TuyaOpen/` vs
@@ -148,6 +147,13 @@ group — `manufacturer` wins whenever both are present.
   `scripts/validate-skills-index.py` reads the same field to decide which of
   its rules — the ones asserting a relationship with the `tuyaopen-cli` CLI —
   apply to a given item.
+- **SDK branch requirements** (`sdkRequirements`) — optional array in a board
+  or demo **detail** file, one `{ "sdk": "tuyaopen" | "tuyaos", "branch":
+  "…" }` entry per SDK line. It declares an exceptional branch needed by that
+  resource; it does not decide catalogue visibility (that remains `sdks`). If
+  the detail has no entry for the active SDK, the default is that SDK's
+  `master` or a Release version. Keep this field out of `index.json` so
+  catalogue lists do not need to fetch every detail file.
 - **Platform pinout `functions` vs `caps`** — in a platform detail file each
   `pinout[]` entry splits its labels into two arrays: `functions[]` is a
   **controlled, selection-only** vocabulary of editor-selectable *routing*
@@ -161,8 +167,10 @@ group — `manufacturer` wins whenever both are present.
   (PWM on `spec`) carries `routable` (default `false` = fixed pinmux, pins
   locked). GPIO-matrix chips (ESP32) set `routable: true` on digital ports so
   their `pinGroups` become *defaults* and any `GPIO`-capable pin is selectable;
-  an optional `candidates: [gpio,…]` constrains the routable set (e.g. LP-domain
-  ports). ADC/analog ports stay `routable: false`.
+  an optional `candidates` constrains the routable set (e.g. LP-domain ports).
+  It accepts individual GPIOs and inclusive ranges, such as
+  `candidates: [0, 2, [8, 28], [30, 40]]`. ADC/analog ports stay
+  `routable: false`.
 - **`published` gates downstream** — a platform item and a board item each carry
   `published` (default `true` when absent). A board's **effective** publish state
   is `board.published !== false` **AND** its chip platform's `published !== false`:

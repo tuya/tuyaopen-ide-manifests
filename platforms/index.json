@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-09-16T08:10:00Z",
+  "publishedAt": "2026-09-18T09:02:56Z",
   "items": [
     {
       "id": "t5ai",
@@ -264,6 +264,23 @@
         "zh-CN": "乐鑫 ESP32-S3 平台 — 双核 Xtensa LX7，主频 240MHz，支持 Wi-Fi 802.11b/g/n、蓝牙 BLE 5.0、USB-OTG，并内置面向端侧 AI/ML 的向量指令。512KB SRAM 并支持 Octal PSRAM，面向音频与显示类 AIoT 应用。"
       },
       "detailUrl": "platforms/esp32/esp32s3.json",
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
+    },
+    {
+      "id": "esp32s31",
+      "platformId": "esp32",
+      "name": {
+        "en": "Espressif ESP32-S31",
+        "zh-CN": "乐鑫 ESP32-S31"
+      },
+      "summary": {
+        "en": "Espressif ESP32-S31 platform — dual-core 32-bit RISC-V @320MHz with Wi-Fi 6 (2.4GHz), Bluetooth 5.4 including Classic Bluetooth, and IEEE 802.15.4 for Zigbee / Thread. 512KB HP SRAM plus 32KB LP SRAM and up to 32MB PSRAM suit connected audio, display, and camera AIoT devices.",
+        "zh-CN": "乐鑫 ESP32-S31 平台 — 双核 32 位 RISC-V，主频 320MHz，支持 Wi-Fi 6（2.4GHz）、蓝牙 5.4（含经典蓝牙）及 IEEE 802.15.4（Zigbee / Thread）。配备 512KB 高性能 SRAM、32KB 低功耗 SRAM，最高支持 32MB PSRAM，适用于音频、显示和摄像头类 AIoT 设备。"
+      },
+      "detailUrl": "platforms/esp32/esp32s31.json",
       "sdks": [
         "tuyaopen"
       ],

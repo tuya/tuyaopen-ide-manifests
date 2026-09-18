@@ -5,8 +5,8 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
-// SDK applicability — optional array; omitted ⇒ ['tuyaopen'] (default). Returns a
-// deduped subset of known SDK ids, or undefined when empty/absent (drop field).
+// SDK applicability — a deduped subset of known SDK ids, or undefined when
+// empty/absent (drop field). This is separate from an SDK branch requirement.
 const SDKS = ['tuyaopen', 'tuyaos'];
 function normalizeSdks(v) {
   if (!Array.isArray(v)) return undefined;
@@ -14,14 +14,39 @@ function normalizeSdks(v) {
   return arr.length ? arr : undefined;
 }
 
+const SAFE_BRANCH = /^[A-Za-z0-9][A-Za-z0-9._/-]*$/;
+function parseSdkRequirements(value) {
+  if (value === undefined) return { ok: true, value: undefined };
+  if (!Array.isArray(value)) return { ok: false, error: 'sdkRequirements must be an array' };
+
+  const requirements = [];
+  const seen = new Set();
+  for (const requirement of value) {
+    if (!requirement || typeof requirement !== 'object' || Array.isArray(requirement) || !SDKS.includes(requirement.sdk)) {
+      return { ok: false, error: 'Each sdkRequirements entry must name a supported SDK' };
+    }
+    const branch = typeof requirement.branch === 'string' ? requirement.branch.trim() : '';
+    if (!branch || branch.length > 256 || branch.includes('..') || !SAFE_BRANCH.test(branch)) {
+      return { ok: false, error: 'Each sdkRequirements branch must be a valid branch name' };
+    }
+    if (seen.has(requirement.sdk)) {
+      return { ok: false, error: 'sdkRequirements may contain only one entry per SDK' };
+    }
+    seen.add(requirement.sdk);
+    requirements.push({ sdk: requirement.sdk, branch });
+  }
+  return { ok: true, value: requirements };
+}
+
 // Build the demo detail object. Holds the source path + build config + docs;
 // identity, classification and tags stay in the index. `configs` is an array
 // of board targets: { board, accessory?, options:[{name?,file}] }.
 // Returns null when there is nothing to store (caller deletes the file).
-function buildDemoDetail(id, { source, cloud, configs, documentation, drivers }) {
+function buildDemoDetail(id, { source, cloud, configs, documentation, drivers, sdkRequirements }) {
   const detail = { id };
 
   if (typeof source === 'string' && source.trim()) detail.source = source.trim();
+  if (Array.isArray(sdkRequirements) && sdkRequirements.length) detail.sdkRequirements = sdkRequirements;
 
   // Cloud demo flag: `true` when it just needs a PID, or an object with optional
   // PID-location overrides ({ pid: { kconfigKey?, macro?, file? } }) when the demo
@@ -126,7 +151,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
 
 // POST /api/demos - Create new demo
 router.post('/', asyncHandler(async (req, res) => {
-  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, cloud, configs, documentation, drivers, publish, sdks } = req.body;
+  const { id, type, name, summary, tags, boards, platforms, compatibilityType, source, cloud, configs, documentation, drivers, publish, sdks, sdkRequirements } = req.body;
 
   if (!id || !name?.en || !source || typeof source !== 'string') {
     return res.status(400).json({
@@ -149,6 +174,11 @@ router.post('/', asyncHandler(async (req, res) => {
   // configs is an array of board targets; cleaned/validated in buildDemoDetail.
   if (configs !== undefined && !Array.isArray(configs)) {
     return res.status(400).json({ success: false, error: 'configs must be an array of board targets' });
+  }
+
+  const sdkRequirementsResult = parseSdkRequirements(sdkRequirements);
+  if (!sdkRequirementsResult.ok) {
+    return res.status(400).json({ success: false, error: sdkRequirementsResult.error });
   }
 
   const demos = await manifestLoader.loadDemos();
@@ -176,7 +206,7 @@ router.post('/', asyncHandler(async (req, res) => {
   await manifestLoader.saveDemosIndex(demos);
 
   // Detail holds source path + build config + docs (identity/tags in the index).
-  const detailEntry = buildDemoDetail(id, { source, cloud, configs, documentation, drivers });
+  const detailEntry = buildDemoDetail(id, { source, cloud, configs, documentation, drivers, sdkRequirements: sdkRequirementsResult.value });
   if (detailEntry) await manifestLoader.saveDemoDetail(id, detailEntry, indexEntry.type);
 
   if (req.body.autoCommit !== false) {
@@ -204,6 +234,14 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     return res.status(400).json({ success: false, error: 'configs must be an array of board targets' });
   }
 
+  const sdkRequirementsResult = parseSdkRequirements(updates.sdkRequirements);
+  if (!sdkRequirementsResult.ok) {
+    return res.status(400).json({ success: false, error: sdkRequirementsResult.error });
+  }
+  if (updates.sdkRequirements !== undefined) {
+    updates.sdkRequirements = sdkRequirementsResult.value;
+  }
+
   // Update index entry (identity / classification / tags + detailUrl)
   const item = demos.items[idx];
   const oldType = item.type === 'app' ? 'app' : 'example';
@@ -211,7 +249,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   for (const key of indexFields) {
     if (updates[key] !== undefined) item[key] = updates[key];
   }
-  // SDK applicability — empty/invalid clears it (defaults back to tuyaopen).
+  // SDK applicability — empty/invalid clears it.
   if (updates.sdks !== undefined) {
     const arr = normalizeSdks(updates.sdks);
     if (arr) item.sdks = arr;
@@ -239,6 +277,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     configs: updates.configs !== undefined ? updates.configs : existing.configs,
     documentation: updates.documentation !== undefined ? updates.documentation : existing.documentation,
     drivers: updates.drivers !== undefined ? updates.drivers : existing.drivers,
+    sdkRequirements: updates.sdkRequirements !== undefined ? updates.sdkRequirements : existing.sdkRequirements,
   });
   // A type change moves the detail file between demos/example|app/; drop the stale one.
   if (item.type !== oldType) await manifestLoader.deleteDemoDetail(req.params.id, oldType);

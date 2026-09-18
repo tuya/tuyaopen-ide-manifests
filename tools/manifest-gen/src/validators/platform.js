@@ -1,9 +1,18 @@
 import { peripheralModules } from '../generators/registry.js'
 
 const VALID_FLASH = ['qspi', 'spi']
+const ALLOWED_TOP_LEVEL = new Set([
+  'schemaVersion', 'platformId', 'id', 'name', 'arch', 'flashInterface',
+  'connectivity', 'memory', 'peripherals', 'power', 'pinout', 'platformSymbol',
+])
 
 export function validatePlatform(data) {
   const errors = []
+
+  for (const key of Object.keys(data)) {
+    if (!ALLOWED_TOP_LEVEL.has(key))
+      errors.push(`${key} — 未注册的 platform 顶层字段；请先更新公共 Schema、生成器和校验`)
+  }
 
   if (data.schemaVersion !== 1)
     errors.push(`schemaVersion — 期望 1，实际 ${data.schemaVersion}`)
@@ -27,9 +36,6 @@ export function validatePlatform(data) {
 
   if (data.connectivity == null || typeof data.connectivity !== 'object' || Array.isArray(data.connectivity))
     errors.push('connectivity — 期望 object')
-
-  if (typeof data.kconfigId !== 'string' || data.kconfigId.length === 0)
-    errors.push('kconfigId — 期望非空 string')
 
   if (data.peripherals && typeof data.peripherals === 'object') {
     for (const mod of peripheralModules) {

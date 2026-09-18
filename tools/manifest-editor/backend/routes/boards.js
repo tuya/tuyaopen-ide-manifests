@@ -6,13 +6,37 @@ import { asyncHandler } from '../middleware/error-handler.js';
 
 const router = express.Router();
 
-// SDK applicability — optional array; omitted ⇒ ['tuyaopen'] (default). Returns
-// a deduped subset of known SDK ids, or undefined when empty/absent (drop field).
+// SDK applicability — a deduped subset of known SDK ids, or undefined when
+// empty/absent (drop field). This is separate from an SDK branch requirement.
 const SDKS = ['tuyaopen', 'tuyaos'];
 function normalizeSdks(v) {
   if (!Array.isArray(v)) return undefined;
   const arr = [...new Set(v.filter((s) => SDKS.includes(s)))];
   return arr.length ? arr : undefined;
+}
+
+const SAFE_BRANCH = /^[A-Za-z0-9][A-Za-z0-9._/-]*$/;
+function parseSdkRequirements(value) {
+  if (value === undefined) return { ok: true, value: undefined };
+  if (!Array.isArray(value)) return { ok: false, error: 'sdkRequirements must be an array' };
+
+  const requirements = [];
+  const seen = new Set();
+  for (const requirement of value) {
+    if (!requirement || typeof requirement !== 'object' || Array.isArray(requirement) || !SDKS.includes(requirement.sdk)) {
+      return { ok: false, error: 'Each sdkRequirements entry must name a supported SDK' };
+    }
+    const branch = typeof requirement.branch === 'string' ? requirement.branch.trim() : '';
+    if (!branch || branch.length > 256 || branch.includes('..') || !SAFE_BRANCH.test(branch)) {
+      return { ok: false, error: 'Each sdkRequirements branch must be a valid branch name' };
+    }
+    if (seen.has(requirement.sdk)) {
+      return { ok: false, error: 'sdkRequirements may contain only one entry per SDK' };
+    }
+    seen.add(requirement.sdk);
+    requirements.push({ sdk: requirement.sdk, branch });
+  }
+  return { ok: true, value: requirements };
 }
 
 // Resolve a board's platform reference (its `platformId` field — which holds a
@@ -52,7 +76,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
     });
   }
 
-  // Merge detail fields (boardSymbol, demos, peripheralPatterns, links)
+  // Merge detail fields (boardSymbol, peripheralPatterns, links, SDK branch requirements)
   const detail = await manifestLoader.loadBoardDetail(req.params.id);
   const merged = { ...board };
   if (detail) {
@@ -61,6 +85,7 @@ router.get('/:id', asyncHandler(async (req, res) => {
     if (detail.links) merged.links = detail.links;
     if (detail.peripheralPatterns) merged.peripheralPatterns = detail.peripheralPatterns;
     if (detail.peripheralGroups) merged.peripheralGroups = detail.peripheralGroups;
+    if (Array.isArray(detail.sdkRequirements)) merged.sdkRequirements = detail.sdkRequirements;
     if (detail.source) merged.source = detail.source;
 
     // Map links to editor field names
@@ -100,6 +125,11 @@ router.post('/', asyncHandler(async (req, res) => {
       success: false,
       error: 'Missing required fields: id, name, platformId, variantId',
     });
+  }
+
+  const sdkRequirementsResult = parseSdkRequirements(req.body.sdkRequirements);
+  if (!sdkRequirementsResult.ok) {
+    return res.status(400).json({ success: false, error: sdkRequirementsResult.error });
   }
 
   // Create new board object. Detail files are grouped by SDK platform
@@ -151,6 +181,7 @@ router.post('/', asyncHandler(async (req, res) => {
     peripheralPatterns: {},
     links: { schematic: null, datasheet: null, productPage: null },
     boardSymbol: boardSymbol,
+    ...(sdkRequirementsResult.value?.length ? { sdkRequirements: sdkRequirementsResult.value } : {}),
   };
   await manifestLoader.saveBoardDetail(id, initialDetail);
 
@@ -198,6 +229,14 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     }
   }
 
+  const sdkRequirementsResult = parseSdkRequirements(updates.sdkRequirements);
+  if (!sdkRequirementsResult.ok) {
+    return res.status(400).json({ success: false, error: sdkRequirementsResult.error });
+  }
+  if (updates.sdkRequirements !== undefined) {
+    updates.sdkRequirements = sdkRequirementsResult.value;
+  }
+
   // Fields that go to the index
   const indexFields = ['name', 'platformId', 'variantId', 'manufacturer', 'summary', 'tags', 'image', 'published'];
   for (const key of indexFields) {
@@ -206,7 +245,7 @@ router.patch('/:id', asyncHandler(async (req, res) => {
     }
   }
 
-  // SDK applicability — empty/invalid clears it (defaults back to tuyaopen).
+  // SDK applicability — empty/invalid clears it.
   if (updates.sdks !== undefined) {
     const arr = normalizeSdks(updates.sdks);
     if (arr) board.sdks = arr;
@@ -223,8 +262,8 @@ router.patch('/:id', asyncHandler(async (req, res) => {
   // Save index
   await manifestLoader.saveBoardsIndex(boards);
 
-  // Fields that go to the detail file: boardSymbol, demos, peripheralPatterns, links, source, memory
-  const detailFields = ['boardSymbol', 'links', 'source', 'memory'];
+  // Fields that go to the detail file.
+  const detailFields = ['boardSymbol', 'links', 'source', 'memory', 'sdkRequirements'];
   // Map editor link fields back to nested links object (merge with existing)
   const editorLinkFields = ['schematicLink', 'guideDocs', 'purchaseLink', 'threeDModelLink'];
   const hasEditorLinks = editorLinkFields.some(k => updates[k] !== undefined);
@@ -259,6 +298,9 @@ router.patch('/:id', asyncHandler(async (req, res) => {
       if (updates[key] !== undefined) {
         if (key === 'links' && updates._mergeLinks) {
           detail.links = { ...(detail.links || {}), ...updates.links };
+        } else if (key === 'sdkRequirements') {
+          if (updates.sdkRequirements.length) detail.sdkRequirements = updates.sdkRequirements;
+          else delete detail.sdkRequirements;
         } else {
           detail[key] = updates[key];
         }

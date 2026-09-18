@@ -6,7 +6,6 @@ import {
   editBasicInfo,
   editConnectivity,
   editMemory,
-  editKconfig,
   editPeripherals,
 } from '../generators/platform/wizard.js'
 import { buildPlatform } from '../generators/platform/builder.js'
@@ -39,7 +38,6 @@ export async function runPlatformEdit(filePath) {
     flashInterface:      existing.flashInterface,
     connectivity:        existing.connectivity,
     memory:              existing.memory,
-    kconfigId:           existing.kconfigId,
     selectedPeripherals: Object.keys(existing.peripherals ?? {}),
     peripheralConfigs:   existing.peripherals ?? {},
   }
@@ -53,7 +51,6 @@ export async function runPlatformEdit(filePath) {
     flashInterface: answers.flashInterface,
     connectivity: answers.connectivity,
     memory:       answers.memory,
-    kconfigId:    answers.kconfigId,
     peripherals:  answers.peripheralConfigs,
   })
 
@@ -65,7 +62,6 @@ export async function runPlatformEdit(filePath) {
         { name: '基本信息（platformId / name / arch / flashInterface）', value: 'basic' },
         { name: '连接方式', value: 'connectivity' },
         { name: '内存配置', value: 'memory' },
-        { name: 'Kconfig ID', value: 'kconfig' },
         { name: '外设配置', value: 'peripherals' },
         { name: chalk.green('✔ 保存并退出'), value: 'done' },
         { name: chalk.red('✗ 放弃修改'), value: 'abort' },
@@ -85,8 +81,6 @@ export async function runPlatformEdit(filePath) {
       await editConnectivity(answers)
     } else if (section === 'memory') {
       await editMemory(answers)
-    } else if (section === 'kconfig') {
-      await editKconfig(answers)
     } else if (section === 'peripherals') {
       await editPeripherals(answers)
     }
@@ -114,4 +108,3 @@ export async function runPlatformEdit(filePath) {
 
   console.log(chalk.green(`\n✔ 已保存：${filePath}`))
 }
-

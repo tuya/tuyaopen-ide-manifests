@@ -47,6 +47,11 @@ function validateWebUrl(url) {
 export function renderBoardForm(board = null) {
   const isNew = !board;
   const title = isNew ? i18n.t('boardFormCreateTitle') : i18n.t('boardFormEditTitle');
+  const sdkRequirements = Array.isArray(board?.sdkRequirements) ? board.sdkRequirements : [];
+  const branchFor = (sdk) => {
+    const requirement = sdkRequirements.find((entry) => entry?.sdk === sdk);
+    return typeof requirement?.branch === 'string' ? requirement.branch : '';
+  };
 
   const formHtml = `
     <form id="boardForm" class="board-form" style="max-width: none; width: 100%; padding: 24px;">
@@ -121,6 +126,21 @@ export function renderBoardForm(board = null) {
         <label class="form-label">${i18n.t('skillSdks')}</label>
         <div class="skill-sdks-checks">${['tuyaopen', 'tuyaos'].map((v) => `<label class="skill-sdk-check"><input type="checkbox" class="board-sdk-cb" value="${v}" ${(board?.sdks || []).includes(v) ? 'checked' : ''}> ${v}</label>`).join('')}</div>
         <small style="color: var(--color-muted);">${i18n.t('skillSdksHint')}</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">${i18n.t('sdkBranchRequirements')}</label>
+        <div class="form-row-2col">
+          <div class="form-col-half">
+            <label class="form-label" for="boardSdkBranchTuyaopen">${i18n.t('sdkBranchTuyaopen')}</label>
+            <input type="text" id="boardSdkBranchTuyaopen" class="form-input" pattern="[A-Za-z0-9][A-Za-z0-9._/-]*" value="${escapeHtml(branchFor('tuyaopen'))}" placeholder="develop">
+          </div>
+          <div class="form-col-half">
+            <label class="form-label" for="boardSdkBranchTuyaos">${i18n.t('sdkBranchTuyaos')}</label>
+            <input type="text" id="boardSdkBranchTuyaos" class="form-input" pattern="[A-Za-z0-9][A-Za-z0-9._/-]*" value="${escapeHtml(branchFor('tuyaos'))}" placeholder="develop">
+          </div>
+        </div>
+        <small style="color: var(--color-muted);">${i18n.t('sdkBranchRequirementsHint')}</small>
       </div>
 
       <div class="form-group">
@@ -650,8 +670,12 @@ export async function saveBoardForm(formElement) {
   // Collect board symbol (SDK board directory name)
   const boardSymbol = document.getElementById('boardSymbol')?.value?.trim();
 
-  // SDK applicability — empty = TuyaOpen only (backend drops the field).
+  // SDK applicability is independent from branch requirements below.
   const sdks = [...document.querySelectorAll('.board-sdk-cb:checked')].map((cb) => cb.value);
+  const sdkRequirements = [
+    { sdk: 'tuyaopen', branch: document.getElementById('boardSdkBranchTuyaopen')?.value?.trim() || '' },
+    { sdk: 'tuyaos', branch: document.getElementById('boardSdkBranchTuyaos')?.value?.trim() || '' },
+  ].filter((requirement) => requirement.branch);
 
   const boardData = {
     id: boardId,
@@ -662,6 +686,7 @@ export async function saveBoardForm(formElement) {
     summary: { en: summaryEn },
     tags,
     sdks,
+    sdkRequirements,
     published: document.getElementById('boardPublished')?.checked ?? true,
     autoCommit: true,
   };
