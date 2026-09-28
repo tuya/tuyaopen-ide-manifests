@@ -15,7 +15,7 @@ compatibility: tuyaopen CLI, either form — bundled with the IDE (out/cli/cli.j
   the standalone npm package (@tuya/tuyaopen-cli, `tuyaopen-cli` binary on PATH); Node.js (whatever version the
   CLI you found reports via `diag doctor --json`)
 metadata:
-  version: 2.0.2
+  version: 2.0.3
   owner: core-team
   deprecated: false
   min-cli-version: 0.1.0-beta.17
@@ -108,7 +108,7 @@ tuyaopen-cli skills install --ids <ids> --yes
 | 动作 | 你能做的 | 用户必须做的 |
 |---|---|---|
 | **平台登录** | `tuyaopen-cli credential login --emit-url` —— 它把 URL 打到 stdout 一行 JSON 并**等待** | 在浏览器里打开那个 URL 完成授权。**把 URL 给他**，不要只说"请登录" |
-| **申领 appid / 网页步骤** | 把带好参数的 URL 拼出来（skill `tuyaopen-miniapp` § 0.2 ③） | 在网页上操作 |
+| **申领 appid / 网页步骤** | appid 只在网页控制台签发——说清在哪个产品下申领；有 appid 之后的版本页 / 绑定页参数化 URL 由 `tuyaopen-cli miniapp upload` 的 `webSteps` 信封携带（2026-09-28 起，原 `tuyaopen-miniapp` § 0.2 ③ 锚点在 capability-broker 迁移中已随正文消失） | 在网页上操作 |
 | **授权码** | 说明为什么需要、怎么取（skill `tuyaopen-embedded-device-auth`） | 提供码，并确认它当前没被别的设备占用 |
 | **手机配网** | 说清前置状态（已写码、设备处于配网态） | 装智能生活 / Smart Life，账号区域与产品一致，App 里添加设备 |
 
