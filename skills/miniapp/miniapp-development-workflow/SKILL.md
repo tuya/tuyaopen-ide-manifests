@@ -4,7 +4,7 @@ description: 'Shared MiniApp 小程序 and 面板 development and release workfl
 license: Apache-2.0
 compatibility: An authenticated IDE session with an open MiniApp project
 metadata:
-  version: 2.7.3
+  version: 2.7.4
   owner: miniapp-team
   deprecated: false
 ---
@@ -17,8 +17,20 @@ specific command syntax in this skill.
 
 ## No `tuyaopen-cli` CLI coverage
 
-This shared workflow is executed through IDE Agent Tools and Broker
-capabilities; it has no direct command-line coverage.
+This payload's executable vocabulary is Broker capabilities only — it
+deliberately publishes no shell commands. The executable CLI route lives in
+the CLI's own discovery surfaces, which are always present, always current,
+and read by agents that never open a skill:
+
+- the `miniapp upload` JSON envelope's `webSteps` block, whose `order` array
+  spells the post-upload route (submit for review, release, bind) command by
+  command, with web fallback URLs; and
+- `schema list` / `schema get`, which describe every command and flag the
+  installed CLI actually carries.
+
+Read the absence of commands here precisely: it does NOT mean any step is
+web-only. Submit for review, release, and bind are all scriptable outside the
+IDE; this document is just not the place that publishes the commands.
 
 ## One request contract
 
