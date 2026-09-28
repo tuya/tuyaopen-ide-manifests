@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-09-18T05:52:59Z",
+  "publishedAt": "2026-09-28T03:30:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
@@ -892,7 +892,7 @@
     },
     {
       "id": "tuyaopen-miniapp",
-      "version": "2.5.2",
+      "version": "2.5.3",
       "group": "miniapp",
       "order": 98,
       "name": {
@@ -923,7 +923,7 @@
       ],
       "cli": {
         "groups": "none",
-        "reason": "Shared MiniApp guidance uses IDE surfaces and Broker capability IDs; direct tuyaopen-cli invocation is not part of this payload."
+        "reason": "Shared MiniApp guidance uses IDE surfaces and Broker capability IDs; this payload names no tuyaopen-cli group itself. The heading means no native subcommands - it does not mean the platform steps are web-only; the CLI publishes that route in its miniapp upload envelope."
       },
       "defaultEnabled": false,
       "installPayload": "miniapp/tuyaopen-miniapp",
@@ -957,7 +957,7 @@
     },
     {
       "id": "miniapp-development-workflow",
-      "version": "2.7.3",
+      "version": "2.7.4",
       "group": "miniapp",
       "order": 99,
       "name": {
@@ -984,7 +984,7 @@
       ],
       "cli": {
         "groups": "none",
-        "reason": "Shared MiniApp workflow uses IDE surfaces, Broker capability IDs, and neutral platform tooling; direct tuyaopen-cli invocation is not part of this payload."
+        "reason": "Broker capabilities are this payload's only executable vocabulary (repo gate skillIsolationScan). The shell route for submit/release/bind is published by the CLI itself - the miniapp upload envelope's webSteps block and schema list - not by any skill."
       },
       "defaultEnabled": true,
       "installPayload": "miniapp/miniapp-development-workflow",

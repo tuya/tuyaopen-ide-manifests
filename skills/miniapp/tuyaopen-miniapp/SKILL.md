@@ -4,7 +4,7 @@ description: 'Use IDE Agent Tools and the Capability Broker for shared MiniApp t
 license: Apache-2.0
 compatibility: An authenticated IDE session with an open TuyaOpen or TuyaOS MiniApp project
 metadata:
-  version: 2.5.2
+  version: 2.5.3
   owner: miniapp-team
   deprecated: false
 ---
@@ -18,8 +18,13 @@ and project before the Agent invokes a capability.
 
 ## No `tuyaopen-cli` CLI coverage
 
-The shared payload is executed through IDE Agent Tools and Broker capabilities;
-it has no direct command-line coverage.
+This shared payload is executed through IDE Agent Tools and Broker
+capabilities; it has no direct command-line coverage. That statement is about
+this payload's own surface only — it does NOT mean the workflow's platform
+steps (submit for review, release, bind) are web-only. Outside the IDE the
+same steps are scriptable, and the CLI publishes that route itself: in the
+`miniapp upload` envelope's `webSteps` block, and via `schema list`
+discovery. Per-command inputs stay with `capability.describe`.
 
 ## Exact Agent Tool contract
 
