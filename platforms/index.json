@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-10-26T10:43:34Z",
+  "publishedAt": "2026-10-26T10:44:39Z",
   "items": [
     {
       "id": "t5ai",
@@ -39,7 +39,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/gd32vw553/gd32vw553-hero.jpg",
+        "alt": {
+          "en": "GD32VW553 development board (LCKFB)",
+          "zh-CN": "GD32VW553 开发板示意图（立创开发板）"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "t2",
@@ -53,7 +62,13 @@
         "zh-CN": "涂鸦 T2 平台 — ARM968E-S，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2，面向高性价比 IoT 应用。"
       },
       "image": {
-        "url": "images/t2/t2-hero.png"
+        "url": "images/t2/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of TUYA T2",
+          "zh-CN": "TUYA T2 AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/t2/t2.json",
       "sdks": [
@@ -73,7 +88,13 @@
         "zh-CN": "BK7231N 平台 — ARM968E-S，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2（与涂鸦 T2 同款芯片）。"
       },
       "image": {
-        "url": "images/bk7231n/bk7231n-hero.png"
+        "url": "images/bk7231n/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of BEKEN BK7231N",
+          "zh-CN": "BEKEN BK7231N AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/bk7231n/bk7231n.json",
       "sdks": [
@@ -93,7 +114,13 @@
         "zh-CN": "涂鸦 T1-CHL 平台 — ARM Cortex-M4，支持 Wi-Fi 802.11b/g/n 与 BLE 4.2，面向通用 IoT 应用。"
       },
       "image": {
-        "url": "images/t1/t1-hero.png"
+        "url": "images/t1/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of TUYA T1-CHL",
+          "zh-CN": "TUYA T1-CHL AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/t1/t1.json",
       "sdks": [
@@ -113,7 +140,13 @@
         "zh-CN": "涂鸦 T2AI 平台 — ARM968E-S，支持 Wi-Fi 802.11b/g/n、BLE 4.2，搭载 4 MB Flash，面向显示/多媒体 AIoT 应用。"
       },
       "image": {
-        "url": "images/t2ai/t2ai-hero.png"
+        "url": "images/t2ai/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of TUYA T2AI",
+          "zh-CN": "TUYA T2AI AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/t2ai/t2ai.json",
       "sdks": [
@@ -133,7 +166,13 @@
         "zh-CN": "涂鸦 T3AI 平台 — ARM Cortex-M33，支持 Wi-Fi 6 / BLE 5.4，集成 QSPI 显示与音频接口，面向端侧 AI 应用。"
       },
       "image": {
-        "url": "images/t3ai/t3ai-hero.png"
+        "url": "images/t3ai/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of TUYA T3AI",
+          "zh-CN": "TUYA T3AI AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/t3ai/t3ai.json",
       "sdks": [
@@ -153,7 +192,13 @@
         "zh-CN": "涂鸦 T3 平台 — ARM Cortex-M33，支持 Wi-Fi 6 / BLE 4.2，并通过 SPI 外接以太网（CH390），面向有线/无线联网设备。"
       },
       "image": {
-        "url": "images/t3/t3-hero.png"
+        "url": "images/t3/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of TUYA T3",
+          "zh-CN": "TUYA T3 AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/t3/t3.json",
       "sdks": [
@@ -173,7 +218,13 @@
         "zh-CN": "瑞昱 RTL8720CF 平台 — ARM Cortex-M33，支持 Wi-Fi 802.11b/g/n（WPA3）与 BLE 5.0。"
       },
       "image": {
-        "url": "images/rtl8720cf/rtl8720cf-hero.png"
+        "url": "images/rtl8720cf/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of REALTEK RTL8720CF",
+          "zh-CN": "REALTEK RTL8720CF AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/rtl8720cf/rtl8720cf.json",
       "sdks": [
@@ -193,7 +244,13 @@
         "zh-CN": "瑞昱 RTL8720CF-VU2 平台 — ARM Cortex-M33，支持 Wi-Fi 802.11b/g/n（WPA3）与 BLE 5.0，搭载 4 MB Flash。"
       },
       "image": {
-        "url": "images/rtl8720cf-vu2/rtl8720cf-vu2-hero.png"
+        "url": "images/rtl8720cf-vu2/hero-v2.png",
+        "alt": {
+          "en": "AI generated platform illustration of REALTEK RTL8720CF-VU2",
+          "zh-CN": "REALTEK RTL8720CF-VU2 AI生成平台示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "detailUrl": "platforms/rtl8720cf-vu2/rtl8720cf-vu2.json",
       "sdks": [
@@ -216,7 +273,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/esp32/esp32-hero.jpg",
+        "alt": {
+          "en": "ESP32-WROOM-32E module",
+          "zh-CN": "ESP32-WROOM-32E 模组"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "esp32c3",
@@ -233,7 +299,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/esp32c3/esp32c3-hero.jpg",
+        "alt": {
+          "en": "ESP32-C3-MINI-1 module",
+          "zh-CN": "ESP32-C3-MINI-1 模组"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "esp32c6",
@@ -250,7 +325,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/esp32c6/esp32c6-hero.jpg",
+        "alt": {
+          "en": "ESP32-C6-MINI-1 module",
+          "zh-CN": "ESP32-C6-MINI-1 模组"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "esp32s3",
@@ -267,7 +351,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/esp32s3/esp32s3-hero.jpg",
+        "alt": {
+          "en": "ESP32-S3-WROOM-1 module",
+          "zh-CN": "ESP32-S3-WROOM-1 模组"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "esp32s31",
@@ -284,7 +377,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/esp32s31/esp32s31-hero.jpg",
+        "alt": {
+          "en": "ESP32-S31-WROOM-3 module",
+          "zh-CN": "ESP32-S31-WROOM-3 模组"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "linux",
@@ -321,7 +423,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/esp32p4c6/esp32p4c6-hero.jpg",
+        "alt": {
+          "en": "ESP32-P4 chip illustration representing the ESP32-P4-C6 platform",
+          "zh-CN": "ESP32-P4 芯片示意图，用于表示 ESP32-P4-C6 平台"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "siwx917",
