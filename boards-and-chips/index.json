@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-10-26T10:43:34Z",
+  "publishedAt": "2026-10-26T10:44:10Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -858,7 +858,16 @@
       "published": false,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/waveshare-esp32c6-dev-kit-n16/card-500.jpg",
+        "alt": {
+          "en": "Waveshare ESP32-C6-DEV-KIT-N16 development board",
+          "zh-CN": "微雪 ESP32-C6-DEV-KIT-N16 开发板"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "waveshare-esp32p4c6-touch-lcd-4-3",
@@ -887,7 +896,16 @@
       "published": false,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/waveshare-esp32p4c6-touch-lcd-4-3/card-500.jpg",
+        "alt": {
+          "en": "Waveshare ESP32-P4-C6 Touch LCD 4.3 development board and display",
+          "zh-CN": "微雪 ESP32-P4-C6 Touch LCD 4.3 开发板及显示屏"
+        },
+        "width": 500,
+        "height": 500
+      }
     },
     {
       "id": "xingzhi-esp32s3-cube-0-96-oled-wifi",
