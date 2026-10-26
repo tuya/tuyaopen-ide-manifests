@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "demos",
-  "publishedAt": "2026-09-14T07:29:14Z",
+  "publishedAt": "2026-10-26T10:44:48Z",
   "items": [
     {
       "id": "ble-ble-central",
@@ -23,7 +23,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/ble-ble-central/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of ble central — discovery results.",
+          "zh-CN": "蓝牙中心设备扫描与发现结果示意封面"
+        }
+      }
     },
     {
       "id": "ble-ble-peripher",
@@ -45,7 +54,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/ble-ble-peripher/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of ble peripheral — phone as central.",
+          "zh-CN": "蓝牙外围设备与手机连接示意封面"
+        }
+      }
     },
     {
       "id": "e-paper-1-54inch-e-paper",
@@ -67,7 +85,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/e-paper-1-54inch-e-paper/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of e-paper 1.54-inch — text · image · graphics.",
+          "zh-CN": "1.54 寸电子墨水屏内容渲染示意封面"
+        }
+      }
     },
     {
       "id": "e-paper-2-13inch-e-paper-touch",
@@ -89,7 +116,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/e-paper-2-13inch-e-paper-touch/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of e-paper + touch 2.13-inch — navigate · draw.",
+          "zh-CN": "2.13 寸触摸电子墨水屏菜单与绘图示意封面"
+        }
+      }
     },
     {
       "id": "e-paper-4-26inch-e-paper",
@@ -111,7 +147,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/e-paper-4-26inch-e-paper/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of e-paper 4.26-inch — image · text · graphics.",
+          "zh-CN": "4.26 寸电子墨水屏图文渲染示意封面"
+        }
+      }
     },
     {
       "id": "games-lvgl-games",
@@ -161,7 +206,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/get-started-cxx/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of c++ integration starter — classes meet c apis.",
+          "zh-CN": "C 与 C++ 项目集成示意封面"
+        }
+      }
     },
     {
       "id": "get-started-sample-project",
@@ -183,7 +237,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/get-started-sample-project/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of minimal project template — a clear starting point.",
+          "zh-CN": "最小示例工程结构示意封面"
+        }
+      }
     },
     {
       "id": "graphics-lvgl-camera",
@@ -207,7 +270,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-lvgl-camera/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of lvgl camera preview — switch with a button.",
+          "zh-CN": "LVGL 界面与摄像头预览切换示意封面"
+        }
+      }
     },
     {
       "id": "graphics-lvgl-demo",
@@ -241,7 +313,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-lvgl-demo/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of lvgl widgets demo — touch · encoder · display.",
+          "zh-CN": "LVGL 组件、触摸与编码器交互示意封面"
+        }
+      }
     },
     {
       "id": "graphics-lvgl-gif",
@@ -273,7 +354,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-lvgl-gif/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of lvgl gif animation — frames on the display.",
+          "zh-CN": "LVGL 屏幕 GIF 动画帧示意封面"
+        }
+      }
     },
     {
       "id": "graphics-lvgl-label",
@@ -299,7 +389,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-lvgl-label/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of lvgl label rendering — lvgl text rendering.",
+          "zh-CN": "LVGL 居中文本标签渲染示意封面"
+        }
+      }
     },
     {
       "id": "graphics-lvgl-simulator",
@@ -321,7 +420,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-lvgl-simulator/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of lvgl pc simulator — sdl2 · no hardware.",
+          "zh-CN": "SDL2 桌面 LVGL 模拟器示意封面"
+        }
+      }
     },
     {
       "id": "graphics-u8g2-i2c",
@@ -343,7 +451,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-u8g2-i2c/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of u8g2 oled via i2c — ssd1306 · 128 × 64.",
+          "zh-CN": "U8g2 I2C OLED 分页渲染示意封面"
+        }
+      }
     },
     {
       "id": "graphics-u8g2-spi",
@@ -365,7 +482,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-u8g2-spi/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of u8g2 display via spi — st7305 · full buffer.",
+          "zh-CN": "U8g2 SPI 显示全缓冲绘制示意封面"
+        }
+      }
     },
     {
       "id": "graphics-u8g2-tdl-disp",
@@ -391,7 +517,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/graphics-u8g2-tdl-disp/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of u8g2 via tdl display layer — display abstraction.",
+          "zh-CN": "U8g2 经 TDL 显示抽象层输出示意封面"
+        }
+      }
     },
     {
       "id": "micropython-mpy-minimal",
@@ -472,7 +607,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/multimedia-audio-kws/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of microphone waveform feeding a highlighted keyword detector",
+          "zh-CN": "语音关键词唤醒功能示意封面"
+        }
+      }
     },
     {
       "id": "multimedia-audio-player-music",
@@ -497,7 +641,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/multimedia-audio-player-music/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Wi-Fi stream flowing through an MP3 decoder to sound waves",
+          "zh-CN": "网络音乐播放功能示意封面"
+        }
+      }
     },
     {
       "id": "multimedia-audio-player-tts",
@@ -522,7 +675,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/multimedia-audio-player-tts/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of embedded speech data decoded into an audio waveform",
+          "zh-CN": "TTS 语音播放功能示意封面"
+        }
+      }
     },
     {
       "id": "multimedia-audio-recorder-output-sdcard",
@@ -547,7 +709,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/multimedia-audio-recorder-output-sdcard/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of microphone audio encoded as a WAV file and saved to an SD card",
+          "zh-CN": "录音存 SD 卡功能示意封面"
+        }
+      }
     },
     {
       "id": "multimedia-audio-vad",
@@ -572,7 +743,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/multimedia-audio-vad/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of audio frames separated into speech and silence regions",
+          "zh-CN": "语音活动检测功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-adc",
@@ -594,7 +774,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-adc/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of analog to digital",
+          "zh-CN": "ADC 模数转换功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-audio-codecs",
@@ -625,7 +814,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-audio-codecs/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of audio record / playback",
+          "zh-CN": "Audio Codec 录放音功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-button",
@@ -659,7 +857,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-button/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of button input",
+          "zh-CN": "按键输入功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-camera-output-display",
@@ -686,7 +893,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-camera-output-display/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of camera display output",
+          "zh-CN": "摄像头屏幕输出功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-camera-output-sdcard",
@@ -711,7 +927,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-camera-output-sdcard/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of camera capture to sd",
+          "zh-CN": "摄像头抓帧存 SD 卡功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-display-fill-color",
@@ -743,7 +968,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-display-fill-color/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of display color fill",
+          "zh-CN": "显示屏颜色填充功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-display-picture",
@@ -775,7 +1009,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-display-picture/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of display image rendering",
+          "zh-CN": "显示屏图片渲染功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-encoder",
@@ -797,7 +1040,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-encoder/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of rotary encoder input",
+          "zh-CN": "旋转编码器输入功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-flash",
@@ -819,7 +1071,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-flash/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of flash read / write",
+          "zh-CN": "Flash 读写功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-gpio",
@@ -841,7 +1102,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-gpio/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of gpio input / output",
+          "zh-CN": "GPIO 输入输出功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-i2c-i2c-scan",
@@ -863,7 +1133,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-i2c-i2c-scan/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of i2c bus scanner",
+          "zh-CN": "I2C 总线扫描功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-i2c-sht3x-4x-sensor",
@@ -885,7 +1164,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-i2c-sht3x-4x-sensor/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of temperature & humidity",
+          "zh-CN": "SHT3x/SHT4x 温湿度传感器功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-imu-bmi270",
@@ -907,7 +1195,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-imu-bmi270/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of bmi270 imu sensor",
+          "zh-CN": "BMI270 惯性传感器功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-ir",
@@ -932,7 +1229,16 @@
       ],
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-ir/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Infrared Transceiver",
+          "zh-CN": "红外收发功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-joystick",
@@ -956,7 +1262,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-joystick/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Joystick Input",
+          "zh-CN": "摇杆输入功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-led",
@@ -989,7 +1304,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-led/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of LED Control",
+          "zh-CN": "LED 控制功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-leds-pixel",
@@ -1013,7 +1337,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-leds-pixel/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of LED Pixel Strip",
+          "zh-CN": "LED 像素灯带功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-pwm",
@@ -1035,7 +1368,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-pwm/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of PWM Pulse Width Modulation",
+          "zh-CN": "PWM 脉宽调制功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-sd",
@@ -1065,7 +1407,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-sd/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of SD Card File I/O",
+          "zh-CN": "SD 卡文件读写功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-spi",
@@ -1087,7 +1438,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-spi/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of SPI Master / Slave",
+          "zh-CN": "SPI 主从通信功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-timer",
@@ -1109,7 +1469,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-timer/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Hardware Timer",
+          "zh-CN": "硬件定时器功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-touch",
@@ -1134,7 +1503,16 @@
       ],
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-touch/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Capacitive Touch Driver",
+          "zh-CN": "电容触摸驱动功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-tp",
@@ -1158,7 +1536,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-tp/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Touch Panel Input",
+          "zh-CN": "触摸屏多点输入功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-uart",
@@ -1180,7 +1567,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-uart/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of UART Serial Communication",
+          "zh-CN": "UART 串口通信功能示意封面"
+        }
+      }
     },
     {
       "id": "peripherals-watchdog",
@@ -1202,7 +1598,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/peripherals-watchdog/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Watchdog Timer",
+          "zh-CN": "看门狗定时器功能示意封面"
+        }
+      }
     },
     {
       "id": "protocols-http-client",
@@ -1224,7 +1629,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/protocols-http-client/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of client sending an HTTP GET request and receiving a response",
+          "zh-CN": "HTTP 客户端功能示意封面"
+        }
+      }
     },
     {
       "id": "protocols-https-client",
@@ -1246,7 +1660,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/protocols-https-client/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of HTTPS request passing through a TLS certificate verification stage",
+          "zh-CN": "HTTPS 客户端功能示意封面"
+        }
+      }
     },
     {
       "id": "protocols-mqtt-client",
@@ -1268,7 +1691,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/protocols-mqtt-client/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of MQTT client subscribing and publishing through a broker",
+          "zh-CN": "MQTT 客户端功能示意封面"
+        }
+      }
     },
     {
       "id": "protocols-tcp-client",
@@ -1290,7 +1722,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/protocols-tcp-client/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of TCP client maintaining a connection and sending data to a server",
+          "zh-CN": "TCP 客户端功能示意封面"
+        }
+      }
     },
     {
       "id": "protocols-tcp-server",
@@ -1312,7 +1753,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/protocols-tcp-server/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of TCP server returning received client data over the connection",
+          "zh-CN": "TCP 回显服务器功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-event",
@@ -1334,7 +1784,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-event/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of event publisher signaling subscribed worker threads",
+          "zh-CN": "OS 事件系统功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-kv",
@@ -1356,7 +1815,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-kv/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of key-value records being written to and read from flash storage",
+          "zh-CN": "KV 键值存储功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-mutex",
@@ -1378,7 +1846,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-mutex/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of two threads taking turns through a mutex to update a shared counter",
+          "zh-CN": "互斥锁同步功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-queue",
@@ -1400,7 +1877,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-queue/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of messages moving through a queue between producer and consumer threads",
+          "zh-CN": "消息队列功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-semaphore",
@@ -1422,7 +1908,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-semaphore/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of semaphore token released by producer and acquired by waiting consumer",
+          "zh-CN": "信号量同步功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-sw-timer",
@@ -1444,7 +1939,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-sw-timer/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of software timer generating periodic callback ticks before stopping",
+          "zh-CN": "软件定时器功能示意封面"
+        }
+      }
     },
     {
       "id": "system-os-thread",
@@ -1466,7 +1970,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/system-os-thread/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of thread task progressing through execution, completion, and deletion",
+          "zh-CN": "线程管理功能示意封面"
+        }
+      }
     },
     {
       "id": "tflite-tflite-helloworld",
@@ -1491,7 +2004,16 @@
       ],
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/tflite-tflite-helloworld/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of tflite micro inference — on-device sine inference.",
+          "zh-CN": "TFLite Micro 正弦函数端侧推理示意封面"
+        }
+      }
     },
     {
       "id": "tuya-ai-duo-eye-mood",
@@ -1972,7 +2494,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/wifi-ap/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Wi-Fi access point broadcasting UDP packets to connected clients",
+          "zh-CN": "Wi-Fi 热点功能示意封面"
+        }
+      }
     },
     {
       "id": "wifi-low-power",
@@ -1994,7 +2525,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/wifi-low-power/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of Wi-Fi radio switching between active and low-power states",
+          "zh-CN": "Wi-Fi 低功耗功能示意封面"
+        }
+      }
     },
     {
       "id": "wifi-scan",
@@ -2016,7 +2556,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/wifi-scan/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of nearby Wi-Fi networks discovered across multiple channels",
+          "zh-CN": "Wi-Fi 扫描功能示意封面"
+        }
+      }
     },
     {
       "id": "wifi-sta",
@@ -2038,7 +2587,16 @@
       "publish": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "image": {
+        "url": "images/wifi-sta/cover.png",
+        "width": 960,
+        "height": 540,
+        "alt": {
+          "en": "Concept illustration of station joining a Wi-Fi access point and reporting connection status",
+          "zh-CN": "Wi-Fi Station 连接功能示意封面"
+        }
+      }
     },
     {
       "id": "tclaw",
