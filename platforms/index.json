@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-09-18T09:02:56Z",
+  "publishedAt": "2026-10-26T10:43:34Z",
   "items": [
     {
       "id": "t5ai",
@@ -345,15 +345,76 @@
     },
     {
       "id": "ec718pm",
-      "platformId": "l511g",
+      "platformId": "l511",
       "name": {
-        "en": "L511G",
-        "zh-CN": "L511G"
+        "en": "L511G-Y7PM",
+        "zh-CN": "L511G-Y7PM"
       },
-      "summary": {},
-      "detailUrl": "platforms/l511g/ec718pm.json",
+      "summary": {
+        "en": "TuyaOpen cellular platform for the MobileTek LYNQ L511G-Y7PM module.",
+        "zh-CN": "移柯通信 LYNQ L511G-Y7PM 模组的 TuyaOpen 蜂窝通信平台。"
+      },
+      "detailUrl": "platforms/l511/ec718pm.json",
       "image": {
-        "url": "images/ec718pm/ec718pm.jpg"
+        "url": "images/ec718pm/l511-y7-v2.png",
+        "alt": {
+          "en": "AI-enhanced LYNQ L511-Y7 family illustration, shared across Y7 variants",
+          "zh-CN": "AI整理的 LYNQ L511-Y7 系列示意图，各 Y7 型号共用"
+        },
+        "width": 500,
+        "height": 500
+      },
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
+    },
+    {
+      "id": "l511c-y7pm",
+      "platformId": "l511",
+      "name": {
+        "en": "L511C-Y7PM",
+        "zh-CN": "L511C-Y7PM"
+      },
+      "summary": {
+        "en": "TuyaOpen cellular platform for the MobileTek LYNQ L511C-Y7PM module.",
+        "zh-CN": "移柯通信 LYNQ L511C-Y7PM 模组的 TuyaOpen 蜂窝通信平台。"
+      },
+      "detailUrl": "platforms/l511/l511c-y7pm.json",
+      "image": {
+        "url": "images/ec718pm/l511-y7-v2.png",
+        "alt": {
+          "en": "AI-enhanced LYNQ L511-Y7 family illustration, shared across Y7 variants",
+          "zh-CN": "AI整理的 LYNQ L511-Y7 系列示意图，各 Y7 型号共用"
+        },
+        "width": 500,
+        "height": 500
+      },
+      "sdks": [
+        "tuyaopen"
+      ],
+      "published": true
+    },
+    {
+      "id": "l511c-y6e",
+      "platformId": "l511",
+      "name": {
+        "en": "L511C-Y6E",
+        "zh-CN": "L511C-Y6E"
+      },
+      "summary": {
+        "en": "TuyaOpen cellular platform for the MobileTek LYNQ L511C-Y6E module.",
+        "zh-CN": "移柯通信 LYNQ L511C-Y6E 模组的 TuyaOpen 蜂窝通信平台。"
+      },
+      "detailUrl": "platforms/l511/l511c-y6e.json",
+      "image": {
+        "url": "images/l511c-y6e/l511-y6-v2.png",
+        "alt": {
+          "en": "AI-enhanced front-view illustration based on the official L511-Y6 package drawing",
+          "zh-CN": "基于官方 L511-Y6 封装图 AI 整理的正面系列示意图"
+        },
+        "width": 500,
+        "height": 500
       },
       "sdks": [
         "tuyaopen"

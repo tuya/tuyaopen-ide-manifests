@@ -1,0 +1,750 @@
+{
+  "schemaVersion": 1,
+  "flashInterface": "qspi",
+  "connectivity": {
+    "wifi": false,
+    "ble": false,
+    "ethernet": false,
+    "cellular": true
+  },
+  "memory": {
+    "sramBytes": 0,
+    "romBytes": 0,
+    "flashMaxBytes": 0,
+    "psramMaxBytes": 0,
+    "efuse": false
+  },
+  "peripherals": {
+    "gpio": {
+      "enabled": true,
+      "count": 29,
+      "spec": {
+        "pins": [
+          5,
+          6,
+          16,
+          19,
+          20,
+          21,
+          22,
+          25,
+          26,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          49,
+          50,
+          51,
+          52,
+          53,
+          54,
+          55,
+          56,
+          57,
+          58,
+          80,
+          81,
+          82,
+          100
+        ],
+        "direction": [
+          "TUYA_GPIO_INPUT",
+          "TUYA_GPIO_OUTPUT"
+        ],
+        "mode": [
+          "TUYA_GPIO_PUSH_PULL",
+          "TUYA_GPIO_PULLUP",
+          "TUYA_GPIO_PULLDOWN",
+          "TUYA_GPIO_FLOATING"
+        ],
+        "irq": {
+          "supported": true,
+          "triggers": [
+            "TUYA_GPIO_IRQ_RISE",
+            "TUYA_GPIO_IRQ_FALL"
+          ],
+          "pins": [
+            5,
+            6,
+            19
+          ]
+        }
+      }
+    },
+    "pwm": {
+      "enabled": true,
+      "count": 5,
+      "spec": {
+        "channels": [
+          {
+            "id": 0,
+            "pin": 22,
+            "irq": false
+          },
+          {
+            "id": 1,
+            "pin": 23,
+            "irq": false
+          },
+          {
+            "id": 2,
+            "pin": 54,
+            "irq": false
+          },
+          {
+            "id": 3,
+            "pin": 25,
+            "irq": false
+          },
+          {
+            "id": 4,
+            "pin": 20,
+            "irq": false
+          }
+        ]
+      }
+    },
+    "i2c": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "role": [
+          "TUYA_IIC_MODE_MASTER"
+        ],
+        "speed": [
+          "TUYA_IIC_BUS_SPEED_100K",
+          "TUYA_IIC_BUS_SPEED_400K"
+        ],
+        "addrWidth": [
+          "TUYA_IIC_ADDRESS_7BIT"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "type": [
+              "hw"
+            ],
+            "routable": false,
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 57,
+                "sda": 58
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "type": [
+              "hw"
+            ],
+            "routable": false,
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 67,
+                "sda": 66
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "spi": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "role": [
+          "TUYA_SPI_ROLE_MASTER"
+        ],
+        "mode": [
+          "TUYA_SPI_MODE0",
+          "TUYA_SPI_MODE1",
+          "TUYA_SPI_MODE2",
+          "TUYA_SPI_MODE3"
+        ],
+        "csType": [
+          "TUYA_SPI_AUTO_TYPE"
+        ],
+        "databits": [
+          "TUYA_SPI_DATA_BIT8",
+          "TUYA_SPI_DATA_BIT16"
+        ],
+        "bitorder": [
+          "TUYA_SPI_ORDER_MSB2LSB",
+          "TUYA_SPI_ORDER_LSB2MSB"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "backend": "spi",
+            "routable": false,
+            "irq": true,
+            "dma": true,
+            "pinGroups": [
+              {
+                "cs": 66,
+                "mosi": 67,
+                "miso": 28,
+                "clk": 29
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "backend": "spi",
+            "routable": false,
+            "irq": true,
+            "dma": true,
+            "pinGroups": [
+              {
+                "clk": 49,
+                "miso": 62,
+                "mosi": 63,
+                "cs": 64
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "pinout": [
+    {
+      "pin": 5,
+      "name": "GPIO1",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "GPIO1"
+      ],
+      "gpio": 5,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：支持低功耗唤醒"
+    },
+    {
+      "pin": 6,
+      "name": "GPIO2",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "GPIO2"
+      ],
+      "gpio": 6,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：支持低功耗唤醒"
+    },
+    {
+      "pin": 16,
+      "name": "NET_STATUS",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "NET_STATUS"
+      ],
+      "gpio": 16,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：网络指示灯接口占用"
+    },
+    {
+      "pin": 19,
+      "name": "MAIN_DTR",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_DTR"
+      ],
+      "gpio": 19,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：默认作为低功耗下唤醒模组，支持低功耗，通过tkl_cellular_base_ioctl（CELL_IOCTL_CLOSE_WAKEUP_MODULE， NULL）可以关闭该功能，做gpio中断使用 MAIN_DTR wakeup use must be disabled with CELL_IOCTL_CLOSE_WAKEUP_MODULE before repurposing as a GPIO interrupt."
+    },
+    {
+      "pin": 20,
+      "name": "MAIN_RI",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "PWM4"
+      ],
+      "caps": [
+        "MAIN_RI"
+      ],
+      "gpio": 20,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：唤醒MCU"
+    },
+    {
+      "pin": 21,
+      "name": "MAIN_DCD",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_DCD"
+      ],
+      "gpio": 21,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 22,
+      "name": "MAIN_CTS",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "PWM0"
+      ],
+      "caps": [
+        "MAIN_CTS"
+      ],
+      "gpio": 22,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 23,
+      "name": "MAIN_RTS",
+      "type": "I/O",
+      "functions": [
+        "PWM1"
+      ],
+      "caps": [
+        "MAIN_RTS"
+      ],
+      "gpio": 23,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init."
+    },
+    {
+      "pin": 25,
+      "name": "STATUS",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "PWM3"
+      ],
+      "caps": [
+        "STATUS"
+      ],
+      "gpio": 25,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 26,
+      "name": "I2S_MCLK",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "I2S_MCLK",
+        "I2S0_MCLK"
+      ],
+      "gpio": 26,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Provided notes verify the shared PCM/I2S interface with an external ES8311 module; this does not indicate an onboard codec."
+    },
+    {
+      "pin": 28,
+      "name": "AUX_RXD",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "SPI0_MISO"
+      ],
+      "caps": [
+        "AUX_RXD",
+        "SPI0_MISO"
+      ],
+      "gpio": 28,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 29,
+      "name": "AUX_TXD",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "SPI0_SCK"
+      ],
+      "caps": [
+        "AUX_TXD",
+        "SPI0_CLK"
+      ],
+      "gpio": 29,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 30,
+      "name": "PCM_CLK",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "PCM_CLK",
+        "I2S0_SCK"
+      ],
+      "gpio": 30,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Provided notes verify the shared PCM/I2S interface with an external ES8311 module; this does not indicate an onboard codec."
+    },
+    {
+      "pin": 31,
+      "name": "PCM_SYNC",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "PCM_SYNC",
+        "I2S0_SYNC"
+      ],
+      "gpio": 31,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Provided notes verify the shared PCM/I2S interface with an external ES8311 module; this does not indicate an onboard codec."
+    },
+    {
+      "pin": 32,
+      "name": "PCM_DIN",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "PCM_DIN",
+        "I2S0_DIN"
+      ],
+      "gpio": 32,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Provided notes report GPIO interrupt limitations. Provided notes verify the shared PCM/I2S interface with an external ES8311 module; this does not indicate an onboard codec."
+    },
+    {
+      "pin": 33,
+      "name": "PCM_DOUT",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "PCM_DOUT",
+        "I2S0_DOUT"
+      ],
+      "gpio": 33,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Provided notes verify the shared PCM/I2S interface with an external ES8311 module; this does not indicate an onboard codec."
+    },
+    {
+      "pin": 49,
+      "name": "LCD_RST",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "SPI1_SCK"
+      ],
+      "caps": [
+        "LCD_RST",
+        "SPI1_CLK"
+      ],
+      "gpio": 49,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 50,
+      "name": "LCD_SPI_OUT",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "LCD_SPI_OUT"
+      ],
+      "gpio": 50,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 51,
+      "name": "LCD_SPI_RS",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "LCD_SPI_RS"
+      ],
+      "gpio": 51,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 52,
+      "name": "LCD_SPI_CS",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "LCD_SPI_CS"
+      ],
+      "gpio": 52,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 53,
+      "name": "LCD_SPI_CLK",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "LCD_SPI_CLK"
+      ],
+      "gpio": 53,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 54,
+      "name": "CAM_MCLK",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "PWM2"
+      ],
+      "caps": [
+        "CAM_MCLK"
+      ],
+      "gpio": 54,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 55,
+      "name": "CAM_DATA0",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "CAM_DATA0"
+      ],
+      "gpio": 55,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 56,
+      "name": "CAM_DATA1",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "CAM_DATA1"
+      ],
+      "gpio": 56,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 57,
+      "name": "CAM_I2C0_SCL",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "I2C0_SCL"
+      ],
+      "caps": [
+        "CAM_I2C0_SCL"
+      ],
+      "gpio": 57,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Fixed I2C0 pins in the current adapter."
+    },
+    {
+      "pin": 58,
+      "name": "CAM_I2C0_SDA",
+      "type": "I/O",
+      "functions": [
+        "GPIO",
+        "I2C0_SDA"
+      ],
+      "caps": [
+        "CAM_I2C0_SDA"
+      ],
+      "gpio": 58,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Provided notes report GPIO interrupt limitations. Fixed I2C0 pins in the current adapter."
+    },
+    {
+      "pin": 62,
+      "name": "USIM2_CLK",
+      "type": "I/O",
+      "functions": [
+        "SPI1_MISO"
+      ],
+      "caps": [
+        "USIM2_CLK",
+        "SPI1_MISO"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. Provided notes report GPIO interrupt limitations. SPI1 shares these pads with USIM2; avoid simultaneous use.",
+      "gpio": 62
+    },
+    {
+      "pin": 63,
+      "name": "USIM2_RST",
+      "type": "I/O",
+      "functions": [
+        "SPI1_MOSI"
+      ],
+      "caps": [
+        "USIM2_RST",
+        "SPI1_MOSI"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. Provided notes report GPIO interrupt limitations. SPI1 shares these pads with USIM2; avoid simultaneous use.",
+      "gpio": 63
+    },
+    {
+      "pin": 64,
+      "name": "USIM2_DATA",
+      "type": "I/O",
+      "functions": [
+        "SPI1_CSN"
+      ],
+      "caps": [
+        "USIM2_DATA",
+        "SPI1_CS"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. Provided notes report GPIO interrupt limitations. SPI1 shares these pads with USIM2; avoid simultaneous use. SPI1 can be reserved by the external-flash configuration; the supplied notes recommend up to 32 MB external flash.",
+      "gpio": 64
+    },
+    {
+      "pin": 66,
+      "name": "I2C1_SDA",
+      "type": "I/O",
+      "functions": [
+        "I2C1_SDA",
+        "SPI0_CSN"
+      ],
+      "caps": [
+        "I2C1_SDA",
+        "SPI0_CS"
+      ],
+      "gpio": 66,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. Provided notes report GPIO interrupt limitations. I2C1 is occupied when an external codec is fitted; it conflicts with SPI0 on the same pads."
+    },
+    {
+      "pin": 67,
+      "name": "I2C1_SCL",
+      "type": "I/O",
+      "functions": [
+        "I2C1_SCL",
+        "SPI0_MOSI"
+      ],
+      "caps": [
+        "I2C1_SCL",
+        "SPI0_MOSI"
+      ],
+      "gpio": 67,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. Provided notes report GPIO interrupt limitations. I2C1 is occupied when an external codec is fitted; it conflicts with SPI0 on the same pads."
+    },
+    {
+      "pin": 78,
+      "name": "LCD_TE",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "LCD_TE"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：中断异常 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. Provided notes report GPIO interrupt limitations."
+    },
+    {
+      "pin": 79,
+      "name": "USIM1_DET",
+      "type": "I",
+      "functions": [],
+      "caps": [
+        "USIM1_DET"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：默认作为sim卡热插拔检测引脚，未开启热插拔功能下可以做gpio中断使用，支持低功耗下唤醒 Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init. SIM hotplug/wakeup path; tkl_gpio_init rejects general GPIO use."
+    },
+    {
+      "pin": 80,
+      "name": "CAM_SPI_CLK",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "CAM_SPI_CLK"
+      ],
+      "gpio": 80,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 81,
+      "name": "CAM_PWDN",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "CAM_PWDN"
+      ],
+      "gpio": 81,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 82,
+      "name": "USB_BOOT",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "USB_BOOT"
+      ],
+      "gpio": 82,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping."
+    },
+    {
+      "pin": 100,
+      "name": "GPIO3",
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "GPIO3"
+      ],
+      "gpio": 100,
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. 提供的功能验证资料：模组内置GPS版本被占用"
+    },
+    {
+      "pin": 101,
+      "name": "GPIO4",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "GPIO4"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init."
+    },
+    {
+      "pin": 103,
+      "name": "CAM_RST_N",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "CAM_RST_N"
+      ],
+      "note": "Tuya GPIO IDs use module pad numbers. L511C/G-Y7PM share this hardware pin mapping. Not exposed as a general GPIO by this target adapter; hardware capability alone does not enable tkl_gpio_init."
+    }
+  ],
+  "platformSymbol": "L511G_Y7PM",
+  "power": {
+    "vdd": {
+      "min": 3.3,
+      "typical": 3.8,
+      "max": 4.5,
+      "unit": "V"
+    },
+    "ioLevel": {
+      "typical": 1.8,
+      "unit": "V"
+    }
+  },
+  "arch": "arm-cortex-m3"
+}

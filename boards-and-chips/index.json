@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-10-20T03:45:19Z",
+  "publishedAt": "2026-10-26T10:43:34Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -2024,29 +2024,121 @@
       }
     },
     {
-      "id": "lynq-l511g-y7",
+      "id": "lynq-l511g-y7pm",
       "name": {
-        "en": "lynq-l511g-y7",
-        "zh-CN": "lynq-l511g-y7"
+        "en": "LYNQ L511G-Y7PM",
+        "zh-CN": "LYNQ L511G-Y7PM"
       },
-      "platformId": "l511g",
+      "platformId": "l511",
       "variantId": "ec718pm",
       "manufacturer": {
-        "en": "Unknown"
+        "en": "MobileTek",
+        "zh-CN": "移柯通信"
       },
       "summary": {
-        "en": ""
+        "en": "MobileTek LYNQ L511G-Y7PM LTE Cat.1 bis module with TuyaOpen support.",
+        "zh-CN": "移柯通信 LYNQ L511G-Y7PM LTE Cat.1 bis 蜂窝通信模组，支持 TuyaOpen。"
       },
       "tags": [
         "cellular",
         "module"
       ],
-      "image": null,
-      "detailUrl": "boards-and-chips/l511g/lynq-l511g-y7.json",
+      "image": {
+        "url": "images/lynq-l511-y7/l511-y7-v2.png",
+        "alt": {
+          "en": "AI-enhanced LYNQ L511-Y7 family illustration, shared across Y7 variants",
+          "zh-CN": "AI整理的 LYNQ L511-Y7 系列示意图，各 Y7 型号共用"
+        },
+        "width": 500,
+        "height": 500
+      },
+      "detailUrl": "boards-and-chips/l511/lynq-l511g-y7pm.json",
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "brand": {
+        "en": "LYNQ",
+        "zh-CN": "LYNQ"
+      }
+    },
+    {
+      "id": "lynq-l511c-y7pm",
+      "name": {
+        "en": "LYNQ L511C-Y7PM",
+        "zh-CN": "LYNQ L511C-Y7PM"
+      },
+      "platformId": "l511",
+      "variantId": "l511c-y7pm",
+      "manufacturer": {
+        "en": "MobileTek",
+        "zh-CN": "移柯通信"
+      },
+      "summary": {
+        "en": "MobileTek LYNQ L511C-Y7PM LTE Cat.1 bis module with TuyaOpen support.",
+        "zh-CN": "移柯通信 LYNQ L511C-Y7PM LTE Cat.1 bis 蜂窝通信模组，支持 TuyaOpen。"
+      },
+      "tags": [
+        "cellular",
+        "module"
+      ],
+      "image": {
+        "url": "images/lynq-l511-y7/l511-y7-v2.png",
+        "alt": {
+          "en": "AI-enhanced LYNQ L511-Y7 family illustration, shared across Y7 variants",
+          "zh-CN": "AI整理的 LYNQ L511-Y7 系列示意图，各 Y7 型号共用"
+        },
+        "width": 500,
+        "height": 500
+      },
+      "detailUrl": "boards-and-chips/l511/lynq-l511c-y7pm.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ],
+      "brand": {
+        "en": "LYNQ",
+        "zh-CN": "LYNQ"
+      }
+    },
+    {
+      "id": "lynq-l511c-y6e",
+      "name": {
+        "en": "LYNQ L511C-Y6E",
+        "zh-CN": "LYNQ L511C-Y6E"
+      },
+      "platformId": "l511",
+      "variantId": "l511c-y6e",
+      "manufacturer": {
+        "en": "MobileTek",
+        "zh-CN": "移柯通信"
+      },
+      "summary": {
+        "en": "MobileTek LYNQ L511C-Y6E LTE Cat.1 bis module with TuyaOpen support.",
+        "zh-CN": "移柯通信 LYNQ L511C-Y6E LTE Cat.1 bis 蜂窝通信模组，支持 TuyaOpen。"
+      },
+      "tags": [
+        "cellular",
+        "module"
+      ],
+      "image": {
+        "url": "images/lynq-l511c-y6e/l511-y6-v2.png",
+        "alt": {
+          "en": "AI-enhanced front-view illustration based on the official L511-Y6 package drawing",
+          "zh-CN": "基于官方 L511-Y6 封装图 AI 整理的正面系列示意图"
+        },
+        "width": 500,
+        "height": 500
+      },
+      "detailUrl": "boards-and-chips/l511/lynq-l511c-y6e.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ],
+      "brand": {
+        "en": "LYNQ",
+        "zh-CN": "LYNQ"
+      }
     }
   ]
 }

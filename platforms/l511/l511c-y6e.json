@@ -1,0 +1,1135 @@
+{
+  "schemaVersion": 1,
+  "platformSymbol": "L511C_Y6E",
+  "connectivity": {
+    "wifi": false,
+    "ble": false,
+    "ethernet": false,
+    "cellular": true
+  },
+  "peripherals": {
+    "gpio": {
+      "enabled": true,
+      "count": 13,
+      "spec": {
+        "pins": [
+          16,
+          17,
+          18,
+          20,
+          21,
+          22,
+          23,
+          25,
+          28,
+          29,
+          38,
+          39,
+          82
+        ],
+        "direction": [
+          "TUYA_GPIO_INPUT",
+          "TUYA_GPIO_OUTPUT"
+        ],
+        "mode": [
+          "TUYA_GPIO_PUSH_PULL",
+          "TUYA_GPIO_PULLUP",
+          "TUYA_GPIO_PULLDOWN",
+          "TUYA_GPIO_FLOATING"
+        ],
+        "irq": {
+          "supported": true,
+          "triggers": [
+            "TUYA_GPIO_IRQ_RISE",
+            "TUYA_GPIO_IRQ_FALL"
+          ],
+          "pins": [
+            20,
+            25
+          ]
+        }
+      }
+    },
+    "pwm": {
+      "enabled": true,
+      "count": 5,
+      "spec": {
+        "channels": [
+          {
+            "id": 0,
+            "pin": 28,
+            "irq": false
+          },
+          {
+            "id": 1,
+            "pin": 29,
+            "irq": false
+          },
+          {
+            "id": 2,
+            "pin": 25,
+            "irq": false
+          },
+          {
+            "id": 3,
+            "pin": 20,
+            "irq": false
+          },
+          {
+            "id": 4,
+            "pin": 16,
+            "irq": false
+          }
+        ]
+      }
+    },
+    "adc": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "bits": 12,
+        "ports": [
+          {
+            "id": 0,
+            "channels": [
+              {
+                "id": 0,
+                "pin": 9
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "channels": [
+              {
+                "id": 0,
+                "pin": 96
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "i2c": {
+      "enabled": false,
+      "count": 0,
+      "spec": {
+        "ports": []
+      }
+    }
+  },
+  "pinout": [
+    {
+      "pin": 1,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 2,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 3,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 4,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 5,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 6,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 7,
+      "name": "PWRKEY",
+      "type": "I",
+      "functions": [],
+      "caps": [
+        "PWRKEY"
+      ]
+    },
+    {
+      "pin": 8,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 9,
+      "name": "ADC0",
+      "type": "AI",
+      "functions": [
+        "ADC0_CH0"
+      ],
+      "caps": [
+        "ADC0"
+      ],
+      "gpio": 9
+    },
+    {
+      "pin": 10,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 11,
+      "name": "USIM1_DATA",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "USIM1_DATA"
+      ]
+    },
+    {
+      "pin": 12,
+      "name": "USIM1_RST",
+      "type": "O",
+      "functions": [],
+      "caps": [
+        "USIM1_RST"
+      ]
+    },
+    {
+      "pin": 13,
+      "name": "USIM1_CLK",
+      "type": "O",
+      "functions": [],
+      "caps": [
+        "USIM1_CLK"
+      ]
+    },
+    {
+      "pin": 14,
+      "name": "USIM1_VDD",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "USIM1_VDD"
+      ]
+    },
+    {
+      "pin": 15,
+      "name": "RESET_N",
+      "type": "I",
+      "functions": [],
+      "caps": [
+        "RESET_N"
+      ]
+    },
+    {
+      "pin": 16,
+      "name": "NET_STATUS",
+      "type": "O",
+      "functions": [
+        "GPIO",
+        "PWM4"
+      ],
+      "caps": [
+        "NET_STATUS"
+      ],
+      "gpio": 16,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 17,
+      "name": "MAIN_RXD",
+      "type": "I",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_RXD"
+      ],
+      "gpio": 17,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 18,
+      "name": "MAIN_TXD",
+      "type": "O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_TXD"
+      ],
+      "gpio": 18,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 19,
+      "name": "MAIN_DTR",
+      "type": "I",
+      "functions": [],
+      "caps": [
+        "MAIN_DTR"
+      ],
+      "note": "Dedicated wakeup/SIM-detect path; tkl_gpio_init rejects this pad as a general GPIO."
+    },
+    {
+      "pin": 20,
+      "name": "MAIN_RI",
+      "type": "O",
+      "functions": [
+        "GPIO",
+        "PWM3"
+      ],
+      "caps": [
+        "MAIN_RI"
+      ],
+      "gpio": 20,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 21,
+      "name": "MAIN_DCD",
+      "type": "O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_DCD"
+      ],
+      "gpio": 21,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 22,
+      "name": "MAIN_CTS",
+      "type": "O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_CTS"
+      ],
+      "gpio": 22,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 23,
+      "name": "MAIN_RTS",
+      "type": "I",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "MAIN_RTS"
+      ],
+      "gpio": 23,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 24,
+      "name": "VDD_EXT",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "VDD_EXT"
+      ]
+    },
+    {
+      "pin": 25,
+      "name": "STATUS",
+      "type": "O",
+      "functions": [
+        "GPIO",
+        "PWM2"
+      ],
+      "caps": [
+        "STATUS"
+      ],
+      "gpio": 25,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 26,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 27,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 28,
+      "name": "AUX_RXD",
+      "type": "I",
+      "functions": [
+        "GPIO",
+        "PWM0"
+      ],
+      "caps": [
+        "AUX_RXD"
+      ],
+      "gpio": 28,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number. AUX/DBG UART pad names differ between the datasheet and adapter comments; UART routing is intentionally not advertised."
+    },
+    {
+      "pin": 29,
+      "name": "AUX_TXD",
+      "type": "O",
+      "functions": [
+        "GPIO",
+        "PWM1"
+      ],
+      "caps": [
+        "AUX_TXD"
+      ],
+      "gpio": 29,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number. AUX/DBG UART pad names differ between the datasheet and adapter comments; UART routing is intentionally not advertised."
+    },
+    {
+      "pin": 30,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 31,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 32,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 33,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 34,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 35,
+      "name": "ANT_MAIN",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "ANT_MAIN"
+      ]
+    },
+    {
+      "pin": 36,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 37,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 38,
+      "name": "DBG_RXD",
+      "type": "I",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "DBG_RXD"
+      ],
+      "gpio": 38,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number. AUX/DBG UART pad names differ between the datasheet and adapter comments; UART routing is intentionally not advertised."
+    },
+    {
+      "pin": 39,
+      "name": "DBG_TXD",
+      "type": "O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "DBG_TXD"
+      ],
+      "gpio": 39,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number. AUX/DBG UART pad names differ between the datasheet and adapter comments; UART routing is intentionally not advertised."
+    },
+    {
+      "pin": 40,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 41,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 42,
+      "name": "VBAT",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "VBAT"
+      ]
+    },
+    {
+      "pin": 43,
+      "name": "VBAT",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "VBAT"
+      ]
+    },
+    {
+      "pin": 44,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 45,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 46,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 47,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 48,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 49,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 50,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 51,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 52,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 53,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 54,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 55,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 56,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 57,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 58,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 59,
+      "name": "USB_DP",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "USB_DP"
+      ]
+    },
+    {
+      "pin": 60,
+      "name": "USB_DM",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "USB_DM"
+      ]
+    },
+    {
+      "pin": 61,
+      "name": "USB_VBUS",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "USB_VBUS"
+      ]
+    },
+    {
+      "pin": 62,
+      "name": "USIM2_CLK",
+      "type": "O",
+      "functions": [],
+      "caps": [
+        "USIM2_CLK"
+      ]
+    },
+    {
+      "pin": 63,
+      "name": "USIM2_RST",
+      "type": "O",
+      "functions": [],
+      "caps": [
+        "USIM2_RST"
+      ]
+    },
+    {
+      "pin": 64,
+      "name": "USIM2_DATA",
+      "type": "I/O",
+      "functions": [],
+      "caps": [
+        "USIM2_DATA"
+      ]
+    },
+    {
+      "pin": 65,
+      "name": "USIM2_VDD",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "USIM2_VDD"
+      ]
+    },
+    {
+      "pin": 66,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 67,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 68,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 69,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 70,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 71,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 72,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 73,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 74,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 75,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 76,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 77,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 78,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 79,
+      "name": "USIM1_DET",
+      "type": "I",
+      "functions": [],
+      "caps": [
+        "USIM1_DET"
+      ],
+      "note": "Dedicated wakeup/SIM-detect path; tkl_gpio_init rejects this pad as a general GPIO."
+    },
+    {
+      "pin": 80,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 81,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 82,
+      "name": "USB_BOOT",
+      "type": "I",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [
+        "USB_BOOT"
+      ],
+      "gpio": 82,
+      "note": "Tuya GPIO ID is the module pad number, not the SoC GPIO number."
+    },
+    {
+      "pin": 83,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 84,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 85,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 86,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 87,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 88,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 89,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 90,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 91,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 92,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 93,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 94,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 95,
+      "name": "GND",
+      "type": "P",
+      "functions": [],
+      "caps": [
+        "GND"
+      ]
+    },
+    {
+      "pin": 96,
+      "name": "ADC1",
+      "type": "AI",
+      "functions": [
+        "ADC1_CH0"
+      ],
+      "caps": [
+        "ADC1"
+      ],
+      "gpio": 96
+    },
+    {
+      "pin": 97,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 98,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 99,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 100,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 101,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 102,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 103,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 104,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 105,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 106,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 107,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 108,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    },
+    {
+      "pin": 109,
+      "name": "RESERVED",
+      "type": "NC",
+      "functions": [],
+      "caps": [],
+      "note": "Reserved in the L511-Y6 series datasheet; do not connect."
+    }
+  ],
+  "arch": "arm-cortex-m3",
+  "memory": {
+    "sramBytes": 1048576,
+    "flashMaxBytes": 4194304
+  },
+  "power": {
+    "vdd": {
+      "min": 3.3,
+      "typical": 3.8,
+      "max": 4.5,
+      "unit": "V"
+    },
+    "ioLevel": {
+      "typical": 1.8,
+      "unit": "V"
+    }
+  }
+}
