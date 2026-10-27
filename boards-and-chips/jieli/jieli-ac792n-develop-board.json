@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "peripheralPatterns": {
+    "display": [
+      {
+        "id": "display",
+        "name": {
+          "en": "480x800 MIPI-DSI LCD",
+          "zh-CN": "480x800 MIPI-DSI 屏"
+        },
+        "model": "ST7701S",
+        "interface": "RGB",
+        "width": 480,
+        "height": 800,
+        "pixelFormat": "RGB565",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "RGB": [
+            {
+              "role": "rst",
+              "gpio": 16
+            },
+            {
+              "role": "bl",
+              "gpio": 17,
+              "activeLevel": "high"
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_DISPLAY": 1,
+          "ENABLE_MIPI_DSI": 1
+        },
+        "note": {
+          "en": "Fixed MIPI-DSI panel (480x800 ST7701S) driven over the DSI PHY; the high-speed lanes are dedicated DSI pins, not GPIO-mappable, so only reset (PB0) and backlight (PB1) are listed. The board Kconfig selects ENABLE_DISPLAY / ENABLE_MIPI_DSI, so the panel is part of the board definition rather than an application choice.",
+          "zh-CN": "板载固定 MIPI-DSI 屏（480x800 ST7701S），经 DSI PHY 驱动；高速差分对为专用 DSI 引脚，不可映射到 GPIO，故仅列出复位（PB0）与背光（PB1）。板级 Kconfig 自动 select ENABLE_DISPLAY / ENABLE_MIPI_DSI，面板属于板级定义而非应用选项。"
+        }
+      }
+    ],
+    "audio": [
+      {
+        "id": "audio",
+        "name": {
+          "en": "On-chip Audio (external LTK5313 PA)",
+          "zh-CN": "片上音频（外置 LTK5313 功放）"
+        },
+        "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "pins": {
+          "INTERNAL": [
+            {
+              "role": "spk_en",
+              "gpio": 79,
+              "activeLevel": "high"
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_MEDIA": 1
+        },
+        "note": {
+          "en": "Opt-in via ENABLE_MEDIA (platform default n). On-chip ADC/DAC, 16 kHz mono, AEC disabled. Two onboard differential mics are wired, but capture keeps ADC1/MIC2 only because ADC0 measured near-silent and opening both trips the vendor ADC channel check. PE15 drives the LTK5313 enable through an inverting stage: low = muted, high = playing.",
+          "zh-CN": "需通过 ENABLE_MEDIA 显式开启（平台默认 n）。片上 ADC/DAC，16kHz 单声道，未启用 AEC。板载两路差分麦克风，但采集仅保留 ADC1/MIC2：ADC0 实测近乎无信号，且同时打开两路会触发厂商 ADC 通道检查。PE15 经反相级驱动 LTK5313 使能：低为静音，高为播放。"
+        }
+      }
+    ],
+    "button": [
+      {
+        "id": "button",
+        "name": {
+          "en": "K1 ADC Key",
+          "zh-CN": "K1 ADC 按键"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "gpio": 48
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_JIELI_ADKEY_BUTTON": 1
+        },
+        "note": {
+          "en": "K1 is an ADC-ladder key on PD00 (ADC0 channel 0), registered through the Tuya ADC-button TDL; raw pressed range 0-96. It is not a digital GPIO input.",
+          "zh-CN": "K1 是 PD00（ADC0 通道 0）上的 ADC 分压按键，通过 Tuya ADC 按键 TDL 注册；按下原始值范围 0-96，并非数字 GPIO 输入。"
+        }
+      }
+    ],
+    "camera": [
+      {
+        "id": "camera",
+        "model": "GC0308",
+        "name": {
+          "en": "CAM2 DVP Camera (optional)",
+          "zh-CN": "CAM2 DVP 摄像头（可选）"
+        },
+        "interface": "DVP",
+        "mounting": "accessory",
+        "pinLocked": false,
+        "pins": {
+          "DVP": [
+            {
+              "role": "i2c_sda",
+              "gpio": 71
+            },
+            {
+              "role": "i2c_scl",
+              "gpio": 72
+            },
+            {
+              "role": "rst",
+              "gpio": 73
+            },
+            {
+              "role": "mclk",
+              "gpio": 56
+            },
+            {
+              "role": "pclk",
+              "gpio": 67
+            },
+            {
+              "role": "vsync",
+              "gpio": 68
+            },
+            {
+              "role": "hsync",
+              "gpio": 69
+            }
+          ]
+        },
+        "kconfig": {
+          "BOARD_CAMERA_DVP": 1
+        },
+        "note": {
+          "en": "Optional CAM2 DVP0 module on the J49 SEN_FPC connector. The board Kconfig defaults to BOARD_CAMERA_NONE, so the camera TDD driver exists but is not enabled by default. Wiring from the platform camera staging: IIC SDA PE7 / SCL PE8 (hardware IIC1, or software IIC1 device iic4 when JIELI_BOARD_CAMERA_DVP_SW_IIC1=y), XCLK PD8, RESET PE9, PCLK PE3, VSYNC PE4, HSYNC PE5; PE6 gates the baseboard 1.8 V/2.8 V camera LDOs. The 10-bit data bus (PD9-PD15, PE0-PE2) is not listed because the board schema only defines d0-d7 and the source does not state the lane order. A CAM1 MIPI-CSI2 (SC1346) connector is an alternative this schema cannot express.",
+          "zh-CN": "J49 SEN_FPC 连接器上的可选 CAM2 DVP0 模组。板级 Kconfig 默认 BOARD_CAMERA_NONE，因此摄像头 TDD 驱动虽存在但默认未启用。引脚来自平台 camera staging：IIC SDA PE7 / SCL PE8（硬件 IIC1；置 JIELI_BOARD_CAMERA_DVP_SW_IIC1=y 时改用软件 IIC1 设备 iic4）、XCLK PD8、RESET PE9、PCLK PE3、VSYNC PE4、HSYNC PE5；PE6 控制底板 1.8V/2.8V 摄像头 LDO。10 位数据总线（PD9-PD15、PE0-PE2）未列出，因为板级 schema 仅定义 d0-d7，且源码未给出 lane 顺序。另有 CAM1 MIPI-CSI2（SC1346）连接器，本 schema 无法表达。"
+        }
+      }
+    ]
+  },
+  "links": {
+    "schematic": {
+      "en": "https://gitee.com/Jieli-Tech/fw-AC792_SDK",
+      "zh-CN": "https://gitee.com/Jieli-Tech/fw-AC792_SDK"
+    },
+    "datasheet": {
+      "en": "https://doc.zh-jieli.com/AC792/zh-cn/wifi_video_master/index.html",
+      "zh-CN": "https://doc.zh-jieli.com/AC792/zh-cn/wifi_video_master/index.html"
+    },
+    "productPage": null
+  },
+  "boardSymbol": "AC792N_Develop_Board",
+  "source": {
+    "repo": "https://github.com/tuya/TuyaOpen",
+    "subpath": "boards/JIELI/AC792N_Develop_Board",
+    "ref": "master"
+  }
+}

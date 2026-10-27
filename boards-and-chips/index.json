@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-10-26T10:44:10Z",
+  "publishedAt": "2026-10-27T03:06:15Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -2157,6 +2157,72 @@
         "en": "LYNQ",
         "zh-CN": "LYNQ"
       }
+    },
+    {
+      "id": "jieli-ac79-devkitboard",
+      "name": {
+        "en": "JieLi AC79 DevKitBoard (AC791/WL82)",
+        "zh-CN": "杰理 AC79_DevKitBoard（AC791/WL82）"
+      },
+      "platformId": "jieli",
+      "variantId": "wl82",
+      "manufacturer": {
+        "en": "JieLi",
+        "zh-CN": "杰理科技"
+      },
+      "summary": {
+        "en": "JieLi AC79 DevKitBoard based on the AC791/WL82 dual-core floating-point DSP up to 320 MHz with Wi-Fi 802.11b/g/n and dual-mode Bluetooth. 8 MiB flash, onboard audio with an external 8002 PA, K1 ADC key, UART1 log and UART0 CLI.",
+        "zh-CN": "基于 AC791/WL82 双核浮点 DSP（最高 320MHz）的杰理 AC79_DevKitBoard，集成 Wi-Fi 802.11b/g/n 与双模蓝牙。8 MiB Flash，板载音频（外置 8002 功放）、K1 ADC 按键、UART1 日志与 UART0 CLI。"
+      },
+      "tags": [
+        "wifi",
+        "ble",
+        "audio",
+        "button",
+        "development"
+      ],
+      "image": {
+        "url": "images/jieli-ac79-devkitboard/jieli-ac79-devkitboard.png"
+      },
+      "detailUrl": "boards-and-chips/jieli/jieli-ac79-devkitboard.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
+    },
+    {
+      "id": "jieli-ac792n-develop-board",
+      "name": {
+        "en": "JieLi AC792N Develop Board (AC792N/WL83)",
+        "zh-CN": "杰理 AC792N_Develop_Board（AC792N/WL83）"
+      },
+      "platformId": "jieli",
+      "variantId": "wl83",
+      "manufacturer": {
+        "en": "JieLi",
+        "zh-CN": "杰理科技"
+      },
+      "summary": {
+        "en": "JieLi AC792N Develop Board based on the AC792N/WL83 dual-core floating-point DSP up to 320 MHz with Wi-Fi 802.11b/g/n and Bluetooth 5.4. 8 MiB flash, 480x800 MIPI-DSI ST7701S panel, onboard audio with an external LTK5313 PA, K1 ADC key, and an optional GC0308 DVP camera.",
+        "zh-CN": "基于 AC792N/WL83 双核浮点 DSP（最高 320MHz）的杰理 AC792N_Develop_Board，集成 Wi-Fi 802.11b/g/n 与蓝牙 5.4。8 MiB Flash、480x800 MIPI-DSI ST7701S 屏、板载音频（外置 LTK5313 功放）、K1 ADC 按键，并可选配 GC0308 DVP 摄像头。"
+      },
+      "tags": [
+        "wifi",
+        "ble",
+        "display",
+        "audio",
+        "camera",
+        "button",
+        "development"
+      ],
+      "image": {
+        "url": "images/jieli-ac792n-develop-board/jieli-ac792n-develop-board.png"
+      },
+      "detailUrl": "boards-and-chips/jieli/jieli-ac792n-develop-board.json",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ]
     }
   ]
 }

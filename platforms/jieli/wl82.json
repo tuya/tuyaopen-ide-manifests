@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "arch": "pi32v2",
+  "connectivity": {
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
+  },
+  "memory": {
+    "sramBytes": 591872
+  },
+  "platformSymbol": "JIELI"
+}

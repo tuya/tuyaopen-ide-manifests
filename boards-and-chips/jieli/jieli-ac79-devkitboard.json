@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "peripheralPatterns": {
+    "audio": [
+      {
+        "id": "audio",
+        "name": {
+          "en": "On-chip Audio (external 8002 PA)",
+          "zh-CN": "片上音频（外置 8002 功放）"
+        },
+        "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "pins": {
+          "INTERNAL": [
+            {
+              "role": "spk_en",
+              "gpio": 18,
+              "activeLevel": "high"
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_MEDIA": 1
+        },
+        "note": {
+          "en": "Opt-in via ENABLE_MEDIA (platform default n). On-chip ADC/DAC, 16 kHz mono, AEC disabled; PB2 is the active-low mute line for the external 8002 speaker amplifier, so it is driven high to play. The microphone is differential MIC1.",
+          "zh-CN": "需通过 ENABLE_MEDIA 显式开启（平台默认 n）。片上 ADC/DAC，16kHz 单声道，未启用 AEC；PB2 是外置 8002 功放的低有效静音脚，播放时驱动为高。麦克风为差分 MIC1。"
+        }
+      }
+    ],
+    "button": [
+      {
+        "id": "button",
+        "name": {
+          "en": "K1 ADC Key",
+          "zh-CN": "K1 ADC 按键"
+        },
+        "interface": "GPIO",
+        "mounting": "onboard",
+        "pinLocked": false,
+        "pins": {
+          "GPIO": [
+            {
+              "role": "btn",
+              "gpio": 17
+            }
+          ]
+        },
+        "kconfig": {
+          "ENABLE_JIELI_ADKEY_BUTTON": 1
+        },
+        "note": {
+          "en": "K1 is an ADC-ladder key on PB1 (ADC0 channel 3), registered through the Tuya ADC-button TDL; raw pressed range 824-1007. It is not a digital GPIO input.",
+          "zh-CN": "K1 是 PB1（ADC0 通道 3）上的 ADC 分压按键，通过 Tuya ADC 按键 TDL 注册；按下原始值范围 824-1007，并非数字 GPIO 输入。"
+        }
+      }
+    ]
+  },
+  "links": {
+    "schematic": {
+      "en": "https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK",
+      "zh-CN": "https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK"
+    },
+    "datasheet": {
+      "en": "https://doc.zh-jieli.com/AC79/zh-cn/release_v1.2.0/index.html",
+      "zh-CN": "https://doc.zh-jieli.com/AC79/zh-cn/release_v1.2.0/index.html"
+    },
+    "productPage": null
+  },
+  "boardSymbol": "AC79_DevKitBoard",
+  "source": {
+    "repo": "https://github.com/tuya/TuyaOpen",
+    "subpath": "boards/JIELI/AC79_DevKitBoard",
+    "ref": "master"
+  }
+}
