@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-10-27T12:34:43Z",
+  "publishedAt": "2026-10-27T12:43:16Z",
   "items": [
     {
       "id": "t5ai",
@@ -547,7 +547,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/jieli/chip-ac791.png",
+        "alt": {
+          "en": "JieLi AC7911B chip",
+          "zh-CN": "杰理 AC7911B 芯片（AC791 系列）"
+        },
+        "width": 388,
+        "height": 388
+      }
     },
     {
       "id": "wl83",
@@ -564,7 +573,16 @@
       "sdks": [
         "tuyaopen"
       ],
-      "published": true
+      "published": true,
+      "image": {
+        "url": "images/jieli/chip-ac792.png",
+        "alt": {
+          "en": "JieLi AC7922A chip",
+          "zh-CN": "杰理 AC7922A 芯片（AC792N 系列）"
+        },
+        "width": 388,
+        "height": 388
+      }
     }
   ]
 }
