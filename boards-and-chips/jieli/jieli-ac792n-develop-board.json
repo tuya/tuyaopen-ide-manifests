@@ -5,15 +5,15 @@
       {
         "id": "display",
         "name": {
-          "en": "480x800 MIPI-DSI LCD",
-          "zh-CN": "480x800 MIPI-DSI 屏"
+          "en": "Optional 480x800 MIPI-DSI LCD",
+          "zh-CN": "可选配 480x800 MIPI-DSI 屏"
         },
         "model": "ST7701S",
         "interface": "RGB",
         "width": 480,
         "height": 800,
         "pixelFormat": "RGB565",
-        "mounting": "onboard",
+        "mounting": "accessory",
         "pinLocked": true,
         "pins": {
           "RGB": [
@@ -33,8 +33,8 @@
           "ENABLE_MIPI_DSI": 1
         },
         "note": {
-          "en": "Fixed MIPI-DSI panel (480x800 ST7701S) driven over the DSI PHY; the high-speed lanes are dedicated DSI pins, not GPIO-mappable, so only reset (PB0) and backlight (PB1) are listed. The board Kconfig selects ENABLE_DISPLAY / ENABLE_MIPI_DSI, so the panel is part of the board definition rather than an application choice.",
-          "zh-CN": "板载固定 MIPI-DSI 屏（480x800 ST7701S），经 DSI PHY 驱动；高速差分对为专用 DSI 引脚，不可映射到 GPIO，故仅列出复位（PB0）与背光（PB1）。板级 Kconfig 自动 select ENABLE_DISPLAY / ENABLE_MIPI_DSI，面板属于板级定义而非应用选项。"
+          "en": "Optional 480x800 MIPI-DSI LCD accessory using the ST7701S driver. DSI high-speed lanes use the dedicated PHY and are not GPIO-mappable; only reset (PB0) and backlight (PB1) are listed. The current TuyaOpen board Kconfig selects ENABLE_DISPLAY and ENABLE_MIPI_DSI, so the software profile enables the display stack by default even when the optional panel is not fitted.",
+          "zh-CN": "可选配 480x800 MIPI-DSI 屏，使用 ST7701S 驱动。DSI 高速差分线连接专用 PHY，不能映射为 GPIO，因此这里只列出复位（PB0）和背光（PB1）。当前 TuyaOpen 板级 Kconfig 会自动选择 ENABLE_DISPLAY 和 ENABLE_MIPI_DSI，因此即使未安装该选配屏，软件配置仍默认启用显示驱动。"
         }
       }
     ],

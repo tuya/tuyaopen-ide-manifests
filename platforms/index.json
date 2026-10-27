@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-10-27T03:06:15Z",
+  "publishedAt": "2026-10-27T12:34:43Z",
   "items": [
     {
       "id": "t5ai",
@@ -536,8 +536,8 @@
       "id": "wl82",
       "platformId": "jieli",
       "name": {
-        "en": "JieLi WL82 (AC791)",
-        "zh-CN": "杰理 WL82（AC791）"
+        "en": "JieLi AC791 (WL82)",
+        "zh-CN": "杰理 AC791（WL82）"
       },
       "summary": {
         "en": "JieLi WL82 / AC791 dual-core floating-point DSP up to 320 MHz with Wi-Fi 802.11b/g/n and dual-mode Bluetooth (BR/EDR + BLE up to 5.0).",
@@ -553,8 +553,8 @@
       "id": "wl83",
       "platformId": "jieli",
       "name": {
-        "en": "JieLi WL83 (AC792N)",
-        "zh-CN": "杰理 WL83（AC792N）"
+        "en": "JieLi AC792N (WL83)",
+        "zh-CN": "杰理 AC792N（WL83）"
       },
       "summary": {
         "en": "JieLi WL83 / AC792N dual-core floating-point DSP up to 320 MHz with Wi-Fi 802.11b/g/n, Bluetooth 5.4, DVP/MIPI camera input and MIPI/RGB display output.",

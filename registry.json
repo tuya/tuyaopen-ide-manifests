@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "tuyaopen-ide-manifests",
   "description": "Top-level index. IDE fetches this first and uses the URLs below to lazy-load each domain's index.json.",
-  "publishedAt": "2026-10-27T03:06:15Z",
+  "publishedAt": "2026-10-27T12:34:43Z",
   "manifests": {
     "platforms": {
       "url": "platforms/index.json",
