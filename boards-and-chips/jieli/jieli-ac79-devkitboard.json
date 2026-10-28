@@ -1,66 +1,282 @@
 {
   "schemaVersion": 1,
   "peripheralPatterns": {
-    "audio": [
+    "sd-card": [
       {
-        "id": "audio",
+        "id": "tf-slot",
         "name": {
-          "en": "On-chip Audio (external 8002 PA)",
-          "zh-CN": "片上音频（外置 8002 功放）"
+          "en": "TF card slot",
+          "zh-CN": "TF 卡槽"
         },
-        "interface": "INTERNAL",
+        "interface": "SDIO",
         "mounting": "onboard",
-        "pinLocked": false,
+        "pinLocked": true,
         "pins": {
-          "INTERNAL": [
+          "SDIO": [
             {
-              "role": "spk_en",
-              "gpio": 18,
-              "activeLevel": "high"
+              "role": "clk",
+              "gpio": 23
+            },
+            {
+              "role": "cmd",
+              "gpio": 22
+            },
+            {
+              "role": "d0",
+              "gpio": 21
             }
           ]
         },
-        "kconfig": {
-          "ENABLE_MEDIA": 1
-        },
+        "kconfig": null,
         "note": {
-          "en": "Opt-in via ENABLE_MEDIA (platform default n). On-chip ADC/DAC, 16 kHz mono, AEC disabled; PB2 is the active-low mute line for the external 8002 speaker amplifier, so it is driven high to play. The microphone is differential MIC1.",
-          "zh-CN": "需通过 ENABLE_MEDIA 显式开启（平台默认 n）。片上 ADC/DAC，16kHz 单声道，未启用 AEC；PB2 是外置 8002 功放的低有效静音脚，播放时驱动为高。麦克风为差分 MIC1。"
+          "en": "The board SDK selects SD0 group A in 1-bit mode: PB7=CLK, PB6=CMD, PB5=DATA0.",
+          "zh-CN": "板级 SDK 选择 SD0 A 组单线模式：PB7=CLK、PB6=CMD、PB5=DATA0。"
+        }
+      }
+    ],
+    "audio": [
+      {
+        "id": "speaker-amp",
+        "name": {
+          "en": "Speaker output",
+          "zh-CN": "扬声器输出"
+        },
+        "interface": "INTERNAL",
+        "mounting": "onboard",
+        "pinLocked": true,
+        "pins": {
+          "INTERNAL": [
+            {
+              "role": "mute",
+              "gpio": 18,
+              "activeLevel": "low"
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "PB2 controls the DAC mute/amplifier mute line; SDK TCFG_DAC_MUTE_VALUE=0. Analog microphone inputs are not digital GPIOs.",
+          "zh-CN": "PB2 控制 DAC 静音/功放静音线；SDK 设置 TCFG_DAC_MUTE_VALUE=0。模拟麦克风输入不是数字 GPIO。"
         }
       }
     ],
     "button": [
       {
-        "id": "button",
+        "id": "adkey",
         "name": {
-          "en": "K1 ADC Key",
-          "zh-CN": "K1 ADC 按键"
+          "en": "ADKEY input",
+          "zh-CN": "ADKEY 按键输入"
         },
-        "interface": "GPIO",
+        "interface": "ADC",
         "mounting": "onboard",
-        "pinLocked": false,
+        "pinLocked": true,
         "pins": {
-          "GPIO": [
+          "ADC": [
             {
-              "role": "btn",
+              "role": "key",
               "gpio": 17
             }
           ]
         },
-        "kconfig": {
-          "ENABLE_JIELI_ADKEY_BUTTON": 1
-        },
+        "kconfig": null,
         "note": {
-          "en": "K1 is an ADC-ladder key on PB1 (ADC0 channel 3), registered through the Tuya ADC-button TDL; raw pressed range 824-1007. It is not a digital GPIO input.",
-          "zh-CN": "K1 是 PB1（ADC0 通道 3）上的 ADC 分压按键，通过 Tuya ADC 按键 TDL 注册；按下原始值范围 824-1007，并非数字 GPIO 输入。"
+          "en": "PB1 is the board SDK ADKEY input.",
+          "zh-CN": "PB1 是板级 SDK 配置的 ADKEY 输入。"
+        }
+      }
+    ],
+    "camera": [
+      {
+        "id": "dvp-camera-connector",
+        "name": {
+          "en": "DVP camera connector",
+          "zh-CN": "DVP 摄像头接口"
+        },
+        "interface": "DVP",
+        "mounting": "accessory",
+        "pinLocked": true,
+        "pins": {
+          "DVP": [
+            {
+              "role": "d0",
+              "gpio": 0
+            },
+            {
+              "role": "d1",
+              "gpio": 1
+            },
+            {
+              "role": "d2",
+              "gpio": 2
+            },
+            {
+              "role": "d3",
+              "gpio": 3
+            },
+            {
+              "role": "d4",
+              "gpio": 4
+            },
+            {
+              "role": "d5",
+              "gpio": 5
+            },
+            {
+              "role": "d6",
+              "gpio": 6
+            },
+            {
+              "role": "d7",
+              "gpio": 7
+            },
+            {
+              "role": "pclk",
+              "gpio": 8
+            },
+            {
+              "role": "hsync",
+              "gpio": 9
+            },
+            {
+              "role": "vsync",
+              "gpio": 10
+            },
+            {
+              "role": "mclk",
+              "gpio": 114
+            },
+            {
+              "role": "rst",
+              "gpio": 115
+            },
+            {
+              "role": "i2c_scl",
+              "gpio": 112
+            },
+            {
+              "role": "i2c_sda",
+              "gpio": 113
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Optional camera module. The WL82 DevKit SDK selects DVP group A: PA0–PA10 for data/sync, PH0/PH1 for SCCB, PH2=MCLK, PH3=RESET.",
+          "zh-CN": "可选摄像头模组。WL82 DevKit SDK 选择 DVP A 组：PA0–PA10 用于数据/同步，PH0/PH1 为 SCCB，PH2=MCLK，PH3=RESET。"
+        }
+      }
+    ],
+    "display": [
+      {
+        "id": "lcd-mcu8080",
+        "name": {
+          "en": "LCD daughterboard (MCU/RGB connector)",
+          "zh-CN": "LCD 显示子板（MCU/RGB 接口）"
+        },
+        "interface": "MCU8080",
+        "mounting": "accessory",
+        "pinLocked": true,
+        "pins": {
+          "MCU8080": [
+            {
+              "role": "wr",
+              "gpio": 42
+            },
+            {
+              "role": "dc",
+              "gpio": 41
+            },
+            {
+              "role": "d7",
+              "gpio": 40
+            },
+            {
+              "role": "d6",
+              "gpio": 39
+            },
+            {
+              "role": "d5",
+              "gpio": 38
+            },
+            {
+              "role": "d4",
+              "gpio": 37
+            },
+            {
+              "role": "d3",
+              "gpio": 36
+            },
+            {
+              "role": "d2",
+              "gpio": 35
+            },
+            {
+              "role": "d1",
+              "gpio": 34
+            },
+            {
+              "role": "d0",
+              "gpio": 33
+            },
+            {
+              "role": "bl",
+              "gpio": 24
+            },
+            {
+              "role": "te",
+              "gpio": 32
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "JL_AC79_DevKitLCD V1.2 is a separate daughterboard. J17 maps PC10=WR/HSYNC, PC9=RS/VSYNC, PC8=EMI_D7/LCD_DCLK, PC7–PC1=EMI_D6–D0/LCD_D0–D6, PC0=TE/LCD_D7, and PB8=BL/DE; interface mode determines the muxed signal name.",
+          "zh-CN": "JL_AC79_DevKitLCD V1.2 是独立显示子板。J17 映射为 PC10=WR/HSYNC、PC9=RS/VSYNC、PC8=EMI_D7/LCD_DCLK、PC7–PC1=EMI_D6–D0/LCD_D0–D6、PC0=TE/LCD_D7、PB8=BL/DE；复用信号名取决于接口模式。"
+        }
+      }
+    ],
+    "touchpad": [
+      {
+        "id": "lcd-touch-panel",
+        "name": {
+          "en": "LCD daughterboard touch interface",
+          "zh-CN": "LCD 显示子板触摸接口"
+        },
+        "interface": "I2C",
+        "mounting": "accessory",
+        "pinLocked": true,
+        "pins": {
+          "I2C": [
+            {
+              "role": "scl",
+              "gpio": 112
+            },
+            {
+              "role": "sda",
+              "gpio": 113
+            },
+            {
+              "role": "int",
+              "gpio": 16
+            },
+            {
+              "role": "rst",
+              "gpio": 20
+            }
+          ]
+        },
+        "kconfig": null,
+        "note": {
+          "en": "Schematic J17 assigns PH0=SCL, PH1=SDA, PB0=INT and PB4=RESET. These INT/RESET labels differ from the field names in the legacy DevKitBoard.c configuration; the schematic net names are used here.",
+          "zh-CN": "原理图 J17 分配 PH0=SCL、PH1=SDA、PB0=INT、PB4=RESET。该 INT/RESET 标注与旧版 DevKitBoard.c 配置中的字段名不一致，此处按原理图网络标注。"
         }
       }
     ]
   },
   "links": {
     "schematic": {
-      "en": "https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK",
-      "zh-CN": "https://gitee.com/Jieli-Tech/fw-AC79_AIoT_SDK"
+      "en": "https://github.com/tuya/TuyaOpen-JieLi/tree/master/chip/wl82/AC79_AIoT_SDK/doc/datasheet/AC791N%E8%A7%84%E6%A0%BC%E4%B9%A6/schematic/JL_AC79_DevKitBoard",
+      "zh-CN": "https://github.com/tuya/TuyaOpen-JieLi/tree/master/chip/wl82/AC79_AIoT_SDK/doc/datasheet/AC791N%E8%A7%84%E6%A0%BC%E4%B9%A6/schematic/JL_AC79_DevKitBoard"
     },
     "datasheet": {
       "en": "https://doc.zh-jieli.com/AC79/zh-cn/release_v1.2.0/index.html",
@@ -73,5 +289,160 @@
     "repo": "https://github.com/tuya/TuyaOpen",
     "subpath": "boards/JIELI/AC79_DevKitBoard",
     "ref": "master"
-  }
+  },
+  "platformSymbol": "JIELI",
+  "expansionConnectors": [
+    {
+      "id": "j18-gpio-header",
+      "name": {
+        "en": "J18 expansion GPIO header",
+        "zh-CN": "J18 扩展 GPIO 排针"
+      },
+      "note": {
+        "en": "19x2 header. PA0–PA10 are shared with the default DVP camera; PB5–PB7 are shared with the TF slot; PB3 is also the SDK debug UART1 TX. Disconnect/reconfigure those functions before using the pins as general GPIO.",
+        "zh-CN": "19×2 排针。PA0–PA10 与默认 DVP 摄像头复用；PB5–PB7 与 TF 卡槽复用；PB3 也是 SDK 调试 UART1 TX。将引脚作为普通 GPIO 使用前须断开或重新配置相关功能。"
+      },
+      "provides": [
+        {
+          "deviceClass": "gpio",
+          "interface": "GPIO"
+        }
+      ]
+    }
+  ],
+  "expansionPins": [
+    {
+      "gpio": 112,
+      "functions": [
+        "GPIO",
+        "I2C0_SCL"
+      ]
+    },
+    {
+      "gpio": 113,
+      "functions": [
+        "GPIO",
+        "I2C0_SDA"
+      ]
+    },
+    {
+      "gpio": 114,
+      "functions": [
+        "GPIO",
+        "DVP_MCLK"
+      ]
+    },
+    {
+      "gpio": 115,
+      "functions": [
+        "GPIO",
+        "DVP_RESET"
+      ]
+    },
+    {
+      "gpio": 0,
+      "functions": [
+        "GPIO",
+        "DVP_D0"
+      ]
+    },
+    {
+      "gpio": 1,
+      "functions": [
+        "GPIO",
+        "DVP_D1"
+      ]
+    },
+    {
+      "gpio": 2,
+      "functions": [
+        "GPIO",
+        "DVP_D2"
+      ]
+    },
+    {
+      "gpio": 3,
+      "functions": [
+        "GPIO",
+        "DVP_D3"
+      ]
+    },
+    {
+      "gpio": 4,
+      "functions": [
+        "GPIO",
+        "DVP_D4"
+      ]
+    },
+    {
+      "gpio": 5,
+      "functions": [
+        "GPIO",
+        "DVP_D5"
+      ]
+    },
+    {
+      "gpio": 6,
+      "functions": [
+        "GPIO",
+        "DVP_D6"
+      ]
+    },
+    {
+      "gpio": 7,
+      "functions": [
+        "GPIO",
+        "DVP_D7"
+      ]
+    },
+    {
+      "gpio": 8,
+      "functions": [
+        "GPIO",
+        "DVP_PCLK"
+      ]
+    },
+    {
+      "gpio": 9,
+      "functions": [
+        "GPIO",
+        "DVP_HSYNC"
+      ]
+    },
+    {
+      "gpio": 10,
+      "functions": [
+        "GPIO",
+        "DVP_VSYNC"
+      ]
+    },
+    {
+      "gpio": 23,
+      "functions": [
+        "GPIO",
+        "SD0_CLK"
+      ]
+    },
+    {
+      "gpio": 22,
+      "functions": [
+        "GPIO",
+        "SD0_CMD"
+      ]
+    },
+    {
+      "gpio": 21,
+      "functions": [
+        "GPIO",
+        "SD0_D0"
+      ]
+    },
+    {
+      "gpio": 19,
+      "functions": [
+        "GPIO",
+        "UART1_TX"
+      ]
+    }
+  ]
 }
