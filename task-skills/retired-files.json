@@ -1,0 +1,37 @@
+{
+  "skills/core/tuyaopen-start/SKILL.md": {
+    "action": "split",
+    "targets": ["skills/README.md", "skills/embedded/tuyaopen-embedded-env-setup/SKILL.md"],
+    "reason": "Discovery and schema contract use the project bootstrap; SDK/toolchain diagnosis is owned by env-setup. Task recipes live in their task payloads."
+  },
+  "skills/core/tuyaopen-start/references/CLI_AND_PROJECT_REFERENCE.md": {
+    "action": "split",
+    "targets": ["skills/README.md", "skills/embedded/tuyaopen-embedded-env-setup/SKILL.md", "skills/embedded/tuyaopen-embedded-project/SKILL.md"],
+    "reason": "Resolver retained separately; command input/output and confirmation are queried from installed schema rather than copied static tables. Project identity belongs to project."
+  },
+  "skills/core/tuyaopen-start/references/ROUTING.md": {
+    "action": "retire",
+    "targets": ["skills/README.md", "skills/index.json"],
+    "reason": "Static global router duplicates catalogue whenToUse and command schemas. Replaced by explicit task discovery, no successor router."
+  },
+  "skills/embedded/tuyaopen-embedded/SKILL.md": {
+    "action": "retire",
+    "targets": ["skills/index.json", "skills/README.md"],
+    "reason": "Pure command map duplicates command schema and task discovery; no unique task implementation."
+  },
+  "skills/core/tuyaopen-skill-maker/SKILL.md": {
+    "action": "move",
+    "targets": ["docs/skill-authoring.md"],
+    "reason": "Catalogue maintenance belongs to repository authors, not installed application agents. Legacy start routing requirements replaced with task discovery and SDK scoping rules."
+  },
+  "skills/cloud/iot-product-workflow/SKILL.md": {
+    "action": "merge",
+    "targets": ["skills/cloud/tuyaopen-cloud/SKILL.md"],
+    "reason": "Product/DP ordering and readback are now steps of the cloud task; Broker envelope details come from the live tool contract."
+  },
+  "skills/miniapp/miniapp-development-workflow/SKILL.md": {
+    "action": "merge",
+    "targets": ["skills/miniapp/tuyaopen-miniapp/SKILL.md"],
+    "reason": "Create/schema/build/preview/upload and explicitly requested release steps form one MiniApp task. Unique attachments and scripts copied separately."
+  }
+}

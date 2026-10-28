@@ -1,0 +1,78 @@
+{
+  "tuyaopen-embedded-env-setup": {
+    "en": "SDK acquisition, activation, host tools and environment diagnostics; not runtime device diagnosis.",
+    "zh-CN": "SDK 获取、初始化、工具链和主机环境诊断；不承担设备运行故障诊断。"
+  },
+  "tuyaopen-embedded-project": {
+    "en": "Create projects, manage identity/board/PID metadata, browse demos and change IDE settings; build options belong to build.",
+    "zh-CN": "创建工程、维护身份与板卡/PID 绑定、浏览 demo 和 IDE 设置；Kconfig 操作归编译技能。"
+  },
+  "tuyaopen-embedded-build": {
+    "en": "Compile/clean firmware, edit and verify Kconfig, diagnose compiler/link failures and integrate library sources.",
+    "zh-CN": "编译清理、Kconfig 编辑与生效检查、编译链接故障及第三方源码构建接入。"
+  },
+  "tuyaopen-embedded-hardware": {
+    "en": "Confirm physical hardware and pin/mux/occupancy evidence; implement board, external and raw peripheral use.",
+    "zh-CN": "核对硬件、板卡引出引脚、复用及占用，记录确认结果并实现外设；新增 BSP 另行处理。"
+  },
+  "tuyaopen-embedded-flash": {
+    "en": "Identify the current image and target board/port, flash or read firmware and explicitly reset hardware.",
+    "zh-CN": "确认当前固件、目标板与端口，执行烧录、Flash 读回和明确请求的复位；日志和授权另行处理。"
+  },
+  "tuyaopen-embedded-cli-debug": {
+    "en": "Capture/analyze device logs, drive its actual serial console and decode matching crash images.",
+    "zh-CN": "设备日志采集分析、串口 CLI 交互及匹配固件的崩溃定位；不承担主机环境初始化。"
+  },
+  "tuyaopen-embedded-add-board": {
+    "en": "Create an independent board BSP, board registration, Kconfig and application presets in the actual SDK.",
+    "zh-CN": "新增独立开发板/BSP、板级注册、Kconfig 和预置配置；既有板应用外设使用归硬件技能。"
+  },
+  "tuyaopen-embedded-code-check": {
+    "en": "Check changed C/C++ formatting, headers, forbidden characters and sensitive data in SDK or external APP sources.",
+    "zh-CN": "检查本次 C/C++ 修改的格式、文件头、字符及敏感信息，支持 SDK 外独立 APP。"
+  },
+  "tuyaopen-embedded-device-auth": {
+    "en": "Manage local licenses, write/read device credentials and diagnose provisioning and activation separately.",
+    "zh-CN": "管理授权码、设备凭据写入读回，并分别诊断配网、激活、MQTT 和 DP 状态。"
+  },
+  "tuyaopen-workflow-embedded-dev": {
+    "en": "Coordinate an explicitly multi-stage firmware request, recover progress and hand over measured evidence; not the entry for every single build or log request.",
+    "zh-CN": "编排明确的多阶段固件任务、恢复进度和交接证据；单独编译、日志或外设请求直接使用对应任务技能。"
+  },
+  "tuyaopen-cloud": {
+    "en": "Create/read cloud products and DPs, synchronize and verify the requested schema using declared authenticated capabilities.",
+    "zh-CN": "通过已声明的认证能力创建读取云产品与 DP、同步并读回验证；不自动进入固件或面板发布。"
+  },
+  "tuyaopen-miniapp": {
+    "en": "Create, implement, build and preview a panel; upload/review/publish/bind only through the endpoint requested.",
+    "zh-CN": "创建、开发、构建和预览面板，仅推进到用户要求的上传、提审、发布或绑定终点。"
+  },
+  "tuyaopen-miniapp-ray-common": {
+    "en": "Ray framework APIs, device context, lifecycle, routing and localization; specific Smart UI props belong to smart-ui.",
+    "zh-CN": "Ray 框架 API、设备上下文、生命周期、路由与国际化；Smart UI 具体组件属性归专项技能。"
+  },
+  "tuyaopen-miniapp-smart-ui": {
+    "en": "Choose and compose Smart UI components, verify props/events and diagnose component behavior in Ray panels.",
+    "zh-CN": "选择组合 Smart UI 组件，核实属性事件并诊断组件行为；不承担通用 PRD 或发布流程。"
+  },
+  "tuyaopen-miniapp-charts-library": {
+    "en": "Integrate chart cards, statistics sources and period/granularity controls for panel chart tasks.",
+    "zh-CN": "面板图表库、统计数据源、场景卡片及周期粒度控件接入。"
+  },
+  "tuyaopen-miniapp-requirement-guide": {
+    "en": "Produce a panel PRD, requested template or requested chapter; never force a PRD before ordinary coding.",
+    "zh-CN": "按明确请求编写小程序面板 PRD、模板或指定章节；不作为普通开发的强制前置步骤。"
+  },
+  "tuyaopen-miniapp-performance-ux-guard": {
+    "en": "Review and optimize measured performance, interaction states, accessibility and release quality; not every UI coding task.",
+    "zh-CN": "审查优化性能、交互状态、可访问性与发布质量；不接管所有 UI 编码任务。"
+  },
+  "tuyaos-build": {
+    "en": "Build/clean TuyaOS apps and wire local.mk sources/includes; do not run TuyaOpen tos.py.",
+    "zh-CN": "TuyaOS 应用编译清理及 local.mk 源码/头文件接入；不运行 TuyaOpen tos.py。"
+  },
+  "tuyaos-hardware-vibe-coding": {
+    "en": "Implement TuyaOS peripherals using APIs evidenced in the active SDK and integrate the active app.",
+    "zh-CN": "按当前 SDK 有据可查的 TAL/TKL API 实现 TuyaOS 外设并接入当前 APP。"
+  }
+}
