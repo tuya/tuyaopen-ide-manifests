@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "platforms",
-  "publishedAt": "2026-10-28T02:18:40Z",
+  "publishedAt": "2026-10-28T02:42:14Z",
   "items": [
     {
       "id": "t5ai",
@@ -536,12 +536,12 @@
       "id": "wl82",
       "platformId": "jieli",
       "name": {
-        "en": "JieLi AC791 (WL82)",
-        "zh-CN": "杰理 AC791（WL82）"
+        "en": "JieLi AC791N (WL82)",
+        "zh-CN": "杰理 AC791N（WL82）"
       },
       "summary": {
-        "en": "JieLi WL82 / AC791 dual-core floating-point DSP up to 320 MHz with Wi-Fi 802.11b/g/n and dual-mode Bluetooth (BR/EDR + BLE up to 5.0).",
-        "zh-CN": "杰理 WL82 / AC791 双核浮点 DSP，最高 320MHz，集成 Wi-Fi 802.11b/g/n 与双模蓝牙（BR/EDR + BLE 5.0）。"
+        "en": "JieLi WL82 / AC791N dual-core floating-point DSP up to 320 MHz with Wi-Fi 802.11b/g/n and dual-mode Bluetooth (BR/EDR + BLE up to 5.0).",
+        "zh-CN": "杰理 WL82 / AC791N 双核浮点 DSP，最高 320MHz，集成 Wi-Fi 802.11b/g/n 与双模蓝牙（BR/EDR + BLE 5.0）。"
       },
       "detailUrl": "platforms/jieli/wl82.json",
       "sdks": [
@@ -552,7 +552,7 @@
         "url": "images/jieli/chip-ac791.png",
         "alt": {
           "en": "JieLi AC7911B chip",
-          "zh-CN": "杰理 AC7911B 芯片（AC791 系列）"
+          "zh-CN": "杰理 AC7911B 芯片（AC791N 系列）"
         },
         "width": 388,
         "height": 388

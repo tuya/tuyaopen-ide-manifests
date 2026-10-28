@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-10-27T12:34:43Z",
+  "publishedAt": "2026-10-28T02:42:14Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -2162,7 +2162,7 @@
       "id": "jieli-ac79-devkitboard",
       "name": {
         "en": "AC79_DevKitBoard",
-        "zh-CN": "杰理 AC79_DevKitBoard（AC791）"
+        "zh-CN": "杰理 AC79_DevKitBoard（AC791N）"
       },
       "platformId": "jieli",
       "variantId": "wl82",
@@ -2171,8 +2171,8 @@
         "zh-CN": "杰理科技"
       },
       "summary": {
-        "en": "JieLi AC79_DevKitBoard (AC791/WL82) built around the AC791 dual-core floating-point DSP up to 320 MHz, with Wi-Fi 802.11b/g/n and dual-mode Bluetooth. 8 MiB flash, onboard audio with an external 8002 PA, K1 ADC key, UART1 log and UART0 CLI.",
-        "zh-CN": "杰理 AC79_DevKitBoard（AC791/WL82）搭载 AC791 双核浮点 DSP（最高 320MHz），集成 Wi-Fi 802.11b/g/n 与双模蓝牙。配备 8 MiB Flash、板载音频（外置 8002 功放）、K1 ADC 按键、UART1 日志与 UART0 CLI。"
+        "en": "JieLi AC79_DevKitBoard (AC791N/WL82) built around the AC791N dual-core floating-point DSP up to 320 MHz, with Wi-Fi 802.11b/g/n and dual-mode Bluetooth. 8 MiB flash, onboard audio with an external 8002 PA, K1 ADC key, UART1 log and UART0 CLI.",
+        "zh-CN": "杰理 AC79_DevKitBoard（AC791N/WL82）搭载 AC791N 双核浮点 DSP（最高 320MHz），集成 Wi-Fi 802.11b/g/n 与双模蓝牙。配备 8 MiB Flash、板载音频（外置 8002 功放）、K1 ADC 按键、UART1 日志与 UART0 CLI。"
       },
       "tags": [
         "wifi",
