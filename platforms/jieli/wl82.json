@@ -1,0 +1,651 @@
+{
+  "schemaVersion": 1,
+  "platformId": "jieli",
+  "id": "wl82",
+  "name": "JieLi WL82 (AC791N)",
+  "arch": "jieli-dsp",
+  "flashInterface": "spi",
+  "connectivity": {
+    "wifi": true,
+    "ble": true,
+    "ethernet": false,
+    "cellular": false
+  },
+  "memory": {
+    "sramBytes": 591872,
+    "romBytes": 0,
+    "flashMaxBytes": 8388608,
+    "psramMaxBytes": 8388608,
+    "efuse": false
+  },
+  "peripherals": {
+    "gpio": {
+      "enabled": true,
+      "count": 41,
+      "spec": {
+        "pins": [
+          [
+            0,
+            10
+          ],
+          [
+            16,
+            24
+          ],
+          [
+            32,
+            42
+          ],
+          [
+            112,
+            121
+          ]
+        ],
+        "direction": [
+          "TUYA_GPIO_INPUT",
+          "TUYA_GPIO_OUTPUT"
+        ],
+        "mode": [
+          "TUYA_GPIO_PUSH_PULL",
+          "TUYA_GPIO_PULLUP",
+          "TUYA_GPIO_PULLDOWN",
+          "TUYA_GPIO_FLOATING",
+          "TUYA_GPIO_OPENDRAIN"
+        ],
+        "irq": {
+          "supported": true,
+          "triggers": [
+            "TUYA_GPIO_IRQ_RISE",
+            "TUYA_GPIO_IRQ_FALL"
+          ],
+          "pins": [],
+          "note": {
+            "en": "Interrupt-capable GPIO pad coverage is not fully established from the available WL82 sources; the pinout lists SDK logical GPIO codes.",
+            "zh-CN": "现有 WL82 资料无法完整确认支持中断的 GPIO 焊盘范围；引脚表列出的是 SDK 逻辑 GPIO 编号。"
+          }
+        }
+      },
+      "note": {
+        "en": "GPIO count and pinout list only the 41 GPIO-capable pads shown on the JL_AC79_WIFI V1.0 coreboard connector table: PA0-PA10, PB0-PB8, PC0-PC10 and PH0-PH9. This is not the full WL82 SDK logical address space. The remaining codes within 0-127 are not confirmed as physically exposed on this board. These pads are muxed with board functions; disconnect or reconfigure the default functions before using a pad as ordinary GPIO. USB-special pins are excluded from this ordinary GPIO count.",
+        "zh-CN": "GPIO 数量和引脚表仅列出 JL_AC79_WIFI V1.0 核心板连接器表明确引出的 41 个 GPIO-capable pad：PA0–PA10、PB0–PB8、PC0–PC10、PH0–PH9。这不是 WL82 SDK 的完整逻辑地址空间；不能据此代码确认其余 0–127 编号已在本板物理引出。上述引脚与板载功能复用，作为普通 GPIO 前须断开或重配默认功能。USB 专用脚不计入普通 GPIO 数量。"
+      }
+    }
+  },
+  "pinout": [
+    {
+      "pin": 0,
+      "name": "PA0",
+      "gpio": 0,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 1,
+      "name": "PA1",
+      "gpio": 1,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 2,
+      "name": "PA2",
+      "gpio": 2,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 3,
+      "name": "PA3",
+      "gpio": 3,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 4,
+      "name": "PA4",
+      "gpio": 4,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 5,
+      "name": "PA5",
+      "gpio": 5,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 6,
+      "name": "PA6",
+      "gpio": 6,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 7,
+      "name": "PA7",
+      "gpio": 7,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 8,
+      "name": "PA8",
+      "gpio": 8,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 9,
+      "name": "PA9",
+      "gpio": 9,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 10,
+      "name": "PA10",
+      "gpio": 10,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 16,
+      "name": "PB0",
+      "gpio": 16,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 17,
+      "name": "PB1",
+      "gpio": 17,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 18,
+      "name": "PB2",
+      "gpio": 18,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 19,
+      "name": "PB3",
+      "gpio": 19,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 20,
+      "name": "PB4",
+      "gpio": 20,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 21,
+      "name": "PB5",
+      "gpio": 21,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 22,
+      "name": "PB6",
+      "gpio": 22,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 23,
+      "name": "PB7",
+      "gpio": 23,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 24,
+      "name": "PB8",
+      "gpio": 24,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 32,
+      "name": "PC0",
+      "gpio": 32,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 33,
+      "name": "PC1",
+      "gpio": 33,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 34,
+      "name": "PC2",
+      "gpio": 34,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 35,
+      "name": "PC3",
+      "gpio": 35,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 36,
+      "name": "PC4",
+      "gpio": 36,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 37,
+      "name": "PC5",
+      "gpio": 37,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 38,
+      "name": "PC6",
+      "gpio": 38,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 39,
+      "name": "PC7",
+      "gpio": 39,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 40,
+      "name": "PC8",
+      "gpio": 40,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 41,
+      "name": "PC9",
+      "gpio": 41,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 42,
+      "name": "PC10",
+      "gpio": 42,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 112,
+      "name": "PH0",
+      "gpio": 112,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 113,
+      "name": "PH1",
+      "gpio": 113,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 114,
+      "name": "PH2",
+      "gpio": 114,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 115,
+      "name": "PH3",
+      "gpio": 115,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 116,
+      "name": "PH4",
+      "gpio": 116,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 117,
+      "name": "PH5",
+      "gpio": 117,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 118,
+      "name": "PH6",
+      "gpio": 118,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 119,
+      "name": "PH7",
+      "gpio": 119,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 120,
+      "name": "PH8",
+      "gpio": 120,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    },
+    {
+      "pin": 121,
+      "name": "PH9",
+      "gpio": 121,
+      "type": "I/O",
+      "functions": [
+        "GPIO"
+      ],
+      "caps": [],
+      "note": {
+        "en": "SDK logical GPIO code; not a package pad number.",
+        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
+      }
+    }
+  ],
+  "platformSymbol": "JIELI"
+}
