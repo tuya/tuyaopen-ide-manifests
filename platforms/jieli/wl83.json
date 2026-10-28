@@ -16,12 +16,20 @@
     "romBytes": 0,
     "flashMaxBytes": 8388608,
     "psramMaxBytes": 16777216,
-    "efuse": false
+    "efuse": false,
+    "note": {
+      "en": "SRAM size is unconfirmed: the board overview reports 256 KiB while AC7926A Datasheet V1.5 reports 352 KiB. sramBytes=0 denotes unknown here, not zero physical SRAM.",
+      "zh-CN": "片上 SRAM 容量尚未确认：板卡概述记载 256 KiB，AC7926A Datasheet V1.5 记载 352 KiB。此处 sramBytes=0 表示未知，不代表实物没有 SRAM。"
+    }
   },
   "peripherals": {
     "gpio": {
       "enabled": true,
       "count": 84,
+      "note": {
+        "en": "count and pinout list the 84 regular GPIOs. The TuyaOpen WL83 TKL GPIO backend also accepts sparse USB GPIO codes 96/97 and 112/113; they are omitted from the regular pinout because available sources do not establish them as general board-header GPIOs.",
+        "zh-CN": "count 和 pinout 列出 84 个常规 GPIO。TuyaOpen WL83 TKL GPIO 后端还接受稀疏 USB GPIO 编号 96/97、112/113；现有资料无法确认这些引脚可作为开发板普通扩展 GPIO，因此未列入常规引脚表。"
+      },
       "spec": {
         "pins": [
           [
