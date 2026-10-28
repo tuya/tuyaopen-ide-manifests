@@ -17,15 +17,16 @@ from release_contract import (  # noqa: E402
 
 def test_release_metadata_is_strict_and_increasing():
     assert load_ide_support() == {
-        "minVersion": "1.0.0",
+        "minVersion": "1.1.0",
         "maxVersionExclusive": "9.9.9",
     }
 
 
-def test_current_release_embeds_identical_support():
-    support = load_ide_support()
+def test_published_release_remains_valid_and_next_release_uses_current_support():
     release = json.loads((ROOT / "release.json").read_text(encoding="utf-8"))
-    assert release["ideSupport"] == support
+    assert validate_ide_support(release["ideSupport"]) == release["ideSupport"]
+    next_release = build_release_manifest(tag="v9.0.0", version="9.0.0", sha256="a" * 64, size=1)
+    assert next_release["ideSupport"] == load_ide_support()
 
 
 @pytest.mark.parametrize(
