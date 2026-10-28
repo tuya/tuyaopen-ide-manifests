@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-10-26T10:44:10Z",
+  "publishedAt": "2026-10-28T08:30:04Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -2048,7 +2048,7 @@
         "zh-CN": "LYNQ L511G-Y7PM"
       },
       "platformId": "l511",
-      "variantId": "ec718pm",
+      "variantId": "l511",
       "manufacturer": {
         "en": "MobileTek",
         "zh-CN": "移柯通信"
@@ -2078,7 +2078,9 @@
       "brand": {
         "en": "LYNQ",
         "zh-CN": "LYNQ"
-      }
+      },
+      "chipDetailUrl": "platforms/l511/ec718pm.json",
+      "chipVariantId": "ec718pm"
     },
     {
       "id": "lynq-l511c-y7pm",
@@ -2087,7 +2089,7 @@
         "zh-CN": "LYNQ L511C-Y7PM"
       },
       "platformId": "l511",
-      "variantId": "l511c-y7pm",
+      "variantId": "l511",
       "manufacturer": {
         "en": "MobileTek",
         "zh-CN": "移柯通信"
@@ -2117,7 +2119,9 @@
       "brand": {
         "en": "LYNQ",
         "zh-CN": "LYNQ"
-      }
+      },
+      "chipDetailUrl": "platforms/l511/l511c-y7pm.json",
+      "chipVariantId": "l511c-y7pm"
     },
     {
       "id": "lynq-l511c-y6e",
@@ -2126,7 +2130,7 @@
         "zh-CN": "LYNQ L511C-Y6E"
       },
       "platformId": "l511",
-      "variantId": "l511c-y6e",
+      "variantId": "l511",
       "manufacturer": {
         "en": "MobileTek",
         "zh-CN": "移柯通信"
@@ -2156,7 +2160,9 @@
       "brand": {
         "en": "LYNQ",
         "zh-CN": "LYNQ"
-      }
+      },
+      "chipDetailUrl": "platforms/l511/l511c-y6e.json",
+      "chipVariantId": "l511c-y6e"
     }
   ]
 }

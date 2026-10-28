@@ -4,10 +4,14 @@ The three module manifests use the TuyaOpen platform and board symbols
 `L511G_Y7PM`, `L511C_Y7PM`, and `L511C_Y6E`. Metadata was checked on
 2026-10-26 against the public BSPs and the sources below.
 
-All three variants and board entries belong to the shared `platformId: "l511"`
-family. Detail files live under `platforms/l511/` and `boards-and-chips/l511/`.
-Each board retains its exact `variantId`, and the platform/board symbols remain
-model-specific for SDK configuration.
+The three board entries share `platformId: "l511"` and `variantId: "l511"`
+for one catalogue group. Each board's `chipDetailUrl` points to its own chip
+specifications under `platforms/l511/`, and `chipVariantId` preserves its exact
+chip identity in project metadata; its board detail retains the
+model-specific `boardSymbol`. The shared platform's `platformSymbol` is `L511`.
+The SDK also requires a model choice; the IDE currently supplies it via its
+L511 compatibility handling. Publish this catalogue only with an IDE and SDK
+that support those fields and choices.
 
 ## Public sources
 
