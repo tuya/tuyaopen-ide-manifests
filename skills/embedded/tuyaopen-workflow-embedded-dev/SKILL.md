@@ -7,7 +7,7 @@ license: Apache-2.0
 compatibility: TuyaOpen environment activated (export.sh / export.ps1 / export.bat); Device connected via USB (MCU
   targets) or native Linux host
 metadata:
-  version: 2.3.2
+  version: 2.3.3
   owner: embedded-team
   deprecated: false
   min-cli-version: 0.1.0-beta.17

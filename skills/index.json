@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "skills",
-  "publishedAt": "2026-10-19T10:23:03Z",
+  "publishedAt": "2026-10-28T00:00:00Z",
   "publishedBy": "tuya/tuyaopen-ide-manifests",
   "items": [
     {
@@ -670,7 +670,7 @@
     },
     {
       "id": "tuyaopen-embedded-code-check",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "group": "embedded",
       "order": 22,
       "name": {
@@ -721,7 +721,7 @@
     },
     {
       "id": "tuyaopen-workflow-embedded-dev",
-      "version": "2.3.2",
+      "version": "2.3.3",
       "group": "embedded",
       "order": 23,
       "name": {

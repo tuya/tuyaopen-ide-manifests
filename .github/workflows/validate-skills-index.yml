@@ -4,6 +4,9 @@ on:
   pull_request:
     paths:
       - "skills/**"
+      - "task-skills/**"
+      - "scripts/build-task-skills-profile.py"
+      - "tests/skills/test_task_profile.py"
       - "scripts/validate-skills-index.py"
       - "scripts/check-skill-version-bumps.py"
       - ".github/workflows/validate-skills-index.yml"
@@ -12,6 +15,9 @@ on:
       - main
     paths:
       - "skills/**"
+      - "task-skills/**"
+      - "scripts/build-task-skills-profile.py"
+      - "tests/skills/test_task_profile.py"
       - "scripts/validate-skills-index.py"
       - "scripts/check-skill-version-bumps.py"
       - ".github/workflows/validate-skills-index.yml"
@@ -31,6 +37,11 @@ jobs:
 
       - name: Validate structure and references
         run: python3 scripts/validate-skills-index.py
+
+      - name: Validate isolated task catalogue
+        run: |
+          python3 scripts/build-task-skills-profile.py --output "$RUNNER_TEMP/task-skills-v2"
+          python3 scripts/validate-skills-index.py "$RUNNER_TEMP/task-skills-v2/skills/index.json"
 
       # A per-skill 'version' nobody bumps is worse than no version: the IDE
       # would report installed copies as up to date while the payload changed.

@@ -1261,7 +1261,10 @@ def check_markdown_relative_links(items: list) -> None:
 
 
 def main() -> int:
+    global REPO_ROOT
     index_path = Path(sys.argv[1]) if len(sys.argv) > 1 else REPO_ROOT / "skills" / "index.json"
+    if index_path.name == 'index.json' and index_path.parent.name == 'skills':
+        REPO_ROOT = index_path.resolve().parent.parent
     if not index_path.is_file():
         print(f"✗ index file not found: {index_path}", file=sys.stderr)
         return 1
@@ -1293,11 +1296,16 @@ def main() -> int:
     check_skill_naming_contract(items)
     check_progressive_disclosure(items)
     check_markdown_relative_links(items)
-    check_routing_covers_opt_in(items)
+    task_profile = data.get('profile') == 'tasks-v2'
+    if task_profile:
+        check_task_profile(data, items)
+    else:
+        check_routing_covers_opt_in(items)
     check_official_skill_shape(items)
     check_local_file_references(items)
-    check_cross_skill_references(items)
-    check_resident_descriptions_cover_triggers(items)
+    if not task_profile:
+        check_cross_skill_references(items)
+        check_resident_descriptions_cover_triggers(items)
     check_attachments_have_exit(items)
 
     if errors:
@@ -1308,6 +1316,38 @@ def main() -> int:
 
     print(f"✓ {index_path}: OK ({len(items)} items validated)")
     return 0
+
+
+def check_task_profile(data, items):
+    """The explicit task source replaces the legacy router with tested discovery."""
+    retired = {'tuyaopen-start', 'tuyaopen-embedded', 'tuyaopen-skill-maker',
+               'iot-product-workflow', 'miniapp-development-workflow'}
+    ids = {x.get('id') for x in items}
+    if retired & ids:
+        err('task profile still exposes retired task entries')
+    required = {'effective-skill-resolution', 'safe-retirement', 'host-skill-discovery'}
+    if not required.issubset(set(data.get('consumerRequirements', []))):
+        err('task profile must declare compatible consumer requirements')
+    bootstrap = REPO_ROOT / 'skills/README.md'
+    if not bootstrap.is_file() or not all(x in bootstrap.read_text() for x in ['skills.list', 'skills.resolve', 'skills read']):
+        err('task profile must ship Host and CLI discovery instructions')
+    by_id = {x['id']: x for x in items}
+    for sdk, expected in [
+        ('tuyaopen', {'tuyaopen-embedded-'+x for x in ['env-setup','project','hardware','build','flash','cli-debug','code-check']}),
+        ('tuyaos', {'tuyaos-build','tuyaos-hardware-vibe-coding'}),
+    ]:
+        selected = {x['id'] for x in items if x.get('defaultEnabled') and sdk in x.get('sdks', ['tuyaopen'])}
+        closure = set(selected)
+        pending = list(selected)
+        while pending:
+            for dep in by_id[pending.pop()].get('requires', []):
+                if dep in by_id and dep not in closure:
+                    closure.add(dep)
+                    pending.append(dep)
+        if closure != expected:
+            err(f'{sdk} task defaults dependency closure differs: {sorted(closure)}')
+    if not (REPO_ROOT/'skills/embedded/tuyaopen-embedded-env-setup/scripts/resolve_cli.py').is_file():
+        err('task profile lost the CLI resolution helper')
 
 
 if __name__ == "__main__":

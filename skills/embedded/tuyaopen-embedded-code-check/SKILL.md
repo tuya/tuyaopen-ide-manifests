@@ -8,7 +8,7 @@ license: Apache-2.0
 compatibility: 'clang-format installed (Linux: `apt install clang-format`; macOS: `brew install clang-format`; Windows:
   `choco install llvm` or an LLVM release); Python 3 (venv active)'
 metadata:
-  version: 1.0.4
+  version: 1.0.5
   owner: embedded-team
   deprecated: false
   min-cli-version: 0.1.0-beta.17

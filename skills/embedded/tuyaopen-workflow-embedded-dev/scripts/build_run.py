@@ -4,21 +4,11 @@
 Usage: python build_run.py [timeout_seconds]
   timeout_seconds: default 30. Pass 0 for no timeout.
 
-Split of responsibility (2026-08-18): the *build* half now goes through the
-`tuyaopen-cli` CLI (`firmware build --stream`) when it can be resolved, falling
-back to `tos.py build` only when the CLI is not reachable — never because it
-failed. `--stream` (rather than plain `--json`) is deliberate: without it the whole
-build's output is buffered into one envelope printed only at the end, so a
-human watching this script would see nothing until the build was already over.
-`--stream` emits one ndjson line per line of build output as it happens —
-**on stderr** since 2026-08-27, with stdout carrying the single result
-envelope exactly as any other command. The exit code is a faithful success
-signal either way. The *run + analyze* half (executing the LINUX ELF and
-scanning its stdout for error/warning/watchdog patterns) is unchanged and
-stays on `subprocess` directly: the CLI has no command that runs a built
-LINUX binary, only one that builds it. See skill `tuyaopen-start` § 4 for
-the unavailable-vs-refused fallback rule this file follows, and § 7 for the
-`tos.py` <-> `tuyaopen-cli` command mapping.
+IDE projects pass their descriptor root explicitly to firmware build. Raw SDK
+applications use tos.py directly even when a global CLI exists. A resolved CLI
+failure is never retried through a lower-level tool. Progress is read from
+stderr; stdout carries one result envelope. Only an unambiguous local ELF
+produced by the current build is eligible for execution.
 """
 import datetime
 import glob
@@ -27,6 +17,7 @@ import os
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 
 def _python_exe():
@@ -91,25 +82,20 @@ def _stream_line_message(line):
     return msg if msg is not None else line
 
 
+def _project_root():
+    current = Path.cwd()
+    for candidate in [current, *current.parents]:
+        if (candidate / 'tuyaopen.project.ini').is_file():
+            return str(candidate)
+    return None
+
+
 def _run_build():
-    """Build the firmware. Returns True on success, False on failure.
-
-    Runs `tuyaopen-cli firmware build --stream` and relays each progress line's
-    `msg` to stdout as it arrives — live output, not a single envelope
-    printed after the fact (see the module docstring for why `--stream`
-    replaces `--json` here). Success is read from the process exit code,
-    which stays a faithful signal in `--stream` mode (see module docstring).
-
-    Falls back to `tos.py build` only when `tuyaopen-cli` cannot be resolved at
-    all — never on a CLI-reported failure (see the unavailable-vs-refused
-    rule in skill `tuyaopen-start` § 4). That fallback, immediately below,
-    already decides success the same way: a plain exit-code check, no output
-    parsing — the `--stream` path above just applies the identical test to
-    the CLI's exit code instead of `tos.py`'s.
-    """
+    """Use CLI only for descriptor-backed projects; never fall back after refusal."""
+    project_root = _project_root()
     argv = _resolve_tuyaopen()
-    if argv is None:
-        print("[tuyaopen-cli not found — falling back to tos.py build]")
+    if argv is None or project_root is None:
+        print("[Using tos.py for this SDK application / unavailable CLI]")
         ret = subprocess.run([_python_exe(), _tos_py(), "build"], check=False)
         return ret.returncode == 0
 
@@ -118,7 +104,7 @@ def _run_build():
     # at the very end and nothing live, while the frames go straight to the
     # terminal as raw ndjson.
     proc = subprocess.Popen(
-        argv + ["firmware", "build", "--stream"],
+        argv + ["firmware", "build", "--stream", "--project-root", project_root],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
@@ -138,14 +124,18 @@ def _run_build():
 
 
 def find_binary():
+    candidates = set()
     for pattern in ["dist/**/*.elf", ".build/bin/*"]:
-        matches = [
-            f for f in glob.glob(pattern, recursive=True)
-            if os.path.isfile(f) and os.access(f, os.X_OK)
-        ]
-        if matches:
-            return matches[0]
-    return None
+        for name in glob.glob(pattern, recursive=True):
+            file = Path(name)
+            if file.is_symlink() or not file.is_file() or not os.access(file, os.X_OK):
+                continue
+            if not file.resolve().is_relative_to(Path.cwd().resolve()):
+                continue
+            with file.open('rb') as stream:
+                if stream.read(4) == b'\x7fELF':
+                    candidates.add(str(file))
+    return next(iter(candidates)) if len(candidates) == 1 else None
 
 
 def analyze_log(lines):
@@ -176,7 +166,7 @@ def main():
 
     binary = find_binary()
     if not binary:
-        print("[ERROR] No executable found in dist/ or .build/bin/")
+        print("[ERROR] No unique executable ELF found in dist/ or .build/bin/")
         sys.exit(1)
 
     if os.path.getmtime(binary) < build_start - 1.0:
@@ -187,6 +177,7 @@ def main():
     print(f"\n--- Running: {binary} (timeout: {timeout}s) ---\n")
 
     output_lines = []
+    timed_out = False
     try:
         with open(log_file, "w") as lf:
             proc = subprocess.Popen(
@@ -198,6 +189,7 @@ def main():
             try:
                 out, _ = proc.communicate(timeout=timeout if timeout else None)
             except subprocess.TimeoutExpired:
+                timed_out = True
                 proc.kill()
                 out, _ = proc.communicate()
             print(out, end="")
@@ -213,6 +205,10 @@ def main():
     print(f"Warnings (ty W): {warn_count}")
     print(f"Watchdog feeds: {wdt_count}")
     print(f"Log saved to: {log_file}")
+
+    if not timed_out and proc.returncode != 0:
+        print(f"RESULT: Runtime failed with exit code {proc.returncode}.")
+        sys.exit(1)
 
     if error_count > 0:
         print("\n--- Error lines ---")

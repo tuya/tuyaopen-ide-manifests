@@ -4,6 +4,8 @@ on:
   pull_request:
     paths:
       - "skills/**"
+      - "task-skills/**"
+      - "docs/skill-authoring.md"
       - "scripts/**"
       - "tests/**"
       - ".github/workflows/skills-tests.yml"
@@ -12,6 +14,8 @@ on:
       - main
     paths:
       - "skills/**"
+      - "task-skills/**"
+      - "docs/skill-authoring.md"
       - "scripts/**"
       - "tests/**"
       - ".github/workflows/skills-tests.yml"

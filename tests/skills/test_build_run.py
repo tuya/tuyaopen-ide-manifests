@@ -88,6 +88,7 @@ def test_run_build_cli_present_success_streams_and_returns_true(monkeypatch, cap
     in --stream mode).
     """
     monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: ["tuyaopen-cli"])
+    monkeypatch.setattr(build_run, "_project_root", lambda: "/project")
     captured = {}
 
     def fake_popen(argv, **kwargs):
@@ -102,7 +103,7 @@ def test_run_build_cli_present_success_streams_and_returns_true(monkeypatch, cap
     monkeypatch.setattr(build_run.subprocess, "run", _forbid_run)
 
     assert build_run._run_build() is True
-    assert captured["argv"][-3:] == ["firmware", "build", "--stream"]
+    assert captured["argv"][1:4] == ["firmware", "build", "--stream"]
     out = capsys.readouterr().out
     assert "Compiling main.c" in out
     assert "build completed" in out
@@ -114,6 +115,8 @@ def test_run_build_cli_present_failure_returns_false_without_fallback(monkeypatc
     is not the same as the CLI being unavailable.
     """
     monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: ["tuyaopen-cli"])
+
+    monkeypatch.setattr(build_run, "_project_root", lambda: "/project")
 
     def fake_popen(argv, **kwargs):
         lines = ['{"ts": 1, "phase": "stderr", "msg": "main.c:10: error: expected \';\'"}\n']
@@ -153,6 +156,8 @@ def test_run_build_cli_refusal_is_not_treated_as_unavailable(monkeypatch):
     happy path above.
     """
     monkeypatch.setattr(build_run, "_resolve_tuyaopen", lambda: ["tuyaopen-cli"])
+
+    monkeypatch.setattr(build_run, "_project_root", lambda: "/project")
 
     def fake_popen(argv, **kwargs):
         lines = [
@@ -214,3 +219,39 @@ def test_resolve_tuyaopen_returns_none_when_nothing_found(monkeypatch, tmp_path)
     monkeypatch.chdir(tmp_path)
 
     assert build_run._resolve_tuyaopen() is None
+
+
+def test_nested_embedded_build_passes_app_root(monkeypatch, tmp_path):
+    (tmp_path / 'tuyaopen.project.ini').write_text('[project]\nname=sample\n')
+    embedded = tmp_path / 'source/embedded'
+    embedded.mkdir(parents=True)
+    monkeypatch.chdir(embedded)
+    monkeypatch.setattr(build_run, '_resolve_tuyaopen', lambda: ['tuyaopen-cli'])
+    captured = {}
+    def popen(argv, **kwargs):
+        captured['argv'] = argv
+        return _FakePopen([], 0)
+    monkeypatch.setattr(build_run.subprocess, 'Popen', popen)
+    assert build_run._run_build() is True
+    args = captured['argv']
+    assert args[args.index('--project-root') + 1] == str(tmp_path)
+
+
+def test_raw_sdk_app_uses_tos_even_when_cli_installed(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(build_run, '_resolve_tuyaopen', lambda: ['tuyaopen-cli'])
+    monkeypatch.setattr(build_run.subprocess, 'Popen', _forbid_popen)
+    monkeypatch.setattr(build_run.subprocess, 'run', lambda *a, **k: _FakeCompletedProcess(0))
+    assert build_run._run_build() is True
+
+
+def test_binary_selection_rejects_scripts_and_ambiguous_elf(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    folder = tmp_path / '.build/bin'
+    folder.mkdir(parents=True)
+    script = folder / 'helper'; script.write_bytes(b'#!/bin/sh\n'); script.chmod(0o755)
+    assert build_run.find_binary() is None
+    one = folder / 'sample'; one.write_bytes(b'\x7fELFtest'); one.chmod(0o755)
+    assert build_run.find_binary() == str(one.relative_to(tmp_path))
+    two = folder / 'other'; two.write_bytes(b'\x7fELFtest'); two.chmod(0o755)
+    assert build_run.find_binary() is None
