@@ -25,15 +25,15 @@
   "peripherals": {
     "gpio": {
       "enabled": true,
-      "count": 84,
+      "count": 83,
       "note": {
-        "en": "count and pinout list the 84 regular GPIOs. The TuyaOpen WL83 TKL GPIO backend also accepts sparse USB GPIO codes 96/97 and 112/113; they are omitted from the regular pinout because available sources do not establish them as general board-header GPIOs.",
-        "zh-CN": "count 和 pinout 列出 84 个常规 GPIO。TuyaOpen WL83 TKL GPIO 后端还接受稀疏 USB GPIO 编号 96/97、112/113；现有资料无法确认这些引脚可作为开发板普通扩展 GPIO，因此未列入常规引脚表。"
+        "en": "count and pinout list the 83 regular GPIO-capable pads shown on the AC792N Develop V1.2 top-board connectors: PA1-PA15, PB0-PB15, PC0-PC13, PD0-PD15, PE0-PE15 and PF0-PF5. PA0 is present in the WL83 SDK GPIO mask but is not shown on these board connectors, so it is excluded. The WL83 SDK/TKL logical address space is not a guarantee that each code is exposed on this board. These pads are muxed with board functions and may need those functions disconnected or reconfigured before use as GPIO. USB-special GPIO codes 96/97 and 112/113 are excluded from this regular GPIO count.",
+        "zh-CN": "count 和 pinout 列出 AC792N Develop V1.2 主控板连接器上标出的 83 个常规 GPIO-capable pad：PA1–PA15、PB0–PB15、PC0–PC13、PD0–PD15、PE0–PE15、PF0–PF5。WL83 SDK GPIO 掩码包含 PA0，但该开发板连接器未标出 PA0，因此不计入。WL83 SDK/TKL 逻辑地址空间不代表每个编号都在本板物理引出。上述引脚与板载功能复用，作为 GPIO 前可能需要断开或重配相关功能。USB 专用 GPIO 编号 96/97、112/113 不计入常规 GPIO 数量。"
       },
       "spec": {
         "pins": [
           [
-            0,
+            1,
             45
           ],
           [
@@ -59,7 +59,6 @@
             "TUYA_GPIO_IRQ_FALL"
           ],
           "pins": [
-            0,
             1,
             2,
             3,
@@ -149,20 +148,6 @@
     }
   },
   "pinout": [
-    {
-      "pin": 0,
-      "name": "PA0",
-      "gpio": 0,
-      "type": "I/O",
-      "functions": [
-        "GPIO"
-      ],
-      "caps": [],
-      "note": {
-        "en": "SDK logical GPIO code; not a package pad number.",
-        "zh-CN": "SDK 逻辑 GPIO 编号，不是芯片封装焊盘号。"
-      }
-    },
     {
       "pin": 1,
       "name": "PA1",
