@@ -11,6 +11,17 @@ python3 scripts/validate-skills-index.py /tmp/tuya-task-skills-v2/skills/index.j
 
 Use an absent or empty output directory. Keep the result on a separately selected source until the release/distribution policy guarantees compatible consumers. This change does not publish or switch a default remote feed.
 
+To prepare a complete versioned release locally, use `scripts/prepare-task-skills-release.py`
+with an absent output directory outside this repository, a release version,
+and explicit `--min-ide-version` / `--max-ide-version` bounds. The minimum
+must be the first released IDE that actually supports task discovery and safe
+retirement; the packager cannot infer that version. It emits `manifests.tar.gz`
+and a matching `release.json`, without publishing either asset or changing the
+legacy feed. Verify both products and the standalone CLI separately before
+publishing. The existing release workflow updates the shared latest feed, so
+it must not be used for this isolated package until a separate publication
+channel is in place; ensure the hosting service does not promote it to latest.
+
 Task bodies live in `task-skills/<id>.md`; corrected attachments in `task-skills/resources/<id>/`. Unchanged payload resources are copied from the legacy source. `roles.json` defines both languages' task summaries and triggers. The generator preserves MiniApp workflow scripts and emits `payload-migrations.json` for every retired file. Add exact destination/resource mappings when a unique resource moves; a generic disposition is not evidence that its behavior was tested.
 
 One skill owns one meaningful task. Workflows compose tasks only for an explicitly requested sequence and endpoint. No task references a global start router for CLI identity, confirmation or output contracts: use the installed schema and effective-payload discovery. API references stay attached to their task; nested files named SKILL.md must not register accidental independent skills.
