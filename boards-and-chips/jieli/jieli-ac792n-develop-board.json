@@ -140,132 +140,33 @@
     ],
     "display": [
       {
-        "id": "display-expansion",
+        "id": "mipi-dsi-st7701s",
         "name": {
-          "en": "RGB/MIPI display expansion",
-          "zh-CN": "RGB/MIPI 显示扩展"
+          "en": "480x800 MIPI-DSI display",
+          "zh-CN": "480x800 MIPI-DSI 显示屏"
         },
-        "interface": "RGB",
+        "model": "ST7701S",
+        "interface": "MIPI",
+        "width": 480,
+        "height": 800,
+        "pixelFormat": "RGB565",
         "mounting": "accessory",
         "pinLocked": true,
         "kconfig": null,
         "note": {
-          "en": "J26 fixed RGB mux: PA4–PA11=LCD_D0–D7, PB0–PB15=LCD_D8–D23, PA12=LCD_DEN, PA13=LCD_DCLK, PA14=LCD_HSYNC and PA15=LCD_VSYNC. Other functions are muxed on these same GPIOs; reset/backlight/power assignments depend on the display top board.",
-          "zh-CN": "J26 固定 RGB 复用信号：PA4–PA11=LCD_D0–D7、PB0–PB15=LCD_D8–D23、PA12=LCD_DEN、PA13=LCD_DCLK、PA14=LCD_HSYNC、PA15=LCD_VSYNC。相同 GPIO 还复用其他功能；复位/背光/电源分配由显示顶板决定。"
+          "en": "This is the optional ST7701S 480x800 MIPI-DSI panel used by the current TuyaOpen AC792N board profile. J26 DSI differential lanes (pins 1–10) are dedicated high-speed signals, not GPIOs. The separate RGB/DPI signals on J26 pins 22–52 are not another display entry here. The vendor WL83 profile assigns PB0/GPIO16 to panel reset and PB1/GPIO17 to backlight.",
+          "zh-CN": "这是当前 TuyaOpen AC792N 板级配置使用的选配 ST7701S 480x800 MIPI-DSI 屏。J26 的 DSI 差分通道（1–10 针）是专用高速信号，不是 GPIO。J26 的另一组 RGB/DPI 信号位于 22–52 针，这里不再作为第二种显示屏列出。杰理 WL83 板级配置将 PB0/GPIO16 用作屏复位，PB1/GPIO17 用作背光。"
         },
         "pins": {
-          "RGB": [
+          "MIPI": [
             {
-              "role": "d0",
-              "gpio": 4
-            },
-            {
-              "role": "d1",
-              "gpio": 5
-            },
-            {
-              "role": "d2",
-              "gpio": 6
-            },
-            {
-              "role": "d3",
-              "gpio": 7
-            },
-            {
-              "role": "d4",
-              "gpio": 8
-            },
-            {
-              "role": "d5",
-              "gpio": 9
-            },
-            {
-              "role": "d6",
-              "gpio": 10
-            },
-            {
-              "role": "d7",
-              "gpio": 11
-            },
-            {
-              "role": "d8",
+              "role": "rst",
               "gpio": 16
             },
             {
-              "role": "d9",
-              "gpio": 17
-            },
-            {
-              "role": "d10",
-              "gpio": 18
-            },
-            {
-              "role": "d11",
-              "gpio": 19
-            },
-            {
-              "role": "d12",
-              "gpio": 20
-            },
-            {
-              "role": "d13",
-              "gpio": 21
-            },
-            {
-              "role": "d14",
-              "gpio": 22
-            },
-            {
-              "role": "d15",
-              "gpio": 23
-            },
-            {
-              "role": "d16",
-              "gpio": 24
-            },
-            {
-              "role": "d17",
-              "gpio": 25
-            },
-            {
-              "role": "d18",
-              "gpio": 26
-            },
-            {
-              "role": "d19",
-              "gpio": 27
-            },
-            {
-              "role": "d20",
-              "gpio": 28
-            },
-            {
-              "role": "d21",
-              "gpio": 29
-            },
-            {
-              "role": "d22",
-              "gpio": 30
-            },
-            {
-              "role": "d23",
-              "gpio": 31
-            },
-            {
-              "role": "de",
-              "gpio": 12
-            },
-            {
-              "role": "pclk",
-              "gpio": 13
-            },
-            {
-              "role": "hsync",
-              "gpio": 14
-            },
-            {
-              "role": "vsync",
-              "gpio": 15
+              "role": "bl",
+              "gpio": 17,
+              "activeLevel": "high"
             }
           ]
         }
@@ -507,8 +408,8 @@
         "zh-CN": "J26 60 针多功能接口"
       },
       "note": {
-        "en": "Pins 22–52 expose PA4–PA15, PB0–PB15 and PC0–PC2 as muxed display/peripheral GPIOs; pins 57–60 carry the touch-panel signals. Pins 1–10 are dedicated DSI differential lanes, not GPIOs. Screen reset, backlight and power enable are defined by the selected top board.",
-        "zh-CN": "22–52 针引出 PA4–PA15、PB0–PB15、PC0–PC2，作为显示/外设复用 GPIO；57–60 针为触摸屏信号。1–10 针为专用 DSI 差分线，不是 GPIO。屏幕复位、背光和电源使能由所选顶板定义。"
+          "en": "Pins 22–52 expose PA4–PA15, PB0–PB15 and PC0–PC2 as muxed RGB/DPI and peripheral GPIOs; pins 57–60 carry touch-panel signals. Pins 1–10 are a separate set of dedicated DSI differential lanes, not GPIOs. The current TuyaOpen WL83 board profile uses the MIPI-DSI display; the RGB/DPI pin map documents the connector only and is not a second active display configuration.",
+          "zh-CN": "22–52 针引出 PA4–PA15、PB0–PB15、PC0–PC2，可复用作 RGB/DPI 信号或普通外设 GPIO；57–60 针为触摸屏信号。1–10 针是另一组专用 DSI 差分线，不是 GPIO。当前 TuyaOpen WL83 板级配置使用 MIPI-DSI 显示屏；RGB/DPI 引脚图仅说明接口连接器信号，不代表第二种已启用的显示配置。"
       },
       "provides": [
         {
