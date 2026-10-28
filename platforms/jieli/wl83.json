@@ -12,14 +12,14 @@
     "cellular": false
   },
   "memory": {
-    "sramBytes": 0,
+    "sramBytes": 360448,
     "romBytes": 0,
     "flashMaxBytes": 8388608,
     "psramMaxBytes": 16777216,
     "efuse": false,
     "note": {
-      "en": "SRAM size is unconfirmed: the board overview reports 256 KiB while AC7926A Datasheet V1.5 reports 352 KiB. sramBytes=0 denotes unknown here, not zero physical SRAM.",
-      "zh-CN": "片上 SRAM 容量尚未确认：板卡概述记载 256 KiB，AC7926A Datasheet V1.5 记载 352 KiB。此处 sramBytes=0 表示未知，不代表实物没有 SRAM。"
+      "en": "On-chip SRAM is 352 KiB (360448 bytes), following AC7926A Datasheet V1.5. The development board overview lists 256 KiB; this manifest uses the datasheet figure.",
+      "zh-CN": "片上 SRAM 为 352 KiB（360448 字节），按 AC7926A Datasheet V1.5 记载。开发板概述另列为 256 KiB；本 manifest 采用芯片手册数值。"
     }
   },
   "peripherals": {
