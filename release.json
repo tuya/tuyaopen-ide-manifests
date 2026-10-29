@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "version": "1.0.7",
-  "tag": "v1.0.7",
-  "publishedAt": "2026-10-29T00:53:36Z",
+  "version": "1.0.8",
+  "tag": "v1.0.8",
+  "publishedAt": "2026-10-29T03:40:52Z",
   "package": {
-    "github": "https://github.com/tuya/tuyaopen-ide-manifests/releases/download/v1.0.7/manifests.tar.gz",
-    "gitee": "https://gitee.com/tuya-open/tuyaopen-ide-manifests/releases/download/v1.0.7/manifests.tar.gz",
-    "tuyacn": "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/tuyaopen-ide-manifests/manifests-1.0.7.tar.gz",
-    "sha256": "d3cfba1bc160521c4e861daf205b2d32857830f4545596352f289247bd16a076",
-    "size": 29199320
+    "github": "https://github.com/tuya/tuyaopen-ide-manifests/releases/download/v1.0.8/manifests.tar.gz",
+    "gitee": "https://gitee.com/tuya-open/tuyaopen-ide-manifests/releases/download/v1.0.8/manifests.tar.gz",
+    "tuyacn": "https://images.tuyacn.com/tuyaopen/tuyaopen-ide-assets/tuyaopen-ide-manifests/manifests-1.0.8.tar.gz",
+    "sha256": "a287dbc38847ba544ebbea681290a495a68be9724e9bc3627db7dabb83ec15e5",
+    "size": 9804576
   },
   "ideSupport": {
     "minVersion": "1.1.0",
@@ -16,13 +16,13 @@
   },
   "domains": {
     "boardsAndChips": {
-      "version": "1.5.1"
+      "version": "1.5.2"
     },
     "demos": {
-      "version": "1.2.1"
+      "version": "1.2.2"
     },
     "platforms": {
-      "version": "1.4.0"
+      "version": "1.4.1"
     },
     "skills": {
       "version": "1.1.5"
