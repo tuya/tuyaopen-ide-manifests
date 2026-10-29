@@ -6,17 +6,17 @@
   "manifests": {
     "platforms": {
       "url": "platforms/index.json",
-      "version": "1.4.0",
+      "version": "1.4.1",
       "summary": "芯片平台与变体（T5AI、ESP32、Linux 等）"
     },
     "boardsAndChips": {
       "url": "boards-and-chips/index.json",
-      "version": "1.5.1",
+      "version": "1.5.2",
       "summary": "开发板与芯片(官方 + 生态)"
     },
     "demos": {
       "url": "demos/index.json",
-      "version": "1.2.1",
+      "version": "1.2.2",
       "summary": "示例工程"
     },
     "skills": {
