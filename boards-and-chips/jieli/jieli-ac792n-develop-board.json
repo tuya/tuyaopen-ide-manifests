@@ -352,7 +352,7 @@
     },
     "productPage": null
   },
-  "boardSymbol": "AC792N_Develop_Board",
+  "boardSymbol": "AC792N_DEVELOP_BOARD",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen",
     "subpath": "boards/JIELI/AC792N_Develop_Board",

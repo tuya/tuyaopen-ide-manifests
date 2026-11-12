@@ -284,7 +284,7 @@
     },
     "productPage": null
   },
-  "boardSymbol": "AC79_DevKitBoard",
+  "boardSymbol": "AC79_DEVKITBOARD",
   "source": {
     "repo": "https://github.com/tuya/TuyaOpen",
     "subpath": "boards/JIELI/AC79_DevKitBoard",
