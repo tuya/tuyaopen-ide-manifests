@@ -328,6 +328,39 @@
           ]
         }
       ]
+    },
+    {
+      "board": "jieli-ac79-devkitboard",
+      "options": [
+        {
+          "file": "JIELI_AC79_DevKitBoard.config",
+          "name": {
+            "en": "AC79_DevKitBoard",
+            "zh-CN": "AC79_DevKitBoard"
+          },
+          "peripherals": [
+            "audio",
+            "button"
+          ]
+        }
+      ]
+    },
+    {
+      "board": "jieli-ac792n-develop-board",
+      "options": [
+        {
+          "file": "JIELI_AC792N_Develop_Board.config",
+          "name": {
+            "en": "AC792N_Develop_Board",
+            "zh-CN": "AC792N_Develop_Board"
+          },
+          "peripherals": [
+            "display",
+            "audio",
+            "button"
+          ]
+        }
+      ]
     }
   ],
   "documentation": {

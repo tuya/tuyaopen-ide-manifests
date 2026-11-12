@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "demos",
-  "publishedAt": "2026-10-29T03:17:05Z",
+  "publishedAt": "2026-11-12T11:53:41Z",
   "items": [
     {
       "id": "ble-ble-central",
@@ -2074,7 +2074,9 @@
         "brd2605a",
         "siwx917-ai-dev-kit",
         "seeed-xiao-esp32s3-sense",
-        "espressif-esp32s31-korvo-1"
+        "espressif-esp32s31-korvo-1",
+        "jieli-ac79-devkitboard",
+        "jieli-ac792n-develop-board"
       ],
       "compatibilityType": "board-specific",
       "detailUrl": "demos/app/tuya-ai-your-chat-bot.json",
