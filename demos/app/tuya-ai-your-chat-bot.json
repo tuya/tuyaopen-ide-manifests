@@ -335,8 +335,8 @@
         {
           "file": "JIELI_AC79_DevKitBoard.config",
           "name": {
-            "en": "AC79_DevKitBoard",
-            "zh-CN": "AC79_DevKitBoard"
+            "en": "JieLi AC79_DevKitBoard",
+            "zh-CN": "杰理 AC79_DevKitBoard"
           },
           "peripherals": [
             "audio",
@@ -351,8 +351,8 @@
         {
           "file": "JIELI_AC792N_Develop_Board.config",
           "name": {
-            "en": "AC792N_Develop_Board",
-            "zh-CN": "AC792N_Develop_Board"
+            "en": "JieLi AC792N_Develop_Board",
+            "zh-CN": "杰理 AC792N_Develop_Board"
           },
           "peripherals": [
             "display",
