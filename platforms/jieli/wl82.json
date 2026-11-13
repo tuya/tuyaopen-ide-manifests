@@ -49,8 +49,7 @@
           "TUYA_GPIO_PUSH_PULL",
           "TUYA_GPIO_PULLUP",
           "TUYA_GPIO_PULLDOWN",
-          "TUYA_GPIO_FLOATING",
-          "TUYA_GPIO_OPENDRAIN"
+          "TUYA_GPIO_FLOATING"
         ],
         "irq": {
           "supported": true,
