@@ -264,18 +264,18 @@
             },
             {
               "role": "int",
-              "gpio": 16
+              "gpio": 20
             },
             {
               "role": "rst",
-              "gpio": 20
+              "gpio": 16
             }
           ]
         },
         "kconfig": null,
         "note": {
-          "en": "Schematic J17 assigns PH0=SCL, PH1=SDA, PB0=INT and PB4=RESET. These INT/RESET labels differ from the field names in the legacy DevKitBoard.c configuration; the schematic net names are used here.",
-          "zh-CN": "原理图 J17 分配 PH0=SCL、PH1=SDA、PB0=INT、PB4=RESET。该 INT/RESET 标注与旧版 DevKitBoard.c 配置中的字段名不一致，此处按原理图网络标注。"
+          "en": "DevKitBoard.c configures the touch panel with .rst_pin = IO_PORTB_00 (the reset shared with the LCD) and .touch_int_pin = IO_PORTB_04. PH0/PH1 are the I2C clock and data.",
+          "zh-CN": "DevKitBoard.c 将触摸屏配置为 .rst_pin = IO_PORTB_00（与 LCD 共用的复位）和 .touch_int_pin = IO_PORTB_04；PH0/PH1 为 I2C 时钟与数据。"
         }
       }
     ]

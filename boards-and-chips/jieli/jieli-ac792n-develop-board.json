@@ -61,14 +61,14 @@
             {
               "role": "mute",
               "gpio": 79,
-              "activeLevel": "high"
+              "activeLevel": "low"
             }
           ]
         },
         "kconfig": null,
         "note": {
-          "en": "Speaker mute/PA control is PE15 (GPIO79), active high (AC7926A SDK profile cross-check). The V1.2 schematic labels MIC1+/- on PC7/PC6 (GPIO39/38) and MIC2+/- on PC11/PC12 (GPIO43/44). AUX LINE IN is an analog J4 connection, not a digital GPIO.",
-          "zh-CN": "扬声器静音/功放控制为 PE15（GPIO79），高有效（以 AC7926A SDK 配置交叉核对）。V1.2 原理图标注 MIC1+/− 接 PC7/PC6（GPIO39/38），MIC2+/− 接 PC11/PC12（GPIO43/44）。AUX LINE IN 是 J4 模拟音频接口，不是数字 GPIO。"
+          "en": "Speaker mute/PA control is PE15 (GPIO79), active low: the board audio profile sets TCFG_AUDIO_DAC_PA_MUTE_LEVEL=0 and drives PE15 low to mute, then high to release the amplifier after the 300 ms delay. The V1.2 schematic labels MIC1+/- on PC7/PC6 (GPIO39/38) and MIC2+/- on PC11/PC12 (GPIO43/44). AUX LINE IN is an analog J4 connection, not a digital GPIO.",
+          "zh-CN": "扬声器静音/功放控制为 PE15（GPIO79），低电平有效：板级音频配置令 TCFG_AUDIO_DAC_PA_MUTE_LEVEL=0，先拉低 PE15 静音，延时 300 ms 后拉高释放功放。V1.2 原理图标注 MIC1+/− 接 PC7/PC6（GPIO39/38），MIC2+/− 接 PC11/PC12（GPIO43/44）。AUX LINE IN 是 J4 模拟音频接口，不是数字 GPIO。"
         }
       }
     ],

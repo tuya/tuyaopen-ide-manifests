@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-11-13T01:48:32Z",
+  "publishedAt": "2026-11-13T06:20:09Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -2171,7 +2171,7 @@
         "zh-CN": "杰理 AC79_DevKitBoard"
       },
       "platformId": "jieli",
-      "variantId": "wl82",
+      "variantId": "jieli",
       "manufacturer": {
         "en": "JieLi",
         "zh-CN": "杰理科技"
@@ -2194,7 +2194,9 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "chipDetailUrl": "platforms/jieli/wl82.json",
+      "chipVariantId": "wl82"
     },
     {
       "id": "jieli-ac792n-develop-board",
@@ -2203,7 +2205,7 @@
         "zh-CN": "杰理 AC792N_Develop_Board"
       },
       "platformId": "jieli",
-      "variantId": "wl83",
+      "variantId": "jieli",
       "manufacturer": {
         "en": "JieLi",
         "zh-CN": "杰理科技"
@@ -2228,7 +2230,9 @@
       "published": true,
       "sdks": [
         "tuyaopen"
-      ]
+      ],
+      "chipDetailUrl": "platforms/jieli/wl83.json",
+      "chipVariantId": "wl83"
     }
   ]
 }
