@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "platformId": "jieli",
   "id": "wl82",
-  "name": "JieLi WL82 (AC791N)",
+  "name": "JieLi",
   "arch": "jieli-dsp",
   "flashInterface": "spi",
   "connectivity": {
