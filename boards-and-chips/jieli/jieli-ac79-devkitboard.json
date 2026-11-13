@@ -225,6 +225,10 @@
             {
               "role": "te",
               "gpio": 32
+            },
+            {
+              "role": "rst",
+              "gpio": 16
             }
           ]
         },
@@ -232,7 +236,10 @@
         "note": {
           "en": "JL_AC79_DevKitLCD V1.2 is a separate daughterboard. J17 maps PC10=WR/HSYNC, PC9=RS/VSYNC, PC8=EMI_D7/LCD_DCLK, PC7–PC1=EMI_D6–D0/LCD_D0–D6, PC0=TE/LCD_D7, and PB8=BL/DE; interface mode determines the muxed signal name.",
           "zh-CN": "JL_AC79_DevKitLCD V1.2 是独立显示子板。J17 映射为 PC10=WR/HSYNC、PC9=RS/VSYNC、PC8=EMI_D7/LCD_DCLK、PC7–PC1=EMI_D6–D0/LCD_D0–D6、PC0=TE/LCD_D7、PB8=BL/DE；复用信号名取决于接口模式。"
-        }
+        },
+        "model": "ILI9488",
+        "width": 320,
+        "height": 480
       }
     ],
     "touchpad": [

@@ -14,10 +14,6 @@
         "pins": {
           "SDIO": [
             {
-              "role": "cd",
-              "gpio": 49
-            },
-            {
               "role": "d3",
               "gpio": 50
             },
@@ -150,7 +146,7 @@
         "width": 480,
         "height": 800,
         "pixelFormat": "RGB565",
-        "mounting": "accessory",
+        "mounting": "onboard",
         "pinLocked": true,
         "kconfig": null,
         "note": {
@@ -259,85 +255,6 @@
           "en": "V1.2 schematic CAM2/DVP0 mapping. PWDN is a passive bias network with no MCU GPIO assignment; camera bus data and timing use the listed GPIOs. SDK AC7926A profile cross-checks the control pins.",
           "zh-CN": "V1.2 原理图 CAM2/DVP0 映射。PWDN 为无 MCU GPIO 分配的被动偏置网络；摄像头数据及时序使用所列 GPIO。AC7926A SDK 配置交叉核对控制引脚。"
         }
-      },
-      {
-        "id": "dvp1-camera",
-        "name": {
-          "en": "DVP1 camera connector",
-          "zh-CN": "DVP1 摄像头接口"
-        },
-        "interface": "DVP",
-        "mounting": "accessory",
-        "pinLocked": true,
-        "pins": {
-          "DVP": [
-            {
-              "role": "mclk",
-              "gpio": 37
-            },
-            {
-              "role": "rst",
-              "gpio": 73
-            },
-            {
-              "role": "i2c_scl",
-              "gpio": 36
-            },
-            {
-              "role": "i2c_sda",
-              "gpio": 35
-            },
-            {
-              "role": "d0",
-              "gpio": 24
-            },
-            {
-              "role": "d1",
-              "gpio": 25
-            },
-            {
-              "role": "d2",
-              "gpio": 26
-            },
-            {
-              "role": "d3",
-              "gpio": 27
-            },
-            {
-              "role": "d4",
-              "gpio": 28
-            },
-            {
-              "role": "d5",
-              "gpio": 29
-            },
-            {
-              "role": "d6",
-              "gpio": 30
-            },
-            {
-              "role": "d7",
-              "gpio": 31
-            },
-            {
-              "role": "pclk",
-              "gpio": 32
-            },
-            {
-              "role": "vsync",
-              "gpio": 33
-            },
-            {
-              "role": "hsync",
-              "gpio": 34
-            }
-          ]
-        },
-        "kconfig": null,
-        "note": {
-          "en": "V1.2 schematic CAM3/DVP1 mapping: PC5=XCLK, PE9=RESET, PC4/PC3=SCL/SDA; PWDN is not assigned a GPIO.",
-          "zh-CN": "V1.2 原理图 CAM3/DVP1 映射：PC5=XCLK、PE9=RESET、PC4/PC3=SCL/SDA；PWDN 未分配 GPIO。"
-        }
       }
     ]
   },
@@ -408,8 +325,8 @@
         "zh-CN": "J26 60 针多功能接口"
       },
       "note": {
-          "en": "Pins 22–52 expose PA4–PA15, PB0–PB15 and PC0–PC2 as muxed RGB/DPI and peripheral GPIOs; pins 57–60 carry touch-panel signals. Pins 1–10 are a separate set of dedicated DSI differential lanes, not GPIOs. The current TuyaOpen WL83 board profile uses the MIPI-DSI display; the RGB/DPI pin map documents the connector only and is not a second active display configuration.",
-          "zh-CN": "22–52 针引出 PA4–PA15、PB0–PB15、PC0–PC2，可复用作 RGB/DPI 信号或普通外设 GPIO；57–60 针为触摸屏信号。1–10 针是另一组专用 DSI 差分线，不是 GPIO。当前 TuyaOpen WL83 板级配置使用 MIPI-DSI 显示屏；RGB/DPI 引脚图仅说明接口连接器信号，不代表第二种已启用的显示配置。"
+        "en": "Pins 22–52 expose PA4–PA15, PB0–PB15 and PC0–PC2 as muxed RGB/DPI and peripheral GPIOs; pins 57–60 carry touch-panel signals. Pins 1–10 are a separate set of dedicated DSI differential lanes, not GPIOs. The current TuyaOpen WL83 board profile uses the MIPI-DSI display; the RGB/DPI pin map documents the connector only and is not a second active display configuration.",
+        "zh-CN": "22–52 针引出 PA4–PA15、PB0–PB15、PC0–PC2，可复用作 RGB/DPI 信号或普通外设 GPIO；57–60 针为触摸屏信号。1–10 针是另一组专用 DSI 差分线，不是 GPIO。当前 TuyaOpen WL83 板级配置使用 MIPI-DSI 显示屏；RGB/DPI 引脚图仅说明接口连接器信号，不代表第二种已启用的显示配置。"
       },
       "provides": [
         {

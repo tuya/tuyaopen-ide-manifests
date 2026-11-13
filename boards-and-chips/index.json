@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-11-12T12:19:39Z",
+  "publishedAt": "2026-11-13T01:48:32Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -2167,8 +2167,8 @@
     {
       "id": "jieli-ac79-devkitboard",
       "name": {
-        "en": "AC79_DevKitBoard",
-        "zh-CN": "杰理 AC79_DevKitBoard（AC791N）"
+        "en": "JieLi AC79_DevKitBoard",
+        "zh-CN": "杰理 AC79_DevKitBoard"
       },
       "platformId": "jieli",
       "variantId": "wl82",
@@ -2199,8 +2199,8 @@
     {
       "id": "jieli-ac792n-develop-board",
       "name": {
-        "en": "AC792N_Develop_Board",
-        "zh-CN": "杰理 AC792N_Develop_Board（AC792N）"
+        "en": "JieLi AC792N_Develop_Board",
+        "zh-CN": "杰理 AC792N_Develop_Board"
       },
       "platformId": "jieli",
       "variantId": "wl83",
