@@ -64,6 +64,348 @@
           }
         }
       }
+    },
+    "uart": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "databits": [
+          "TUYA_UART_DATA_LEN_8BIT"
+        ],
+        "stopbits": [
+          "TUYA_UART_STOP_LEN_1BIT"
+        ],
+        "parity": [
+          "TUYA_UART_PARITY_TYPE_NONE"
+        ],
+        "flowctrl": [
+          "TUYA_UART_FLOWCTRL_NONE"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "role": "log",
+            "irq": {
+              "rx": true,
+              "tx": false
+            },
+            "pinGroups": [
+              {
+                "tx": 49,
+                "rx": 75
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "role": "general",
+            "irq": {
+              "rx": true,
+              "tx": false
+            },
+            "pinGroups": [
+              {
+                "tx": 20,
+                "rx": 21
+              }
+            ]
+          }
+        ]
+      },
+      "note": {
+        "en": "Only 8N1 without flow control. UART0 carries the log console on PD1/PE11; UART1 is the SDK uart2 block on PB4/PB5. Receive is interrupt driven.",
+        "zh-CN": "仅支持 8N1、无流控。UART0 是 PD1/PE11 上的日志串口；UART1 对应 SDK 的 uart2，引脚 PB4/PB5。接收为中断驱动。"
+      }
+    },
+    "i2c": {
+      "enabled": true,
+      "count": 3,
+      "spec": {
+        "role": [
+          "TUYA_IIC_MODE_MASTER"
+        ],
+        "speed": [
+          "TUYA_IIC_BUS_SPEED_100K",
+          "TUYA_IIC_BUS_SPEED_400K",
+          "TUYA_IIC_BUS_SPEED_1M"
+        ],
+        "addrWidth": [
+          "TUYA_IIC_ADDRESS_7BIT"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "type": [
+              "hw"
+            ],
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 4,
+                "sda": 5
+              }
+            ],
+            "swAnyGpio": false
+          },
+          {
+            "id": 1,
+            "type": [
+              "hw"
+            ],
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 6,
+                "sda": 7
+              }
+            ],
+            "swAnyGpio": false
+          },
+          {
+            "id": 2,
+            "type": [
+              "sw"
+            ],
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 2,
+                "sda": 3
+              }
+            ],
+            "swAnyGpio": false
+          }
+        ],
+        "portType": [
+          "hw",
+          "sw"
+        ]
+      },
+      "note": {
+        "en": "IIC0 and IIC1 are hardware buses (100 kHz / 400 kHz / 1 MHz, 3.4 MHz rejected); IIC2 is the software bus with fixed timing, so its requested speed is ignored.",
+        "zh-CN": "IIC0、IIC1 是硬件总线（100 kHz / 400 kHz / 1 MHz，3.4 MHz 被拒绝）；IIC2 是软件模拟总线，时序固定，请求的速率不生效。"
+      }
+    },
+    "spi": {
+      "enabled": true,
+      "count": 3,
+      "spec": {
+        "role": [
+          "TUYA_SPI_ROLE_MASTER"
+        ],
+        "mode": [
+          "TUYA_SPI_MODE0"
+        ],
+        "csType": [
+          "TUYA_SPI_SOFT_TYPE"
+        ],
+        "databits": [
+          "TUYA_SPI_DATA_BIT8"
+        ],
+        "bitorder": [
+          "TUYA_SPI_ORDER_MSB2LSB",
+          "TUYA_SPI_ORDER_LSB2MSB"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "backend": "spi",
+            "irq": false,
+            "dma": false,
+            "pinGroups": [
+              {
+                "clk": 35,
+                "mosi": 36,
+                "miso": 37
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "backend": "spi",
+            "irq": false,
+            "dma": false,
+            "pinGroups": [
+              {
+                "clk": 32,
+                "mosi": 33,
+                "miso": 34
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "backend": "spi",
+            "irq": false,
+            "dma": false,
+            "pinGroups": [
+              {
+                "clk": 50,
+                "mosi": 51,
+                "miso": 52
+              }
+            ]
+          }
+        ]
+      },
+      "note": {
+        "en": "Master only, 8-bit, mode 0; the rate is set at init. Chip select is driven by the caller as GPIO. Per-pin pinmux works only before the port is opened.",
+        "zh-CN": "仅主机、8 位、模式 0；速率在初始化时设置。片选由用户当作 GPIO 驱动。逐管脚的 pinmux 只在端口打开前有效。"
+      }
+    },
+    "pwm": {
+      "enabled": true,
+      "count": 4,
+      "spec": {
+        "polarity": [
+          "TUYA_PWM_POSITIVE",
+          "TUYA_PWM_NEGATIVE"
+        ],
+        "countMode": [
+          "TUYA_PWM_CNT_UP"
+        ],
+        "duty": {
+          "min": 0,
+          "max": 10000
+        },
+        "capture": {
+          "supported": false
+        },
+        "channels": [
+          {
+            "id": 0,
+            "pin": 24,
+            "irq": false
+          },
+          {
+            "id": 1,
+            "pin": 8,
+            "irq": false
+          },
+          {
+            "id": 2,
+            "pin": 26,
+            "irq": false
+          },
+          {
+            "id": 3,
+            "pin": 28,
+            "irq": false
+          }
+        ]
+      },
+      "note": {
+        "en": "Four MCPWM channels, each driving a complementary H/L pair; the pin listed is the H side (L: 25, 10, 27, 29). cycle == 0 is treated as 10000.",
+        "zh-CN": "四路 MCPWM，每路驱动一对互补的 H/L，表中所列为 H 引脚（L 分别为 25、10、27、29）。cycle 为 0 时按 10000 处理。"
+      }
+    },
+    "adc": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "bits": 10,
+        "mode": [
+          "TUYA_ADC_CONTINUOUS"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "channels": [
+              {
+                "id": 0,
+                "pin": 48
+              },
+              {
+                "id": 1,
+                "pin": 49
+              },
+              {
+                "id": 2,
+                "pin": 54
+              },
+              {
+                "id": 3,
+                "pin": 55
+              },
+              {
+                "id": 4,
+                "pin": 56
+              },
+              {
+                "id": 5,
+                "pin": 57
+              },
+              {
+                "id": 6,
+                "pin": 58
+              },
+              {
+                "id": 7,
+                "pin": 68
+              },
+              {
+                "id": 8,
+                "pin": 69
+              },
+              {
+                "id": 9,
+                "pin": 70
+              },
+              {
+                "id": 10,
+                "pin": 71
+              },
+              {
+                "id": 11,
+                "pin": 72
+              },
+              {
+                "id": 12,
+                "pin": 73
+              },
+              {
+                "id": 13,
+                "pin": 45
+              },
+              {
+                "id": 14,
+                "pin": 96
+              },
+              {
+                "id": 15,
+                "pin": 112
+              }
+            ]
+          }
+        ]
+      },
+      "note": {
+        "en": "ADC0, 10 bit, 3.3 V reference, at most 8 channels per request. Single sampling is rejected. Scan sampling is accepted by the adapter as well.",
+        "zh-CN": "ADC0，10 位，3.3V 参考，单次请求最多 8 个通道；单次采样被拒绝。适配层也接受扫描采样。"
+      }
+    },
+    "timer": {
+      "enabled": true,
+      "count": 6,
+      "spec": {
+        "bits": 32,
+        "mode": [
+          "TUYA_TIMER_MODE_ONCE",
+          "TUYA_TIMER_MODE_PERIOD"
+        ],
+        "ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "note": {
+        "en": "One logical timer can be active at a time; a second start returns OPRT_RESOURCE_NOT_READY. Callbacks run in the SDK timer task, not in an ISR.",
+        "zh-CN": "同一时刻只能有一个定时器处于活动状态，第二次启动返回 OPRT_RESOURCE_NOT_READY；回调在 SDK 定时任务中执行，不在中断里。"
+      }
     }
   },
   "pinout": [

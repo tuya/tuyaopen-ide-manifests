@@ -68,6 +68,355 @@
         "en": "GPIO count and pinout list only the 41 GPIO-capable pads shown on the JL_AC79_WIFI V1.0 coreboard connector table: PA0-PA10, PB0-PB8, PC0-PC10 and PH0-PH9. This is not the full WL82 SDK logical address space. The remaining codes within 0-127 are not confirmed as physically exposed on this board. These pads are muxed with board functions; disconnect or reconfigure the default functions before using a pad as ordinary GPIO. USB-special pins are excluded from this ordinary GPIO count.",
         "zh-CN": "GPIO 数量和引脚表仅列出 JL_AC79_WIFI V1.0 核心板连接器表明确引出的 41 个 GPIO-capable pad：PA0–PA10、PB0–PB8、PC0–PC10、PH0–PH9。这不是 WL82 SDK 的完整逻辑地址空间；不能据此代码确认其余 0–127 编号已在本板物理引出。上述引脚与板载功能复用，作为普通 GPIO 前须断开或重配默认功能。USB 专用脚不计入普通 GPIO 数量。"
       }
+    },
+    "uart": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "databits": [
+          "TUYA_UART_DATA_LEN_8BIT"
+        ],
+        "stopbits": [
+          "TUYA_UART_STOP_LEN_1BIT"
+        ],
+        "parity": [
+          "TUYA_UART_PARITY_TYPE_NONE"
+        ],
+        "flowctrl": [
+          "TUYA_UART_FLOWCTRL_NONE"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "role": "general",
+            "irq": {
+              "rx": false,
+              "tx": false
+            },
+            "pinGroups": [
+              {
+                "tx": 5,
+                "rx": 6
+              },
+              {
+                "tx": 17,
+                "rx": 18
+              },
+              {
+                "tx": 3,
+                "rx": 4
+              },
+              {
+                "tx": 112,
+                "rx": 113
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "role": "general",
+            "irq": {
+              "rx": false,
+              "tx": false
+            },
+            "pinGroups": [
+              {
+                "tx": 114,
+                "rx": 115
+              }
+            ]
+          }
+        ]
+      },
+      "note": {
+        "en": "Only 8N1 without flow control. Receive is polled every 10 ms with a 1 KB ring buffer, so no RX interrupt is reported. UART1 is the SDK uart2 block on fixed PH2/PH3 and is opt-in: opening it stops the vendor debug console on PB3.",
+        "zh-CN": "仅支持 8N1、无流控。接收由任务每 10 ms 轮询一次，1 KB 环形缓冲，因此没有 RX 中断。UART1 对应 SDK 的 uart2，固定 PH2/PH3，需要显式开启：打开后会停掉 PB3 上的厂商调试台。"
+      }
+    },
+    "i2c": {
+      "enabled": true,
+      "count": 2,
+      "spec": {
+        "role": [
+          "TUYA_IIC_MODE_MASTER"
+        ],
+        "speed": [
+          "TUYA_IIC_BUS_SPEED_400K"
+        ],
+        "addrWidth": [
+          "TUYA_IIC_ADDRESS_7BIT"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "type": [
+              "sw"
+            ],
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 0,
+                "sda": 1
+              }
+            ],
+            "swAnyGpio": false
+          },
+          {
+            "id": 1,
+            "type": [
+              "hw"
+            ],
+            "irq": false,
+            "pinGroups": [
+              {
+                "scl": 148,
+                "sda": 149
+              },
+              {
+                "scl": 7,
+                "sda": 8
+              },
+              {
+                "scl": 33,
+                "sda": 34
+              },
+              {
+                "scl": 112,
+                "sda": 113
+              }
+            ],
+            "swAnyGpio": false
+          }
+        ],
+        "portType": [
+          "hw",
+          "sw"
+        ]
+      },
+      "note": {
+        "en": "IIC0 is the vendor software (bit-banged) bus with fixed timing, so the requested speed is ignored and its pins come from the board config. IIC1 is the hardware bus and accepts 400 kHz only.",
+        "zh-CN": "IIC0 是厂商的软件模拟（bit-bang）总线，时序固定，请求的速率不生效，引脚来自板级配置；IIC1 是硬件总线，只接受 400 kHz。"
+      }
+    },
+    "spi": {
+      "enabled": true,
+      "count": 3,
+      "spec": {
+        "role": [
+          "TUYA_SPI_ROLE_MASTER"
+        ],
+        "mode": [
+          "TUYA_SPI_MODE0"
+        ],
+        "csType": [
+          "TUYA_SPI_SOFT_TYPE"
+        ],
+        "databits": [
+          "TUYA_SPI_DATA_BIT8"
+        ],
+        "bitorder": [
+          "TUYA_SPI_ORDER_MSB2LSB",
+          "TUYA_SPI_ORDER_LSB2MSB"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "backend": "spi",
+            "irq": false,
+            "dma": false,
+            "freq": {
+              "min": 1000000,
+              "max": 1000000
+            },
+            "pinGroups": [
+              {
+                "clk": 35,
+                "mosi": 36,
+                "miso": 32,
+                "cs": 37
+              }
+            ]
+          },
+          {
+            "id": 1,
+            "backend": "spi",
+            "irq": false,
+            "dma": false,
+            "freq": {
+              "min": 1000000,
+              "max": 1000000
+            },
+            "pinGroups": [
+              {
+                "clk": 22,
+                "mosi": 23,
+                "miso": 21
+              },
+              {
+                "clk": 41,
+                "mosi": 42,
+                "miso": 40
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "backend": "spi",
+            "irq": false,
+            "dma": false,
+            "freq": {
+              "min": 1000000,
+              "max": 1000000
+            },
+            "pinGroups": [
+              {
+                "clk": 112,
+                "mosi": 113,
+                "miso": 114
+              },
+              {
+                "clk": 3,
+                "mosi": 4,
+                "miso": 2
+              }
+            ]
+          }
+        ]
+      },
+      "note": {
+        "en": "Fixed 1 MHz: WL82 has no baud-rate ioctl, so any other rate is rejected. Chip select is driven by the caller as GPIO; the SPI2 USB group and the SPI0 group A route are not usable.",
+        "zh-CN": "固定 1 MHz：WL82 没有波特率 ioctl，其他速率会被拒绝。片选由用户当作 GPIO 驱动；SPI2 的 USB 组和 SPI0 的 A 组不可用。"
+      }
+    },
+    "pwm": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "polarity": [
+          "TUYA_PWM_POSITIVE"
+        ],
+        "countMode": [
+          "TUYA_PWM_CNT_UP"
+        ],
+        "duty": {
+          "min": 0,
+          "max": 10000
+        },
+        "capture": {
+          "supported": false
+        },
+        "channels": [
+          {
+            "id": 0,
+            "pin": 114,
+            "irq": false
+          }
+        ]
+      },
+      "note": {
+        "en": "Single channel: PWM0 is the TIMER2 output on one pin, default PH2. cycle == 0 is treated as 10000, negative polarity and multichannel start/stop are not supported.",
+        "zh-CN": "单通道：PWM0 是 TIMER2 在单个引脚上的输出，默认 PH2。cycle 为 0 时按 10000 处理；负极性以及多通道启停不支持。"
+      }
+    },
+    "adc": {
+      "enabled": true,
+      "count": 1,
+      "spec": {
+        "bits": 10,
+        "mode": [
+          "TUYA_ADC_CONTINUOUS"
+        ],
+        "ports": [
+          {
+            "id": 0,
+            "channels": [
+              {
+                "id": 0,
+                "pin": 7
+              },
+              {
+                "id": 1,
+                "pin": 8
+              },
+              {
+                "id": 2,
+                "pin": 10
+              },
+              {
+                "id": 3,
+                "pin": 17
+              },
+              {
+                "id": 4,
+                "pin": 22
+              },
+              {
+                "id": 5,
+                "pin": 23
+              },
+              {
+                "id": 6,
+                "pin": 32
+              },
+              {
+                "id": 7,
+                "pin": 33
+              },
+              {
+                "id": 8,
+                "pin": 41
+              },
+              {
+                "id": 9,
+                "pin": 42
+              },
+              {
+                "id": 10,
+                "pin": 112
+              },
+              {
+                "id": 11,
+                "pin": 115
+              },
+              {
+                "id": 12,
+                "pin": 149
+              },
+              {
+                "id": 13,
+                "pin": 148
+              }
+            ]
+          }
+        ]
+      },
+      "note": {
+        "en": "ADC0, 10 bit, 3.3 V reference, at most 10 channels per request. Single sampling is rejected. Scan sampling is accepted by the adapter as well.",
+        "zh-CN": "ADC0，10 位，3.3V 参考，单次请求最多 10 个通道；单次采样被拒绝。适配层也接受扫描采样。"
+      }
+    },
+    "timer": {
+      "enabled": true,
+      "count": 6,
+      "spec": {
+        "bits": 32,
+        "mode": [
+          "TUYA_TIMER_MODE_ONCE",
+          "TUYA_TIMER_MODE_PERIOD"
+        ],
+        "ids": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "note": {
+        "en": "One logical timer can be active at a time; a second start returns OPRT_RESOURCE_NOT_READY. Callbacks run in the SDK timer task, not in an ISR.",
+        "zh-CN": "同一时刻只能有一个定时器处于活动状态，第二次启动返回 OPRT_RESOURCE_NOT_READY；回调在 SDK 定时任务中执行，不在中断里。"
+      }
     }
   },
   "pinout": [
