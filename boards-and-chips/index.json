@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "domain": "boardsAndChips",
-  "publishedAt": "2026-11-13T06:20:09Z",
+  "publishedAt": "2026-11-17T10:30:00Z",
   "items": [
     {
       "id": "tuya-t5-e1",
@@ -1188,10 +1188,13 @@
     {
       "id": "sparkleiot-t5ai-dev",
       "name": {
-        "en": "SparkleIoT T5AI Dev Board",
-        "zh-CN": "星火思创 T5AI 开发板"
+        "en": "NiceMCU T5AI Dev Board with 2.8-inch Display",
+        "zh-CN": "耐思物联 2.8寸屏T5AI 开发板"
       },
-      "manufacturer": "SparkleIoT",
+      "manufacturer": {
+        "en": "NiceMCU",
+        "zh-CN": "东莞耐思物联科技有限公司"
+      },
       "platformId": "t5ai",
       "variantId": "t5ai",
       "summary": {
@@ -1216,6 +1219,75 @@
       "image": {
         "url": "images/sparkleiot-t5ai-dev/sparkleiot-t5ai-dev.jpg"
       }
+    },
+    {
+      "id": "nicemcu-t5-0-96isp",
+      "name": {
+        "en": "NiceMCU T5 0.96-inch ISP Board",
+        "zh-CN": "耐思物联 T5 0.96寸屏 ISP 开发板"
+      },
+      "manufacturer": {
+        "en": "NiceMCU",
+        "zh-CN": "东莞耐思物联科技有限公司"
+      },
+      "platformId": "t5ai",
+      "variantId": "t5ai",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ],
+      "summary": {
+        "en": "T5-E1 board with a reserved 8-pin header for an external 0.96-inch ST7735S SPI LCD, onboard speaker amplifier and analog microphone, SH3001 accelerometer, IR TX/RX, user LED and button, battery management, and a 10-pin UART ISP header.",
+        "zh-CN": "基于 T5-E1 的开发板：预留 8 针排针外接 0.96 寸 ST7735S SPI 屏，板载喇叭功放与模拟麦克风、SH3001 加速度计、红外收发、用户 LED 与按键、电池管理，并预留 10 针串口 ISP 排针。"
+      },
+      "image": {
+        "url": "images/nicemcu-t5-0-96isp/nicemcu-t5-0-96isp.jpg"
+      },
+      "detailUrl": "boards-and-chips/t5ai/nicemcu-t5-0-96isp.json",
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "display",
+        "audio",
+        "imu",
+        "led",
+        "button",
+        "battery",
+        "development"
+      ]
+    },
+    {
+      "id": "nicemcu-t5-dev",
+      "name": {
+        "en": "NiceMCU T5 Dev Board",
+        "zh-CN": "耐思物联 T5 开发板"
+      },
+      "manufacturer": {
+        "en": "NiceMCU",
+        "zh-CN": "东莞耐思物联科技有限公司"
+      },
+      "platformId": "t5ai",
+      "variantId": "t5ai",
+      "published": true,
+      "sdks": [
+        "tuyaopen"
+      ],
+      "summary": {
+        "en": "Compact T5-E1 dev board with CH340 USB-to-UART, dual 18-pin expansion headers exposing all GPIOs plus codec audio pins, a user LED, and USB Type-C power.",
+        "zh-CN": "基于 T5-E1 的核心开发板：板载 CH340 USB 转串口，双排 18 针扩展排针引出全部 GPIO 与 codec 音频引脚，用户 LED，USB Type-C 供电。"
+      },
+      "image": {
+        "url": "images/nicemcu-t5-dev/nicemcu-t5-dev.jpg"
+      },
+      "detailUrl": "boards-and-chips/t5ai/nicemcu-t5-dev.json",
+      "tags": [
+        "wifi",
+        "ble",
+        "ai",
+        "led",
+        "development"
+      ]
     },
     {
       "id": "tuya-cb2l",
