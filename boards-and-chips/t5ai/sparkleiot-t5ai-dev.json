@@ -223,9 +223,10 @@
     "schematic": null,
     "datasheet": null,
     "productPage": {
-      "en": "https://e.tb.cn/h.8cKdRJSGfXbu54V?tk=WVl1gGbz4yY"
+      "en": "https://e.tb.cn/h.8cKdRJSGfXbu54V?tk=WVl1gGbz4yY",
+      "zh-CN": "https://e.tb.cn/h.8cKdRJSGfXbu54V?tk=WVl1gGbz4yY"
     }
   },
-  "boardSymbol": "SPARKLEIOT_T5AI_2_8IPS",
+  "boardSymbol": "NICEMCU_T5_2_8ISP",
   "expansionPins": []
 }

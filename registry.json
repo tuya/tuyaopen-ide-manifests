@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "name": "tuyaopen-ide-manifests",
   "description": "Top-level index. IDE fetches this first and uses the URLs below to lazy-load each domain's index.json.",
-  "publishedAt": "2026-11-13T06:20:09Z",
+  "publishedAt": "2026-11-17T10:30:00Z",
   "manifests": {
     "platforms": {
       "url": "platforms/index.json",
@@ -11,7 +11,7 @@
     },
     "boardsAndChips": {
       "url": "boards-and-chips/index.json",
-      "version": "1.5.5",
+      "version": "1.5.6",
       "summary": "开发板与芯片(官方 + 生态)"
     },
     "demos": {
